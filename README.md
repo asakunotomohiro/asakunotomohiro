@@ -15,12 +15,47 @@
 
 * アルゴリズムの勉強に使うプログラミング言語  
   * [Python](https://www.python.jp)  
+    * [x] 変数2021/08/06  
+    * [ ] 配列  
+    * [ ] 条件分岐  
+    * [ ] 繰り返し  
+    * [ ] 関数  
   * [Go](https://golang.org)  
+    * [ ] 変数  
+    * [ ] 配列  
+    * [ ] 条件分岐  
+    * [ ] 繰り返し  
+    * [ ] 関数  
   * [C](https://clang.llvm.org)  
+    * [ ] 変数  
+    * [ ] 配列  
+    * [ ] 条件分岐  
+    * [ ] 繰り返し  
+    * [ ] 関数  
   * [C++](https://cpprefjp.github.io)  
+    * [ ] 変数  
+    * [ ] 配列  
+    * [ ] 条件分岐  
+    * [ ] 繰り返し  
+    * [ ] 関数  
   * [C#](https://docs.microsoft.com/ja-jp/dotnet/csharp/)  
+    * [ ] 変数  
+    * [ ] 配列  
+    * [ ] 条件分岐  
+    * [ ] 繰り返し  
+    * [ ] 関数  
   * [Perl](https://www.perl.org)  
+    * [ ] 変数  
+    * [ ] 配列  
+    * [ ] 条件分岐  
+    * [ ] 繰り返し  
+    * [ ] 関数  
   * [Java](https://docs.oracle.com/en/java/)  
+    * [ ] 変数  
+    * [ ] 配列  
+    * [ ] 条件分岐  
+    * [ ] 繰り返し  
+    * [ ] 関数  
 
 <details><summary>気が向き次第勉強に取り組む言語達</summary>
 
