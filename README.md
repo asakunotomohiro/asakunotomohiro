@@ -21,7 +21,7 @@
     * [ ] 繰り返し  
     * [ ] 関数  
   * [Go](https://golang.org)  
-    * [ ] 変数  
+    * [x] 変数2021/08/07  
     * [ ] 配列  
     * [ ] 条件分岐  
     * [ ] 繰り返し  
@@ -59,7 +59,7 @@
 
 <details><summary>気が向き次第勉強に取り組む言語達</summary>
 
-* Godot  
+* Godot script  
 * vim script  
 * VBA  
 * PowerShell  
