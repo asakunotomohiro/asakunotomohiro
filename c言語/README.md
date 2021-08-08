@@ -45,7 +45,7 @@
 [x] 手順3. コピーしてきたディレクトリ名を"基礎知識用の勉強"に変更する。  
 [x] 手順3-1. `helloWorld.[言語用の拡張子]`のファイルを作り、おなじみ"Hello World."プログラムを作る。  
 [x] 手順3-2. main関数不要であれば、"**実行済み**"ディレクトリ不要になるはず、削除すること。  
-[ ] 手順3-3. コミットする。  
+[x] 手順3-3. コミットする。  
 [ ] 手順4. 各ディレクトリで、5種類(変数・配列・条件分岐・繰り返し・関数)の"絶対的に勉強する一覧"を勉強する。  
 [ ] 手順4-1. 箇条書きごとに勉強を進める。  
 [ ] 手順4-2. 箇条書きごとに勉強を終えることで、コミット実施する。  
@@ -119,7 +119,46 @@ $
 それなのに、`return`がなくても問題にならないのは矛盾しているよね。  
 そして、引数も空のままって・・・。  
 
+##### おまけ。
+以下の戻り値無し版もだめだった。
+```c:sample.c
+#include <stdio.h>
+
+void main()
+{
+	printf("hello, world\n");
+}
+```
+
+何が悪いの？  
+よく考えたらコンパイルのバージョンによるのか・・・。  
+
+```terminal
+$ gcc --version
+Configured with: --prefix=/Applications/Xcode.app/Contents/Developer/usr --with-gxx-include-dir=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/4.2.1
+Apple clang version 11.0.0 (clang-1100.0.33.16)
+Target: x86_64-apple-darwin18.7.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+$ g++ --version
+Configured with: --prefix=/Applications/Xcode.app/Contents/Developer/usr --with-gxx-include-dir=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/4.2.1
+Apple clang version 11.0.0 (clang-1100.0.33.16)
+Target: x86_64-apple-darwin18.7.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+$ cc --version
+Apple clang version 11.0.0 (clang-1100.0.33.16)
+Target: x86_64-apple-darwin18.7.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+$
+```
+
+全部`clang`の`version11.0.0`か・・・。  
+
 #### 変数
+辞典からの引用。  
+> 値を記憶する入れ物．C言語では非constオブジェクト(記憶対象)をいう．(略)．変数の概念があるかないかは，アセンブリ言語と高水準言語の1つの分かれ目でもある．（以降略
 
 * 他の話題例  
   * [ ] 定数  
@@ -140,6 +179,59 @@ $
   * [ ] 演算子  
      * [ ] 算術演算子  
      * [ ] 優先順位  
+
+##### 変数
+変数の名前が識別とする。  
+**逆引き大全** では、変数の項目がない。  
+そして、 **スコープ** という項目で変数の説明をしている(一応 **内部変数** という項目もある)。  
+何でだよ。  
+
+どうでもいいことだが、プログラムファイルの名前は、多バイトでも問題ないんだな。  
+小さい簡易なプログラムだから許されるとか？  
+今の時代に、英数字のみをファイル名に限定するのはおかしなことか。  
+
+以下、普通に変数を使ってみる。
+```c:変数.c
+#include <stdio.h>
+
+int main(void)
+{
+	int asa = 20210808;
+	char *asakuno = "朝来野智博";
+	float tomo = 35.693999;
+	double hiro = 139.689502;
+
+	printf("asa = %d\n", asa);	// asa = 20210808
+	printf("asakuno = %s\n", asakuno);	// asakuno = 朝来野智博
+	printf("tomo = %f\n", tomo);	// tomo = 35.694000
+	printf("hiro = %f\n", hiro);	// hiro = 139.689502
+}
+```
+
+##### 定数
+
+
+
+
+
+
+
+
+##### データ型
+
+
+
+##### リテラル
+
+
+
+##### キャスト
+
+
+
+##### 演算子
+
+
 
 #### 配列
 
