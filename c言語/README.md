@@ -246,19 +246,17 @@ int main(void)
 そのため、`const`を使う場合は正しく使いこなさなければ、全く意味の無い宣言になる。  
 最後の書き換えが失敗しているのは、普通に`const`している変数を書き換えているから(これが普通に求める結果かと・・・)。  
 
-以下でも対策不可(どういうこと？)。
+以下、上記の書き換え対策。
 ```c
 #include <stdio.h>
 
 int main(void)
 {
 	int asakuno = 20210808;
-	const int* const pasakuno = &asakuno;	// これで対策になると思ったが、成らなかった(なぜ？)。
-//	const *int const pasakuno = &asakuno;	// expected identifier or '('
-//	const int const *pasakuno = &asakuno;	// duplicate 'const' declaration specifier [-Wduplicate-decl-specifier]
-	printf("pasakuno = %d\n", *pasakuno);	// pasakuno = 20210808
-	pasakuno = 20210809;
-	printf("pasakuno = %d\n", *pasakuno);	// pasakuno = 20210809
+	const int* const pasakuno = &asakuno;	// note: variable 'pasakuno' declared const here
+	printf("pasakuno = %d\n", *pasakuno);
+	pasakuno = 20210809;	// cannot assign to variable 'pasakuno' with const-qualified type 'const int *const'
+	printf("pasakuno = %d\n", *pasakuno);
 }
 ```
 
