@@ -14,7 +14,7 @@
   ※実際には使わない。お守り代わり。  
   [技術評論社](https://gihyo.jp/book)の[新ANSI C言語辞典](https://gihyo.jp/book/1997/4-7741-0432-9)
   ※辞典とは言え、これも出番はないかな。  
-  ※これ以上の辞典って何があるの？(増版しない理由は他に良いのがあるから？)  
+  ※説明が技術的で、全く説明が頭に入ってこない・・・増版しないわ。  
   [秀和システム](https://www.shuwasystem.co.jp)の[現場ですぐに使える！ C/C++逆引き大全 560の極意](https://www.shuwasystem.co.jp/book/9784798054278.html)
   ※と言いつつ、この辞典(?)も使う。  
   [アスキー](https://ascii.jp)の"エキスパートCプログラミング 知られざるCの深層"  
@@ -207,13 +207,60 @@ int main(void)
 	printf("hiro = %f\n", hiro);	// hiro = 139.689502
 }
 ```
+※float型の変数値を正確に出力しきれていない。  
 
 ##### 定数
+ない。  
+しかし、 **ない** と断言するのは、C言語を使い続けた人間としては不服のため、あると言い直すことにしよう。  
 
+constが有効活用されており、完全に **定数** として機能しているのがわかる。
+```c
+#include <stdio.h>
 
+int main(void)
+{
+	const int asakuno = 20210808;	// err：note: variable 'asakuno' declared const here
+	asakuno = 20210809;	// err：cannot assign to variable 'asakuno' with const-qualified type 'const int'
 
+	printf("asakuno = %d\n", asakuno);
+}
+```
 
+以下、定数が存在しないプログラム。
+```c
+#include <stdio.h>
 
+int main(void)
+{
+	int asakuno = 20210808;
+	int const *pasakuno = &asakuno;
+	printf("pasakuno = %d\n", *pasakuno);	// pasakuno = 20210808
+
+	asakuno = 20210809;
+	printf("pasakuno = %d\n", *pasakuno);	// pasakuno = 20210809
+
+	pasakuno = 4649;	// err：incompatible integer to pointer conversion assigning to 'const int *' from 'int' [-Wint-conversion]
+}
+```
+1つ目と2つ目の出力結果が異なっているのは、書き換え不可の変数ではない変数を書き換えているから。  
+そのため、`const`を使う場合は正しく使いこなさなければ、全く意味の無い宣言になる。  
+最後の書き換えが失敗しているのは、普通に`const`している変数を書き換えているから(これが普通に求める結果かと・・・)。  
+
+以下でも対策不可(どういうこと？)。
+```c
+#include <stdio.h>
+
+int main(void)
+{
+	int asakuno = 20210808;
+	const int* const pasakuno = &asakuno;	// これで対策になると思ったが、成らなかった(なぜ？)。
+//	const *int const pasakuno = &asakuno;	// expected identifier or '('
+//	const int const *pasakuno = &asakuno;	// duplicate 'const' declaration specifier [-Wduplicate-decl-specifier]
+	printf("pasakuno = %d\n", *pasakuno);	// pasakuno = 20210808
+	pasakuno = 20210809;
+	printf("pasakuno = %d\n", *pasakuno);	// pasakuno = 20210809
+}
+```
 
 
 
