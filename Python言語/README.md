@@ -15,6 +15,16 @@
 開発規模が大きくなった場合、`Visual Studio Code(VSCode)`に逃げるかもしれない。  
 さらに手に負えないほどの規模にまで膨れ上がれば、`Visual Studio 2019 for Mac`などを使う・・・かもね。  
 
+#### Pythonで学ぶアルゴリズムの教科書
+簡単なプログラミングに使う基礎知識を統一する。  
+
+* 基礎知識5種類  
+  * [x] [変数](#variable変数)  
+  * [x] [配列](#arrangement配列)  
+  * [ ] [条件分岐](#Conditional条件分岐)  
+  * [ ] [繰り返し](#repetition繰り返し)  
+  * [ ] [関数](#function関数)  
+
 #### 具体的な基礎知識
 何はともあれ、まずは、"Hello World"を表示するプログラムを作る。  
 そのため、以下の手順で勉強を進めることにする。  
@@ -97,7 +107,7 @@ name = '朝来野'; print(name)
 デバッガ：VSCodeには標準でついているようだ。
 ならば、Vimエディタには？  
 
-##### 変数
+##### <a name="variable変数"></a>変数
 複数のルールがある。  
 
 * Unicode文字を利用できる。  
@@ -254,26 +264,218 @@ print(name1)    # NameError: name 'name1' is not defined
 ```
 
 
-##### 配列
+##### <a name="arrangement配列"></a>配列
 他のプログラミング言語では、配列という。  
 しかし、Pythonでは、リスト(list)と呼ぶ(混乱するので止めて欲しい)。  
 
+様式：
+`配列名 = [データ0, データ1, データ2, ・・・]`  
+
+今回のアルゴリズムの勉強(書籍)では、後から追加しないやり方として、事前に配列数を確保しておくとのこと。  
+そんなこと知らんわ。  
+
+以下、配列の生成
+```python:配列(list).py
+asakuno = list('朝来野智博')
+print(asakuno)	# ['朝', '来', '野', '智', '博']
+```
+
+以下、ジャグ配列
+```python:配列(list).py
+asakuno = [
+    ['朝', '来', '野'],
+    ['智', '博'],
+]
+print(asakuno)	# [['朝', '来', '野'], ['智', '博']]
+
+print(asakuno[1][0])	# 智
+```
+
+
+以下、配列の要素へ追加・要素から削除
+```python:配列(list)追加・削除.py
+# 基本的なリスト
+asakuno = ['朝来野', ]
+print(asakuno)	# ['朝来野']
+
+# 以下、末尾に追加。
+asakuno.append('智博')
+print(asakuno)	# ['朝来野', '智博']
+
+# 以下、途中に追加。
+asakuno.insert(1, '-')	# 1番目の直前に挿入。
+print(asakuno)	# ['朝来野', '-', '智博']
+
+# 以下、削除。
+asakuno.pop(1)	# 1番目を削除(取り出し)
+print(asakuno)	# ['朝来野', '智博']
+
+# 以下、削除。
+asakuno.pop()	# 末尾を削除。
+print(asakuno)	# ['朝来野']
+```
+
+以下、配列の要素へ追加・要素から削除
+```python:配列(list)複数要素追加・置換・削除.py
+# 要素の挿入
+asakuno = list('朝来智博')  # 「野」がない。
+asakuno[2:2] = ['野']
+print(asakuno)	# ['朝', '来', '野', '智', '博']
+```
+
+以下、要素内指定で削除。
+```python:配列(list)要素削除.py
+asakuno = ['朝来野', '智博', ]
+print(asakuno)	# ['朝来野', '智博']
+
+# 以下、要素を削除。
+asakuno.remove('朝来野')
+print(asakuno)	# ['智博']
+```
+
+以下、要素内指定で削除。
+```python:配列(list)複数要素追加・置換・削除.py
+# 要素の削除
+asakuno[2:9] = []
+print(asakuno)	# ['朝', '来', '智', '博']
+
+# 要素の削除
+asakuno = list('朝来野智博')
+asakuno[2:3] = list('asakuno')  # 上記と同じ結果に揃えた。
+del asakuno[2:9]
+print(asakuno)	# ['朝', '来', '智', '博']
+```
+
+以下、要素を全て削除。
+```python:配列(list)要素削除.py
+asakuno = list('朝来野智博')
+print(asakuno)	# ['朝', '来', '野', '智', '博']
+
+asakuno.clear()
+print(asakuno)	# []
+```
+
+以下、配列内から1文字を検索。
+```python:配列(list)検索.py
+asakuno = list('朝来野智博朝来野智博')
+
+# 6文字目(index_5)以降で「朝」の検索
+print(asakuno.index('朝', 5))	# 5
+```
+
+以下、配列内にある文字を数える。
+```python:配列(list)重複確認.py
+asakuno = list('朝来野智博朝来野智博')
+
+# 「朝」の出現回数
+print(asakuno.count('朝'))	# 2
+```
+
+以下、配列内にあるかどうかを確認する。
+```python:配列(list)存在確認.py
+asakuno = list('朝来野智博朝来野智博')
+
+# 「a」の検索
+print('a' in asakuno)	# False
+```
+
+以下、浅いコピーを行う(コピー先を変更した場合、コピー元にも影響する)。
+```python:配列(list)複製.py
+asakuno = list('朝来野智博')
+
+# 上記配列を複製する(シャローコピー)。
+tomohiro = asakuno.copy()
+print(tomohiro)	# ['朝', '来', '野', '智', '博']
+```
+深いコピー(ディープコピー)をする場合は、`import copy`でモジュールを使い、`deepcopy`メソッドでコピーをする。  
+
+以下、配列の連結及び、指定回数連結。
+```python:配列(list)連結.py
+asakuno = list('朝来野')
+tomohiro = list('智博')
+
+asakunotomohiro = asakuno + tomohiro
+print(asakunotomohiro)	# ['朝', '来', '野', '智', '博']
+
+asakunotomohiro = tomohiro * 3
+print(asakunotomohiro)	# ['智', '博', '智', '博', '智', '博']
+```
+これは、配列を新しく作り直すことに注意すること。
+
+以下、配列内を並び替え。
+```python:配列(list)並び替え.py
+asakuno = list('朝来野智博')
+
+# 逆順に並べ替える。
+asakuno.reverse()
+print(asakuno)	# ['博', '智', '野', '来', '朝']
+
+# 逆順に並べ替える？
+asakuno = list('朝来野智博')
+asakuno.sort(reverse=True)
+print(asakuno)	# ['野', '来', '朝', '智', '博']
+
+# ソート
+asakuno = list('asakuno')
+asakuno.sort()
+print(asakuno)	# ['a', 'a', 'k', 'n', 'o', 's', 'u']
+```
+
+以下、forループにて、配列の要素を番号付きで取り出す。
+```python:配列(list)要素を番号付きで取り出す.py
+asakuno = list('朝来野智博')
+
+for tomohiro, asakunotomohiro in enumerate(asakuno):
+    print(tomohiro, '：', asakunotomohiro)
+# 出力結果：0 ： 朝
+#           1 ： 来
+#           2 ： 野
+#           3 ： 智
+#           4 ： 博
+```
+
+```python:配列(list)要素のbool値判断.py
+# 以下、リスト内の全ての要素がTrueであるか。
+print(all([True, True, False]))	# False
+
+asakuno = list('朝来野智博')
+print(all(asakuno))	# True
+#	何の役にも立たない判定方法だな。
+```
+
+配列から各要素を取り出す。
+```python:配列(list)for.py
+asakuno = list('朝来野智博')
+
+for tomohiro in asakuno:
+    print(tomohiro)
+# 出力結果：朝
+#           来
+#           野
+#           智
+#           博
+```
+
+以下、rangeによる配列作成。
+```python:配列(list)range.py
+asakuno = list(range(0, 7, 2))
+print(asakuno)	# [0, 2, 4, 6]
+```
+かなりの非効率なため、やらない方が良い。  
+
+##### <a name="Conditional条件分岐"></a>条件分岐
 
 
 
-##### 条件分岐
+
+
+##### <a name="repetition繰り返し"></a>繰り返し
 
 
 
 
 
-##### 繰り返し
-
-
-
-
-
-##### 関数
+##### <a name="function関数"></a>関数
 
 
 ### Gitのマージルール
