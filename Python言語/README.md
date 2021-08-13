@@ -9,6 +9,7 @@
 [プログラミング言語 Python情報サイト](https://www.python.jp)  
 [ゼロからのPython入門講座](https://www.python.jp/train/index.html)  
 [Python チュートリアル](https://docs.python.org/ja/3/tutorial/)  
+[Python Documentation contents](https://docs.python.org/ja/3/contents.html)  
 
 ## 開発環境
 開発には、`MacVim`を使う。  
@@ -44,6 +45,56 @@
   (細かく分けることでやる気を継続する・・・はず)  
 [ ] 手順6. 上記、5種類の基礎知識を終わるまで繰り返す。  
 [ ] 手順7. 5種類の基礎知識終了にて、"study2programming"ブランチにマージする。  
+
+勉強環境のコンパイルバージョン：3.8.6  
+```terminal
+$ python --version
+Python 3.8.6
+$
+```
+
+プログラムファイルの拡張子：`*.py`  
+標準の文字コード(プログラムファイル)：UTF-8  
+以下、別の文字コード指定(ファイルの先頭に記述する)。
+```python:Sample.py
+# coding=UTF-7
+```
+
+さらに別の記述方法。
+```python:Sample.py
+# coding:CESU-8
+```
+
+文字区切り(行末記号)：改行  
+以下、単語事の区切りであれば改行が許される。
+```python
+print(
+	hoge
+)
+print \
+	(boo)
+```
+
+以下、複数行を1行にまとめることも許される。
+```python
+hoge = 'Pythonの勉強'; print(hoge)
+```
+
+インデント：半角スペース4個が基本。Tabでも構わないが、半角スペースと混在しないこと(半角スペースの利用を推奨)。  
+基本的に、インデントに意味がある。  
+以下は、不可。
+```python
+hoge = 'Pythonの勉強'
+    print(hoge)
+```
+
+以下は、許される。
+```python
+print('Hello',
+      'World.')
+```
+
+標準の出力関数：`print`  
 
 * 他の話題例  
   * [x] 定数  
