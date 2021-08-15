@@ -629,23 +629,102 @@ endif
 #### <a name="repetition繰り返し"></a>繰り返し
 
 * 絶対的に勉強する一覧  
-  * [ ] 真偽条件での繰り返し  
+  * [x] 真偽条件での繰り返し  
     基本構造例：while( 条件式 )  
     基本構造例：do〜while( 条件式 )  
+                `do`はないようだ。  
   * [ ] 指定回数条件での繰り返し  
     基本構造例：for( 条件式 )  
     基本構造例：拡張for命令  
-  * [ ] ジャンプ処理  
-    * [ ] break  
-    * [ ] continue  
+  * [x] ジャンプ処理  
+    * [x] break  
+    * [x] continue  
 
 ##### 真偽条件での繰り返し
+[様式](https://vim-jp.org/vimdoc-ja/eval.html#:while)：
+```vim
+while [条件式]
+	処理。
+endwhile
+```
+条件式が真である間、処理が実行される。  
 
+例）
+```vim:while.vim
+var ii = 1
+while ii < 5
+	echom ii .. '回目の実行'
+	ii += 1
+endwhile
+```
+
+以下、実行結果
+```text
+1回目の実行
+2回目の実行
+3回目の実行
+4回目の実行
+```
 
 ##### 指定回数条件での繰り返し
 
 
 ##### ジャンプ処理
+[break](#break文使用例)：`endwhile` までジャンプしてループを脱ける。  
+[continue](#continue文使用例)：ループの先頭にジャンプしてループを継続する。  
+
+<a name="break文使用例"></a>
+例）[break文使用](https://vim-jp.org/vimdoc-ja/eval.html#:break)
+```vim:while.vim
+while ii < 5
+	echom ii .. '回目の実行'
+	if ii == 3
+		break
+	endif
+	ii += 1
+endwhile
+```
+
+以下、実行結果
+```text
+1回目の実行
+2回目の実行
+```
+
+<a name="continue文使用例"></a>
+例）[continue文使用](https://vim-jp.org/vimdoc-ja/eval.html#:continue)
+```vim:while.vim
+var ii = 1
+var jj = 0
+while ii < 5
+	echom ii .. '回目の実行(jj値：' .. jj .. ')'
+	if jj > 10
+		" この処理がなければ無限ループになる。
+		break
+	endif
+	jj += 1
+	if ii == 2
+		continue
+	endif
+	ii += 1
+endwhile
+```
+
+以下、実行結果
+```text
+1回目の実行(jj値：0)
+2回目の実行(jj値：1)
+2回目の実行(jj値：2)
+2回目の実行(jj値：3)
+2回目の実行(jj値：4)
+2回目の実行(jj値：5)
+2回目の実行(jj値：6)
+2回目の実行(jj値：7)
+2回目の実行(jj値：8)
+2回目の実行(jj値：9)
+2回目の実行(jj値：10)
+2回目の実行(jj値：11)
+```
 
 
 
