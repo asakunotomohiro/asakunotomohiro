@@ -106,12 +106,12 @@
 簡単なプログラミングに使う基礎知識を統一する。  
 
 * 基礎知識5種類  
-  * [ ] [変数](#variable変数)  
-  * [ ] [配列](#arrangement配列)  
+  * [ ] 変数  
+  * [ ] 配列  
     ここでのPythoでは、`リスト(list)`を配列と呼んでいる。  
-  * [ ] [条件分岐](#Conditional条件分岐)  
-  * [ ] [繰り返し](#repetition繰り返し)  
-  * [ ] [関数](#function関数)  
+  * [ ] 条件分岐  
+  * [ ] 繰り返し  
+  * [ ] 関数  
 
 <details><summary>今回は勉強を見送る一覧</summary>
 
@@ -171,7 +171,6 @@
 コメント方法：  
 
 </details>
-
 
 #### 開発環境
 できる限り`MacVim`を使うつもりだが、基本は`Visual Studio Code(VSCode)`だろう。  
