@@ -8,7 +8,7 @@
 簡単なプログラミングに使う基礎知識を統一する。  
 
 * 基礎知識5種類  
-  * [ ] [変数](#variable変数)  
+  * [x] [変数](#variable変数)  
   * [ ] [配列](#arrangement配列)  
   * [ ] [条件分岐](#Conditional条件分岐)  
   * [ ] [繰り返し](#repetition繰り返し)  
@@ -39,14 +39,14 @@
         完全にこのファイルのことを忘れていた。  
   * [x] 手順3-2. `helloWorld.[言語用の拡張子]`のファイルを作り、おなじみ"Hello World."プログラムを作る。  
   * [ ] 手順3-3. main関数不要であれば、"**実行済み**"ディレクトリを削除すること。  
-  * [ ] 手順3-4. コミットする。  
+  * [x] 手順3-4. コミットする。  
   * [ ] 手順4. 各ディレクトリで、5種類の"絶対的に勉強する一覧"を勉強する。  
     * 以下、5種類の内訳。  
-    [ ] 変数  
-    [ ] 配列  
-    [ ] 条件分岐  
-    [ ] 繰り返し  
-    [ ] 関数  
+      [x] 変数  
+      [ ] 配列  
+      [ ] 条件分岐  
+      [ ] 繰り返し  
+      [ ] 関数  
   * [ ] 手順4-1. 箇条書きごとに勉強を進める。  
   * [ ] 手順4-2. 箇条書きごとに勉強を終えることで、コミット実施する。  
   * [ ] 手順4-3. 次の箇条書きに移り、勉強を継続(再開)する。  
@@ -195,8 +195,10 @@ $
 </details>
 
 ## 開発環境
-基本は、`Visual Studio Code(VSCode)`を用いて勉強をしていくことになるだろう。  
-また、`Visual Studio 2019 for Mac`を使うほど大規模になることはないだろう(他の言語も大規模にはなるまい)。  
+今回は、`Visual Studio 2019 for Mac(VS2019)`を使う。  
+最初は`Visual Studio Code(VSCode)`を使うはずだったが、動かない。  
+デバッグ環境まで用意する必要があるようなのだが、やり方が分からないため、VS2019を使うことにした。  
+開発環境を用意するのに時間を使いたくないからな。  
 
 ### 具体的な基礎知識
 
@@ -208,47 +210,168 @@ $
 * 絶対的に勉強する一覧  
   * [変数の宣言方法](#subVariable1)  
   * [変数への代入方法](#subVariable1)  
-    * [ ] 代入演算子(`=`)  
+    * [x] 代入演算子(`=`)  
   * [変数値の出力方法](#subVariable2)  
-  * [代入した変数の利用方法](#subVariable3)  
   * [データ型](#subVariable4)  
-    * [ ] 整数(`int`)  
-    * [ ] 浮動小数点型(`float`)  
-    * [ ] 文字型(`string`)  
-    * [ ] 真偽型(`bool`)  
+    * [x] 整数(`int`)  
+    * [x] 浮動小数点型(`float`)  
+    * [x] 文字型(`string`)  
+    * [x] 真偽型(`bool`)  
+  * [代入した変数の利用方法](#subVariable3)  
   * [変数値を使った計算方法](#subVariable5)  
-    * [ ] 算術演算子  
-      * [ ] 足し算(`+`)  
-      * [ ] 引き算(`-`)  
-      * [ ] 掛け算(`*`)  
-      * [ ] 割り算(`/`)  
+    * [x] 算術演算子  
+      * [x] 足し算(`+`)  
+      * [x] 引き算(`-`)  
+      * [x] 掛け算(`*`)  
+      * [x] 割り算(`/`)  
       * [ ] 累乗(`**`)  
+        C#にはないようだ。  
       * [ ] 割り算の商(`//`)  
-      * [ ] 割り算の余り(`%`)  
+        C#にはないようだ。  
+      * [x] 割り算の余り(`%`)  
   * [型変換(キャスト)方法](#subVariable6)  
-    * [ ] 明示変換  
+    * [x] 明示変換  
 
 <a name="subVariable1"></a>
 ##### 変数  
+変数宣言
 様式：
+`データ型 変数名`  
+例）
+`int hoge;`  
+
+初期化(変数宣言と同時に値を代入する)様式：
+`データ型 変数名 = 初期値`  
+その値のことを"初期値"と呼ぶ。  
 
 <a name="subVariable2"></a>
 ##### 変数値の出力方法
 
-<a name="subVariable3"></a>
-##### 代入した変数の利用方法
+```cs
+public static void Main(string[] args)
+{
+	Console.WriteLine("Hello World!");
+
+	string hoge = "Hello World";
+	string boo;
+
+	// 複数同時宣言
+	int hoo = 0, bar = 1, har = 2, bee = 3;
+
+	// 出力
+	boo = @"{Hello
+　|
+World.}";
+	Console.WriteLine(hoge, boo, hoo, bar, har, bee);    // この書き方では出力されない(先頭の変数のみ出力された)。
+	Console.WriteLine(boo);
+	Console.WriteLine(hoo);     // 0
+	Console.WriteLine(bar);    // 1
+	Console.WriteLine(har);    // 2
+	Console.WriteLine(bee);    // 3
+
+}
+```
 
 <a name="subVariable4"></a>
 ##### データ型
+以下の表に限らず、腐るほどある。  
+
+|C#型|CLR名|符号|ビットサイズ|範囲|接尾辞|一言|
+|----|-----|----|------------|----|------|----|
+|int|System.Int32|付き|32|-2147483648〜2147483647|||
+|float|System.Single|32|32ビット(〜7桁)||F|極力使わない。|
+|string|System.String||||||
+|bool|System.Boolean|||||true:0・false:1|
 
 <a name="subVariable5"></a>
 ##### 変数値を使った計算方法
 
+|演算子|概要|機能|
+|------|----|----|
+|++|インクリメント|オペランドに1加算|
+|--|デクリメント|オペランドに1減算|
+|+|加算|※二項演算子に限る|
+|-|減算|※二項演算子に限る|
+|*|乗算||
+|/|除算|整数型の場合、余り切り捨て|
+|%|剰余|除算の余り|
+
 <a name="subVariable6"></a>
 ##### 型変換(キャスト)方法
+様式：
+`(データ型)変数名`  
 
+以下、キャスト。
+```cs
+byte over = (byte)255;
+Console.WriteLine(over);
+```
+
+以下、桁あふれするような代入は、エラーになる。
+```cs
+// Error CS0221: Constant value '256' cannot be converted to a 'byte' (use 'unchecked' syntax to override) (CS0221) (データ型)
+byte over = (byte)256;
+Console.WriteLine(over);
+```
+
+<a name="subVariable3"></a>
+##### 代入した変数の利用方法
+
+
+```cs
+int hoge = 1234;
+float boo = 12.34F;
+bool egoh = true;
+string bar = "本日は晴天なり本日は晴天なり。";
+Console.WriteLine(hoge);  // 1234
+Console.WriteLine(boo);   // 12.34
+Console.WriteLine(egoh);  // True
+Console.WriteLine(bar);   // 本日は晴天なり本日は晴天なり。
+
+Console.WriteLine("------------------");
+// 以下、計算など。
+egoh = (hoge == boo);
+Console.WriteLine(hoge + boo);  // 1246.34
+Console.WriteLine(hoge - boo);  // 1221.66
+Console.WriteLine(hoge * boo);  // 15227.56
+Console.WriteLine(hoge / boo);  // 100
+Console.WriteLine(hoge % boo);  // 12.33998
+Console.WriteLine(egoh);        // False
+egoh = (100 == 100);
+Console.WriteLine(egoh);        // True
+```
 
 ##### 変数での説明しない項目。
+
+<details><summary>今回は勉強を見送る一覧</summary>
+
+* [ ] データ型  
+  * [ ] 文字  
+    char  
+  * [ ] 整数  
+    sbyte  
+    byte(メモリやバイナリファイル用)  
+    short  
+    ushort  
+    uint  
+    long(要素数100万以上)  
+    ulong  
+    decimal(金額用？)  
+  * [ ] 浮動小数点型(`double`など)  
+    double  
+  * [ ] 型推論  
+    ない？  
+    ある(`var型`)。  
+  * [ ] 複素数型  
+    ない？  
+
+* [ ] リテラル  
+  * [ ] 整数リテラル  
+  * [ ] 浮動小数点リテラル  
+  * [ ] 文字リテラル  
+  * [ ] 文字列リテラル  
+
+</details>
 
 <a name="arrangement配列"></a>
 #### [配列(リスト)](#arrangement配列sub)
