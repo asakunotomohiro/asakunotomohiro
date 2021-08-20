@@ -39,7 +39,9 @@
     * [ ] 繰り返し  
     * [ ] 関数  
   * [C#](https://docs.microsoft.com/ja-jp/dotnet/csharp/)  
-    * [ ] 変数  
+    * [x] 変数2021/08/20  
+      コミット失敗？  
+      **\*.csproj.user**がコミット対象外になっていた(いいのか？)。  
     * [ ] 配列  
     * [ ] 条件分岐  
     * [ ] 繰り返し  
@@ -173,8 +175,9 @@
 #### 開発環境
 できる限り`MacVim`を使うつもりだが、基本は`Visual Studio Code(VSCode)`だろう。  
 理由は、vim環境で **C#** をコンパイルできなかった(Macだからという理由ではないはず)。  
-そのため、[VSCode](https://code.visualstudio.com)を使うだろう。  
-規模が大きくなれば`Visual Studio 2019 for Mac`([VS2019](https://visualstudio.microsoft.com/ja/downloads/))などを使う？  
+そのため、`Visual Studio 2019 for Mac`([VS2019](https://visualstudio.microsoft.com/ja/downloads/))を使う。  
+今回の勉強では、[VSCode](https://code.visualstudio.com)を使いたかったが、環境構築できず、VS2019を使う羽目になった。  
+
 
 #### Gitのマージルール
 個々の言語ごとにブランチをそれぞれ作成する。  
