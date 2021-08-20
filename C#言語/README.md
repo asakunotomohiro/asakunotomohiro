@@ -35,9 +35,9 @@
   * [x] 手順1. 勉強用のブランチに移動する。  
   * [x] 手順2. ルートディレクトリのひな形ディレクトリをコピーしてくる。  
   * [x] 手順3. コピーしてきたディレクトリ名を"基礎知識用の勉強"に変更する。  
-  * [ ] 手順3-1. 当ファイル(`README.md`)の書き換えを行う。  
+  * [x] 手順3-1. 当ファイル(`README.md`)の書き換えを行う。  
         完全にこのファイルのことを忘れていた。  
-  * [ ] 手順3-2. `helloWorld.[言語用の拡張子]`のファイルを作り、おなじみ"Hello World."プログラムを作る。  
+  * [x] 手順3-2. `helloWorld.[言語用の拡張子]`のファイルを作り、おなじみ"Hello World."プログラムを作る。  
   * [ ] 手順3-3. main関数不要であれば、"**実行済み**"ディレクトリを削除すること。  
   * [ ] 手順3-4. コミットする。  
   * [ ] 手順4. 各ディレクトリで、5種類の"絶対的に勉強する一覧"を勉強する。  
@@ -88,6 +88,38 @@ $
 [インデント](https://docs.microsoft.com/ja-jp/dotnet/csharp/fundamentals/coding-style/coding-conventions)：フリーフォーマット  
 標準の出力関数：`System.Console.WriteLine`  
 コメント方法：`//`・`/*〜*/`・`///`  
+
+以下、ハローワールドのコンパイル。
+```cs:helloWorld.cs
+$ mcs ./helloWorld.cs	←☆コンパイル。
+$ ll
+total 48
+-rwxr-xr-x  1 asakunotomohiro  staff   3072  8 20 15:43 helloWorld.exe*	←☆コンパイル結果ファイル。
+-rw-r--r--  1 asakunotomohiro  staff     91  8 20 15:42 helloWorld.cs	←☆コンパイル対象ファイル。
+drwxr-xr-x  9 asakunotomohiro  staff    288  8 20 15:40 基礎知識用の勉強/
+-rw-r--r--@ 1 asakunotomohiro  staff  13053  8 20 15:19 README.md
+$ ./helloWorld.exe	←☆コンパイル結果ファイル単体での実行は不可。
+-bash: ./helloWorld.exe: cannot execute binary file
+$ mono ./helloWorld.exe 	←☆"mono"プログラムによる実行にて、成功する。
+Hello World.
+$
+$ csc ./helloWorld.cs 	←☆上記とは異なる方法のコンパイル。
+Microsoft (R) Visual C# Compiler version 3.9.0-6.21124.20 (db94f4cc)
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+$ ./helloWorld.exe 	←☆当たり前だが、単体実行失敗。
+-bash: ./helloWorld.exe: cannot execute binary file
+$ ll
+total 48
+-rwxr-xr-x  1 asakunotomohiro  staff   3584  8 20 15:44 helloWorld.exe*	←☆コンパイル結果ファイル。
+-rw-r--r--  1 asakunotomohiro  staff     91  8 20 15:42 helloWorld.cs	←☆コンパイル対象ファイル。
+drwxr-xr-x  9 asakunotomohiro  staff    288  8 20 15:40 基礎知識用の勉強/
+-rw-r--r--@ 1 asakunotomohiro  staff  13053  8 20 15:19 README.md
+$ mono ./helloWorld.exe 	←☆"mono"プログラムによる実行にて、成功する。
+Hello World.
+$
+```
+相変わらずvimではコンパイルが出来ない(Pathが長いんだと)。  
 
 #### ※注意事項  
 基礎知識として、5種類を勉強するが、その目的はアルゴリズムの勉強用であって、5種類を本格的に極めるためではない。  
