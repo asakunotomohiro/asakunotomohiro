@@ -42,6 +42,25 @@
 
 </details>
 
+以下、ソースファイルなどを全く使わずに実行する方法(`jshell`)。
+```terminal
+$ jshell
+|  JShellへようこそ -- バージョン13
+|  概要については、次を入力してください: /help intro
+
+jshell> exit
+|  エラー:
+|  シンボルを見つけられません
+|    シンボル:   変数 exit
+|    場所: クラス 
+|  exit
+|  ^--^
+
+jshell> /exit
+|  終了します
+$
+```
+
 ### 開発環境
 本当に基本的な部分のみ`MacVim`を使うことになるだろう。  
 ある程度規模が大きくなった時に、`Visual Studio Code(VSCode)`に移行する。  
