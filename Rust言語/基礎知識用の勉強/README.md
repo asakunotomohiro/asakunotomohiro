@@ -10,11 +10,23 @@
 [プログラミング言語Rust入門](https://project.nikkeibp.co.jp/bnt/atcl/20/P96850/)  
 
 また、以下のサイトも参考にする。  
-[The Rust Programming Language 日本語版](https://doc.rust-jp.rs/book-ja/foreword.html)
+[The Rust Programming Language 日本語版](https://doc.rust-jp.rs/book-ja/index.html)  
+上記書籍で、この電子本を紹介しており、最初に読む本として最適とのこと・・・なぜ本を出した。そして、なぜ紹介した。  
 
 
 ## 開発環境
 できる限り`MacVim`を使うつもりだが、環境構築から始める言語環境のため、`Visual Studio Code(VSCode)`に逃げるかもしれない。  
+
+コンパイルのやり方すら分からない。
+```terminal
+$ rust --versiont
+-bash: rust: command not found
+$ rustc -V
+-bash: rustc: command not found
+$ cargo -V
+-bash: cargo: command not found
+$
+```
 
 ## Pythonで学ぶアルゴリズムの教科書
 簡単なプログラミングに使う基礎知識を統一する。  
