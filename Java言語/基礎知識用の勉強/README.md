@@ -41,11 +41,11 @@
   * [x] 手順3. コピーしてきたディレクトリ名を"基礎知識用の勉強"に変更する。  
   * [x] 手順3-0. ここまでは、上位ディレクトリにある"README.md"で作業を終えているはず。  
   * [x] 手順3-1. 当ファイル(`README.md`)の書き換えを行う。  
-        ※**上位ディレクトリにある"README.md"**は触らない。  
+        ※ **上位ディレクトリにある"README.md"** は触らない。  
         ※勉強項目は記載するが、実際の勉強は記載しないことにする(見にくくて仕方ない)。  
-  * [ ] 手順3-2. `helloWorld.[言語用の拡張子]`のファイルを作り、おなじみ"Hello World."プログラムを作る。  
+  * [x] 手順3-2. `helloWorld.[言語用の拡張子]`のファイルを作り、おなじみ"Hello World."プログラムを作る。  
   * [ ] 手順3-3. main関数不要であれば、"**実行済み**"ディレクトリを削除すること。  
-  * [ ] 手順3-4. コミットする。  
+  * [x] 手順3-4. コミットする。  
   * [ ] 手順4. 各ディレクトリで、5種類の"絶対的に勉強する一覧"を勉強する。  
     * 以下、5種類の内訳。  
     [ ] 変数  
@@ -75,11 +75,66 @@ $
 ```
 
   * プログラムファイルの拡張子：`*.java`  
+  * 実行方式：コンパイラ方式  
   * 標準の文字コード(プログラムファイル)：UTF-8(BOMなし)  
+    文字コード指定のコンパイル方法：`javac -encoding UTF-8 [ソースファイル名]`  
+    文字コード指定のコンパイル方法：`javac -sjis UTF-8 [ソースファイル名]`  
   * 文字区切り(行末記号)：セミコロン`;`  
   * インデント：フリーフォーマット  
   * 標準の出力関数：`System.out.println`・`System.out.print`  
   * コメント方法：`//`・`/*〜*/`  
+
+以下、ハローワールドプログラム。
+```java
+class helloWorld {
+	public static void main(String[] args){
+		System.out.println("hello World.");
+	}
+}
+```
+インポート文がなくても色々使えるんだな。  
+
+以下、コンパイル方法(及び実行)。
+```terminal
+$ javac helloWorld.java	←☆コンパイル実施。
+$ ll
+total 24
+-rw-r--r--   1 asakunotomohiro  staff   426  8 21 16:16 helloWorld.class	←☆コンパイルでの生成ファイル。
+drwxr-xr-x  10 asakunotomohiro  staff   320  8 21 16:13 基礎知識用の勉強/
+-rw-r--r--   1 asakunotomohiro  staff   103  8 21 16:11 helloWorld.java
+-rw-r--r--   1 asakunotomohiro  staff  3221  8 21 16:11 README.md
+$ chmod 744 ./helloWorld.class	←☆実行権限を付与する。
+$ java helloWorld	←☆コンパイル結果の実行ファイルを実行する。
+hello World.
+$
+```
+※クラス名とファイル名は同じ必要がある。  
+
+以下、コンパイルせずに実行(他ファイル参照ない場合に有効)。
+```terminal
+$ ll
+total 16
+drwxr-xr-x  10 asakunotomohiro  staff   320  8 21 16:18 基礎知識用の勉強/
+-rw-r--r--@  1 asakunotomohiro  staff   103  8 21 16:11 helloWorld.java
+-rw-r--r--   1 asakunotomohiro  staff  3221  8 21 16:11 README.md
+$ java helloWorld.java	←☆プログラムファイルそのものを実行する。
+hello World.
+$ ll	←☆クラスファイルなどの余分なものは生成されていない。
+total 16
+drwxr-xr-x  10 asakunotomohiro  staff   320  8 21 16:18 基礎知識用の勉強/
+-rw-r--r--@  1 asakunotomohiro  staff   103  8 21 16:11 helloWorld.java
+-rw-r--r--   1 asakunotomohiro  staff  3221  8 21 16:11 README.md
+$
+```
+
+### 一連のコンパイルから実行までの流れ
+実行の流れを示すよりは、命名規則もどきの説明。  
+
+* 以下、手順  
+  1. ソースファイル名：\<クラス名\>.java  
+  1. コンパイル実施：javac \<ソースファイル名\>  
+  1. 生成されるクラス名：\<クラス名\>.class  
+  1. 実行方法：java \<クラス名\>  
 
 ### ※注意事項
 基礎知識として、5種類を勉強するが、その目的はアルゴリズムの勉強用であって、5種類を本格的に極めるためではない。  
