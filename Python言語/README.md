@@ -11,6 +11,11 @@
 [Python チュートリアル](https://docs.python.org/ja/3/tutorial/)  
 [Python Documentation contents](https://docs.python.org/ja/3/contents.html)  
 
+* 書籍  
+  [Pythonチュートリアル 第2版](https://www.oreilly.co.jp/books/9784873114422/)  
+  チュートリアル本を持っているが、[第4版](https://www.oreilly.co.jp/books/9784873119359/)が出ていることを考えれば、古い内容なのだろう。  
+  使うことはないだろう。  
+
 ## 開発環境
 開発には、`MacVim`を使う。  
 開発規模が大きくなった場合、`Visual Studio Code(VSCode)`に逃げるかもしれない。  
@@ -24,7 +29,7 @@
   * [x] [配列](#arrangement配列)  
         Pythoでは、`リスト(list)`という。  
   * [x] [条件分岐](#Conditional条件分岐)  
-  * [ ] [繰り返し](#repetition繰り返し)  
+  * [x] [繰り返し](#repetition繰り返し)  
   * [ ] [関数](#function関数)  
 
 ### 具体的な基礎知識
@@ -693,38 +698,148 @@ if [条件式]:
 #### 繰り返し
 
 * 絶対的に勉強する一覧  
-  * [ ] [指定回数条件での繰り返し](#subRepetition1)  
-    [ ] [基本構造例：for( 条件式 )](#subRepetition2)  
-    [ ] [基本構造例：拡張for命令(`in`)](#subRepetition3)  
-    [ ] [`for`の入れ子。](#subRepetition4)  
+  * [x] [指定回数条件での繰り返し](#subRepetition1)  
+    [x] [基本構造例：for( 条件式 )](#subRepetition2)  
+    [x] [基本構造例：拡張for命令(`in`)](#subRepetition3)  
+    [x] [`for`の入れ子。](#subRepetition4)  
   * [ジャンプ処理](#subRepetition5)  
-    * [ ] break  
-    * [ ] continue  
-  * [ ] [真偽条件での繰り返し](#subRepetition6)  
-    [ ] [基本構造例：while( 条件式 )](#subRepetition6)  
-    [ ] [無限ループ](#subRepetition7)  
+    * [x] break  
+    * [x] continue  
+  * [x] [真偽条件での繰り返し](#subRepetition6)  
+    [x] [基本構造例：while( 条件式 )](#subRepetition6)  
+    [x] [無限ループ](#subRepetition7)  
 
 <a name="subRepetition1"></a>
 ##### 繰り返し
 様式：
+`for [繰り返し用変数] in range([変数の範囲])`  
+
+* range  
+  * range(繰り返す回数)  
+    変数値は0から始まり、指定回数分繰り返す。  
+  * range(初期値, 終値)  
+    変数値は初期値から始まり、1づつ増えながら終値まで繰り返す。  
+  * range(初期値, 終値, 増減分)  
+    初期値から終わり値までを指定の増減分変化させながら繰り返す。  
+  * 注意  
+    例）`range(1, 5)`の場合、`1, 2, 3, 4`の並なり、`5`は含まれない。  
+
 
 <a name="subRepetition2"></a>
 ###### 指定回数条件での繰り返し：for( 条件式 )
+for [繰り返し用変数] in range(繰り返す回数)  
+
+```Python
+for ii in range(10):
+    print(ii)
+# 出力結果。
+#       0
+#       1
+#       2
+#       3
+#       4
+#       5
+#       6
+#       7
+#       8
+#       9
+```
 
 <a name="subRepetition3"></a>
 ###### 指定回数条件での繰り返し：拡張for命令
+2種類。  
+
+for [繰り返し用変数] in range(初期値, 終値)  
+```Python
+for ii in range(1, 5):
+    print(ii)
+# 出力結果。
+#       1
+#       2
+#       3
+#       4
+```
+
+for [繰り返し用変数] in range(初期値, 終値, 増減分)  
+```Python
+for ii in range(20, 10, -1):
+    print(ii)
+# 出力結果。
+#       20
+#       19
+#       18
+#       17
+#       16
+#       15
+#       14
+#       13
+#       12
+#       11
+```
 
 <a name="subRepetition4"></a>
 ##### `for`の入れ子。
 
+```Python
+for ii in range(4):
+    print("1つ目のfor", ii, "回目の実行")
+    for jj in range(4):
+        print("　　2つ目のfor", jj, "回目の実行")
+```
+
 <a name="subRepetition5"></a>
 ##### ジャンプ処理
+以下、2種類ある。  
+* break  
+* continue  
+
+`break`にて、それ以降の処理を行わず、for文を抜け出る。
+```Python
+for ii in range(4):
+    print("1つ目のfor", ii, "回目の実行")
+    if ii == 3:
+        break
+    for jj in range(4):
+        print("　　2つ目のfor", jj, "回目の実行")
+```
+`ii`が`3`の場合、`for`を抜け出る。  
+
+`continue`にて、for文に戻る。
+```Python
+for ii in range(4):
+    print("1つ目のfor", ii, "回目の実行")
+    if ii == 2:
+        continue
+    for jj in range(4):
+        print("　　2つ目のfor", jj, "回目の実行")
+```
+`ii`が`2`の場合、次の処理を行わず、`for`に戻る。  
 
 <a name="subRepetition6"></a>
 ##### 真偽条件での繰り返し：while( 条件式 )
+様式：
+`while [条件式]`  
+
+```Python
+ii = 1
+while ii <= 10:
+    print(ii)
+    ii += 1
+```
 
 <a name="subRepetition7"></a>
 ##### 無限ループ
+様式：
+`while True:`  
+
+以下、無限ループ。
+```Python
+while True:
+    ss = input("文字列入力：")
+    print(ss)
+    if ss == "":
+        break
+```
 
 <a name="subRepetition999"></a>
 ##### 繰り返しでの説明しない項目。
