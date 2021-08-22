@@ -2,7 +2,7 @@
 ここは、プログラミング言語のRust言語を勉強するブランチになる。  
 
 ## ブランチの利用方法
-まず始めに、「Pythonで学ぶアルゴリズムの教科書」を勉強する。  
+まず始めに、「[Pythonで学ぶアルゴリズムの教科書](https://book.impress.co.jp/books/1120101024)」を勉強する。  
 その応用として、アルゴリズムの部分をRust言語に当てはめながらRustならではのアルゴリズムを身につけていく・・・つもり。  
 
 ## 勉強方法
@@ -17,14 +17,13 @@
 ## 開発環境
 できる限り`MacVim`を使うつもりだが、環境構築から始める言語環境のため、`Visual Studio Code(VSCode)`に逃げるかもしれない。  
 
-コンパイルのやり方すら分からない。
+コンパイルコマンド(`cargo`)。
 ```terminal
-$ rust --versiont
--bash: rust: command not found
-$ rustc -V
--bash: rustc: command not found
-$ cargo -V
--bash: cargo: command not found
+$ source $HOME/.cargo/env	←☆Path通し。
+$ rustc -V	←☆コンパイラコマンド。
+rustc 1.54.0 (a178d0322 2021-07-26)
+$ cargo -V	←☆ビルドシステム(普段はこちらを使うようだ)。
+cargo 1.54.0 (5ae8d74b3 2021-06-22)
 $
 ```
 
@@ -85,6 +84,15 @@ $
 　　例）`print`・`printf`・`say`・`Console.WriteLine`など。  
   * コメント方法：  
 　　例）`//`・`"`・`REM`・`#`・`/* */`など。  
+
+以下、ハローワールドプログラム。
+```Rust:main.rs
+fn main() {
+    println!("Hello, world!");
+}
+```
+※ワーニングあり。  
+
 
 ### ※注意事項
 基礎知識として、5種類を勉強するが、その目的はアルゴリズムの勉強用であって、5種類を本格的に極めるためではない。  
