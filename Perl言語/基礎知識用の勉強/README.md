@@ -18,6 +18,8 @@
 
 第7版で勉強した方が良いと言うことか!?  
 しかし、買い増すのもな・・・。  
+第7版を書店で取り寄せたのだが、まだ入荷連絡が無い。
+ということで、本棚をあさったところ[新版Perl言語プログラミングレッスン入門編](https://www.sbcr.jp/product/4797336803/)を見つけたため、これで学習を進めることにする・・・取り寄せ本はどうすりゃいい？  
 
 職場でPerlを使う環境だったが、記号だらけになるのを嫌い、ほとんど記号などを使わず、配列などもシフトさせずに添え字を使い、文書処理などの細かい作業を`awk`や`sed`任せにしていた。  
 Perlは、単純に`awk` `sed`を呼び出すだけのキッカーの役割でしかなく、Perlを使うだけ無駄なこだわりを持っている現場だった。  
@@ -43,7 +45,7 @@ Perlは、単純に`awk` `sed`を呼び出すだけのキッカーの役割で�
 ※プログラミングに使う基礎知識を統一する(簡単に済ませられる量に絞り込む)。  
 
 * 基礎知識5種類  
-  * [ ] [変数](#variable変数)  
+  * [ ] [変数(スカラー)](#variable変数)  
   * [ ] [配列](#arrangement配列)  
   * [ ] [条件分岐](#Conditional条件分岐)  
   * [ ] [繰り返し](#repetition繰り返し)  
@@ -82,21 +84,34 @@ Perlは、単純に`awk` `sed`を呼び出すだけのキッカーの役割で�
   * [ ] 手順7. 5種類の基礎知識終了にて、"study2programming"ブランチにマージする。  
 
 * 以下、勉強環境。  
-  * 勉強環境のコンパイルバージョン：  
-  * プログラムファイルの拡張子：  
-　　※Windowsに併せるならば拡張子は必須かな。  
-  * 実行方式：  
-    例）`コンパイラ方式`・`インタプリタ方式`  
-  * 標準の文字コード(プログラムファイル)：  
-　　例）UTF-8(今時はこれに統一されている？)。  
-  * 文字区切り(行末記号)：  
-　　例）セミコロン(基本はこれ)・Pythonは改行  
-  * インデント：  
-　　例）フリーフォーマット(基本はこれ？C言語など)・Pythonは絶対的に半角スペース4つなのかな。Go言語も重要。  
-  * 標準の出力関数：  
-　　例）`print`・`printf`・`say`・`Console.WriteLine`など。  
-  * コメント方法：  
-　　例）`//`・`"`・`REM`・`#`・`/* */`など。  
+  * 勉強環境のコンパイルバージョン：perl 5, version 18, subversion 4 (v5.18.4)  
+```terminal
+$ perl --version
+
+This is perl 5, version 18, subversion 4 (v5.18.4) built for darwin-thread-multi-2level
+(with 2 registered patches, see perl -V for more detail)
+
+Copyright 1987-2013, Larry Wall
+
+Perl may be copied only under the terms of either the Artistic License or the
+GNU General Public License, which may be found in the Perl 5 source kit.
+
+Complete documentation for Perl, including FAQ lists, should be found on
+this system using "man perl" or "perldoc perl".  If you have access to the
+Internet, point your browser at http://www.perl.org/, the Perl Home Page.
+
+$
+```
+
+  * プログラムファイルの拡張子：`*.pl`  
+　　※Prologのプログラムファイル拡張子と同じ。  
+  * 実行方式：インタプリタ方式  
+  * 標準の文字コード(プログラムファイル)：UTF-8  
+　　※プログマ(`use utf8;`)宣言が必要。  
+  * 文字区切り(行末記号)：セミコロン`;`  
+  * インデント：フリーフォーマット  
+  * 標準の出力関数：`print`・`printf`・`say`  
+  * コメント方法：`#`  
 
 ### ※注意事項
 基礎知識として、5種類を勉強するが、その目的はアルゴリズムの勉強用であって、5種類を本格的に極めるためではない。  
@@ -104,7 +119,7 @@ Perlは、単純に`awk` `sed`を呼び出すだけのキッカーの役割で�
 
 #### 以下、概要。
 <a name="variable変数"></a>
-* [変数](#variable変数sub)  
+* [変数(スカラー)](#variable変数sub)  
   * 変数の宣言方法  
     数値の代入  
     文字列の代入  
@@ -122,12 +137,16 @@ Perlは、単純に`awk` `sed`を呼び出すだけのキッカーの役割で�
 
 <a name="arrangement配列"></a>
 * [配列(リスト)](#arrangement配列sub)  
+  Perlでの配列とリストは別物。  
+  配列：データを入れる入れ物であって、データは関係ない。  
+  リスト：配列に入れるためのデータであって、入れ物ではない。  
   * 宣言方法  
     要素  
     要素数  
     添え字(インデックス)  
   * 要素追加方法  
   * 2次元配列  
+    Perlでの多次元配列は不可能(リファレンスを使えば可能)。  
   * ※取り出しは"for"で説明する。  
 
 <a name="Conditional条件分岐"></a>
@@ -169,7 +188,7 @@ Perlは、単純に`awk` `sed`を呼び出すだけのキッカーの役割で�
     ローカル変数  
 
 <a name="variable変数sub"></a>
-### 変数
+### 変数(スカラー)
 値の格納方法について。  
 ※複雑な説明はしない。  
 
@@ -197,7 +216,7 @@ Perlは、単純に`awk` `sed`を呼び出すだけのキッカーの役割で�
 
 
 <a name="subVariable1"></a>
-#### 変数
+#### 変数(スカラー)
 様式：
 
 <a name="subVariable2"></a>
@@ -266,9 +285,10 @@ Perlは、単純に`awk` `sed`を呼び出すだけのキッカーの役割で�
 
 <a name="arrangement配列sub"></a>
 ### 配列
-変数を連ならせる格納方法。  
-今回のPythonではリストを配列と呼ぶ。  
-※配列とリストを分けている場合はリストの勉強を後回しにし、配列がない状態でリストがある場合はリストを勉強する。  
+Perlでの配列とは、データを入れる入れ物でしかない。データは全く関係ない。  
+Perlでのリストとは、配列に入れるためのデータであって、入れ物は全く無関係になる。  
+今回のPerlでは今までのルールから外れ、配列を優先して勉強し、その後でリストに触れる。  
+※本来であれば、配列があるのだからリストは触らないのだが、配列だけでは勉強できないため、仕方ない。  
 
 * 絶対的に勉強する一覧  
   * [ ] [配列の宣言方法](#subArrangement1)  
@@ -289,7 +309,7 @@ Perlは、単純に`awk` `sed`を呼び出すだけのキッカーの役割で�
 
 <a name="subArrangement3"></a>
 #### 二次元配列の宣言方法
-様式：
+Perlでの2次元配列は、配列で宣言できないため、学習見送り。  
 
 <a name="subArrangement999"></a>
 #### 配列での説明しない項目。
