@@ -1,17 +1,35 @@
 # ドキュメント作成方法
 Githubでは、Markdown形式を採用している。  
 そのため、とりあえずは、Markdownでの作成方法の勉強を進める。  
-エディタについてもここに記録を残そうと思う・・・分けた方が良いかな・・・。  
 
 ## メモ作成方法
 見やすいような成形が施されるメモ取りは以下がある。  
 
-* vimエディタ  
-普段使いのエディタについてもここでメモを取る。  
 * markdown  
 手軽に始められ、なおかつビューアでの見栄えもいい感じにしてくれるテキストメモの技法。  
 * sphinx  
 Pythonのドキュメント作成に使われる技法として有名。  
+
+* その他の軽量マークアップ言語(リンクは、公式外かもしれない)。
+  * [Redmine](https://redmine.jp)の[textile記法](https://redmine.jp/tech_note/textile/)  
+  * [Typetalk](https://www.typetalk.com/ja/)の[メッセージ整形](https://support.typetalk.com/hc/ja/articles/212900337-メッセージを整形する)  
+  * [はてなブログ](https://hatenablog.com)の[はてな記法](https://help.hatenablog.com/entry/text-hatena-list)  
+  * [Scrapbox](https://scrapbox.io/product)の[ブラケティング](https://scrapbox.io/help-jp/ブラケティング)  
+  * [Pandoc](https://pandoc.org)  
+    [日本語版](https://pandoc-doc-ja.readthedocs.io/ja/latest/users-guide.html)  
+  * [EtText](http://ettext.taint.org)  
+    日本語版はない？  
+  * [AsciiDoc](https://asciidoc.org)  
+    日本語版はない？  
+  * [MkDocs](https://www.mkdocs.org)  
+    日本語版はない？  
+  * [Slack](https://slack.com)の[メッセージの書式設定](https://slack.com/intl/ja-jp/help/articles/202288908-メッセージの書式設定)  
+  * [Re:VIEW](https://reviewml.org/ja/)  
+  * [青空文庫](https://www.aozora.gr.jp)の[注記](https://www.aozora.gr.jp/annotation/)  
+  * [小説家になろう](https://syosetu.com)の[執筆中の仕様](https://syosetu.com/man/sippitu/)や[ルビ振り](https://syosetu.com/man/ruby/)など？  
+  * [カクヨム](https://kakuyomu.jp)の[カクヨム記法](https://kakuyomu.jp/help/entry/notation)  
+  * [LeME](https://leme.style)の[Markdown](https://leme.style/making-guide/point-markdown/)  
+  * [Org Mode](https://www.orgmode.org/ja/index.html)  
 
 
 ### markdownとは。
