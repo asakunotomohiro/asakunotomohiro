@@ -1341,6 +1341,35 @@ OSのクリップボードを経由する。
 
 <a id="vimPracticeThinkingSpeedUpKadokawa5150002"></a>
 ### TIP98：パターンを含む行を削除する
+様式：
+`:g/パターン(検索単語)/d`  
+パターンに一致する行を削除する。  
+
+様式：
+`:v/パターン(検索単語)/d`  
+パターンに一致しない行を削除する。  
+
+
+
+■以下、パターンに一致しない行を削除する。  
+以下、変更前のテキスト内容。
+```text
+https://vim-jp.org/vimdoc-ja/
+aaa
+https://vim-jp.org
+bb
+htt
+http://nanasi.jp
+```
+実行コマンド：
+`v/http/d`  
+以下、実行結果。
+```text
+https://vim-jp.org/vimdoc-ja/
+https://vim-jp.org
+http://nanasi.jp
+```
+**http**が存在する行以外を削除する。  
 
 
 <a id="vimPracticeThinkingSpeedUpKadokawa5150003"></a>
