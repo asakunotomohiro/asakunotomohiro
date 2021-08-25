@@ -5,9 +5,9 @@ Githubでは、Markdown形式を採用している。
 ## メモ作成方法
 見やすいような成形が施されるメモ取りは以下がある。  
 
-* markdown  
+* [markdown](#localfileMarkdownJump)  
 手軽に始められ、なおかつビューアでの見栄えもいい感じにしてくれるテキストメモの技法。  
-* sphinx  
+* [sphinx](#localfileSphinxJump)  
 Pythonのドキュメント作成に使われる技法として有名。  
 
 * その他の軽量マークアップ言語(リンクは、公式外かもしれない)。
@@ -32,12 +32,28 @@ Pythonのドキュメント作成に使われる技法として有名。
   * [Org Mode](https://www.orgmode.org/ja/index.html)  
 
 
+<a id="localfileMarkdownJump"></a>
 ### markdownとは。
 文書を記述するための軽量マークアップ言語のひとつ。  
 本来はプレーンテキスト形式で手軽に書いた文書からHTMLを生成するために開発されたものである。  
 
+* 利用サービス  
+  * [Stack Overflow](https://ja.stackoverflow.com)  
+  * [Reddit](https://www.reddit.com)  
+  * [GitHub](https://github.com)  
+  * [Bitbucket](https://bitbucket.org)  
+  * [Tumblr](https://www.tumblr.com)  
+  * その他  
+    * Posterous  
+      ブログのようだが、閉鎖済み。  
+    * [Instiki](https://golem.ph.utexas.edu/wiki/instiki/show/HomePage)  
+    * [Squarespace](https://www.squarespace.com)  
+    * [MultiMarkdown](https://multimarkdown.com)  
+    * [CommonMark](https://commonmark.org)  
+    * [StackEdit](https://stackedit.io)  
 
-### sphinxとは。
+<a id="localfileSphinxJump"></a>
+### [sphinx](https://www.sphinx-doc.org/ja/master/contents.html)とは。
 本来は、Pythonのソースコードに記述されたpydocコメント整形ツール(軽量マークアップ言語)だった。  
 いまや、Python以外のドキュメント作成にも使われている。  
 

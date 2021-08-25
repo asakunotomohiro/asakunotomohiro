@@ -13,7 +13,51 @@
 [Bitbucket-Markdown構文ガイド](https://ja.confluence.atlassian.com/bitbucketserver/markdown-syntax-guide-776639995.html)  
 [Qiita-Markdown記法チートシート](https://qiita.com/Qiita/items/c686397e4a0f4f11683d)  
 
+* 以下も考慮する。  
+  * [Stack Overflow](https://ja.stackoverflow.com)  
+  * [Reddit](https://www.reddit.com)  
+  * [GitHub](https://github.com)  
+  * [Bitbucket](https://bitbucket.org)  
+  * [Qiita](https://qiita.com)  
+  * [Tumblr](https://www.tumblr.com)  
 
+上記で考慮するサービスを以下のひな形に当てはめて使う。  
+<details><summary>ひな形(目次もどき)</summary>
+
+以下のひな形を使う。  
+必要に応じて必要なサービスだけを利用する。  
+
+    ##### [タイトル]
+    [大まかな概要を記述]
+
+    以下、言語ごとの細かい方言(違い)を説明する。  
+    * 一覧  
+      * [Stack Overflow](#planemarkdownSnsserviceStackoverflow[大本の番号])  
+      * [Reddit](#planemarkdownSnsserviceReddit[大本の番号])  
+      * [GitHub](#planemarkdownSnsserviceGithub[大本の番号])  
+      * [Bitbucket](#planemarkdownSnsserviceBitbucket[大本の番号])  
+      * [Qiita](#planemarkdownSnsserviceQiita[大本の番号])  
+      * [Tumblr](#planemarkdownSnsserviceTumblr[大本の番号])  
+
+    <a name="planemarkdownSnsserviceStackoverflow[大本の番号]"></a>
+    ###### Stack Overflow
+
+    <a name="planemarkdownSnsserviceReddit[大本の番号]"></a>
+    ###### Reddit
+
+    <a name="planemarkdownSnsserviceGithub[大本の番号]"></a>
+    ###### GitHub
+
+    <a name="planemarkdownSnsserviceBitbucket[大本の番号]"></a>
+    ###### Bitbucket
+
+    <a name="planemarkdownSnsserviceQiita[大本の番号]"></a>
+    ###### Qiita
+
+    <a name="planemarkdownSnsserviceTumblr[大本の番号]"></a>
+    ###### Tumblr
+
+</details>
 
 ---
 ## 参考書籍(1冊目)。
