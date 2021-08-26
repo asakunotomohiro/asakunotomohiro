@@ -32,3 +32,15 @@ print(100 + TAX)    # 出力結果：110
 # 変数の破棄
 # del name1
 # print(name1)    # NameError: name 'name1' is not defined
+
+# キャスト(文字列⇒数字)
+asakuno = "20210826"
+print(asakuno + asakuno)    # 出力結果：2021082620210826
+tomohiro = int(asakuno)
+print(tomohiro + tomohiro)  # 出力結果：40421652
+
+# キャスト(数字⇒文字列)
+asakuno = 20210826
+print(asakuno + asakuno)  # 出力結果：40421652
+tomohiro = str(asakuno)
+print(tomohiro + tomohiro)  # 出力結果：2021082620210826
