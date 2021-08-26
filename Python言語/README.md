@@ -425,6 +425,9 @@ print(100 + TAX)    # 出力結果：110
 
 * 絶対的に勉強する一覧  
   * [x] 1次元配列  
+        [x] 要素とは。  
+        [x] 要素数とは。  
+        [x] 添え字とは。  
   * [x] 多次元配列  
      * [x] 2次元配列  
      * [x] 3次元配列  
@@ -434,207 +437,238 @@ print(100 + TAX)    # 出力結果：110
 様式：
 `配列名 = [データ0, データ1, データ2, ・・・]`  
 
-今回のアルゴリズムの勉強(書籍)では、後から追加しないやり方として、事前に配列数を確保しておくとのこと。  
-そんなこと知らんわ。  
+※今回のアルゴリズムの勉強(書籍)では、後から追加しないやり方をとるため、事前に確保してから勉強が始まる。  
 
 以下、配列の生成
 ```python:配列(list).py
-asakuno = list('朝来野智博')
-print(asakuno)	# ['朝', '来', '野', '智', '博']
+hoge = list('boo')
+print(hoge)	# ['b', 'o', 'o']
 ```
 
 以下、ジャグ配列(2次元配列)
 ```python:配列(list).py
-asakuno = [
-    ['朝', '来', '野'],
-    ['智', '博'],
+hoge = [
+    ['b', 'a', 'r'],
+    ['h', 'o'],
 ]
-print(asakuno)	# [['朝', '来', '野'], ['智', '博']]
-
-print(asakuno[1][0])	# 智
+print(hoge)	# [['b', 'a', 'r'], ['h', 'o']]
+print(hoge[1][1])	# o
 ```
 
 ```python:配列(list)多次元配列.py
-asakuno = [
-    ['朝', '来', '野',
-        ['智', '博', ]
+hoge = [
+    ['b', 'a', 'r',
+        ['b', 'o', ]
      ]
 ]
-print(asakuno)	# [['朝', '来', '野', ['智', '博']]]
-print(asakuno[0][1])	# 来
-print(asakuno[0][3][1])	# 博
+print(hoge)	# [['b', 'a', 'r', ['b', 'o']]]
+print(hoge[0][1])	# a
+print(hoge[0][3][1])	# o
 ```
+
+要素数の数え方。
+```Python
+hoge = "barhoge"
+print(len(hoge))	# 7
+```
+
+配列から各要素を取り出す。
+```python:配列(list)for.py
+hoge = list('hoge')
+
+for boo in hoge:
+    print(boo)
+# 出力結果：h
+#           o
+#           g
+#           e
+```
+
+<details><summary>そこまで重要ではないはずなので、隠す</summary>
 
 以下、配列の要素へ追加・要素から削除
 ```python:配列(list)追加・削除.py
 # 基本的なリスト
-asakuno = ['朝来野', ]
-print(asakuno)	# ['朝来野']
+hoge = ['hoge', ]
+print(hoge)	# ['hoge']
 
 # 以下、末尾に追加。
-asakuno.append('智博')
-print(asakuno)	# ['朝来野', '智博']
+hoge.append('bar')
+print(hoge)	# ['hoge', 'bar']
 
 # 以下、途中に追加。
-asakuno.insert(1, '-')	# 1番目の直前に挿入。
-print(asakuno)	# ['朝来野', '-', '智博']
+hoge.insert(1, '-')
+print(hoge)	# ['hoge', '-', 'bar']
 
 # 以下、削除。
-asakuno.pop(1)	# 1番目を削除(取り出し)
-print(asakuno)	# ['朝来野', '智博']
+hoge.pop(1)
+print(hoge)	# ['hoge', 'bar']
 
 # 以下、削除。
-asakuno.pop()	# 末尾を削除。
-print(asakuno)	# ['朝来野']
+hoge.pop()
+print(hoge)	# ['hoge']
 ```
 
 以下、配列の要素へ追加・要素から削除
 ```python:配列(list)複数要素追加・置換・削除.py
 # 要素の挿入
-asakuno = list('朝来智博')  # 「野」がない。
-asakuno[2:2] = ['野']
-print(asakuno)	# ['朝', '来', '野', '智', '博']
+hoge = list('Pythonest')  # 「T」がない。PythonTest(Pythonテスト)にしたい
+hoge[6:6] = ['T']
+print(hoge)	# ['P', 'y', 't', 'h', 'o', 'n', 'T', 'e', 's', 't']
 ```
 
 以下、要素内指定で削除。
 ```python:配列(list)要素削除.py
-asakuno = ['朝来野', '智博', ]
-print(asakuno)	# ['朝来野', '智博']
+hoge = ['hoge', 'bar', ]
+print(hoge)	# ['hoge', 'bar']
 
 # 以下、要素を削除。
-asakuno.remove('朝来野')
-print(asakuno)	# ['智博']
+hoge.remove('hoge')
+print(hoge)	# ['bar']
 ```
 
 以下、要素内指定で削除。
 ```python:配列(list)複数要素追加・置換・削除.py
 # 要素の削除
-asakuno[2:9] = []
-print(asakuno)	# ['朝', '来', '智', '博']
+hoge = list('hogebarboo')
+hoge[2:9] = []
+print(hoge)	# ['h', 'o', 'o']
 
 # 要素の削除
-asakuno = list('朝来野智博')
-asakuno[2:3] = list('asakuno')  # 上記と同じ結果に揃えた。
-del asakuno[2:9]
-print(asakuno)	# ['朝', '来', '智', '博']
+hoge = list('hogebar')
+hoge[2:3] = list('hoge')
+del hoge[2:9]
+print(hoge)	# ['h', 'o', 'r']
 ```
 
 以下、要素を全て削除。
 ```python:配列(list)要素削除.py
-asakuno = list('朝来野智博')
-print(asakuno)	# ['朝', '来', '野', '智', '博']
+hoge = list('hoge')
+print(hoge)	# ['h', 'o', 'g', 'e']
 
-asakuno.clear()
-print(asakuno)	# []
+hoge.clear()
+print(hoge)	# []
 ```
 
 以下、配列内から1文字を検索。
 ```python:配列(list)検索.py
-asakuno = list('朝来野智博朝来野智博')
+hoge = list('hogehoge')
 
-# 6文字目(index_5)以降で「朝」の検索
-print(asakuno.index('朝', 5))	# 5
+# 6文字目(index_5)以降で「e」の検索
+print(hoge.index('e', 5))	# 7
 ```
 
 以下、配列内にある文字を数える。
 ```python:配列(list)重複確認.py
-asakuno = list('朝来野智博朝来野智博')
+hoge = list('hogehoge')
 
-# 「朝」の出現回数
-print(asakuno.count('朝'))	# 2
+# 「h」の出現回数
+print(hoge.count('h'))	# 2
 ```
 
 以下、配列内にあるかどうかを確認する。
 ```python:配列(list)存在確認.py
-asakuno = list('朝来野智博朝来野智博')
+hoge = list('hogehoge')
 
 # 「a」の検索
-print('a' in asakuno)	# False
+print('a' in hoge)	# False
 ```
 
 以下、浅いコピーを行う(コピー先を変更した場合、コピー元にも影響する)。
 ```python:配列(list)複製.py
-asakuno = list('朝来野智博')
+hoge = list('hoge')
 
 # 上記配列を複製する(シャローコピー)。
-tomohiro = asakuno.copy()
-print(tomohiro)	# ['朝', '来', '野', '智', '博']
+boo = hoge.copy()
+print(boo)	# ['h', 'o', 'g', 'e']
 ```
 深いコピー(ディープコピー)をする場合は、`import copy`でモジュールを使い、`deepcopy`メソッドでコピーをする。  
 
 以下、配列の連結及び、指定回数連結。
 ```python:配列(list)連結.py
-asakuno = list('朝来野')
-tomohiro = list('智博')
+hoge = list('hoge')
+boo = list('bar')
 
-asakunotomohiro = asakuno + tomohiro
-print(asakunotomohiro)	# ['朝', '来', '野', '智', '博']
+hogeboo = hoge + boo
+print(hogeboo)	# ['h', 'o', 'g', 'e', 'b', 'a', 'r']
 
-asakunotomohiro = tomohiro * 3
-print(asakunotomohiro)	# ['智', '博', '智', '博', '智', '博']
+hogeboo = boo * 3
+print(hogeboo)	# ['b', 'a', 'r', 'b', 'a', 'r', 'b', 'a', 'r']
 ```
 これは、配列を新しく作り直すことに注意すること。
 
 以下、配列内を並び替え。
 ```python:配列(list)並び替え.py
-asakuno = list('朝来野智博')
+hoge = list('hoge')
 
 # 逆順に並べ替える。
-asakuno.reverse()
-print(asakuno)	# ['博', '智', '野', '来', '朝']
+hoge.reverse()
+print(hoge)	# ['e', 'g', 'o', 'h']
 
 # 逆順に並べ替える？
-asakuno = list('朝来野智博')
-asakuno.sort(reverse=True)
-print(asakuno)	# ['野', '来', '朝', '智', '博']
+hoge = list('hoge')
+hoge.sort(reverse=True)
+print(hoge)	# ['o', 'h', 'g', 'e']
 
 # ソート
-asakuno = list('asakuno')
-asakuno.sort()
-print(asakuno)	# ['a', 'a', 'k', 'n', 'o', 's', 'u']
+hoge = list('hoge')
+hoge.sort()
+print(hoge)	# ['e', 'g', 'h', 'o']
 ```
 
 以下、forループにて、配列の要素を番号付きで取り出す。
 ```python:配列(list)要素を番号付きで取り出す.py
-asakuno = list('朝来野智博')
+hoge = list('hoge')
 
-for tomohiro, asakunotomohiro in enumerate(asakuno):
-    print(tomohiro, '：', asakunotomohiro)
-# 出力結果：0 ： 朝
-#           1 ： 来
-#           2 ： 野
-#           3 ： 智
-#           4 ： 博
+for boo, hogeboo in enumerate(hoge):
+    print(boo, '：', hogeboo)
+# 出力結果：0 ： h
+#           1 ： o
+#           2 ： g
+#           3 ： e
 ```
 
 ```python:配列(list)要素のbool値判断.py
 # 以下、リスト内の全ての要素がTrueであるか。
 print(all([True, True, False]))	# False
 
-asakuno = list('朝来野智博')
-print(all(asakuno))	# True
-#	何の役にも立たない判定方法だな。
-```
-
-配列から各要素を取り出す。
-```python:配列(list)for.py
-asakuno = list('朝来野智博')
-
-for tomohiro in asakuno:
-    print(tomohiro)
-# 出力結果：朝
-#           来
-#           野
-#           智
-#           博
+hoge = list('hoge')
+print(all(hoge))	# True
+#	何の役にも立たない判定方法。
 ```
 
 以下、rangeによる配列作成。
 ```python:配列(list)range.py
-asakuno = list(range(0, 7, 2))
-print(asakuno)	# [0, 2, 4, 6]
+hoge = list(range(0, 7, 2))
+print(hoge)	# [0, 2, 4, 6]
 ```
 かなりの非効率なため、やらない方が良い。  
+
+</details>
+
+#### 配列での説明しない項目。
+
+<details><summary>今回は勉強を見送る一覧</summary>
+
+* 配列の応用  
+  * [ ] 3次元配列以上の宣言方法。  
+  * [ ] 配列を複製する方法。  
+  * [ ] 配列からスライスを作成する方法。  
+
+* 構造体  
+  そもそもないようだ。  
+  * [ ] 構造体の複製  
+  * [ ] 構造体からのスライス作成  
+  * [ ] 共用体  
+  * [ ] 列挙体  
+
+* コレクション  
+  * [ ] Set  
+  * [ ] Map  
+  * [ ] Queue  
+    ない？  
+
+</details>
 
 <a name="Conditional条件分岐sub"></a>
 #### 条件分岐
