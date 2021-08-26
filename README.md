@@ -14,18 +14,13 @@
 しかし、それだけでは面白くないため、そのアルゴリズムを他の言語にも流用するつもりで、他の言語も並行して勉強していくことを考えている。  
 それが仇になり、一向にアルゴリズムの勉強に手を出せないでいる。  
 
-ちなみに、アルゴリズム用の本は2004年出版(アスキー社)の[The Art of Computer Programming Volume1 Fundamental Algorithms Third Edition 日本語版 (ASCII Addison Wesley Programming Series)](https://asciidwango.jp/post/122327235600/the-art-of-computer-programming-volume-1)を持っているのだが、出版年月日が明らかにおかしい。  
-今出版しているのと2004年出版は中身が違うのか？  
-今出版しているのは、[KADOKAWA](https://www.kadokawa.co.jp/product/312303000000/)からの出版になっている。  
-どういうこと!?  
-
 * アルゴリズムの勉強に使うプログラミング言語  
   * [Python](https://www.python.jp)  
     * [x] 変数2021/08/06  
     * [x] 配列2021/08/11  
     * [x] 条件分岐2021/08/12  
     * [x] 繰り返し2021/08/22  
-    * [ ] 関数  
+    * [x] 関数2021/08/23  
   * [Go](https://golang.org)  
     * [x] 変数2021/08/07  
     * [ ] 配列  
