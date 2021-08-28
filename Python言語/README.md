@@ -11,11 +11,6 @@
 [Python チュートリアル](https://docs.python.org/ja/3/tutorial/)  
 [Python Documentation contents](https://docs.python.org/ja/3/contents.html)  
 
-* 書籍  
-  [Pythonチュートリアル 第2版](https://www.oreilly.co.jp/books/9784873114422/)  
-  チュートリアル本を持っているが、[第4版](https://www.oreilly.co.jp/books/9784873119359/)が出ていることを考えれば、古い内容なのだろう。  
-  使うことはないだろう。  
-
 ## 開発環境
 開発には、`MacVim`を使う。  
 開発規模が大きくなった場合、`Visual Studio Code(VSCode)`に逃げるかもしれない。  
@@ -24,6 +19,8 @@
 ## Pythonで学ぶアルゴリズムの教科書
 簡単なプログラミングに使う基礎知識を統一する。  
 
+<details><summary>基礎知識5種類の項目</summary>
+
 * 基礎知識5種類  
   * [x] [変数](#variable変数)  
   * [x] [配列](#arrangement配列)  
@@ -31,6 +28,67 @@
   * [x] [条件分岐](#Conditional条件分岐)  
   * [x] [繰り返し](#repetition繰り返し)  
   * [x] [関数](#function関数)  
+
+</details>
+
+* アルゴリズム勉強目次  
+  * [x] Chapter 1 プログラミングの基礎知識  
+    現時点で完了している(上記の基礎知識5種類として)。  
+  * [ ] Chapter 2 プログラミングの力を養う  
+    * 平均値を求める。  
+    * 1からnまで足し合わせる。  
+    * 九九の式を出力する。  
+    * 素数を求める。  
+    * nの階乗(n!)を求める。  
+    * エラトステネスの篩(フルイ)  
+    * n進法を理解する。  
+  * [ ] Chapter 3 データ構造を学ぶ  
+    * スタック  
+    * キュー  
+    * リスト  
+    * 木  
+    * グラフ  
+    * データを保存する(Pythonのファイル処理)  
+  * [ ] Chapter 4 サーチ  
+    * 線形探索  
+    * 二分探索  
+    * 木探索  
+    * 計算量について知る  
+    * ランダウの記号  
+    * 数当てゲーム  
+    * ビット演算を学ぶ  
+  * [ ] Chapter 5 ソート  
+    * 選択ソート  
+    * バブルソート  
+    * 挿入ソート  
+    * クイックソート  
+    * マージソート  
+    * ヒープソート  
+    * クイックソートの再起の過程を出力する。  
+    * 再帰関数を用いたマージソート。  
+    * Pythonのソート命令とheapqモジュールの使い方。  
+    * ソートの計算量と計算時間。  
+  * [ ] Chapter 6 ハッシュ  
+    * ハッシュとは。  
+    * ハッシュ関数  
+    * ハッシュテーブル  
+    * 衝突を回避する。  
+    * 暗号学的ハッシュ関数  
+  * [ ] Chapter 7 さまざまなアルゴリズムを学ぶ  
+    * ユークリッドの互除法  
+    * 文字列探索  
+    * アルゴリズムを理解するヒント(処理の過程の出力)。  
+  * [ ] Chapter 8 アルゴリズムを見える化する  
+    * n次関数の曲線を描く。  
+    * フラクタル図形を描く。  
+    * 迷路を解く過程を描く。  
+    * アルゴリズムを使い分ける。  
+    * マンデルブロー集合を描こう。  
+  * [ ] Appendix 1 Pythonのインストール方法  
+  * [ ] Appendix 2 テキストエディタと統合開発環境  
+  * [ ] Appendix 3 Pythonの記述ルール  
+
+<details><summary>基礎知識5種類の作業手順</summary>
 
 ### 具体的な基礎知識
 何はともあれ、まずは、"Hello World"を表示するプログラムを作る。  
@@ -48,7 +106,10 @@
 [x] 手順5. 1つのプログラミング言語で、手順4の勉強1種類を終えた時に、次のプログラミング言語に移る。  
   (細かく分けることでやる気を継続する・・・はず)  
 [x] 手順6. 上記、5種類の基礎知識を終わるまで繰り返す。  
-[ ] 手順7. 5種類の基礎知識終了にて、"study2programming"ブランチにマージする。  
+[x] 手順7. 5種類の基礎知識終了にて、"study2programming"ブランチにマージする。  
+
+</details>
+
 
 勉強環境のコンパイルバージョン：3.8.6  
 ```terminal
@@ -149,6 +210,12 @@ name = 'hoge'; print(name)
 そのため、1つ1つを最小限に絞り込み、1つを10分前後の勉強時間に収まるように気をつけること。  
 
 <a name="variable変数"></a>
+<a name="arrangement配列"></a>
+<a name="Conditional条件分岐"></a>
+<a name="repetition繰り返し"></a>
+<a name="function関数"></a>
+<details><summary>基礎知識5種類の概要</summary>
+
 * [変数](#variable変数sub)  
   * 変数の宣言方法  
     数値の代入  
@@ -165,7 +232,6 @@ name = 'hoge'; print(name)
     * データ型の変換(キャスト)  
   * ※スコープは"関数"で説明する。  
 
-<a name="arrangement配列"></a>
 * [配列(リスト)](#arrangement配列sub)  
   * 宣言方法  
     要素  
@@ -175,7 +241,6 @@ name = 'hoge'; print(name)
   * 2次元配列  
   * ※取り出しは"for"で説明する。  
 
-<a name="Conditional条件分岐"></a>
 * [条件分岐](#Conditional条件分岐sub)  
   * if文  
     条件式  
@@ -185,7 +250,6 @@ name = 'hoge'; print(name)
       論理演算子  
       比較演算子  
 
-<a name="repetition繰り返し"></a>
 * [繰り返し](#repetition繰り返しsub)  
   * for文  
     条件式  
@@ -199,7 +263,6 @@ name = 'hoge'; print(name)
     条件式  
     無限ループ  
 
-<a name="function関数"></a>
 * [関数](#function関数sub)  
   書式  
   引数  
@@ -213,7 +276,11 @@ name = 'hoge'; print(name)
     グローバル変数  
     ローカル変数  
 
+</details>
+
 <a name="variable変数sub"></a>
+<details><summary>実際の変数の勉強</summary>
+
 #### 変数
 複数のルールがある。  
 
@@ -364,10 +431,11 @@ hoge = str(boo)
 print(hoge + hoge)  # 出力結果：2021082620210826
 ```
 
+</details>
+
+<details><summary>今回は勉強を見送る変数系統一覧</summary>
 
 #### 変数での説明しない項目。
-
-<details><summary>今回は勉強を見送る一覧</summary>
 
 * [x] 定数  
   存在しない。  
@@ -416,6 +484,8 @@ print(100 + TAX)    # 出力結果：110
 </details>
 
 <a name="arrangement配列sub"></a>
+<details><summary>実際の配列の勉強</summary>
+
 #### 配列
 他のプログラミング言語では、配列という。  
 しかし、Pythonでは、リスト(list)と呼ぶ(混乱するので止めて欲しい)。  
@@ -643,9 +713,11 @@ print(hoge)	# [0, 2, 4, 6]
 
 </details>
 
-#### 配列での説明しない項目。
+</details>
 
-<details><summary>今回は勉強を見送る一覧</summary>
+<details><summary>今回は勉強を見送る配列系統一覧</summary>
+
+#### 配列での説明しない項目。
 
 * 配列の応用  
   * [ ] 3次元配列以上の宣言方法。  
@@ -668,6 +740,8 @@ print(hoge)	# [0, 2, 4, 6]
 </details>
 
 <a name="Conditional条件分岐sub"></a>
+<details><summary>実際の条件分岐の勉強</summary>
+
 #### 条件分岐
 条件分岐とは、何らかの条件が成り立ったときに分岐させる仕組み。  
 
@@ -768,9 +842,11 @@ if [条件式]:
 `or`：どちらの条件がTrueの場合にif文の処理が走る。  
 これを **[ド・モルガンの法則](https://ja.wikipedia.org/wiki/ド・モルガンの法則)** として、使うべし。  
 
-#### 条件分岐での説明しない項目。
+</details>
 
-<details><summary>今回は勉強を見送る一覧</summary>
+<details><summary>今回は勉強を見送る条件分岐系統一覧</summary>
+
+#### 条件分岐での説明しない項目。
 
 * 多岐分岐-条件にて複数から選ぶ。  
   基本構造例：switch  
@@ -795,6 +871,8 @@ if [条件式]:
 </details>
 
 <a name="repetition繰り返しsub"></a>
+<details><summary>実際の変数の勉強</summary>
+
 #### 繰り返し
 
 * 絶対的に勉強する一覧  
@@ -941,11 +1019,18 @@ while True:
         break
 ```
 
+</details>
+
 <a name="subRepetition999"></a>
+<details><summary>今回は勉強を見送る繰り返し系統一覧なし</summary>
+
 ##### 繰り返しでの説明しない項目。
 
+</details>
 
 <a name="function関数sub"></a>
+<details><summary>実際の関数の勉強</summary>
+
 #### 関数
 
 * 絶対的に勉強する一覧  
@@ -1030,8 +1115,31 @@ print(word)
   関数内部で宣言した変数。  
   そして、グローバル変数を関数内部で利用する場合、`global`宣言を付けた変数宣言が必須になる(関数内で)。  
 
+</details>
+
 <a name="subFunction999"></a>
+<details><summary>今回は勉強を見送る関数系統一覧</summary>
+
 ##### 関数での説明しない項目。
+
+</details>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ### Gitのマージルール
 当ブランチでPython言語の勉強をする。  
