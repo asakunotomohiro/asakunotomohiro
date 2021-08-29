@@ -2,6 +2,309 @@
 ここは、プログラミング言語のPerl言語を勉強するブランチになる。  
 
 ## ブランチの利用方法
+現時点でのブランチは、Perl言語の基礎知識5種類を勉強するブランチになる。  
+その勉強は、本命である「Pythonで学ぶアルゴリズムの教科書」を勉強するための前戯だ。  
+
+## Perl5
+オライリー社のPerl第7版を購入したことは、あとで呟いているのだが、書籍に書いている「はじめに」は、「**Perl6**という別言語が存在するが、Perlを勉強したい人はPerl5を求めているはずだ。」と説明している。  
+本来であれば、Perlから名前を変えたかったようだが、Perl6という名前を付けてしまい、そのまま開発を進ませたような説明をしている。  
+そのため、Perl6は世の中にあるが、Perl5.24で話を進めるようだ。  
+そして、せっかくPerl5.24で説明をするというのだからそのバージョン以降で動くプログラムを作ろうと思う。  
+※悲しいかな。本命から逸れたことには触れないで頂きたい。  
+書籍ですらPerl6ではなく、Perl5で話を進めるというのに、Perl6が結局何だったのか話題に触れないままで問題用に、気にするだけ無駄になる。  
+また、そのバージョンで動かすには、プログラムファイルの行頭に`use v5.24;`を記述するようだ。  
+現時点でそのバージョンにしたかったのだが、最新版がv5.34だった・・・仕方ない。  
+[最新版](https://www.perl.org/get.html)を導入しよう。  
+
+<details><summary>Perlのインストール作業記録</summary>
+
+以下、実際のインストール作業(書籍のP361にある)。
+
+    $ \curl -L https://install.perlbrew.pl | bash
+      % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                     Dload  Upload   Total   Spent    Left  Speed
+    100   170  100   170    0     0    229      0 --:--:-- --:--:-- --:--:--   230
+    100  1574  100  1574    0     0   1389      0  0:00:01  0:00:01 --:--:--  7058
+
+    ## Download the latest perlbrew
+
+    ## Installing perlbrew
+    Using Perl </usr/bin/perl>
+    perlbrew is installed: ~/perl5/perlbrew/bin/perlbrew
+
+    perlbrew root (~/perl5/perlbrew) is initialized.
+
+    Append the following piece of code to the end of your ~/.bash_profile and start a
+    new shell, perlbrew should be up and fully functional from there:
+
+        source ~/perl5/perlbrew/etc/bashrc
+
+    Simply run `perlbrew` for usage details.
+
+    Happy brewing!
+
+    ## Installing patchperl
+
+    ## Done.
+    $
+
+以下、上記の管理プログラム導入後に、(現時点での)最新版のPerlをインストールする(Path通しが必要)。
+
+    $ perlbrew install perl-5.34.0
+    -bash: perlbrew: command not found
+    $
+    $ ~/perl5/perlbrew/bin/perlbrew install perl-5.34.0
+    Fetching perl 5.34.0 as /Users/asakunotomohiro/perl5/perlbrew/dists/perl-5.34.0.tar.gz
+    Download https://www.cpan.org/src/5.0/perl-5.34.0.tar.gz to /Users/asakunotomohiro/perl5/perlbrew/dists/perl-5.34.0.tar.gz
+    Installing /Users/asakunotomohiro/perl5/perlbrew/build/perl-5.34.0/perl-5.34.0 into ~/perl5/perlbrew/perls/perl-5.34.0
+
+    This could take a while. You can run the following command on another shell to track the status:
+
+      tail -f ~/perl5/perlbrew/build.perl-5.34.0.log
+
+
+    Installation process failed. To spot any issues, check
+
+      /Users/asakunotomohiro/perl5/perlbrew/build.perl-5.34.0.log
+
+    If some perl tests failed and you still want to install this distribution anyway,
+    do:
+
+      (cd /Users/asakunotomohiro/perl5/perlbrew/build/perl-5.34.0/perl-5.34.0; make install)
+
+    You might also want to try upgrading patchperl before trying again:
+
+      perlbrew install-patchperl
+
+    Generally, if you need to install a perl distribution known to have minor test
+    failures, do one of these commands to avoid seeing this message:
+
+      perlbrew --notest install perl-5.34.0
+      perlbrew --force install perl-5.34.0
+
+    $
+失敗したようだ。  
+
+以下、個別に(上記のヒント通りに)インストール再開。
+
+    $ cd /Users/asakunotomohiro/perl5/perlbrew/build/perl-5.34.0/perl-5.34.0; make install
+    ./miniperl -Ilib make_ext.pl cpan/Archive-Tar/pm_to_blib  MAKE="/Applications/Xcode.app/Contents/Developer/usr/bin/make" LIBPERL_A=libperl.a
+    ./miniperl -Ilib m
+    　　　・
+    　　　・
+    　　　・
+      /Users/asakunotomohiro/perl5/perlbrew/perls/perl-5.34.0/man/man1/streamzip.1
+      /Users/asakunotomohiro/perl5/perlbrew/perls/perl-5.34.0/man/man1/xsubpp.1
+      /Users/asakunotomohiro/perl5/perlbrew/perls/perl-5.34.0/man/man1/zipdetails.1
+    $
+成功した(`echo $?`)？  
+
+試しに最新版で動かす。
+
+    $ ~/perl5/perlbrew/bin/perlbrew switch perl-5.34.0
+
+    A sub-shell is launched with perl-5.34.0 as the activated perl. Run 'exit' to finish it.
+
+    bash-3.2$ exit
+    exit
+    $
+    $ perl --version	←☆要は、Path通しが必要と言うことか。
+
+    This is perl 5, version 18, subversion 4 (v5.18.4) built for darwin-thread-multi-2level
+    (with 2 registered patches, see perl -V for more detail)
+
+    Copyright 1987-2013, Larry Wall
+
+    Perl may be copied only under the terms of either the Artistic License or the
+    GNU General Public License, which may be found in the Perl 5 source kit.
+
+    Complete documentation for Perl, including FAQ lists, should be found on
+    this system using "man perl" or "perldoc perl".  If you have access to the
+    Internet, point your browser at http://www.perl.org/, the Perl Home Page.
+
+    $
+動いた。  
+ただ、想定と違う実行方法になっている。  
+
+以下、動作確認。
+
+    $ cat ./version.pl
+    use v5.24;
+
+    print $^V
+    $ perl ./version.pl
+    Perl v5.24.0 required--this is only v5.18.4, stopped at ./version.pl line 1.
+    BEGIN failed--compilation aborted at ./version.pl line 1.
+    $
+動かない。  
+Path通しが必要なのか・・・。  
+おかしいだろう。  
+何のための**brew**か・・・そっちのPathを通せば良い？  
+
+以下、最先端のバージョン導入。
+
+    $ ~/perl5/perlbrew/bin/perlbrew install perl-blead
+    Fetching perl-blead as /Users/asakunotomohiro/perl5/perlbrew/dists/blead.tar.gz
+    Installing /Users/asakunotomohiro/perl5/perlbrew/build/blead/perl5-blead into ~/perl5/perlbrew/perls/perl-blead
+
+    This could take a while. You can run the following command on another shell to track the status:
+
+      tail -f ~/perl5/perlbrew/build.perl-blead.log
+
+
+    perl-blead is successfully installed.
+    $ echo $?
+    0
+    $
+これが有効だったか確認する前に、Pathを通してしまった。  
+
+以下、Path通し後のバージョン確認。
+
+    $ perlbrew --version
+    /Users/asakunotomohiro/perl5/perlbrew/bin/perlbrew  - App::perlbrew/0.92
+    $
+
+以下、インストール可能なバージョン表示。
+
+    $ perlbrew available
+    # perl
+       perl-5.35.3
+    i  perl-5.34.0
+       perl-5.32.1
+       perl-5.30.3
+       perl-5.28.3
+       perl-5.26.3
+       perl-5.24.4
+       perl-5.22.4
+       perl-5.20.3
+       perl-5.18.4
+       perl-5.16.3
+       perl-5.14.4
+       perl-5.12.5
+       perl-5.10.1
+        perl-5.8.9
+        perl-5.6.2
+      perl5.005_03
+      perl5.004_05
+
+
+    # cperl
+      cperl-5.30.0
+      cperl-5.30.0-RC1
+
+
+    $
+
+以下、**perlbrew**のアップデート。
+
+    $ perlbrew self-upgrade
+    Your perlbrew is up-to-date.
+    $
+
+以下、PerlBrewにて、インストール済みのバージョン確認。
+
+    $ perlbrew list
+      perl-blead
+      perl-5.34.0
+    $
+
+以下、バージョン切り替えコマンド実施。
+
+    $ perlbrew switch 5.34.0
+    $ echo $?
+    0
+    $ perl --version
+
+    This is perl 5, version 34, subversion 0 (v5.34.0) built for darwin-2level
+
+    Copyright 1987-2021, Larry Wall
+
+    Perl may be copied only under the terms of either the Artistic License or the
+    GNU General Public License, which may be found in the Perl 5 source kit.
+
+    Complete documentation for Perl, including FAQ lists, should be found on
+    this system using "man perl" or "perldoc perl".  If you have access to the
+    Internet, point your browser at http://www.perl.org/, the Perl Home Page.
+
+    $
+
+以下、PerlBrewバージョンを終了する(既存のPerlを有効化)。
+
+    $ perlbrew off
+    perlbrew is turned off.
+    $ perl --version
+
+    This is perl 5, version 18, subversion 4 (v5.18.4) built for darwin-thread-multi-2level
+    (with 2 registered patches, see perl -V for more detail)
+
+    Copyright 1987-2013, Larry Wall
+
+    Perl may be copied only under the terms of either the Artistic License or the
+    GNU General Public License, which may be found in the Perl 5 source kit.
+
+    Complete documentation for Perl, including FAQ lists, should be found on
+    this system using "man perl" or "perldoc perl".  If you have access to the
+    Internet, point your browser at http://www.perl.org/, the Perl Home Page.
+
+    $
+※上記で切り替えた続きなので、バージョンが切り替わっているのは確認済み。  
+
+以下、プログラム側でのバージョン確認。
+
+    $ cat version.pl
+    use v5.24;
+
+    print $^V . "\n"
+    $ perl version.pl
+    v5.34.0
+    $
+`v5.24`指定をしているのに、`v5.34.0`として動いた。  
+[う〜ん](https://perldoc.jp/func/use%20VERSION)。  
+Perl全く分からない。  
+
+
+---
+### 新機能の利用
+まず初めに、バージョン指定の方法。  
+ファイル行頭に記述するのは、前述通りだが、他にも方法がある。  
+以下のどれかを記述すれば良い(すべて同じ意味)。
+```Perl
+use v5.24;
+use 5.24.0;
+use 5.024;
+```
+※v5.12以降の指定により、暗黙的に`strict`と`warnings`が有効になる。  
+
+#### [新機能のロード無し](https://perldoc.jp/func/require)
+最小バージョンを指定する(どういう意味？)。
+```Perl
+require v5.24;
+```
+
+#### [必要になったときに新機能をロードする](https://perldoc.jp/docs/modules/feature-1.20/feature.pod)。
+書籍の説明が理解できないのだが、指定した新機能をロードする？
+```Perl
+use feature qw(:5.10);
+```
+※この書き方により、指定バージョンに関連するタグを暗黙のうちにロードするようだ。  
+
+#### 個別に新機能のロード実施。
+全てではなく、個別にロードする(上記とは違うってことだよね)。
+```Perl
+use feature qw(state signatures);
+```
+
+#### 新機能の無効。
+`feature`プラグマにより無効化しているため、そのプラグマが使えるバージョンが最低でも必要になる。
+```Perl
+no feature qw(:all);
+```
+※要は、無効化するほど古いバージョンを使っていないのに、新しいのでは動かないという思い込みの強い人が使うバージョン指定だろう。  
+
+</details>
+
+ちなみに、本書の1章分の学習時間は1〜2時間ほどだそうだ(1週間で読了できるそうだ)。  
+そして、[Perl6](https://raku.org)は、[Raku](https://docs.raku.org)に名前が変わっていると思って良いよね。  
 
 ## 勉強方法
 勉強するプログラミング言語の一つとしている。  
@@ -15,6 +318,19 @@
 は、どこに行った？  
 [バグ](https://perldoc.jp/docs/perl/5.34.0/perlsyn.pod#Switch32Statements)があったという報告も見えるし・・・。  
 
+職場でPerlを使う環境だったが、記号だらけになるのを嫌い、ほとんど記号などを使わず、配列などもシフトさせずに添え字を使い、文書処理などの細かい作業を`awk`や`sed`任せにしていた。  
+Perlは、単純に`awk` `sed`を呼び出すだけのキッカーの役割でしかなく、Perlを使うことを無駄にするこだわりを持っている現場だった。  
+Perlの開発者は言う「`awk`では細かい文書処理ができないため、Perlを作った」と・・・。  
+
+そんな間抜けなこだわりは、その小さいプロジェクトだけに完結せず、ドコモ自体も[アレア品川ビル](http://www.area-shinagawa.com/)の2階からの入退室管理は警備員を配置するなどの厳重管理をする癖して、1階からは自由に入館できるできる仕組みを放置するこだわりを持っていた。  
+しかも、守秘義務に同意したが、なぜかそれを反故にされ、契約を切られた。  
+ずさんなセキュリティ管理をするぐらい入退室管理を自由にさせるほどだから守秘義務の契約なども屁とも思わず、派遣社員の私を踏みにじってくるのだろう。  
+くっそぉ〜。  
+逆か？  
+守秘義務に限らず、契約を気分で変えるため、セキュリティ云々の話は興味が無いのかな・・・。  
+
+同ビルの13階は、自由に契約できるようだが、最低15万円ほどの賃料で借りられるようだ(2坪もないって・・・)。  
+建物に自由入館できるとは言え、各フロアに入るには、カギが必要・・・それを言えば、1階からもそうだから・・・大丈夫ってことかな。  
 
 現実世界での不自由さから解放されて[フリーガイ](https://www.20thcenturystudios.jp/movie/Freeguy.html)になれるように[初めてのPerl 第7版](https://www.oreilly.co.jp/books/9784873118246/)を手に入れた。  
 バグのない世界を作れるようになりたいからな。  
@@ -76,7 +392,7 @@ Hello World.$
 $
 ```
 
-## Pythonで学ぶアルゴリズムの教科書
+## 「Pythonで学ぶアルゴリズムの教科書」
 ※プログラミングに使う基礎知識を統一する(簡単に済ませられる量に絞り込む)。  
 
 * 基礎知識5種類  
