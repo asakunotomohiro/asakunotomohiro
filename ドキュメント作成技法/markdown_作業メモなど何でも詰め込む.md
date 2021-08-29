@@ -158,6 +158,72 @@ ASIN：
 <a id="planetextmarkdown170001"></a>
 #### 表／タスクリスト／打ち消し線／拡張自動リンク／絵文字／シンタックスハイライト
 
+<a id="planetextmarkdownTable170001"></a>
+##### 表・テーブルの作成方法
+大まかな表(テーブル)作成。  
+
+|左側のタイトル|中側のタイトル|右側のタイトル|
+|--------------|--------------|--------------|
+|左側の中身|中側の中身|右側の中身|
+※タイトルと中身の区切り(`-`)は、最低でも3つ必要。  
+
+そのため、以下、表にならない。
+|ab|AB|
+|--|--|
+|cd|CD|
+※なぜか、表として見ることができる・・・嘘やろ!?  
+
+以下、左寄せ。
+|左寄せタイトル|左寄せタイトル|左寄せタイトル|
+|:-------------|:-------------|:-------------|
+|左寄せ中身|左寄せ中身|左寄せ中身|
+
+以下、中央寄せ。
+|中央寄タイトル|中央寄タイトル|中央寄タイトル|
+|:------------:|:------------:|:------------:|
+|中央寄せ中身|中央寄せ中身|中央寄せ中身|
+
+以下、右寄せ。
+|右寄せタイトル|右寄せタイトル|右寄せタイトル|
+|-------------:|-------------:|-------------:|
+|右寄せ中身|右寄せ中身|右寄せ中身|
+
+以下、改行した状態での表作成。
+|タイトル1|タイトル2|タイトル3|
+|---------|:-------:|--------:|
+|左側1|中身1|右側1|ここは表とは関係ないため無視される。
+|*イタリック*|文字|_イタリック_|
+|改行<br>あり|[リンクあり](#planetextmarkdownTable170001)|`コード`|
+|**ボールド**|文字|__ボールド__|
+
+
+以下、言語ごとの細かい方言(違い)を説明する。  
+* 一覧  
+  * [Stack Overflow](#planemarkdownSnsserviceStackoverflow170001table)  
+  * [Reddit](#planemarkdownSnsserviceReddit170001table)  
+  * [GitHub](#planemarkdownSnsserviceGithub170001table)  
+  * [Bitbucket](#planemarkdownSnsserviceBitbucket170001table)  
+  * [Qiita](#planemarkdownSnsserviceQiita170001table)  
+  * [Tumblr](#planemarkdownSnsserviceTumblr170001table)  
+
+<a name="planemarkdownSnsserviceStackoverflow170001table"></a>
+###### Stack Overflow
+
+<a name="planemarkdownSnsserviceReddit170001table"></a>
+###### Reddit
+
+<a name="planemarkdownSnsserviceGithub170001table"></a>
+###### GitHub
+
+<a name="planemarkdownSnsserviceBitbucket170001table"></a>
+###### Bitbucket
+
+<a name="planemarkdownSnsserviceQiita170001table"></a>
+###### Qiita
+
+<a name="planemarkdownSnsserviceTumblr170001table"></a>
+###### Tumblr
+
 <a id="planetextmarkdown170002"></a>
 #### 注意：GitHub Flavored Markdown Specにない記法
 
