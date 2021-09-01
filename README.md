@@ -55,9 +55,9 @@
   * [Perl](https://www.perl.org)  
     * [x] 変数2021/08/29  
     * [x] 配列2021/08/31  
-    * [ ] 条件分岐  
-    * [ ] 繰り返し  
-    * [ ] 関数  
+    * [x] 条件分岐2021/09/02  
+    * [x] 繰り返し2021/09/02  
+    * [x] 関数2021/09/02  
   * [Java](https://docs.oracle.com/en/java/)  
     * [x] 変数2021/08/21  
     * [ ] 配列  
@@ -104,6 +104,7 @@
 * PHP  
 * Pascal  
 * Prolog
+* React  
 * Swift  
 * TypeScript  
 
