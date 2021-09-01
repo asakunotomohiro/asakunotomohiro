@@ -379,7 +379,7 @@ $
   * [x] [変数(スカラー)](#variable変数)2021/08/29  
   * [x] [配列](#arrangement配列)2021/08/31  
   * [x] [条件分岐](#Conditional条件分岐)2021/09/01  
-  * [ ] [繰り返し](#repetition繰り返し)  
+  * [x] [繰り返し](#repetition繰り返し)2021/09/01  
   * [ ] [関数](#function関数)  
 
 ## 具体的な基礎知識
@@ -968,7 +968,6 @@ Perlの[演算子](https://perldoc.jp/docs/perl/perlop.pod)。
 <a name="subConditional999"></a>
 #### 条件分岐での説明しない項目。
 
-[以下、今回の言語に関係の無い項目を削除すること(対象言語に存在するが、見送るもののみ、以下残す)。]  
 <details><summary>今回は勉強を見送る一覧</summary>
 
 * 多岐分岐  
@@ -1014,52 +1013,106 @@ Perlの[演算子](https://perldoc.jp/docs/perl/perlop.pod)。
 ### 繰り返し
 
 * 絶対的に勉強する一覧  
-  * [ ] [指定回数条件での繰り返し](#subRepetition1)  
-    [ ] [基本構造例：for( 条件式 )](#subRepetition2)  
-    [ ] [基本構造例：拡張for命令(`in`)](#subRepetition3)  
-    [ ] [`for`の入れ子。](#subRepetition4)  
+  * [x] [指定回数条件での繰り返し](#subRepetition1)  
+    [x] [基本構造例：for( 条件式 )](#subRepetition2)  
+    [x] [基本構造例：拡張for命令(`in`)](#subRepetition3)  
+    [x] [`for`の入れ子。](#subRepetition4)  
   * [ジャンプ処理](#subRepetition5)  
-    * [ ] break  
-    * [ ] continue  
-  * [ ] [真偽条件での繰り返し](#subRepetition6)  
-    [ ] [基本構造例：while( 条件式 )](#subRepetition6)  
-    [ ] [無限ループ](#subRepetition7)  
+    * [x] break  
+      Perlでは`last`  
+    * [x] continue  
+      Perlでは`next`  
+  * [x] [真偽条件での繰り返し](#subRepetition6)  
+    [x] [基本構造例：while( 条件式 )](#subRepetition6)  
+    [x] [無限ループ](#subRepetition7)  
 
 
 <a name="subRepetition1"></a>
 #### 繰り返し
 様式：
+基本的には、[拡張for命令](#subRepetition3)と同等。  
+`for( [リスト] ) { ・・・ }`  
+
+リスト例）
+`1..10`  
+使用例）
+`for( 1..10 )`  
+
+これで1から10までのリストが作られ、その間繰り返しが発生する。  
 
 <a name="subRepetition2"></a>
 ##### 指定回数条件での繰り返し：for( 条件式 )
 様式：
+`for ( 初期化; 条件式; 増減分) { ・・・ }`  
+※増減分は、初期化する変数をどうするか決める場所として使うのが一般的。  
 
 <a name="subRepetition3"></a>
 ##### 指定回数条件での繰り返し：拡張for命令
 様式：
+`foreach my 変数名 ( リスト ) { ・・・ }`  
+
+※リスト部分には、(上記配列で勉強外だが)sort演算子やreverse演算子なども使える。  
+例）`foreach my 変数名 ( sort(リスト) ) { ・・・ }`  
+当たり前だが、foreach前にsort演算子が実行され、実行後にforeachが実行されるため、sort演算子の実行は最初の1回だけと言うことになる。  
 
 <a name="subRepetition4"></a>
 #### `for`の入れ子。
+やりたければ勝手にすれば良い。
+```
+foreach my 変数名1 ( リスト ) {
+	foreach my 変数名2 ( リスト ) {
+		・・・
+	}
+}
+```
 
 <a name="subRepetition5"></a>
 #### ジャンプ処理
+繰り返しの制御として、以下を使う。  
+
+* last  
+  while処理を抜け出る。  
+  ※他のプログラミング言語でいえば、`break`文。  
+  使える繰り返し：`for`・`foreach`・`while`・`until`・裸のブロック。  
+* next  
+  while処理の先頭に戻り、条件式を評価する。  
+  ※他のプログラミング言語でいえば、`continue`文。  
+  使える繰り返し：`for`・`foreach`・`while`・`until`・裸のブロック。  
 
 <a name="subRepetition6"></a>
 #### 真偽条件での繰り返し：while( 条件式 )
 様式：
+`while ( 条件式 ) { ・・・ }`  
 
 <a name="subRepetition7"></a>
 #### 無限ループ
 様式：
+`while ( ) { ・・・ }`  
+条件式の部分を空にすれば無限ループになる。  
 
 <a name="subRepetition999"></a>
 #### 繰り返しでの説明しない項目。
 
-[以下、今回の言語に関係の無い項目を削除すること(対象言語に存在するが、見送るもののみ、以下残す)。]  
 <details><summary>今回は勉強を見送る一覧</summary>
 
 * [ ] 真偽条件での繰り返し  
   基本構造例：do〜while( 条件式 )  
+  条件否定：do〜until ( 条件式 )  
+  * until修飾子  
+    上記のdoと同じ？  
+  * while修飾子  
+    上記のdoと同じ？  
+
+* その他の繰り返し。  
+  * 文字列の繰り返し。  
+    例）`say "-" x 30;`
+  * grepによる繰り返し。  
+  * mapによる繰り返し。  
+
+* ジャンプ処理  
+  * redo  
+    nextのようなものだが、条件式を評価せずにwhile文の頭に戻る(要は、現在の条件で再実行)。  
+    使える繰り返し：`for`・`foreach`・`while`・`until`・裸のブロック。  
 
 </details>
 
