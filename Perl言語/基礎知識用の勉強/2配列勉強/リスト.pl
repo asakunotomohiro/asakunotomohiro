@@ -26,6 +26,7 @@ say "@string";	# asa kuno tomo hiro
 @string = ( @string, $kakko );
 say "@string";	# asa kuno tomo hiro )(
 
+# 任意のデリミタ利用
 my @string = qw! asa kuno tomo hiro !;
 say "@string";	# asa kuno tomo hiro
 @asakuno = (@string, undef, $kakko);
@@ -40,6 +41,12 @@ say "@string, @asakuno";	# , 1 2 3 4 5
 $asakuno[0] = 99;
 say "@string, @asakuno";	# 1 2 3 4 5, 99 2 3 4 5
 	# 配列データはコピーされる(参照ではない)。
+
+# {}などのデリミタの使い分け。
+@asakuno = qw{ /usr/hoge /home/bar/ /\\boo };
+say "$asakuno[0]";	# /usr/hoge
+say "$asakuno[1]";	# /home/bar/
+say "$asakuno[2]";	# /\boo
 
 
 # 以上。
