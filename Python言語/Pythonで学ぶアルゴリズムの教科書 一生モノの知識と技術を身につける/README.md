@@ -21,7 +21,7 @@
     現時点で完了している。  
   * [Chapter 2 プログラミングの力を養う](#algorithmTextbookLearnedinPython)  
     * [x] 平均値を求める。2021/08/30  
-    * [ ] 1からnまで足し合わせる。  
+    * [x] 1からnまで足し合わせる。2021/09/02  
     * [ ] 九九の式を出力する。  
     * [ ] 素数を求める。  
     * [ ] nの階乗(n!)を求める。  
@@ -180,6 +180,69 @@ print("平均値：", bar)	# 平均値： 82.4
 
 <a name="addFrom1tonChapter2"></a>
 #### 1からnまで足し合わせる。
+今回は、以下のルールがある。  
+
+* 作業1回目のルール。  
+  * `for`を用いる。  
+  * 関数定義はない。  
+
+```Python
+addsum = 0
+for ii in range(1, 11):
+    # 1から10までを1づつ加算していく。
+    addsum = addsum + ii
+print(addsum)	# 55
+```
+
+* 作業2回目のルール。  
+  * 加算回数(いくつまでの)を関数内で行う。  
+  * 加算回数の指定を関数の指定で行う。  
+  * 加算回数の結果を`return`で返す。  
+
+```Python
+def addup(count):
+    addsum = 0
+    for ii in range(1, count+1):
+        addsum = addsum + ii
+    return addsum
+print(addup(10) )	# 55
+```
+
+* 作業3回目のルール。  
+  * 「カール・フリードリヒ・ガウス」に[倣え](https://ja.wikipedia.org/wiki/カール・フリードリヒ・ガウス)。  
+    > ガウスが7歳の時、算数の授業で教師が「1から100までの数字すべてを足せ」という問題を出し、生徒たちが問題を解くには相当な時間がかかるだろうと考えていたが、ガウスはわずか数秒で「5050」という解答を出し、教師を驚かせた。  
+    要は、等差級数の和の公式を使えば良いようだ(で、それは何？)。  
+
+```Python
+def addup_Gauss(count):
+    addsum = (1+count)*count/2
+    return int(addsum)
+print(addup_Gauss(10))	# 55
+```
+
+* 作業4回目のルール。  
+  要は、nからmまで足し合わせる。  
+  * 開始の数字を任意にする。  
+  * 終了の数字を任意にする。  
+  * 開始の数字 ＜ 終了の数字。  
+
+```Python
+def gauss_start_end(start, end):
+    if start < end:
+        addsum = (start+end)*(end-start+1)/2
+    else:
+        addsum = 0
+    return int(addsum)
+
+print(gauss_start_end(1, 10))   # 55
+print(gauss_start_end(5, 10))   # 45
+print(gauss_start_end(10, 1))   # 0
+print(gauss_start_end(10, 10))   # 0
+print(gauss_start_end(100, 5050))   # 12748825　あっているか不明。
+```
+
+
+※これらのプログラム全てシンタックスエラーになるのだが、どういうこと!?  
 
 <a name="outputTheMultiplicationTableChapter2"></a>
 #### 九九の式を出力する。
