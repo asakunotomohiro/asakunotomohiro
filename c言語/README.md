@@ -59,7 +59,7 @@
 ※プログラミングに使う基礎知識を統一する(簡単に済ませられる量に絞り込む)。  
 * 基礎知識5種類  
   * [x] [変数](#variable変数)2021/08/30  
-  * [ ] [配列](#arrangement配列)  
+  * [x] [配列](#arrangement配列)2021/09/03  
   * [ ] [条件分岐](#Conditional条件分岐)  
   * [ ] [繰り返し](#repetition繰り返し)  
   * [ ] [関数](#function関数)  
@@ -749,25 +749,96 @@ c++を含んだC言語での[浮動小数点リテラル](https://www.ibm.com/do
 <a name="subArrangement1"></a>
 #### 配列
 様式：
+`データ型 配列名[配列要素数];`  
 
 <a name="subArrangement2"></a>
 #### 配列への追加方法
 様式：
+`データ型 配列名[配列要素数] = {値1, 値2, ・・・ };`  
+※配列要素数に代入する値が足りない場合、0で埋められる。  
+
+以下、例）
+```c
+#include <stdio.h>
+
+int main(void)
+{
+	int hoge[5] = {0};	// 5つ全てが0クリアされる。
+
+	hoge[0] = 20210903;
+	hoge[1] = hoge[0] + 1;
+	hoge[2] = hoge[0] + 2;
+	hoge[3] = hoge[0] + 3;
+	hoge[4] = hoge[0] + 4;
+
+	printf("hoge = %d\n", hoge[0]);		// hoge = 20210903
+	printf("hoge = %d\n", hoge[1]);		// hoge = 20210904
+	printf("hoge = %d\n", hoge[2]);		// hoge = 20210905
+	printf("hoge = %d\n", hoge[3]);		// hoge = 20210906
+	printf("hoge = %d\n", *(hoge+4) );	// hoge = 20210907
+}
+```
+
+#### 配列への文字列追加方法
+様式：
+```c
+char 配列名[配列要素数];
+strcpy(配列名, "代入したい文字列");
+```
+※"代入したい文字列"は、配列要素数より1つ小さくしなければならない(`null`のため)。  
+
+以下、2次元配列の文字列代入方法。
+```c
+char 配列名[配列要素数][配列要素数];
+strcpy(配列名[0], "代入したい文字列");
+strcpy(配列名[1], "代入したい文字列");
+```
 
 <a name="subArrangement3"></a>
 #### 二次元配列の宣言方法
 様式：
+`データ型 配列名[配列要素数][配列要素数];`  
+
+```c
+#include <stdio.h>
+
+int main(void)
+{
+	int hoge[5][3] = {0};
+
+	char *phoge[3] = {"hoge", "bar", "boo"};
+	char hogeArray[][16] = {
+		"hoge",
+		"bar",
+		"boo",
+	};
+
+	for ( int ii = 0; ii < 5; ii++ ) {
+		for ( int jj = 0; jj < 3; jj++ ) {
+			printf("hoge = %d\n", hoge[ii][jj]);	// 全て0で初期化されている。
+		}
+	}
+
+	// 以下、ポインタ配列。
+	printf("phoge = %s\n", phoge[0]);	// phoge = hoge
+	printf("phoge = %s\n", phoge[1]);	// phoge = bar
+	printf("phoge = %s\n", phoge[2]);	// phoge = boo
+
+	printf("hogeArray = %s\n", hogeArray[0]);	// hogeArray = hoge
+}
+```
 
 <a name="subArrangement999"></a>
 #### 配列での説明しない項目。
 
-[以下、今回の言語に関係の無い項目を削除すること(対象言語に存在するが、見送るもののみ、以下残す)。]  
 <details><summary>今回は勉強を見送る一覧</summary>
 
 * 配列の応用  
   * [ ] 3次元配列以上の宣言方法。  
   * [ ] 配列を複製する方法。  
-  * [ ] 配列からスライスを作成する方法。  
+    ちょこっと触ってみた。  
+  * 配列からスライスを作成する方法。  
+    C言語にはない。  
 
 * 構造体  
   * [ ] 構造体の複製  
@@ -776,6 +847,7 @@ c++を含んだC言語での[浮動小数点リテラル](https://www.ibm.com/do
   * [ ] 列挙体  
 
 * コレクション  
+  C言語にはない。  
   * [ ] List?  
   * [ ] Set  
   * [ ] Map  
@@ -928,6 +1000,8 @@ c++を含んだC言語での[浮動小数点リテラル](https://www.ibm.com/do
       [ ] 引数あり-戻り値無し  
       [ ] 引数無し-戻り値あり  
       [ ] 引数あり-戻り値あり  
+    * [ ] 配列の受け渡し。  
+      C言語特有のポインタ渡しになるため必須の確認作業。  
     * [スコープ](#subFunction2)  
       [ ] グローバルスコープ変数  
       [ ] ローカルスコープ変数  
