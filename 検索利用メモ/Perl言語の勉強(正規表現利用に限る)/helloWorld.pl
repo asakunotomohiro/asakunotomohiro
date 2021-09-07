@@ -63,6 +63,21 @@ if ( m,e(l)o, ) {	# Helloにヒットしない。
 }
 
 
+print "-" x 3 . "ここまで正規表現(検索)" . "-" x 50 . "\n";
+print "ここから置換" . "\n";
 
+$helloworld = "Hello World($^V).";
+print $helloworld . "\n";	# Hello World(v5.18.4).
+my $kakkonashi = $helloworld =~ s/\(.*\)//;
+print $helloworld . "($kakkonashi)\n";	# Hello World.(1)
+
+$helloworld = "Hello World($^V).";
+if ( $helloworld =~ s/(?<hello>^h.*d)\((?<ver>.*)\)/Perl-ver{$+{ver}}/i ) {
+	# 置換成功により、以下を表示する。
+	print $helloworld . "\n";	# Perl-ver{v5.18.4}.
+}
+
+
+print "-" x 3 . "ここまで正規表現(置換)" . "-" x 50 . "\n";
 
 print "以上。"
