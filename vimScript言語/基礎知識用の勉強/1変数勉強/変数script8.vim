@@ -4,6 +4,9 @@
 let asakuno = 'asakuno'
 echom asakuno
 
+let pi = 3.14159265359
+echom pi
+
 " let l:tomohiro_l = 'l:tomohiro(vimScript8)'	" E461: 不正な変数名です: l:tomohiro_l
 function! Tomohiro() abort
 	let g:asakunotomohiro = 'g:asakuno(vimScript8)'

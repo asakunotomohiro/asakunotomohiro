@@ -24,6 +24,12 @@ enddef
 echom TomohiroRet()
 "	出力結果：Tomohiro関数(引数無し)戻り値あり
 
+def! TomohiroRet( tomoarg = '引数無し' ): void
+	echom tomoarg
+enddef
+call TomohiroRet( 'Tomohiro関数(引数あり)戻り値なし' )
+"	出力結果：Tomohiro関数(引数あり)戻り値なし
+
 def! TomohiroMandatoryArgRet( tomoArg: string ): string
 	var funcEcho = tomoArg .. '：Tomohiro関数(引数あり: 必須)戻り値あり'
 

@@ -8,9 +8,9 @@ echo 'hello World.'
 echon 'hello World.'
 " 以下、警告ハイライト付きのメッセージ(及び、同セッションメッセージの記録あり:echom)。
 echohl WarningMsg
-echom 'hello World.'
+echom '警告：hello World.'
 echohl None
 " 以下、エラーハイライト付きのメッセージ(及び、同セッションメッセージの記録あり:echom)。
 echohl ErrorMsg
-echom 'hello World.'
+echom 'エラー：hello World.'
 echohl None
