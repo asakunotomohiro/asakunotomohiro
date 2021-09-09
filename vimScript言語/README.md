@@ -270,6 +270,7 @@ MacVimバージョン：8.2.2164
   * [変数値の出力方法](#subVariable3)  
   * [データ型](#subVariable4)  
     * [x] 整数(`int`)  
+      `number`型って何？  
     * [x] 浮動小数点型(`float`)  
     * [x] 文字型(`string`)  
     * [x] 真偽型(`bool`)  
@@ -313,6 +314,8 @@ script8と異なり、イコール記号の前後に半角スペースが必要�
 変数の代入：
 他のプログラミング言語のように、型が決められているのではない。  
 代入時に変化する。  
+しかし、それは、文字列型と数値型の話であり、他のデータ型はエラーになるようだ。  
+そして、関数の戻り値を設定する場合は、型付けを厳格に決める必要がある。  
 
 
 変数名
@@ -426,14 +429,45 @@ echo g:ver
 
 <a name="subVariable4"></a>
 #### データ型
-通常は意識する必要は無い。  
+以下、10種類ある。  
+今回は、そのうちの数種類のみ使う。  
 
+* データ型  
+  * 数値  
+    `var number = 20210909`  
+    数値型から文字型へは自動キャストが行われる。  
+  * 文字列  
+    `var string = "hoge"`  
+    文字型から数値型へは自動キャストが行われない(vim9script)。  
+  * 関数リファレンス  
+    説明対象外。  
+  * [リスト](#arrangement配列sub)  
+    `var hogeList = ['hoge1', 'hoge2', 'hoge3', ・・・]`  
+  * 辞書  
+    `var hogeDictionary = {'hoge': 20210909, 'boo': 20110311}`  
+    説明対象外。  
+  * 浮動小数点数  
+    `var floatNumber = 2021.0909`  
+  * 特殊値  
+    説明対象外。  
+    ただ、Bool型には触れる。  
+  * ジョブ  
+    説明対象外。  
+  * チャネル  
+    説明対象外。  
+  * Blob  
+    説明対象外。  
+
+<a name="subVariable4doublequote"></a>
 * ダブルクォーテーション  
-[文字列定数(ダブルクォーテーションで括る)](https://vim-jp.org/vimdoc-ja/eval.html#expr-quote)  
-リテラルではない文字列を表す。  
+  [文字列定数(ダブルクォーテーションで括る)](https://vim-jp.org/vimdoc-ja/eval.html#expr-quote)  
+  リテラルではない文字列を表す。  
+  例）`"hoge\tboo"`⇒"hoge	boo"  
+<a name="subVariable4singlequote"></a>
 * シングルクォーテーション  
-リテラル文字列を表す。  
-
+  リテラル文字列を表す(同記号は重ね掛け必須)。  
+  例）`'hoge's`エラー。  
+  例）`'hoge''s`⇒"hoge's"  
 
 * 文字の結合(vim9script)  
 `'abc' .. 123`  
@@ -451,6 +485,7 @@ echo g:ver
     v:false  
     vim9script：false  
 
+
 * [float型](https://vim-jp.org/vimdoc-ja/eval.html#Float)  
   `+float`機能つきでコンパイルされたときのみ有効。  
   ※vimエディタ上のexコマンドにて`:ve`実行時に有効有無を確認できる。  
@@ -458,6 +493,15 @@ echo g:ver
     出力結果：`3.141593`  
 
 
+* 定数  
+  * [数定数](https://vim-jp.org/vimdoc-ja/eval.html#expr-number)  
+    `number`型？  
+  * [文字列型の文字列定数](https://vim-jp.org/vimdoc-ja/eval.html#expr-quote)  
+    `string`型？  
+    [ダブルクォーテーション](#subVariable4doublequote)で囲む必要がある。  
+  * [リテラル文字列](https://vim-jp.org/vimdoc-ja/eval.html#literal-string)  
+    `string`型？  
+    [シングルクォーテーション](#subVariable4singlequote)で囲む必要がある。  
 
 
 以下、結局分からずじまい。  
@@ -501,6 +545,7 @@ echo g:ver
 * 'string'  
 リテラル文字列(literal string)  
 
+以下、ダブルクォーテーションで囲む場合に有効。  
 |エスケープシーケンス|意味|
 |--------------------|----|
 |`\t`|\<Tab\>|
@@ -561,16 +606,19 @@ todo: これなんだっけ？
   * [ ] 浮動小数点型(`double`など)  
     [float](https://vim-jp.org/vimdoc-ja/eval.html#variables)のみある。  
   * [ ] 型推論  
-    ない？(と言うか、型推論だけがある)  
+    ない？(あるとは思うが・・・)  
   * [ ] 複素数型  
     そもそもコレ何？  
+    ないようだな。  
 * [ ] リテラル  
   * [ ] 整数リテラル  
   * [ ] 浮動小数点リテラル  
   * [ ] 文字リテラル  
-  * [ ] 文字列リテラル  
+    文字列リテラルと同じ扱い？  
+  * [x] [文字列リテラル](#subVariable4singlequote)  
 * [ ] キャスト  
   * [ ] 暗黙変換  
+    数値から文字はできるが、逆はできない。  
 * [ ] 演算子  
   * [ ] 優先順位  
 
@@ -633,6 +681,7 @@ vim9script用の書式：
 変数と同じく、イコール記号の前後に半角スペースが必要。  
 script8でスライスをする場合は、`hogeList[0:1]`のように、コロン`:`の前後を詰めることができる。  
 しかし、9になった場合、スペースが必要になる(`[0 : 1]`・`[0 :]`・`[: 1]`・`[:]`)。
+`var hogeList = ['hogeList1', 'hogeList2', ]`  
 
 また、script8とは異なり、9の場合に指定する添え字は、文字単位での指定になる(注意事項2)。  
 要は、見た目通りに指定できる(script8はバイト単位のため、多バイトを相手する場合意図しない結果が出てくる)。  
@@ -1318,7 +1367,7 @@ vim9scriptでも`unlet`は使えるようだ。
   基礎的なプログラミングの力を養っていく。  
   例えば、配列利用の関数定義・繰り返し・再帰関数・条件分岐など。  
   以下、各項目(目次)。  
-  [ ] [平均値を求める。](#findTheAverageValueChapter2)  
+  [x] [平均値を求める。](#findTheAverageValueChapter2)  
   [ ] [1からnまで足し合わせる。](#addFrom1tonChapter2)  
   [ ] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
   [ ] [素数を求める。](#findAPrimeNumberChapter2)  
@@ -1407,6 +1456,44 @@ vim9scriptでも`unlet`は使えるようだ。
 
 <a name="findTheAverageValueChapter2"></a>
 ##### 平均値を求める。
+勉強内容はPythonと基本は同じ。  
+それをvimScript9用に移植するだけのこと。  
+
+* ルールもPythonと同じ。  
+  * 点数を配列で定義する。  
+    `var hogeList = [70, 98, 92, 88, 64]`  
+  * `for`を用いる。  
+
+```vim
+def! Average(): list<number>
+	" 数字を配列で用意する。
+	var score = [70, 98, 92, 88, 64]
+	" 合計値用の変数。
+	var total = 0
+
+	" 配列要素値を1つづつ取り出す。
+	for value in score
+		" それを合計する。
+		total += value
+	endfor
+	" 合計値を配列要素数で割る。
+	var average = total / len(score)
+
+	" 合計値と平均値を呼び出し元に戻す。
+	var retList = [total, average]
+	return retList
+enddef
+let aveList = Average()
+"echom Average()
+"	出力結果：[412, 82]
+
+" 以下、出力結果。
+echom "合計値：" .. aveList[0]	" 合計値：412
+echom "平均点：" .. aveList[1]	" 平均点：82
+```
+※不思議なことに、変数名の前に`l:`・`b:`・`s:`のどれを付けてもエラーになった。  
+どういうこと!?  
+
 
 <a name="addFrom1tonChapter2"></a>
 ##### 1からnまで足し合わせる。
