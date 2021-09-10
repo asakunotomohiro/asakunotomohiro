@@ -15,6 +15,23 @@ let asaList = asakunoList[:]
 echom asaList
 "	出力結果：['asakuno', 'tomohiro']
 
+let tomohiro = [1, 2]
+echom tomohiro
+"	出力結果：[1, 2]
+
+let tomohiro = [1 .. 2]
+echom tomohiro
+"	出力結果：['12']
+
+"let tomohiro = (1, 2)
+"echom tomohiro
+"	出力結果：エラー
+
+" そもそも下記の書き方は何？
+let tomohiro = (1 .. 2)
+echom tomohiro
+"	出力結果：12
+
 def! Tomohiro(): list<string>
 #	var tomohiroList=['asakuno', 'tomohiro', ]	# E1004: White space required before and after '=' at "=['asakuno', 'tomohiro', ]"
 	var tomohiroList = ['tomohiroList1', 'tomohiroList2', ]

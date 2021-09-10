@@ -142,6 +142,8 @@ MacVimバージョン：8.2.2164
 標準の出力関数：`echo`・`echon`・`echom`  
 コメント方法：`"`  
 　　※プログラムの仕様上プログラム処理より右側にコメントを付けられない場合がある。  
+コメント方法：`#`  
+　　※vimScript9の場合のコメント方式。逆に`"`は使えない。  
 
 </details>
 
@@ -1368,7 +1370,7 @@ vim9scriptでも`unlet`は使えるようだ。
   例えば、配列利用の関数定義・繰り返し・再帰関数・条件分岐など。  
   以下、各項目(目次)。  
   [x] [平均値を求める。](#findTheAverageValueChapter2)  
-  [ ] [1からnまで足し合わせる。](#addFrom1tonChapter2)  
+  [x] [1からnまで足し合わせる。](#addFrom1tonChapter2)  
   [ ] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
   [ ] [素数を求める。](#findAPrimeNumberChapter2)  
   [ ] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
@@ -1497,6 +1499,90 @@ echom "平均点：" .. aveList[1]	" 平均点：82
 
 <a name="addFrom1tonChapter2"></a>
 ##### 1からnまで足し合わせる。
+勉強内容はPythonと基本は同じ。  
+それをvimScript9用に移植するだけのこと。  
+
+* ルール1もPythonと同じ。  
+  * `for`を用いる。  
+  * 関数は定義しない・・・無理だよね。  
+    関数で使い回すわけではないので、由としよう。  
+
+```vim
+def! Addup1(): number
+	var total = 0
+	for b:ii in range(1, 10)
+		total += b:ii
+	endfor
+
+	return total
+enddef
+let b:total = Addup1()
+echom b:total
+"	出力結果：55
+```
+
+* ルール2もPythonと同じ。  
+  * nまでの値を関数の引数で受け取る。  
+  * 関数内で合算した結果をreturnで返す。  
+    あぁルール1でやったことだよ・・・。  
+
+```vim
+def! Addup2( argnum = 0 ): number
+	var total = 0
+	for ii in range( 1, argnum )
+		total += ii
+	endfor
+
+	return total
+enddef
+let total = Addup2(10)
+echom total
+"	出力結果：55
+```
+`argnum += 1`がエラーになった。  
+何でだよ。  
+文字などを引数に渡した場合エラーになる。  
+
+* ルール3もPythonと同じ。  
+  * 工夫して計算する。  
+  * (初めの数+終わりの数)*(足し合わせる個数/2)  
+
+```vim
+def! Addup3( argnum = 0 ): number
+	var num = argnum
+	var total = (1 + num) * num / 2
+
+	return total
+enddef
+let total = Addup3(10)
+echom total
+"	出力結果：55
+```
+
+* その他  
+```vim
+def! AddupGauss( argnum1 = 0, argnum2 = 0 ): number
+	var num1 = 0
+	var num2 = 0
+	if argnum2 <= 0
+		num2 = argnum1
+		num1 = 1
+	else
+		num1 = argnum1
+		num2 = argnum2
+	endif
+	var count = num2 - num1 + 1.0
+
+	var total = float2nr((num1 + num2) * count / 2.0)
+
+	return total
+enddef
+echom AddupGauss(10)
+"	出力結果：55
+echom AddupGauss(1, 10)
+"	出力結果：55
+```
+
 
 <a name="outputTheMultiplicationTableChapter2"></a>
 ##### 九九の式を出力する。
