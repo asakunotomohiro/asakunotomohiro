@@ -87,4 +87,21 @@ if ( $name =~ m/(?P<name>e).*(?P=name)$/ ) {
 }
 
 
+say "-" x 30;
+
+# 以下、リストコンテキスト結果をリストに代入する。
+my $asakuno = "asakuno tomohiro asakunotomohiro hoge bar boo";
+(my $first, my $last) = $asakuno =~ /^(\w+) .* (\w+)$/;
+say $first;	# asakuno
+say $last;	# boo
+
+# 以下、さらに括弧を付けたキャプチャ(上記のキャプチャより1個多い)。
+(my $full, my $first, my $last) = $asakuno =~ /^((\w+) .* (\w+))$/;
+say $full;	# asakuno tomohiro asakunotomohiro hoge bar boo
+say $first;	# asakuno
+say $last;	# boo
+
+
+# 上記2種類は、書籍の内容を勘違いしているように思う。
+
 print "以上。"
