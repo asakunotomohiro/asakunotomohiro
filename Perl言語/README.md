@@ -93,7 +93,9 @@ Perlerになるつもりはない。
 [x] 手順5. 手順4での「5種類の基礎知識」が終わり次第、このディレクトリにある当ファイルの作業を再開する。  
 [x] 手順6. 5種類の基礎知識終了にて、"study2programming"ブランチにマージする。  
 
-<details><summary>以下を最低限埋める</summary>
+</details>
+
+<details><summary>私の作業環境</summary>
 
 ## 開発環境
 開発には、`MacVim`を使う。  
@@ -127,9 +129,10 @@ $
     そのため、次に続く文がない場合は、セミコロン不要で実行できる(それでも付けろよ)。  
   * インデント：フリーフォーマット  
   * 標準の出力関数：`print`・`printf`・`say`  
+    整形関数：[`sprintf`](https://perldoc.jp/func/sprintf)  
   * コメント方法：`#`  
-    [大きなブロックで囲む方法](https://perldoc.jp/docs/perl/5.10.0/perlfaq7.pod#How32can32I32comment32out32a32large32block32of32perl32code63)  
-    それはPODマーカーで囲むこと。  
+    [大きなブロックで囲む方法](https://perldoc.jp/docs/perl/5.10.0/perlfaq7.pod#How32can32I32comment32out32a32large32block32of32perl32code63)：
+    PODマーカーで囲むこと。  
 
 以下、ハローワールド。
 ```terminal
@@ -151,8 +154,6 @@ Unix以外のシステムでは、`#!perl`と記述するそうだ(記述した�
 
 </details>
 
-</details>
-
 <details><summary>アルゴリズム問題解決の作業手順</summary>
 
 ## 具体的なアルゴリズム問題解決前手順
@@ -160,12 +161,13 @@ Unix以外のシステムでは、`#!perl`と記述するそうだ(記述した�
 
 * 以下、手順。  
   * [x] 手順1. 勉強用のブランチに移動する(上記目次の1チャプター分専用ブランチとする)。  
-  * [ ] 手順2. ルートディレクトリのひな形ディレクトリ配下の必要なディレクトリをコピーする。  
+  * [x] 手順2. ルートディレクトリのひな形ディレクトリ配下の必要なディレクトリをコピーする。  
     **Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける** ディレクトリ配下の必要なチャプター用ディレクトリ。  
-  * [ ] 手順3. 当ファイル(`README.md`)の書き換えを行う。  
-  * [ ] 手順3-1. 勉強対象のチャプター子部分にチェックリストを付ける。  
+  * [x] 手順3. 当ファイル(`README.md`)の書き換えを行う。  
+  * [x] 手順3-1. 勉強対象のチャプター子部分にチェックリストを付ける。  
         ※ **上位ディレクトリにある"README.md"** は触らない。  
-  * [ ] 手順3-2. 目次部分を修正する。  
+        この手順不要？  
+  * [x] 手順3-2. 目次部分を修正する。  
     同ファイルの細かい場所(下記の行頭シャープ記号3つ以上ある)箇所にリンクできるようにする。  
   * [ ] 手順3-3. コミットする。  
   * [ ] 手順4. 各ディレクトリで、各項目ごとに勉強を進める。  
@@ -1263,7 +1265,7 @@ Perlでオブジェクト指向開発ができるだけでなく、そのやり�
   以下、各項目(目次)。  
   [x] [平均値を求める。](#findTheAverageValueChapter2)  
   [x] [1からnまで足し合わせる。](#addFrom1tonChapter2)  
-  [ ] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
+  [x] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
   [ ] [素数を求める。](#findAPrimeNumberChapter2)  
   [ ] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
   [ ] [エラトステネスの篩](#eratosthenesSieveChapter2)  
@@ -1383,6 +1385,8 @@ Pythonより作りやすい言語ではある。
 勉強内容はPythonと基本は同じ。  
 それをPerl用に移植するだけのこと。  
 
+<details><summary>基本内容</summary>
+
 * ルールもPythonと同じだが、関数は定義する。  
   * `for`を用いる。  
   * ~~関数は定義しない~~。  
@@ -1453,11 +1457,83 @@ say &addup3('a');	# 0
 say &addup3(10, 20);	# 55
 ```
 
-数時間前にPerl言語を触っているのに、今回の作業に着手により、数時間前の作業をすっかり忘れて、1から調べ直す。  
-あぁ就職できないわけだわ。  
+</details>
+
+* 作業ルール。  
+  * 「カール・フリードリヒ・ガウス」に倣え。  
+  * 開始の数字 ＜ 終了の数字。  
+    要は、nからmまで足し合わせる。  
+    * 開始の数字を任意にする。  
+    * 終了の数字を任意にする。  
+
+```Perl
+sub AddupGauss() {
+	my ($start, $end) = @_;
+	if ( scalar(@_) == 2 ) {
+		# 引数が2つある場合の代入方法。
+		($start, $end) = @_;
+	}
+	elsif ( scalar(@_) == 1 ) {
+		($end) = @_;
+		$start = 1;
+	}
+	if ( $start =~ /^[0-9]+$/ && $end =~ /^[0-9]+$/ ) {
+		;
+	}
+	else {
+		$start = $end = 0;
+	}
+	my $total = ($start+$end)*$end/2;
+
+	return $total;
+}
+
+say &AddupGauss();	# 0
+say &AddupGauss(10);	# 55
+say &AddupGauss('a');	# 0
+say &AddupGauss(1, 10);	# 55
+say &AddupGauss(1, 100);	# 5050
+```
 
 <a name="outputTheMultiplicationTableChapter2"></a>
 #### 九九の式を出力する。
+Pythonでやったように、九九の式を出すのではなく、九九表を出すことにする。  
+ルールはPythonと同じ。  
+
+* 作業ルール。  
+  * 二重ループを使う。  
+
+以下、いつも通りの九九表出力。
+```Perl
+sub kukuTable() {
+	for my $ii ( 1..9 ) {
+		for my $jj ( 1..9 ) {
+			printf("%3d", $ii * $jj);
+		}
+		say;
+	}
+
+	return 0;
+}
+
+&kukuTable();
+```
+
+```text
+  1  2  3  4  5  6  7  8  9
+  2  4  6  8 10 12 14 16 18
+  3  6  9 12 15 18 21 24 27
+  4  8 12 16 20 24 28 32 36
+  5 10 15 20 25 30 35 40 45
+  6 12 18 24 30 36 42 48 54
+  7 14 21 28 35 42 49 56 63
+  8 16 24 32 40 48 56 64 72
+  9 18 27 36 45 54 63 72 81
+```
+九九表完成。
+
+今回`sprintf`と言う今まで勉強していない関数を使ったよ。  
+何をしているのやら。  
 
 <a name="findAPrimeNumberChapter2"></a>
 #### 素数を求める。
@@ -1675,3 +1751,4 @@ study2programmingに取り込むときのマージは、3方向マージ(`--no-f
 
 
 以上。
+<!-- vim:set ts=4 sts=4 sw=4 tw=0:expandtabs -->
