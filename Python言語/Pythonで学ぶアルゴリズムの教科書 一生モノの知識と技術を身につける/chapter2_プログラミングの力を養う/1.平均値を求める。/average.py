@@ -1,4 +1,8 @@
-import statistics
+# coding:utf-8
+# import statistics
+#   なぜインポートがエラーになる？
+#   インポートしなければ、以下のエラーになる。
+#       NameError: name 'statistics' is not defined
 
 print("平均値を求める。")
 
@@ -47,3 +51,4 @@ for ii in asakuno:
 print(testData2)
 
 print("以上。")
+# vim:set ts=4 sts=4 sw=4 tw=0:expandtabs
