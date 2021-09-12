@@ -1371,7 +1371,7 @@ vim9scriptでも`unlet`は使えるようだ。
   以下、各項目(目次)。  
   [x] [平均値を求める。](#findTheAverageValueChapter2)  
   [x] [1からnまで足し合わせる。](#addFrom1tonChapter2)  
-  [ ] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
+  [x] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
   [ ] [素数を求める。](#findAPrimeNumberChapter2)  
   [ ] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
   [ ] [エラトステネスの篩](#eratosthenesSieveChapter2)  
@@ -1586,6 +1586,42 @@ echom AddupGauss(1, 10)
 
 <a name="outputTheMultiplicationTableChapter2"></a>
 ##### 九九の式を出力する。
+Pythonでやったように、九九の式を出すのではなく、九九表を出すことにする。  
+ルールはPythonと同じ。  
+
+* 作業ルール。  
+  * 二重ループを使う。  
+
+以下、いつも通りの九九表出力。
+```vim
+def! KukuTable(): number
+	for ii in range(1, 9)
+		var outputkuku = ""
+		for jj in range(1, 9)
+			outputkuku = outputkuku .. printf("%3d", ii * jj)
+		endfor
+		outputkuku = outputkuku[2 :]
+		echom outputkuku
+	endfor
+
+	return 0
+enddef
+call KukuTable()
+```
+
+以下、出力結果
+```text
+1  2  3  4  5  6  7  8  9
+2  4  6  8 10 12 14 16 18
+3  6  9 12 15 18 21 24 27
+4  8 12 16 20 24 28 32 36
+5 10 15 20 25 30 35 40 45
+6 12 18 24 30 36 42 48 54
+7 14 21 28 35 42 49 56 63
+8 16 24 32 40 48 56 64 72
+9 18 27 36 45 54 63 72 81
+```
+きれいに収まった。  
 
 <a name="findAPrimeNumberChapter2"></a>
 ##### 素数を求める。
@@ -1803,3 +1839,4 @@ study2programmingに取り込むときのマージは、3方向マージ(`--no-f
 
 
 以上。
+<!-- vim:set ts=4 sts=4 sw=4 tw=0:expandtabs -->
