@@ -189,6 +189,9 @@ ASIN：なし。
    1. 章 [シンタックスファイルの記述方法](#viBibleImprovedGihyo100030)  
       1. [シンタックスの定義](#viBibleImprovedGihyo2300001)  
       1. [シンタックスファイル](#viBibleImprovedGihyo2300002)  
+1. 付録1 [リファレンス](#viBibleImprovedGihyo010001)  
+1. 付録2 [ライセンス](#viBibleImprovedGihyo010002)  
+1. 付録3 [インストール](#viBibleImprovedGihyo010003)  
 1. [個人メモ](#memo2999)  
 
 ---
@@ -374,6 +377,598 @@ ASIN：
 ---
 <a id="viimprovedBible9784774120188"></a>
 ## 書籍：ViIMproved‐Vim完全バイブル
+
+<a id="viBibleImprovedGihyo010000"></a>
+### 付録
+
+<a id="viBibleImprovedGihyo010001"></a>
+#### 付録1 リファレンス
+
+<a id="viBibleImprovedGihyo010002"></a>
+#### 付録2 ライセンス
+
+<a id="viBibleImprovedGihyo010003"></a>
+#### 付録3 インストール
+[VimのPythonインターフェイス](https://vim-jp.org/vimdoc-ja/if_pyth.html#python3)  
+は、役に立たなかった。  
+
+
+##### 現在の環境
+Macに標準でインストールされているPythonが優先されている。
+
+```terminal
+$ which python
+/usr/bin/python
+$ /usr/bin/python --version
+Python 2.7.16
+$ pyenv versions
+  system
+* 3.8.6 (set by /Users/asakunotomohiro/.python-version)
+$ cat /etc/paths
+/usr/local/bin
+/usr/bin
+/bin
+/usr/sbin
+/sbin
+$ ll /usr/local/bin | grep python
+lrwxr-xr-x  1 asakunotomohiro  admin     38  9 11 00:30 python-build@ -> ../Cellar/pyenv/2.0.6/bin/python-build
+lrwxr-xr-x  1 asakunotomohiro  admin     37  9 11 00:24 pip3.9@ -> ../Cellar/python@3.9/3.9.7/bin/pip3.9
+lrwxr-xr-x  1 asakunotomohiro  admin     37  9 11 00:24 wheel3@ -> ../Cellar/python@3.9/3.9.7/bin/wheel3
+lrwxr-xr-x  1 asakunotomohiro  admin     35  9 11 00:24 pip3@ -> ../Cellar/python@3.9/3.9.7/bin/pip3
+lrwxr-xr-x  1 asakunotomohiro  admin     47  9 11 00:23 python3.9-config@ -> ../Cellar/python@3.9/3.9.7/bin/python3.9-config
+lrwxr-xr-x  1 asakunotomohiro  admin     40  9 11 00:23 python3.9@ -> ../Cellar/python@3.9/3.9.7/bin/python3.9
+lrwxr-xr-x  1 asakunotomohiro  admin     45  9 11 00:23 python3-config@ -> ../Cellar/python@3.9/3.9.7/bin/python3-config
+lrwxr-xr-x  1 asakunotomohiro  admin     38  9 11 00:23 python3@ -> ../Cellar/python@3.9/3.9.7/bin/python3
+lrwxr-xr-x  1 asakunotomohiro  admin     39  9 11 00:23 pydoc3.9@ -> ../Cellar/python@3.9/3.9.7/bin/pydoc3.9
+lrwxr-xr-x  1 asakunotomohiro  admin     37  9 11 00:23 pydoc3@ -> ../Cellar/python@3.9/3.9.7/bin/pydoc3
+lrwxr-xr-x  1 asakunotomohiro  admin     38  9 11 00:23 idle3.9@ -> ../Cellar/python@3.9/3.9.7/bin/idle3.9
+lrwxr-xr-x  1 asakunotomohiro  admin     36  9 11 00:23 idle3@ -> ../Cellar/python@3.9/3.9.7/bin/idle3
+lrwxr-xr-x  1 asakunotomohiro  admin     39  9 11 00:23 2to3-3.9@ -> ../Cellar/python@3.9/3.9.7/bin/2to3-3.9
+lrwxr-xr-x  1 asakunotomohiro  admin     35  9 11 00:23 2to3@ -> ../Cellar/python@3.9/3.9.7/bin/2to3
+$
+```
+
+
+##### Mac
+Python作業時に、なぜかPython3ではなく、Python2で動かすことになっており、試行錯誤しながらPython3に戻す。  
+
+```terminal
+$ vim --version | grep python	←☆python3が無効化になっている。
++cryptv          +linebreak       +python/dyn      +viminfo
++cscope          +lispindent      -python3         +vreplace
+$ which vim	←☆Pathの確認。
+/usr/bin/vim
+$ brew info vim	←☆何の確認？
+vim: stable 8.2.3400 (bottled), HEAD
+Vi 'workalike' with many additional features
+https://www.vim.org/
+Conflicts with:
+  ex-vi (because vim and ex-vi both install bin/ex and bin/view)
+  macvim (because vim and macvim both install vi* binaries)
+Not installed
+From: https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/vim.rb
+License: Vim
+==> Dependencies
+Required: gettext ✔, lua ✘, ncurses ✘, perl ✘, python@3.9 ✔, ruby ✘
+==> Options
+--HEAD
+    Install HEAD version
+==> Analytics
+install: 58,136 (30 days), 239,571 (90 days), 989,115 (365 days)
+install-on-request: 58,088 (30 days), 239,328 (90 days), 982,534 (365 days)
+build-error: 0 (30 days)
+$ brew uninstall --force  ex-vi	←☆コンフリクトが発生しているため、削除する。
+$ brew info vim	←☆消えない。
+vim: stable 8.2.3400 (bottled), HEAD
+Vi 'workalike' with many additional features
+https://www.vim.org/
+Conflicts with:
+  ex-vi (because vim and ex-vi both install bin/ex and bin/view)
+  macvim (because vim and macvim both install vi* binaries)
+Not installed
+From: https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/vim.rb
+License: Vim
+==> Dependencies
+Required: gettext ✔, lua ✘, ncurses ✘, perl ✘, python@3.9 ✔, ruby ✘
+==> Options
+--HEAD
+    Install HEAD version
+==> Analytics
+install: 58,136 (30 days), 239,571 (90 days), 989,115 (365 days)
+install-on-request: 58,088 (30 days), 239,328 (90 days), 982,534 (365 days)
+build-error: 0 (30 days)
+$
+$ brew info --json=v1 vim	←☆これは何の確認？
+[
+  {
+    "name": "vim",
+    "full_name": "vim",
+    "tap": "homebrew/core",
+    "oldname": null,
+    "aliases": [
+
+    ],
+    "versioned_formulae": [
+
+    ],
+    "desc": "Vi 'workalike' with many additional features",
+    "license": "Vim",
+    "homepage": "https://www.vim.org/",
+    "versions": {
+      "stable": "8.2.3400",
+      "head": "HEAD",
+      "bottle": true
+    },
+    "urls": {
+      "stable": {
+        "url": "https://github.com/vim/vim/archive/v8.2.3400.tar.gz",
+        "tag": null,
+        "revision": null
+      }
+    },
+    "revision": 0,
+    "version_scheme": 0,
+    "bottle": {
+      "stable": {
+        "rebuild": 0,
+        "root_url": "https://ghcr.io/v2/homebrew/core",
+        "files": {
+          "arm64_big_sur": {
+            "cellar": "/opt/homebrew/Cellar",
+            "url": "https://ghcr.io/v2/homebrew/core/vim/blobs/sha256:4676c43a753839238dc3624514405cb9cca9cee588935ca8d718533f40633ddf",
+            "sha256": "4676c43a753839238dc3624514405cb9cca9cee588935ca8d718533f40633ddf"
+          },
+          "big_sur": {
+            "cellar": "/usr/local/Cellar",
+            "url": "https://ghcr.io/v2/homebrew/core/vim/blobs/sha256:13f972994bf3093ab04450255a479ccce5e95a4e286ccba751a1e48f71d52590",
+            "sha256": "13f972994bf3093ab04450255a479ccce5e95a4e286ccba751a1e48f71d52590"
+          },
+          "catalina": {
+            "cellar": "/usr/local/Cellar",
+            "url": "https://ghcr.io/v2/homebrew/core/vim/blobs/sha256:bad534094e98ddc1f578fe33088731ac9c3a3cc7c66704a9a47db0f91b6475d8",
+            "sha256": "bad534094e98ddc1f578fe33088731ac9c3a3cc7c66704a9a47db0f91b6475d8"
+          },
+          "mojave": {
+            "cellar": "/usr/local/Cellar",
+            "url": "https://ghcr.io/v2/homebrew/core/vim/blobs/sha256:cfcb49ee0ff0d0c4e4b92fbc385fc3c72bed5fefd633246e0f602feeff9cd199",
+            "sha256": "cfcb49ee0ff0d0c4e4b92fbc385fc3c72bed5fefd633246e0f602feeff9cd199"
+          },
+          "x86_64_linux": {
+            "cellar": "/home/linuxbrew/.linuxbrew/Cellar",
+            "url": "https://ghcr.io/v2/homebrew/core/vim/blobs/sha256:92c3aa5c7db0576c82c1cfbeff3e271bda282b60fac9fb6eb3e5f1fc87221f25",
+            "sha256": "92c3aa5c7db0576c82c1cfbeff3e271bda282b60fac9fb6eb3e5f1fc87221f25"
+          }
+        }
+      }
+    },
+    "keg_only": false,
+    "bottle_disabled": false,
+    "options": [
+
+    ],
+    "build_dependencies": [
+
+    ],
+    "dependencies": [
+      "gettext",
+      "lua",
+      "ncurses",
+      "perl",
+      "python@3.9",
+      "ruby"
+    ],
+    "recommended_dependencies": [
+
+    ],
+    "optional_dependencies": [
+
+    ],
+    "uses_from_macos": [
+
+    ],
+    "requirements": [
+
+    ],
+    "conflicts_with": [
+      "ex-vi",
+      "macvim"
+    ],
+    "caveats": null,
+    "installed": [
+
+    ],
+    "linked_keg": null,
+    "pinned": false,
+    "outdated": false,
+    "deprecated": false,
+    "deprecation_date": null,
+    "deprecation_reason": null,
+    "disabled": false,
+    "disable_date": null,
+    "disable_reason": null
+  }
+]
+$
+```
+ex-viは、[The Traditional Vi](http://ex-vi.sourceforge.net)ってこと？  
+で、それが何？  
+
+よく分からないため、インストールし直した。
+```terminal
+$ brew install vim
+Updating Homebrew...
+==> Auto-updated Homebrew!
+Updated Homebrew from 0f0c7102f to 9c0349377.
+Updated 3 taps (homebrew/core, homebrew/cask and homebrew/cask-fonts).
+==> New Formulae
+selene
+==> Updated Formulae
+Updated 127 formulae.
+==> New Casks
+epilogue-operator               mathcha-notebook                nimblenote                      remotion
+==> Updated Casks
+Updated 101 casks.
+
+==> Downloading https://ghcr.io/v2/homebrew/core/lua/manifests/5.4.3-2
+######################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/lua/blobs/sha256:e075a5333160b570cb0532f7124061c44ae58fe33cad382ad2dbbf9f8767
+==> Downloading from https://pkg-containers.githubusercontent.com/ghcr1/blobs/sha256:e075a5333160b570cb0532f7124061c44ae58fe33
+######################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/ncurses/manifests/6.2-1
+######################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/ncurses/blobs/sha256:66e1c57db9437cca11a5d6248e148a5ec00bbb0522c0d45b4fa3a95d
+==> Downloading from https://pkg-containers.githubusercontent.com/ghcr1/blobs/sha256:66e1c57db9437cca11a5d6248e148a5ec00bbb052
+######################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/berkeley-db/manifests/18.1.40
+######################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/berkeley-db/blobs/sha256:ef85a6b6fb93f8dcee4144acf22665a331c5b2398822a5f183ae
+==> Downloading from https://pkg-containers.githubusercontent.com/ghcr1/blobs/sha256:ef85a6b6fb93f8dcee4144acf22665a331c5b2398
+######################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/perl/manifests/5.34.0
+######################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/perl/blobs/sha256:2222c3f09bdcd10640720d2f52ba71e09408ead129bc77853b2fdf88fc3
+==> Downloading from https://pkg-containers.githubusercontent.com/ghcr1/blobs/sha256:2222c3f09bdcd10640720d2f52ba71e09408ead12
+######################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/libyaml/manifests/0.2.5
+######################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/libyaml/blobs/sha256:a04988b3868cfadf7bcaff6b753b59388cbea70b38f2fa41a2522915
+==> Downloading from https://pkg-containers.githubusercontent.com/ghcr1/blobs/sha256:a04988b3868cfadf7bcaff6b753b59388cbea70b3
+######################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/ruby/manifests/3.0.2
+######################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/ruby/blobs/sha256:ec10947a2e2281b7dc4586c06762cf9ef41c48cb9defc683817dbe07398
+==> Downloading from https://pkg-containers.githubusercontent.com/ghcr1/blobs/sha256:ec10947a2e2281b7dc4586c06762cf9ef41c48cb9
+######################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/vim/manifests/8.2.3400
+######################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/vim/blobs/sha256:cfcb49ee0ff0d0c4e4b92fbc385fc3c72bed5fefd633246e0f602feeff9c
+==> Downloading from https://pkg-containers.githubusercontent.com/ghcr1/blobs/sha256:cfcb49ee0ff0d0c4e4b92fbc385fc3c72bed5fefd
+######################################################################## 100.0%
+==> Installing dependencies for vim: lua, ncurses, berkeley-db, perl, libyaml and ruby
+==> Installing vim dependency: lua
+==> Pouring lua--5.4.3.mojave.bottle.2.tar.gz
+🍺  /usr/local/Cellar/lua/5.4.3: 29 files, 648.8KB
+==> Installing vim dependency: ncurses
+==> Pouring ncurses--6.2.mojave.bottle.1.tar.gz
+🍺  /usr/local/Cellar/ncurses/6.2: 3,913 files, 8.6MB
+==> Installing vim dependency: berkeley-db
+==> Pouring berkeley-db--18.1.40.mojave.bottle.tar.gz
+🍺  /usr/local/Cellar/berkeley-db/18.1.40: 44 files, 5.7MB
+==> Installing vim dependency: perl
+==> Pouring perl--5.34.0.mojave.bottle.tar.gz
+🍺  /usr/local/Cellar/perl/5.34.0: 2,482 files, 64.9MB
+==> Installing vim dependency: libyaml
+==> Pouring libyaml--0.2.5.mojave.bottle.tar.gz
+🍺  /usr/local/Cellar/libyaml/0.2.5: 10 files, 301.8KB
+==> Installing vim dependency: ruby
+==> Pouring ruby--3.0.2.mojave.bottle.tar.gz
+🍺  /usr/local/Cellar/ruby/3.0.2: 16,390 files, 35.2MB
+==> Installing vim
+==> Pouring vim--8.2.3400.mojave.bottle.tar.gz
+🍺  /usr/local/Cellar/vim/8.2.3400: 2,005 files, 34.2MB
+$
+$ vim --version | grep python	←☆だめだった。
++cryptv          +linebreak       +python/dyn      +viminfo
++cscope          +lispindent      -python3         +vreplace
+$
+```
+だめだった。  
+
+削除後にインストールする。
+```terminal
+$ brew uninstall vim
+Uninstalling /usr/local/Cellar/vim/8.2.3400... (2,005 files, 34.2MB)
+$ vim --version | grep python	←☆消えていない。
++cryptv          +linebreak       +python/dyn      +viminfo
++cscope          +lispindent      -python3         +vreplace
+$ brew install vim --with-python3 --with-python
+Updating Homebrew...
+==> Auto-updated Homebrew!
+Updated 1 tap (homebrew/core).
+==> Updated Formulae
+Updated 1 formula.
+
+Usage: brew install [options] formula|cask [...]
+
+Install a formula or cask. Additional options specific to a formula may be
+appended to the command.
+
+Unless HOMEBREW_NO_INSTALL_CLEANUP is set, brew cleanup will then be run for
+the installed formulae or, every 30 days, for all formulae.
+
+  -d, --debug                      If brewing fails, open an interactive
+                                   debugging session with access to IRB or a
+                                   shell inside the temporary build directory.
+  -f, --force                      Install formulae without checking for
+                                   previously installed keg-only or
+                                   non-migrated versions. When installing
+                                   casks, overwrite existing files (binaries
+                                   and symlinks are excluded, unless
+                                   originally from the same cask).
+  -v, --verbose                    Print the verification and postinstall
+                                   steps.
+      --formula, --formulae        Treat all named arguments as formulae.
+      --env                        Disabled other than for internal Homebrew
+                                   use.
+      --ignore-dependencies        An unsupported Homebrew development flag to
+                                   skip installing any dependencies of any
+                                   kind. If the dependencies are not already
+                                   present, the formula will have issues. If
+                                   you're not developing Homebrew, consider
+                                   adjusting your PATH rather than using this
+                                   flag.
+      --only-dependencies          Install the dependencies with specified
+                                   options but do not install the formula
+                                   itself.
+      --cc                         Attempt to compile using the specified
+                                   compiler, which should be the name of the
+                                   compiler's executable, e.g. gcc-7 for GCC
+                                   7. In order to use LLVM's clang, specify
+                                   llvm_clang. To use the Apple-provided
+                                   clang, specify clang. This option will
+                                   only accept compilers that are provided by
+                                   Homebrew or bundled with macOS. Please do
+                                   not file issues if you encounter errors
+                                   while using this option.
+  -s, --build-from-source          Compile formula from source even if a
+                                   bottle is provided. Dependencies will still
+                                   be installed from bottles if they are
+                                   available.
+      --force-bottle               Install from a bottle if it exists for the
+                                   current or newest version of macOS, even if
+                                   it would not normally be used for
+                                   installation.
+      --include-test               Install testing dependencies required to
+                                   run brew test formula.
+      --HEAD                       If formula defines it, install the HEAD
+                                   version, aka. main, trunk, unstable,
+                                   master.
+      --fetch-HEAD                 Fetch the upstream repository to detect if
+                                   the HEAD installation of the formula is
+                                   outdated. Otherwise, the repository's HEAD
+                                   will only be checked for updates when a new
+                                   stable or development version has been
+                                   released.
+      --keep-tmp                   Retain the temporary files created during
+                                   installation.
+      --build-bottle               Prepare the formula for eventual bottling
+                                   during installation, skipping any
+                                   post-install steps.
+      --bottle-arch                Optimise bottles for the specified
+                                   architecture rather than the oldest
+                                   architecture supported by the version of
+                                   macOS the bottles are built on.
+      --display-times              Print install times for each package at the
+                                   end of the run.
+  -i, --interactive                Download and patch formula, then open a
+                                   shell. This allows the user to run
+                                   ./configure --help and otherwise
+                                   determine how to turn the software package
+                                   into a Homebrew package.
+  -g, --git                        Create a Git repository, useful for
+                                   creating patches to the software.
+      --cask, --casks              Treat all named arguments as casks.
+      --[no-]binaries              Disable/enable linking of helper
+                                   executables (default: enabled).
+      --require-sha                Require all casks to have a checksum.
+      --[no-]quarantine            Disable/enable quarantining of downloads
+                                   (default: enabled).
+      --skip-cask-deps             Skip installing cask dependencies.
+      --appdir                     Target location for Applications (default:
+                                   /Applications).
+      --colorpickerdir             Target location for Color Pickers (default:
+                                   ~/Library/ColorPickers).
+      --prefpanedir                Target location for Preference Panes
+                                   (default: ~/Library/PreferencePanes).
+      --qlplugindir                Target location for QuickLook Plugins
+                                   (default: ~/Library/QuickLook).
+      --mdimporterdir              Target location for Spotlight Plugins
+                                   (default: ~/Library/Spotlight).
+      --dictionarydir              Target location for Dictionaries (default:
+                                   ~/Library/Dictionaries).
+      --fontdir                    Target location for Fonts (default:
+                                   ~/Library/Fonts).
+      --servicedir                 Target location for Services (default:
+                                   ~/Library/Services).
+      --input-methoddir            Target location for Input Methods (default:
+                                   ~/Library/Input Methods).
+      --internet-plugindir         Target location for Internet Plugins
+                                   (default: ~/Library/Internet Plug-Ins).
+      --audio-unit-plugindir       Target location for Audio Unit Plugins
+                                   (default:
+                                   ~/Library/Audio/Plug-Ins/Components).
+      --vst-plugindir              Target location for VST Plugins (default:
+                                   ~/Library/Audio/Plug-Ins/VST).
+      --vst3-plugindir             Target location for VST3 Plugins (default:
+                                   ~/Library/Audio/Plug-Ins/VST3).
+      --screen-saverdir            Target location for Screen Savers (default:
+                                   ~/Library/Screen Savers).
+      --language                   Comma-separated list of language codes to
+                                   prefer for cask installation. The first
+                                   matching language is used, otherwise it
+                                   reverts to the cask's default language. The
+                                   default value is the language of your
+                                   system.
+  -q, --quiet                      Make some output more quiet.
+  -h, --help                       Show this message.
+Error: invalid option: --with-python3
+$
+```
+だめだった。  
+
+強制アンインストール後のインストール。
+```terminal
+$ brew uninstall --force vim
+$ echo $?
+0
+$ brew install vim
+	Updating Homebrew...
+==> Downloading https://ghcr.io/v2/homebrew/core/vim/manifests/8.2.3400
+Already downloaded: /Users/asakunotomohiro/Library/Caches/Homebrew/downloads/1e3dcba1b5075c90057a6186a8412ea7d14ba8a673b9b9f5be33753e205ce83b--vim-8.2.3400.bottle_manifest.json
+==> Downloading https://ghcr.io/v2/homebrew/core/vim/blobs/sha256:cfcb49ee0ff0d0c4e4b92fbc385fc3c72bed5fefd633246e0f602feeff9c
+Already downloaded: /Users/asakunotomohiro/Library/Caches/Homebrew/downloads/7abf703e9e0c6f8f62efacf8aaaa0ac9eea553925c14c514948cbadc76c8e822--vim--8.2.3400.mojave.bottle.tar.gz
+==> Pouring vim--8.2.3400.mojave.bottle.tar.gz
+🍺  /usr/local/Cellar/vim/8.2.3400: 2,005 files, 34.2MB
+$ vim --version | grep python
++cryptv          +linebreak       +python/dyn      +viminfo
++cscope          +lispindent      -python3         +vreplace
+$
+```
+だめだった。  
+
+再度実施。
+```terminal
+$ brew remove vim
+Uninstalling /usr/local/Cellar/vim/8.2.3400... (2,005 files, 34.2MB)
+$ brew info vim	←☆チェックが付いたのはなぜ？
+vim: stable 8.2.3400 (bottled), HEAD
+Vi 'workalike' with many additional features
+https://www.vim.org/
+Conflicts with:
+  ex-vi (because vim and ex-vi both install bin/ex and bin/view)
+  macvim (because vim and macvim both install vi* binaries)
+Not installed
+From: https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/vim.rb
+License: Vim
+==> Dependencies
+Required: gettext ✔, lua ✔, ncurses ✔, perl ✔, python@3.9 ✔, ruby ✔
+==> Options
+--HEAD
+	Install HEAD version
+==> Analytics
+install: 58,136 (30 days), 239,571 (90 days), 989,115 (365 days)
+install-on-request: 58,088 (30 days), 239,328 (90 days), 982,534 (365 days)
+build-error: 0 (30 days)
+$ brew install --HEAD vim
+Updating Homebrew...
+==> Cloning https://github.com/vim/vim.git
+Cloning into '/Users/asakunotomohiro/Library/Caches/Homebrew/vim--git'...
+Updating files: 100% (3577/3577), done.
+==> Checking out branch master
+Already on 'master'
+Your branch is up to date with 'origin/master'.
+Warning: Your Xcode (11.3) is outdated.
+Please update to Xcode 11.3.1 (or delete it).
+Xcode can be updated from the App Store.
+
+Warning: A newer Command Line Tools release is available.
+Update them from Software Update in System Preferences or run:
+  softwareupdate --all --install --force
+
+If that doesn't show you any updates, run:
+  sudo rm -rf /Library/Developer/CommandLineTools
+  sudo xcode-select --install
+
+Alternatively, manually download them from:
+  https://developer.apple.com/download/more/.
+You should download the Command Line Tools for Xcode 11.3.1.
+
+==> ./configure --prefix=/usr/local --mandir=/usr/local/Cellar/vim/HEAD-28e591d/share/man --enable-multibyte --with-tlib=ncurs
+==> make
+==> make install prefix=/usr/local/Cellar/vim/HEAD-28e591d STRIP=/usr/bin/true
+🍺  /usr/local/Cellar/vim/HEAD-28e591d: 2,006 files, 34.2MB, built in 7 minutes 58 seconds
+Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/vim--8.2.3400... (11.6MB)
+$ vim --version | grep python
++cryptv          +linebreak       +python/dyn      +viminfo
++cscope          +lispindent      -python3         +vreplace
+$
+```
+
+今まで理解できない挙動だったため、それに付き合い、理解できない行動として、とりあえず最新バージョン(?)をインストールした。
+```terminal
+$ pyenv install 3.9.7
+python-build: use openssl@1.1 from homebrew
+python-build: use readline from homebrew
+Downloading Python-3.9.7.tar.xz...
+-> https://www.python.org/ftp/python/3.9.7/Python-3.9.7.tar.xz
+Installing Python-3.9.7...
+python-build: use readline from homebrew
+python-build: use zlib from xcode sdk
+Installed Python-3.9.7 to /Users/asakunotomohiro/.pyenv/versions/3.9.7
+
+$ pyenv version
+3.8.6 (set by /Users/asakunotomohiro/.python-version)
+$ pyenv global 1.1.1
+pyenv: version `1.1.1' not installed
+$ pyenv global 3.9.7
+$ pyenv version
+3.8.6 (set by /Users/asakunotomohiro/.python-version)
+$ python --version
+Python 3.8.6
+$ pyenv local 3.9.7	←☆何でだよ。
+$ python --version
+Python 3.9.7
+$ pyenv version
+3.9.7 (set by /Users/asakunotomohiro/.python-version)
+$
+```
+切り替わらない。  
+むぅ。  
+端末再起動もだめだった。  
+
+再起動がだめだというのはシンタックスエラーを解消できないという意味で、Python3版は付与されていた。
+```terminal
+$ brew list vim
+/usr/local/Cellar/vim/HEAD-28e591d/bin/ex
+/usr/local/Cellar/vim/HEAD-28e591d/bin/rview
+/usr/local/Cellar/vim/HEAD-28e591d/bin/rvim
+/usr/local/Cellar/vim/HEAD-28e591d/bin/vi
+/usr/local/Cellar/vim/HEAD-28e591d/bin/view
+/usr/local/Cellar/vim/HEAD-28e591d/bin/vim
+/usr/local/Cellar/vim/HEAD-28e591d/bin/vimdiff
+/usr/local/Cellar/vim/HEAD-28e591d/bin/vimtutor
+/usr/local/Cellar/vim/HEAD-28e591d/bin/xxd
+/usr/local/Cellar/vim/HEAD-28e591d/share/man/ (177 files)
+/usr/local/Cellar/vim/HEAD-28e591d/share/vim/ (1815 files)
+$ /usr/local/Cellar/vim/HEAD-28e591d/bin/vim --version | grep python
++cmdline_hist      +langmap           -python            +visual
++cmdline_info      +libcall           +python3           +visualextra
+リンク: clang -L. -fstack-protector-strong -L/usr/local/lib -L/usr/local/opt/libyaml/lib -L/usr/local/opt/openssl@1.1/lib -L/usr/local/opt/readline/lib -L/usr/local/lib -o vim -lncurses -liconv -lintl -framework AppKit -L/usr/local/opt/lua/lib -llua5.4 -mmacosx-version-min=10.14 -fstack-protector-strong -L/usr/local/lib -L/usr/local/Cellar/perl/5.34.0/lib/perl5/5.34.0/darwin-thread-multi-2level/CORE -lperl -lm -lutil -lc -L/usr/local/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/lib/python3.9/config-3.9-darwin -lpython3.9 -framework CoreFoundation -lruby.3.0 -L/usr/local/Cellar/ruby/3.0.2/lib
+$
+```
+
+Macvimで`:echo has('python3')`を実行したことで、**1**が帰ってきた。  
+なぜにシンタックスエラーが解消されない？  
+
+公式ページを参考に、バージョン確認したときに、Python3でエラーになった。  
+`py3 print(sys.version)`を実行後の以下結果。
+```messages
+E837: このVimでは :python を使った後に :py3 を使えません
+E263: このコマンドは無効です、ごめんなさい: Pythonライブラリをロードできませんでした。
+```
+
+Python2バージョン確認は問題なく表示された。
+```messages
+2.7.16 (default, Mar 25 2021, 18:52:10)
+[GCC 4.2.1 Compatible Apple LLVM 10.0.1 (clang-1001.0.37.14)]
+```
+
+[KaoriyaVim](https://vim-jp.org/tips/if_python.html)はPython2とPython3は同時に動かせるが、MacVimは無理？  
+そもそも同時に動かすつもりはない。  
+Python3だけが動けば良い。  
+その選択肢がなく、Python2だけ動くというのは納得できない。  
+
+もしかして、プラグインが邪魔をしている？  
 
 <a id="viBibleImprovedGihyo000002"></a>
 ### 詳細
