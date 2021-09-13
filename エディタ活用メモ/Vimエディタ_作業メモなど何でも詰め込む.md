@@ -398,6 +398,69 @@ ASIN：
 
 <a id="viBibleImprovedGihyo2280001"></a>
 ##### 設定コマンド
+様式：  
+* `:set オプション=値`  
+* `:set オプション`  
+* `:set noオプション`  
+* `:set オプション?`  
+* `:set オプション&`  
+
+* オプション  
+
+<a id="viBibleImprovedGihyo2280001AutomaticallySetOptionsInFile"></a>
+###### ファイル内のオプションを自動設定する(モードライン：modeline)
+ファイル編集時にファイル先頭もしくは末尾を読み込み、設定行([モードライン](https://vim-jp.org/vim-users-jp/2009/06/02/Hack-20.html))を探し、設定を有効化する。  
+
+様式：
+`[text]{white}{vi:|vim:|ex:}[white]{options}`  
+`[text]{white}{vi:|vim:|ex:}[white]se[t] {options}:[text]`  
+例）
+`-- vim:ts=8:sw=2:sts=2:st:et`  
+※公式ページからの引用。  
+`<!-- vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=markdown expandtab: -->`  
+※このファイルの末尾に記載している。  
+
+* オプション  
+  * `tabstop`・`ts`  
+    画面でタブ表示する幅。  
+  * `shiftwidth`・`sw`  
+    インデント時に使用されるスペースの数。  
+  * `softtabstop`・`sts`  
+    タブを入力時、その数値分だけ半角スペースを挿入する。  
+    0は何もしない？(変化無いぞ？)  
+  * `textwidth`・`tw`  
+    このオプションで設定された幅で行を改行する。  
+    0は何もしない？(変化無いぞ？)  
+  * `expandtab`・`et`  
+    有効にすると、タブを挿入する時、そのタブを半角スペースとして挿入します。  
+  * `wrap`  
+    有効にすると、画面端で行を折り返して表示します。  
+  * `fileformat`・`ff`  
+    ファイルの改行の種類。dos、mac、unixのどれかを指定します(例：`ff=dos`)。  
+  * `filetype`・`ft`  
+    ファイルタイプ(例：`ft=markdown`)。  
+    これは駆使したい・・・と思ってしまうが、使わないだろう。  
+  * `fileencoding`・`fenc`  
+    ファイルのエンコーディング(例：`fenc=utf-8`)。  
+
+
+そもそもの探す設定(vimrcなど)：
+`:set modeline`  
+`:set nomodeline`  
+
+* オプション  
+  * `modeline`  
+    設定有無判定：on・off  
+    例）`:set modeline`  
+    例）`:set nomodeline`  
+    `modelines`オプション指定されている行数分モードラインを探す。  
+    * `modelines [数字]`  
+      指定行分だけモードラインを探す。  
+      0を指定した場合、`modeline`設定がOnでも探さなくなる。  
+      例）`:set modelines=100`  
+  * nomodeline  
+    モードラインを探さない。  
+
 
 <a id="viBibleImprovedGihyo2280002"></a>
 ##### キーボードの用法をカスタマイズする
@@ -1470,4 +1533,4 @@ http://nanasi.jp
 
 ---
 ーーー 最終行 ーーー
-<!-- vim:set ts=4 sts=4 sw=4 tw=0: -->
+<!-- vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=markdown expandtab: -->
