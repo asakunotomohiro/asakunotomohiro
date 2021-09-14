@@ -1157,6 +1157,23 @@ todo: パターン指定
 <a id="viBibleImprovedGihyo2250003"></a>
 ##### 簡単な編集
 
+<a name="viBibleImprovedGihyo2250003textput"></a>
+###### テキストをプットする。
+`:put`は、指定した行の後ろへレジスタ内容をプット(ペースト)する。  
+
+例）aレジスタ内容を5行目後ろにプットする。  
+`:5 put a`  
+
+また、**echom**でメッセージを出力した場合、それを**messages**が内容を保持している。
+その保持した内容をもプットできる。  
+`:put =execute('messages')`  
+
+※これは、exコマンドに出力されたメッセージも含まれる？  
+
+`:put "messages"`の場合は、ヤンクしたのが貼り付けられるようだ。  
+`:put =execute('version')`の場合は、vimエディタのバージョンがそのまま貼り付けられる。  
+と言うことは、`execute`が何かを調べる必要があると言うことか。  
+
 <a id="viBibleImprovedGihyo2250004"></a>
 ##### その他のコマンド
 
