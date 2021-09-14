@@ -61,7 +61,7 @@
   * [x] [変数](#variable変数)2021/08/30  
   * [x] [配列](#arrangement配列)2021/09/03  
   * [x] [条件分岐](#Conditional条件分岐)2021/09/14  
-  * [ ] [繰り返し](#repetition繰り返し)  
+  * [x] [繰り返し](#repetition繰り返し)2021/09/14  
   * [ ] [関数](#function関数)  
 
 <details><summary>アルゴリズムの勉強</summary>
@@ -956,52 +956,169 @@ else {
 ### 繰り返し
 
 * 絶対的に勉強する一覧  
-  * [ ] [指定回数条件での繰り返し](#subRepetition1)  
-    [ ] [基本構造例：for( 条件式 )](#subRepetition2)  
+  * [x] [指定回数条件での繰り返し](#subRepetition1)  
+    [x] [基本構造例：for( 条件式 )](#subRepetition2)  
     [ ] [基本構造例：拡張for命令(`in`)](#subRepetition3)  
-    [ ] [`for`の入れ子。](#subRepetition4)  
+    残念ながらC言語にrangeなどのような配列から要素を自動抜き取りしてくれる便利なものはない。  
+    [x] [`for`の入れ子。](#subRepetition4)  
   * [ジャンプ処理](#subRepetition5)  
-    * [ ] break  
-    * [ ] continue  
-  * [ ] [真偽条件での繰り返し](#subRepetition6)  
-    [ ] [基本構造例：while( 条件式 )](#subRepetition6)  
-    [ ] [無限ループ](#subRepetition7)  
+    * [x] break  
+    * [x] continue  
+  * [x] [真偽条件での繰り返し](#subRepetition6)  
+    [x] [基本構造例：while( 条件式 )](#subRepetition6)  
+    [x] [無限ループ](#subRepetition7)  
 
 
 <a name="subRepetition1"></a>
 #### 繰り返し
 様式：
+`for ( 初期化; 条件式; 増減分; ) 処理;`  
+C99規格以降であれば、初期化部分で変数の宣言が行える(例：`for( int ii=0; 〜)`)。  
+
+様式：
+`while ( 式 ) 処理;`  
 
 <a name="subRepetition2"></a>
 ##### 指定回数条件での繰り返し：for( 条件式 )
 様式：
 
+これは頻繁に使う処理だと思う。
+```c
+#include <stdio.h>
+#include <ctype.h>
+
+int main(void)
+{
+	int hoge = 0;
+
+	for ( int ii = 0; ii < 5; ii++ ) {
+		printf("hoge：%d\t%d回目\n", hoge, ii);
+	}
+}
+```
+
+以下、出力結果。
+```c
+hoge：0	0回目
+hoge：0	1回目
+hoge：0	2回目
+hoge：0	3回目
+hoge：0	4回目
+```
+
 <a name="subRepetition3"></a>
 ##### 指定回数条件での繰り返し：拡張for命令
 様式：
+C言語では出来ない。  
 
 <a name="subRepetition4"></a>
 #### `for`の入れ子。
+```c
+for ( 初期化; 条件式1; 増減分; ) {
+	処理1;
+	for ( 初期化; 条件式2; 増減分; ) {
+		処理2;
+	}
+}
+```
+
 
 <a name="subRepetition5"></a>
 #### ジャンプ処理
+普通に`continue`・`break`が使える。  
+
+以下、`continue`処理。
+```c
+for ( int ii = 0; ii < 5; ii++ ) {
+	if ( ii == 2 ) {
+		continue;
+	}
+	printf("hoge：%d\t%d回目\n", hoge, ii);
+}
+```
+
+以下、出力結果。
+```text
+hoge：0	0回目
+hoge：0	1回目
+hoge：0	3回目
+hoge：0	4回目
+```
+2回目が飛ばされている。  
+
+以下、`break`処理。
+```c
+	for ( int ii = 0; ii < 5; ii++ ) {
+		if ( ii == 2 ) {
+			break;
+		}
+		printf("hoge：%d\t%d回目\n", hoge, ii);
+	}
+```
+
+以下、出力結果。
+```terminal
+hoge：0	0回目
+hoge：0	1回目
+```
+2回目以降が実行されていない。
+
 
 <a name="subRepetition6"></a>
 #### 真偽条件での繰り返し：while( 条件式 )
 様式：
+```clang
+int hoge = 0;
+
+while ( hoge < 5 ) {
+	hoge++;
+	printf("%d回目\n", hoge);
+}
+```
+
+以下、出力結果。
+```text
+1回目
+2回目
+3回目
+4回目
+5回目
+```
 
 <a name="subRepetition7"></a>
 #### 無限ループ
-様式：
+以下、`for`様式。
+```c
+for (;;) {
+	処理;
+}
+```
+
+以下、`while`の様式。
+```c
+while (1) {
+	処理;
+}
+```
+条件式の部分は真以外であれば問題ない(`0`以外を使う)。  
+また、どこかで抜ける処理を付ける必要がある。  
+
+以下、例）
+```c
+while (1) {
+	if ( 条件 ) break;
+}
+```
+
 
 <a name="subRepetition999"></a>
 #### 繰り返しでの説明しない項目。
 
-[以下、今回の言語に関係の無い項目を削除すること(対象言語に存在するが、見送るもののみ、以下残す)。]  
 <details><summary>今回は勉強を見送る一覧</summary>
 
 * [ ] 真偽条件での繰り返し  
   基本構造例：do〜while( 条件式 )  
+  アルゴリズムの勉強でも使いそうに思うのだがな・・・。  
 
 </details>
 
@@ -1383,3 +1500,4 @@ study2programmingに取り込むときのマージは、3方向マージ(`--no-f
 例外作業として、masterに取り込む場合はチェリーピッキングでピンポイントに必要最小限のコミットのみを取り込む(しつこいが、masterに取り込むことはしたくない)。  
 
 以上。
+<!-- vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=markdown expandtab: -->
