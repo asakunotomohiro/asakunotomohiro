@@ -209,6 +209,80 @@ name = 'hoge'; print(name)
 
 </details>
 
+<details><summary>pyenvからのPythonインストール</summary>
+
+既に3.8.6をインストール済みだが、新たに新しいバージョンを追加インストールした。  
+
+pyenvそのものもよく分かっていないが、とりあえず使っている。
+```terminal
+$ pyenv install 3.9.7
+python-build: use openssl@1.1 from homebrew
+python-build: use readline from homebrew
+Downloading Python-3.9.7.tar.xz...
+-> https://www.python.org/ftp/python/3.9.7/Python-3.9.7.tar.xz
+Installing Python-3.9.7...
+python-build: use readline from homebrew
+python-build: use zlib from xcode sdk
+Installed Python-3.9.7 to /Users/asakunotomohiro/.pyenv/versions/3.9.7
+
+$ pyenv version
+3.8.6 (set by /Users/asakunotomohiro/.python-version)
+$ pyenv global 1.1.1
+pyenv: version `1.1.1' not installed
+$ pyenv global 3.9.7
+$ pyenv version
+3.8.6 (set by /Users/asakunotomohiro/.python-version)
+$ python --version
+Python 3.8.6
+$ pyenv local 3.9.7	←☆何でだよ。
+$ python --version
+Python 3.9.7
+$ pyenv version
+3.9.7 (set by /Users/asakunotomohiro/.python-version)
+$
+```
+本来やりたかったことは、VimエディタでPython3開発をすることだった。  
+しかし、Python2で動いてしまうため、どうしてもシンタックスエラーになる。  
+それを解消できず、Pythonの勉強が進まずに数時間経過した。  
+
+</details>
+
+<details><summary>pip3のアップデート</summary>
+
+結局これが何をするものなのか分かっていない。  
+
+pip3などの確認。
+```terminal
+$ which pip3
+/usr/local/bin/pip3
+$ pip3 --version
+pip 20.2.4 from /Users/asakunotomohiro/Library/Python/3.9/lib/python/site-packages/pip (python 3.9)
+$ pip3 list
+Package    Version
+---------- -------
+pip        20.2.4
+setuptools 57.4.0
+wheel      0.37.0
+WARNING: You are using pip version 20.2.4; however, version 21.2.4 is available.
+You should consider upgrading via the '/usr/local/opt/python@3.9/bin/python3.9 -m pip install --upgrade pip' command.
+$ /usr/local/opt/python@3.9/bin/python3.9 -m pip install --upgrade pip
+Looking in indexes: https://pypi.python.org/simple/
+Collecting pip
+  Downloading pip-21.2.4-py3-none-any.whl (1.6 MB)
+     |████████████████████████████████| 1.6 MB 3.9 MB/s 
+Installing collected packages: pip
+  Attempting uninstall: pip
+    Found existing installation: pip 20.2.4
+    Uninstalling pip-20.2.4:
+      Successfully uninstalled pip-20.2.4
+Successfully installed pip-21.2.4
+$ pip3 --version
+pip 21.2.4 from /usr/local/lib/python3.9/site-packages/pip (python 3.9)
+$
+```
+
+</details>
+
 ### ※注意事項
 基礎知識として、5種類を勉強する場合の目的は、アルゴリズムの勉強用であって、5種類を本格的に極めるためではない。  
 そのため、1つ1つを最小限に絞り込み、1つを10分前後の勉強時間に収まるように気をつけること。  
