@@ -1372,7 +1372,7 @@ vim9scriptでも`unlet`は使えるようだ。
   [x] [平均値を求める。](#findTheAverageValueChapter2)  
   [x] [1からnまで足し合わせる。](#addFrom1tonChapter2)  
   [x] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
-  [ ] [素数を求める。](#findAPrimeNumberChapter2)  
+  [x] [素数を求める。](#findAPrimeNumberChapter2)  
   [ ] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
   [ ] [エラトステネスの篩](#eratosthenesSieveChapter2)  
   [ ] [n進法を理解する。](#understandnAryNotationChapter2)  
@@ -1625,6 +1625,49 @@ call KukuTable()
 
 <a name="findAPrimeNumberChapter2"></a>
 ##### 素数を求める。
+素数とは、1とその数以外に約数を持たない2以上の自然数のこと。  
+
+Pythonに倣い、試す数は**2〜2分のn**までの数で割ることを調べる方法をとる。  
+例えば、10を調べる場合、その半分より大きい数(**6**・**7**・**8**・**9**)では、10を割ることが出来ない。  
+そのことを利用した方法で素数を求める。  
+
+* 素数を求めるルール  
+  * 二重ループを使う。  
+  * 2から2分のnまでの数で割る。  
+    ※それらの数で割り切れなければ素数。  
+
+全く同じプログラムには出来ないと言うのが面白い。
+```vim
+def! Prime(): number
+	var outputprime = ""
+	for ii in range(2, 100)
+		var hh = ii / 2
+		var ff = v:true
+		for jj in range(2, hh)
+			if ii % jj == 0
+				ff = v:false
+				break
+			endif
+		endfor
+		if ff == v:true
+			outputprime = outputprime .. printf("%d,", ii)
+		endif
+	endfor
+	echom outputprime
+
+	return 0
+enddef
+call Prime()
+```
+
+出力結果
+```text
+2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,
+```
+当初2を表示させることが出来ないため、焦った。  
+こんなことだからプログラマーには向いていないのだろうと自覚させられる。  
+めげずに頑張ろう。  
+
 
 <a name="findTheFactorialOfNChapter2"></a>
 ##### nの階乗を求める。
@@ -1839,4 +1882,4 @@ study2programmingに取り込むときのマージは、3方向マージ(`--no-f
 
 
 以上。
-<!-- vim:set ts=4 sts=4 sw=4 tw=0:expandtabs -->
+<!-- vim: set ts=4 sts=4 sw=4 tw=0 expandtab: -->
