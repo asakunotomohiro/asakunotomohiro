@@ -112,12 +112,13 @@
 
 <details><summary>現在の作業環境</summary>
 
-勉強環境のコンパイルバージョン：3.8.6  
+勉強環境のコンパイルバージョン：3.9.7  
 ```terminal
-$ python --version
-Python 3.8.6
+$ python3 --version
+Python 3.9.7
 $
 ```
+途中で利用バージョンを変更した。  
 
 プログラムファイルの拡張子：`*.py`  
 標準の文字コード(プログラムファイル)：UTF-8  
@@ -164,9 +165,12 @@ print('Hello',
 
 ```terminal:version
 $ python --version
-Python 3.8.6
+Python 2.7.16
+$ python3 --version
+Python 3.9.7
 $
 ```
+もちろんPython3を使う。  
 
 プログラムの拡張子：`.py`  
 標準の文字コード：`UTF-8`  
@@ -209,6 +213,7 @@ name = 'hoge'; print(name)
 
 </details>
 
+以下、pyenvの利用中止("nの階乗(n!)を求める"以降は、pyenvを使わず、homebrewを使ったPythonを使う)。  
 <details><summary>pyenvからのPythonインストール</summary>
 
 既に3.8.6をインストール済みだが、新たに新しいバージョンを追加インストールした。  
@@ -247,6 +252,7 @@ $
 
 </details>
 
+ゆえに、pip3も使わない。  
 <details><summary>pip3のアップデート</summary>
 
 結局これが何をするものなのか分かっていない。  
