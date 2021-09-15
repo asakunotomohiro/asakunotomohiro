@@ -48,3 +48,5 @@ int main(void)
 	// asakuno == a[0] は等しい。
 
 }
+
+// vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=c noexpandtab:

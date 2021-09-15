@@ -9,10 +9,15 @@
 持っている本を見返したら[Cデスクトップリファレンス](https://www.oreilly.co.jp/books/4873111153/)こそ、C99に則している本だった。  
 
 
+<a name="algorithmHowToUseTheBranch"></a>
 ## ブランチの利用方法
-現在のブランチは、基礎知識5種類を勉強するためにある。  
+ここのブランチは、Python書籍からのアルゴリズム問題をC言語に置き換えて勉強するのに使う。  
+また、具体的なアルゴリズムの種類は、下記書籍の目次チャプターに限定する。  
+書籍名：Pythonで学ぶアルゴリズムの教科書  
+※チャプターごとにブランチを分けていく。  
 
 
+<a name="algorithmHowToStudy"></a>
 ### 勉強方法
 本来の大本の勉強は、「Pythonで学ぶアルゴリズムの教科書」を元にアルゴリズムの勉強をする。  
 
@@ -29,39 +34,122 @@
   ※説明が技術的で、全く説明が頭に入ってこない・・・増版しないわ。  
   [秀和システム](https://www.shuwasystem.co.jp)の[現場ですぐに使える！ C/C++逆引き大全 560の極意](https://www.shuwasystem.co.jp/book/9784798054278.html)
   ※と言いつつ、この辞典(?)も使う。  
-  [アスキー](https://ascii.jp)の"エキスパートCプログラミング 知られざるCの深層"  
-
-* 利用を控えた書籍  
-  [O'Reilly](https://www.oreilly.co.jp/books/)の[Head First C ―頭とからだで覚えるCの基本](https://www.oreilly.co.jp/books/9784873116099/)  
 
 
+<a name="algorithmDevelopmentEnvironment"></a>
 ## 開発環境
 できる限り`MacVim`を使うつもり。  
 開発規模が大きくなった場合、`Visual Studio Code(VSCode)`に逃げるかもしれない。  
 さらに手に負えないほどの規模にまで膨れ上がれば、`Visual Studio 2019 for Mac`などを使う・・・かもね。  
 
 
+<a name="algorithmCheckTheStatusOfTheActualWorkingEnvironment"></a>
+<details><summary>実際に作業する環境の状況確認</summary>
+
+勉強環境のコンパイルバージョン：clang version 11.0.0
+```terminal:version
+$ gcc --version
+Configured with: --prefix=/Applications/Xcode.app/Contents/Developer/usr --with-gxx-include-dir=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/4.2.1
+Apple clang version 11.0.0 (clang-1100.0.33.16)
+Target: x86_64-apple-darwin18.7.0
+Thread model: posix
+InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
+$
+```
+
+プログラムファイルの拡張子：`*.c`  
+ヘッダファイルの拡張子：`*.h`  
+標準の文字コード(プログラムファイル)：UTF-8(?)  
+文字区切り(行末記号)：セミコロン`;`  
+インデント：フリーフォーマット  
+標準の出力関数：`printf`  
+単数行コメント方法：`//`  
+複数行コメント方法：`/* 〜 */`  
+
+
+<a name="algorithmHelloWorld"></a>
+### ハローワールドプログラム
+`main`文言の先頭に`int`を付けることでワーニングが解消できた。  
+
+```c:helloWorld.c
+$ cat helloWorld.c
+#include <stdio.h>
+
+int main()
+{
+	printf("hello, world\n");
+}
+$ gcc helloWorld.c
+$ ./a.out
+hello, world
+$
+```
+
+しかし、この`int`は、戻り値になるはず。  
+それなのに、`return`がなくても問題にならないのは矛盾しているよね。  
+そして、引数も空のままって・・・。  
+
+<a name="algorithmkandrHelloWorld"></a>
+<details><summary>K&Rの"Hello World."</summary>
+
+**K&R**の **Hello World.** 出力は難易度が高かった
+(参考にする書籍のP8)。  
+
+```c:warningありのhelloWorld.c
+$ cat helloWorld.c
+#include <stdio.h>
+
+main()
+{
+	printf("hello, world\n");
+}
+$ gcc helloWorld.c
+helloWorld.c:3:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+main()
+^
+1 warning generated.
+$ ./a.out
+hello, world
+$
+```
+
+一応コンパイルが通り、実行できるのだが、ワーニングが出るのはちょっとな・・・。  
+お守り変わりにして使わない発言した直後に使うのもどうかと思ったが、普通のプログラムの掲載がK&R本だけだったよ。  
+
+<a name="algorithmbonusHelloWorld"></a>
+#### おまけ。
+以下の戻り値無し版もだめだった。
+```c:sample.c
+#include <stdio.h>
+
+void main()
+{
+	printf("hello, world\n");
+}
+```
+
+原因は分からないが、コンパイルのせいだろう。  
+
+</details>
+
+</details>
+
+<a name="algorithmTextbookLearnedinPythonBook"></a>
 ## 「[Pythonで学ぶアルゴリズムの教科書](https://book.impress.co.jp/books/1120101024)」
 本の概要。  
 > エンジニアの基礎体力を身につける  
 
 <details><summary>基礎知識5種類の項目</summary>
 
-基礎知識5種類の勉強が終わり次第、下記のチェックリストをここに移動する。  
-
-</details>
-
 ※プログラミングに使う基礎知識を統一する(簡単に済ませられる量に絞り込む)。  
 * 基礎知識5種類  
-  * [x] [変数](#variable変数)2021/08/30  
-  * [x] [配列](#arrangement配列)2021/09/03  
-  * [x] [条件分岐](#Conditional条件分岐)2021/09/14  
-  * [x] [繰り返し](#repetition繰り返し)2021/09/14  
-  * [x] [関数](#function関数)2021/09/14  
+  * [x] [変数](#variable変数sub)  
+  * [x] [配列](#arrangement配列sub)  
+  * [x] [条件分岐](#Conditional条件分岐sub)  
+  * [x] [繰り返し](#repetition繰り返しsub)  
+  * [x] [関数](#function関数sub)  
 
-<details><summary>アルゴリズムの勉強</summary>
-
-そもそも基礎知識5種類の勉強が終わっていないため、着手できない。  
+</details>
 
 <a name="algorithmTextbookLearnedinPythonContents"></a>
 * [アルゴリズム勉強目次](#algorithmTextbookLearnedinPython)  
@@ -78,10 +166,9 @@
   * Appendix 2 テキストエディタと統合開発環境
   * Appendix 3 Pythonの記述ルール
 
-</details>
-
 <details><summary>基礎知識5種類の作業手順</summary>
 
+<a name="algorithmSpecificBasicKnowledge"></a>
 ## 具体的な基礎知識
 何はともあれ、まずは、"Hello World"を表示するプログラムを作る。  
 その後で、基礎中の基礎となる制御構造(構造化プログラミング)を簡略化しながら勉強する。  
@@ -118,17 +205,19 @@
 
 <details><summary>アルゴリズム問題解決の作業手順</summary>
 
+<a name="algorithmSpecificAlgorithmPreSolvingProcedure"></a>
 ## 具体的なアルゴリズム問題解決前手順
 基礎知識5種類を勉強するのと同じように、アルゴリズムの勉強にも以下の手順で進める。  
 
 * 以下、手順。  
   * [x] 手順1. 勉強用のブランチに移動する(上記[目次](#algorithmTextbookLearnedinPythonContents)の1チャプター分専用ブランチとする)。  
-  * [ ] 手順2. 当ファイル(`README.md`)の書き換えを行う。  
-    [ ] アルゴリズムの勉強用に変更する。  
-    [ ] アルゴリズムの勉強用項目を出すが、基礎知識5種類の勉強項目は隠す(`details`・`summary`)。  
+  * [x] 手順2. 当ファイル(`README.md`)の書き換えを行う。  
+    [x] アルゴリズムの勉強用に変更する。  
+    [x] アルゴリズムの勉強用項目を出すが、基礎知識5種類の勉強項目は隠す(`details`・`summary`)。  
   * [ ] 編集後、コミットする。  
   * [ ] 手順3. 各ディレクトリで、チャプタごとに勉強を進める。  
     ※そのとき、(できる限り)プログラムファイルに[モードライン](https://vim-jp.org/vim-users-jp/2009/06/02/Hack-20.html)を記載する。  
+    `/* vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=c noexpandtab: */`  
     ※チェックリストは上記にある。  
     Chapter 2 プログラミングの力を養う  
     Chapter 3 データ構造を学ぶ  
@@ -143,203 +232,12 @@
 </details>
 
 
-## 実際に作業する環境の状況確認
-
-勉強環境のコンパイルバージョン：clang version 11.0.0
-```terminal:version
-$ gcc --version
-Configured with: --prefix=/Applications/Xcode.app/Contents/Developer/usr --with-gxx-include-dir=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/4.2.1
-Apple clang version 11.0.0 (clang-1100.0.33.16)
-Target: x86_64-apple-darwin18.7.0
-Thread model: posix
-InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
-$
-```
-
-プログラムファイルの拡張子：`*.c`  
-ヘッダファイルの拡張子：`*.h`  
-標準の文字コード(プログラムファイル)：UTF-8(?)  
-文字区切り(行末記号)：セミコロン`;`  
-インデント：フリーフォーマット  
-標準の出力関数：`printf`  
-1行コメント方法：`//`  
-複数行コメント方法：`/* 〜 */`  
-
-### Hello World.
-
-
-</details>
-
-
-### ハローワールドプログラム
-`main`文言の先頭に`int`を付けることでワーニングが解消できた。  
-
-```c:helloWorld.c
-$ cat helloWorld.c
-#include <stdio.h>
-
-int main()
-{
-	printf("hello, world\n");
-}
-$ gcc helloWorld.c
-$ ./a.out
-hello, world
-$
-```
-
-しかし、この`int`は、戻り値になるはず。  
-それなのに、`return`がなくても問題にならないのは矛盾しているよね。  
-そして、引数も空のままって・・・。  
-
-<details><summary>K&Rの"Hello World."</summary>
-
-#### K&Rの"Hello World."
-**K&R**の **Hello World.** 出力は難易度が高かった
-(参考にする書籍のP8)。  
-
-```c:warningありのhelloWorld.c
-$ cat helloWorld.c
-#include <stdio.h>
-
-main()
-{
-	printf("hello, world\n");
-}
-$ gcc helloWorld.c
-helloWorld.c:3:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
-main()
-^
-1 warning generated.
-$ ./a.out
-hello, world
-$
-```
-
-一応コンパイルが通り、実行できるのだが、ワーニングが出るのはちょっとな・・・。  
-お守り変わりにして使わない発言した直後に使うのもどうかと思ったが、普通のプログラムの掲載がK&R本だけだったよ。  
-
-#### おまけ。
-以下の戻り値無し版もだめだった。
-```c:sample.c
-#include <stdio.h>
-
-void main()
-{
-	printf("hello, world\n");
-}
-```
-
-何が悪いの？  
-よく考えたらコンパイルのバージョンによるのか・・・。  
-
-```terminal
-$ gcc --version
-Configured with: --prefix=/Applications/Xcode.app/Contents/Developer/usr --with-gxx-include-dir=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/4.2.1
-Apple clang version 11.0.0 (clang-1100.0.33.16)
-Target: x86_64-apple-darwin18.7.0
-Thread model: posix
-InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
-$ g++ --version
-Configured with: --prefix=/Applications/Xcode.app/Contents/Developer/usr --with-gxx-include-dir=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/4.2.1
-Apple clang version 11.0.0 (clang-1100.0.33.16)
-Target: x86_64-apple-darwin18.7.0
-Thread model: posix
-InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
-$ cc --version
-Apple clang version 11.0.0 (clang-1100.0.33.16)
-Target: x86_64-apple-darwin18.7.0
-Thread model: posix
-InstalledDir: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin
-$
-```
-
-全部`clang`の`version11.0.0`か・・・。  
-
-</details>
-
+<a name="algorithmNotes"></a>
 ### ※注意事項
 「アルゴリズムを勉強することが目的」であるということを理解すること。  
 しかし、やる気を維持するためにも1冊分を読了させることも目的としており、深掘りせずに進めることも考慮すること。  
 要は、深く踏み込むか、流し読み程度に抑えるかどうかはそのときに決める。  
 
-
-<a name="variable変数"></a>
-<a name="arrangement配列"></a>
-<a name="Conditional条件分岐"></a>
-<a name="repetition繰り返し"></a>
-<a name="function関数"></a>
-<details><summary>基礎知識5種類の各項目</summary>
-
-~~※ここの項目不要かな・・・。~~
-
-基礎知識として5種類を勉強するが、その目的はアルゴリズムの勉強用であって、5種類を本格的に極めるためではない。  
-そのため、1つ1つを最小限に絞り込み、1つを10分前後の勉強時間に収まるように気をつけること。  
-※現時点で守れていないため、何とかして短い時間に抑え、アルゴリズムの勉強を本格的に勉強できるように考慮すること。  
-
-
-#### 概要。
-* [変数](#variable変数sub)  
-  * 変数の宣言方法  
-    数値の代入  
-    文字列の代入  
-    代入したそれらの出力  
-  * 代入した値の変更方法  
-    変数を用いた計算  
-    * 計算用演算子の説明  
-    * データ型の説明  
-      数値-整数型  
-      数値-小数型  
-      文字列  
-      論理値  
-    * データ型の変換(キャスト)  
-  * ※スコープは"関数"で説明する。  
-
-* [配列(リスト)](#arrangement配列sub)  
-  * 宣言方法  
-    要素  
-    要素数  
-    添え字(インデックス)  
-  * 要素追加方法  
-  * 2次元配列  
-  * ※取り出しは"for"で説明する。  
-
-* [条件分岐](#Conditional条件分岐sub)  
-  * if文  
-    条件式  
-    * if文からの派生  
-      if〜elif〜else  
-    * 演算子  
-      論理演算子  
-      比較演算子  
-
-* [繰り返し](#repetition繰り返しsub)  
-  * for文  
-    条件式  
-    多重(入れ子)利用  
-    break  
-    continue  
-    拡張for文  
-    　例）range  
-    配列からの取り出し。  
-  * while文  
-    条件式  
-    無限ループ  
-
-* [関数](#function関数sub)  
-  書式  
-  引数  
-  戻り値  
-  * 組み合わせ  
-    引数無し-戻り値無し  
-    引数あり-戻り値無し  
-    引数無し-戻り値あり  
-    引数あり-戻り値あり  
-  * 変数の有効範囲(スコープ)  
-    グローバル変数  
-    ローカル変数  
-
-</details>
 
 <a name="variable変数sub"></a>
 <details><summary>実際の変数の勉強</summary>
@@ -348,8 +246,6 @@ $
 辞典からの引用。  
 > 値を記憶する入れ物．C言語では非constオブジェクト(記憶対象)をいう．(略)．変数の概念があるかないかは，アセンブリ言語と高水準言語の1つの分かれ目でもある．（以降略
 
-グローバル変数について説明する・・・？  
-とりあえず、プログラムは作った。  
 
 * 絶対的に勉強する一覧  
   * [変数の宣言方法](#subVariable1)  
@@ -408,9 +304,29 @@ int main(void)
 <a name="subVariable2"></a>
 #### 変数への代入方法及び変数の利用
 様式：
+`データ型 変数名 = 値;`  
+
 
 <a name="subVariable3"></a>
 #### 変数値の出力方法
+`printf`関数を利用することで変数値を出力できる。  
+
+```c
+#include <stdio.h>
+
+int main(void)
+{
+	int bar = 20210808;
+	char *hoge = "hoge";
+	float boo = 35.693999;
+	double egoh = 139.689502;
+
+	printf("bar  = %d\n", bar);		// bar  = 20210808
+	printf("hoge = %s\n", hoge);	// hoge = hoge
+	printf("boo  = %f\n", boo);		// boo  = 35.694000
+	printf("egoh = %f\n", egoh);	// egoh = 139.689502
+}
+```
 
 <a name="subVariable4"></a>
 #### データ型
@@ -423,8 +339,10 @@ C言語の場合、string型がないため、char型で代用する。
 |--------|------|----|
 |int|||
 |float|||
-|string|||
-|bool|||
+|string||`char`型のみある。|
+|bool||**C99**規格以降で使える。|
+
+<details><summary>表だった情報は無い</summary>
 
 基本的には4種類ある。  
 **整数型**：`short`・`int`・`long`の3種類を使い分ける。  
@@ -438,6 +356,8 @@ C言語の場合、string型がないため、char型で代用する。
 * 文字型  
 `char型`：基本的には、`unsigned char型`の配列を多バイト文字列に使う。  
 
+</details>
+
 * 真偽型  
 `true`：`1`  
 `false`：`0`  
@@ -446,8 +366,6 @@ C言語の場合、string型がないため、char型で代用する。
 #### 変数値を使った計算方法
 * 算術演算子  
 算術演算をする演算子とのこと(まんまだな)。  
-
-* 演算子  
 
 |演算子の種類|演算子|名前|説明|
 |------------|------|----|----|
@@ -702,17 +620,10 @@ c++を含んだC言語での[浮動小数点リテラル](https://www.ibm.com/do
     * 記憶量演算子  
       `sizeof`  
 
-* 演算子  
+* 雑多な演算子  
 
-以下、ちょっと先走った内容。
 |演算子の種類|演算子|名前|説明|
 |------------|------|----|----|
-|比較演算子|`>`|大なり|
-|比較演算子|`>=`|大なりイコール|
-|比較演算子|`<`|小なり|
-|比較演算子|`<=`|小なりイコール|
-|比較演算子|`==`|イコール|
-|比較演算子|`!=`|ノットイコール|
 |代入演算子|`=`||代入|
 |代入演算子|`+=`||加算して代入|
 |代入演算子|`-=`||減算して代入|
@@ -1034,6 +945,7 @@ hoge：0	4回目
 様式：
 C言語では出来ない。  
 
+
 <a name="subRepetition4"></a>
 #### `for`の入れ子。
 ```c
@@ -1044,6 +956,7 @@ for ( 初期化; 条件式1; 増減分; ) {
 	}
 }
 ```
+
 
 <a name="subRepetition5"></a>
 #### ジャンプ処理
@@ -1107,6 +1020,7 @@ while ( hoge < 5 ) {
 5回目
 ```
 
+
 <a name="subRepetition7"></a>
 #### 無限ループ
 様式：
@@ -1132,6 +1046,7 @@ while (1) {
 	if ( 条件 ) break;
 }
 ```
+
 
 <a name="subRepetition999"></a>
 #### 繰り返しでの説明しない項目。
@@ -1163,6 +1078,7 @@ while (1) {
     * [スコープ](#subFunction3)  
       [x] グローバルスコープ変数  
       [x] ローカルスコープ変数  
+
 
 <a name="subFunction1"></a>
 #### 関数
@@ -1231,6 +1147,7 @@ int inthogeint(int hoge) {
 `hoge() {}`  
 処理が全くなく、何も処理として戻さない。  
 
+
 ##### プロトタイプ宣言
 関数を作る場合、その関数のプロトタイプを事前に作っておく必要がある。  
 C言語では必須で無いような説明もあったが、作らなければエラーになったため、必要だと思う。  
@@ -1252,6 +1169,7 @@ int hogefunc(int arg) {
     return 0;
 }
 ```
+
 
 <a name="subFunction2"></a>
 #### 配列の受け渡し。
@@ -1316,6 +1234,7 @@ int hogefunc(int hoge[], int size) {
 ポインタ配列`int *hoge[20210915];`などあるが、そのとき調べることにする。  
 多次元配列などは関数に渡さないよね・・・きっと。  
 
+
 <a name="subFunction3"></a>
 #### スコープ
 グローバル変数：
@@ -1324,6 +1243,7 @@ int hogefunc(int hoge[], int size) {
 
 スコープ変数：
 狭義域はブロック内で宣言する。  
+
 
 <a name="subFunction999"></a>
 #### 関数での説明しない項目。
@@ -1355,9 +1275,6 @@ int hogefunc(int hoge[], int size) {
 
 </details>
 
-<details><summary>アルゴリズムの勉強項目詳細</summary>
-
-基礎知識5種類の勉強終了後、展開する。  
 
 <a name="algorithmTextbookLearnedinPython"></a>
 #### ☆アルゴリズムの勉強チャプタ概要☆
@@ -1654,7 +1571,6 @@ Python限定にしたくなかったが、他のプログラミング言語に�
 <a name="letsDrawTheMandelbrotSetChapter8"></a>
 #### マンデルブロー集合を描こう。
 
-</details>
 
 ## ※Gitのマージルール
 study2programmingに取り込むときのマージは、3方向マージ(`--no-ff`)を使う。  

@@ -27,3 +27,5 @@ int main(void)
 //	printf("boolサイズ%s\n", bool_asakuno);	// use of undeclared identifier 'bool_asakuno'; did you mean 'long_asakuno'?
 											// format specifies type 'char *' but the argument has type 'long' [-Wformat]
 }
+
+// vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=c noexpandtab:

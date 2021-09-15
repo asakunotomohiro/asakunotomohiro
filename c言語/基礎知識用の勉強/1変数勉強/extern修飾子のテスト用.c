@@ -16,3 +16,5 @@ void func_asakuno( void ){
 	tomohiro = 20210810;
 	printf("asakuno関数, tomohiro：%d\n", tomohiro);
 }
+
+// vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=c noexpandtab:

@@ -75,3 +75,5 @@ int main(void)
 
 	printf("asaarray = %s\n", *(asaarray+0) );	// asaarray = 朝来野智博
 }
+
+// vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=c noexpandtab:

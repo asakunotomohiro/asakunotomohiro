@@ -24,3 +24,5 @@ int main(void)
 	asakuno = 20210810;
 	printf("main関数, asakuno：%d\n", asakuno );	// main関数, asakuno：20210810
 }
+
+// vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=c noexpandtab:

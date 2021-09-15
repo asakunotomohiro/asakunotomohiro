@@ -15,3 +15,5 @@ int main(void)
 			// 要は、環境依存なのだろう。
 
 }
+
+// vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=c noexpandtab:

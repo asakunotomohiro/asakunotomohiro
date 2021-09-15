@@ -33,3 +33,5 @@ int main(void)
 		// asakunotomohiro関数, tomohiro：1000	←関数内でのインクリメントが有効に働いているのがわかる。
 //	printf("main関数, tomohiro：%d\n", tomohiro );	use of undeclared identifier 'tomohiro'
 }
+
+// vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=c noexpandtab:

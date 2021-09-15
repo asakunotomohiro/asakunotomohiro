@@ -31,3 +31,5 @@ printf("----------------------------------------\n");
 		printf( "[%c]はその他の文字\n", asakuno);
 	}
 }
+
+// vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=c noexpandtab:

@@ -27,14 +27,7 @@ int main(void)
 	int_asakuno = (char)float_asakuno;	// エラーなくキャストが出来た。
 	printf("int：%d\n", int_asakuno);	// int：-27
 
-	// 暗黙の型変換可能時に変換するやり方(C++のみ)。
-//	int_asakuno = static_cast<char>(float_asakuno);	// エラー発生(Cには存在しないため)
-		// expected expression
-		// use of undeclared identifier 'static_cast'
-
-	// 明示的キャスト。
-//	int_asakuno = reinterpret_cast<char>(float_asakuno);	// エラー発生(Cには存在しないため)
-		// expected expression
-		// use of undeclared identifier 'reinterpret_cast'
-
+	return 0;
 }
+
+// vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=c noexpandtab:

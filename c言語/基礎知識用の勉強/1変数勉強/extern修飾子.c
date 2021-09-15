@@ -36,3 +36,5 @@ int main(void)
 		// asakunotomohiro関数, asakuno：20210810
 		// asakunotomohiro関数, tomohiro：20210810
 }
+
+// vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=c noexpandtab:

@@ -16,3 +16,5 @@ int main(void)
 	printf("%d\n", asakuno);	// 1	←trueは1であり、trueではないということか。
 	printf("%d\n", tomohiro);	// 0	←falseは0であり、falseではないということか。
 }
+
+// vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=c noexpandtab:
