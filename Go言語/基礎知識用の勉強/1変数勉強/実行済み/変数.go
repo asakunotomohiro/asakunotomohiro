@@ -17,3 +17,5 @@ func main() {
 	fmt.Printf("今日は%vです。\n桁を増やして%vです。\n", 朝来野, 智博) // 出力結果：今日は20210805です。逆から見れば50801202です。
 	fmt.Print(朝来野智博, go勉強)                         // 出力結果：朝来野 智博頑張るぞぉ
 }
+
+/* vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=go noexpandtab: */
