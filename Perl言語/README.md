@@ -1268,7 +1268,7 @@ Perlでオブジェクト指向開発ができるだけでなく、そのやり�
   [x] [1からnまで足し合わせる。](#addFrom1tonChapter2)  
   [x] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
   [x] [素数を求める。](#findAPrimeNumberChapter2)  
-  [ ] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
+  [x] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
   [ ] [エラトステネスの篩](#eratosthenesSieveChapter2)  
   [ ] [n進法を理解する。](#understandnAryNotationChapter2)  
 <a name="algorithmTextbookLearnedinPythonChapter3"></a>
@@ -1584,6 +1584,97 @@ say;
 
 <a name="findTheFactorialOfNChapter2"></a>
 #### nの階乗を求める。
+**階乗とは**
+1からnまでの全ての整数の積をnの階乗という。  
+**再帰関数**
+関数内から自身の関数を呼び出すことを再帰処理という。
+また、その呼び出す仕組みの関数を再帰関数という。  
+
+以下、再帰関数例）
+```perl
+sub factorial() {
+	my $word = shift @_;
+	my $num = length($word);
+	if ( $num > 0 ) {
+		factorial(substr($word, 0, $num-1));
+	}
+	printf("再帰関数%d回目の実行及び出力内容：%s\n", $num, $word);
+	return 0
+}
+&factorial("hoge");
+```
+
+以下、出力結果。
+```terminal
+再帰関数0回目の実行及び出力内容：
+再帰関数1回目の実行及び出力内容：h
+再帰関数2回目の実行及び出力内容：ho
+再帰関数3回目の実行及び出力内容：hog
+再帰関数4回目の実行及び出力内容：hoge
+```
+
+* ルール1  
+  再帰関数を使わない。  
+  * 関数定義は行わない(行う)。  
+  * `for`を使う。  
+
+以下、ルール1のプログラム。
+```perl
+sub factorial2() {
+	my $arg = shift @_;
+	my $sum = 1;
+	if ( $arg == 0 ) {
+		$arg = 0;
+	}
+	for ( my $ii = $arg; $ii > 0; $ii-- ) {
+		$sum = $sum * $ii;
+	}
+	say "${arg}! =" . $sum;
+}
+
+&factorial2(10);
+```
+
+以下、実行結果。
+```terminal
+10! =3628800
+```
+
+* ルール2  
+  再帰関数を使う。  
+  * 再帰関数の定義ルール  
+    * `n = 0`
+      **n! = 1**  
+    * `n > 0`
+      **n! = n * (n-1) * (n-2) * ・・・ * 2 * 1**
+      nから1引いた数を掛け、さらに1づつ引き続けながらnが1にまるまで続ける。  
+
+以下、20の階乗の結果のみを求めている。
+```perl
+sub factorial() {
+	my $arg = shift @_;
+	my $ret;
+	if ( $arg == 0 ) {
+		$ret = 1;
+	}
+	else {
+		$ret = $arg * &factorial($arg-1);
+	}
+
+	return $ret
+}
+
+say &factorial(20);
+```
+
+以下、実行結果。
+```terminal
+2432902008176640000
+```
+Python言語のあとに着手したが、混乱する。  
+しかし、すぐに取り組まなければ、そもそものアルゴリズムを忘れてしまう。  
+忘れるぐらいだから理解していないとも言えるのだが・・・。  
+
 
 <a name="eratosthenesSieveChapter2"></a>
 #### エラトステネスの篩
