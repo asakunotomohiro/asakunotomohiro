@@ -286,6 +286,7 @@ $ pip3 --version
 pip 21.2.4 from /usr/local/lib/python3.9/site-packages/pip (python 3.9)
 $
 ```
+pyenvとpip3は別物？  
 
 </details>
 
