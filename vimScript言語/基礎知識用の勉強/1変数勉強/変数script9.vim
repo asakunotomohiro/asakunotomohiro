@@ -22,6 +22,13 @@ def! Tomohiro(): string
 #	echom asakuno9
 #	unlet asakuno9	" E1081: Cannot unlet asakuno9
 #	echom asakuno9
+
+	var asakuno = '朝来野智博'
+	echom len(asakuno)	# 15
+	asakuno = 'asakuno'
+	echom len(asakuno)	# 7
+
+
 	return tomohiro
 enddef
 echom Tomohiro()

@@ -49,4 +49,4 @@ call Prime()
 "			2,3,4,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,
 
 echom "以上。"
-" vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=markdown noexpandtab:
+" vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=vim noexpandtab:

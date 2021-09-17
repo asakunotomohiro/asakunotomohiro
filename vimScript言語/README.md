@@ -1373,7 +1373,7 @@ vim9scriptでも`unlet`は使えるようだ。
   [x] [1からnまで足し合わせる。](#addFrom1tonChapter2)  
   [x] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
   [x] [素数を求める。](#findAPrimeNumberChapter2)  
-  [ ] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
+  [x] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
   [ ] [エラトステネスの篩](#eratosthenesSieveChapter2)  
   [ ] [n進法を理解する。](#understandnAryNotationChapter2)  
 <a name="algorithmTextbookLearnedinPythonChapter3"></a>
@@ -1636,7 +1636,7 @@ Pythonに倣い、試す数は**2〜2分のn**までの数で割ることを調�
   * 2から2分のnまでの数で割る。  
     ※それらの数で割り切れなければ素数。  
 
-全く同じプログラムには出来ないと言うのが面白い。
+以下、素数を求めるプログラム。
 ```vim
 def! Prime(): number
 	var outputprime = ""
@@ -1664,13 +1664,87 @@ call Prime()
 ```text
 2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,
 ```
-当初2を表示させることが出来ないため、焦った。  
-こんなことだからプログラマーには向いていないのだろうと自覚させられる。  
-めげずに頑張ろう。  
+頑張って、先頭の2を表示させることに成功した。  
 
 
 <a name="findTheFactorialOfNChapter2"></a>
 ##### nの階乗を求める。
+**階乗とは**
+1からnまでの全ての整数の積をnの階乗という。  
+**再帰関数**
+関数内から自身の関数を呼び出すことを再帰処理という。
+また、その呼び出す仕組みの関数を再帰関数という。  
+[Vim script の再帰回数について](https://github.com/vim-jp/issues/issues/270)200回が限界値に設定されている。  
+
+以下、再帰関数例）
+```vim
+def! Factorial( args = '0' ): number
+	var num = len(args) - 1
+	if num > 0
+		echom printf("再帰関数%d回目の実行及び出力内容：%s", num, args)
+		num -= 1
+		Factorial(args[0 : num])
+	endif
+	if len(args) <= 1
+		echom printf("再帰関数%d回目の実行及び出力内容：%s", num, args)
+	endif
+
+	return num
+enddef
+call Factorial("hoge")
+```
+無理矢理再帰関数を作ったが、意図した動きをしてくれない(Python・Perlの挙動と異なる)。  
+
+以下、実行結果
+```terminal
+再帰関数3回目の実行及び出力内容：hoge
+再帰関数2回目の実行及び出力内容：hog
+再帰関数1回目の実行及び出力内容：ho
+再帰関数0回目の実行及び出力内容：h
+```
+
+* ルール1  
+  再帰関数を使わない。  
+  * 関数定義は行わない(行う)。  
+  * `for`を使う。  
+
+以下、ルール1のプログラム。
+```vim
+```
+
+以下、実行結果
+```terminal
+```
+
+* ルール2  
+  再帰関数を使う。  
+  * 再帰関数の定義ルール  
+    * `n = 0`
+      **n! = 1**  
+    * `n > 0`
+      **n! = n * (n-1) * (n-2) * ・・・ * 2 * 1**
+      nから1引いた数を掛け、さらに1づつ引き続けながらnが1にまるまで続ける。  
+
+以下、20の階乗の結果のみを求めている。
+```vim
+def! Factorial3( arg = 0): number
+	var ret = 0
+	if arg == 0
+		ret = 1
+	else
+		ret = arg * Factorial3(arg - 1)
+	endif
+
+	return ret
+enddef
+echom Factorial3(20)
+```
+
+以下、実行結果
+```terminal
+2432902008176640000
+```
+桁が大きいため、本当に合っているのかいつも不安になる。  
 
 <a name="eratosthenesSieveChapter2"></a>
 ##### エラトステネスの篩
