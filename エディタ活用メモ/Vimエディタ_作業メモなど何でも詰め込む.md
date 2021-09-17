@@ -392,6 +392,10 @@ ASIN：
 [VimのPythonインターフェイス](https://vim-jp.org/vimdoc-ja/if_pyth.html#python3)  
 は、役に立たなかった。  
 
+今後は、`brew install --HEAD vim`でインストールを行ってみる。  
+<details><summary>再インストール</summary>
+
+試行錯誤した結果があるもののそもそもがズレたことをしていたためちょっち封印する。  
 
 ##### 現在の環境
 Macに標準でインストールされているPythonが優先されている。
@@ -946,6 +950,8 @@ $ /usr/local/Cellar/vim/HEAD-28e591d/bin/vim --version | grep python
 リンク: clang -L. -fstack-protector-strong -L/usr/local/lib -L/usr/local/opt/libyaml/lib -L/usr/local/opt/openssl@1.1/lib -L/usr/local/opt/readline/lib -L/usr/local/lib -o vim -lncurses -liconv -lintl -framework AppKit -L/usr/local/opt/lua/lib -llua5.4 -mmacosx-version-min=10.14 -fstack-protector-strong -L/usr/local/lib -L/usr/local/Cellar/perl/5.34.0/lib/perl5/5.34.0/darwin-thread-multi-2level/CORE -lperl -lm -lutil -lc -L/usr/local/opt/python@3.9/Frameworks/Python.framework/Versions/3.9/lib/python3.9/config-3.9-darwin -lpython3.9 -framework CoreFoundation -lruby.3.0 -L/usr/local/Cellar/ruby/3.0.2/lib
 $
 ```
+どのタイミングで **+python3**が有効化したのか全く分からない。  
+今頃の予想だが、ターミナルの再起動で認識するようになったとか(再現できないので分からない)？  
 
 Macvimで`:echo has('python3')`を実行したことで、**1**が帰ってきた。  
 なぜにシンタックスエラーが解消されない？  
@@ -969,6 +975,11 @@ Python3だけが動けば良い。
 その選択肢がなく、Python2だけ動くというのは納得できない。  
 
 もしかして、プラグインが邪魔をしている？  
+⇒正解。プラグインで利用しているバージョンが古かった。  
+今後は、何かあれば、Language Server更新用の`:LspInstallServer`を実行する。  
+
+</details>
+
 
 <a id="viBibleImprovedGihyo000002"></a>
 ### 詳細
