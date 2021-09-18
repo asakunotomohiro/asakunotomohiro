@@ -1,4 +1,13 @@
-/* 私の使っているJavaバージョンが古かった。
+/* openJDKの最新版(ver16？)を用いてコンパイルをしたところ成功した。
+$ javac コメントブロック.java
+$ java コメントブロック
+20210918。
+朝来野智博
+Javaの勉強。
+$
+ */
+
+/* 私の使っているJavaバージョンが古かった(java 13)。
 $ javac --enable-preview --release 14 -Xlint:preview コメントブロック.java
 エラー: リリース・バージョン14はサポートされていません
 使用方法: javac <options> <source files>
@@ -31,7 +40,7 @@ class コメントブロック {
 		System.out.println( """
 			20210918。
 			朝来野智博
-			Javaの勉強。""" );	// error| エラー: テキスト・ブロックはプレビュー機能であり、デフォルトで無効になっています。
+			Javaの勉強。""" );
 	}
 }
 

@@ -134,16 +134,18 @@
 ## 実際に作業する環境の状況確認
 
 * 勉強環境。  
-  * 勉強環境のコンパイルバージョン：javac 13  
+  * 勉強環境のコンパイルバージョン：javac 16  
 ```terminal
-$ javac -version
-javac 13
-$ java -version
-java version "13" 2019-09-17
-Java(TM) SE Runtime Environment (build 13+33)
-Java HotSpot(TM) 64-Bit Server VM (build 13+33, mixed mode, sharing)
+$ javac --version
+javac 16.0.2
+$ java --version
+openjdk 16.0.2 2021-07-20
+OpenJDK Runtime Environment Homebrew (build 16.0.2+0)
+OpenJDK 64-Bit Server VM Homebrew (build 16.0.2+0, mixed mode, sharing)
 $
 ```
+["条件分岐"](#Conditional条件分岐sub)以降このバージョンを使う。  
+※それまでは、Oracleバージョン13を使っていた。  
 
   * プログラムファイルの拡張子：`*.java`  
 　　※Windowsに併せるならば拡張子は必須かな。  
