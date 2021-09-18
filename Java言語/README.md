@@ -3,12 +3,13 @@
 
 
 ## ブランチの利用方法
+アルゴリズムの勉強用プログラミング言語の一つとしている。  
+まずは、基礎知識5種類の勉強を始める。  
 
 
 ## 勉強方法
-勉強するプログラミング言語の一つとしている。  
-
-オラクルの[Java](https://education.oracle.com/ja/java/java/pFamily_48)で勉強しづらく、[Let'sプログラミング-Java入門](https://www.javadrive.jp/start/)を利用するのは負けた気がする。  
+オラクルの[Java](https://education.oracle.com/ja/java/java/pFamily_48)で勉強しづらい。  
+と言うことで、以下2冊をもとに勉強を進める。  
 
 
 以下の書籍を購入済み。  
@@ -40,8 +41,8 @@
 
 ※プログラミングに使う基礎知識を統一する(簡単に済ませられる量に絞り込む)。  
 * 基礎知識5種類  
-  * [ ] [変数](#variable変数)  
-  * [ ] [配列](#arrangement配列)  
+  * [x] [変数](#variable変数)2021/08/21  
+  * [x] [配列](#arrangement配列)2021/09/18  
   * [ ] [条件分岐](#Conditional条件分岐)  
   * [ ] [繰り返し](#repetition繰り返し)  
   * [ ] [関数](#function関数)  
@@ -179,10 +180,10 @@ class helloWorld {
 $ javac helloWorld.java	←☆コンパイル実施。
 $ ll
 total 24
--rw-r--r--   1 asakunotomohiro  staff   426  8 21 16:16 helloWorld.class	←☆コンパイルでの生成ファイル。
-drwxr-xr-x  10 asakunotomohiro  staff   320  8 21 16:13 基礎知識用の勉強/
--rw-r--r--   1 asakunotomohiro  staff   103  8 21 16:11 helloWorld.java
--rw-r--r--   1 asakunotomohiro  staff  3221  8 21 16:11 README.md
+-rw-r--r--   1 hogebar  staff   426  8 21 16:16 helloWorld.class	←☆コンパイルでの生成ファイル。
+drwxr-xr-x  10 hogebar  staff   320  8 21 16:13 基礎知識用の勉強/
+-rw-r--r--   1 hogebar  staff   103  8 21 16:11 helloWorld.java
+-rw-r--r--   1 hogebar  staff  3221  8 21 16:11 README.md
 $ chmod 744 ./helloWorld.class	←☆実行権限を付与する。
 $ java helloWorld	←☆コンパイル結果の実行ファイルを実行する。
 hello World.
@@ -194,16 +195,16 @@ $
 ```terminal
 $ ll
 total 16
-drwxr-xr-x  10 asakunotomohiro  staff   320  8 21 16:18 基礎知識用の勉強/
--rw-r--r--@  1 asakunotomohiro  staff   103  8 21 16:11 helloWorld.java
--rw-r--r--   1 asakunotomohiro  staff  3221  8 21 16:11 README.md
+drwxr-xr-x  10 hogebar  staff   320  8 21 16:18 基礎知識用の勉強/
+-rw-r--r--@  1 hogebar  staff   103  8 21 16:11 helloWorld.java
+-rw-r--r--   1 hogebar  staff  3221  8 21 16:11 README.md
 $ java helloWorld.java	←☆プログラムファイルそのものを実行する。
 hello World.
 $ ll	←☆クラスファイルなどの余分なものは生成されていない。
 total 16
-drwxr-xr-x  10 asakunotomohiro  staff   320  8 21 16:18 基礎知識用の勉強/
--rw-r--r--@  1 asakunotomohiro  staff   103  8 21 16:11 helloWorld.java
--rw-r--r--   1 asakunotomohiro  staff  3221  8 21 16:11 README.md
+drwxr-xr-x  10 hogebar  staff   320  8 21 16:18 基礎知識用の勉強/
+-rw-r--r--@  1 hogebar  staff   103  8 21 16:11 helloWorld.java
+-rw-r--r--   1 hogebar  staff  3221  8 21 16:11 README.md
 $
 ```
 
@@ -216,6 +217,9 @@ $
   1. 生成されるクラス名：\<クラス名\>.class  
   1. 実行方法：java \<クラス名\>  
 
+* 文字コード指定のコンパイル方法  
+  様式：`javac -encoding [文字コード] [ソースファイル名]`  
+  例）`javac -encoding UTF-8 hoge.java`  
 
 ### ※注意事項
 「アルゴリズムを勉強することが目的」であるということを理解すること。  
@@ -457,6 +461,7 @@ boo = 1 + boo;
   * [ ] 整数(`long`など)  
   * [ ] 浮動小数点型(`double`など)  
   * [ ] 型推論  
+    `var`
   * [ ] 複素数型  
 * [ ] リテラル  
   * [ ] 整数リテラル  
@@ -487,34 +492,99 @@ boo = 1 + boo;
 ※配列とリストを分けている場合はリストの勉強を後回しにし、配列がない状態でリストがある場合はリストを勉強する。  
 
 * 絶対的に勉強する一覧  
-  * [ ] [配列の宣言方法](#subArrangement1)  
-        [ ] 要素とは。  
-        [ ] 要素数とは。  
-        [ ] 添え字とは。  
+  * [x] [配列の宣言方法](#subArrangement1)  
+        [x] 要素とは。  
+        [x] 要素数とは。  
+        0から始まり、後から拡張は不可。  
+        [x] 添え字とは。  
   * [ ] [配列への追加方法](#subArrangement2)  
-  * [ ] [二次元配列の宣言方法](#subArrangement3)  
+    コレクションを使わない場合の配列への追加は不可。  
+    ※追加の意味は何だった？(配列拡張？配列代入のこと？)  
+  * [x] [二次元配列の宣言方法](#subArrangement3)  
 
+ゼロから分かるJavaの勉強とは言え、配列の説明をしないのは可笑しいだろう。  
 
 <a name="subArrangement1"></a>
 #### 配列
+添え字は0から始まる。  
 様式：
+`データ型[] 配列名 = new データ型[要素数]`  
+例）
+`int[] hoge = new int[10];`  
+
+※毎度のことで当たり前だが、これは配列要素数だけの宣言に留まる。  
+
+```java
+class 配列 {
+	public static void main(String[] args){
+
+		// 以下2種類の配列宣言。
+		int[] bar = {
+					20210918,
+					20210919,
+					20210920,
+					};	// int型宣言
+		var hoge = new int[] {
+					54755032,
+					64546030,
+					24330271,
+					bar[1]
+					};	// 型推論宣言
+
+		System.out.println( bar[0] );	// 20210918
+		System.out.println( hoge[1] );	// 64546030
+		System.out.println( hoge.length );	// 4
+	}
+}
+```
 
 <a name="subArrangement2"></a>
 #### 配列への追加方法
+初期化宣言のみ(配列の拡張は不可)。  
 様式：
+`データ型[] 配列名 = { 要素1, 要素2, ・・・ };`  
+例）
+`int[] hoge = { 1, 2, 3, 4, };`  
 
 <a name="subArrangement3"></a>
 #### 二次元配列の宣言方法
 様式：
+`データ型[][] 2次元配列名 = new データ型[1次元目の配列要素数][2次元目の配列要素数];`  
+例）
+
+```java
+class 二次元配列 {
+	public static void main(String[] args){
+
+		// 以下、2次元配列宣言のみ。
+		int[][] hoge = new int[2][3];
+
+		// 以下、2次元配列の初期化。
+		int[][] bar = {
+			{
+				20210918,
+				20210919,
+			},
+			{
+				20210920,
+				20210921,
+			}
+			};
+		System.out.print(hoge[0][1]+ "\n");	// 0
+		System.out.print(bar[0][0] + "\n");	// 20210918
+		System.out.print(bar[1][0] + "\n");	// 20210920
+	}
+}
+```
 
 <a name="subArrangement999"></a>
 #### 配列での説明しない項目。
 
-[以下、今回の言語に関係の無い項目を削除すること(対象言語に存在するが、見送るもののみ、以下残す)。]  
 <details><summary>今回は勉強を見送る一覧</summary>
 
 * 配列の応用  
   * [ ] 3次元配列以上の宣言方法。  
+    ジャグ配列宣言方法も。  
   * [ ] 配列を複製する方法。  
   * [ ] 配列からスライスを作成する方法。  
 
@@ -524,11 +594,37 @@ boo = 1 + boo;
   * [ ] 共用体  
   * [ ] 列挙体  
 
-* コレクション  
-  * [ ] List?  
+* コレクション(Collection)  
+  * [ ] List  
+    [ ] ArrayList  
+    [ ] LinkedList  
+    * 順序を持つ。  
+    * 要素の重複可能。  
   * [ ] Set  
+    [ ] HashSet  
+    [ ] LinkedHashSet  
+    [ ] TreeSet  
+    * 要素の重複不可。  
   * [ ] Map  
+    [ ] HashMap  
+    [ ] TreeMap  
+    * キーと値の組み合わせで管理する。  
+    * キーの重複不可。  
   * [ ] Queue  
+    [ ] ArrayDeque  
+    [ ] LinkedList  
+    * 先頭・末尾への要素に追加・削除あり  
+    * 待ち行列・スタック用途  
+
+* 旧式のコレクション  
+  * Vector  
+    ArrayList  
+  * Stack  
+    ArrayDeque  
+  * Dictionary  
+    HashMap  
+  * Hashtable  
+    HashMap  
 
 </details>
 
