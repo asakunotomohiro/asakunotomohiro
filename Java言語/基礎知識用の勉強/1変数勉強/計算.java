@@ -23,3 +23,5 @@ class 計算 {
 		System.out.println( asakunoB );	// true
 	}
 }
+
+// vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=java noexpandtab:
