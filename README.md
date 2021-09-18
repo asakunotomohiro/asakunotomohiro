@@ -62,7 +62,7 @@
     * [x] 関数2021/09/02  
   * [Java](https://docs.oracle.com/en/java/)  
     * [x] 変数2021/08/21  
-    * [ ] 配列  
+    * [x] 配列2021/09/18  
     * [ ] 条件分岐  
     * [ ] 繰り返し  
     * [ ] 関数  
@@ -119,8 +119,8 @@
 </details>
 
 
-ついでに、Gitの勉強にも成れば良いと思っている。  
-さらについてに、Markdownの勉強のためにも本ファイルを活用するつもり・・・きっと・・・。  
+ついでに、Gitの勉強にもなれば良いと思っている。  
+さらについでに、Markdownの勉強にもなれば良いと思っている。  
 
 <a name="PythonAcquireKnowledgeAndSkillsOfLifelongThings"></a>
 ### 「Pythonで学ぶアルゴリズムの教科書」
