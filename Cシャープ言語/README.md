@@ -42,7 +42,7 @@
 ※プログラミングに使う基礎知識を統一する(簡単に済ませられる量に絞り込む)。  
 * 基礎知識5種類  
   * [x] [変数](#variable変数)2021/08/20  
-  * [ ] [配列](#arrangement配列)  
+  * [x] [配列](#arrangement配列)2021/09/19  
   * [ ] [条件分岐](#Conditional条件分岐)  
   * [ ] [繰り返し](#repetition繰り返し)  
   * [ ] [関数](#function関数)  
@@ -490,34 +490,132 @@ Console.WriteLine(over);
 ※配列とリストを分けている場合はリストの勉強を後回しにし、配列がない状態でリストがある場合はリストを勉強する。  
 
 * 絶対的に勉強する一覧  
-  * [ ] [配列の宣言方法](#subArrangement1)  
-        [ ] 要素とは。  
-        [ ] 要素数とは。  
-        [ ] 添え字とは。  
-  * [ ] [配列への追加方法](#subArrangement2)  
-  * [ ] [二次元配列の宣言方法](#subArrangement3)  
+  * [x] [配列の宣言方法](#subArrangement1)  
+        [x] 要素とは。  
+        [x] 要素数とは。  
+        [x] 添え字とは(0始まり)。  
+  * [x] [配列への追加方法](#subArrangement2)  
+  * [x] [二次元配列の宣言方法](#subArrangement3)  
 
 
 <a name="subArrangement1"></a>
 #### 配列
+コレクションのひとつ(CLRの型システムのひとつ)。  
+
 様式：
+`データ型[] 配列名 = new データ型[要素数]`  
+`var 配列名 = new データ型[要素数]`  
+例）
+```cs
+int[] numbers = new int[10];
+string[] strings = new string[numbers.Length];
+```
+※要素数は、32ビット環境では21億個までが上限として指定できる。  
 
 <a name="subArrangement2"></a>
 #### 配列への追加方法
+配列の拡張を意味するのではない。  
+
 様式：
+
+```cs
+using System;
+
+namespace 配列
+{
+	class MainClass
+	{
+		public static void Main(string[] args)
+		{
+			int[] hoge = new int[10];
+			string[] strings = new string[hoge.Length];
+			Console.WriteLine("hoge：" + hoge[0]);	// hoge：0
+			Console.WriteLine("hoge：" + hoge[hoge.Length - 1]);	// hoge：0
+
+			var weekday = new string[5];
+			weekday[0] = "Monday";
+			weekday[4] = "Friday";
+			Console.WriteLine("weekday：" + weekday[4]);	// weekday：Friday
+
+			var weekdaykai = new string[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", };
+			Console.WriteLine("weekdaykai：" + weekdaykai[4]);	// weekdaykai：Friday
+
+			// 以下、さらなる改良。
+			string[] weekdaykaikai = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", };
+
+			// 以下、さらなる改良。	←☆この書き方になれるのがナウいそうだ。
+			var weekdaykaikaikai = new[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", };
+		}
+	}
+}
+```
 
 <a name="subArrangement3"></a>
 #### 二次元配列の宣言方法
+今後は、矩形配列を使う。  
+むしろ、矩形配列だけがある？  
+※他のプログラミング言語のような多次元配列宣言はできない？(ジャグ配列であればできそうだ)  
+
 様式：
+`データ型[,] 配列名 = new データ型[1次元目の要素数, 2次元目の要素数]`  
+例）
+`int[,] array = new int[5, 10];`  
+
+要素への取得など）  
+代入：`array[2, 9] = 20210919;`  
+取得：`array[0, 0]`  
+※代入していない要素場所はゼロで初期化される？  
+
+```cs
+using System;
+
+namespace 二次元配列
+{
+	class MainClass
+	{
+		public static void Main(string[] args)
+		{
+			Console.WriteLine("Hello World!");
+
+			int[,] array = new int[5, 10];
+			var twoarray = new int[,]
+			{
+				{ 20210919, 20210920, 20210921, },
+				{ 20210918, 20210917, 20210916, },
+			};
+
+			Console.WriteLine("2次元配列：" + twoarray[1, 2]);   // 2次元配列：20210916
+
+			array[2, 9] = 20210919;
+			Console.WriteLine("2次元配列array[0, 0]：" + array[0, 0]);   // 2次元配列array[0, 0]：0
+			Console.WriteLine("2次元配列array[2, 9]：" + array[2, 9]);   // 2次元配列array[2, 9]：20210919
+
+			// Console.WriteLine("2次元配列array[5, 9]：" + array[5, 9]);   // System.IndexOutOfRangeException
+			// Console.WriteLine("2次元配列array[4, 10]：" + array[4, 10]);   // System.IndexOutOfRangeException
+
+			Console.WriteLine("2次元配列arrayの大きさ：" + array.Length);    // 2次元配列arrayの大きさ：50
+			Console.WriteLine("2次元配列arrayの大きさ：" + array.GetLength(0));    // 2次元配列arrayの大きさ：5
+			Console.WriteLine("2次元配列arrayの大きさ：" + array.GetLength(1));    // 2次元配列arrayの大きさ：10
+
+			// Console.WriteLine("2次元配列arrayの大きさ：" + array.GetLength(2));    // System.IndexOutOfRangeException
+
+		}
+	}
+}
+```
 
 <a name="subArrangement999"></a>
 #### 配列での説明しない項目。
 
-[以下、今回の言語に関係の無い項目を削除すること(対象言語に存在するが、見送るもののみ、以下残す)。]  
 <details><summary>今回は勉強を見送る一覧</summary>
 
 * 配列の応用  
+  * [ ] 配列の拡張。  
+    `Array.Resize()`  
+  * [ ] ジャグ配列。  
+  * [ ] 読み取り専用配列の宣言ができないことの説明。  
   * [ ] 3次元配列以上の宣言方法。  
+    3次元配列`int[,,] hoge = 〜`  
   * [ ] 配列を複製する方法。  
   * [ ] 配列からスライスを作成する方法。  
 
