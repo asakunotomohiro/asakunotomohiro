@@ -2,12 +2,14 @@
 ここは、プログラミング言語の[プログラミング]言語を勉強するブランチになる。  
 
 
+<a name="algorithmHowToUseTheBranch"></a>
 ## ブランチの利用方法
 ここのブランチは、書籍のアルゴリズムを勉強するのに使う。  
 また、具体的なアルゴリズムの種類は、下記書籍の目次チャプターに限定する。  
 ※チャプターごとにブランチを分けていく。  
 
 
+<a name="algorithmHowToStudy"></a>
 ## 勉強方法
 [勉強する理由や勉強用資料などを説明する]  
 
@@ -15,10 +17,12 @@
 * [書籍名]  
 
 
+<a name="algorithmDevelopmentEnvironment"></a>
 ## 開発環境
 [開発環境を説明する。基本はvim]  
 
 
+<a name="algorithmTextbookLearnedinPythonBook"></a>
 ## 「[Pythonで学ぶアルゴリズムの教科書](https://book.impress.co.jp/books/1120101024)」
 本の概要。  
 > エンジニアの基礎体力を身につける  
@@ -55,8 +59,9 @@
   * Appendix 2 テキストエディタと統合開発環境
   * Appendix 3 Pythonの記述ルール
 
-<details><summary>基礎知識5種類の作業手順</summary>
 
+<a name="algorithmSpecificBasicKnowledge"></a>
+<details><summary>基礎知識5種類の作業手順</summary>
 
 ## 具体的な基礎知識
 何はともあれ、まずは、"Hello World"を表示するプログラムを作る。  
@@ -92,8 +97,9 @@
 
 </details>
 
-<details><summary>アルゴリズム問題解決の作業手順</summary>
 
+<a name="algorithmSpecificAlgorithmPreSolvingProcedure"></a>
+<details><summary>アルゴリズム問題解決の作業手順</summary>
 
 ## 具体的なアルゴリズム問題解決前手順
 基礎知識5種類を勉強するのと同じように、アルゴリズムの勉強にも以下の手順で進める。  
@@ -120,6 +126,7 @@
 </details>
 
 
+<a name="algorithmCheckTheStatusOfTheActualWorkingEnvironment"></a>
 ## 実際に作業する環境の状況確認
 
 * 勉強環境。  
@@ -148,11 +155,13 @@
 　　例）`/*〜*/`・`''' 〜 '''`など。  
 
 
+<a name="algorithmHelloWorld"></a>
 ### ハローワールドプログラム
 ※実行用プログラムと実行結果だけでなく、その過程も必要ならば載せる。  
 ※手順を忘れないためにも・・・。  
 
 
+<a name="algorithmNotes"></a>
 ### ※注意事項
 「アルゴリズムを勉強することが目的」であるということを理解すること。  
 しかし、やる気を維持するためにも1冊分を読了させることも目的としており、深掘りせずに進めることも考慮すること。  
