@@ -1,9 +1,12 @@
 # C#言語
 ここは、プログラミング言語のC#言語を勉強するブランチになる。  
 
+
 ## ブランチの利用方法
 ここのブランチは、書籍のアルゴリズムを勉強するのに使う。  
 また、具体的なアルゴリズムの種類は、下記書籍の目次チャプターに限定する。  
+※チャプターごとにブランチを分けていく。  
+
 
 ## 勉強方法
 勉強するプログラミング言語の一つとしている。  
@@ -18,20 +21,17 @@
   * [C# 関連のドキュメント](https://docs.microsoft.com/ja-jp/dotnet/csharp/)  
   * [とほほのC#入門](https://www.tohoho-web.com/ex/c-sharp.html)  
 
+
 ## 開発環境
 今回は、`Visual Studio 2019 for Mac(VS2019)`を使う。  
 最初は`Visual Studio Code(VSCode)`を使うはずだったが、動かない。  
 デバッグ環境まで用意する必要があるようなのだが、やり方が分からないため、VS2019を使うことにした。  
 開発環境を用意するのに時間を使いたくないからな。  
 
+
 ## 「[Pythonで学ぶアルゴリズムの教科書](https://book.impress.co.jp/books/1120101024)」
 本の概要。  
 > エンジニアの基礎体力を身につける  
-> 
-> Pythonを用い、ITエンジニアが身につけたい王道アルゴリズムを手を動かしながら学べる入門書です。  
-> スタック、キュー、リスト、木、グラフなどのデータ構造から、サーチ、ソート、ハッシュといった王道アルゴリズムを厳選しつつ、ユークリッドの互除法、最短経路問題、フラクタル図形の描画などワンランク上の知識・技術まで網羅。  
-> サンプルは手入力しやすい短めのプログラムを108個用意しています。  
-> 資格＆就職試験に挑む方、大学や専門学校で情報処理を学ぶ方など、プログラミングの力を伸ばしたいすべての方におすすめです。  
 
 <details><summary>基礎知識5種類の項目</summary>
 
@@ -41,7 +41,7 @@
 
 ※プログラミングに使う基礎知識を統一する(簡単に済ませられる量に絞り込む)。  
 * 基礎知識5種類  
-  * [x] [変数](#variable変数)  
+  * [x] [変数](#variable変数)2021/08/20  
   * [ ] [配列](#arrangement配列)  
   * [ ] [条件分岐](#Conditional条件分岐)  
   * [ ] [繰り返し](#repetition繰り返し)  
@@ -51,16 +51,17 @@
 
 ※上記の基礎知識5種類の勉強が終わり次第閉じた状態を解除する。  
 
+<a name="algorithmTextbookLearnedinPythonContents"></a>
 * [アルゴリズム勉強目次](#algorithmTextbookLearnedinPython)  
-  * [x] Chapter 1 プログラミングの基礎知識  
+  * [ ] Chapter 1 プログラミングの基礎知識  
     現時点で完了している(上記の基礎知識5種類として)。  
-  * [Chapter 2 プログラミングの力を養う](#algorithmTextbookLearnedinPythonChapter2)  
-  * [Chapter 3 データ構造を学ぶ](#algorithmTextbookLearnedinPythonChapter3)  
-  * [Chapter 4 サーチ](#algorithmTextbookLearnedinPythonChapter4)  
-  * [Chapter 5 ソート](#algorithmTextbookLearnedinPythonChapter5)  
-  * [Chapter 6 ハッシュ](#algorithmTextbookLearnedinPythonChapter6)  
-  * [Chapter 7 さまざまなアルゴリズムを学ぶ](#algorithmTextbookLearnedinPythonChapter7)  
-  * [Chapter 8 アルゴリズムを見える化する](#algorithmTextbookLearnedinPythonChapter8)  
+  * [ ] [Chapter 2 プログラミングの力を養う](#algorithmTextbookLearnedinPythonChapter2)  
+  * [ ] [Chapter 3 データ構造を学ぶ](#algorithmTextbookLearnedinPythonChapter3)  
+  * [ ] [Chapter 4 サーチ](#algorithmTextbookLearnedinPythonChapter4)  
+  * [ ] [Chapter 5 ソート](#algorithmTextbookLearnedinPythonChapter5)  
+  * [ ] [Chapter 6 ハッシュ](#algorithmTextbookLearnedinPythonChapter6)  
+  * [ ] [Chapter 7 さまざまなアルゴリズムを学ぶ](#algorithmTextbookLearnedinPythonChapter7)  
+  * [ ] [Chapter 8 アルゴリズムを見える化する](#algorithmTextbookLearnedinPythonChapter8)  
   * Appendix 1 Pythonのインストール方法
   * Appendix 2 テキストエディタと統合開発環境
   * Appendix 3 Pythonの記述ルール
@@ -69,34 +70,36 @@
 
 <details><summary>基礎知識5種類の作業手順</summary>
 
-### 具体的な基礎知識
+## 具体的な基礎知識
 何はともあれ、まずは、"Hello World"を表示するプログラムを作る。  
+その後で、基礎中の基礎となる制御構造(構造化プログラミング)を簡略化しながら勉強する。  
 そのため、以下の手順で勉強を進めることにする。  
 
 * 以下、手順。  
   * [x] 手順1. 勉強用のブランチに移動する。  
   * [x] 手順2. ルートディレクトリのひな形ディレクトリをコピーしてくる。  
-  * [x] 手順3. コピーしてきたディレクトリ名を"基礎知識用の勉強"に変更する。  
-  * [x] 手順3-1. 当ファイル(`README.md`)の書き換えを行う。  
-        完全にこのファイルのことを忘れていた。  
-  * [x] 手順3-2. `helloWorld.[言語用の拡張子]`のファイルを作り、おなじみ"Hello World."プログラムを作る。  
-  * [ ] 手順3-3. main関数不要であれば、"**実行済み**"ディレクトリを削除すること。  
-  * [x] 手順3-4. コミットする。  
-  * [ ] 手順4. 各ディレクトリで、5種類の"絶対的に勉強する一覧"を勉強する。  
+  * [x] 手順2-0. ここまでは、上位ディレクトリにある"README.md"で作業を終えているはず。  
+  * [x] 手順2-1. 当ファイル(`README.md`)の書き換えを行う。  
+        ※ 開発環境を記録する。  
+        ※ アルゴリズムの勉強用項目は隠しておく(`details`・`summary`)代わりに、基礎知識5種類の勉強用の項目は出しておく。  
+  * [x] 手順2-2. `helloWorld.[言語用の拡張子]`のファイルを作り、おなじみ"Hello World."プログラムを作る。  
+  * [ ] 手順2-3. main関数不要であれば、"**実行済み**"ディレクトリを削除すること。  
+  * [x] 手順2-4. コミットする。  
+  * [ ] 手順3. 各ディレクトリで、5種類の"絶対的に勉強する一覧"を箇条書きごとに勉強する。  
     * 以下、5種類の内訳。  
-      [x] 変数  
-      [ ] 配列  
-      [ ] 条件分岐  
-      [ ] 繰り返し  
-      [ ] 関数  
-  * [ ] 手順4-1. 箇条書きごとに勉強を進める。  
-  * [ ] 手順4-2. 箇条書きごとに勉強を終えることで、コミット実施する。  
-  * [ ] 手順4-3. 次の箇条書きに移り、勉強を継続(再開)する。  
-  * [x] 手順4-X. 変数などの勉強で箇条書きごとにコミットは辛いよね。  
-  * [ ] 手順5. 1つのプログラミング言語で、手順4の勉強1種類を終えた時に、次のプログラミング言語に移る。  
+      ※そのとき、(できる限り)プログラムファイルにモードラインを記載する。  
+      ※チェックリストは上記にある。  
+      変数  
+      配列  
+      条件分岐  
+      繰り返し  
+      関数  
+  * [ ] 手順3-1. 箇条書きごとにコミット実施する。  
+  * [ ] 手順4. 1つのプログラミング言語で、手順3の勉強1種類を終えた時に、次のプログラミング言語に移る。  
          (細かく分けることでやる気が維持される・・・はず)  
-  * [ ] 手順6. 上記、5種類の基礎知識を終わるまで繰り返す。  
-  * [ ] 手順7. 5種類の基礎知識終了にて、"study2programming"ブランチにマージする。  
+  * [ ] 手順4-1. 今回のプログラミング言語に戻ってきたことにより、次の箇条書きに移り、勉強を継続(再開)する。  
+  * [ ] 手順5. 上記、5種類の基礎知識を終わるまで繰り返す。  
+  * [ ] 手順6. 5種類の基礎知識終了にて、"study2programming"ブランチにマージする。  
 
 </details>
 
@@ -106,31 +109,31 @@
 基礎知識5種類を勉強するのと同じように、アルゴリズムの勉強にも以下の手順で進める。  
 
 * 以下、手順。  
-  * [x] 手順1. 勉強用のブランチに移動する(上記目次の1チャプター分専用ブランチとする)。  
-  * [ ] 手順2. ルートディレクトリのひな形ディレクトリ配下の必要なディレクトリをコピーする。  
-    **Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける** ディレクトリ配下の必要なチャプター用ディレクトリ。  
-  * [ ] 手順3. 当ファイル(`README.md`)の書き換えを行う。  
-  * [ ] 手順3-1. 勉強対象のチャプター子部分にチェックリストを付ける。  
-        ※ **上位ディレクトリにある"README.md"** は触らない。  
-  * [ ] 手順3-2. 目次部分を修正する。  
-    同ファイルの細かい場所(下記の行頭シャープ記号3つ以上ある)箇所にリンクできるようにする。  
-  * [ ] 手順3-3. コミットする。  
-  * [ ] 手順4. 各ディレクトリで、各項目ごとに勉強を進める。  
-    [ ] Chapter 2 プログラミングの力を養う
-    [ ] Chapter 3 データ構造を学ぶ
-    [ ] Chapter 4 サーチ
-    [ ] Chapter 5 ソート
-    [ ] Chapter 6 ハッシュ
-    [ ] Chapter 7 さまざまなアルゴリズムを学ぶ
-    [ ] Chapter 8 アルゴリズムを見える化する
-  * [ ] 手順5. 1つのプログラミング言語で、手順4の勉強1種類を終えた時に、次のプログラミング言語に移る。  
-  * [ ] 手順6. 上記、1チャプター分が終わるまで繰り返す。  
-  * [ ] 手順7. 1チャプター分終了にて、"study2programming"ブランチにマージする。  
+  * [ ] 手順1. 勉強用のブランチに移動する(上記[目次](#algorithmTextbookLearnedinPythonContents)の1チャプター分専用ブランチとする)。  
+  * [ ] 手順2. 当ファイル(`README.md`)の書き換えを行う。  
+    [ ] アルゴリズムの勉強用に変更する。  
+    [ ] アルゴリズムの勉強用項目を出すが、基礎知識5種類の勉強項目は隠す(`details`・`summary`)。  
+  * [ ] 編集後、コミットする。  
+  * [ ] 手順3. 各ディレクトリで、チャプタごとに勉強を進める。  
+    ※そのとき、(できる限り)プログラムファイルに[モードライン](https://vim-jp.org/vim-users-jp/2009/06/02/Hack-20.html)を記載する。  
+    ※チェックリストは上記にある。  
+    Chapter 2 プログラミングの力を養う  
+    Chapter 3 データ構造を学ぶ  
+    Chapter 4 サーチ  
+    Chapter 5 ソート  
+    Chapter 6 ハッシュ  
+    Chapter 7 さまざまなアルゴリズムを学ぶ  
+    Chapter 8 アルゴリズムを見える化する  
+  * [ ] 手順4. 1つのプログラミング言語で、手順3の勉強1種類(要は、1チャプタ分の子部分)を終えた時に、次のプログラミング言語に移る。  
+  * [ ] 手順5. 1チャプタ分終了にて、"study2programming"ブランチにマージする。  
 
 </details>
 
+
 ## 実際に作業する環境の状況確認
-勉強[環境](https://docs.microsoft.com/ja-jp/dotnet/csharp/language-reference/language-specification/introduction)のコンパイルバージョン：version 6.12.0.0  
+
+* 勉強環境。  
+  * 勉強[環境](https://docs.microsoft.com/ja-jp/dotnet/csharp/language-reference/language-specification/introduction)のコンパイルバージョン：version 6.12.0.0  
 ```terminal
 $ csc -version
 3.9.0-6.21124.20 (db94f4cc)
@@ -155,13 +158,30 @@ Copyright (C) 2002-2014 Novell, Inc, Xamarin Inc and Contributors. www.mono-proj
     GC:            sgen (concurrent by default)
 $
 ```
-プログラムファイルの[拡張子](https://docs.microsoft.com/ja-jp/dotnet/csharp/language-reference/language-specification/introduction)：`*.cs`  
-標準の文字コード(プログラムファイル)：  
+
+  * プログラムファイルの[拡張子](https://docs.microsoft.com/ja-jp/dotnet/csharp/language-reference/language-specification/introduction)：`*.cs`  
+  * 実行方式：  
+    例）`コンパイラ方式`・`インタプリタ方式`  
+  * 標準の文字コード(プログラムファイル)：  
 　　例）UTF-8(今時はこれに統一されている？)。  
-文字区切り(行末記号)：セミコロン`;`  
-[インデント](https://docs.microsoft.com/ja-jp/dotnet/csharp/fundamentals/coding-style/coding-conventions)：フリーフォーマット  
-標準の出力関数：`System.Console.WriteLine`  
-コメント方法：`//`・`/*〜*/`・`///`  
+  * 文字コードの扱い：
+　　例）UTF-8・Unicode  
+  * 文字区切り(行末記号)：セミコロン`;`  
+  * [インデント](https://docs.microsoft.com/ja-jp/dotnet/csharp/fundamentals/coding-style/coding-conventions)：フリーフォーマット  
+  * 標準の出力関数：`System.Console.WriteLine`  
+  * 標準のフォーマット関数：  
+　　例）`printf`など。
+　　※必須記入項目ではなく、勉強途中での記載でも可とする。  
+  * 単数行コメント方法：`//`  
+  * XML行コメント方法：`///`  
+    今回のアルゴリズムの勉強では使わない。  
+  * 複数行コメント方法：`/*〜*/`  
+    別解：`#if`ディレクティブ(プリプロセッサ)  
+    別解は、今回のアルゴリズムの勉強では使わない。  
+
+
+### ハローワールドプログラム
+相変わらずvimではコンパイルが出来ない(Pathが長いそうだ)。  
 
 以下、ハローワールドのコンパイル。
 ```cs:helloWorld.cs
@@ -193,18 +213,24 @@ $ mono ./helloWorld.exe 	←☆"mono"プログラムによる実行にて、成�
 Hello World.
 $
 ```
-相変わらずvimではコンパイルが出来ない(Pathが長いんだと)。  
 
-#### ※注意事項  
-基礎知識として、5種類を勉強するが、その目的はアルゴリズムの勉強用であって、5種類を本格的に極めるためではない。  
-そのため、1つ1つを最小限に絞り込み、1つを10分前後の勉強時間に収まるように気をつけること。  
+
+### ※注意事項
+「アルゴリズムを勉強することが目的」であるということを理解すること。  
+しかし、やる気を維持するためにも1冊分を読了させることも目的としており、深掘りせずに進めることも考慮すること。  
+要は、深く踏み込むか、流し読み程度に抑えるかどうかはそのときに決める。  
 
 <a name="variable変数"></a>
 <a name="arrangement配列"></a>
 <a name="Conditional条件分岐"></a>
 <a name="repetition繰り返し"></a>
 <a name="function関数"></a>
-<details><summary>基礎知識5種類に対する注意事項</summary>
+<details><summary>基礎知識5種類の各項目</summary>
+
+基礎知識として5種類を勉強するが、その目的はアルゴリズムの勉強用であって、5種類を本格的に極めるためではない。  
+そのため、1つ1つを最小限に絞り込み、1つを10分前後の勉強時間に収まるように気をつけること。  
+※現時点で守れていないため、何とかして短い時間に抑え、アルゴリズムの勉強を本格的に勉強できるように考慮すること。  
+
 
 #### 概要。
 * [変数](#variable変数sub)  
@@ -269,7 +295,6 @@ $
 
 </details>
 
-
 <a name="variable変数sub"></a>
 <details><summary>実際の変数の勉強</summary>
 
@@ -279,15 +304,14 @@ $
 
 * 絶対的に勉強する一覧  
   * [変数の宣言方法](#subVariable1)  
-  * [変数への代入方法](#subVariable1)  
+  * [変数への代入方法及び変数の利用](#subVariable2)  
     * [x] 代入演算子(`=`)  
-  * [変数値の出力方法](#subVariable2)  
+  * [変数値の出力方法](#subVariable3)  
   * [データ型](#subVariable4)  
     * [x] 整数(`int`)  
     * [x] 浮動小数点型(`float`)  
     * [x] 文字型(`string`)  
     * [x] 真偽型(`bool`)  
-  * [代入した変数の利用方法](#subVariable3)  
   * [変数値を使った計算方法](#subVariable5)  
     * [x] 算術演算子  
       * [x] 足し算(`+`)  
@@ -301,91 +325,22 @@ $
       * [x] 割り算の余り(`%`)  
   * [型変換(キャスト)方法](#subVariable6)  
     * [x] 明示変換  
+      `代入先変数名 = (データ型)変数名`  
 
 <a name="subVariable1"></a>
-#### 変数  
-変数宣言
+#### 変数
 様式：
-`データ型 変数名`  
+`データ型 変数名;`  
 例）
 `int hoge;`  
 
+
+<a name="subVariable2"></a>
+#### 変数への代入方法及び変数の利用
+様式：
 初期化(変数宣言と同時に値を代入する)様式：
 `データ型 変数名 = 初期値`  
 その値のことを"初期値"と呼ぶ。  
-
-<a name="subVariable2"></a>
-#### 変数値の出力方法
-
-```cs
-public static void Main(string[] args)
-{
-	Console.WriteLine("Hello World!");
-
-	string hoge = "Hello World";
-	string boo;
-
-	// 複数同時宣言
-	int hoo = 0, bar = 1, har = 2, bee = 3;
-
-	// 出力
-	boo = @"{Hello
-　|
-World.}";
-	Console.WriteLine(hoge, boo, hoo, bar, har, bee);    // この書き方では出力されない(先頭の変数のみ出力された)。
-	Console.WriteLine(boo);
-	Console.WriteLine(hoo);     // 0
-	Console.WriteLine(bar);    // 1
-	Console.WriteLine(har);    // 2
-	Console.WriteLine(bee);    // 3
-
-}
-```
-
-<a name="subVariable4"></a>
-#### データ型
-以下の表に限らず、腐るほどある。  
-
-|C#型|CLR名|符号|ビットサイズ|範囲|接尾辞|一言|
-|----|-----|----|------------|----|------|----|
-|int|System.Int32|付き|32|-2147483648〜2147483647|||
-|float|System.Single|32|32ビット(〜7桁)||F|極力使わない。|
-|string|System.String||||||
-|bool|System.Boolean|||||true:0・false:1|
-
-<a name="subVariable5"></a>
-#### 変数値を使った計算方法
-
-|演算子|概要|機能|
-|------|----|----|
-|++|インクリメント|オペランドに1加算|
-|--|デクリメント|オペランドに1減算|
-|+|加算|※二項演算子に限る|
-|-|減算|※二項演算子に限る|
-|*|乗算||
-|/|除算|整数型の場合、余り切り捨て|
-|%|剰余|除算の余り|
-
-<a name="subVariable6"></a>
-#### 型変換(キャスト)方法
-様式：
-`(データ型)変数名`  
-
-以下、キャスト。
-```cs
-byte over = (byte)255;
-Console.WriteLine(over);
-```
-
-以下、桁あふれするような代入は、エラーになる。
-```cs
-// Error CS0221: Constant value '256' cannot be converted to a 'byte' (use 'unchecked' syntax to override) (CS0221) (データ型)
-byte over = (byte)256;
-Console.WriteLine(over);
-```
-
-<a name="subVariable3"></a>
-#### 代入した変数の利用方法
 
 
 ```cs
@@ -411,15 +366,89 @@ egoh = (100 == 100);
 Console.WriteLine(egoh);        // True
 ```
 
+<a name="subVariable3"></a>
+#### 変数値の出力方法
+`Console.WriteLine`を使う。  
+
+```cs
+public static void Main(string[] args)
+{
+	Console.WriteLine("Hello World!");
+
+	string hoge = "Hello World";
+	string boo;
+
+	// 複数同時宣言
+	int hoo = 0, bar = 1, har = 2, bee = 3;
+
+	// 出力
+	boo = @"{Hello
+　|
+World.}";
+	Console.WriteLine(hoge, boo, hoo, bar, har, bee);    // この書き方では出力されない(先頭の変数のみ出力された)。
+	Console.WriteLine(boo);
+	Console.WriteLine(hoo);    // 0
+	Console.WriteLine(bar);    // 1
+	Console.WriteLine(har);    // 2
+	Console.WriteLine(bee);    // 3
+
+}
+```
+
+<a name="subVariable4"></a>
+#### データ型
+以下の表に限らず、腐るほどある。  
+
+|C#型|CLR名|符号|ビットサイズ|範囲|接尾辞|一言|
+|----|-----|----|------------|----|------|----|
+|int|System.Int32|付き|32|-2147483648〜2147483647|||
+|float|System.Single|32|32ビット(〜7桁)||F|極力使わない。|
+|string|System.String||||||
+|bool|System.Boolean|||||true:0・false:1|
+
+<a name="subVariable5"></a>
+#### 変数値を使った計算方法
+
+|演算子|意味|備考|
+|------|----|----|
+|`+`|加算|※二項演算子に限る|
+|`-`|減算|※二項演算子に限る|
+|`*`|乗算||
+|`/`|除算|整数型の場合、余り切り捨て。|
+|`**`|累乗|C#にはない。|
+|`//`|除算の商|C#にはない。|
+|`%`|剰余演算|除算の余り|
+|`++`|インクリメント|オペランドに1加算|
+|`--`|デクリメント|オペランドに1減算|
+
+<a name="subVariable6"></a>
+#### 型変換(キャスト)方法
+様式：
+`(データ型)変数名`  
+
+以下、キャスト。
+```cs
+byte over = (byte)255;
+Console.WriteLine(over);
+```
+
+以下、桁あふれするような代入は、エラーになる。
+```cs
+// Error CS0221: Constant value '256' cannot be converted to a 'byte' (use 'unchecked' syntax to override) (CS0221) (データ型)
+byte over = (byte)256;
+Console.WriteLine(over);
+```
+
 <a name="subVariable999"></a>
 #### 変数での説明しない項目。
 
 <details><summary>今回は勉強を見送る一覧</summary>
 
+* [ ] 定数  
 * [ ] データ型  
   * [ ] 文字  
     char  
-  * [ ] 整数  
+  * [ ] 整数(`long`など)  
     sbyte  
     byte(メモリやバイナリファイル用)  
     short  
@@ -429,18 +458,24 @@ Console.WriteLine(egoh);        // True
     ulong  
     decimal(金額用？)  
   * [ ] 浮動小数点型(`double`など)  
-    double  
   * [ ] 型推論  
-    ない？  
     ある(`var型`)。  
   * [ ] 複素数型  
-    ない？  
-
 * [ ] リテラル  
   * [ ] 整数リテラル  
   * [ ] 浮動小数点リテラル  
   * [ ] 文字リテラル  
   * [ ] 文字列リテラル  
+* [ ] キャスト  
+  * [ ] 暗黙変換  
+* [ ] 演算子  
+  * [ ] 優先順位  
+
+* ちょっと高度な話題  
+  * [ ] ポインタ  
+
+* 関数を変数に代入  
+* 関数を引数に使う  
 
 </details>
 
@@ -694,8 +729,8 @@ Console.WriteLine(egoh);        // True
 
 ※基礎知識5種類の勉強終了後に、ここを解放する。  
 
-#### ☆アルゴリズムの勉強チャプタ概要☆
 <a name="algorithmTextbookLearnedinPython"></a>
+#### ☆アルゴリズムの勉強チャプタ概要☆
 <a name="algorithmTextbookLearnedinPythonChapter2"></a>
 * [Chapter2 プログラミングの力を養う](#developProgrammingSkillsOverviewChapter2)  
   基礎的なプログラミングの力を養っていく。  
@@ -991,23 +1026,18 @@ Python限定にしたくなかったが、他のプログラミング言語に�
 
 </details>
 
-## Gitのマージルール
-当ブランチでC#言語の勉強をする。  
-以下、流れとして、、、
-
-* 当ブランチ）  
-  1. 当ブランチで勉強する。  
-  1. 切りの良い場所でコミット実施。  
-
-  * 上記作業再開。  
-    1. 前回の勉強を再開する。  
-    1. 1章分の勉強終了後、"study2programming"にマージする。  
-    1. 誤字脱字程度のコミットはスカッシュしたい。  
-    1. "study2programming"をPushする。  
-    ※masterにマージすることはない。  
-    1. 章ごとにタグ付けをする(Push実施)。  
-
+## ※Gitのマージルール
 study2programmingに取り込むときのマージは、3方向マージ(`--no-ff`)を使う。  
-例外作業として、masterに取り込む場合はチェリーピッキングでピンポイントに必要最小限のコミットのみを取り込む(しつこいが、masterに取り込むことはしたくない)。  
+
+* [ ] "study2programming"にマージする時のルール。  
+  * [ ] 誤字脱字程度のコミットはスカッシュしたい。  
+  * [ ] マージ後"study2programming"をPushする。  
+    ※masterにマージすることはない。  
+  * [ ] マージごとにタグ付けをする(そしてPush実施)。  
+
+* 例外としてmasterに取り込む場合は、チェリーピッキングでピンポイントに必要最小限のコミットのみを取り込む(しつこいが、masterに取り込むことはしたくない)。  
+  言いたいことは、履歴を複数にしたくないと言うこと。  
+
 
 以上。
+<!-- vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=markdown expandtab: -->
