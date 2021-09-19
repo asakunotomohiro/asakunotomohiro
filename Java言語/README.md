@@ -44,7 +44,7 @@
   * [x] [変数](#variable変数)2021/08/21  
   * [x] [配列](#arrangement配列)2021/09/18  
   * [x] [条件分岐](#Conditional条件分岐)2021/09/19  
-  * [ ] [繰り返し](#repetition繰り返し)  
+  * [x] [繰り返し](#repetition繰り返し)2021/09/19  
   * [ ] [関数](#function関数)  
 
 <details><summary>アルゴリズムの勉強項目詳細</summary>
@@ -743,6 +743,8 @@ class 条件分岐 {
 
 * 多岐分岐-条件にて複数から選ぶ。  
   基本構造例：switch  
+  ※Java12で導入されたswitch式も説明する。  
+  また、**break**を使い、抜け出す方法を説明する。  
 
 * 関係演算子  
   * [ ] 三項演算子  
@@ -772,52 +774,188 @@ class 条件分岐 {
 ### 繰り返し
 
 * 絶対的に勉強する一覧  
-  * [ ] [指定回数条件での繰り返し](#subRepetition1)  
-    [ ] [基本構造例：for( 条件式 )](#subRepetition2)  
-    [ ] [基本構造例：拡張for命令(`in`)](#subRepetition3)  
-    [ ] [`for`の入れ子。](#subRepetition4)  
+  * [x] [指定回数条件での繰り返し](#subRepetition1)  
+    [x] [基本構造例：for( 条件式 )](#subRepetition2)  
+    [x] [基本構造例：拡張for命令(`in`)](#subRepetition3)  
+    [x] [`for`の入れ子。](#subRepetition4)  
   * [ジャンプ処理](#subRepetition5)  
-    * [ ] break  
-    * [ ] continue  
-  * [ ] [真偽条件での繰り返し](#subRepetition6)  
-    [ ] [基本構造例：while( 条件式 )](#subRepetition6)  
-    [ ] [無限ループ](#subRepetition7)  
+    * [x] break  
+    * [x] continue  
+  * [x] [真偽条件での繰り返し](#subRepetition6)  
+    [x] [基本構造例：while( 条件式 )](#subRepetition6)  
+    [x] [無限ループ](#subRepetition7)  
 
 
 <a name="subRepetition1"></a>
 #### 繰り返し
 様式：
+```java
+for ( 初期化式; 継続条件式; 増減式 ) {
+	処理;
+}
+```
 
 <a name="subRepetition2"></a>
 ##### 指定回数条件での繰り返し：for( 条件式 )
 様式：
 
+以下、例）
+```java
+class 繰り返しfor {
+	public static void main(String[] args){
+		for ( int i = 0; 3 > i; i++ ) {
+			System.out.println( i );
+		}
+		// 出力結果：
+//					0
+//					1
+//					2
+	}
+}
+```
+
 <a name="subRepetition3"></a>
 ##### 指定回数条件での繰り返し：拡張for命令
 様式：
+```java
+for ( データ型 仮変数:配列 ) {
+	仮変数を使った処理;
+}
+```
+
+以下、例）
+```java
+class 拡張for文 {
+	public static void main(String[] args){
+		String[] stringArray = new String[]{"hoge", "bar", "boo", };
+
+		// 以下、拡張for文
+		for ( String ii:stringArray ) {
+			System.out.println( ii );
+		}
+		// 出力結果：
+//					hoge
+//					bar
+//					boo
+	}
+}
+```
 
 <a name="subRepetition4"></a>
 #### `for`の入れ子。
 
+以下、例）
+```java
+class forの入れ子 {
+	public static void main(String[] args){
+		for ( int i = 0; 3 > i; i++ ) {
+			for ( int j = 0; 3 > j; j++ ) {
+				System.out.println( "i == " + i + ", j == " + j );
+			}
+		}
+		// 出力結果：
+//					i == 0, j == 0
+//					i == 0, j == 1
+//					i == 0, j == 2
+//					i == 1, j == 0
+//					i == 1, j == 1
+//					i == 1, j == 2
+//					i == 2, j == 0
+//					i == 2, j == 1
+//					i == 2, j == 2
+	}
+}
+```
+
 <a name="subRepetition5"></a>
 #### ジャンプ処理
+[break](#subRepetition5break)：直近のループを抜け出る。  
+[continue](#subRepetition5continue)：ループの先頭にジャンプしてループを継続する。  
+
+<a name="subRepetition5break"></a>
+`break`例）
+```java
+class forからのbrak {
+	public static void main(String[] args){
+		String[] eachfor = new String[]{"hoge", "boo", "bar", };
+
+		int kk = 0;
+		for ( String ii:eachfor ) {
+			for ( String jj:eachfor ) {
+					System.out.println( kk + ": ii==" + ii + ": jj==" + jj );
+					kk++;
+			}
+			kk = 0;
+			if ( ii.equals("boo") ) {
+				break;
+			}
+		}
+		// 出力結果：
+//					0: ii==hoge: jj==hoge
+//					1: ii==hoge: jj==boo
+//					2: ii==hoge: jj==bar
+//					0: ii==boo: jj==hoge
+//					1: ii==boo: jj==boo
+//					2: ii==boo: jj==bar
+	}
+}
+```
+1つ目のループに**break**があり、**bar**を出力前に抜け出た。  
+※2つ目のループは最後まで処理をしている。  
+
+<a name="subRepetition5continue"></a>
+`continue`例）
+```terminal
+class forからのcontinue {
+	public static void main(String[] args){
+		String[] eachcontinue = new String[]{"hoge", "bar", "boo", "Array", };
+
+		for ( String ii:eachcontinue ) {
+			if ( ii.equals("bar") ) {
+				continue;
+			}
+			System.out.println( "ii==" + ii );
+		}
+		// 出力結果：
+//					ii==hoge
+//					ii==boo
+//					ii==Array
+	}
+}
+```
+**bar**を出力する手前でループの先頭に戻っている。  
+その後、処理を再開しているため、**bar**が出力されていない。  
+
 
 <a name="subRepetition6"></a>
 #### 真偽条件での繰り返し：while( 条件式 )
 様式：
+```java
+while ( 条件式 ) {
+	処理;
+	抜け出す処理(条件式);
+}
+```
+
 
 <a name="subRepetition7"></a>
 #### 無限ループ
-様式：
+for様式：
+`for (;;) {}`  
+
+while様式：
+`while ( 真になる条件 ) {}`  
+
 
 <a name="subRepetition999"></a>
 #### 繰り返しでの説明しない項目。
 
-[以下、今回の言語に関係の無い項目を削除すること(対象言語に存在するが、見送るもののみ、以下残す)。]  
 <details><summary>今回は勉強を見送る一覧</summary>
 
 * [ ] 真偽条件での繰り返し  
   基本構造例：do〜while( 条件式 )  
+* **break**のラベル付きで抜け出る方法。  
+* **continue**のラベル付きで抜け出る方法。  
 
 </details>
 
