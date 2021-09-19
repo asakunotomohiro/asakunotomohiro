@@ -52,11 +52,14 @@ $
 ```terminal
 $ javac --version
 javac 17
-$ javac -version
-javac 17
+$ java --version
+java 17 2021-09-14 LTS
+Java(TM) SE Runtime Environment (build 17+35-LTS-2724)
+Java HotSpot(TM) 64-Bit Server VM (build 17+35-LTS-2724, mixed mode, sharing)
 $
 ```
-なぜに詳細な説明が出てこない？  
+`javac`と`java`を合わせる必要あるのか？  
+ないよね・・・別々にする必要も無いけど。  
 
 
 ## Homebrewでのインストール
@@ -224,6 +227,8 @@ $
 ここまでする必要があるならば、普通にオラクルのJavaをインストールすれば良いように思う・・・。  
 バージョン切り替えする必要は全くないのだから・・・。  
 
+※OracleのJavaに戻す場合は、Path通しの部分をコメントアウトするだけでいい(リンクファイル作成は触らないと言うこと)。  
+
 ```terminal
 $ brew list java
 /usr/local/Cellar/openjdk/16.0.2/bin/jaotc
@@ -261,6 +266,20 @@ $ brew list java
 /usr/local/Cellar/openjdk/16.0.2/share/man/ (29 files)
 $
 ```
+
+### バージョン確認。
+
+```terminal
+$ javac --version
+javac 16.0.2
+$ java --version
+openjdk 16.0.2 2021-07-20
+OpenJDK Runtime Environment Homebrew (build 16.0.2+0)
+OpenJDK 64-Bit Server VM Homebrew (build 16.0.2+0, mixed mode, sharing)
+$
+```
+
+
 
 
 以上。

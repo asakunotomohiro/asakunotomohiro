@@ -43,7 +43,7 @@
 * 基礎知識5種類  
   * [x] [変数](#variable変数)2021/08/21  
   * [x] [配列](#arrangement配列)2021/09/18  
-  * [ ] [条件分岐](#Conditional条件分岐)  
+  * [x] [条件分岐](#Conditional条件分岐)2021/09/19  
   * [ ] [繰り返し](#repetition繰り返し)  
   * [ ] [関数](#function関数)  
 
@@ -146,6 +146,8 @@ $
 ```
 ["条件分岐"](#Conditional条件分岐sub)以降このバージョンを使う。  
 ※それまでは、Oracleバージョン13を使っていた。  
+openJDKの最新が16ではなく、やっぱり[Javaバージョン履歴から17](https://ja.wikipedia.org/wiki/Javaバージョン履歴)っぽいのだが・・・。  
+個人的には、11と思っているのだが・・・。  
 
   * プログラムファイルの拡張子：`*.java`  
 　　※Windowsに併せるならば拡張子は必須かな。  
@@ -638,24 +640,81 @@ class 二次元配列 {
 ### 条件分岐
 
 * 絶対的に勉強する一覧  
-  * [ ] [単純分岐-"もし"1つ。](#subConditional1)  
+  * [x] [単純分岐-"もし"1つ。](#subConditional1)  
     基本構造例：if  
-  * [ ] [多岐分岐-"もし"2つ以上。](#subConditional1)  
+  * [x] [多岐分岐-"もし"2つ以上。](#subConditional1)  
     基本構造例：if〜else if〜  
-  * [ ] [論理演算子(ド・モルガンの法則)](#subConditional2)  
-    * [ ] 論理積(`AND`・`&&`)  
-    * [ ] 論理和(`OR`・`||`)  
-  * [ ] [比較演算子](#subConditional3)  
-    * [ ] 等しい(`==`)  
-    * [ ] 等しくない(`!=`)  
-    * [ ] より大きい(`>`)  
-    * [ ] より小さい(`<`)  
-    * [ ] 以上(`>=`)  
-    * [ ] 以下(`<=`)  
+  * [x] [論理演算子(ド・モルガンの法則)](#subConditional2)  
+    * [x] 論理積(`AND`・`&&`)  
+    * [x] 論理和(`OR`・`||`)  
+  * [x] [比較演算子](#subConditional3)  
+    * [x] 等しい(`==`)  
+    * [x] 等しくない(`!=`)  
+    * [x] より大きい(`>`)  
+    * [x] より小さい(`<`)  
+    * [x] 以上(`>=`)  
+    * [x] 以下(`<=`)  
 
 <a name="subConditional1"></a>
 #### 条件分岐
 様式：
+```java
+if ( 条件式 ) {
+	処理;
+}
+```
+
+多岐分岐：
+```java
+if ( 条件式1 ) {
+	処理A;
+}
+else if ( 条件式2 ) {
+	処理B;
+}
+else {
+	処理C;
+}
+```
+
+以下、例）
+```java
+class 条件分岐 {
+	public static void main(String[] args){
+		int boo = 19;
+		int bar = 20;
+
+		if ( boo+1 == bar ) {
+			System.out.print( "20 == 20：" );
+			System.out.println( boo+1 == bar );	// 20 == 20：true
+		}
+
+		if ( boo == bar ) {
+			System.out.print( "19 == 20：" );
+			System.out.println( boo == bar );
+		}
+		else {
+			System.out.print( "19 != 20：" );
+			System.out.println( boo != bar );	// 19 != 20：true
+		}
+
+		if ( boo == bar ) {
+			System.out.print( "19 == 20：" );
+			System.out.println( boo == bar );
+		}
+		else if ( boo+1 != bar ) {
+			System.out.print( "20 != 20：" );
+			System.out.println( boo+1 != bar );
+		}
+		else {
+			System.out.print( "19 < 20：" );
+			System.out.println( boo < bar );	// 19 < 20：true
+		}
+
+	}
+}
+```
+
 
 <a name="subConditional2"></a>
 #### 論理演算子(ド・モルガンの法則)
@@ -680,14 +739,14 @@ class 二次元配列 {
 <a name="subConditional999"></a>
 #### 条件分岐での説明しない項目。
 
-[以下、今回の言語に関係の無い項目を削除すること(対象言語に存在するが、見送るもののみ、以下残す)。]  
 <details><summary>今回は勉強を見送る一覧</summary>
 
 * 多岐分岐-条件にて複数から選ぶ。  
   基本構造例：switch  
 
 * 関係演算子  
-  * [ ] 三項演算子(`?:`)  
+  * [ ] 三項演算子  
+    `?:`  
   * [ ] 論理演算子  
     * [ ] 排他的論理和(`XOR`・`NOT OR`・`^`)  
     * [ ] 否定(`NOT`・`!`・`~`)  
@@ -698,6 +757,7 @@ class 二次元配列 {
 * 他の話題例  
   * [ ] 変数の比較  
   * [ ] 配列の比較  
+    ちょっとやってみた。  
 
 * ジャンプ  
   * [ ] goto文  
