@@ -35,7 +35,7 @@ say "@asakuno";	# asa kuno tomo hiro  )(
 
 say "-" x 30;
 @string = ();
-@asakuno = (1..5);	# 増加する使い方のみできるため、空リストが生成される。
+@asakuno = (1..5);	# 増加する使い方のみできる。
 say "@string, @asakuno";	# , 1 2 3 4 5
 @string = @asakuno;
 $asakuno[0] = 99;
