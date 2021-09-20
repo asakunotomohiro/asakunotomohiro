@@ -2,26 +2,26 @@
 ここは、プログラミング言語のJava言語を勉強するブランチになる。  
 
 
+<a name="algorithmHowToUseTheBranch"></a>
 ## ブランチの利用方法
-アルゴリズムの勉強用プログラミング言語の一つとしている。  
-まずは、基礎知識5種類の勉強を始める。  
+アルゴリズムの勉強用プログラミング言語の一つ。  
+ここのブランチは、書籍のアルゴリズムを勉強するのに使う。  
+また、具体的なアルゴリズムの種類は、下記書籍の[目次チャプター](#algorithmTextbookLearnedinPythonContents)に限定する。  
+※そして、チャプターごとにブランチを分けていく。  
 
 
+<a name="algorithmHowToStudy"></a>
 ## 勉強方法
 オラクルの[Javaサイト](https://education.oracle.com/ja/java/java/pFamily_48)では勉強しづらい。  
-と言うことで、以下2冊をもとに勉強を進める。  
-
-
-以下の書籍を購入済み。  
-* [楽しく学ぶJava入門](https://www.impressrd.jp/news/detail/451)の合本(7日分を1冊にまとめてある)  
-  [1日目](https://nextpublishing.jp/book/6437.html)の出版は2015年のようだ。  
-  だからなのか、**System.in.read**などは現在**非推奨関数**になっており、コンパイルエラーが発生する。  
-* [ゼロからわかる Java超入門 [改訂3版]](https://gihyo.jp/book/2020/978-4-297-11484-8)  
 
 以下のサイトを参考にする。  
 * [Javaチュートリアル](https://docs.oracle.com/cd/E26537_01/tutorial/)  
 
+全体的に、Pythonのアルゴリズムの勉強を今回のJavaに流用するため、ネットを駆使するしか無いように思う。  
+Java難しい(他のもだけど)。  
 
+
+<a name="algorithmDevelopmentEnvironment"></a>
 ## 開発環境
 本当に基本的な部分のみ`MacVim`を使うことになるだろう(自動補完がうまく働かなければ普通にIDEを使う)。  
 ある程度規模が大きくなった時に、`Visual Studio Code(VSCode)`に移行する。  
@@ -29,118 +29,24 @@
 できる限り`MacVim`を使うつもりだが。  
 
 
-## 「[Pythonで学ぶアルゴリズムの教科書](https://book.impress.co.jp/books/1120101024)」
-本の概要。  
-> エンジニアの基礎体力を身につける  
-
-※プログラミングに使う基礎知識を統一する(簡単に済ませられる量に絞り込む)。  
-* 基礎知識5種類  
-  * [x] [変数](#variable変数)2021/08/21  
-  * [x] [配列](#arrangement配列)2021/09/18  
-  * [x] [条件分岐](#Conditional条件分岐)2021/09/19  
-  * [x] [繰り返し](#repetition繰り返し)2021/09/19  
-  * [x] [関数](#function関数)2021/09/20  
-    今回メソッドを関数と呼ぶ。  
-
-<details><summary>アルゴリズムの勉強項目詳細</summary>
-
-<a name="algorithmTextbookLearnedinPythonContents"></a>
-* [アルゴリズム勉強目次](#algorithmTextbookLearnedinPython)  
-  * [ ] Chapter 1 プログラミングの基礎知識  
-    現時点で完了している(上記の基礎知識5種類として)。  
-  * [ ] [Chapter 2 プログラミングの力を養う](#algorithmTextbookLearnedinPythonChapter2)  
-  * [ ] [Chapter 3 データ構造を学ぶ](#algorithmTextbookLearnedinPythonChapter3)  
-  * [ ] [Chapter 4 サーチ](#algorithmTextbookLearnedinPythonChapter4)  
-  * [ ] [Chapter 5 ソート](#algorithmTextbookLearnedinPythonChapter5)  
-  * [ ] [Chapter 6 ハッシュ](#algorithmTextbookLearnedinPythonChapter6)  
-  * [ ] [Chapter 7 さまざまなアルゴリズムを学ぶ](#algorithmTextbookLearnedinPythonChapter7)  
-  * [ ] [Chapter 8 アルゴリズムを見える化する](#algorithmTextbookLearnedinPythonChapter8)  
-  * Appendix 1 Pythonのインストール方法
-  * Appendix 2 テキストエディタと統合開発環境
-  * Appendix 3 Pythonの記述ルール
-
-</details>
-
-<details><summary>基礎知識5種類の作業手順</summary>
-
-## 具体的な基礎知識
-何はともあれ、まずは、"Hello World"を表示するプログラムを作る。  
-その後で、基礎中の基礎となる制御構造(構造化プログラミング)を簡略化しながら勉強する。  
-そのため、以下の手順で勉強を進めることにする。  
-
-* 以下、手順。  
-  * [x] 手順1. 勉強用のブランチに移動する。  
-  * [x] 手順2. ルートディレクトリのひな形ディレクトリをコピーしてくる。  
-  * [x] 手順2-0. ここまでは、上位ディレクトリにある"README.md"で作業を終えているはず。  
-  * [x] 手順2-1. 当ファイル(`README.md`)の書き換えを行う。  
-        ※ 開発環境を記録する。  
-        ※ アルゴリズムの勉強用項目は隠しておく(`details`・`summary`)代わりに、基礎知識5種類の勉強用の項目は出しておく。  
-  * [x] 手順2-2. `helloWorld.[言語用の拡張子]`のファイルを作り、おなじみ"Hello World."プログラムを作る。  
-  * [x] 手順2-3. main関数不要であれば、"**実行済み**"ディレクトリを削除すること。  
-  * [x] 手順2-4. コミットする。  
-  * [x] 手順3. 各ディレクトリで、5種類の"絶対的に勉強する一覧"を箇条書きごとに勉強する。  
-    * 以下、5種類の内訳。  
-      ※そのとき、(できる限り)プログラムファイルにモードラインを記載する。  
-      ※チェックリストは上記にある。  
-      変数  
-      配列  
-      条件分岐  
-      繰り返し  
-      関数  
-  * [x] 手順3-1. 箇条書きごとにコミット実施する。  
-  * [x] 手順4. 1つのプログラミング言語で、手順3の勉強1種類を終えた時に、次のプログラミング言語に移る。  
-         (細かく分けることでやる気が維持される・・・はず)  
-  * [x] 手順4-1. 今回のプログラミング言語に戻ってきたことにより、次の箇条書きに移り、勉強を継続(再開)する。  
-  * [x] 手順5. 上記、5種類の基礎知識を終わるまで繰り返す。  
-  * [ ] 手順6. 5種類の基礎知識終了にて、"study2programming"ブランチにマージする。  
-
-</details>
-
-<details><summary>アルゴリズム問題解決の作業手順</summary>
-
-
-## 具体的なアルゴリズム問題解決前手順
-基礎知識5種類を勉強するのと同じように、アルゴリズムの勉強にも以下の手順で進める。  
-
-* 以下、手順。  
-  * [x] 手順1. 勉強用のブランチに移動する(上記[目次](#algorithmTextbookLearnedinPythonContents)の1チャプター分専用ブランチとする)。  
-  * [ ] 手順2. 当ファイル(`README.md`)の書き換えを行う。  
-    [ ] アルゴリズムの勉強用に変更する。  
-    [ ] アルゴリズムの勉強用項目を出すが、基礎知識5種類の勉強項目は隠す(`details`・`summary`)。  
-  * [ ] 編集後、コミットする。  
-  * [ ] 手順3. 各ディレクトリで、チャプタごとに勉強を進める。  
-    ※そのとき、(できる限り)プログラムファイルに[モードライン](https://vim-jp.org/vim-users-jp/2009/06/02/Hack-20.html)を記載する。  
-    ※チェックリストは上記にある。  
-    Chapter 2 プログラミングの力を養う  
-    Chapter 3 データ構造を学ぶ  
-    Chapter 4 サーチ  
-    Chapter 5 ソート  
-    Chapter 6 ハッシュ  
-    Chapter 7 さまざまなアルゴリズムを学ぶ  
-    Chapter 8 アルゴリズムを見える化する  
-  * [ ] 手順4. 1つのプログラミング言語で、手順3の勉強1種類(要は、1チャプタ分の子部分)を終えた時に、次のプログラミング言語に移る。  
-  * [ ] 手順5. 1チャプタ分終了にて、"study2programming"ブランチにマージする。  
-
-</details>
-
-
-## 実際に作業する環境の状況確認
+<a name="algorithmCheckTheStatusOfTheActualWorkingEnvironment"></a>
+<details><summary>実際に作業する環境の状況確認</summary>
 
 * 勉強環境。  
-  * 勉強環境のコンパイルバージョン：javac 16  
+  * 勉強環境のコンパイルバージョン：javac 17  
 ```terminal
 $ javac --version
-javac 16.0.2
+javac 17
 $ java --version
-openjdk 16.0.2 2021-07-20
-OpenJDK Runtime Environment Homebrew (build 16.0.2+0)
-OpenJDK 64-Bit Server VM Homebrew (build 16.0.2+0, mixed mode, sharing)
+java 17 2021-09-14 LTS
+Java(TM) SE Runtime Environment (build 17+35-LTS-2724)
+Java HotSpot(TM) 64-Bit Server VM (build 17+35-LTS-2724, mixed mode, sharing)
 $
 ```
-["条件分岐"](#Conditional条件分岐sub)以降このバージョンを使う。  
-※それまでは、Oracleバージョン13を使っていた。  
-openJDKの最新が16ではなく、やっぱり[Javaバージョン履歴](https://ja.wikipedia.org/wiki/Javaバージョン履歴)から17っぽいのだが・・・。  
-個人的には、11と思っているのだが・・・。  
+今回のアルゴリズムの勉強以降このバージョンを使う。  
+※それまでは、openjdk16とOracleVer13を使っていた。  
+Javaを16にしてから補完が効かなくなったように思う。  
+そもそも公式の17を避ける理由もないしな・・・個人勉強範囲内だし・・・。  
 
   * プログラムファイルの拡張子：`*.java`  
   * 実行方式：コンパイラ方式  
@@ -159,6 +65,7 @@ openJDKの最新が16ではなく、やっぱり[Javaバージョン履歴](http
   * javadocと言われるドキュメント自動生成のコメント方法：`/** 〜 */`  
 
 
+<a name="algorithmHelloWorld"></a>
 ### ハローワールドプログラム
 以下、ハローワールドプログラム。
 ```java
@@ -203,97 +110,124 @@ drwxr-xr-x  10 hogebar  staff   320  8 21 16:18 基礎知識用の勉強/
 $
 ```
 
+
 #### 一連のコンパイルから実行までの流れ
 実行の流れを示すよりは、命名規則もどきの説明。  
 
 * 以下、手順  
-  1. ソースファイル名：\<クラス名\>.java  
-  1. コンパイル実施：javac \<ソースファイル名\>  
-  1. 生成されるクラス名：\<クラス名\>.class  
-  1. 実行方法：java \<クラス名\>  
+  1. ソースファイル名：[クラス名].java  
+  1. コンパイル実施：javac [ソースファイル名]  
+  1. 生成されるクラス名：[クラス名].class  
+  1. 実行方法：java [クラス名]  
 
 * 文字コード指定のコンパイル方法  
   様式：`javac -encoding [文字コード] [ソースファイル名]`  
   例）`javac -encoding UTF-8 hoge.java`  
 
+</details>
+
+
+<a name="algorithmTextbookLearnedinPythonBook"></a>
+## 「[Pythonで学ぶアルゴリズムの教科書](https://book.impress.co.jp/books/1120101024)」
+本の概要。  
+> エンジニアの基礎体力を身につける  
+
+<details><summary>基礎知識5種類の項目</summary>
+
+※プログラミングに使う基礎知識を統一する(簡単に済ませられる量に絞り込む)。  
+* 基礎知識5種類  
+  * [x] [変数](#variable変数sub)  
+  * [x] [配列](#arrangement配列sub)  
+  * [x] [条件分岐](#Conditional条件分岐sub)  
+  * [x] [繰り返し](#repetition繰り返しsub)  
+  * [x] [関数](#function関数sub)  
+    今回メソッドを関数と呼ぶ。  
+
+</details>
+
+<a name="algorithmTextbookLearnedinPythonContents"></a>
+* [アルゴリズム勉強目次](#algorithmTextbookLearnedinPython)  
+  * [x] Chapter 1 プログラミングの基礎知識  
+    現時点で完了している(上記の基礎知識5種類として)。  
+  * [ ] [Chapter 2 プログラミングの力を養う](#algorithmTextbookLearnedinPythonChapter2)  
+  * [ ] [Chapter 3 データ構造を学ぶ](#algorithmTextbookLearnedinPythonChapter3)  
+  * [ ] [Chapter 4 サーチ](#algorithmTextbookLearnedinPythonChapter4)  
+  * [ ] [Chapter 5 ソート](#algorithmTextbookLearnedinPythonChapter5)  
+  * [ ] [Chapter 6 ハッシュ](#algorithmTextbookLearnedinPythonChapter6)  
+  * [ ] [Chapter 7 さまざまなアルゴリズムを学ぶ](#algorithmTextbookLearnedinPythonChapter7)  
+  * [ ] [Chapter 8 アルゴリズムを見える化する](#algorithmTextbookLearnedinPythonChapter8)  
+  * Appendix 1 Pythonのインストール方法
+  * Appendix 2 テキストエディタと統合開発環境
+  * Appendix 3 Pythonの記述ルール
+
+<details><summary>基礎知識5種類の作業手順</summary>
+
+## 具体的な基礎知識
+何はともあれ、まずは、"Hello World"を表示するプログラムを作る。  
+その後で、基礎中の基礎となる制御構造(構造化プログラミング)を簡略化しながら勉強する。  
+そのため、以下の手順で勉強を進めることにする。  
+
+* 以下、手順。  
+  * [x] 手順1. 勉強用のブランチに移動する。  
+  * [x] 手順2. ルートディレクトリのひな形ディレクトリをコピーしてくる。  
+  * [x] 手順2-0. ここまでは、上位ディレクトリにある"README.md"で作業を終えているはず。  
+  * [x] 手順2-1. 当ファイル(`README.md`)の書き換えを行う。  
+        ※ 開発環境を記録する。  
+        ※ アルゴリズムの勉強用項目は隠しておく(`details`・`summary`)代わりに、基礎知識5種類の勉強用の項目は出しておく。  
+  * [x] 手順2-2. `helloWorld.[言語用の拡張子]`のファイルを作り、おなじみ"Hello World."プログラムを作る。  
+  * [x] 手順2-3. main関数不要であれば、"**実行済み**"ディレクトリを削除すること。  
+  * [x] 手順2-4. コミットする。  
+  * [x] 手順3. 各ディレクトリで、5種類の"絶対的に勉強する一覧"を箇条書きごとに勉強する。  
+    * 以下、5種類の内訳。  
+      ※そのとき、(できる限り)プログラムファイルにモードラインを記載する。  
+      ※チェックリストは上記にある。  
+      変数  
+      配列  
+      条件分岐  
+      繰り返し  
+      関数  
+  * [x] 手順3-1. 箇条書きごとにコミット実施する。  
+  * [x] 手順4. 1つのプログラミング言語で、手順3の勉強1種類を終えた時に、次のプログラミング言語に移る。  
+         (細かく分けることでやる気が維持される・・・はず)  
+  * [x] 手順4-1. 今回のプログラミング言語に戻ってきたことにより、次の箇条書きに移り、勉強を継続(再開)する。  
+  * [x] 手順5. 上記、5種類の基礎知識を終わるまで繰り返す。  
+  * [x] 手順6. 5種類の基礎知識終了にて、"study2programming"ブランチにマージする。  
+
+</details>
+
+<details><summary>アルゴリズム問題解決の作業手順</summary>
+
+## 具体的なアルゴリズム問題解決前手順
+基礎知識5種類を勉強するのと同じように、アルゴリズムの勉強にも以下の手順で進める。  
+
+* 以下、手順。  
+  * [x] 手順1. 勉強用のブランチに移動する(上記[目次](#algorithmTextbookLearnedinPythonContents)の1チャプター分専用ブランチとする)。  
+  * [x] 手順2. 当ファイル(`README.md`)の書き換えを行う。  
+    [x] アルゴリズムの勉強用に変更する。  
+    [x] アルゴリズムの勉強用項目を出すが、基礎知識5種類の勉強項目は隠す(`details`・`summary`)。  
+  * [x] 編集後、コミットする。  
+  * [ ] 手順3. 各ディレクトリで、チャプタごとに勉強を進める。  
+    ※そのとき、(できる限り)プログラムファイルに[モードライン](https://vim-jp.org/vim-users-jp/2009/06/02/Hack-20.html)を記載する。  
+    ※チェックリストは上記にある。  
+    Chapter 2 プログラミングの力を養う  
+    Chapter 3 データ構造を学ぶ  
+    Chapter 4 サーチ  
+    Chapter 5 ソート  
+    Chapter 6 ハッシュ  
+    Chapter 7 さまざまなアルゴリズムを学ぶ  
+    Chapter 8 アルゴリズムを見える化する  
+  * [ ] 手順4. 1つのプログラミング言語で、手順3の勉強1種類(要は、1チャプタ分の子部分)を終えた時に、次のプログラミング言語に移る。  
+  * [ ] 手順5. 1チャプタ分終了にて、"study2programming"ブランチにマージする。  
+
+</details>
+
+
+<a name="algorithmNotes"></a>
 ### ※注意事項
 「アルゴリズムを勉強することが目的」であるということを理解すること。  
 しかし、やる気を維持するためにも1冊分を読了させることも目的としており、深掘りせずに進めることも考慮すること。  
 要は、深く踏み込むか、流し読み程度に抑えるかどうかはそのときに決める。  
 
-<a name="variable変数"></a>
-<a name="arrangement配列"></a>
-<a name="Conditional条件分岐"></a>
-<a name="repetition繰り返し"></a>
-<a name="function関数"></a>
-<details><summary>基礎知識5種類の各項目</summary>
-
-基礎知識として5種類を勉強するが、その目的はアルゴリズムの勉強用であって、5種類を本格的に極めるためではない。  
-そのため、1つ1つを最小限に絞り込み、1つを10分前後の勉強時間に収まるように気をつけること。  
-
-
-#### 概要。
-* [変数](#variable変数sub)  
-  * 変数の宣言方法  
-    数値の代入  
-    文字列の代入  
-    代入したそれらの出力  
-  * 代入した値の変更方法  
-    変数を用いた計算  
-    * 計算用演算子の説明  
-    * データ型の説明  
-      数値-整数型  
-      数値-小数型  
-      文字列  
-      論理値  
-    * データ型の変換(キャスト)  
-  * ※スコープは"関数"で説明する。  
-
-* [配列(リスト)](#arrangement配列sub)  
-  * 宣言方法  
-    要素  
-    要素数  
-    添え字(インデックス)  
-  * 要素追加方法  
-  * 2次元配列  
-  * ※取り出しは"for"で説明する。  
-
-* [条件分岐](#Conditional条件分岐sub)  
-  * if文  
-    条件式  
-    * if文からの派生  
-      if〜elif〜else  
-    * 演算子  
-      論理演算子  
-      比較演算子  
-
-* [繰り返し](#repetition繰り返しsub)  
-  * for文  
-    条件式  
-    多重(入れ子)利用  
-    break  
-    continue  
-    拡張for文  
-    　例）range  
-    配列からの取り出し。  
-  * while文  
-    条件式  
-    無限ループ  
-
-* [関数](#function関数sub)  
-  書式  
-  引数  
-  戻り値  
-  * 組み合わせ  
-    引数無し-戻り値無し  
-    引数あり-戻り値無し  
-    引数無し-戻り値あり  
-    引数あり-戻り値あり  
-  * 変数の有効範囲(スコープ)  
-    グローバル変数  
-    ローカル変数  
-
-</details>
 
 <a name="variable変数sub"></a>
 <details><summary>実際の変数の勉強</summary>
@@ -328,6 +262,7 @@ $
       * [x] 割り算の余り(`%`)  
   * [型変換(キャスト)方法](#subVariable6)  
     * [x] 明示変換  
+
 
 <a name="subVariable1"></a>
 #### 変数
@@ -434,6 +369,7 @@ int boo = hoge.intValue();
 boo = 1 + boo;
 ```
 
+
 <a name="subVariable6"></a>
 #### 型変換(キャスト)方法
 様式：
@@ -497,6 +433,7 @@ boo = 1 + boo;
   * [x] [二次元配列の宣言方法](#subArrangement3)  
 
 ゼロから分かるJavaの勉強とは言え、配列の説明をしないのは可笑しいだろう。  
+
 
 <a name="subArrangement1"></a>
 #### 配列
@@ -648,6 +585,7 @@ class 二次元配列 {
     * [x] 以上(`>=`)  
     * [x] 以下(`<=`)  
 
+
 <a name="subConditional1"></a>
 #### 条件分岐
 様式：
@@ -789,6 +727,7 @@ for ( 初期化式; 継続条件式; 増減式 ) {
 	処理;
 }
 ```
+
 
 <a name="subRepetition2"></a>
 ##### 指定回数条件での繰り返し：for( 条件式 )
@@ -1143,7 +1082,6 @@ class スコープ {
 
 </details>
 
-<details><summary>アルゴリズムの勉強項目詳細</summary>
 
 <a name="algorithmTextbookLearnedinPython"></a>
 #### ☆アルゴリズムの勉強チャプタ概要☆
@@ -1440,7 +1378,6 @@ Python限定にしたくなかったが、他のプログラミング言語に�
 <a name="letsDrawTheMandelbrotSetChapter8"></a>
 #### マンデルブロー集合を描こう。
 
-</details>
 
 ## ※Gitのマージルール
 study2programmingに取り込むときのマージは、3方向マージ(`--no-ff`)を使う。  
