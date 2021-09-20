@@ -45,13 +45,13 @@
   * [x] [配列](#arrangement配列)2021/09/18  
   * [x] [条件分岐](#Conditional条件分岐)2021/09/19  
   * [x] [繰り返し](#repetition繰り返し)2021/09/19  
-  * [ ] [関数](#function関数)  
+  * [x] [関数](#function関数)2021/09/20  
+    Javaではクラスという？  
+    それともメソッド？  
 
 <details><summary>アルゴリズムの勉強項目詳細</summary>
 
 基礎知識5種類の勉強終了後、ここを解放する。  
-
-</details>
 
 <a name="algorithmTextbookLearnedinPythonContents"></a>
 * [アルゴリズム勉強目次](#algorithmTextbookLearnedinPython)  
@@ -67,6 +67,8 @@
   * Appendix 1 Pythonのインストール方法
   * Appendix 2 テキストエディタと統合開発環境
   * Appendix 3 Pythonの記述ルール
+
+</details>
 
 <details><summary>基礎知識5種類の作業手順</summary>
 
@@ -146,7 +148,7 @@ $
 ```
 ["条件分岐"](#Conditional条件分岐sub)以降このバージョンを使う。  
 ※それまでは、Oracleバージョン13を使っていた。  
-openJDKの最新が16ではなく、やっぱり[Javaバージョン履歴から17](https://ja.wikipedia.org/wiki/Javaバージョン履歴)っぽいのだが・・・。  
+openJDKの最新が16ではなく、やっぱり[Javaバージョン履歴](https://ja.wikipedia.org/wiki/Javaバージョン履歴)から17っぽいのだが・・・。  
 個人的には、11と思っているのだが・・・。  
 
   * プログラムファイルの拡張子：`*.java`  
@@ -160,12 +162,11 @@ openJDKの最新が16ではなく、やっぱり[Javaバージョン履歴から
   * 文字区切り(行末記号)：セミコロン`;`  
   * インデント：フリーフォーマット  
   * 標準の出力関数：`System.out.println`・`System.out.print`  
-  * 標準のフォーマット関数：  
-　　例）`printf`など。
+  * 標準のフォーマット関数：`System.out.printf`  
 　　※必須記入項目ではなく、勉強途中での記載でも可とする。  
-  * 1行コメント方法：`//`  
+  * 単数行コメント方法：`//`  
   * 複数行コメント方法：`/* 〜 */`  
-  * javadocと言われるドキュメント自動生成のコメント方法：`/** 〜*/`  
+  * javadocと言われるドキュメント自動生成のコメント方法：`/** 〜 */`  
 
 
 ### ハローワールドプログラム
@@ -965,33 +966,155 @@ while様式：
 <details><summary>実際の関数の勉強</summary>
 
 ### 関数
+今回のJavaでは、メソッドを関数とする。  
 
 * 絶対的に勉強する一覧  
-  * [ ] 使い回せるようにまとめること。  
-    * [ ] [引数と戻り値の組み合わせ。](#subFunction1)  
-      [ ] 引数無し-戻り値無し  
-      [ ] 引数あり-戻り値無し  
-      [ ] 引数無し-戻り値あり  
-      [ ] 引数あり-戻り値あり  
+  * [x] 使い回せるようにまとめること。  
+    * [x] [引数と戻り値の組み合わせ。](#subFunction1)  
+      [x] 引数無し-戻り値無し  
+      [x] 引数あり-戻り値無し  
+      [x] 引数無し-戻り値あり  
+      [x] 引数あり-戻り値あり  
     * [スコープ](#subFunction2)  
-      [ ] グローバルスコープ変数  
-      [ ] ローカルスコープ変数  
+      [x] グローバルスコープ変数  
+      [x] ローカルスコープ変数  
 
 <a name="subFunction1"></a>
 #### 関数
 様式：
+```java
+修飾子 戻り値のデータ型 メソッド名 ( 引数のデータ型1, 引数のデータ型2, ・・・ ) 例外処理 {
+	処理;
+
+	return 戻り値用変数など;
+}
+```
+※クラス定義ではなく、メソッド定義を説明したい。このメソッドを関数とする。  
+
+以下、引数無し-戻り値無し。
+```java
+class メソッド {
+	public static void nofuncno() {
+		// static を付けなければ、staticを付けた関数から呼べない。
+		System.out.print("引数無し-戻り値無し\n");
+	}
+
+	public static void main(String[] args){
+		// 以下、引数無しの戻り値なしの関数を呼び出す。
+		nofuncno();	// 引数無し-戻り値無し
+
+	}
+}
+```
+
+以下、引数あり-戻り値無し。
+```java
+class メソッド {
+	public static void nofuncint( int hoge ) {
+		// static を付けなければ、staticを付けた関数から呼べない。
+		System.out.printf("引数あり(%d)-戻り値無し\n", hoge);
+	}
+
+	public static void main(String[] args){
+		// 以下、引数ありの戻り値なしの関数を呼び出す。
+		nofuncint( 20210920 );	// 引数あり(20210920)-戻り値無し
+
+	}
+}
+```
+
+以下、引数無し-戻り値あり。
+```java
+class メソッド {
+	public static int intfuncno() {
+		// static を付けなければ、staticを付けた関数から呼べない。
+		System.out.print("引数なし-戻り値あり\n");
+		return 1234;
+	}
+
+	public static void main(String[] args){
+		// 以下、引数無しの戻り値ありの関数を呼び出す。
+		int retfunc = intfuncno();	// 引数なし-戻り値あり
+		System.out.printf("引数無しの戻り値あり(%d)\n", retfunc);	// 引数あり(20210921)-戻り値あり
+
+	}
+}
+```
+
+以下、引数あり-戻り値あり。
+```java
+class メソッド {
+	public static int intfuncint( int hoge ) {
+		// static を付けなければ、staticを付けた関数から呼べない。
+		System.out.printf("引数あり(%d)-戻り値あり\n", hoge);
+		return 5678;
+	}
+
+	public static void main(String[] args){
+		// 以下、引数ありの戻り値ありの関数を呼び出す。
+		retfunc = intfuncint( 20210921 );	// 引数あり(20210921)-戻り値あり
+		System.out.printf("引数ありの戻り値あり(%d)\n", retfunc);	// 引数ありの戻り値あり(5678)
+
+	}
+}
+```
+
+Javaの関数は使いにくい。  
+と言うか、メソッドを関数と呼んで良いのか？  
+しかし、クラスを関数と呼ぶには仰々しいよな。  
+
+<a name="subFunction1class"></a>
+<details><summary>今回はメソッドを関数と呼ぶため、クラスのことは封印する。</summary>
+
+クラスの定義：
+```java
+修飾子 class クラス名 {
+	フィールド定義(広域変数宣言);
+	メソッド定義;
+}
+```
+
+|修飾子|概要|
+|------|----|
+|`public`|全てのクラスから利用可能|
+|`final`|継承を許可しない。|
+|`abstract`|抽象クラス|
+|`strictfp`|浮動小数点を環境に依存しない方法で演算する。|
+
+</details>
 
 <a name="subFunction2"></a>
 #### スコープ
+3種類あるが、そのうちフィールドスコープは[対象外](#subFunction1class)とする。  
+* スコープ  
+  * ローカル変数用スコープ  
+    関数(メソッド)内で宣言された変数のこと。  
+  * ブロックスコープ  
+    括弧`{}`内で宣言された変数のこと(括弧から出たときに消滅)。  
+
+```java
+class スコープ {
+	public static void bar() {
+		int bar = 0;
+		System.out.printf("引数無し-戻り値無し関数内の変数：%d\n", bar);
+	}
+
+	public static void main(String[] args){
+		// 以下、関数呼び出し。
+		bar();	// 引数無し-戻り値無し関数内の変数：0
+
+		{
+			int boo = 20210920;
+			System.out.printf("ブロック内の変数：%d\n", boo);	// ブロック内の変数：20210920
+		}
+	}
+}
+```
 
 <a name="subFunction999"></a>
 #### 関数での説明しない項目。
 
-[以下、今回の言語に関係の無い項目を削除すること(対象言語に存在するが、見送るもののみ、以下残す)。]  
 <details><summary>今回は勉強を見送る一覧</summary>
-
-そもそもPythonは、普通に必要？  
-しかし、アルゴリズムの勉強には不要なのだろう。  
 
 * 標準的な関数  
   * [ ] 可変長引数  
@@ -1001,8 +1124,10 @@ while様式：
 * オブジェクト指向  
   * [ ] クラスの定義  
   * [ ] フィールド  
-  * [ ] メソッド  
+  * [x] メソッド  
+    今回これを関数とした。  
   * [ ] コンストラクタ  
+  * [ ] オーバーロード  
 * オブジェクト指向  
   * [ ] カプセル化  
   * [ ] 継承  
