@@ -81,14 +81,28 @@ Perlerになるつもりはない。
 
 * 応用知識  
   * [ ] [リファレンス](#practicaluseReference)  
-    [ ] リファレンス  
-    [ ] デリファレンス  
-    [ ] 入れ子  
-    [ ] スコープ  
-    [ ] サブルーチンへのリファレンス  
-    [ ] ファイルハンドルへのリファレンス  
-    [ ] 応用利用  
-  * [ ] [ハッシュ(連想配列)](#practicaluseHash)  
+    * [ ] リファレンス  
+      [ ] 変数  
+      [ ] 配列  
+      [ ] ハッシュ  
+      [ ] 関数(サブルーチン)  
+      [ ] OSの環境変数  
+      [ ] ファイルハンドルへのリファレンス  
+    * [ ] デリファレンス  
+    * [ ] 入れ子  
+    * [ ] スコープ  
+    * [ ] サブルーチンへのリファレンス  
+    * [ ] 応用利用  
+  * [x] [ハッシュ(連想配列)](#practicaluseHash)  
+    [x] 特徴  
+    [x] 作成方法  
+    [x] 取得方法  
+    [x] 変更方法(並べ替え含む)  
+    [x] キーの重複  
+    [x] 繰り返し処理。  
+    [x] 既存キーの確認方法。  
+    [x] 値の削除方法。  
+    [x] OSの環境変数  
   * [ ] [ファイル操作](#practicaluseFileoperation)  
   * [ ] [ディレクトリ操作](#practicaluseDirectorymanipulation)  
   * [ ] [オブジェクト指向](#practicaluseObjectorientation)  
@@ -2189,9 +2203,270 @@ C言語で言うポインタ変数の実体化と言うことでいい？
 
 #### サブルーチンへのリファレンス
 
-#### ファイルハンドルへのリファレンス
-
 #### 応用利用
+
+</details>
+
+<a name="practicaluseHash"></a>
+<details><summary>応用知識-ハッシュ(連想配列)</summary>
+
+### [ハッシュ(連想配列)](https://perldoc.jp/func/values)
+> リストコンテキストでは、指定したハッシュのすべての値を返します。  
+
+[キー/値のハッシュスライス](https://perldoc.jp/docs/perl/5.34.0/perldata.pod#Key47Value32Hash32Slices)  
+
+
+* 3つの特徴  
+  * キーは重複不可(一意であること)。  
+  * 値は重複可能。  
+  * 順番は存在しない。  
+
+* Perlへの哲学の適用  
+  * ハッシュの大きさに制限はない。  
+
+#### 作成方法
+様式：`%ハッシュ名 = ('キー1', 値1, 'キー2', 値2, ・・・ );`  
+例）
+```perl
+my %hoge = (
+	hoge => 20210922,
+	bar  => 9784873118246,
+	boo  => "本日は晴天なり。",
+);
+```
+※キーは、シングルクォーテーションで囲む(`=>`を使う場合は省略可能)。  
+
+
+コピーもできるが、負担が掛かるため、止めた方が良い。
+`my %new_has = %old_hash;`  
+
+#### 取得方法
+愚痴：作成方法が丸括弧で、取得方法が波括弧なのは混乱する。  
+`$ハッシュ名{'キー'}`;
+
+
+```perl
+sub associativearray() {
+	my %hoge = (
+		'hoge' => 100006601775326,
+		'boo'  => 100011324721840,
+		'bar'  => "300505",
+	);
+
+	say "$hoge{'hoge'}";			# 100006601775326
+	say "$hoge{'100006601775326'}";	# 空文字列
+
+	for my $key (keys(%hoge)) {
+		my $value = $hoge{$key};
+		say "$key -> $value";
+		# 出力結果：
+#				hoge -> 100006601775326
+#				boo -> 100011324721840
+#				bar -> 300505
+	}
+	say "%hoge";	# %hoge
+	say %hoge;		# hoge100006601775326boo100011324721840bar300505	←☆当然実行ごとに値が変わる。
+}
+&associativearray();
+```
+
+#### 変更方法
+様式：
+`$ハッシュ名{'キー'} = 値`;
+
+##### キーと値を入れ替える。
+**reverse**により、入れ替えが可能。  
+
+```perl
+sub associativearray() {
+	my %hoge = (
+		hoge => 100006601775326,
+		boo  => 100011324721840,
+		bar  => "300505",
+	);
+
+	for my $key (keys(%hoge)) {
+		my $value = $hoge{$key};
+		say "$key -> $value";
+		# 出力結果：
+#				hoge -> 100006601775326
+#				boo -> 100011324721840
+#				bar -> 300505
+	}
+	say "-" x 30;
+	my %revershoge = reverse %hoge;
+	for my $key (keys(%revershoge)) {
+		my $value = $revershoge{$key};
+		say "$key -> $value";
+		# 出力結果：
+#				100006601775326 -> hoge
+#				100011324721840 -> boo
+#				300505 -> bar
+	}
+}
+&associativearray();
+```
+
+##### keys関数・values関数
+順不同ではあるが、かならず対になる取得ができる。  
+
+```perl
+sub associativearray() {
+	my %hoge = (
+		hoge => 100006601775326,
+		boo  => 100011324721840,
+		bar  => "300505",
+	);
+
+	my @key = keys %hoge;
+	my @value = values %hoge;
+	say "キー：@key";	# キー：hoge bar boo
+	say "値：@value";	# 値：100006601775326 300505 100011324721840
+
+	say "以下、組数";
+	my $count = keys %hoge;
+	say "個数：$count";	# 個数：3
+	my $count = values %hoge;
+	say "個数：$count";	# 個数：3
+
+	if (%hoge) {
+		say "ハッシュ内容がある。";	# ハッシュ内容がある。
+	}
+}
+&associativearray();
+```
+
+##### キーの並べ替え
+正しいやり方が分からない。  
+
+```perl
+	my %hoge = (
+		hoge => 20210922,
+		boo => 4873118247,
+		bar => "sort",
+	);
+
+	foreach ( sort keys %hoge ) {
+		say "$_ -> $hoge{$_}";
+	}
+```
+
+##### 値での並べ替え
+正しいやり方が分からない。  
+
+```perl
+	my %hoge = (
+		hoge => 20210922,
+		boo => 4873118247,
+		bar => "sort",
+	);
+
+	foreach ( sort { $hoge{$a} <=> $hoge{$b} } keys %hoge ) {
+		say "$_ -> $hoge{$_}";
+	}
+```
+
+
+#### キーの重複
+上書きされる。  
+
+追加代入様式：
+`$既存のハッシュ名{追加したいキー名} = 追加したい値;`  
+
+#### 繰り返し処理(`each`関数)。
+
+```perl
+sub associativearray() {
+	my %hoge = (
+		hoge => 20210922,
+		boo => 20180120,
+		bar => "続・初めてのPerl 改訂第2版",
+	);
+
+	while( my ($key, $value) = each %hoge ) {
+		say "$key -> $value";
+		# 出力結果：
+#					bar -> 続・初めてのPerl 改訂第2版
+#					boo -> 20180120
+#					hoge -> 20210922
+	}
+}
+&associativearray();
+```
+ループ内であれば、eachが実行されるたびに、次のキーと値の対が取得される。  
+これは、反復子(イテレータ：iterator)技術により、現在値を保持しているため。  
+
+
+##### 既存キーの確認方法(`exists`関数)。
+キーが存在すれば、どのようなキーだろうが、存在するとして扱われる。  
+
+```perl
+sub associativearray() {
+	my %hoge = (
+		hoge => 20210923,
+		boo  => 20210922,
+	);
+
+	if ( exists $hoge{"hoge"} ) {
+		say '$hoge{"hoge"}が存在する。';
+				# 出力結果：$hoge{"hoge"}が存在する。
+	}
+	if ( exists $hoge{"bar"} ) {
+		say '$hoge{"bar"}が存在する。';
+				# 出力結果：
+				# 出力しない。
+	}
+}
+&associativearray();
+```
+
+
+#### 値の削除方法(`delete`関数)。
+削除すると言うことは、ハッシュ定義内から消すと言うことであり、`undef`を代入することではない。  
+
+```perl
+sub associativearray() {
+	my %hoge = (
+		hoge => 4873118247,
+		boo => 20210922,
+		bar => "本日は晴天なり。",
+	);
+
+	while( my ($key, $value) = each %hoge ) {
+		say "$key -> $value";
+		# 出力結果：
+#				hoge -> 4873118247
+#				boo -> 20210922
+#				bar -> 本日は晴天なり。
+	}
+
+	say "-" x 30;
+	delete $hoge{'hoge'};
+	while( my ($key, $value) = each %hoge ) {
+		say "$key -> $value";
+		# 出力結果：
+#				boo -> 20210922
+#				bar -> 本日は晴天なり。
+	}
+}
+&associativearray();
+```
+
+#### OSの環境変数(`%ENV`)
+
+以下、環境変数をPerlで取得する。
+```terminal
+$ set | grep HISTCONTROL
+HISTCONTROL=ignoreboth
+$
+```
+
+以下、取得できている。
+```perl
+say "$ENV{HISTCONTROL}";	# ignoreboth
+```
+
+何に使うのか分からないが、GoでのGUI開発は日本語文字を取得するのに環境変数を利用しているな・・・。  
 
 </details>
 
