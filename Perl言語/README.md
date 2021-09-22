@@ -61,6 +61,42 @@ Perlerになるつもりはない。
   * Appendix 2 テキストエディタと統合開発環境
   * Appendix 3 Pythonの記述ルール
 
+
+<details><summary>応用知識の項目</summary>
+
+### 基礎知識5種類の勉強範囲を広げる
+基礎知識5種類の勉強は、アルゴリズムの勉強用に特化していたが、今回は普通にPerlを使うための範囲にまで手を広げる。  
+
+* 基礎知識5種類の範囲を広げる  
+  * [ ] [変数(スカラー)](#practicaluseVariable変数)  
+  * [ ] [配列](#practicaluseArrangement配列)  
+    [ ] リスト演算子(`grep`・`map`)  
+    [ ] eval  
+  * [ ] [条件分岐](#practicaluseConditional条件分岐)  
+  * [ ] [繰り返し](#practicaluseRepetition繰り返し)  
+  * [ ] [関数](#practicaluseFunction関数)  
+
+### 基礎知識5種類の勉強以外の項目
+基礎知識5種類に納められない範囲の勉強に手を広げる。  
+
+* 応用知識  
+  * [ ] [リファレンス](#practicaluseReference)  
+    [ ] スコープ  
+    [ ] サブルーチンへのリファレンス  
+    [ ] ファイルハンドルへのリファレンス  
+    [ ] 応用利用  
+  * [ ] [ハッシュ(連想配列)](#practicaluseHash)  
+  * [ ] [ファイル操作](#practicaluseFileoperation)  
+  * [ ] [ディレクトリ操作](#practicaluseDirectorymanipulation)  
+  * [ ] [オブジェクト指向](#practicaluseObjectorientation)  
+    [ ] 入門  
+  * [ ] [テスト方法](#practicaluseTester)  
+  * [ ] [標準モジュール](#practicaluseModule)  
+  * [ ] [プロセス管理](#practicaluseSystemfunc)  
+
+</details>
+
+
 <details><summary>基礎知識5種類の作業手順</summary>
 
 ### Perl5
@@ -2002,6 +2038,21 @@ Python限定にしたくなかったが、他のプログラミング言語に�
 
 <a name="letsDrawTheMandelbrotSetChapter8"></a>
 #### マンデルブロー集合を描こう。
+
+<a name="practicaluseReference"></a>
+<details><summary>応用知識-リファレンス</summary>
+
+### [リファレンス](https://perldoc.jp/docs/perl/5.8.8/perlref.pod)
+
+#### スコープ
+
+#### サブルーチンへのリファレンス
+
+#### ファイルハンドルへのリファレンス
+
+#### 応用利用
+
+</details>
 
 ## Gitのマージルール
 個々の言語ごとにブランチをそれぞれ作成する。  
