@@ -45,6 +45,22 @@ sub associativearray() {
 	$asakuno{asakuno} = $asakuno;
 	say "$asakuno{asakuno}";	# 朝来野智博
 
+	# 以下、追加？
+	# %asakuno += ('addkey', "addvalue");
+				# Can't modify private hash in addition (+) at ハッシュ.pl line 48, near ");"
+				# Execution of ハッシュ.pl aborted due to compilation errors.
+
+	# %asakuno .= ('addkey', "addvalue");
+				# Can't modify private hash in concatenation (.) or string at ハッシュ.pl line 52, near ");"
+				# Execution of ハッシュ.pl aborted due to compilation errors.
+
+	%asakuno = ('addkey', "addvalue");
+	say "$asakuno{asakuno}";	# 空文字列
+	say "$asakuno{addkey}";		# addvalue
+	# 追加することが出来ない。どうすればいい？
+	$asakuno{'today'} = 20210923;
+	say "$asakuno{addkey}";		# addvalue
+	say "$asakuno{today}";		# 20210923
 }
 &associativearray();
 

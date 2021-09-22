@@ -93,16 +93,16 @@ Perlerになるつもりはない。
     * [ ] スコープ  
     * [ ] サブルーチンへのリファレンス  
     * [ ] 応用利用  
-  * [ ] [ハッシュ(連想配列)](#practicaluseHash)  
+  * [x] [ハッシュ(連想配列)](#practicaluseHash)  
     [x] 特徴  
     [x] 作成方法  
     [x] 取得方法  
-    [ ] 変更方法(並べ替え含む)  
-    [ ] キーの重複  
+    [x] 変更方法(並べ替え含む)  
+    [x] キーの重複  
     [x] 繰り返し処理。  
     [x] 既存キーの確認方法。  
     [x] 値の削除方法。  
-    [ ] OSの環境変数  
+    [x] OSの環境変数  
   * [ ] [ファイル操作](#practicaluseFileoperation)  
   * [ ] [ディレクトリ操作](#practicaluseDirectorymanipulation)  
   * [ ] [オブジェクト指向](#practicaluseObjectorientation)  
@@ -2337,13 +2337,41 @@ sub associativearray() {
 ```
 
 ##### キーの並べ替え
+正しいやり方が分からない。  
 
+```perl
+	my %hoge = (
+		hoge => 20210922,
+		boo => 4873118247,
+		bar => "sort",
+	);
+
+	foreach ( sort keys %hoge ) {
+		say "$_ -> $hoge{$_}";
+	}
+```
 
 ##### 値での並べ替え
+正しいやり方が分からない。  
+
+```perl
+	my %hoge = (
+		hoge => 20210922,
+		boo => 4873118247,
+		bar => "sort",
+	);
+
+	foreach ( sort { $hoge{$a} <=> $hoge{$b} } keys %hoge ) {
+		say "$_ -> $hoge{$_}";
+	}
+```
 
 
 #### キーの重複
+上書きされる。  
 
+追加代入様式：
+`$既存のハッシュ名{追加したいキー名} = 追加したい値;`  
 
 #### 繰り返し処理(`each`関数)。
 
