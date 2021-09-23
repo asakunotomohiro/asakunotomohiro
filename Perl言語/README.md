@@ -2,6 +2,7 @@
 ここは、プログラミング言語のPerl言語を勉強するブランチになる。  
 
 
+<a name="algorithmHowToUseTheBranch"></a>
 ## ブランチの利用方法
 ここのブランチは、Python書籍からアルゴリズムをPerlに置き換えて勉強するのに使う。  
 また、具体的なアルゴリズムの種類は、下記書籍の目次チャプターに限定する。  
@@ -9,7 +10,8 @@
 ※チャプターごとにブランチを分けていく。  
 
 
-### 勉強方法
+<a name="algorithmHowToStudy"></a>
+## 勉強方法
 勉強するプログラミング言語の一つとしている。  
 「[初めてのPerl](https://www.oreilly.co.jp/books/)」は、[第5版](https://www.oreilly.co.jp/books/9784873114279/)を紙の本で持ち、[第6版](https://www.oreilly.co.jp/books/9784873115672/)をPDF版で持っている。  
 そして、今回の勉強のためだけに[第7版](https://www.oreilly.co.jp/books/9784873118246/)を(紙媒体で)購入した。  
@@ -25,38 +27,44 @@
 さすがアメリカン書籍だ。  
 
 
-### 開発環境
+<a name="algorithmDevelopmentEnvironment"></a>
+## 開発環境
 開発には、`MacVim`を使う。  
 大きな規模にしてまで勉強を継続する予定はないかな。  
 Perlを極めるには、毎日最低でも20分間はPerlの勉強を続けなければいけないとのことだが、それは無理。  
 Perlerになるつもりはない。  
 
+
+### 「[Pythonで学ぶアルゴリズムの教科書](https://book.impress.co.jp/books/1120101024)」
+本の概要。  
+> エンジニアの基礎体力を身につける  
+
+<a name="algorithmTextbookLearnedinPythonBook"></a>
 <details><summary>基礎知識5種類の項目</summary>
 
-### Pythonで学ぶアルゴリズムの教科書
-簡単なプログラミングに使う基礎知識を統一する。  
-
+※プログラミングに使う基礎知識を統一する(簡単に済ませられる量に絞り込む)。  
 * 基礎知識5種類  
-  * [x] [変数(スカラー)](#variable変数)2021/08/29  
-  * [x] [配列](#arrangement配列)2021/08/31  
+  * [x] [変数(スカラー)](#variable変数sub)  
+  * [x] [配列](#arrangement配列sub)  
     ここでのPythoでは、`リスト(list)`を配列と呼んでいる。  
     ここでのPerlでは、リストはリストであり、配列は配列である。  
-  * [x] [条件分岐](#Conditional条件分岐)2021/09/01  
-  * [x] [繰り返し](#repetition繰り返し)2021/09/01  
-  * [x] [関数](#function関数)2021/09/01  
+  * [x] [条件分岐](#Conditional条件分岐sub)  
+  * [x] [繰り返し](#repetition繰り返しsub)  
+  * [x] [関数](#function関数sub)  
 
 </details>
 
+<a name="algorithmTextbookLearnedinPythonContents"></a>
 * [アルゴリズム勉強目次](#algorithmTextbookLearnedinPython)  
   * [x] Chapter 1 プログラミングの基礎知識  
     現時点で完了している(上記の基礎知識5種類として)。  
-  * [Chapter 2 プログラミングの力を養う](#algorithmTextbookLearnedinPythonChapter2)  
-  * [Chapter 3 データ構造を学ぶ](#algorithmTextbookLearnedinPythonChapter3)  
-  * [Chapter 4 サーチ](#algorithmTextbookLearnedinPythonChapter4)  
-  * [Chapter 5 ソート](#algorithmTextbookLearnedinPythonChapter5)  
-  * [Chapter 6 ハッシュ](#algorithmTextbookLearnedinPythonChapter6)  
-  * [Chapter 7 さまざまなアルゴリズムを学ぶ](#algorithmTextbookLearnedinPythonChapter7)  
-  * [Chapter 8 アルゴリズムを見える化する](#algorithmTextbookLearnedinPythonChapter8)  
+  * [ ] [Chapter 2 プログラミングの力を養う](#algorithmTextbookLearnedinPythonChapter2)  
+  * [ ] [Chapter 3 データ構造を学ぶ](#algorithmTextbookLearnedinPythonChapter3)  
+  * [ ] [Chapter 4 サーチ](#algorithmTextbookLearnedinPythonChapter4)  
+  * [ ] [Chapter 5 ソート](#algorithmTextbookLearnedinPythonChapter5)  
+  * [ ] [Chapter 6 ハッシュ](#algorithmTextbookLearnedinPythonChapter6)  
+  * [ ] [Chapter 7 さまざまなアルゴリズムを学ぶ](#algorithmTextbookLearnedinPythonChapter7)  
+  * [ ] [Chapter 8 アルゴリズムを見える化する](#algorithmTextbookLearnedinPythonChapter8)  
   * Appendix 1 Pythonのインストール方法
   * Appendix 2 テキストエディタと統合開発環境
   * Appendix 3 Pythonの記述ルール
@@ -115,6 +123,7 @@ Perlerになるつもりはない。
 </details>
 
 
+<a name="algorithmSpecificBasicKnowledge"></a>
 <details><summary>基礎知識5種類の作業手順</summary>
 
 ### Perl5
@@ -137,21 +146,43 @@ Perlerになるつもりはない。
 > \  なにかのリファレンスを取ります。  
 
 
-#### 具体的な基礎知識
+## 具体的な基礎知識
+何はともあれ、まずは、"Hello World"を表示するプログラムを作る。  
+その後で、基礎中の基礎となる制御構造(構造化プログラミング)を簡略化しながら勉強する。  
+そのため、以下の手順で勉強を進めることにする。  
 
-[x] 手順1. 勉強用のブランチに移動する。  
-[x] 手順2. ルートディレクトリのひな形ディレクトリをコピーしてくる。  
-[x] 手順3. コピーしてきたディレクトリ名を"基礎知識用の勉強"に変更する。  
-[x] 手順4. その(ディレクトリ配下にある)"ひな形/README.md"を参考に作業を進める。  
-[x] 手順4-1. これ以降は、そのファイルを元に作業を進める。  
-[x] 手順5. 手順4での「5種類の基礎知識」が終わり次第、このディレクトリにある当ファイルの作業を再開する。  
-[x] 手順6. 5種類の基礎知識終了にて、"study2programming"ブランチにマージする。  
+* 以下、手順。  
+  * [x] 手順1. 勉強用のブランチに移動する。  
+  * [x] 手順2. ルートディレクトリのひな形ディレクトリをコピーしてくる。  
+  * [x] 手順2-0. ここまでは、上位ディレクトリにある"README.md"で作業を終えているはず。  
+  * [x] 手順2-1. 当ファイル(`README.md`)の書き換えを行う。  
+        ※ 開発環境を記録する。  
+        ※ アルゴリズムの勉強用項目は隠しておく(`details`・`summary`)代わりに、基礎知識5種類の勉強用の項目は出しておく。  
+  * [x] 手順2-2. `helloWorld.[言語用の拡張子]`のファイルを作り、おなじみ"Hello World."プログラムを作る。  
+  * [x] 手順2-3. main関数不要であれば、"**実行済み**"ディレクトリを削除すること。  
+  * [x] 手順2-4. コミットする。  
+  * [x] 手順3. 各ディレクトリで、5種類の"絶対的に勉強する一覧"を箇条書きごとに勉強する。  
+    * 以下、5種類の内訳。  
+      ※そのとき、(できる限り)プログラムファイルにモードラインを記載する。  
+      ※チェックリストは上記にある。  
+      変数  
+      配列  
+      条件分岐  
+      繰り返し  
+      関数  
+  * [x] 手順3-1. 箇条書きごとにコミット実施する。  
+  * [x] 手順4. 1つのプログラミング言語で、手順3の勉強1種類を終えた時に、次のプログラミング言語に移る。  
+         (細かく分けることでやる気が維持される・・・はず)  
+  * [x] 手順4-1. 今回のプログラミング言語に戻ってきたことにより、次の箇条書きに移り、勉強を継続(再開)する。  
+  * [x] 手順5. 上記、5種類の基礎知識を終わるまで繰り返す。  
+  * [x] 手順6. 5種類の基礎知識終了にて、"study2programming"ブランチにマージする。  
 
 </details>
 
+<a name="algorithmCheckTheStatusOfTheActualWorkingEnvironment"></a>
 <details><summary>私の作業環境</summary>
 
-## 開発環境
+## 実際に作業する環境の状況確認
 開発には、`MacVim`を使う。  
 
 * 以下、私の利用環境。  
@@ -188,7 +219,10 @@ $
     [大きなブロックで囲む方法](https://perldoc.jp/docs/perl/5.10.0/perlfaq7.pod#How32can32I32comment32out32a32large32block32of32perl32code63)：
     PODマーカーで囲むこと。  
 
-以下、ハローワールド。
+
+<a name="algorithmHelloWorld"></a>
+### ハローワールドプログラム
+
 ```terminal
 $ cat helloWorld.pl
 #!/usr/bin/perl -w
@@ -208,127 +242,44 @@ Unix以外のシステムでは、`#!perl`と記述するそうだ(記述した�
 
 </details>
 
+
+<a name="algorithmSpecificAlgorithmPreSolvingProcedure"></a>
 <details><summary>アルゴリズム問題解決の作業手順</summary>
 
 ## 具体的なアルゴリズム問題解決前手順
 基礎知識5種類を勉強するのと同じように、アルゴリズムの勉強にも以下の手順で進める。  
 
 * 以下、手順。  
-  * [x] 手順1. 勉強用のブランチに移動する(上記目次の1チャプター分専用ブランチとする)。  
-  * [x] 手順2. ルートディレクトリのひな形ディレクトリ配下の必要なディレクトリをコピーする。  
-    **Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける** ディレクトリ配下の必要なチャプター用ディレクトリ。  
-  * [x] 手順3. 当ファイル(`README.md`)の書き換えを行う。  
-  * [x] 手順3-1. 勉強対象のチャプター子部分にチェックリストを付ける。  
-        ※ **上位ディレクトリにある"README.md"** は触らない。  
-        この手順不要？  
-  * [x] 手順3-2. 目次部分を修正する。  
-    同ファイルの細かい場所(下記の行頭シャープ記号3つ以上ある)箇所にリンクできるようにする。  
-  * [ ] 手順3-3. コミットする。  
-  * [ ] 手順4. 各ディレクトリで、各項目ごとに勉強を進める。  
-    [ ] Chapter 2 プログラミングの力を養う  
-    [ ] Chapter 3 データ構造を学ぶ  
-    [ ] Chapter 4 サーチ  
-    [ ] Chapter 5 ソート  
-    [ ] Chapter 6 ハッシュ  
-    [ ] Chapter 7 さまざまなアルゴリズムを学ぶ  
-    [ ] Chapter 8 アルゴリズムを見える化する  
-  * [ ] 手順5. 1つのプログラミング言語で、手順4の勉強1種類を終えた時に、次のプログラミング言語に移る。  
-  * [ ] 手順6. 上記、1チャプター分が終わるまで繰り返す。  
-  * [ ] 手順7. 1チャプター分終了にて、"study2programming"ブランチにマージする。  
+  * [x] 手順1. 勉強用のブランチに移動する(上記[目次](#algorithmTextbookLearnedinPythonContents)の1チャプター分専用ブランチとする)。  
+  * [x] 手順2. 当ファイル(`README.md`)の書き換えを行う。  
+    [x] アルゴリズムの勉強用に変更する。  
+    [x] アルゴリズムの勉強用項目を出すが、基礎知識5種類の勉強項目は隠す(`details`・`summary`)。  
+  * [x] 編集後、コミットする。  
+  * [ ] 手順3. 各ディレクトリで、チャプタごとに勉強を進める。  
+    ※そのとき、(できる限り)プログラムファイルに[モードライン](https://vim-jp.org/vim-users-jp/2009/06/02/Hack-20.html)を記載する。  
+    ※チェックリストは上記にある。  
+    Chapter 2 プログラミングの力を養う  
+    Chapter 3 データ構造を学ぶ  
+    Chapter 4 サーチ  
+    Chapter 5 ソート  
+    Chapter 6 ハッシュ  
+    Chapter 7 さまざまなアルゴリズムを学ぶ  
+    Chapter 8 アルゴリズムを見える化する  
+  * [ ] 手順4. 1つのプログラミング言語で、手順3の勉強1種類(要は、1チャプタ分の子部分)を終えた時に、次のプログラミング言語に移る。  
+  * [ ] 手順5. 1チャプタ分終了にて、"study2programming"ブランチにマージする。  
 
 </details>
 
+
+<a name="algorithmNotes"></a>
 ### ※注意事項
-アルゴリズムを勉強することが目的であるため、理解すること。  
-しかし、やる気を維持するためにも1冊分を読了させることも目的として、深掘りせずに進めることも考慮すること。  
+「アルゴリズムを勉強することが目的」であるということを理解すること。  
+しかし、やる気を維持するためにも1冊分を読了させることも目的としており、深掘りせずに進めることも考慮すること。  
 要は、深く踏み込むか、流し読み程度に抑えるかどうかはそのときに決める。  
 
-何より、書籍記載のアルゴリズムは、サンプルとして公式ページからダウンロードできる。  
-そのため、書籍通りに進めるわけには行かず、自分なりに理解できるやり方で勉強した場合、当然ながら時間が掛かり、踏み込む必要が発生するだろう。  
-それでも読了も達成したいため、なかなか両立は、難しい・・・と思い込んでいるが、実際は流し読み程度に抑え、サクサク勧めていこうと思う。
-
-<a name="variable変数"></a>
-<a name="arrangement配列"></a>
-<a name="Conditional条件分岐"></a>
-<a name="repetition繰り返し"></a>
-<a name="function関数"></a>
-<details><summary>基礎知識5種類の各項目</summary>
-
-基礎知識として、5種類を勉強するが、その目的はアルゴリズムの勉強用であって、5種類を本格的に極めるためではない。  
-そのため、1つ1つを最小限に絞り込み、1つを10分前後の勉強時間に収まるように気をつけること。  
-
-#### 概要。
-* [変数](#variable変数sub)  
-  * 変数の宣言方法  
-    数値の代入  
-    文字列の代入  
-    代入したそれらの出力  
-  * 代入した値の変更方法  
-    変数を用いた計算  
-    * 計算用演算子の説明  
-    * データ型の説明  
-      数値-整数型  
-      数値-小数型  
-      文字列  
-      論理値  
-    * データ型の変換(キャスト)  
-  * ※スコープは"関数"で説明する。  
-
-* [配列(リスト)](#arrangement配列sub)  
-  Perlでの配列とリストは別物。  
-  配列：データを入れる入れ物であって、データは関係ない。  
-  リスト：配列に入れるためのデータであって、入れ物ではない。  
-  * 宣言方法  
-    要素  
-    要素数  
-    添え字(インデックス)  
-  * 要素追加方法  
-  * 2次元配列  
-  * ※取り出しは"for"で説明する。  
-
-* [条件分岐](#Conditional条件分岐sub)  
-  * if文  
-    条件式  
-    * if文からの派生  
-      if〜elif〜else  
-    * 演算子  
-      論理演算子  
-      比較演算子  
-
-* [繰り返し](#repetition繰り返しsub)  
-  * for文  
-    条件式  
-    多重(入れ子)利用  
-    break  
-    continue  
-    拡張for文  
-    　例）range  
-    配列からの取り出し。  
-  * while文  
-    条件式  
-    無限ループ  
-
-* [関数](#function関数sub)  
-  書式  
-  引数  
-  戻り値  
-  * 組み合わせ  
-    引数無し-戻り値無し  
-    引数あり-戻り値無し  
-    引数無し-戻り値あり  
-    引数あり-戻り値あり  
-  * 変数の有効範囲(スコープ)  
-    グローバル変数  
-    ローカル変数  
-
-</details>
 
 <a name="variable変数sub"></a>
-<a name="arrangement配列sub"></a>
-<a name="Conditional条件分岐sub"></a>
-<a name="repetition繰り返しsub"></a>
-<a name="function関数sub"></a>
-<details><summary>実際の基礎知識5種類の勉強</summary>
+<details><summary>実際の変数の勉強</summary>
 
 ### 変数
 値の格納方法について。  
@@ -361,7 +312,7 @@ Unix以外のシステムでは、`#!perl`と記述するそうだ(記述した�
     * [x] 明示変換  
 
 <a name="subVariable1"></a>
-#### 変数(スカラー)
+#### 変数(スカラー変数)
 様式：
 `my $変数名;`  
 
@@ -385,6 +336,7 @@ foreach ( @hoge ) {
 }
 ```
 上記の`foreach`では、`@hoge`配列から要素を取り出した値は、`$_`に代入され、`say`にて`$_`変数値が出力される。
+
 
 <a name="subVariable2"></a>
 #### 変数への代入方法及び変数の利用
@@ -436,12 +388,19 @@ print "$hoge's" . $hoge;	# boo	←☆なぜこの表記になるのか分から�
 |`y///`|`tr///`|文字変換|しない|
 |`""`|`qr//`|正規表現|する|
 
-
 <a name="subVariable4"></a>
 #### データ型
 なし。  
 全ての数値を使った計算は、例外なく倍精度浮動小数点数で行う(要は、整数値は存在しない)。  
 そのため、Bool型もない。  
+
+|データ型|サイズ|備考|
+|--------|------|----|
+|int||なし。|
+|float||なし。|
+|string||なし。|
+|bool||なし。|
+
 
 ##### bool値
 以下が、Bool値の代替方法。  
@@ -455,25 +414,25 @@ print "$hoge's" . $hoge;	# boo	←☆なぜこの表記になるのか分から�
 ※ブール値を反転させる場合は否定演算子(`!`)を使う。  
 
 以下、実施。
-```Perl
-$hoge = 0;
-if ($hoge) {
-	say "真の場合実行。", $hoge;
-}
-else {
-	say "偽の場合実行。", $hoge;
-}
-#	実行結果：偽の場合実行。0
 
-$hoge = 1;
-if ($hoge) {
-	say "真の場合実行。", $hoge;
-}
-else {
-	say "偽の場合実行。", $hoge;
-}
-#	実行結果：真の場合実行。1
-```
+    $hoge = 0;
+    if ($hoge) {
+    	say "真の場合実行。", $hoge;
+    }
+    else {
+    	say "偽の場合実行。", $hoge;
+    }
+    #	実行結果：偽の場合実行。0
+    
+    $hoge = 1;
+    if ($hoge) {
+    	say "真の場合実行。", $hoge;
+    }
+    else {
+    	say "偽の場合実行。", $hoge;
+    }
+    #	実行結果：真の場合実行。1
+
 
 <a name="subVariable5"></a>
 #### 変数値を使った計算方法
@@ -509,17 +468,22 @@ say $hoge;	# 83
 わざわざ切り捨てる必要あるか？  
 最後の式は、四捨五入なので、使い道はある。  
 
+
 <a name="subVariable999"></a>
 #### 変数での説明しない項目。
 
 <details><summary>今回は勉強を見送る一覧</summary>
 
-* 定数  
+* [ ] 定数  
   [ ] [constantプラグマ](https://perldoc.jp/docs/modules/constant-1.17/constant.pod)  
   これは、関数定義で書き込みできないようにしている(他のプログラミング言語のような定数とは概念からして異なる)。  
   他にも定数のやり方はあるようだが、Perlに元から付けられているものではないのだろう。  
-* データ型  
+* [ ] データ型  
   ない(キャストするときに必要？)。  
+  * [ ] 整数(`long`など)  
+  * [ ] 浮動小数点型(`double`など)  
+  * [ ] 型推論  
+  * [ ] 複素数型  
 * [ ] リテラル  
   * [ ] 整数リテラル  
     10進数以外の解釈。  
@@ -529,10 +493,10 @@ say $hoge;	# 83
     > プログラムでUnicodeをリテラルとして使いたい場合には、utf8プラグマを指定する必要があります。  
     > 指定したくない理由が理解できるまでは、常にこのプラグマを指定するのが良い習慣でしょう。  
     > `use utf8;`  
-* [ ] ダブルクォート文字列リテラル  
-  * バックスラッシュエスケープ  
+  * [ ] ダブルクォート文字列リテラル  
+    * バックスラッシュエスケープ  
 * [ ] キャスト  
-  * [ ] 暗黙変換  
+  * 暗黙変換  
     暗黙をわざわざ説明しない。  
 * [ ] 演算子  
   * [ ] reverse演算子(配列用)  
@@ -552,11 +516,17 @@ say $hoge;	# 83
 
 * ちょっと高度な話題  
   * [ ] ポインタ  
+    Perlでは、リファレンスのこと(ちょっとだけ調べた)。  
 
 * 関数を変数に代入  
 * 関数を引数に使う  
 
 </details>
+
+</details>
+
+<a name="arrangement配列sub"></a>
+<details><summary>実際の配列の勉強</summary>
 
 ### 配列
 Perlでの配列とは、データ(リストのこと)を入れる入れ物でしかない。データは全く関係ない。  
@@ -585,9 +555,9 @@ Perlでのリストとは、配列に入れるためのデータであって、�
 様式：
 `my @配列名;`  
 
-
 <a name="subArrangement2"></a>
 #### 配列への追加方法
+様式：
 [配列](#subArrangement2wrongarray)は0から始まるが、意識する必要は無いだろう。  
 
 様式：
@@ -719,6 +689,7 @@ say @hoge;	# 2021083120210901
 say $hoge[0];	# 20210831
 say $hoge[1];	# 20210901
 ```
+
 
 <a name="subArrangement2wrongarray"></a>
 <details><summary>間違った配列操作</summary>
@@ -856,6 +827,7 @@ say "@boo";	# 20210830 20210831 20210901 20210902
 ```
 ※配列内容が展開されてから新しい配列に格納される。  
 
+
 <a name="subArrangement999"></a>
 #### 配列での説明しない項目。
 
@@ -878,7 +850,8 @@ say "@boo";	# 20210830 20210831 20210901 20210902
 
 * 配列の応用  
   * [ ] 多次元配列。  
-    リファレンス。  
+    [ ] 3次元配列以上の宣言方法。  
+    [x] リファレンス(少しだけ調べた)。  
   * [x] 配列を複製する方法。  
   * [ ] 配列からスライスを作成する方法。  
 
@@ -899,6 +872,11 @@ say "@boo";	# 20210830 20210831 20210901 20210902
 
 </details>
 
+</details>
+
+<a name="Conditional条件分岐sub"></a>
+<details><summary>実際の条件分岐の勉強</summary>
+
 ### 条件分岐
 
 * 絶対的に勉強する一覧  
@@ -916,7 +894,6 @@ say "@boo";	# 20210830 20210831 20210901 20210902
     * [x] より小さい(`<`)  
     * [x] 以上(`>=`)  
     * [x] 以下(`<=`)  
-
 
 <a name="subConditional1"></a>
 #### 条件分岐
@@ -981,6 +958,7 @@ if ( 条件式1 and 条件式2 ) {
 }
 ```
 
+
 <a name="subConditional3"></a>
 #### 比較演算子
 Perlの[演算子](https://perldoc.jp/docs/perl/perlop.pod)。  
@@ -993,10 +971,10 @@ Perlの[演算子](https://perldoc.jp/docs/perl/perlop.pod)。
 |--------|----------|------------|----|
 |等号|`==`|`eq`|イコール(equal)|
 |不等|`!=`|`ne`|ノットイコール(not equal)|
-|より小さい|`<`|`lt`|レスザン(決して…でない：less than)|
 |より大きい|`>`|`gt`|グレタザン(より大きい：greater than)|
-|以下(等しいもしくは小さい)|`<=`|`le`|(less than or equal to)|
+|より小さい|`<`|`lt`|レスザン(決して…でない：less than)|
 |以上(等しいもしくは大きい)|`>=`|`ge`|(greater than or equal to)|
+|以下(等しいもしくは小さい)|`<=`|`le`|(less than or equal to)|
 
 
 <a name="subConditional999"></a>
@@ -1048,6 +1026,11 @@ Perlの[演算子](https://perldoc.jp/docs/perl/perlop.pod)。
 
 </details>
 
+</details>
+
+<a name="repetition繰り返しsub"></a>
+<details><summary>実際の繰り返しの勉強</summary>
+
 ### 繰り返し
 
 * 絶対的に勉強する一覧  
@@ -1080,11 +1063,13 @@ Perlの[演算子](https://perldoc.jp/docs/perl/perlop.pod)。
 
 これで1から10までのリストが作られ、その間繰り返しが発生する。  
 
+
 <a name="subRepetition2"></a>
 ##### 指定回数条件での繰り返し：for( 条件式 )
 様式：
 `for ( 初期化; 条件式; 増減分) { ・・・ }`  
 ※増減分は、初期化する変数をどうするか決める場所として使うのが一般的。  
+
 
 <a name="subRepetition3"></a>
 ##### 指定回数条件での繰り返し：拡張for命令
@@ -1096,6 +1081,7 @@ Perlの[演算子](https://perldoc.jp/docs/perl/perlop.pod)。
 例）`foreach my $変数名 ( sort(リスト) ) { ・・・ }`  
 当たり前だが、foreach前にsort演算子が実行され、実行後にforeachが実行されるため、sort演算子の実行は最初の1回だけと言うことになる。  
 
+
 <a name="subRepetition4"></a>
 #### `for`の入れ子。
 やりたければ勝手にすれば良い。
@@ -1106,6 +1092,7 @@ foreach my $変数名1 ( リスト ) {
 	}
 }
 ```
+
 
 <a name="subRepetition5"></a>
 #### ジャンプ処理
@@ -1143,6 +1130,7 @@ while( ( my $index, my $value ) = each @hoge ) {
 昔は出来なかった。  
 そして、[Go](https://golang.org/doc/effective_go#for)の`for...range`ではできていたため、他の言語でも出来て欲しいと思っていた。  
 
+
 <a name="subRepetition7"></a>
 #### 無限ループ
 様式：
@@ -1152,6 +1140,7 @@ while( ( my $index, my $value ) = each @hoge ) {
 
 余談：
 `for (i=0;;i++) `の場合、無限ループだが、繰返し回数は得られる。  
+
 
 <a name="subRepetition999"></a>
 #### 繰り返しでの説明しない項目。
@@ -1181,6 +1170,11 @@ while( ( my $index, my $value ) = each @hoge ) {
     使える繰り返し：`for`・`foreach`・`while`・`until`・裸のブロック。  
 
 </details>
+
+</details>
+
+<a name="function関数sub"></a>
+<details><summary>実際の関数の勉強</summary>
 
 ### 関数
 Perlでは、サブルーチンというようだ。  
@@ -1260,6 +1254,7 @@ sub 関数名 {
 
 ※関数原型(関数プロトタイプ)宣言不要。  
 
+
 <a name="subFunction2"></a>
 #### [スコープ](https://perldoc.jp/docs/perl/5.10.0/perlfaq7.pod#Whats32the32difference32between32dynamic32and32lexical32-40static41-32scoping63-32Between32local40-41-32and32my40-41-63)
 関数内だけで永続的な変数を使う場合は、`state`での変数宣言をする(v5.10以降)。  
@@ -1277,13 +1272,11 @@ v5.24ではできないが、最新版では出来るのか。
 この形式で[宣言](https://perldoc.jp/docs/perl/5.16.1/perlsub.pod#Temporary32Values32via32local40-41)できるはずなのだが・・・。  
 そもそも`my`を使えば良いだけなので、全く困らない(大事発言はどこへやら)。  
 
+
 <a name="subFunction999"></a>
 #### 関数での説明しない項目。
 
 <details><summary>今回は勉強を見送る一覧</summary>
-
-そもそもPythonは、普通に必要？  
-しかし、アルゴリズムの勉強には不要なのだろう。  
 
 * 標準的な関数  
   * [x] 可変長引数  
@@ -1316,8 +1309,8 @@ Perlでオブジェクト指向開発ができるだけでなく、そのやり�
 
 </details>
 
-#### ☆アルゴリズムの勉強チャプタ概要☆
 <a name="algorithmTextbookLearnedinPython"></a>
+#### ☆アルゴリズムの勉強チャプタ概要☆
 <a name="algorithmTextbookLearnedinPythonChapter2"></a>
 * [Chapter2 プログラミングの力を養う](#developProgrammingSkillsOverviewChapter2)  
   基礎的なプログラミングの力を養っていく。  
@@ -1440,6 +1433,7 @@ say "平均点：$average";	# 平均点：82.4
 Pythonより作りやすい言語ではある。  
 しかし、暗黙的な`$_`を多用した場合、保守できないのがPerlなんだよな・・・。  
 
+
 <a name="addFrom1tonChapter2"></a>
 #### 1からnまで足し合わせる。
 勉強内容はPythonと基本は同じ。  
@@ -1555,6 +1549,7 @@ say &AddupGauss(1, 10);	# 55
 say &AddupGauss(1, 100);	# 5050
 ```
 
+
 <a name="outputTheMultiplicationTableChapter2"></a>
 #### 九九の式を出力する。
 Pythonでやったように、九九の式を出すのではなく、九九表を出すことにする。  
@@ -1592,8 +1587,8 @@ sub kukuTable() {
 ```
 九九表完成。
 
-今回`sprintf`と言う今まで勉強していない関数を使ったよ。  
-何をしているのやら。  
+`sprintf`は、今回初めて使った。  
+
 
 <a name="findAPrimeNumberChapter2"></a>
 #### 素数を求める。
@@ -1639,8 +1634,8 @@ say;
 ```terminal
 2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,
 ```
-また、この程度の短いプログラムを作るのに30分以上掛かってしまったよ。  
 [比較演算子](#subConditional3)の扱いにてんやわんやする。  
+
 
 <a name="findTheFactorialOfNChapter2"></a>
 #### nの階乗を求める。
@@ -1731,15 +1726,12 @@ say &factorial(20);
 ```terminal
 2432902008176640000
 ```
-Python言語のあとに着手したが、混乱する。  
-しかし、すぐに取り組まなければ、そもそものアルゴリズムを忘れてしまう。  
-忘れるぐらいだから理解していないとも言えるのだが・・・。  
+他のプログラミング言語とちゃんぽんで進めるのは間違っていることを実感している・・・が、やめられない。  
 
 
 <a name="eratosthenesSieveChapter2"></a>
 #### エラトステネスの篩
 効率よく素数を求めることができるアルゴリズムのこと。  
-書籍のページが見にくい。短いソースコードなのだからページをまたがずに記載して欲しい。  
 
 
 <details><summary>Perlプログラム</summary>
@@ -1778,7 +1770,8 @@ sub eratosthenes_table() {
 			$outputTable .= sprintf("\n");
 		}
 	}
-	say "$outputTable";
+	say $outputTable =~ s/\s*$//mgr;
+	say;
 }
 
 sub prime_eratosthenes() {
@@ -1797,6 +1790,8 @@ sub prime_eratosthenes() {
 }
 &prime_eratosthenes();
 ```
+
+</details>
 
 <details><summary>Perlプログラムの出力結果</summary>
 
@@ -1864,14 +1859,8 @@ sub prime_eratosthenes() {
 
 以上。
 ```
-※見にくいため、末尾の半角スペースを勝手に削除した(Perl側で削除する方法はある？)。
 
 </details>
-
-</details>
-
-疲れる。  
-他のプログラミング言語に置き換えるのは無謀だったかも。  
 
 
 <a name="understandnAryNotationChapter2"></a>
@@ -2058,9 +2047,14 @@ Python限定にしたくなかったが、他のプログラミング言語に�
 #### マンデルブロー集合を描こう。
 
 
-<a name=""></a>
+<a name="appliedknowledge"></a>
 ## 応用知識
+基礎知識5種類だけではアルゴリズムの勉強に足りない部分が発生したため、ちょっとだけ手を広げて勉強した。  
 
+* 応用部分  
+  * [リファレンス](#practicaluseReference)  
+  * [ハッシュ(連想配列)](#practicaluseHash)  
+  * 今後も機会があれば増やしていく。  
 
 <a name="practicaluseReference"></a>
 <details><summary>応用知識-リファレンス</summary>
@@ -2290,19 +2284,19 @@ sub arrayReference() {
 
 	say;
 	say '@booの要素を出力($boo[0])：' . "$boo[0]";	# @bar のアドレスが入っていると思っている。
-					# 出力結果：@booの要素を出力($boo[0])：ARRAY(0x7fdda280abb0)
+				# 出力結果：@booの要素を出力($boo[0])：ARRAY(0x7fdda280abb0)
 	say '@booをデリファレンス($boo[0]->[0])：' . "$boo[0]->[0]";	# @bar の第1要素目が入っていると思っている。
-					# 出力結果：@booをデリファレンス($boo[0]->[0])：hoge1のアドレス格納用配列リファレンス
+				# 出力結果：@booをデリファレンス($boo[0]->[0])：hoge1のアドレス格納用配列リファレンス
 	say '@booをデリファレンス($boo[0]->[1])：' . "$boo[0]->[1]";	# @bar の第2要素目が入っていると思っている(ここにhoge1のアドレスが入っている)。
-					# 出力結果：@booをデリファレンス($boo[0]->[1])：ARRAY(0x7fdda280aaf0)
+				# 出力結果：@booをデリファレンス($boo[0]->[1])：ARRAY(0x7fdda280aaf0)
 	say '@booをデリファレンス($boo[0]->[1][0])：' . "$boo[0]->[1][0]";	# @hoge1 の第1要素が入っていると思っている。
-					# 出力結果：@booをデリファレンス($boo[0]->[1][0])：hogeのアドレス格納用配列リファレンス
+				# 出力結果：@booをデリファレンス($boo[0]->[1][0])：hogeのアドレス格納用配列リファレンス
 	say '@booをデリファレンス($boo[0]->[1][1])：' . "$boo[0]->[1][1]";	# @hoge1 の第2要素が入っていると思っている(hogeのアドレスが入っている)。
-					# 出力結果：@booをデリファレンス($boo[0]->[1][1])：ARRAY(0x7fdda280a388)
+				# 出力結果：@booをデリファレンス($boo[0]->[1][1])：ARRAY(0x7fdda280a388)
 	say '@booをデリファレンス($boo[0]->[1][1][0])：' . "$boo[0]->[1][1][0]";	# @hoge の第1要素が入っていると思っている。
-					# 出力結果：@booをデリファレンス($boo[0]->[1][1][0])：20210923
+				# 出力結果：@booをデリファレンス($boo[0]->[1][1][0])：20210923
 	say '@booをデリファレンス($boo[0]->[1][1][1])：' . "$boo[0]->[1][1][1]";	# @hoge の第2要素が入っていると思っている。
-					# 出力結果：@booをデリファレンス($boo[0]->[1][1][1])：Perl難しい
+				# 出力結果：@booをデリファレンス($boo[0]->[1][1][1])：Perl難しい
 
 	say;
 	say \@hoge1;	# ARRAY(0x7fdda280aaf0)	←☆上記と同じ結果が出ている。
@@ -2658,28 +2652,18 @@ say "$ENV{HISTCONTROL}";	# ignoreboth
 
 </details>
 
-## Gitのマージルール
-個々の言語ごとにブランチをそれぞれ作成する。  
-そのブランチで作業する。  
-以下、流れとして、、、
-
-* ブランチ作成などの初期作業。  
-  1. [ ] 対象言語のブランチ作成  
-  1. [ ] そのブランチで勉強する。  
-  1. [ ] 切りの良い場所でコミット実施。  
-
-  * 上記作業再開。  
-    1. [ ] 前回の勉強を再開する。  
-    1. [ ] 1章分の勉強終了後、"study2programming"にマージする。  
-    1. [ ] 誤字脱字程度のコミットはスカッシュしたい。  
-    1. [ ] "study2programming"をPushする。  
-       ※masterにマージすることはない。  
-    1. [ ] 章ごとにタグ付けをする(Push実施)。  
-
+## ※Gitのマージルール
 study2programmingに取り込むときのマージは、3方向マージ(`--no-ff`)を使う。  
-例外作業として、masterに取り込む場合はチェリーピッキングでピンポイントに必要最小限のコミットのみを取り込む(しつこいが、masterに取り込むことはしたくない)。  
-あわよくば、Gitの勉強にもなればと思ったが、思った以上に難しい。  
+
+* [ ] "study2programming"にマージする時のルール。  
+  * [ ] 誤字脱字程度のコミットはスカッシュしたい。  
+  * [ ] マージ後"study2programming"をPushする。  
+    ※masterにマージすることはない。  
+  * [ ] マージごとにタグ付けをする(そしてPush実施)。  
+
+* 例外としてmasterに取り込む場合は、チェリーピッキングでピンポイントに必要最小限のコミットのみを取り込む(しつこいが、masterに取り込むことはしたくない)。  
+  言いたいことは、履歴を複数にしたくないと言うこと。  
 
 
 以上。
-<!-- vim: set ts=4 sts=4 sw=4 tw=0 expandtab: -->
+<!-- vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=markdown expandtab: -->

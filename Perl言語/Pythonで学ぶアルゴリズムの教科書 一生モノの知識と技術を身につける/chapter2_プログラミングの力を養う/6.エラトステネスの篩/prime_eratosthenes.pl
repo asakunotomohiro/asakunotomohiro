@@ -61,7 +61,8 @@ sub eratosthenes_table() {
 		}
 #		say "110?:" . $ii if $ii >= 100;
 	}
-	say "$outputTable";
+	say $outputTable =~ s/\s*$//mgr;
+	say;
 }
 
 sub prime_eratosthenes() {
@@ -150,8 +151,6 @@ sub prime_eratosthenes() {
 #			／, 71, ／, 73, ／, ／, ／, ／, ／, 79,
 #			／, ／, ／, 83, ／, ／, ／, ／, ／, 89,
 #			／, ／, ／, ／, ／, ／, ／, 97, ／, ／,
-#			
-#			以上。
 
 
 say "以上。"
