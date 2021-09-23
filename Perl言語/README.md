@@ -81,15 +81,16 @@ Perlerになるつもりはない。
 
 * 応用知識  
   * [ ] [リファレンス](#practicaluseReference)  
-    * [ ] リファレンス  
-      [ ] 変数  
-      [ ] 配列  
-      [ ] ハッシュ  
+    * [x] リファレンス  
+      [x] 変数  
+      [x] 配列  
+      [x] ハッシュ  
       [ ] 関数(サブルーチン)  
       [ ] OSの環境変数  
       [ ] ファイルハンドルへのリファレンス  
-    * [ ] デリファレンス  
-    * [ ] 入れ子  
+    * [x] デリファレンス  
+    * [x] 入れ子  
+      本当は途中。  
     * [ ] スコープ  
     * [ ] サブルーチンへのリファレンス  
     * [ ] 応用利用  
@@ -2178,26 +2179,213 @@ ${"${pack}::$name"} = 5;    # Sets $THAT::foo without eval
 
 > 変数名やサブルーチン名の一部として識別子を置くところでは、適切な 型のリファレンスを持った単純スカラ変数でその識別子を 置き換えることができます:  
 
+以下、変数用のデリファレンス。
 ```perl
-$bar = $$scalarref;
-push(@$arrayref, $filename);
-$$arrayref[0] = "January";
-$$hashref{"KEY"} = "VALUE";
-&$coderef(1,2,3);
-print $globref "output\n";
-```
-説明が何を表しているのか分からないが、リファレンスになっている対象のシジル前に`$`を置けばいい？  
-通常の配列は`@array`だが、それをリファレンス化するには、`\`を前置し、`$arrayref = \@array`として、それが代入されたリファレンス変数配列の実体は、`@$arrayref`ってこと？  
-その要素への取得は、`$$arrayref[0]`ってことね。  
+use v5.24;
 
-C言語で言うポインタ変数の実体化と言うことでいい？  
+sub dereferenceScalar() {
+	my $hoge = "bar";
+	my $refhoge = \$hoge;
+
+	say "以下、変数用のデリファレンス";
+	say '通常の変数$hoge          ：' . "$hoge";
+					# 出力結果：通常の変数$hoge          ：bar
+	say 'リファレンス値$refhoge   ：' . "$refhoge";
+					# 出力結果：リファレンス値$refhoge   ：SCALAR(0x7ff9b801c608)
+	say 'デリファレンス値$$refhoge：' . "$$refhoge";
+					# 出力結果：デリファレンス値$$refhoge：bar
+
+}
+&dereferenceScalar();
+```
+
+以下、配列用のデリファレンス。
+```perl
+sub dereferenceArray() {
+	my @hoge = ("本日は晴天なり。", "bar", );
+	my $refhoge = \@hoge;
+
+	say "以下、配列用のデリファレンス";
+	say '通常の配列@hoge          ：' . "@hoge";
+					# 出力結果：通常の配列@hoge          ：本日は晴天なり。 bar
+	say 'リファレンス値@refhoge   ：' . "$refhoge";
+					# 出力結果：リファレンス値@refhoge   ：ARRAY(0x7ff9b801c770)
+	say 'デリファレンス値@$refhoge：' . "@$refhoge";
+					# 出力結果：デリファレンス値@$refhoge：本日は晴天なり。 bar
+}
+&dereferenceArray();
+```
+
+以下、ハッシュ用のデリファレンス。
+```perl
+sub dereferenceHash() {
+	my %hoge = ("本日は晴天なり。", "bar", );
+	my $refhoge = \%hoge;
+
+	say "以下、ハッシュ用のデリファレンス";
+	say '通常のハッシュ%hoge                    ：' . "%hoge";
+					# 出力結果：通常のハッシュ%hoge                    ：%hoge
+	while( my ($key, $value) = each %$refhoge ) {
+		say '通常のハッシュ%hoge(%key, $value)      ：' . "$key -> $value";
+					# 出力結果：通常のハッシュ%hoge(%key, $value)      ：本日は晴天なり。 -> bar
+	}
+	say 'リファレンス値%refhoge                 ：' . "%$refhoge";
+					# 出力結果：リファレンス値%refhoge                 ：%HASH(0x7ff9b801c920)
+	while( my ($key, $value) = each %$refhoge ) {
+		say 'デリファレンス値%$refhoge(%key, $value)：' . "$key -> $value";
+					# 出力結果：デリファレンス値%$refhoge(%key, $value)：本日は晴天なり。 -> bar
+	}
+}
+&dereferenceHash();
+```
+
+当然関数用など他にもデリファレンスが必要なリファレンスもある。  
 
 #### 入れ子
 入れ子にできる種類は、複数ある。  
-今回は・・・。  
+
+* 現在の確認項目  
+  * 変数  
+  * 配列  
+  * ハッシュ  
+
+* 未確認  
+  * 関数  
+
+以下、変数の入れ子・・・変数を入れ子するというのは可笑しいと言うか、不可能だよね。
+```perl
+sub scalarReference() {
+	# 目的：配列をリファレンスとして配列の中に格納し、さらにそれをリファレンスとして配列に入れるという入れ子をすること。
+	my $hoge1 = $hoge;	# 変数にスカラー値を代入する。
+	my $bar = \$hoge1;	# それをリファレンスとして別の変数に代入する。
+	say \$hoge1;				# SCALAR(0x7f87e1809b88)
+	say $bar;					# SCALAR(0x7f87e1809b88)
+	say $hoge;					# 本日は晴天なり。
+	$hoge = \$bar;		# さらに、リファレンス変数が代入されている変数を別の変数にリファレンスとして代入する(混乱する)。
+	say \$bar;					# REF(0x7f87e1809ba0)
+	say $hoge;					# REF(0x7f87e1809ba0)
+	say;
+	say '$hogeをデリファレンス($$hoge)：' . "$$hoge";	# $hoge1 のアドレスが入っていると思っている。
+				# 出力結果：$hogeをデリファレンス($$hoge)：SCALAR(0x7f87e1809b88)
+	say '$$hogeをデリファレンス($$$hoge)：' . "$$$hoge";	# スカラー値 が入っていると思っている。
+				# 出力結果：$$hogeをデリファレンス($$$hoge)：本日は晴天なり。
+}
+&scalarReference();
+```
+
+以下、配列をリファレンスとして、配列に代入し、さらにその配列をリファレンスとして配列に代入するという入れ子をしている。
+```perl
+sub arrayReference() {
+	say '@hogeの値：' . "@hoge";					# @hogeの値：20210923 Perl難しい
+	my @hoge1 = ("hogeのアドレス格納用配列リファレンス", \@hoge);		# 配列に配列リファレンスを代入する。
+	say '@hogeのアドレス：' . \@hoge;				# @hogeのアドレス：ARRAY(0x7fdda280a388)
+	say '@hoge1の値：' . "@hoge1";					# @hoge1の値：hogeのアドレス格納用配列リファレンス ARRAY(0x7fdda280a388)
+	my @bar = ("hoge1のアドレス格納用配列リファレンス", \@hoge1);	# それをリファレンスとして別の配列に代入する。
+	say '@hoge1のアドレス：' . \@hoge1;				# @hoge1のアドレス：ARRAY(0x7fdda280aaf0)
+	say '@barの値：' . "@bar";						# @barの値：hoge1のアドレス格納用配列リファレンス ARRAY(0x7fdda280aaf0)
+	my @boo = (\@bar);		# さらに、リファレンス配列が代入されている配列を別の配列にリファレンスとして代入する(混乱する)。
+	say '@barのアドレス：' . \@bar;					# @barのアドレス：ARRAY(0x7fdda280abb0)
+	say '@booの値：' . "@boo";						# @booの値：ARRAY(0x7fdda280abb0)
+					# 出力結果：
+
+	say;
+	say '@booの要素を出力($boo[0])：' . "$boo[0]";	# @bar のアドレスが入っていると思っている。
+					# 出力結果：@booの要素を出力($boo[0])：ARRAY(0x7fdda280abb0)
+	say '@booをデリファレンス($boo[0]->[0])：' . "$boo[0]->[0]";	# @bar の第1要素目が入っていると思っている。
+					# 出力結果：@booをデリファレンス($boo[0]->[0])：hoge1のアドレス格納用配列リファレンス
+	say '@booをデリファレンス($boo[0]->[1])：' . "$boo[0]->[1]";	# @bar の第2要素目が入っていると思っている(ここにhoge1のアドレスが入っている)。
+					# 出力結果：@booをデリファレンス($boo[0]->[1])：ARRAY(0x7fdda280aaf0)
+	say '@booをデリファレンス($boo[0]->[1][0])：' . "$boo[0]->[1][0]";	# @hoge1 の第1要素が入っていると思っている。
+					# 出力結果：@booをデリファレンス($boo[0]->[1][0])：hogeのアドレス格納用配列リファレンス
+	say '@booをデリファレンス($boo[0]->[1][1])：' . "$boo[0]->[1][1]";	# @hoge1 の第2要素が入っていると思っている(hogeのアドレスが入っている)。
+					# 出力結果：@booをデリファレンス($boo[0]->[1][1])：ARRAY(0x7fdda280a388)
+	say '@booをデリファレンス($boo[0]->[1][1][0])：' . "$boo[0]->[1][1][0]";	# @hoge の第1要素が入っていると思っている。
+					# 出力結果：@booをデリファレンス($boo[0]->[1][1][0])：20210923
+	say '@booをデリファレンス($boo[0]->[1][1][1])：' . "$boo[0]->[1][1][1]";	# @hoge の第2要素が入っていると思っている。
+					# 出力結果：@booをデリファレンス($boo[0]->[1][1][1])：Perl難しい
+
+	say;
+	say \@hoge1;	# ARRAY(0x7fdda280aaf0)	←☆上記と同じ結果が出ている。
+	say \@_;		# ARRAY(0x7fdda28181d8)
+}
+&arrayReference();
+```
+要は、これこそが2次元配列と言うことか？  
 
 
+以下、配列のリファレンスを変数に代入し、その変数のリファレンスを変数に代入している。
+```perl
+sub arrayReference() {
+	my $refhoge = \@hoge;			# 変数に配列リファレンスを代入する。
+	my $refbar = \$refhoge;	# それをリファレンスとして別の変数に代入する。
+	my $hoge = \$refbar;		# さらに、リファレンス変数が代入されている変数を別の変数にリファレンスとして代入する(混乱する)。
 
+	say '@hogeの値を出力：' . "@hoge";	# そもそもの値確認。
+					# 出力結果：@hogeの値を出力：20210923 Perl難しい
+
+	say;
+	say '$hogeの値を出力  ：' . "$hoge";	# $refbar のアドレスが入っていると思っている(最終結果)。
+					# 出力結果：$hogeの値を出力  ：REF(0x7fba480140e8)
+	say '$refbarのアドレス：' . \$refbar;	# $refbarのアドレス：REF(0x7fba480140e8)
+	say '$hogeをデリファレンス：' . "$$hoge";	# $refbar が入っていると思っている。
+					# 出力結果：$hogeをデリファレンス：REF(0x7fba48014160)
+	say '$refhogeのアドレス   ：' . \$refhoge;	# $refhogeのアドレス   ：REF(0x7fba48014160)
+
+	say;
+	my $dehoge = $$hoge;	# $refbar が代入されたと思っている。
+	say '$dehogeを出力：' . "$dehoge";	# $refbar が入っていると思っている。
+					# 出力結果：$dehogeを出力：REF(0x7fba48014160)
+	say '$dehogeを出力：' . "$$hoge";	# $refbar が入っていると思っている。
+					# 出力結果：$dehogeを出力：REF(0x7fba48014160)
+
+	say;
+	my $dedehoge = $$dehoge;
+	say '$dedehogeを出力：' . "$dedehoge";	# $refhoge が入っていると思っている。
+					# 出力結果：$dedehogeを出力：ARRAY(0x7fba48005d88)
+	say '$dedehogeを出力：' . "$$$hoge";	# $refhoge が入っていると思っている。
+					# 出力結果：$dedehogeを出力：ARRAY(0x7fba48005d88)
+
+	say;
+	say '@hogeを出力：' . "@$$$hoge";	# $hoge が入っていると思っている。
+					# 出力結果：@hogeを出力：20210923 Perl難しい
+	say '$hoge[0]を出力：' . "$$$$hoge[0]";	# $hoge が入っていると思っている。
+					# 出力結果：$hoge[0]を出力：20210923
+	say '$hoge[1]を出力：' . "$$$$hoge[1]";	# $hoge が入っていると思っている。
+					# 出力結果：$hoge[1]を出力：Perl難しい
+
+}
+&arrayReference();
+```
+これをするだけの利益はあるのだろうか。  
+
+以下、ハッシュをリファレンスとして変数に代入し、その変数をリファレンスとして変数に代入している。
+```perl
+sub hashReference() {
+	my %hogehash = (%hoge);			# ハッシュにハッシュリファレンスを代入する。
+	my $barhash = \%hogehash;	# それをリファレンスとして別のハッシュに代入する。
+	my $boo = \$barhash;	# さらに、ハッシュリファレンスが代入されているハッシュを別のハッシュにリファレンスとして代入する(混乱する)。
+
+	my $deboo = $$boo;	# ハッシュのリファレンスをデリファレンスした($barhashになっている)。
+	my %dedeboo = %$deboo;	# ハッシュのリファレンスをデリファレンスした($hogehashになっている)。
+	while( my ($key, $value) = each %dedeboo ) {
+		say '%dedebooの要素を出力($boo[0])：' . "$key -> $value";	# %barhash が入っていると思っている。
+			# 出力結果：
+#					%dedebooの要素を出力($boo[0])：hoge -> 20210923
+#					%dedebooの要素を出力($boo[0])：boo -> 本日は晴天なり。
+#					%dedebooの要素を出力($boo[0])：bar -> Perl難しい
+	}
+
+	while( my ($key, $value) = each %$$boo ) {
+		say '%hogeの要素を出力(%$$boo)：' . "$key -> $value";	# %barhash が入っていると思っている。
+			# 出力結果：
+#					%hogeの要素を出力(%$$boo)：hoge -> 20210923
+#					%hogeの要素を出力(%$$boo)：bar -> Perl難しい
+#					%hogeの要素を出力(%$$boo)：boo -> 本日は晴天なり。
+	}
+}
+&hashReference();
+```
+本当にやりたかったことは、ハッシュのネストであって、これではない。  
 
 #### スコープ
 
