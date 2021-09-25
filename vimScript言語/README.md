@@ -897,6 +897,32 @@ else
 endif
 ```
 
+以下、条件分岐例）
+```vim
+def! Function(): string
+	if 10 == 0
+		echom '10と0は等しい。'
+	elseif 10 != 0
+		# こっちが実行される。
+		echom '10と0は等しくない。'
+	else
+		echom 'その他'
+	endif
+	# 実行結果：10と0は等しくない。
+
+	#
+	# 以下、文字列比較演算子。
+	#
+	if 'hoge' ==? 'hOgE'
+		echom 'hogeは、hOgEに等しい(==?)。'
+	endif
+	# 実行結果：hogeは、hOgEに等しい(==?)。
+
+	return 'vim9script関数内の条件分岐'
+enddef
+echom Function()
+"	出力結果：vim9script関数内の条件分岐
+```
 
 ##### 多岐分岐-条件にて複数から選ぶ。
 ない。  
@@ -1021,6 +1047,36 @@ vim9scriptでのforを使った配列要素を削除する場合、script8との
 
 ファイルから指定行を取り出しての処理もお手の物。  
 
+以下、実行例）
+```vim
+def! Bar(): string
+	for ii in range(3)
+		echom ii .. '回目の実行'
+	endfor
+#		出力結果：
+#				0回目の実行
+#				1回目の実行
+#				2回目の実行
+
+	return 'vim9script用繰り返し処理'
+enddef
+echom Bar()
+
+
+" 以下、ステップ実行の逆方向
+def! BarReverseRange(): string
+	for ii in range(10, 3, -3)
+		echom ii .. '回目の実行'
+	endfor
+#		出力結果：
+#			10回目の実行
+#			7回目の実行
+#			4回目の実行
+
+	return '負のステップ実行'
+enddef
+echom BarReverseRange()
+```
 
 <a name="subRepetition3"></a>
 ##### 指定回数条件での繰り返し：拡張for命令
@@ -1045,6 +1101,22 @@ endfor
 1回目の処理では、`hoge`の値として、`hoge1`だけが代入されており、`boo`の値として`boo1`が代入されている。  
 2回目以降でも同様に次々1つずつ値が代入されて処理されていく。  
 
+以下、実行例）
+```vim
+def! Bar(): string
+	var hogeList = ['hoge', 'bar', 'b o o']
+	for bar in hogeList
+		echom bar
+	endfor
+#		出力結果：
+#				hoge
+#				bar
+#				b o o
+
+	return 'vim9script用繰り返し処理'
+enddef
+echom Bar()
+```
 
 <a name="subRepetition4"></a>
 #### `for`の入れ子。
@@ -1209,6 +1281,8 @@ vim9scriptに限定して説明したつもり。
 
 <a name="subFunction1"></a>
 #### 関数
+もしかして、引き数値を書き換えることは出来ない？  
+
 様式(vim9script)：
 ```vim
 def[!] [関数名]([引数])[: 戻り値型名]
@@ -1227,6 +1301,7 @@ enddef
 引数任意。  
 `def! [関数名]([引数]: [型] = [デフォルト値])`
 引数任意(型付けあり)。  
+
 
 **注意事項1**
 関数名は、先頭を大文字にしなければならない。  
@@ -1247,6 +1322,10 @@ enddef
 
 **注意事項6**
 関数呼び出しの場合には、`call`を付けずに関数呼び出しができる。  
+
+**注意事項7**
+> 引数は "a:" のプリフィックス無しで使われる(vim9script)。  
+> 型をケアしない場合や関数が多型で動くなら、"any" 型を使うことができます。  
 
 以下、引数なしの戻り値あり。
 ```vim
@@ -1374,7 +1453,7 @@ vim9scriptでも`unlet`は使えるようだ。
   [x] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
   [x] [素数を求める。](#findAPrimeNumberChapter2)  
   [x] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
-  [ ] [エラトステネスの篩](#eratosthenesSieveChapter2)  
+  [x] [エラトステネスの篩](#eratosthenesSieveChapter2)  
   [ ] [n進法を理解する。](#understandnAryNotationChapter2)  
 <a name="algorithmTextbookLearnedinPythonChapter3"></a>
 * [Chapter3 データ構造を学ぶ](#learnDataStructuresOverviewChapter3)  
@@ -1748,6 +1827,144 @@ echom Factorial3(20)
 
 <a name="eratosthenesSieveChapter2"></a>
 ##### エラトステネスの篩
+効率よく素数を求めることができるアルゴリズムのこと。  
+
+<details><summary>vim9scriptプログラム</summary>
+
+```vim
+def! Main()
+	var eratosthenes = []
+	for ii in range( 100 )
+		add(eratosthenes, true)
+	endfor
+	eratosthenes[0] = false
+	eratosthenes[1] = false
+
+	var notprime = 2
+	Show(eratosthenes)
+
+	while notprime < 10
+		var retfurui = Eratosthenes(notprime, eratosthenes)
+		# 1つ目の要素は、ふるいにかける値
+		notprime = retfurui[0]
+		# 2つ目の要素は、表の中身(2次元配列になっているのを取り出す)
+		eratosthenes = retfurui[1]
+	endwhile
+enddef
+
+def! Show( eratosthenes: list<bool> ): list<bool>
+	var output = ""
+	for ii in range(100)
+		if eratosthenes[ii] == true
+			output = printf("%s %2d,", output, ii)
+		else
+			output ..= "  /,"
+		endif
+
+		if ii % 10 == 9
+			echom output
+			output = ""
+		endif
+	endfor
+
+	return eratosthenes
+enddef
+
+def! Eratosthenes(notprime: number, eratosthenes: list<bool>): any
+	var argnotprime = notprime
+	for ii in range( (argnotprime * 2), 100, argnotprime)
+		eratosthenes[ii] = false
+		ii += argnotprime
+	endfor
+
+	echom ""
+	echom argnotprime .. "の倍数をふるい落とした。"
+	Show(eratosthenes)
+
+	while argnotprime < 100	# 次にふるい落とす数。
+		argnotprime += 1
+		if eratosthenes[argnotprime] == true
+			break
+		endif
+	endwhile
+
+	# 複数の戻り値が出来ないため、1つのリストにまとめた。
+	return [argnotprime, eratosthenes, ]
+enddef
+
+call Main()
+```
+
+</details>
+
+<details><summary>vim9scriptプログラムの出力結果</summary>
+
+以下、出力結果。
+```text
+  /,  /,  2,  3,  4,  5,  6,  7,  8,  9,
+ 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+ 20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
+ 30, 31, 32, 33, 34, 35, 36, 37, 38, 39,
+ 40, 41, 42, 43, 44, 45, 46, 47, 48, 49,
+ 50, 51, 52, 53, 54, 55, 56, 57, 58, 59,
+ 60, 61, 62, 63, 64, 65, 66, 67, 68, 69,
+ 70, 71, 72, 73, 74, 75, 76, 77, 78, 79,
+ 80, 81, 82, 83, 84, 85, 86, 87, 88, 89,
+ 90, 91, 92, 93, 94, 95, 96, 97, 98, 99,
+
+2の倍数をふるい落とした。
+  /,  /,  2,  3,  /,  5,  /,  7,  /,  9,
+  /, 11,  /, 13,  /, 15,  /, 17,  /, 19,
+  /, 21,  /, 23,  /, 25,  /, 27,  /, 29,
+  /, 31,  /, 33,  /, 35,  /, 37,  /, 39,
+  /, 41,  /, 43,  /, 45,  /, 47,  /, 49,
+  /, 51,  /, 53,  /, 55,  /, 57,  /, 59,
+  /, 61,  /, 63,  /, 65,  /, 67,  /, 69,
+  /, 71,  /, 73,  /, 75,  /, 77,  /, 79,
+  /, 81,  /, 83,  /, 85,  /, 87,  /, 89,
+  /, 91,  /, 93,  /, 95,  /, 97,  /, 99,
+
+3の倍数をふるい落とした。
+  /,  /,  2,  3,  /,  5,  /,  7,  /,  /,
+  /, 11,  /, 13,  /,  /,  /, 17,  /, 19,
+  /,  /,  /, 23,  /, 25,  /,  /,  /, 29,
+  /, 31,  /,  /,  /, 35,  /, 37,  /,  /,
+  /, 41,  /, 43,  /,  /,  /, 47,  /, 49,
+  /,  /,  /, 53,  /, 55,  /,  /,  /, 59,
+  /, 61,  /,  /,  /, 65,  /, 67,  /,  /,
+  /, 71,  /, 73,  /,  /,  /, 77,  /, 79,
+  /,  /,  /, 83,  /, 85,  /,  /,  /, 89,
+  /, 91,  /,  /,  /, 95,  /, 97,  /,  /,
+
+5の倍数をふるい落とした。
+  /,  /,  2,  3,  /,  5,  /,  7,  /,  /,
+  /, 11,  /, 13,  /,  /,  /, 17,  /, 19,
+  /,  /,  /, 23,  /,  /,  /,  /,  /, 29,
+  /, 31,  /,  /,  /,  /,  /, 37,  /,  /,
+  /, 41,  /, 43,  /,  /,  /, 47,  /, 49,
+  /,  /,  /, 53,  /,  /,  /,  /,  /, 59,
+  /, 61,  /,  /,  /,  /,  /, 67,  /,  /,
+  /, 71,  /, 73,  /,  /,  /, 77,  /, 79,
+  /,  /,  /, 83,  /,  /,  /,  /,  /, 89,
+  /, 91,  /,  /,  /,  /,  /, 97,  /,  /,
+
+7の倍数をふるい落とした。
+  /,  /,  2,  3,  /,  5,  /,  7,  /,  /,
+  /, 11,  /, 13,  /,  /,  /, 17,  /, 19,
+  /,  /,  /, 23,  /,  /,  /,  /,  /, 29,
+  /, 31,  /,  /,  /,  /,  /, 37,  /,  /,
+  /, 41,  /, 43,  /,  /,  /, 47,  /,  /,
+  /,  /,  /, 53,  /,  /,  /,  /,  /, 59,
+  /, 61,  /,  /,  /,  /,  /, 67,  /,  /,
+  /, 71,  /, 73,  /,  /,  /,  /,  /, 79,
+  /,  /,  /, 83,  /,  /,  /,  /,  /, 89,
+  /,  /,  /,  /,  /,  /,  /, 97,  /,  /,
+```
+
+</details>
+
+残念ながらアルゴリズムを理解せずに構築したため、本当にこれが最適解なのか分からない。  
+しかし、まずは1冊読破することを優先する。  
 
 <a name="understandnAryNotationChapter2"></a>
 ##### n進法を理解する。
