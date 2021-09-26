@@ -32,6 +32,7 @@
 > サンプルは手入力しやすい短めのプログラムを108個用意しています。  
 > 資格＆就職試験に挑む方、大学や専門学校で情報処理を学ぶ方など、プログラミングの力を伸ばしたいすべての方におすすめです。  
 
+<a name="basicKnowledgeFiveTypesOfStudyRange"></a>
 <details><summary>基礎知識5種類の項目</summary>
 
 ※プログラミングに使う基礎知識を統一する(簡単に済ませられる量に絞り込む)。  
@@ -46,7 +47,7 @@
 
 <a name="algorithmTextbookLearnedinPythonContents"></a>
 * [アルゴリズム勉強目次](#algorithmTextbookLearnedinPython)  
-  * [x] Chapter 1 プログラミングの基礎知識  
+  * [x] [Chapter 1 プログラミングの基礎知識](#basicKnowledgeFiveTypesOfStudyRange)  
     現時点で完了している(上記の基礎知識5種類として)。  
   * [ ] [Chapter 2 プログラミングの力を養う](#algorithmTextbookLearnedinPythonChapter2)  
   * [ ] [Chapter 3 データ構造を学ぶ](#algorithmTextbookLearnedinPythonChapter3)  
@@ -60,6 +61,39 @@
   * Appendix 3 Pythonの記述ルール
 
 
+<a name="breakingAwayFromBasicKnowledge"></a>
+<details><summary>応用知識の項目</summary>
+
+<a name="expandTheScopeOfBasicKnowledge"></a>
+### 基礎知識5種類の勉強範囲を広げる
+基礎知識5種類の勉強は、アルゴリズムの勉強用に特化していたが、この部分は、通常開発ができる範囲に手を広げる。  
+
+* 基礎知識5種類の範囲を広げる  
+  * [ ] [変数](#practicaluseVariable変数)  
+  * [ ] [配列](#practicaluseArrangement配列)  
+  * [ ] [条件分岐](#practicaluseConditional条件分岐)  
+  * [ ] [繰り返し](#practicaluseRepetition繰り返し)  
+  * [ ] [関数](#practicaluseFunction関数)  
+
+
+<a name="rangeOtherThanBasicKnowledge"></a>
+### 基礎知識5種類の勉強以外の項目
+基礎知識5種類に納められない範囲の勉強に手を広げる。  
+
+* [応用知識](#appliedknowledge)  
+  * [ ] [ポインタ・リファレンス](#practicalusePointer)  
+  * [ ] [NULL・nil](#practicaluseNull)  
+  * [ ] [ハッシュ(連想配列)](#practicaluseHash)  
+  * [ ] [ファイル操作](#practicaluseFileoperation)  
+  * [ ] [ディレクトリ操作](#practicaluseDirectorymanipulation)  
+  * [ ] [オブジェクト指向](#practicaluseObjectorientation)  
+  * [ ] [テスト方法](#practicaluseTester)  
+  * [ ] [標準関数(モジュール)](#practicaluseModule)  
+  * [ ] [プロセス管理](#practicaluseSystemfunc)  
+
+</details>
+
+
 <a name="algorithmSpecificBasicKnowledge"></a>
 <details><summary>基礎知識5種類の作業手順</summary>
 
@@ -70,10 +104,11 @@
 
 * 以下、手順。  
   * [x] 手順1. 勉強用のブランチに移動する。  
-  * [x] 手順2. ルートディレクトリのひな形ディレクトリをコピーしてくる。  
-  * [x] 手順2-0. ここまでは、上位ディレクトリにある"README.md"で作業を終えているはず。  
+  * [ ] 手順2. ルートディレクトリのひな形ディレクトリをコピーしてくる。  
+    ※ディレクトリ名をプログラミング言語に変更する。  
+    ※配下の**Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける**ディレクトリは削除。  
   * [ ] 手順2-1. 当ファイル(`README.md`)の書き換えを行う。  
-        ※ **上位ディレクトリにある"README.md"** は触らない。  
+        ※ **上位ディレクトリにある"README.md"** は触らない(新しいプログラミング言語の場合は、追記が必要)。  
         ※ 開発環境を記録する。  
         ※ アルゴリズムの勉強用項目は隠しておく(`details`・`summary`)代わりに、基礎知識5種類の勉強用の項目は出しておく。  
   * [ ] 手順2-2. `helloWorld.[言語用の拡張子]`のファイルを作り、おなじみ"Hello World."プログラムを作る。  
@@ -81,7 +116,7 @@
   * [ ] 手順2-4. コミットする。  
   * [ ] 手順3. 各ディレクトリで、5種類の"絶対的に勉強する一覧"を箇条書きごとに勉強する。  
     * 以下、5種類の内訳。  
-      ※そのとき、(できる限り)プログラムファイルにモードラインを記載する。  
+      ※そのとき、(できる限り)プログラムファイルに[モードライン](../エディタ活用メモ/Vimエディタ_作業メモなど何でも詰め込む.md)を記載する。  
       ※チェックリストは上記にある。  
       変数  
       配列  
@@ -102,15 +137,17 @@
 <details><summary>アルゴリズム問題解決の作業手順</summary>
 
 ## 具体的なアルゴリズム問題解決前手順
-基礎知識5種類を勉強するのと同じように、アルゴリズムの勉強にも以下の手順で進める。  
+アルゴリズムの勉強に、以下の手順を行う。  
 
 * 以下、手順。  
   * [x] 手順1. 勉強用のブランチに移動する(上記[目次](#algorithmTextbookLearnedinPythonContents)の1チャプター分専用ブランチとする)。  
-  * [ ] 手順2. 当ファイル(`README.md`)の書き換えを行う。  
+  * [ ] 手順2. ルートディレクトリのひな形ディレクトリ配下の必要なディレクトリをコピーする。  
+    **Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける** ディレクトリ配下の必要なチャプター用ディレクトリ。  
+  * [ ] 手順3. 当ファイル(`README.md`)の書き換えを行う。  
     [ ] アルゴリズムの勉強用に変更する。  
     [ ] アルゴリズムの勉強用項目を出すが、基礎知識5種類の勉強項目は隠す(`details`・`summary`)。  
   * [ ] 編集後、コミットする。  
-  * [ ] 手順3. 各ディレクトリで、チャプタごとに勉強を進める。  
+  * [ ] 手順4. 各ディレクトリで、チャプタごとに勉強を進める。  
     ※そのとき、(できる限り)プログラムファイルに[モードライン](https://vim-jp.org/vim-users-jp/2009/06/02/Hack-20.html)を記載する。  
     ※チェックリストは上記にある。  
     Chapter 2 プログラミングの力を養う  
@@ -120,8 +157,8 @@
     Chapter 6 ハッシュ  
     Chapter 7 さまざまなアルゴリズムを学ぶ  
     Chapter 8 アルゴリズムを見える化する  
-  * [ ] 手順4. 1つのプログラミング言語で、手順3の勉強1種類(要は、1チャプタ分の子部分)を終えた時に、次のプログラミング言語に移る。  
-  * [ ] 手順5. 1チャプタ分終了にて、"study2programming"ブランチにマージする。  
+  * [ ] 手順5. 1つのプログラミング言語で、手順4の勉強1種類(要は、1チャプタ分の子部分)を終えた時に、次のプログラミング言語に移る。  
+  * [ ] 手順6. 1チャプタ分終了にて、"study2programming"ブランチにマージする。  
 
 </details>
 
@@ -153,6 +190,8 @@
 　　例）`//`・`"`・`REM`・`#`など。  
   * 複数行コメント方法：  
 　　例）`/*〜*/`・`''' 〜 '''`など。  
+  * デバッガ機能(デバッグ技法)：  
+　　例）`gdb`・`perldebug`・`pdb`など。  
 
 
 <a name="algorithmHelloWorld"></a>
@@ -177,8 +216,6 @@
 <a name="repetition繰り返し"></a>
 <a name="function関数"></a>
 <details><summary>基礎知識5種類の各項目</summary>
-
-~~※ここの項目不要かな・・・。~~
 
 基礎知識として5種類を勉強するが、その目的はアルゴリズムの勉強用であって、5種類を本格的に極めるためではない。  
 そのため、1つ1つを最小限に絞り込み、1つを10分前後の勉強時間に収まるように気をつけること。  
@@ -810,8 +847,6 @@
 <a name="howToUsePythonSortInstructionsAndHeapqModuleChapter5"></a>
 #### プログラミング言語用のソート・ヒープ・キュー関数の使い方。
 Python限定にしたくなかったが、他のプログラミング言語にはない可能性がある。  
-[ヒープ](https://docs.microsoft.com/ja-jp/windows/win32/memory/heap-functions)と言うのはアルゴリズムより、コンピュータでの概念のほうが一般的なのかな。  
-[C言語](https://code-reference.com/c/stdlib.h)ですら[クイックソート](https://ja.cppreference.com/w/c/algorithm)があるのだから他のプログラミング言語にはあってしかるべき。  
 
 <a name="sortCalculationComplexityAndCalculationTimeChapter5"></a>
 #### ソートの計算量と計算時間。
@@ -828,9 +863,6 @@ Python限定にしたくなかったが、他のプログラミング言語に�
 
 <a name="whatIsAHashChapter6"></a>
 #### ハッシュとは。
-調べればすぐに出てくる。  
-そもそもプログラマーがハッシュを知らないというのはあり得ない。  
-[Git](https://git-scm.com/book/ja/v2/使い始める-Gitの基本)でも[履歴閲覧](https://docs.github.com/ja/github/searching-for-information-on-github/searching-on-github/searching-commits)に[コミットハッシュ値](https://git-scm.com/book/ja/v2/Git-の基本-コミット履歴の閲覧)を使う。  
 
 <a name="hashFunctionChapter6"></a>
 #### ハッシュ関数
@@ -886,6 +918,16 @@ Python限定にしたくなかったが、他のプログラミング言語に�
 <a name="letsDrawTheMandelbrotSetChapter8"></a>
 #### マンデルブロー集合を描こう。
 
+
+<a name="appliedknowledge"></a>
+## 応用知識
+基礎知識5種類だけでは不足する知識を補う。  
+
+* 応用部分  
+  * 何を勉強したか記載する。  
+
+
+<a name="gitflow"></a>
 ## ※Gitのマージルール
 study2programmingに取り込むときのマージは、3方向マージ(`--no-ff`)を使う。  
 
@@ -900,4 +942,4 @@ study2programmingに取り込むときのマージは、3方向マージ(`--no-f
 
 
 以上。
-<!-- vim: set ts=4 sts=4 sw=4 tw=0 expandtab: -->
+<!-- vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=markdown expandtab: -->

@@ -3,6 +3,8 @@ print("Hello, World!")
 name1 = '朝来野'
 name2 = '智博'
 
+print("朝来野の文字数：", len(name1))   # 朝来野の文字数： 3
+
 print(
     name1, '.', name2, sep='+'  # 出力結果：朝来野+.+智博
 )
@@ -44,3 +46,5 @@ asakuno = 20210826
 print(asakuno + asakuno)  # 出力結果：40421652
 tomohiro = str(asakuno)
 print(tomohiro + tomohiro)  # 出力結果：2021082620210826
+
+# vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=python expandtab:
