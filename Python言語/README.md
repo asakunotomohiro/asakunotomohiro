@@ -1298,7 +1298,7 @@ Hello World(引数あり-戻り値あり).
 * [Chapter3 データ構造を学ぶ](#learnDataStructuresOverviewChapter3)  
   今までに勉強した配列(リスト)を用いた発展を遂げる。  
   ※今回利用するリストはアルゴリズム(概念)用語であり、Pythonで用いているリスト(配列)という用語とは別物。  
-  ※例外処理(`try〜except〜finally`)をの説明をしている(いずれ基礎知識として勉強に組み込む必要がある？)。  
+  ※例外処理(`try〜except〜finally`)の説明をしている(いずれ基礎知識として勉強に組み込む必要がある？)。  
   以下、各項目(目次)。  
   [ ] [スタック](#stackChapter3)  
   [ ] [キュー](#queueChapter3)  
@@ -1311,55 +1311,55 @@ Hello World(引数あり-戻り値あり).
   複数データから目的地を探し出すこと。  
   ※有名な探索アルゴリズムのみに限定している。  
   以下、各項目(目次)。  
-  [ ] [線形探索](#linearSearchChapter4)  
-  [ ] [二分探索](#binarySearchChapter4)  
-  [ ] [木探索](#treeExplorationChapter4)  
-  [ ] [計算量について知る](#knowAboutComputationalComplexityChapter4)  
-  [ ] [ランダウの記号](#landauSignChapter4)  
-  [ ] [数当てゲーム](#numberGuessingGameChapter4)  
-  [ ] [ビット演算を学ぶ](#learnBitwiseOperationsChapter4)  
+  [線形探索](#linearSearchChapter4)  
+  [二分探索](#binarySearchChapter4)  
+  [木探索](#treeExplorationChapter4)  
+  [計算量について知る](#knowAboutComputationalComplexityChapter4)  
+  [ランダウの記号](#landauSignChapter4)  
+  [数当てゲーム](#numberGuessingGameChapter4)  
+  [ビット演算を学ぶ](#learnBitwiseOperationsChapter4)  
 <a name="algorithmTextbookLearnedinPythonChapter5"></a>
 * [Chapter5 ソート](#sortOverviewChapter5)  
   一定の規則に従い並び替えること。  
   ※有名な並べ替えアルゴリズムのみに限定している。  
   以下、各項目(目次)。  
-  [ ] [選択ソート](#selectionSortChapter5)  
-  [ ] [バブルソート](#bubbleSortChapter5)  
-  [ ] [挿入ソート](#insertionSortChapter5)  
-  [ ] [クイックソート](#quickSortChapter5)  
-  [ ] [マージソート](#mergeSortChapter5)  
-  [ ] [ヒープソート](#heapsortChapter5)  
-  [ ] [クイックソートの再起の過程を出力する。](#outputTheProcessOfQuicksortRecurrenceChapter5)  
-  [ ] [再帰関数を用いたマージソート。](#mergeSortUsingARecursiveFunctionChapter5)  
-  [ ] [プログラミング言語用のソート・ヒープ・キュー関数の使い方。](#howToUsePythonSortInstructionsAndHeapqModuleChapter5)  
-  [ ] [ソートの計算量と計算時間。](#sortCalculationComplexityAndCalculationTimeChapter5)  
+  [選択ソート](#selectionSortChapter5)  
+  [バブルソート](#bubbleSortChapter5)  
+  [挿入ソート](#insertionSortChapter5)  
+  [クイックソート](#quickSortChapter5)  
+  [マージソート](#mergeSortChapter5)  
+  [ヒープソート](#heapsortChapter5)  
+  [クイックソートの再起の過程を出力する。](#outputTheProcessOfQuicksortRecurrenceChapter5)  
+  [再帰関数を用いたマージソート。](#mergeSortUsingARecursiveFunctionChapter5)  
+  [プログラミング言語用のソート・ヒープ・キュー関数の使い方。](#howToUsePythonSortInstructionsAndHeapqModuleChapter5)  
+  [ソートの計算量と計算時間。](#sortCalculationComplexityAndCalculationTimeChapter5)  
 <a name="algorithmTextbookLearnedinPythonChapter6"></a>
 * [Chapter6 ハッシュ](#hashOverviewChapter6)  
   ハッシュとは、データから算出した小さな値のこと。  
   今回は、そのハッシュとしての値を算出する方法を勉強する。  
   以下、各項目(目次)。  
-  [ ] [ハッシュとは。](#whatIsAHashChapter6)  
-  [ ] [ハッシュ関数](#hashFunctionChapter6)  
-  [ ] [ハッシュテーブル](#hashTableChapter6)  
-  [ ] [衝突を回避する。](#avoidCollisionsChapter6)  
-  [ ] [暗号学的ハッシュ関数](#cryptographicHashFunctionChapter6)  
+  [ハッシュとは。](#whatIsAHashChapter6)  
+  [ハッシュ関数](#hashFunctionChapter6)  
+  [ハッシュテーブル](#hashTableChapter6)  
+  [衝突を回避する。](#avoidCollisionsChapter6)  
+  [暗号学的ハッシュ関数](#cryptographicHashFunctionChapter6)  
 <a name="algorithmTextbookLearnedinPythonChapter7"></a>
 * [Chapter7 さまざまなアルゴリズムを学ぶ](#learnVariousAlgorithmsOverviewChapter7)  
   アルゴリズムを勉強する上で必ず関わるアルゴリズムになる。  
   むしろ、ここまで勉強できてアルゴリズムを勉強したと言えるのではないだろうか。  
   以下、各項目(目次)。  
-  [ ] [ユークリッドの互除法](#euclideanAlgorithmChapter7)  
-  [ ] [文字列探索](#stringSearchChapter7)  
-  [ ] [アルゴリズムを理解するヒント(処理の過程の出力)。](#tipsForUnderstandingTheAlgorithmChapter7)  
+  [ユークリッドの互除法](#euclideanAlgorithmChapter7)  
+  [文字列探索](#stringSearchChapter7)  
+  [アルゴリズムを理解するヒント(処理の過程の出力)。](#tipsForUnderstandingTheAlgorithmChapter7)  
 <a name="algorithmTextbookLearnedinPythonChapter8"></a>
 * [Chapter8 アルゴリズムを見える化する](#visualizeTheAlgorithmOverviewChapter8)  
   今回のアルゴリズムを勉強することで、アルゴリズム(もしくはデータ)を可視化する方法を勉強できる。  
   以下、各項目(目次)。  
-  [ ] [n次関数の曲線を描く。](#drawACurveOfTheNthOrderFunctionChapter8)  
-  [ ] [フラクタル図形を描く。](#drawAFractalFigureChapter8)  
-  [ ] [迷路を解く過程を描く。](#drawTheProcessOfSolvingTheMazeChapter8)  
-  [ ] [アルゴリズムを使い分ける。](#useDifferentAlgorithmsChapter8)  
-  [ ] [マンデルブロー集合を描こう。](#letsDrawTheMandelbrotSetChapter8)  
+  [n次関数の曲線を描く。](#drawACurveOfTheNthOrderFunctionChapter8)  
+  [フラクタル図形を描く。](#drawAFractalFigureChapter8)  
+  [迷路を解く過程を描く。](#drawTheProcessOfSolvingTheMazeChapter8)  
+  [アルゴリズムを使い分ける。](#useDifferentAlgorithmsChapter8)  
+  [マンデルブロー集合を描こう。](#letsDrawTheMandelbrotSetChapter8)  
 
 <a name="developProgrammingSkillsOverviewChapter2"></a>
 ### プログラミングの力を養う
@@ -1378,6 +1378,8 @@ Hello World(引数あり-戻り値あり).
 #### 平均値を求める。
 今回は、以下のルールがある。  
 要は、平均値を求める方法は他にもあると言うことなのだろう。  
+
+<details><summary>展開</summary>
 
 * ルール。  
   * 点数を配列で定義する。  
@@ -1401,10 +1403,14 @@ print("合計値：", egoh)	# 合計値： 412
 print("平均値：", bar)	# 平均値： 82.4
 ```
 
+</details>
+
 
 <a name="addFrom1tonChapter2"></a>
 #### 1からnまで足し合わせる。
 今回は、以下のルールがある。  
+
+<details><summary>展開</summary>
 
 * 作業ルール。  
   * 「カール・フリードリヒ・ガウス」に[倣え](https://ja.wikipedia.org/wiki/カール・フリードリヒ・ガウス)。  
@@ -1430,10 +1436,14 @@ print(gauss_start_end(10, 10))   # 0
 print(gauss_start_end(100, 5050))   # 12748825　あっているか不明。
 ```
 
+</details>
+
 
 <a name="outputTheMultiplicationTableChapter2"></a>
 #### 九九の式を出力する。
 書籍とは違い、九九表を出力する。  
+
+<details><summary>展開</summary>
 
 * 作業ルール。  
   * 二重ループを使う。  
@@ -1467,11 +1477,15 @@ kuku()
 これだよね。  
 式を出すより、表を出した方がなじみ深いと思うのだが・・・。  
 
+</details>
+
 
 <a name="findAPrimeNumberChapter2"></a>
 #### 素数を求める。
 素数とは、1とその数以外に約数を持たない2以上の自然数のこと。  
 例えば、**2**・**3**・**5**・**7**・**11**・**13**・**17**・・・など・・・。  
+
+<details><summary>展開</summary>
 
 素数の求めかた。  
 例えば、n値を調べる場合、**2**・**3**・・・**n-2**・**n-1**と言う数で割る。  
@@ -1529,6 +1543,8 @@ prime1("素数を求める関数1呼び出し")
 この`==`の部分を`is`に変更し、`if ff is True:`にしたらエラーが解消された。  
 ※今後のプログラム全てに当てはまる。  
 
+</details>
+
 
 <a name="findTheFactorialOfNChapter2"></a>
 #### nの階乗を求める。
@@ -1542,6 +1558,8 @@ prime1("素数を求める関数1呼び出し")
 **再帰関数**
 上記の階乗では掛け算処理部分は使い回せるため、掛け算関数を1度定義してしまえば、それを再度読み込むことで似た関数を作る必要なく、手軽に階乗を作り出すことができる。  
 しかし、そもそも再帰関数を使いこなすのは難しい。  
+
+<details><summary>展開</summary>
 
 
 * ルール  
@@ -1573,15 +1591,16 @@ print("20の階乗：", fac)
 20の階乗： 2432902008176640000
 ```
 
+</details>
+
 
 <a name="eratosthenesSieveChapter2"></a>
 #### エラトステネスの篩
-[ウィキペディア](https://ja.wikipedia.org/wiki/エラトステネスの篩)でシグマ記号を用いた解説をしている。  
-そんなに複雑なのか・・・。  
-
+効率よく素数を求めることができるアルゴリズムのこと。  
 素数とは、1と自身の数以外に約数を持たない2以上の自然数のこと。  
 例えば、**2**・**3**・**5**・**7**・**11**・**13**・**17**・・・など・・・。  
 
+<details><summary>Pythonプログラム</summary>
 
 * アルゴリズムの概要。  
   1. 0から99の整数を並べる。  
@@ -1597,8 +1616,6 @@ print("20の階乗：", fac)
 
 注意：本の説明が間違っている。  
 3・5・7は素数なのでふるい落とし、その倍数もふるい落とすとある・・・何でだよ(図への説明)。  
-
-<details><summary>Pythonプログラム</summary>
 
 ```python
 def main():
@@ -1709,6 +1726,9 @@ main()
 
 </details>
 
+[ウィキペディア](https://ja.wikipedia.org/wiki/エラトステネスの篩)でシグマ記号を用いた解説をしている。  
+そんなに複雑なのか・・・(今回に関係ないからどうでも良いけど)。  
+
 他には、アトキンの篩と言うのもあるそうだ。  
 
 
@@ -1716,6 +1736,8 @@ main()
 #### n進法を理解する。
 n進法とは？
 > n進法の基本的な考え方は、n種類の記号を使って数を表し、値がn、n*n、n*n*n・・・に達するごとに繰り上がる  
+
+<details><summary>展開</summary>
 
 2進法
 **2\*2**・**2\*2\*2**・**2\*2\*2\*2**・・・・  
@@ -1769,6 +1791,9 @@ n進法とは？
     print("16進数リテラル")
     print(0xff, 0x00, 0xAA, -0x1, 0x1, 0x13464EE, )
     # 出力結果：(255, 0, 170, -1, 1, 20210926)
+
+</details>
+
 
 <a name="learnDataStructuresOverviewChapter3"></a>
 ### データ構造を学ぶ
