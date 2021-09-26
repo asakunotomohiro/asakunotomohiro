@@ -59,6 +59,20 @@ echom TomohiroRange()
 "			1回目の実行
 "			2回目の実行
 
+" 以下、指定回数分のループ
+def! TomohiroRange(): string
+	for ii in range(1, 3)
+		echom ii .. '回目の実行(1, 3)'
+	endfor
+
+	return g:asakuno
+enddef
+echom TomohiroRange()
+"	出力結果：
+"				1回目の実行(1, 3)
+"				2回目の実行(1, 3)
+"				3回目の実行(1, 3)
+
 " 以下、ステップ実行の逆方向
 def! TomohiroReverseRange(): string
 	for ii in range(19, 7, -3)

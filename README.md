@@ -192,7 +192,7 @@
 <details><summary>「プログラミングの力を養う(Chapter2)」勉強状況</summary>
 
 * アルゴリズムの勉強に使うプログラミング言語  
-  * [x] [Python](https://www.python.jp)  
+  * [x] [Python](./Python言語/README.md)  
     * 平均値を求める。  
     * 1からnまで足し合わせる。  
     * 九九の式を出力する。  
@@ -241,6 +241,14 @@
     * エラトステネスの篩(フルイ)  
     * n進法を理解する。  
   * [ ] [Java](https://docs.oracle.com/en/java/)  
+    * 平均値を求める。  
+    * 1からnまで足し合わせる。  
+    * 九九の式を出力する。  
+    * 素数を求める。  
+    * nの階乗(n!)を求める。  
+    * エラトステネスの篩(フルイ)  
+    * n進法を理解する。  
+  * [x] [vim9script](./vimScript言語/README.md)  
     * 平均値を求める。  
     * 1からnまで足し合わせる。  
     * 九九の式を出力する。  
@@ -312,6 +320,13 @@
     * 木  
     * グラフ  
     * データを保存する(Pythonのファイル処理をJavaに置き換える)  
+  * [ ] [vim9script](https://vim-jp.org/vimdoc-ja/usr_41.html)  
+    * スタック  
+    * キュー  
+    * リスト  
+    * 木  
+    * グラフ  
+    * データを保存する(Pythonのファイル処理をJavaに置き換える)  
   * [ ] [Rust](https://doc.rust-jp.rs/book-ja/index.html)  
     * スタック  
     * キュー  
@@ -375,6 +390,14 @@
     * 数当てゲーム  
     * ビット演算を学ぶ  
   * [ ] [Java](https://docs.oracle.com/en/java/)  
+    * 線形探索  
+    * 二分探索  
+    * 木探索  
+    * 計算量について知る  
+    * ランダウの記号  
+    * 数当てゲーム  
+    * ビット演算を学ぶ  
+  * [ ] [vim9script](https://vim-jp.org/vimdoc-ja/usr_41.html)  
     * 線形探索  
     * 二分探索  
     * 木探索  
@@ -480,6 +503,18 @@
     * Pythonのソート命令とheapqモジュールの使い方。  
       Java言語に置き換え可能か調べるとこからが作業開始になる。  
     * ソートの計算量と計算時間。  
+  * [ ] [vim9script](https://vim-jp.org/vimdoc-ja/usr_41.html)  
+    * 選択ソート  
+    * バブルソート  
+    * 挿入ソート  
+    * クイックソート  
+    * マージソート  
+    * ヒープソート  
+    * クイックソートの再起の過程を出力する。  
+    * 再帰関数を用いたマージソート。  
+    * Pythonのソート命令とheapqモジュールの使い方。  
+      Java言語に置き換え可能か調べるとこからが作業開始になる。  
+    * ソートの計算量と計算時間。  
   * [ ] [Rust](https://doc.rust-jp.rs/book-ja/index.html)  
     * 選択ソート  
     * バブルソート  
@@ -541,6 +576,12 @@
     * ハッシュテーブル  
     * 衝突を回避する。  
     * 暗号学的ハッシュ関数  
+  * [ ] [vim9script](https://vim-jp.org/vimdoc-ja/usr_41.html)  
+    * ハッシュとは。  
+    * ハッシュ関数  
+    * ハッシュテーブル  
+    * 衝突を回避する。  
+    * 暗号学的ハッシュ関数  
   * [ ] [Rust](https://doc.rust-jp.rs/book-ja/index.html)  
     * ハッシュとは。  
     * ハッシュ関数  
@@ -579,6 +620,10 @@
     * 文字列探索  
     * アルゴリズムを理解するヒント(処理の過程の出力)。  
   * [ ] [Java](https://docs.oracle.com/en/java/)  
+    * ユークリッドの互除法  
+    * 文字列探索  
+    * アルゴリズムを理解するヒント(処理の過程の出力)。  
+  * [ ] [vim9script](https://vim-jp.org/vimdoc-ja/usr_41.html)  
     * ユークリッドの互除法  
     * 文字列探索  
     * アルゴリズムを理解するヒント(処理の過程の出力)。  
@@ -630,6 +675,12 @@
     * アルゴリズムを使い分ける。  
     * マンデルブロー集合を描こう。  
   * [ ] [Java](https://docs.oracle.com/en/java/)  
+    * n次関数の曲線を描く。  
+    * フラクタル図形を描く。  
+    * 迷路を解く過程を描く。  
+    * アルゴリズムを使い分ける。  
+    * マンデルブロー集合を描こう。  
+  * [ ] [vim9script](https://vim-jp.org/vimdoc-ja/usr_41.html)  
     * n次関数の曲線を描く。  
     * フラクタル図形を描く。  
     * 迷路を解く過程を描く。  
