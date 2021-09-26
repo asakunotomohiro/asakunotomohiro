@@ -192,7 +192,7 @@
 <details><summary>「プログラミングの力を養う(Chapter2)」勉強状況</summary>
 
 * アルゴリズムの勉強に使うプログラミング言語  
-  * [ ] [Python](https://www.python.jp)  
+  * [x] [Python](https://www.python.jp)  
     * 平均値を求める。  
     * 1からnまで足し合わせる。  
     * 九九の式を出力する。  
@@ -698,4 +698,4 @@
 例外作業として、masterに取り込む場合はチェリーピッキングでピンポイントに必要最小限のコミットのみを取り込む(しつこいが、masterに取り込むことはしたくない)。  
 
 以上。
-<!-- vim: set ts=4 sts=4 sw=4 tw=0 expandtab: -->
+<!-- vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=markdown expandtab: -->
