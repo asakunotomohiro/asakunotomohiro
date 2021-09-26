@@ -1454,7 +1454,7 @@ vim9scriptでも`unlet`は使えるようだ。
   [x] [素数を求める。](#findAPrimeNumberChapter2)  
   [x] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
   [x] [エラトステネスの篩](#eratosthenesSieveChapter2)  
-  [ ] [n進法を理解する。](#understandnAryNotationChapter2)  
+  [x] [n進法を理解する。](#understandnAryNotationChapter2)  
 <a name="algorithmTextbookLearnedinPythonChapter3"></a>
 * [Chapter3 データ構造を学ぶ](#learnDataStructuresOverviewChapter3)  
   今までに勉強した配列(リスト)を用いた発展を遂げる。  
@@ -1968,6 +1968,39 @@ call Main()
 
 <a name="understandnAryNotationChapter2"></a>
 ##### n進法を理解する。
+アルゴリズムの1つとして勉強することではない。  
+普通の一般説明。  
+
+```vim
+def! Main()
+	echom "2進数表記"
+	echom 0b11111111 .. ", " .. 0b0 .. ", " .. 0b10101010 .. ", " .. -0b1 .. ", " .. 0b1 .. ", " .. 0b1001101000110010011101110
+				# 255, 0, 170, -1, 1, 20210926
+	echom 0B11111111 .. ", " .. 0B0 .. ", " .. 0B10101010 .. ", " .. -0B1 .. ", " .. 0B1 .. ", " .. 0B1001101000110010011101110
+				# 255, 0, 170, -1, 1, 20210926
+
+	#echom "マイナス記号を付けた場合、引き算が行われる。" .. 0b1 - 0b1
+				# E1036: - requires number or float arguments
+	echom "マイナス記号を付けた場合、引き算が行われる。" .. (0b1 - 0b1)
+				# マイナス記号を付けた場合、引き算が行われる。0
+
+	echom "8進数表記"
+	echom 0o377 .. ", " .. 0o0 .. ", " .. 0o252 .. ", " .. -0o1 .. ", " .. 0o1 .. ", " .. 0o115062356
+				# 255, 0, 170, -1, 1, 20210926
+
+	echom "10進数表記"
+	echom 255 .. ", " .. 0 .. ", " .. 170 .. ", " .. -1 .. ", " .. 1 .. ", " .. 20210926
+				# 255, 0, 170, -1, 1, 20210926
+
+	echom "16進数表記"
+	echom 0xff .. ", " .. 0x00 .. ", " .. 0xAA .. ", " .. -0x1 .. ", " .. 0x1 .. ", " .. 0x13464EE
+				# 255, 0, 170, -1, 1, 20210926
+
+enddef
+
+call Main()
+```
+
 
 <a name="learnDataStructuresOverviewChapter3"></a>
 #### データ構造を学ぶ
