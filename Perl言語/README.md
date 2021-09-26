@@ -58,7 +58,7 @@ Perlerになるつもりはない。
 * [アルゴリズム勉強目次](#algorithmTextbookLearnedinPython)  
   * [x] Chapter 1 プログラミングの基礎知識  
     現時点で完了している(上記の基礎知識5種類として)。  
-  * [ ] [Chapter 2 プログラミングの力を養う](#algorithmTextbookLearnedinPythonChapter2)  
+  * [x] [Chapter 2 プログラミングの力を養う](#algorithmTextbookLearnedinPythonChapter2)  
   * [ ] [Chapter 3 データ構造を学ぶ](#algorithmTextbookLearnedinPythonChapter3)  
   * [ ] [Chapter 4 サーチ](#algorithmTextbookLearnedinPythonChapter4)  
   * [ ] [Chapter 5 ソート](#algorithmTextbookLearnedinPythonChapter5)  
@@ -1322,7 +1322,7 @@ Perlでオブジェクト指向開発ができるだけでなく、そのやり�
   [x] [素数を求める。](#findAPrimeNumberChapter2)  
   [x] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
   [x] [エラトステネスの篩](#eratosthenesSieveChapter2)  
-  [ ] [n進法を理解する。](#understandnAryNotationChapter2)  
+  [x] [n進法を理解する。](#understandnAryNotationChapter2)  
 <a name="algorithmTextbookLearnedinPythonChapter3"></a>
 * [Chapter3 データ構造を学ぶ](#learnDataStructuresOverviewChapter3)  
   今までに勉強した配列(リスト)を用いた発展を遂げる。  
@@ -1796,7 +1796,7 @@ sub prime_eratosthenes() {
 <details><summary>Perlプログラムの出力結果</summary>
 
 以下、出力結果。
-```teext
+```text
 エラトステネスの篩
 ／, ／,  2,  3,  4,  5,  6,  7,  8,  9,
 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
@@ -1865,6 +1865,30 @@ sub prime_eratosthenes() {
 
 <a name="understandnAryNotationChapter2"></a>
 #### n進法を理解する。
+アルゴリズムの1つとして勉強することではない。  
+普通の一般説明。  
+
+```perl
+sub main() {
+	say "2進数リテラル";
+	say 0b11111111, ", ",0b0, ", ",0b10101010, ", ",-0b1, ", ",0b1, ", ",0b1001101000110010011101110;
+	# 出力結果：255, 0, 170, -1, 1, 20210926
+
+	say "8進数リテラル";
+	say 0377, ", ",00, ", ",0252, ", ",-01, ", ",01, ", ",0115062356;
+	# 出力結果：255, 0, 170, -1, 1, 20210926
+
+	say "10進数リテラル";
+	say 255, ", ",0, ", ",170, ", ",-1, ", ",1, ", ",20210926;
+	# 出力結果：255, 0, 170, -1, 1, 20210926
+
+	say "16進数リテラル";
+	say 0xff, ", ",0x00, ", ",0xAA, ", ",-0x1, ", ",0x1, ", ",0x13464EE;
+	# 出力結果：255, 0, 170, -1, 1, 20210926
+
+}
+&main("asakuno");
+```
 
 <a name="learnDataStructuresOverviewChapter3"></a>
 ### データ構造を学ぶ
