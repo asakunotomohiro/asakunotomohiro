@@ -254,14 +254,14 @@ echo HelloWorld()
   * [x] 編集後、コミットする。  
   * [ ] 手順4. 各ディレクトリで、チャプタごとに勉強を進める。  
     ※そのとき、(できる限り)プログラムファイルに[モードライン](https://vim-jp.org/vim-users-jp/2009/06/02/Hack-20.html)を記載する。  
-    ※チェックリストは上記にある。  
-    Chapter 2 プログラミングの力を養う  
-    Chapter 3 データ構造を学ぶ  
-    Chapter 4 サーチ  
-    Chapter 5 ソート  
-    Chapter 6 ハッシュ  
-    Chapter 7 さまざまなアルゴリズムを学ぶ  
-    Chapter 8 アルゴリズムを見える化する  
+    ※チェックリストは[上記](#algorithmTextbookLearnedinPythonContents)にある。  
+    Chapter 2 [プログラミングの力を養う](#algorithmTextbookLearnedinPythonChapter2)  
+    Chapter 3 [データ構造を学ぶ](#algorithmTextbookLearnedinPythonChapter3)  
+    Chapter 4 [サーチ](#algorithmTextbookLearnedinPythonChapter4)  
+    Chapter 5 [ソート](#algorithmTextbookLearnedinPythonChapter5)  
+    Chapter 6 [ハッシュ](#algorithmTextbookLearnedinPythonChapter6)  
+    Chapter 7 [さまざまなアルゴリズムを学ぶ](#algorithmTextbookLearnedinPythonChapter7)  
+    Chapter 8 [アルゴリズムを見える化する](#algorithmTextbookLearnedinPythonChapter8)  
   * [ ] 手順5. 1つのプログラミング言語で、手順4の勉強1種類(要は、1チャプタ分の子部分)を終えた時に、次のプログラミング言語に移る。  
   * [ ] 手順6. 1チャプタ分終了にて、"study2programming"ブランチにマージする。  
 
@@ -1481,55 +1481,55 @@ vim9scriptでは`unlet`が使えないようだ。
   複数データから目的地を探し出すこと。  
   ※有名な探索アルゴリズムのみに限定している。  
   以下、各項目(目次)。  
-  [ ] [線形探索](#linearSearchChapter4)  
-  [ ] [二分探索](#binarySearchChapter4)  
-  [ ] [木探索](#treeExplorationChapter4)  
-  [ ] [計算量について知る](#knowAboutComputationalComplexityChapter4)  
-  [ ] [ランダウの記号](#landauSignChapter4)  
-  [ ] [数当てゲーム](#numberGuessingGameChapter4)  
-  [ ] [ビット演算を学ぶ](#learnBitwiseOperationsChapter4)  
+  [線形探索](#linearSearchChapter4)  
+  [二分探索](#binarySearchChapter4)  
+  [木探索](#treeExplorationChapter4)  
+  [計算量について知る](#knowAboutComputationalComplexityChapter4)  
+  [ランダウの記号](#landauSignChapter4)  
+  [数当てゲーム](#numberGuessingGameChapter4)  
+  [ビット演算を学ぶ](#learnBitwiseOperationsChapter4)  
 <a name="algorithmTextbookLearnedinPythonChapter5"></a>
 * [Chapter5 ソート](#sortOverviewChapter5)  
   一定の規則に従い並び替えること。  
   ※有名な並べ替えアルゴリズムのみに限定している。  
   以下、各項目(目次)。  
-  [ ] [選択ソート](#selectionSortChapter5)  
-  [ ] [バブルソート](#bubbleSortChapter5)  
-  [ ] [挿入ソート](#insertionSortChapter5)  
-  [ ] [クイックソート](#quickSortChapter5)  
-  [ ] [マージソート](#mergeSortChapter5)  
-  [ ] [ヒープソート](#heapsortChapter5)  
-  [ ] [クイックソートの再起の過程を出力する。](#outputTheProcessOfQuicksortRecurrenceChapter5)  
-  [ ] [再帰関数を用いたマージソート。](#mergeSortUsingARecursiveFunctionChapter5)  
-  [ ] [プログラミング言語用のソート・ヒープ・キュー関数の使い方。](#howToUsePythonSortInstructionsAndHeapqModuleChapter5)  
-  [ ] [ソートの計算量と計算時間。](#sortCalculationComplexityAndCalculationTimeChapter5)  
+  [選択ソート](#selectionSortChapter5)  
+  [バブルソート](#bubbleSortChapter5)  
+  [挿入ソート](#insertionSortChapter5)  
+  [クイックソート](#quickSortChapter5)  
+  [マージソート](#mergeSortChapter5)  
+  [ヒープソート](#heapsortChapter5)  
+  [クイックソートの再起の過程を出力する。](#outputTheProcessOfQuicksortRecurrenceChapter5)  
+  [再帰関数を用いたマージソート。](#mergeSortUsingARecursiveFunctionChapter5)  
+  [プログラミング言語用のソート・ヒープ・キュー関数の使い方。](#howToUsePythonSortInstructionsAndHeapqModuleChapter5)  
+  [ソートの計算量と計算時間。](#sortCalculationComplexityAndCalculationTimeChapter5)  
 <a name="algorithmTextbookLearnedinPythonChapter6"></a>
 * [Chapter6 ハッシュ](#hashOverviewChapter6)  
   ハッシュとは、データから算出した小さな値のこと。  
   今回は、そのハッシュとしての値を算出する方法を勉強する。  
   以下、各項目(目次)。  
-  [ ] [ハッシュとは。](#whatIsAHashChapter6)  
-  [ ] [ハッシュ関数](#hashFunctionChapter6)  
-  [ ] [ハッシュテーブル](#hashTableChapter6)  
-  [ ] [衝突を回避する。](#avoidCollisionsChapter6)  
-  [ ] [暗号学的ハッシュ関数](#cryptographicHashFunctionChapter6)  
+  [ハッシュとは。](#whatIsAHashChapter6)  
+  [ハッシュ関数](#hashFunctionChapter6)  
+  [ハッシュテーブル](#hashTableChapter6)  
+  [衝突を回避する。](#avoidCollisionsChapter6)  
+  [暗号学的ハッシュ関数](#cryptographicHashFunctionChapter6)  
 <a name="algorithmTextbookLearnedinPythonChapter7"></a>
 * [Chapter7 さまざまなアルゴリズムを学ぶ](#learnVariousAlgorithmsOverviewChapter7)  
   アルゴリズムを勉強する上で必ず関わるアルゴリズムになる。  
   むしろ、ここまで勉強できてアルゴリズムを勉強したと言えるのではないだろうか。  
   以下、各項目(目次)。  
-  [ ] [ユークリッドの互除法](#euclideanAlgorithmChapter7)  
-  [ ] [文字列探索](#stringSearchChapter7)  
-  [ ] [アルゴリズムを理解するヒント(処理の過程の出力)。](#tipsForUnderstandingTheAlgorithmChapter7)  
+  [ユークリッドの互除法](#euclideanAlgorithmChapter7)  
+  [文字列探索](#stringSearchChapter7)  
+  [アルゴリズムを理解するヒント(処理の過程の出力)。](#tipsForUnderstandingTheAlgorithmChapter7)  
 <a name="algorithmTextbookLearnedinPythonChapter8"></a>
 * [Chapter8 アルゴリズムを見える化する](#visualizeTheAlgorithmOverviewChapter8)  
   今回のアルゴリズムを勉強することで、アルゴリズム(もしくはデータ)を可視化する方法を勉強できる。  
   以下、各項目(目次)。  
-  [ ] [n次関数の曲線を描く。](#drawACurveOfTheNthOrderFunctionChapter8)  
-  [ ] [フラクタル図形を描く。](#drawAFractalFigureChapter8)  
-  [ ] [迷路を解く過程を描く。](#drawTheProcessOfSolvingTheMazeChapter8)  
-  [ ] [アルゴリズムを使い分ける。](#useDifferentAlgorithmsChapter8)  
-  [ ] [マンデルブロー集合を描こう。](#letsDrawTheMandelbrotSetChapter8)  
+  [n次関数の曲線を描く。](#drawACurveOfTheNthOrderFunctionChapter8)  
+  [フラクタル図形を描く。](#drawAFractalFigureChapter8)  
+  [迷路を解く過程を描く。](#drawTheProcessOfSolvingTheMazeChapter8)  
+  [アルゴリズムを使い分ける。](#useDifferentAlgorithmsChapter8)  
+  [マンデルブロー集合を描こう。](#letsDrawTheMandelbrotSetChapter8)  
 
 <a name="developProgrammingSkillsOverviewChapter2"></a>
 ### プログラミングの力を養う
@@ -1548,6 +1548,8 @@ vim9scriptでは`unlet`が使えないようだ。
 #### 平均値を求める。
 勉強内容はPythonと基本は同じ。  
 それをvimScript9用に移植するだけのこと。  
+
+<details><summary>展開</summary>
 
 * ルールもPythonと同じ。  
   * 点数を配列で定義する。  
@@ -1584,11 +1586,15 @@ echom "平均点：" .. aveList[1]	" 平均点：82
 ※不思議なことに、変数名の前に`l:`・`b:`・`s:`のどれを付けてもエラーになった。  
 どういうこと!?  
 
+</details>
+
 
 <a name="addFrom1tonChapter2"></a>
 #### 1からnまで足し合わせる。
 勉強内容はPythonと基本は同じ。  
 それをvimScript9用に移植するだけのこと。  
+
+<details><summary>展開</summary>
 
 * ルール1もPythonと同じ。  
   * `for`を用いる。  
@@ -1671,11 +1677,15 @@ echom AddupGauss(1, 10)
 "	出力結果：55
 ```
 
+</details>
+
 
 <a name="outputTheMultiplicationTableChapter2"></a>
 #### 九九の式を出力する。
 Pythonでやったように、九九の式を出すのではなく、九九表を出すことにする。  
 ルールはPythonと同じ。  
+
+<details><summary>展開</summary>
 
 * 作業ルール。  
   * 二重ループを使う。  
@@ -1711,10 +1721,14 @@ call KukuTable()
 ```
 いつもの九九表ができあがった。  
 
+</details>
+
 
 <a name="findAPrimeNumberChapter2"></a>
 #### 素数を求める。
 素数とは、1とその数以外に約数を持たない2以上の自然数のこと。  
+
+<details><summary>展開</summary>
 
 Pythonに倣い、試す数は**2〜2分のn**までの数で割ることを調べる方法をとる。  
 例えば、10を調べる場合、その半分より大きい数(**6**・**7**・**8**・**9**)では、10を割ることが出来ない。  
@@ -1754,11 +1768,16 @@ call Prime()
 2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,
 ```
 
+</details>
+
 
 <a name="findTheFactorialOfNChapter2"></a>
 #### nの階乗を求める。
 **階乗とは**
 1からnまでの全ての整数の積をnの階乗という。  
+
+<details><summary>展開</summary>
+
 **再帰関数**
 関数内から自身の関数を呼び出すことを再帰処理という。
 また、その呼び出す仕組みの関数を再帰関数という。  
@@ -1820,6 +1839,8 @@ echom Factorial3(20)
 2432902008176640000
 ```
 桁が大きいため、本当に合っているのかいつも不安になる。  
+
+</details>
 
 
 <a name="eratosthenesSieveChapter2"></a>
@@ -1969,6 +1990,8 @@ call Main()
 アルゴリズムの1つとして勉強することではない。  
 普通の一般説明。  
 
+<details><summary>展開</summary>
+
 ```vim
 def! Main()
 	echom "2進数表記"
@@ -1998,6 +2021,8 @@ enddef
 
 call Main()
 ```
+
+</details>
 
 
 <a name="learnDataStructuresOverviewChapter3"></a>
