@@ -646,7 +646,7 @@
 * [Chapter3 データ構造を学ぶ](#learnDataStructuresOverviewChapter3)  
   今までに勉強した配列(リスト)を用いた発展を遂げる。  
   ※今回利用するリストはアルゴリズム(概念)用語であり、Pythonで用いているリスト(配列)という用語とは別物。  
-  ※例外処理(`try〜except〜finally`)をの説明をしている(いずれ基礎知識として勉強に組み込む必要がある？)。  
+  ※例外処理(`try〜except〜finally`)の説明をしている(いずれ基礎知識として勉強に組み込む必要がある？)。  
   以下、各項目(目次)。  
   [ ] [スタック](#stackChapter3)  
   [ ] [キュー](#queueChapter3)  

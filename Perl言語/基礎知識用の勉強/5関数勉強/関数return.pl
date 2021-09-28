@@ -20,4 +20,6 @@ say &asakuno("関数呼び出し");	# 名前err
 say asakuno "朝来野";	# 智博
 say &asakuno("智博", "朝来野");	# 名前err朝来野
 
-# 以上。
+
+say "以上。"
+# vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=perl noexpandtab:

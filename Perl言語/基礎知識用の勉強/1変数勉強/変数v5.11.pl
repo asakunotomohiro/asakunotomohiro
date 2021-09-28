@@ -8,3 +8,5 @@ $asakuno = $^V;
 
 # 上記の変数宣言でmyを付けた場合はv5.34.0が表示される。
 print $asakuno . "\n";
+
+# vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=perl noexpandtab:

@@ -141,6 +141,5 @@ say "@asakuno";		# [空文字]
 say "@tomohiro";	# 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
 
 
-
-
-# 以上。
+say "以上。"
+# vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=perl noexpandtab:

@@ -30,7 +30,13 @@ state @stateAsakuno = ("朝来野", "智博", );
 }
 #say $blockAsakuno;	# aborted due to compilation errors.
 #say @blockAsakuno;	# aborted due to compilation errors.
+#say $stateAsakuno;	# Execution of スコープ.pl aborted due to compilation errors.
 	# ブロック内での変数や配列宣言は、そのブロックから出た場合、破棄される。
 
+#local $tomohiro = "智博";
+	# Global symbol "$tomohiro" requires explicit package name (did you forget to declare "my $tomohiro"?) at スコープ.pl line 36.
+	# Execution of スコープ.pl aborted due to compilation errors.
 
-# 以上。
+
+say "以上。"
+# vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=perl noexpandtab:

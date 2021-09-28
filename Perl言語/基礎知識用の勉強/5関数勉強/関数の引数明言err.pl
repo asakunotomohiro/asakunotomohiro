@@ -15,4 +15,6 @@ say $ret;
 $ret = &asakuno("abc", "def");	# 関数1つ目：abc, def<-ここまで。
 say $ret;
 
-# 以上。
+
+say "以上。"
+# vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=perl noexpandtab:

@@ -35,7 +35,7 @@ say "@asakuno";	# asa kuno tomo hiro  )(
 
 say "-" x 30;
 @string = ();
-@asakuno = (1..5);	# 増加する使い方のみできるため、空リストが生成される。
+@asakuno = (1..5);	# 増加する使い方のみできる。
 say "@string, @asakuno";	# , 1 2 3 4 5
 @string = @asakuno;
 $asakuno[0] = 99;
@@ -49,4 +49,5 @@ say "$asakuno[1]";	# /home/bar/
 say "$asakuno[2]";	# /\boo
 
 
-# 以上。
+say "以上。"
+# vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=perl noexpandtab:

@@ -24,9 +24,6 @@ say $ret;
 
 # 上記の関数は、最後の処理が戻り値になるため、その戻り値を呼び出し側で出力(say)している。
 
-say "-" x 30;
 
-
-
-
-# 以上。
+say "以上。"
+# vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=perl noexpandtab:

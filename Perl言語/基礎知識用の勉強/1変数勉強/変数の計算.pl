@@ -33,4 +33,6 @@ my $tomo = "8a9";
 say $asa + $tomo;	# 2029
 	# エラーになって欲しい。
 
-say "-" x 20;
+say "以上。"
+
+# vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=perl noexpandtab:

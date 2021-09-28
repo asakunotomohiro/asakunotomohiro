@@ -107,5 +107,5 @@ my $tomohiro = 1.1234;
 say $asakuno[$tomohiro];	# 20210901
 #	これは、小数点数が切り捨てられて添え字として利用されているため、2つ目の要素(添え字1)が取り出された。
 
-
-# 以上。
+say "以上。"
+# vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=perl noexpandtab:

@@ -2,6 +2,7 @@
 ここは、プログラミング言語のPerl言語を勉強するブランチになる。  
 
 
+<a name="algorithmHowToUseTheBranch"></a>
 ## ブランチの利用方法
 ここのブランチは、Python書籍からアルゴリズムをPerlに置き換えて勉強するのに使う。  
 また、具体的なアルゴリズムの種類は、下記書籍の目次チャプターに限定する。  
@@ -9,7 +10,8 @@
 ※チャプターごとにブランチを分けていく。  
 
 
-### 勉強方法
+<a name="algorithmHowToStudy"></a>
+## 勉強方法
 勉強するプログラミング言語の一つとしている。  
 「[初めてのPerl](https://www.oreilly.co.jp/books/)」は、[第5版](https://www.oreilly.co.jp/books/9784873114279/)を紙の本で持ち、[第6版](https://www.oreilly.co.jp/books/9784873115672/)をPDF版で持っている。  
 そして、今回の勉強のためだけに[第7版](https://www.oreilly.co.jp/books/9784873118246/)を(紙媒体で)購入した。  
@@ -25,42 +27,162 @@
 さすがアメリカン書籍だ。  
 
 
-### 開発環境
+<a name="algorithmDevelopmentEnvironment"></a>
+## 開発環境
 開発には、`MacVim`を使う。  
 大きな規模にしてまで勉強を継続する予定はないかな。  
 Perlを極めるには、毎日最低でも20分間はPerlの勉強を続けなければいけないとのことだが、それは無理。  
 Perlerになるつもりはない。  
 
-<details><summary>基礎知識5種類の項目</summary>
+<a name="algorithmCheckTheStatusOfTheActualWorkingEnvironment"></a>
+<details><summary>実際に作業する環境の状況確認</summary>
 
-### Pythonで学ぶアルゴリズムの教科書
-簡単なプログラミングに使う基礎知識を統一する。  
+* 勉強環境。  
+  * 勉強環境のコンパイルバージョン：perl 5, version 34, subversion 0 (v5.34.0)  
+```terminal
+$ perl --version
 
-* 基礎知識5種類  
-  * [x] [変数(スカラー)](#variable変数)2021/08/29  
-  * [x] [配列](#arrangement配列)2021/08/31  
-    ここでのPythoでは、`リスト(list)`を配列と呼んでいる。  
-    ここでのPerlでは、リストはリストであり、配列は配列である。  
-  * [x] [条件分岐](#Conditional条件分岐)2021/09/01  
-  * [x] [繰り返し](#repetition繰り返し)2021/09/01  
-  * [x] [関数](#function関数)2021/09/01  
+This is perl 5, version 34, subversion 0 (v5.34.0) built for darwin-2level
+
+Copyright 1987-2021, Larry Wall
+
+Perl may be copied only under the terms of either the Artistic License or the
+GNU General Public License, which may be found in the Perl 5 source kit.
+
+Complete documentation for Perl, including FAQ lists, should be found on
+this system using "man perl" or "perldoc perl".  If you have access to the
+Internet, point your browser at http://www.perl.org/, the Perl Home Page.
+
+$
+```
+
+  * プログラムファイルの拡張子：`*.pl`  
+　　※Prologのプログラムファイル拡張子と同じ。  
+　　※他にも`*.cgi`を使えるそうだ。  
+　　※`*.pm`は、Perlプログラムとは異なる。  
+  * 実行方式：インタプリタ方式  
+  * 標準の文字コード(プログラムファイル)：UTF-8  
+　　※プラグマ(`use utf8;`)宣言が必要。  
+  * 文字コードの扱い：
+　　例）UTF-8・Unicode  
+  * 文字区切り(行末記号)：セミコロン`;`  
+    文を区切るために必要なだけであって、文を終わらせるために付けるのではない。  
+    そのため、次に続く文がない場合は、セミコロン不要で実行できる(それでも付けろよ)。  
+  * インデント：フリーフォーマット  
+  * 標準の出力関数：`print`・`printf`・`say`  
+    整形関数：[`sprintf`](https://perldoc.jp/func/sprintf)  
+  * 標準のフォーマット関数：  
+　　例）`printf`など。
+　　※必須記入項目ではなく、勉強途中での記載でも可とする。  
+  * 単数行コメント方法：`#`  
+  * 複数行コメント方法：
+    [大きなブロックで囲む方法](https://perldoc.jp/docs/perl/5.10.0/perlfaq7.pod#How32can32I32comment32out32a32large32block32of32perl32code63)：
+    PODマーカーで囲むこと。  
+  * デバッガ機能(デバッグ技法)：  
 
 </details>
 
+
+<a name="algorithmTextbookLearnedinPythonBook"></a>
+## 「[Pythonで学ぶアルゴリズムの教科書](https://book.impress.co.jp/books/1120101024)」
+本の概要。  
+> エンジニアの基礎体力を身につける  
+
+<a name="basicKnowledgeFiveTypesOfStudyRange"></a>
+<details><summary>基礎知識5種類の項目</summary>
+
+※プログラミングに使う基礎知識を統一する(簡単に済ませられる量に絞り込む)。  
+* 基礎知識5種類  
+  * [x] [変数](#variable変数)  
+  * [x] [配列](#arrangement配列)  
+    ここでのPythoでは、`リスト(list)`を配列と呼んでいる。  
+    ここでのPerlでは、リストはリストであり、配列は配列である。  
+  * [x] [条件分岐](#Conditional条件分岐)  
+  * [x] [繰り返し](#repetition繰り返し)  
+  * [x] [関数](#function関数)  
+
+</details>
+
+<a name="algorithmTextbookLearnedinPythonContents"></a>
 * [アルゴリズム勉強目次](#algorithmTextbookLearnedinPython)  
-  * [x] Chapter 1 プログラミングの基礎知識  
+  * [x] [Chapter 1 プログラミングの基礎知識](#basicKnowledgeFiveTypesOfStudyRange)  
     現時点で完了している(上記の基礎知識5種類として)。  
-  * [Chapter 2 プログラミングの力を養う](#algorithmTextbookLearnedinPythonChapter2)  
-  * [Chapter 3 データ構造を学ぶ](#algorithmTextbookLearnedinPythonChapter3)  
-  * [Chapter 4 サーチ](#algorithmTextbookLearnedinPythonChapter4)  
-  * [Chapter 5 ソート](#algorithmTextbookLearnedinPythonChapter5)  
-  * [Chapter 6 ハッシュ](#algorithmTextbookLearnedinPythonChapter6)  
-  * [Chapter 7 さまざまなアルゴリズムを学ぶ](#algorithmTextbookLearnedinPythonChapter7)  
-  * [Chapter 8 アルゴリズムを見える化する](#algorithmTextbookLearnedinPythonChapter8)  
+  * [x] [Chapter 2 プログラミングの力を養う](#algorithmTextbookLearnedinPythonChapter2)  
+  * [ ] [Chapter 3 データ構造を学ぶ](#algorithmTextbookLearnedinPythonChapter3)  
+  * [ ] [Chapter 4 サーチ](#algorithmTextbookLearnedinPythonChapter4)  
+  * [ ] [Chapter 5 ソート](#algorithmTextbookLearnedinPythonChapter5)  
+  * [ ] [Chapter 6 ハッシュ](#algorithmTextbookLearnedinPythonChapter6)  
+  * [ ] [Chapter 7 さまざまなアルゴリズムを学ぶ](#algorithmTextbookLearnedinPythonChapter7)  
+  * [ ] [Chapter 8 アルゴリズムを見える化する](#algorithmTextbookLearnedinPythonChapter8)  
   * Appendix 1 Pythonのインストール方法
   * Appendix 2 テキストエディタと統合開発環境
   * Appendix 3 Pythonの記述ルール
 
+
+<a name="breakingAwayFromBasicKnowledge"></a>
+<details><summary>応用知識の項目</summary>
+
+<a name="expandTheScopeOfBasicKnowledge"></a>
+### 基礎知識5種類の勉強範囲を広げる
+基礎知識5種類の勉強は、アルゴリズムの勉強用に特化していたが、この部分は、通常開発ができる範囲に手を広げる。  
+
+* 基礎知識5種類の範囲を広げる  
+  * [ ] [変数](#practicaluseVariable変数)  
+  * [ ] [配列](#practicaluseArrangement配列)  
+    [x] 配列の任意の場所へ追加・削除。  
+    [x] 配列のコピー  
+    [x] 要素数確認  
+    [x] 添え字での最大数確認  
+    [x] 空確認  
+    [ ] リスト演算子(`grep`・`map`)  
+    [ ] eval  
+  * [ ] [条件分岐](#practicaluseConditional条件分岐)  
+  * [ ] [繰り返し](#practicaluseRepetition繰り返し)  
+  * [ ] [関数](#practicaluseFunction関数)  
+
+
+<a name="rangeOtherThanBasicKnowledge"></a>
+### 基礎知識5種類の勉強以外の項目
+基礎知識5種類に納められない範囲の勉強に手を広げる。  
+
+* [応用知識](#appliedknowledge)  
+  * [ ] [ポインタ・リファレンス](#practicalusePointer)  
+    * [x] リファレンス  
+      [x] 変数  
+      [x] 配列  
+      [x] ハッシュ  
+      [ ] 関数(サブルーチン)  
+      [ ] OSの環境変数  
+      [ ] ファイルハンドルへのリファレンス  
+    * [x] デリファレンス  
+    * [x] 入れ子  
+      本当は途中。  
+    * [ ] スコープ  
+    * [ ] サブルーチンへのリファレンス  
+    * [ ] 応用利用  
+  * [ ] [NULL・nil](#practicaluseNull)  
+  * [ ] [ハッシュ(連想配列)](#practicaluseHash)  
+    [x] 特徴  
+    [x] 作成方法  
+    [x] 取得方法  
+    [x] 変更方法(並べ替え含む)  
+    [x] キーの重複  
+    [x] 繰り返し処理。  
+    [x] 既存キーの確認方法。  
+    [x] 値の削除方法。  
+    [x] OSの環境変数  
+  * [ ] [ファイル操作](#practicaluseFileoperation)  
+  * [ ] [ディレクトリ操作](#practicaluseDirectorymanipulation)  
+  * [ ] [オブジェクト指向](#practicaluseObjectorientation)  
+    [ ] 入門  
+  * [ ] [テスト方法](#practicaluseTester)  
+  * [ ] [標準関数(モジュール)](#practicaluseModule)  
+  * [ ] [プロセス管理](#practicaluseSystemfunc)  
+
+</details>
+
+
+<a name="algorithmSpecificBasicKnowledge"></a>
 <details><summary>基礎知識5種類の作業手順</summary>
 
 ### Perl5
@@ -83,61 +205,82 @@ Perlerになるつもりはない。
 > \  なにかのリファレンスを取ります。  
 
 
-#### 具体的な基礎知識
+## 具体的な基礎知識
+何はともあれ、まずは、"Hello World"を表示するプログラムを作る。  
+その後で、基礎中の基礎となる制御構造(構造化プログラミング)を簡略化しながら勉強する。  
+そのため、以下の手順で勉強を進めることにする。  
 
-[x] 手順1. 勉強用のブランチに移動する。  
-[x] 手順2. ルートディレクトリのひな形ディレクトリをコピーしてくる。  
-[x] 手順3. コピーしてきたディレクトリ名を"基礎知識用の勉強"に変更する。  
-[x] 手順4. その(ディレクトリ配下にある)"ひな形/README.md"を参考に作業を進める。  
-[x] 手順4-1. これ以降は、そのファイルを元に作業を進める。
-[x] 手順5. 手順4での「5種類の基礎知識」が終わり次第、このディレクトリにある当ファイルの作業を再開する。  
-[x] 手順6. 5種類の基礎知識終了にて、"study2programming"ブランチにマージする。  
+* 以下、手順。  
+  * [x] 手順1. 勉強用のブランチに移動する。  
+  * [x] 手順2. ルートディレクトリのひな形ディレクトリをコピーしてくる。  
+    ※ディレクトリ名をプログラミング言語に変更する。  
+    ※配下の**Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける**ディレクトリは削除。  
+  * [x] 手順2-1. 当ファイル(`README.md`)の書き換えを行う。  
+        ※ 開発環境を記録する。  
+        ※ アルゴリズムの勉強用項目は隠しておく(`details`・`summary`)代わりに、基礎知識5種類の勉強用の項目は出しておく。  
+  * [x] 手順2-2. `helloWorld.[言語用の拡張子]`のファイルを作り、おなじみ"Hello World."プログラムを作る。  
+  * [x] 手順2-3. main関数不要であれば、"**実行済み**"ディレクトリを削除すること。  
+  * [x] 手順2-4. コミットする。  
+  * [x] 手順3. 各ディレクトリで、5種類の"絶対的に勉強する一覧"を箇条書きごとに勉強する。  
+    * 以下、5種類の内訳。  
+      ※そのとき、(できる限り)プログラムファイルに[モードライン](../エディタ活用メモ/Vimエディタ_作業メモなど何でも詰め込む.md)を記載する。  
+      ※チェックリストは上記にある。  
+      変数  
+      配列  
+      条件分岐  
+      繰り返し  
+      関数  
+  * [x] 手順3-1. 箇条書きごとにコミット実施する。  
+  * [x] 手順4. 1つのプログラミング言語で、手順3の勉強1種類を終えた時に、次のプログラミング言語に移る。  
+         (細かく分けることでやる気が維持される・・・はず)  
+  * [x] 手順4-1. 今回のプログラミング言語に戻ってきたことにより、次の箇条書きに移り、勉強を継続(再開)する。  
+  * [x] 手順5. 上記、5種類の基礎知識を終わるまで繰り返す。  
+  * [x] 手順6. 5種類の基礎知識終了にて、"study2programming"ブランチにマージする。  
 
-<details><summary>以下を最低限埋める</summary>
+</details>
 
-## 開発環境
-開発には、`MacVim`を使う。  
 
-* 以下、私の利用環境。  
-  * 勉強環境のコンパイルバージョン：perl 5, version 34, subversion 0 (v5.34.0)  
-```terminal
-$ perl --version
+<a name="algorithmSpecificAlgorithmPreSolvingProcedure"></a>
+<details><summary>アルゴリズム問題解決の作業手順</summary>
 
-This is perl 5, version 34, subversion 0 (v5.34.0) built for darwin-2level
+## 具体的なアルゴリズム問題解決前手順
+アルゴリズムの勉強に、以下の手順を行う。  
 
-Copyright 1987-2021, Larry Wall
+* 以下、手順。  
+  * [x] 手順1. 勉強用のブランチに移動する(上記[目次](#algorithmTextbookLearnedinPythonContents)の1チャプター分専用ブランチとする)。  
+  * [x] 手順2. ルートディレクトリのひな形ディレクトリ配下の必要なディレクトリをコピーする。  
+    **Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける** ディレクトリ配下の必要なチャプター用ディレクトリ。  
+  * [x] 手順3. 当ファイル(`README.md`)の書き換えを行う。  
+    [x] アルゴリズムの勉強用に変更する。  
+    [x] アルゴリズムの勉強用項目を出すが、基礎知識5種類の勉強項目は隠す(`details`・`summary`)。  
+  * [x] 編集後、コミットする。  
+  * [ ] 手順4. 各ディレクトリで、チャプタごとに勉強を進める。  
+    ※そのとき、(できる限り)プログラムファイルに[モードライン](https://vim-jp.org/vim-users-jp/2009/06/02/Hack-20.html)を記載する。  
+    ※チェックリストは上記にある。  
+    Chapter 2 プログラミングの力を養う  
+    Chapter 3 データ構造を学ぶ  
+    Chapter 4 サーチ  
+    Chapter 5 ソート  
+    Chapter 6 ハッシュ  
+    Chapter 7 さまざまなアルゴリズムを学ぶ  
+    Chapter 8 アルゴリズムを見える化する  
+  * [ ] 手順5. 1つのプログラミング言語で、手順4の勉強1種類(要は、1チャプタ分の子部分)を終えた時に、次のプログラミング言語に移る。  
+  * [ ] 手順6. 1チャプタ分終了にて、"study2programming"ブランチにマージする。  
 
-Perl may be copied only under the terms of either the Artistic License or the
-GNU General Public License, which may be found in the Perl 5 source kit.
+</details>
 
-Complete documentation for Perl, including FAQ lists, should be found on
-this system using "man perl" or "perldoc perl".  If you have access to the
-Internet, point your browser at http://www.perl.org/, the Perl Home Page.
 
-$
-```
+<a name="algorithmHelloWorld"></a>
+### ハローワールドプログラム
+Perlは、ワンライナープログラミング言語で有名だが、一応プログラムらしく作成した。  
 
-  * プログラムファイルの拡張子：`*.pl`  
-　　※Prologのプログラムファイル拡張子と同じ。  
-  * 実行方式：インタプリタ方式  
-  * 標準の文字コード(プログラムファイル)：UTF-8  
-　　※プラグマ(`use utf8;`)宣言が必要。  
-  * 文字区切り(行末記号)：セミコロン`;`  
-    文を区切るために必要なだけであって、文を終わらせるために付けるのではない。  
-    そのため、次に続く文がない場合は、セミコロン不要で実行できる(それでも付けろよ)。  
-  * インデント：フリーフォーマット  
-  * 標準の出力関数：`print`・`printf`・`say`  
-  * コメント方法：`#`  
-    [大きなブロックで囲む方法](https://perldoc.jp/docs/perl/5.10.0/perlfaq7.pod#How32can32I32comment32out32a32large32block32of32perl32code63)  
-    それはPODマーカーで囲むこと。  
-
-以下、ハローワールド。
+以下、作業記録。
 ```terminal
 $ cat helloWorld.pl
 #!/usr/bin/perl -w
 
-print "Hello World.\n";	# Hello World.
-print $^V . "\n";	# v5.18.4
+print "Hello World.\n";
+print $^V . "\n";
 $ ./helloWorld.pl
 Hello World.
 v5.18.4
@@ -148,131 +291,18 @@ $
 そして、今回は、恥ずかしながら古いバージョンのPerlで実行している。  
 Unixシステムでは`#!/usr/bin/env perl`で、Perlのインストール場所を探してくれるそうだ(Macで動いた)。  
 Unix以外のシステムでは、`#!perl`と記述するそうだ(記述したところで動いてはくれない)。  
+※当たり前だが、このシェバングの場合、古い[バージョン](#algorithmCheckTheStatusOfTheActualWorkingEnvironment)のため、勉強用には適しておらず、今後も`perl プログラムファイル名.pl`とする。  
 
-</details>
 
-</details>
-
-<details><summary>アルゴリズム問題解決の作業手順</summary>
-
-## 具体的なアルゴリズム問題解決前手順
-基礎知識5種類を勉強するのと同じように、アルゴリズムの勉強にも以下の手順で進める。  
-
-* 以下、手順。  
-  * [x] 手順1. 勉強用のブランチに移動する(上記目次の1チャプター分専用ブランチとする)。  
-  * [ ] 手順2. ルートディレクトリのひな形ディレクトリ配下の必要なディレクトリをコピーする。  
-    **Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける** ディレクトリ配下の必要なチャプター用ディレクトリ。  
-  * [ ] 手順3. 当ファイル(`README.md`)の書き換えを行う。  
-  * [ ] 手順3-1. 勉強対象のチャプター子部分にチェックリストを付ける。  
-        ※ **上位ディレクトリにある"README.md"** は触らない。  
-  * [ ] 手順3-2. 目次部分を修正する。  
-    同ファイルの細かい場所(下記の行頭シャープ記号3つ以上ある)箇所にリンクできるようにする。  
-  * [ ] 手順3-3. コミットする。  
-  * [ ] 手順4. 各ディレクトリで、各項目ごとに勉強を進める。  
-    [ ] Chapter 2 プログラミングの力を養う
-    [ ] Chapter 3 データ構造を学ぶ
-    [ ] Chapter 4 サーチ
-    [ ] Chapter 5 ソート
-    [ ] Chapter 6 ハッシュ
-    [ ] Chapter 7 さまざまなアルゴリズムを学ぶ
-    [ ] Chapter 8 アルゴリズムを見える化する
-  * [ ] 手順5. 1つのプログラミング言語で、手順4の勉強1種類を終えた時に、次のプログラミング言語に移る。  
-  * [ ] 手順6. 上記、1チャプター分が終わるまで繰り返す。  
-  * [ ] 手順7. 1チャプター分終了にて、"study2programming"ブランチにマージする。  
-
-</details>
-
+<a name="algorithmNotes"></a>
 ### ※注意事項
-アルゴリズムを勉強することが目的であるため、理解すること。  
-しかし、やる気を維持するためにも1冊分を読了させることも目的として、深掘りせずに進めることも考慮すること。  
+「アルゴリズムを勉強することが目的」であるということを理解すること。  
+しかし、やる気を維持するためにも1冊分を読了させることも目的としており、深掘りせずに進めることも考慮すること。  
 要は、深く踏み込むか、流し読み程度に抑えるかどうかはそのときに決める。  
 
-何より、書籍記載のアルゴリズムは、サンプルとして公式ページからダウンロードできる。  
-そのため、書籍通りに進めるわけには行かず、自分なりに理解できるやり方で勉強した場合、当然ながら時間が掛かり、踏み込む必要が発生するだろう。  
-それでも読了も達成したいため、なかなか両立は、難しい・・・と思い込んでいるが、実際は流し読み程度に抑え、サクサク勧めていこうと思う。
 
 <a name="variable変数"></a>
-<a name="arrangement配列"></a>
-<a name="Conditional条件分岐"></a>
-<a name="repetition繰り返し"></a>
-<a name="function関数"></a>
-<details><summary>基礎知識5種類の各項目</summary>
-
-基礎知識として、5種類を勉強するが、その目的はアルゴリズムの勉強用であって、5種類を本格的に極めるためではない。  
-そのため、1つ1つを最小限に絞り込み、1つを10分前後の勉強時間に収まるように気をつけること。  
-
-#### 概要。
-* [変数](#variable変数sub)  
-  * 変数の宣言方法  
-    数値の代入  
-    文字列の代入  
-    代入したそれらの出力  
-  * 代入した値の変更方法  
-    変数を用いた計算  
-    * 計算用演算子の説明  
-    * データ型の説明  
-      数値-整数型  
-      数値-小数型  
-      文字列  
-      論理値  
-    * データ型の変換(キャスト)  
-  * ※スコープは"関数"で説明する。  
-
-* [配列(リスト)](#arrangement配列sub)  
-  Perlでの配列とリストは別物。  
-  配列：データを入れる入れ物であって、データは関係ない。  
-  リスト：配列に入れるためのデータであって、入れ物ではない。  
-  * 宣言方法  
-    要素  
-    要素数  
-    添え字(インデックス)  
-  * 要素追加方法  
-  * 2次元配列  
-  * ※取り出しは"for"で説明する。  
-
-* [条件分岐](#Conditional条件分岐sub)  
-  * if文  
-    条件式  
-    * if文からの派生  
-      if〜elif〜else  
-    * 演算子  
-      論理演算子  
-      比較演算子  
-
-* [繰り返し](#repetition繰り返しsub)  
-  * for文  
-    条件式  
-    多重(入れ子)利用  
-    break  
-    continue  
-    拡張for文  
-    　例）range  
-    配列からの取り出し。  
-  * while文  
-    条件式  
-    無限ループ  
-
-* [関数](#function関数sub)  
-  書式  
-  引数  
-  戻り値  
-  * 組み合わせ  
-    引数無し-戻り値無し  
-    引数あり-戻り値無し  
-    引数無し-戻り値あり  
-    引数あり-戻り値あり  
-  * 変数の有効範囲(スコープ)  
-    グローバル変数  
-    ローカル変数  
-
-</details>
-
-<a name="variable変数sub"></a>
-<a name="arrangement配列sub"></a>
-<a name="Conditional条件分岐sub"></a>
-<a name="repetition繰り返しsub"></a>
-<a name="function関数sub"></a>
-<details><summary>実際の基礎知識5種類の勉強</summary>
+<details><summary>実際の変数の勉強</summary>
 
 ### 変数
 値の格納方法について。  
@@ -304,8 +334,9 @@ Unix以外のシステムでは、`#!perl`と記述するそうだ(記述した�
   * [型変換(キャスト)方法](#subVariable6)  
     * [x] 明示変換  
 
+
 <a name="subVariable1"></a>
-#### 変数(スカラー)
+#### 変数
 様式：
 `my $変数名;`  
 
@@ -315,11 +346,12 @@ Unix以外のシステムでは、`#!perl`と記述するそうだ(記述した�
 変数とスカラーは異なるようだ。  
 文字列をスカラーと良い、それを格納する入れ物を変数というのだろう。  
 
-##### デフォルト変数
+
+##### デフォルト変数(`$_`)
 変数を指定する場所で変数が指定されていない場合、`$_`が自動的に使われる(ユーザからの目には見えないが、あえてそれを指定することもできる)。  
 
 ```Perl
-$_ = "hoge";	# myを付けてはならない(宣言無しなのは暗黙宣言されているから)。
+$_ = "hoge";	# myを付けてはならない(暗黙宣言)。
 say;	# hoge
 
 my @hoge = ("hoge", "bar");
@@ -329,6 +361,7 @@ foreach ( @hoge ) {
 }
 ```
 上記の`foreach`では、`@hoge`配列から要素を取り出した値は、`$_`に代入され、`say`にて`$_`変数値が出力される。
+
 
 <a name="subVariable2"></a>
 #### 変数への代入方法及び変数の利用
@@ -341,9 +374,10 @@ foreach ( @hoge ) {
 これは、レキシカル変数(my変数)と良い、基本的にはブロック内で変数宣言するときに付けるのだが、今回のように最新版(v5.12以降)であれば、自動的にレキシカル変数が必要になる。  
 また、古いバージョンの時に宣言を明確にする場合は、`use strict;`を宣言する。  
 
+
 <a name="subVariable3"></a>
 #### 変数値の出力方法
-今後、ここにプログラムを記載する場合、`use v5.24;`を省略する(実際のプログラムファイルには記載している)。  
+今後、`use v5.24;`を前提とする。  
 
 ```Perl
 my $hoge = "boo";
@@ -366,12 +400,34 @@ print "$hoge's" . $hoge;	# boo	←☆なぜこの表記になるのか分から�
      `"〜"`を`qq/ /`に置き換えられる。  
    * グレブアクセント``` ` ```  
      ``` `〜` ```を`qx/ /`に置き換えられる。  
+   * 丸括弧`()`  
+     `(〜)`を`qw/ /`に置き換えられる。  
+
+|標準形|一般形|意味|展開|
+|------|------|----|----|
+|`''`|`q//`|リテラル文字列|しない|
+|`""`|`qq//`|リテラル文字列|する|
+|``` `` ```|`qx//`|コマンド実行|する|
+|`()`|`qw//`|ワードリスト|しない|
+|`//`|`m//`|パターンマッチ|する|
+|`s///`|`s///`|パターン置換|する|
+|`y///`|`tr///`|文字変換|しない|
+|`""`|`qr//`|正規表現|する|
+
 
 <a name="subVariable4"></a>
 #### データ型
 なし。  
 全ての数値を使った計算は、例外なく倍精度浮動小数点数で行う(要は、整数値は存在しない)。  
 そのため、Bool型もない。  
+
+|データ型|サイズ|備考|
+|--------|------|----|
+|int||なし。|
+|float||なし。|
+|string||なし。|
+|bool||なし。|
+
 
 ##### bool値
 以下が、Bool値の代替方法。  
@@ -381,28 +437,29 @@ print "$hoge's" . $hoge;	# boo	←☆なぜこの表記になるのか分から�
   * 値が文字列であれば、空文字(`''`)と文字列(`'0'`)は偽を表す。それ以外は真を表す。  
   * 変数に値がない場合は偽を表す(undefの場合偽ということ)。
 
+※配列宣言しただけでは空文字が設定されるため、偽になる。  
 ※ブール値を反転させる場合は否定演算子(`!`)を使う。  
 
 以下、実施。
-```Perl
-$hoge = 0;
-if ($hoge) {
-	say "真の場合実行。", $hoge;
-}
-else {
-	say "偽の場合実行。", $hoge;
-}
-#	実行結果：偽の場合実行。0
 
-$hoge = 1;
-if ($hoge) {
-	say "真の場合実行。", $hoge;
-}
-else {
-	say "偽の場合実行。", $hoge;
-}
-#	実行結果：真の場合実行。1
-```
+    $hoge = 0;
+    if ($hoge) {
+    	say "真の場合実行。", $hoge;
+    }
+    else {
+    	say "偽の場合実行。", $hoge;
+    }
+    #	実行結果：偽の場合実行。0
+    
+    $hoge = 1;
+    if ($hoge) {
+    	say "真の場合実行。", $hoge;
+    }
+    else {
+    	say "偽の場合実行。", $hoge;
+    }
+    #	実行結果：真の場合実行。1
+
 
 <a name="subVariable5"></a>
 #### 変数値を使った計算方法
@@ -417,6 +474,7 @@ else {
 |`**`|累乗||
 |`//`|除算の商|Perlにない。|
 |`%`|剰余演算||
+
 
 <a name="subVariable6"></a>
 #### 型変換(キャスト)方法
@@ -438,28 +496,34 @@ say $hoge;	# 83
 わざわざ切り捨てる必要あるか？  
 最後の式は、四捨五入なので、使い道はある。  
 
+
 <a name="subVariable999"></a>
 #### 変数での説明しない項目。
 
 <details><summary>今回は勉強を見送る一覧</summary>
 
-* 定数  
+* [ ] 定数  
   [ ] [constantプラグマ](https://perldoc.jp/docs/modules/constant-1.17/constant.pod)  
   これは、関数定義で書き込みできないようにしている(他のプログラミング言語のような定数とは概念からして異なる)。  
   他にも定数のやり方はあるようだが、Perlに元から付けられているものではないのだろう。  
-* データ型  
+* [ ] データ型  
   ない(キャストするときに必要？)。  
+  * [ ] 整数(`long`など)  
+  * [ ] 浮動小数点型(`double`など)  
+  * [x] 型推論  
+    ほぼこれ。  
+  * [ ] 複素数型  
 * [ ] リテラル  
   * [ ] 整数リテラル  
-    10進数以外の解釈。  
+    10進数以外の説明(一応プログラムはある)。  
   * [ ] 浮動小数点リテラル  
   * [ ] 文字リテラル  
   * [ ] 文字列リテラル  
     > プログラムでUnicodeをリテラルとして使いたい場合には、utf8プラグマを指定する必要があります。  
     > 指定したくない理由が理解できるまでは、常にこのプラグマを指定するのが良い習慣でしょう。  
     > `use utf8;`  
-* [ ] ダブルクォート文字列リテラル  
-  * バックスラッシュエスケープ  
+  * [ ] ダブルクォート文字列リテラル  
+    * バックスラッシュエスケープ  
 * [ ] キャスト  
   * [ ] 暗黙変換  
     暗黙をわざわざ説明しない。  
@@ -481,11 +545,18 @@ say $hoge;	# 83
 
 * ちょっと高度な話題  
   * [ ] ポインタ  
+    Perlでは、リファレンスのこと(ちょっとだけ調べた)。  
 
 * 関数を変数に代入  
 * 関数を引数に使う  
 
 </details>
+
+</details>
+
+
+<a name="arrangement配列"></a>
+<details><summary>実際の配列の勉強</summary>
 
 ### 配列
 Perlでの配列とは、データ(リストのこと)を入れる入れ物でしかない。データは全く関係ない。  
@@ -504,22 +575,47 @@ Perlでのリストとは、配列に入れるためのデータであって、�
 
 
 <a name="subArrangement1"></a>
-#### リスト(配列とは異なる)
-様式：
-`my ($変数1, $変数2, $変数3, ・・・) = (値1, 値2, 値3, ・・・);`  
-
-コンマ区切りしたものをリストと呼ぶ。  
-
 #### 配列
 様式：
 `my @配列名;`  
 
 
+##### リスト(配列とは異なる)
+様式：
+`my ($変数1, $変数2, $変数3, ・・・) = (値1, 値2, 値3, ・・・);`  
+
+コンマ区切りしたものをリストと呼ぶ。  
+
+
+##### デフォルト配列(`@_`)
+これは[関数](#function関数)の引数として使うのが一般的。  
+
+
 <a name="subArrangement2"></a>
 #### 配列への追加方法
 様式：
+[配列](#subArrangement2wrongarray)は0から始まるが、意識する必要は無いだろう。  
+
+様式：
 `my @配列名 = (値1, 値2, 値3, ・・・)`  
 
+* 追加方法  
+  * 配列末尾への対応。  
+    スタック`stack`(後入れ先出し法：Last In First Out, LIFO)  
+    * 取り出し[pop](#subArrangement2pop)  
+      配列の**最後**から要素を**取り出す**。  
+    * 追加[push](#subArrangement2push)  
+      配列の**最後**に要素を**追加**する。  
+      `unshift`の追加処理より**早い**。  
+  * 配列先頭への対応。  
+    キュー`queue`(先入れ先出し法：First In First Out, FIFO)  
+    * 取り出し[shift](#subArrangement2shift)  
+      配列の**先頭**から要素を**取り出す**。  
+      `pop`の取り出しより**早い**。  
+    * 追加[unshift](#subArrangement2unshift)  
+      配列の**先頭**に要素を**追加**する。  
+
+<a name="subArrangement2pop"></a>
 * 末尾要素の取り出し：
 `$変数名 = pop @配列名;`  
 ※括弧を付けても利用可能(`pop(@配列名);`)。  
@@ -532,6 +628,7 @@ say "@hoge";	# 1 2 3
 say "$four";	# 4
 ```
 
+<a name="subArrangement2push"></a>
 * 末尾に要素を追加：
 `push @配列名, 値;`  
 `push @配列名, 値1, 値2, 値3, ・・・;`  
@@ -545,6 +642,7 @@ push(@hoge, 20210902);
 say "@hoge";	# 1 2 3 4 20210902
 ```
 
+<a name="subArrangement2shift"></a>
 * 先頭要素を取り出し：
 `$変数名 = shift @配列名;`  
 ※括弧を付けても利用可能(`shift(@配列名);`)。  
@@ -559,6 +657,7 @@ say "@hoge";	# 2 3 4
 say "$four";		# 1
 ```
 
+<a name="subArrangement2unshift"></a>
 * 先頭に要素を追加：
 `unshift @配列名, 値`  
 `unshift @配列名, リスト`  
@@ -572,100 +671,15 @@ unshift @hoge, 20210903;
 say "@hoge";	# 20210903 1 2 3 4
 ```
 
-* 専門用語  
-  * スタック`stack`(後入れ先出し法：Last In First Out, LIFO)  
-    `push`・`pop`の組み合わせ。  
-    * push  
-      配列の**最後**に要素を**追加**する。  
-      `unshift`の追加処理早い。  
-    * pop  
-      配列の**最後**から要素を**取り出す**。  
-  * キュー`queue`(先入れ先出し法：First In First Out, FIFO)  
-    `shift`・`unshift`の組み合わせ。  
-    * shift  
-      配列の**最初**から要素を**取り出す**。  
-      `pop`の取り出しより早い。  
-    * unshift  
-      配列の**最初**に要素を**追加**する。  
 
-* 配列を任意の場所で継ぎ接ぎ：
-  * `$変数名 = splice @配列名, 添え字;`  
-    添え字以降の要素が取り除かれ、配列最後の要素が変数に代入される。  
-  * `@配列名 = splice @配列名, 添え字;`  
-    添え字の要素以降が配列に代入される。  
-    要は、第2引数までの利用。  
-  * `@配列名 = splice @配列名, 添え字, 要素数;`  
-    添え字の要素以降から要素数までが配列に代入される。  
-    要は、第3引数までの利用。  
-  * `@配列名 = splice @配列名, 添え字, 要素数, リスト;`  
-    添え字の要素以降から要素数までが配列に代入され、その分をリストで置き換える。  
-    要は、第4引数までの利用。  
-    要素数の部分を0指定した場合、その場所に挿入する(置き換えではなくなる)。  
-
-以下、`splice`演算子による添え字番号指定の取り出し(第2引数までの利用)。
-```Perl
-my @hoge = ( 1..10 );
-say "@hoge";	# 1 2 3 4 5 6 7 8 9 10
-@boo = splice @hoge, 2;
-say "@hoge";	# 1 2
-say "@boo";		# 3 4 5 6 7 8 9 10
-```
-
-以下、`splice`演算子による添え字番号指定の取り出し(第3引数までの利用)。
-```Perl
-my @hoge = ( 1..10 );
-say "@hoge";	# 1 2 3 4 5 6 7 8 9 10
-@boo = splice @hoge, 2, 3;
-say "@hoge";	# 1 2 6 7 8 9 10
-say "@boo";		# 3 4 5
-```
-
-以下、`splice`演算子による添え字番号指定の置換(第4引数までの利用)。
-```Perl
-my @hoge = ( 1..10 );
-say "@hoge";	# 1 2 3 4 5 6 7 8 9 10
-@boo = splice @hoge, 2, 3, ("hoge", "boo");
-say "@hoge";	# 1 2 hoge boo 6 7 8 9 10
-say "@boo";		# 3 4 5
-```
-
-以下、`splice`演算子による添え字番号指定の挿入(第4引数までの利用)。
-```Perl
-my @hoge = ( 1..5 );
-say "@hoge";	# 1 2 3 4 5
-@boo = splice @hoge, 2, 0, ("hoge", "boo");
-say "@ahoge";	# 1 2 hoge boo 3 4 5
-say "@boo";		# [空文字のようだ]
-```
-
-
-<details><summary>間違った配列操作</summary>
-
-様式：
-`my @配列名 = (値1, 値2, 値3, ・・・)`  
-
-最初の要素への取得方法。  
-`$配列名[0]`  
-これで**値1**が取り出せる。  
-もしくは、値1を書き換える。  
-
-上記で言えば、2つ分の要素が配列に格納されている。  
-そのため、配列の3番目要素(添え字2)以降はない。  
-しかし、それ以降にも追加が可能。
-```Perl
-$hoge[9] = 20210901 + 9;	# 20210901
-```
-※この場合、[2]から[8]は、`undef`が自動的に格納されている。  
-
-</details>
-
-配列は0から数える。
+配列は0から数えるが、意識する必要はあるか？
 ```Perl
 my @hoge = (20210831, 20210901);
 say @hoge;	# 2021083120210901
 say $hoge[0];	# 20210831
 say $hoge[1];	# 20210901
 ```
+
 
 最後の要素への確認方法(配列は上記利用)。
 ```Perl
@@ -714,66 +728,40 @@ say "hoge\@Boge";	# hoge@Boge
 `foreach my $変数名 ( @配列名 ) { ・・・ }`  
 配列名には、`(1..5)`などのリストを指定する。  
 
-<details><summary>配列操作の応用</summary>
-
-##### 配列のコピー。
-配列は、そのままイコール記号での代入でコピーできる。
-```Perl
-my @hoge = qw(20210831, 20210901, );
-my @boo;
-@boo = @hoge;
-$hoge[0] = "bar";
-say "@boo";	# 20210831, 20210901,
-```
-hoge配列への変更では、@booに影響ない。  
-
-
-##### 要素確認。
-配列への代入個数を調べる。
-```Perl
-my @hoge = qw(20210831, 20210901, );
-my $len = @hoge;	# 配列を変数に代入する(配列の添え字無し)。
-say $len;	# 2
-```
-
-以下、別の方法(関数利用)
-```Perl
-say scalar(@hoge);
-```
-
-
-##### 添え字確認。
-上記要素数の確認ではなく、最大添え字数の調べ方。
-```Perl
-my @hoge = qw(20210831, 20210901, );
-say $#hoge;	# 1
-```
-配列は0から数える。  
-2つの要素があるため、最大配列添え字は1になる。  
-その1が結果として得られている。  
-
-
-##### 空確認
-空確認は、要素数0で判断できる。
-```Perl
-my @hoge = qw(20210831, 20210901, );
-# 配列要素の空確認。
-if (@hoge > 0) {
-	say "空でない。"
-}
-# 別の方法。
-if (@hoge) {
-	say "空でない。"
-}
-```
-
-</details>
 
 <a name="subArrangement3"></a>
 #### 二次元配列の宣言方法
-Perlでの2次元配列は、配列で宣言できないため、学習見送り。  
+配列の中で配列を宣言する場合、中にある配列をリファレンスとして外側の配列に渡すことで、2次元配列になる。  
 
-以下、配列同士の連結。
+```perl
+my @hoge = qw(20210927 20210928 );
+my @boo = qw(20210929 20210930 );
+
+my $twoarray = [\@hoge, \@boo];
+
+say $twoarray->[0];	# ARRAY(0x7ff4b5004328)
+say $twoarray->[1];	# ARRAY(0x7ff4b50047f0)
+
+say $twoarray->[0][0];	# 20210927
+say $twoarray->[0][1];	# 20210928
+say $twoarray->[1][0];	# 20210929
+say $twoarray->[1][1];	# 20210930
+```
+
+以下、直接の書き方。
+```perl
+my $twoarray = [[20210830, 20210831], [20210901, 20210902]];
+
+say $twoarray->[0];	# ARRAY(0x7f95808061a0)
+say $twoarray->[1];	# ARRAY(0x7f9580806338)
+
+say $twoarray->[0][0];	# 20210830
+say $twoarray->[0][1];	# 20210831
+say $twoarray->[1][0];	# 20210901
+say $twoarray->[1][1];	# 20210902
+```
+
+以下、通常の配列を連結しただけでは連結されてしまい、1次元配列になってしまう。  
 ```Perl
 my @hoge = qw(20210830 20210831 );
 my @bar = qw(20210901 20210902 );
@@ -782,12 +770,13 @@ say "@boo";	# 20210830 20210831 20210901 20210902
 ```
 ※配列内容が展開されてから新しい配列に格納される。  
 
+
 <a name="subArrangement999"></a>
 #### 配列での説明しない項目。
 
 <details><summary>今回は勉強を見送る一覧</summary>
 
-* 本来の配列操作。2021/09/03
+* 本来の配列操作。  
   * [x] pop演算子  
   * [x] push演算子  
   * [x] shift演算子  
@@ -804,7 +793,8 @@ say "@boo";	# 20210830 20210831 20210901 20210902
 
 * 配列の応用  
   * [ ] 多次元配列。  
-    リファレンス。  
+    [ ] 3次元配列以上の宣言方法。  
+    [x] リファレンス(少しだけ調べた)。  
   * [x] 配列を複製する方法。  
   * [ ] 配列からスライスを作成する方法。  
 
@@ -816,14 +806,20 @@ say "@boo";	# 20210830 20210831 20210901 20210902
   * 列挙体  
 
 * コレクション  
-  * [ ] ハッシュ(`%ハッシュ名`)  
-    ハッシュスライス作成  
-  * [x] List  
+  * [x] [ハッシュ(`%ハッシュ名`)](#practicaluseHash)  
+    [ ] ハッシュスライス作成  
+  * [x] List(配列)  
   * [ ] Set  
   * [ ] Map  
   * [ ] Queue  
 
 </details>
+
+</details>
+
+
+<a name="Conditional条件分岐"></a>
+<details><summary>実際の条件分岐の勉強</summary>
 
 ### 条件分岐
 
@@ -846,7 +842,8 @@ say "@boo";	# 20210830 20210831 20210901 20210902
 
 <a name="subConditional1"></a>
 #### 条件分岐
-条件式が真を返した場合のみに処理を実行する。  
+条件式が真(`0`以外)を返した場合のみに処理を実行する。  
+数値`0`が偽。それ以外真。  
 
 様式：
 `if ( 条件式 ) {・・・}`  
@@ -878,6 +875,7 @@ if ( $hoge[0] == $bar ) {
 ※条件式の結果が反転される。  
 否定演算子には、`!`以外に、`not`も使えるが、優先順位は低い。  
 
+
 <a name="subConditional2"></a>
 #### 論理演算子(ド・モルガンの法則)
 以下の演算子を用いる。
@@ -885,6 +883,7 @@ if ( $hoge[0] == $bar ) {
 |------|----|----|
 |`and`・`&&`|論理積|Perlでは、論理AND演算子と言う。|
 |`or`・`||`|論理和|Perlでは、論理OR演算子と言う。|
+
 ※`&&`と`||`は、`and`と`or`に比べて優先順位が低い。  
 
 
@@ -905,6 +904,7 @@ if ( 条件式1 and 条件式2 ) {
 }
 ```
 
+
 <a name="subConditional3"></a>
 #### 比較演算子
 Perlの[演算子](https://perldoc.jp/docs/perl/perlop.pod)。  
@@ -912,14 +912,15 @@ Perlの[演算子](https://perldoc.jp/docs/perl/perlop.pod)。
 例えば、数値と比較する場合0になり、文字列として比較する場合空文字になる。  
 そのため、変数を使う前に、宣言と同時に0クリアせずに使える(普通は0クリアなどすべき)。  
 
-|比較方法|数値の比較|文字列の比較|補足|
+比較演算子
+|比較方法|**数値**の比較|**文字列**の比較|補足|
 |--------|----------|------------|----|
 |等号|`==`|`eq`|イコール(equal)|
 |不等|`!=`|`ne`|ノットイコール(not equal)|
-|より小さい|`<`|`lt`|レスザン(決して…でない：less than)|
 |より大きい|`>`|`gt`|グレタザン(より大きい：greater than)|
-|以下(等しいもしくは小さい)|`<=`|`le`|(less than or equal to)|
+|より小さい|`<`|`lt`|レスザン(決して…でない：less than)|
 |以上(等しいもしくは大きい)|`>=`|`ge`|(greater than or equal to)|
+|以下(等しいもしくは小さい)|`<=`|`le`|(less than or equal to)|
 
 
 <a name="subConditional999"></a>
@@ -944,7 +945,7 @@ Perlの[演算子](https://perldoc.jp/docs/perl/perlop.pod)。
     * [ ] 排他的論理和(`XOR`・`NOT OR`・`^`)  
     * [ ] 否定(`NOT`・`!`・`~`)  
     * [ ] ビット演算子(`&`・`|`)  
-    * [ ] defined-or演算子(以下説明)
+    * [ ] defined-or演算子(以下説明)  
 
 |論理演算子|意味|備考|
 |----------|----|----|
@@ -971,6 +972,12 @@ Perlの[演算子](https://perldoc.jp/docs/perl/perlop.pod)。
 
 </details>
 
+</details>
+
+
+<a name="repetition繰り返し"></a>
+<details><summary>実際の繰り返しの勉強</summary>
+
 ### 繰り返し
 
 * 絶対的に勉強する一覧  
@@ -980,9 +987,9 @@ Perlの[演算子](https://perldoc.jp/docs/perl/perlop.pod)。
     [x] [`for`の入れ子。](#subRepetition4)  
   * [ジャンプ処理](#subRepetition5)  
     * [x] break  
-      Perlでは`last`  
+      Perlでは[`last`](#subRepetition5last)  
     * [x] continue  
-      Perlでは`next`  
+      Perlでは[`next`](#subRepetition5next)  
   * [x] [真偽条件での繰り返し](#subRepetition6)  
     [x] [基本構造例：while( 条件式 )](#subRepetition6)  
     [x] [無限ループ](#subRepetition7)  
@@ -1003,11 +1010,13 @@ Perlの[演算子](https://perldoc.jp/docs/perl/perlop.pod)。
 
 これで1から10までのリストが作られ、その間繰り返しが発生する。  
 
+
 <a name="subRepetition2"></a>
 ##### 指定回数条件での繰り返し：for( 条件式 )
 様式：
 `for ( 初期化; 条件式; 増減分) { ・・・ }`  
 ※増減分は、初期化する変数をどうするか決める場所として使うのが一般的。  
+
 
 <a name="subRepetition3"></a>
 ##### 指定回数条件での繰り返し：拡張for命令
@@ -1019,9 +1028,10 @@ Perlの[演算子](https://perldoc.jp/docs/perl/perlop.pod)。
 例）`foreach my $変数名 ( sort(リスト) ) { ・・・ }`  
 当たり前だが、foreach前にsort演算子が実行され、実行後にforeachが実行されるため、sort演算子の実行は最初の1回だけと言うことになる。  
 
+
 <a name="subRepetition4"></a>
 #### `for`の入れ子。
-やりたければ勝手にすれば良い。
+アルゴリズム以外にも使うのは当然の技術。
 ```
 foreach my $変数名1 ( リスト ) {
 	foreach my $変数名2 ( リスト ) {
@@ -1030,11 +1040,12 @@ foreach my $変数名1 ( リスト ) {
 }
 ```
 
+
 <a name="subRepetition5"></a>
 #### ジャンプ処理
 繰り返しの制御として、以下を使う。  
 
-* last  
+* [last](#subRepetition5last)  
   while処理を抜け出る。  
   ※他のプログラミング言語でいえば、`break`文。  
   使える繰り返し：`for`・`foreach`・`while`・`until`・裸のブロック。  
@@ -1042,6 +1053,49 @@ foreach my $変数名1 ( リスト ) {
   while処理の先頭に戻り、条件式を評価する。  
   ※他のプログラミング言語でいえば、`continue`文。  
   使える繰り返し：`for`・`foreach`・`while`・`until`・裸のブロック。  
+
+
+<a name="subRepetition5last"></a>
+以下、break(last)での繰り返し処理強制中断。  
+```perl
+my @hoge = (20210901, 20210902, );
+
+# 繰り返しの入れ子。
+#	lastラベルで抜け出る。
+LASTJUMP: foreach my $boo ( @hoge ) {
+	foreach my $number ( 1..10 ) {
+		if ( $number == 3 ) {
+			say "$number：$boo";
+						# 3：20210901
+					# 以下のラベルがない場合、
+						#	3：20210902
+					# も出力している。
+					# lastのため、1つ目の繰り返しを抜け出ている。
+		}
+		last LASTJUMP if ( $number == 3);
+	}
+}
+```
+
+<a name="subRepetition5next"></a>
+以下、continue(next)での繰り返し処理強制中断。  
+```perl
+my @boo = (20210901, 20210902, );
+
+#	nextで抜け出る。
+LASTJUMP: foreach my $tomohiro ( @boo ) {
+	foreach my $number ( 1..10 ) {
+		if ( $number == 3 ) {
+			say "$number：$tomohiro";	# 出力なし。
+		}
+		next LASTJUMP if ( $number == 2);
+			# 1つ目のforeach処理に戻るため、3以降にインクリメントされず、処理が終了する。
+			# このnext処理がない場合、当然のように2行が出力される。
+#					3：20210901
+#					3：20210902
+	}
+}
+```
 
 
 <a name="subRepetition6"></a>
@@ -1062,9 +1116,8 @@ while( ( my $index, my $value ) = each @hoge ) {
 							# 1, 20210904
 }
 ```
-これはめちゃくちゃ便利。  
-昔は出来なかった。  
-そして、[Go](https://golang.org/doc/effective_go#for)の`for...range`ではできていたため、他の言語でも出来て欲しいと思っていた。  
+過去のバージョンでは出来なかった。  
+
 
 <a name="subRepetition7"></a>
 #### 無限ループ
@@ -1075,6 +1128,7 @@ while( ( my $index, my $value ) = each @hoge ) {
 
 余談：
 `for (i=0;;i++) `の場合、無限ループだが、繰返し回数は得られる。  
+
 
 <a name="subRepetition999"></a>
 #### 繰り返しでの説明しない項目。
@@ -1103,7 +1157,14 @@ while( ( my $index, my $value ) = each @hoge ) {
     nextのようなものだが、条件式を評価せずにwhile文の頭に戻る(要は、現在の条件で再実行)。  
     使える繰り返し：`for`・`foreach`・`while`・`until`・裸のブロック。  
 
+
 </details>
+
+</details>
+
+
+<a name="function関数"></a>
+<details><summary>実際の関数の勉強</summary>
 
 ### 関数
 Perlでは、サブルーチンというようだ。  
@@ -1122,6 +1183,7 @@ Perlでは、サブルーチンというようだ。
       [ ] ローカルスコープ変数  
       私の環境ではエラーになった。  
 
+
 <a name="subFunction1"></a>
 #### 関数
 様式：
@@ -1130,6 +1192,8 @@ sub 関数名 {
 	処理;
 }
 ```
+
+引数の受け取り方は、可変長引数として[デフォルト配列(`@_`)](#subArrangement1)を使う。  
 
 [呼び出し方法](https://perldoc.jp/docs/perl/5.10.0/perlfaq7.pod#Whats32the32difference32between32calling32a32function32as32foo32and32foo40-41-63)：
 `&関数名();`  
@@ -1180,8 +1244,8 @@ sub 関数名 {
   * 例2）`my ($ret) = &funcHoge();`  
   これは、配列の1つ目の値を変数に代入している。  
 
-
 ※関数原型(関数プロトタイプ)宣言不要。  
+
 
 <a name="subFunction2"></a>
 #### [スコープ](https://perldoc.jp/docs/perl/5.10.0/perlfaq7.pod#Whats32the32difference32between32dynamic32and32lexical32-40static41-32scoping63-32Between32local40-41-32and32my40-41-63)
@@ -1200,19 +1264,17 @@ v5.24ではできないが、最新版では出来るのか。
 この形式で[宣言](https://perldoc.jp/docs/perl/5.16.1/perlsub.pod#Temporary32Values32via32local40-41)できるはずなのだが・・・。  
 そもそも`my`を使えば良いだけなので、全く困らない(大事発言はどこへやら)。  
 
+
 <a name="subFunction999"></a>
 #### 関数での説明しない項目。
 
 <details><summary>今回は勉強を見送る一覧</summary>
 
-そもそもPythonは、普通に必要？  
-しかし、アルゴリズムの勉強には不要なのだろう。  
-
 * 標準的な関数  
   * [x] 可変長引数  
     Perlでは常に可変長になる。  
-  * [ ] 再帰関数  
-    今更だが、アルゴリズムの勉強に使うのでは？  
+  * [x] 再帰関数  
+    アルゴリズムの勉強で使っている。  
   * [ ] 高階関数  
     変数の応用部分で説明する？  
 * オブジェクト指向  
@@ -1239,86 +1301,88 @@ Perlでオブジェクト指向開発ができるだけでなく、そのやり�
 
 </details>
 
-#### ☆アルゴリズムの勉強チャプタ概要☆
+
 <a name="algorithmTextbookLearnedinPython"></a>
+#### ☆アルゴリズムの勉強チャプタ概要☆
 <a name="algorithmTextbookLearnedinPythonChapter2"></a>
 * [Chapter2 プログラミングの力を養う](#developProgrammingSkillsOverviewChapter2)  
   基礎的なプログラミングの力を養っていく。  
   例えば、配列利用の関数定義・繰り返し・再帰関数・条件分岐など。  
   以下、各項目(目次)。  
-  [ ] [平均値を求める。](#findTheAverageValueChapter2)  
-  [ ] [1からnまで足し合わせる。](#addFrom1tonChapter2)  
-  [ ] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
-  [ ] [素数を求める。](#findAPrimeNumberChapter2)  
-  [ ] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
-  [ ] [エラトステネスの篩](#eratosthenesSieveChapter2)  
-  [ ] [n進法を理解する。](#understandnAryNotationChapter2)  
+  [x] [平均値を求める。](#findTheAverageValueChapter2)  
+  [x] [1からnまで足し合わせる。](#addFrom1tonChapter2)  
+  [x] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
+  [x] [素数を求める。](#findAPrimeNumberChapter2)  
+  [x] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
+  [x] [エラトステネスの篩](#eratosthenesSieveChapter2)  
+  [x] [n進法を理解する。](#understandnAryNotationChapter2)  
 <a name="algorithmTextbookLearnedinPythonChapter3"></a>
 * [Chapter3 データ構造を学ぶ](#learnDataStructuresOverviewChapter3)  
   今までに勉強した配列(リスト)を用いた発展を遂げる。  
   ※今回利用するリストはアルゴリズム(概念)用語であり、Pythonで用いているリスト(配列)という用語とは別物。  
-  ※例外処理(`try〜except〜finally`)をの説明をしている(いずれ基礎知識として勉強に組み込む必要がある？)。  
+  ※例外処理(`try〜except〜finally`)の説明をしている(いずれ基礎知識として勉強に組み込む必要がある？)。  
   以下、各項目(目次)。  
-  [ ] [スタック](#stackChapter3)  
-  [ ] [キュー](#queueChapter3)  
-  [ ] [リスト](#listChapter3)  
-  [ ] [木](#woodChapter3)  
-  [ ] [グラフ](#graphChapter3)  
-  [ ] [データを保存する。](#saveTheDataChapter3)  
+  [スタック](#stackChapter3)  
+  [キュー](#queueChapter3)  
+  [リスト](#listChapter3)  
+  [木](#woodChapter3)  
+  [グラフ](#graphChapter3)  
+  [データを保存する。](#saveTheDataChapter3)  
 <a name="algorithmTextbookLearnedinPythonChapter4"></a>
 * [Chapter4 サーチ](#searchOverviewChapter4)  
   複数データから目的地を探し出すこと。  
   ※有名な探索アルゴリズムのみに限定している。  
   以下、各項目(目次)。  
-  [ ] [線形探索](#linearSearchChapter4)  
-  [ ] [二分探索](#binarySearchChapter4)  
-  [ ] [木探索](#treeExplorationChapter4)  
-  [ ] [計算量について知る](#knowAboutComputationalComplexityChapter4)  
-  [ ] [ランダウの記号](#landauSignChapter4)  
-  [ ] [数当てゲーム](#numberGuessingGameChapter4)  
-  [ ] [ビット演算を学ぶ](#learnBitwiseOperationsChapter4)  
+  [線形探索](#linearSearchChapter4)  
+  [二分探索](#binarySearchChapter4)  
+  [木探索](#treeExplorationChapter4)  
+  [計算量について知る](#knowAboutComputationalComplexityChapter4)  
+  [ランダウの記号](#landauSignChapter4)  
+  [数当てゲーム](#numberGuessingGameChapter4)  
+  [ビット演算を学ぶ](#learnBitwiseOperationsChapter4)  
 <a name="algorithmTextbookLearnedinPythonChapter5"></a>
 * [Chapter5 ソート](#sortOverviewChapter5)  
-  一定の規則に従い並び替えること。  
-  ※有名な並べ替えアルゴリズムのみに限定している。  
+  一定の規則に従い、並び替えること。  
+  ※有名な並べ替えアルゴリズムのみ。  
   以下、各項目(目次)。  
-  [ ] [選択ソート](#selectionSortChapter5)  
-  [ ] [バブルソート](#bubbleSortChapter5)  
-  [ ] [挿入ソート](#insertionSortChapter5)  
-  [ ] [クイックソート](#quickSortChapter5)  
-  [ ] [マージソート](#mergeSortChapter5)  
-  [ ] [ヒープソート](#heapsortChapter5)  
-  [ ] [クイックソートの再起の過程を出力する。](#outputTheProcessOfQuicksortRecurrenceChapter5)  
-  [ ] [再帰関数を用いたマージソート。](#mergeSortUsingARecursiveFunctionChapter5)  
-  [ ] [プログラミング言語用のソート・ヒープ・キュー関数の使い方。](#howToUsePythonSortInstructionsAndHeapqModuleChapter5)  
-  [ ] [ソートの計算量と計算時間。](#sortCalculationComplexityAndCalculationTimeChapter5)  
+  [選択ソート](#selectionSortChapter5)  
+  [バブルソート](#bubbleSortChapter5)  
+  [挿入ソート](#insertionSortChapter5)  
+  [クイックソート](#quickSortChapter5)  
+  [マージソート](#mergeSortChapter5)  
+  [ヒープソート](#heapsortChapter5)  
+  [クイックソートの再起の過程を出力する。](#outputTheProcessOfQuicksortRecurrenceChapter5)  
+  [再帰関数を用いたマージソート。](#mergeSortUsingARecursiveFunctionChapter5)  
+  [プログラミング言語用のソート・ヒープ・キュー関数の使い方。](#howToUsePythonSortInstructionsAndHeapqModuleChapter5)  
+  [ソートの計算量と計算時間。](#sortCalculationComplexityAndCalculationTimeChapter5)  
 <a name="algorithmTextbookLearnedinPythonChapter6"></a>
 * [Chapter6 ハッシュ](#hashOverviewChapter6)  
   ハッシュとは、データから算出した小さな値のこと。  
   今回は、そのハッシュとしての値を算出する方法を勉強する。  
   以下、各項目(目次)。  
-  [ ] [ハッシュとは。](#whatIsAHashChapter6)  
-  [ ] [ハッシュ関数](#hashFunctionChapter6)  
-  [ ] [ハッシュテーブル](#hashTableChapter6)  
-  [ ] [衝突を回避する。](#avoidCollisionsChapter6)  
-  [ ] [暗号学的ハッシュ関数](#cryptographicHashFunctionChapter6)  
+  [ハッシュとは。](#whatIsAHashChapter6)  
+  [ハッシュ関数](#hashFunctionChapter6)  
+  [ハッシュテーブル](#hashTableChapter6)  
+  [衝突を回避する。](#avoidCollisionsChapter6)  
+  [暗号学的ハッシュ関数](#cryptographicHashFunctionChapter6)  
 <a name="algorithmTextbookLearnedinPythonChapter7"></a>
 * [Chapter7 さまざまなアルゴリズムを学ぶ](#learnVariousAlgorithmsOverviewChapter7)  
   アルゴリズムを勉強する上で必ず関わるアルゴリズムになる。  
   むしろ、ここまで勉強できてアルゴリズムを勉強したと言えるのではないだろうか。  
   以下、各項目(目次)。  
-  [ ] [ユークリッドの互除法](#euclideanAlgorithmChapter7)  
-  [ ] [文字列探索](#stringSearchChapter7)  
-  [ ] [アルゴリズムを理解するヒント(処理の過程の出力)。](#tipsForUnderstandingTheAlgorithmChapter7)  
+  [ユークリッドの互除法](#euclideanAlgorithmChapter7)  
+  [文字列探索](#stringSearchChapter7)  
+  [アルゴリズムを理解するヒント(処理の過程の出力)。](#tipsForUnderstandingTheAlgorithmChapter7)  
 <a name="algorithmTextbookLearnedinPythonChapter8"></a>
 * [Chapter8 アルゴリズムを見える化する](#visualizeTheAlgorithmOverviewChapter8)  
   今回のアルゴリズムを勉強することで、アルゴリズム(もしくはデータ)を可視化する方法を勉強できる。  
   以下、各項目(目次)。  
-  [ ] [n次関数の曲線を描く。](#drawACurveOfTheNthOrderFunctionChapter8)  
-  [ ] [フラクタル図形を描く。](#drawAFractalFigureChapter8)  
-  [ ] [迷路を解く過程を描く。](#drawTheProcessOfSolvingTheMazeChapter8)  
-  [ ] [アルゴリズムを使い分ける。](#useDifferentAlgorithmsChapter8)  
-  [ ] [マンデルブロー集合を描こう。](#letsDrawTheMandelbrotSetChapter8)  
+  [n次関数の曲線を描く。](#drawACurveOfTheNthOrderFunctionChapter8)  
+  [フラクタル図形を描く。](#drawAFractalFigureChapter8)  
+  [迷路を解く過程を描く。](#drawTheProcessOfSolvingTheMazeChapter8)  
+  [アルゴリズムを使い分ける。](#useDifferentAlgorithmsChapter8)  
+  [マンデルブロー集合を描こう。](#letsDrawTheMandelbrotSetChapter8)  
+
 
 <a name="developProgrammingSkillsOverviewChapter2"></a>
 ### プログラミングの力を養う
@@ -1335,24 +1399,491 @@ Perlでオブジェクト指向開発ができるだけでなく、そのやり�
 
 <a name="findTheAverageValueChapter2"></a>
 #### 平均値を求める。
+勉強内容はPythonと基本は同じ。  
+それをPerl用に移植するだけのこと。  
+
+* ルールもPythonと同じ。  
+  * 点数を配列で定義する。  
+    `my @score = (70, 98, 92, 88, 64);`  
+  * `for`を用いる。  
+
+```Perl
+# 以下の配列に入っている数字を使い、合計点及び平均点を求める。
+my @score = (70, 98, 92, 88, 64);
+
+my $total;	# この変数に合計点を入れる。
+for ( @score ) {
+	# for my $value ( @score ) {	←☆取り出した値を用意した変数に代入してもいい(むしろそうしたほうが処理速度は上がる)。
+	# 以下、合算。
+	$total += $_;
+}
+# 以下、平均点を求める(合計÷個数)。
+#	my $count = @score;	←☆配列の個数を取り出して使ってもいい。
+my $average = $total / @score;
+
+say "合計点：$total";	# 合計点：412
+say "平均点：$average";	# 平均点：82.4
+```
+Pythonより作りやすい言語ではある。  
+しかし、暗黙的な`$_`を多用した場合、保守できないのがPerlなんだよな・・・。  
+
 
 <a name="addFrom1tonChapter2"></a>
 #### 1からnまで足し合わせる。
+勉強内容はPythonと基本は同じ。  
+それをPerl用に移植するだけのこと。  
+
+<details><summary>基本内容</summary>
+
+* ルールもPythonと同じだが、関数は定義する。  
+  * `for`を用いる。  
+  * ~~関数は定義しない~~。  
+
+```Perl
+sub addup1() {
+	my $total;	# この変数に合計点を入れる。
+	for ( 1..10 ) {
+		# 以下、合算。
+		$total += $_;
+	}
+
+	return $total;
+}
+say &addup1();	# 55
+```
+
+* ルール2  
+  * nまでの値を関数の引数で受け取る。  
+  * 関数内で合算した結果をreturnで返す。  
+    あぁルール1でやったことだよ・・・。  
+
+```Perl
+sub addup2() {
+	my ($argnum) = @_;
+	my $start = 1;
+	my $total;
+	if ( $argnum =~ /^[0-9]+$/ ) {
+		;
+	}
+	else {
+		$start = $argnum = 0;
+	}
+	for ( $start..$argnum ) {
+		$total += $_;
+	}
+
+	return $total;
+}
+
+say &addup2();	# 0
+say &addup2(10);	# 55
+say &addup2('a');	# 0
+```
+
+* ルール3  
+  * 工夫して計算する。  
+  * (初めの数+終わりの数)*(足し合わせる個数/2)  
+
+```Perl
+sub addup3() {
+	my ($argnum) = @_;
+	my $start = 1;
+	if ( $argnum =~ /^[0-9]+$/ ) {
+		;
+	}
+	else {
+		$start = $argnum = 0;
+	}
+	my $total = ($start+$argnum)*$argnum/2;
+
+	return $total;
+}
+
+say &addup3();	# 0
+say &addup3(10);	# 55
+say &addup3('a');	# 0
+say &addup3(10, 20);	# 55
+```
+
+</details>
+
+* 作業ルール。  
+  * 「カール・フリードリヒ・ガウス」に倣え。  
+  * 開始の数字 ＜ 終了の数字。  
+    要は、nからmまで足し合わせる。  
+    * 開始の数字を任意にする。  
+    * 終了の数字を任意にする。  
+
+```Perl
+sub AddupGauss() {
+	my ($start, $end) = @_;
+	if ( scalar(@_) == 2 ) {
+		# 引数が2つある場合の代入方法。
+		($start, $end) = @_;
+	}
+	elsif ( scalar(@_) == 1 ) {
+		($end) = @_;
+		$start = 1;
+	}
+	if ( $start =~ /^[0-9]+$/ && $end =~ /^[0-9]+$/ ) {
+		;
+	}
+	else {
+		$start = $end = 0;
+	}
+	my $total = ($start+$end)*$end/2;
+
+	return $total;
+}
+
+say &AddupGauss();	# 0
+say &AddupGauss(10);	# 55
+say &AddupGauss('a');	# 0
+say &AddupGauss(1, 10);	# 55
+say &AddupGauss(1, 100);	# 5050
+```
+
 
 <a name="outputTheMultiplicationTableChapter2"></a>
 #### 九九の式を出力する。
+Pythonでやったように、九九の式を出すのではなく、九九表を出すことにする。  
+ルールはPythonと同じ。  
+
+* 作業ルール。  
+  * 二重ループを使う。  
+
+以下、いつも通りの九九表出力。
+```Perl
+sub kukuTable() {
+	for my $ii ( 1..9 ) {
+		for my $jj ( 1..9 ) {
+			printf("%3d", $ii * $jj);
+		}
+		say;
+	}
+
+	return 0;
+}
+
+&kukuTable();
+```
+
+```text
+  1  2  3  4  5  6  7  8  9
+  2  4  6  8 10 12 14 16 18
+  3  6  9 12 15 18 21 24 27
+  4  8 12 16 20 24 28 32 36
+  5 10 15 20 25 30 35 40 45
+  6 12 18 24 30 36 42 48 54
+  7 14 21 28 35 42 49 56 63
+  8 16 24 32 40 48 56 64 72
+  9 18 27 36 45 54 63 72 81
+```
+九九表完成。
+
+`sprintf`は、今回初めて使った。  
+
 
 <a name="findAPrimeNumberChapter2"></a>
 #### 素数を求める。
+素数とは、1とその数以外に約数を持たない2以上の自然数のこと。  
+
+Pythonに倣い、試す数は**2〜2分のn**までの数で割ることを調べる方法をとる。  
+例えば、10を調べる場合、その半分より大きい数(**6**・**7**・**8**・**9**)では、10を割ることが出来ない。  
+そのことを利用した方法で素数を求める。  
+後日、[エラトステネスの篩](#eratosthenesSieveChapter2)を使った効率のいいアルゴリズムを勉強する。  
+
+* 素数を求めるルール  
+  * 二重ループを使う。  
+  * 2から2分のnまでの数で割る。  
+    ※それらの数で割り切れなければ素数。  
+
+```perl
+sub prime() {
+	for my $ii ( 2..100 ) {
+		# 商を求める演算子の代わりに、小数点部分を切り落とす処理としてintにキャストする。
+		my $hh = int($ii / 2);
+		# 真偽値はないため、普通に文字列を使う。
+		my $ff = 'True';
+		for my $jj ( 2..$hh ) {
+			if ( ($ii % $jj) == 0 ) {
+				# 真偽値がないため、0をFalseとして扱う。
+				$ff = 0;
+				last;
+			}
+		}
+		if ($ff eq 'True') {
+			print($ii . ",");
+		}
+	}
+
+	return 0;
+}
+
+&prime();
+say;
+```
+
+以下、実行結果。
+```terminal
+2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,
+```
+[比較演算子](#subConditional3)の扱いにてんやわんやする。  
+
 
 <a name="findTheFactorialOfNChapter2"></a>
 #### nの階乗を求める。
+**階乗とは**
+1からnまでの全ての整数の積をnの階乗という。  
+**再帰関数**
+関数内から自身の関数を呼び出すことを再帰処理という。
+また、その呼び出す仕組みの関数を再帰関数という。  
+
+以下、再帰関数例）
+```perl
+sub factorial() {
+	my $word = shift @_;
+	my $num = length($word);
+	if ( $num > 0 ) {
+		factorial(substr($word, 0, $num-1));
+	}
+	printf("再帰関数%d回目の実行及び出力内容：%s\n", $num, $word);
+	return 0
+}
+&factorial("hoge");
+```
+
+以下、出力結果。
+```terminal
+再帰関数0回目の実行及び出力内容：
+再帰関数1回目の実行及び出力内容：h
+再帰関数2回目の実行及び出力内容：ho
+再帰関数3回目の実行及び出力内容：hog
+再帰関数4回目の実行及び出力内容：hoge
+```
+
+* ルール1  
+  再帰関数を使わない。  
+  * 関数定義は行わない(行う)。  
+  * `for`を使う。  
+
+以下、ルール1のプログラム。
+```perl
+sub factorial2() {
+	my $arg = shift @_;
+	my $sum = 1;
+	if ( $arg == 0 ) {
+		$arg = 0;
+	}
+	for ( my $ii = $arg; $ii > 0; $ii-- ) {
+		$sum = $sum * $ii;
+	}
+	say "${arg}! =" . $sum;
+}
+
+&factorial2(10);
+```
+
+以下、実行結果。
+```terminal
+10! =3628800
+```
+
+* ルール2  
+  再帰関数を使う。  
+  * 再帰関数の定義ルール  
+    * `n = 0`
+      **n! = 1**  
+    * `n > 0`
+      **n! = n * (n-1) * (n-2) * ・・・ * 2 * 1**
+      nから1引いた数を掛け、さらに1づつ引き続けながらnが1にまるまで続ける。  
+
+以下、20の階乗の結果のみを求めている。
+```perl
+sub factorial() {
+	my $arg = shift @_;
+	my $ret;
+	if ( $arg == 0 ) {
+		$ret = 1;
+	}
+	else {
+		$ret = $arg * &factorial($arg-1);
+	}
+
+	return $ret
+}
+
+say &factorial(20);
+```
+
+以下、実行結果。
+```terminal
+2432902008176640000
+```
+他のプログラミング言語とちゃんぽんで進めるのは間違っていることを実感している・・・が、やめられない。  
+
 
 <a name="eratosthenesSieveChapter2"></a>
 #### エラトステネスの篩
+効率よく素数を求めることができるアルゴリズムのこと。  
+
+
+<details><summary>Perlプログラム</summary>
+
+```perl
+sub eratosthenes_sieve() {
+	my ($eratosthenes, @argprime) = @_;
+
+	for ( my $ii = ($eratosthenes + $eratosthenes); $ii <= $#argprime; $ii += $eratosthenes ) {
+		$argprime[$ii] = "false";
+	}
+	say "$eratosthenesの倍数をふるい落とした。";
+	&eratosthenes_table( @argprime );
+	while ( $eratosthenes < $#argprime ) {
+		$eratosthenes++;
+		if ( $argprime[$eratosthenes] eq "true" ) {
+			last;
+		}
+	}
+	return ($eratosthenes, @argprime);
+}
+
+sub eratosthenes_table() {
+	my @argprime = @_;
+	my $outputTable = "";
+
+	my $forvaluemax = @argprime;
+	for my $ii ( 0..$#argprime ) {
+		if ( $argprime[$ii] eq "true" ) {
+			$outputTable .= sprintf("%2s, ", $ii);
+		}
+		else {
+			$outputTable .= sprintf("／, ");
+		}
+		if ( ($ii % 10) == 9 ) {
+			$outputTable .= sprintf("\n");
+		}
+	}
+	say $outputTable =~ s/\s*$//mgr;
+	say;
+}
+
+sub prime_eratosthenes() {
+	my @prime;	# 配列宣言
+	$prime[99] = 0;
+	foreach my $ii ( 2..$#prime ) {
+		$prime[$ii] = "true";	# 要素を真にする(0以外もしくは空文字以外を代入)。
+	}
+
+	# ふるい落とし始める最初の値を用意する。
+	my $eratosthenes = 2;
+	&eratosthenes_table( @prime );
+	while ( $eratosthenes < 10 ) {	# √99 まで行う。
+		($eratosthenes, @prime) = &eratosthenes_sieve( $eratosthenes, @prime );
+	}
+}
+&prime_eratosthenes();
+```
+
+</details>
+
+<details><summary>Perlプログラムの出力結果</summary>
+
+以下、出力結果。
+```text
+エラトステネスの篩
+／, ／,  2,  3,  4,  5,  6,  7,  8,  9,
+10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
+30, 31, 32, 33, 34, 35, 36, 37, 38, 39,
+40, 41, 42, 43, 44, 45, 46, 47, 48, 49,
+50, 51, 52, 53, 54, 55, 56, 57, 58, 59,
+60, 61, 62, 63, 64, 65, 66, 67, 68, 69,
+70, 71, 72, 73, 74, 75, 76, 77, 78, 79,
+80, 81, 82, 83, 84, 85, 86, 87, 88, 89,
+90, 91, 92, 93, 94, 95, 96, 97, 98, 99,
+
+2の倍数をふるい落とした。
+／, ／,  2,  3, ／,  5, ／,  7, ／,  9,
+／, 11, ／, 13, ／, 15, ／, 17, ／, 19,
+／, 21, ／, 23, ／, 25, ／, 27, ／, 29,
+／, 31, ／, 33, ／, 35, ／, 37, ／, 39,
+／, 41, ／, 43, ／, 45, ／, 47, ／, 49,
+／, 51, ／, 53, ／, 55, ／, 57, ／, 59,
+／, 61, ／, 63, ／, 65, ／, 67, ／, 69,
+／, 71, ／, 73, ／, 75, ／, 77, ／, 79,
+／, 81, ／, 83, ／, 85, ／, 87, ／, 89,
+／, 91, ／, 93, ／, 95, ／, 97, ／, 99,
+
+3の倍数をふるい落とした。
+／, ／,  2,  3, ／,  5, ／,  7, ／, ／,
+／, 11, ／, 13, ／, ／, ／, 17, ／, 19,
+／, ／, ／, 23, ／, 25, ／, ／, ／, 29,
+／, 31, ／, ／, ／, 35, ／, 37, ／, ／,
+／, 41, ／, 43, ／, ／, ／, 47, ／, 49,
+／, ／, ／, 53, ／, 55, ／, ／, ／, 59,
+／, 61, ／, ／, ／, 65, ／, 67, ／, ／,
+／, 71, ／, 73, ／, ／, ／, 77, ／, 79,
+／, ／, ／, 83, ／, 85, ／, ／, ／, 89,
+／, 91, ／, ／, ／, 95, ／, 97, ／, ／,
+
+5の倍数をふるい落とした。
+／, ／,  2,  3, ／,  5, ／,  7, ／, ／,
+／, 11, ／, 13, ／, ／, ／, 17, ／, 19,
+／, ／, ／, 23, ／, ／, ／, ／, ／, 29,
+／, 31, ／, ／, ／, ／, ／, 37, ／, ／,
+／, 41, ／, 43, ／, ／, ／, 47, ／, 49,
+／, ／, ／, 53, ／, ／, ／, ／, ／, 59,
+／, 61, ／, ／, ／, ／, ／, 67, ／, ／,
+／, 71, ／, 73, ／, ／, ／, 77, ／, 79,
+／, ／, ／, 83, ／, ／, ／, ／, ／, 89,
+／, 91, ／, ／, ／, ／, ／, 97, ／, ／,
+
+7の倍数をふるい落とした。
+／, ／,  2,  3, ／,  5, ／,  7, ／, ／,
+／, 11, ／, 13, ／, ／, ／, 17, ／, 19,
+／, ／, ／, 23, ／, ／, ／, ／, ／, 29,
+／, 31, ／, ／, ／, ／, ／, 37, ／, ／,
+／, 41, ／, 43, ／, ／, ／, 47, ／, ／,
+／, ／, ／, 53, ／, ／, ／, ／, ／, 59,
+／, 61, ／, ／, ／, ／, ／, 67, ／, ／,
+／, 71, ／, 73, ／, ／, ／, ／, ／, 79,
+／, ／, ／, 83, ／, ／, ／, ／, ／, 89,
+／, ／, ／, ／, ／, ／, ／, 97, ／, ／,
+
+以上。
+```
+
+</details>
+
 
 <a name="understandnAryNotationChapter2"></a>
 #### n進法を理解する。
+アルゴリズムの1つとして勉強することではない。  
+普通の一般説明。  
+
+```perl
+sub main() {
+	say "2進数リテラル";
+	say 0b11111111, ", ",0b0, ", ",0b10101010, ", ",-0b1, ", ",0b1, ", ",0b1001101000110010011101110;
+	# 出力結果：255, 0, 170, -1, 1, 20210926
+
+	say "8進数リテラル";
+	say 0377, ", ",00, ", ",0252, ", ",-01, ", ",01, ", ",0115062356;
+	# 出力結果：255, 0, 170, -1, 1, 20210926
+
+	say "10進数リテラル";
+	say 255, ", ",0, ", ",170, ", ",-1, ", ",1, ", ",20210926;
+	# 出力結果：255, 0, 170, -1, 1, 20210926
+
+	say "16進数リテラル";
+	say 0xff, ", ",0x00, ", ",0xAA, ", ",-0x1, ", ",0x1, ", ",0x13464EE;
+	# 出力結果：255, 0, 170, -1, 1, 20210926
+
+}
+&main("asakuno");
+```
+
 
 <a name="learnDataStructuresOverviewChapter3"></a>
 ### データ構造を学ぶ
@@ -1458,8 +1989,6 @@ Perlでオブジェクト指向開発ができるだけでなく、そのやり�
 <a name="howToUsePythonSortInstructionsAndHeapqModuleChapter5"></a>
 #### プログラミング言語用のソート・ヒープ・キュー関数の使い方。
 Python限定にしたくなかったが、他のプログラミング言語にはない可能性がある。  
-[ヒープ](https://docs.microsoft.com/ja-jp/windows/win32/memory/heap-functions)と言うのはアルゴリズムより、コンピュータでの概念のほうが一般的なのかな。  
-[C言語](https://code-reference.com/c/stdlib.h)ですら[クイックソート](https://ja.cppreference.com/w/c/algorithm)があるのだから他のプログラミング言語にはあってしかるべき。  
 
 <a name="sortCalculationComplexityAndCalculationTimeChapter5"></a>
 #### ソートの計算量と計算時間。
@@ -1476,9 +2005,6 @@ Python限定にしたくなかったが、他のプログラミング言語に�
 
 <a name="whatIsAHashChapter6"></a>
 #### ハッシュとは。
-調べればすぐに出てくる。  
-そもそもプログラマーがハッシュを知らないというのはあり得ない。  
-[Git](https://git-scm.com/book/ja/v2/使い始める-Gitの基本)でも[履歴閲覧](https://docs.github.com/ja/github/searching-for-information-on-github/searching-on-github/searching-commits)に[コミットハッシュ値](https://git-scm.com/book/ja/v2/Git-の基本-コミット履歴の閲覧)を使う。  
 
 <a name="hashFunctionChapter6"></a>
 #### ハッシュ関数
@@ -1534,27 +2060,827 @@ Python限定にしたくなかったが、他のプログラミング言語に�
 <a name="letsDrawTheMandelbrotSetChapter8"></a>
 #### マンデルブロー集合を描こう。
 
-## Gitのマージルール
-個々の言語ごとにブランチをそれぞれ作成する。  
-そのブランチで作業する。  
-以下、流れとして、、、
 
-* ブランチ作成などの初期作業。  
-  1. [ ] 対象言語のブランチ作成  
-  1. [ ] そのブランチで勉強する。  
-  1. [ ] 切りの良い場所でコミット実施。  
+<a name="appliedknowledge"></a>
+## 応用知識
+基礎知識5種類だけではアルゴリズムの勉強に足りない部分が発生したため、ちょっとだけ手を広げて勉強した。  
 
-  * 上記作業再開。  
-    1. [ ] 前回の勉強を再開する。  
-    1. [ ] 1章分の勉強終了後、"study2programming"にマージする。  
-    1. [ ] 誤字脱字程度のコミットはスカッシュしたい。  
-    1. [ ] "study2programming"をPushする。  
-       ※masterにマージすることはない。  
-    1. [ ] 章ごとにタグ付けをする(Push実施)。  
+* 応用部分  
+  * [リファレンス](#practicaluseReference)  
+  * [ハッシュ(連想配列)](#practicaluseHash)  
+  * 今後も機会があれば増やしていく。  
 
+
+<a name="practicaluseArrangement配列"></a>
+<details><summary>応用知識-配列</summary>
+
+### スプライス(任意の場所への追加・削除)
+配列への操作方法の応用として、配列途中への追加・削除を行う。  
+
+* 配列を任意の場所で継ぎ接ぎ：
+  * `$変数名 = splice @配列名, 添え字;`  
+    添え字以降の要素が取り除かれ、配列最後の要素が変数に代入される。  
+  * `@配列名 = splice @配列名, 添え字;`  
+    添え字の要素以降が配列に代入される。  
+    要は、第2引数までの利用。  
+  * `@配列名 = splice @配列名, 添え字, 要素数;`  
+    添え字の要素以降から要素数までが配列に代入される。  
+    要は、第3引数までの利用。  
+  * `@配列名 = splice @配列名, 添え字, 要素数, リスト;`  
+    添え字の要素以降から要素数までが配列に代入され、その分をリストで置き換える。  
+    要は、第4引数までの利用。  
+    要素数の部分を0指定した場合、その場所に挿入する(置き換えではなくなる)。  
+
+以下、`splice`演算子による添え字番号指定の取り出し(第2引数までの利用)。
+```Perl
+my @hoge = ( 1..10 );
+say "@hoge";	# 1 2 3 4 5 6 7 8 9 10
+@boo = splice @hoge, 2;
+say "@hoge";	# 1 2
+say "@boo";		# 3 4 5 6 7 8 9 10
+```
+
+以下、`splice`演算子による添え字番号指定の取り出し(第3引数までの利用)。
+```Perl
+my @hoge = ( 1..10 );
+say "@hoge";	# 1 2 3 4 5 6 7 8 9 10
+@boo = splice @hoge, 2, 3;
+say "@hoge";	# 1 2 6 7 8 9 10
+say "@boo";		# 3 4 5
+```
+
+以下、`splice`演算子による添え字番号指定の置換(第4引数までの利用)。
+```Perl
+my @hoge = ( 1..10 );
+say "@hoge";	# 1 2 3 4 5 6 7 8 9 10
+@boo = splice @hoge, 2, 3, ("hoge", "boo");
+say "@hoge";	# 1 2 hoge boo 6 7 8 9 10
+say "@boo";		# 3 4 5
+```
+
+以下、`splice`演算子による添え字番号指定の挿入(第4引数までの利用)。
+```Perl
+my @hoge = ( 1..5 );
+say "@hoge";	# 1 2 3 4 5
+@boo = splice @hoge, 2, 0, ("hoge", "boo");
+say "@ahoge";	# 1 2 hoge boo 3 4 5
+say "@boo";		# [空文字のようだ]
+```
+
+
+### 配列のコピー。
+配列は、そのままイコール記号での代入でコピーできる。
+```Perl
+my @hoge = qw(20210831, 20210901, );
+my @boo;
+@boo = @hoge;
+$hoge[0] = "bar";
+say "@boo";	# 20210831, 20210901,
+```
+hoge配列への変更では、@booに影響ない。  
+
+
+### 要素数確認。
+配列への代入個数を調べる。
+```Perl
+my @hoge = qw(20210831, 20210901, );
+my $len = @hoge;	# 配列を変数に代入する(配列の添え字無し)。
+say $len;	# 2
+```
+
+以下、別の方法(関数利用)
+```Perl
+say scalar(@hoge);
+```
+
+
+### 添え字での最大数確認。
+上記要素数の確認ではなく、最大添え字数の調べ方。
+```Perl
+my @hoge = qw(20210831, 20210901, );
+say $#hoge;	# 1
+```
+配列は0から数える。  
+2つの要素があるため、最大配列添え字は1になる。  
+その1が結果として得られている。  
+
+
+### 空確認
+空確認は、要素数0で判断できる。
+```Perl
+my @hoge = qw(20210831, 20210901, );
+# 配列要素の空確認。
+if (@hoge > 0) {
+	say "空でない。"
+}
+# 別の方法。
+if (@hoge) {
+	say "空でない。"
+}
+```
+
+
+<a name="subArrangement2wrongarray"></a>
+### 間違った配列操作
+`my @配列名 = (値1, 値2, 値3, ・・・)`  
+
+最初の要素への取得方法。  
+`$配列名[0]`  
+これで**値1**が取り出せる。  
+もしくは、値1を書き換える。  
+
+上記で言えば、2つ分の要素が配列に格納されている。  
+そのため、配列の3番目要素(添え字2)以降はない。  
+しかし、それ以降にも追加が可能。
+```Perl
+$hoge[9] = 20210901 + 9;	# 20210901
+```
+※この場合、[2]から[8]は、`undef`が自動的に格納されている。  
+
+</details>
+
+
+<a name="practicaluseReference"></a>
+<details><summary>応用知識-リファレンス</summary>
+
+### [リファレンス](https://perldoc.jp/docs/perl/5.8.8/perlref.pod)
+データの複雑な相互関係を表現するのに適している。  
+
+公式サイトの説明を一部引用
+> Perl はシンボリックリファレンスを変数として使うことを簡単にしただけでなく、 任意のデータについて「ハード」リファレンスを持つことを可能としたのです。  
+> 任意のスカラはハードリファレンスを保持することができます。  
+> 配列とハッシュはスカラから構成されているので、あなたはいまや配列の配列、 ハッシュの配列、配列のハッシュ、関数のハッシュの配列等々を簡単に 組み立てることができるのです。  
+・・・中略・・・  
+> Perlでリファレンスを使うのは非常に簡単です。  
+> 原則のオーバーライドが一つあるだけです。  
+> Perl はリファレンス(referencing)やデリファレンス(defreferencing)を 暗黙に行うことはありません。  
+> スカラがリファレンスを保持しているとき、それは常に単純なスカラとして 振る舞います。  
+> 勝手に配列や、ハッシュ、サブルーチンとして振る舞うようなことはありません。  
+> デリファレンスをすることによって、自分で明示的に Perl に 教える必要があります。  
+
+※句点で勝手に改行を入れた。  
+
+
+#### リファレンス
+利用方法は、リファレンスを取得したい対象の先頭に`\`を付けることで取得できる。  
+
+```Perl
+$scalarref = \$foo;
+$arrayref  = \@ARGV;
+$hashref   = \%ENV;
+$coderef   = \&handler;
+$globref   = \*foo;
+```
+ただ、  
+> バックスラッシュ演算子を使って IO ハンドル(ファイルハンドルまたは ディレクトリハンドル)へのリファレンスを生成することはできません。  
+
+例）
+```perl
+use v5.24;
+
+my $hoge = "Perlプログラム";
+my @hoge = ("配列-配列", "リファレンス");	# この末尾に文字列を追加する。
+
+say "配列リファレンス";
+
+sub arrayReferenceEdit() {
+	my $one = shift @_;
+	my $two = shift;	# 配列のアドレスを取得している(\@hoge)。
+
+	say $one;
+	# 以下、リファレンスとして配列のアドレスが代入されている。
+	say $two;
+	# 以下、デリファレンスしながら値の書き換え。
+	for my $value ( @$two ) {
+		say "$valueを書き換える。";
+		# 出力結果：
+#				配列-配列を書き換える。
+#				リファレンスを書き換える。
+		# 以下、書き換え実施。
+		$value = "書き換え：" . $value . "を書き換える";
+	}
+}
+&arrayReferenceEdit($hoge, \@hoge);
+
+say $hoge[0];	# 書き換え：配列-配列を書き換える
+say $hoge[1];	# 書き換え：リファレンスを書き換える
+```
+難しいが、C言語のポインタと思えば良いだろう。  
+しかし、記号を使い分けるのは慣れないと思う。  
+
+
+##### 名前無し配列へのリファレンス
+> 名前の無い配列へのリファレンスは、大かっこを使って作ることができます:  
+
+```perl
+$arrayref = [1, 2, ['a', 'b', 'c']];
+
+say $arrayref->[0];		# 1
+say $arrayref->[1];		# 2
+say $arrayref->[2][0];	# a
+say $arrayref->[2][1];	# b
+```
+
+これは、どういう意味？  
+
+以下、失敗
+```perl
+my @two = ('a', 'b', 'c');
+my @one = (1, 2, @two);
+my $arrayref = [@one];
+
+say $arrayref->[0];		# 1
+say $arrayref->[1];		# 2
+say $arrayref->[2];		# a
+say $arrayref->[3];		# b
+say $arrayref->[4];		# c
+```
+
+以下、成功？
+```perl
+my @two = ('a', 'b', 'c');
+my @one = (1, 2, \@two);
+my $arrayref = [@one];
+
+say $arrayref->[0];		# 1
+say $arrayref->[1];		# 2
+say $arrayref->[2];		# ARRAY(0x7f9fb2801b08)
+say $arrayref->[2][0];	# b
+say $arrayref->[2][1];	# c
+say $arrayref->[2][2];	# c
+```
+
+以下ができるのであれば、上記は失敗(上記は2次元配列ではない？)？
+```perl
+my @two = ('a', 'b', 'c');
+my @one = (1, 2, \@two);
+
+say $one[0];	# 1
+say $one[1];	# 2
+say $one[2];	# ARRAY(0x7ff75c818b08)
+say $one[2][0];	# a
+say $one[2][1];	# b
+say $one[2][2];	# c
+```
+
+難しい。  
+C言語のポインタだと思っていたのだが難しい。  
+よくよく考え直せば、もしかしてC言語のポインタを忘れている？  
+
+
+##### 名前無しハッシュへのリファレンス
+> 名前の無いハッシュへのリファレンスは、中かっこを使って作ることができます:  
+
+```perl
+$hashref = {
+	'Adam'  => 'Eve',
+	'Clyde' => 'Bonnie',
+};
+```
+
+
+##### 名前無し関数(サブルーチン)へのリファレンス
+> 無名サブルーチンのへのリファレンスは、サブルーチン名の無い sub を使って 作ることができます:  
+
+```perl
+$coderef = sub { print "Boink!\n" };
+```
+
+
+#### シンボリックリファレンス
+リファレンスとして使われた値が既に定義されていたときには、それはシンボリックリファレンスとして扱われるようだが、何を言っている？  
+
+```perl
+$name = "foo";
+
+# 以下、全てエラーになる。
+$$name = 1;         # Sets $foo
+${$name} = 2;       # Sets $foo
+${$name x 2} = 3;   # Sets $foofoo
+$name->[0] = 4;     # Sets $foo[0]
+@$name = ();        # Clears @foo
+&$name();           # Calls &foo() (as in Perl 4)
+
+# 5の代入が出来ずにエラーになる。
+$pack = "THAT";
+${"${pack}::$name"} = 5;    # Sets $THAT::foo without eval
+```
+この書き方が出来ないように`use strict 'refs';`を宣言すれば良い。  
+宣言する場合は、ブロックで囲み、`no strict 'refs';`を宣言すれば良い。  
+
+
+#### デリファレンス
+リファレンスの実体化？  
+
+> 変数名やサブルーチン名の一部として識別子を置くところでは、適切な 型のリファレンスを持った単純スカラ変数でその識別子を 置き換えることができます:  
+
+以下、変数用のデリファレンス。
+```perl
+use v5.24;
+
+sub dereferenceScalar() {
+	my $hoge = "bar";
+	my $refhoge = \$hoge;
+
+	say "以下、変数用のデリファレンス";
+	say '通常の変数$hoge          ：' . "$hoge";
+					# 出力結果：通常の変数$hoge          ：bar
+	say 'リファレンス値$refhoge   ：' . "$refhoge";
+					# 出力結果：リファレンス値$refhoge   ：SCALAR(0x7ff9b801c608)
+	say 'デリファレンス値$$refhoge：' . "$$refhoge";
+					# 出力結果：デリファレンス値$$refhoge：bar
+
+}
+&dereferenceScalar();
+```
+
+以下、配列用のデリファレンス。
+```perl
+sub dereferenceArray() {
+	my @hoge = ("本日は晴天なり。", "bar", );
+	my $refhoge = \@hoge;
+
+	say "以下、配列用のデリファレンス";
+	say '通常の配列@hoge          ：' . "@hoge";
+					# 出力結果：通常の配列@hoge          ：本日は晴天なり。 bar
+	say 'リファレンス値@refhoge   ：' . "$refhoge";
+					# 出力結果：リファレンス値@refhoge   ：ARRAY(0x7ff9b801c770)
+	say 'デリファレンス値@$refhoge：' . "@$refhoge";
+					# 出力結果：デリファレンス値@$refhoge：本日は晴天なり。 bar
+}
+&dereferenceArray();
+```
+
+以下、ハッシュ用のデリファレンス。
+```perl
+sub dereferenceHash() {
+	my %hoge = ("本日は晴天なり。", "bar", );
+	my $refhoge = \%hoge;
+
+	say "以下、ハッシュ用のデリファレンス";
+	say '通常のハッシュ%hoge                    ：' . "%hoge";
+					# 出力結果：通常のハッシュ%hoge                    ：%hoge
+	while( my ($key, $value) = each %$refhoge ) {
+		say '通常のハッシュ%hoge(%key, $value)      ：' . "$key -> $value";
+					# 出力結果：通常のハッシュ%hoge(%key, $value)      ：本日は晴天なり。 -> bar
+	}
+	say 'リファレンス値%refhoge                 ：' . "%$refhoge";
+					# 出力結果：リファレンス値%refhoge                 ：%HASH(0x7ff9b801c920)
+	while( my ($key, $value) = each %$refhoge ) {
+		say 'デリファレンス値%$refhoge(%key, $value)：' . "$key -> $value";
+					# 出力結果：デリファレンス値%$refhoge(%key, $value)：本日は晴天なり。 -> bar
+	}
+}
+&dereferenceHash();
+```
+
+当然関数用など他にもデリファレンスが必要なリファレンスもある。  
+
+
+#### 入れ子
+入れ子にできる種類は、複数ある。  
+
+* 現在の確認項目  
+  * 変数  
+  * 配列  
+  * ハッシュ  
+
+* 未確認  
+  * 関数  
+
+以下、変数の入れ子・・・変数を入れ子するというのは可笑しいと言うか、不可能だよね。
+```perl
+sub scalarReference() {
+	# 目的：配列をリファレンスとして配列の中に格納し、さらにそれをリファレンスとして配列に入れるという入れ子をすること。
+	my $hoge1 = $hoge;	# 変数にスカラー値を代入する。
+	my $bar = \$hoge1;	# それをリファレンスとして別の変数に代入する。
+	say \$hoge1;				# SCALAR(0x7f87e1809b88)
+	say $bar;					# SCALAR(0x7f87e1809b88)
+	say $hoge;					# 本日は晴天なり。
+	$hoge = \$bar;		# さらに、リファレンス変数が代入されている変数を別の変数にリファレンスとして代入する(混乱する)。
+	say \$bar;					# REF(0x7f87e1809ba0)
+	say $hoge;					# REF(0x7f87e1809ba0)
+	say;
+	say '$hogeをデリファレンス($$hoge)：' . "$$hoge";	# $hoge1 のアドレスが入っていると思っている。
+				# 出力結果：$hogeをデリファレンス($$hoge)：SCALAR(0x7f87e1809b88)
+	say '$$hogeをデリファレンス($$$hoge)：' . "$$$hoge";	# スカラー値 が入っていると思っている。
+				# 出力結果：$$hogeをデリファレンス($$$hoge)：本日は晴天なり。
+}
+&scalarReference();
+```
+
+以下、配列をリファレンスとして、配列に代入し、さらにその配列をリファレンスとして配列に代入するという入れ子をしている。
+```perl
+sub arrayReference() {
+	say '@hogeの値：' . "@hoge";					# @hogeの値：20210923 Perl難しい
+	my @hoge1 = ("hogeのアドレス格納用配列リファレンス", \@hoge);		# 配列に配列リファレンスを代入する。
+	say '@hogeのアドレス：' . \@hoge;				# @hogeのアドレス：ARRAY(0x7fdda280a388)
+	say '@hoge1の値：' . "@hoge1";					# @hoge1の値：hogeのアドレス格納用配列リファレンス ARRAY(0x7fdda280a388)
+	my @bar = ("hoge1のアドレス格納用配列リファレンス", \@hoge1);	# それをリファレンスとして別の配列に代入する。
+	say '@hoge1のアドレス：' . \@hoge1;				# @hoge1のアドレス：ARRAY(0x7fdda280aaf0)
+	say '@barの値：' . "@bar";						# @barの値：hoge1のアドレス格納用配列リファレンス ARRAY(0x7fdda280aaf0)
+	my @boo = (\@bar);		# さらに、リファレンス配列が代入されている配列を別の配列にリファレンスとして代入する(混乱する)。
+	say '@barのアドレス：' . \@bar;					# @barのアドレス：ARRAY(0x7fdda280abb0)
+	say '@booの値：' . "@boo";						# @booの値：ARRAY(0x7fdda280abb0)
+					# 出力結果：
+
+	say;
+	say '@booの要素を出力($boo[0])：' . "$boo[0]";	# @bar のアドレスが入っていると思っている。
+				# 出力結果：@booの要素を出力($boo[0])：ARRAY(0x7fdda280abb0)
+	say '@booをデリファレンス($boo[0]->[0])：' . "$boo[0]->[0]";	# @bar の第1要素目が入っていると思っている。
+				# 出力結果：@booをデリファレンス($boo[0]->[0])：hoge1のアドレス格納用配列リファレンス
+	say '@booをデリファレンス($boo[0]->[1])：' . "$boo[0]->[1]";	# @bar の第2要素目が入っていると思っている(ここにhoge1のアドレスが入っている)。
+				# 出力結果：@booをデリファレンス($boo[0]->[1])：ARRAY(0x7fdda280aaf0)
+	say '@booをデリファレンス($boo[0]->[1][0])：' . "$boo[0]->[1][0]";	# @hoge1 の第1要素が入っていると思っている。
+				# 出力結果：@booをデリファレンス($boo[0]->[1][0])：hogeのアドレス格納用配列リファレンス
+	say '@booをデリファレンス($boo[0]->[1][1])：' . "$boo[0]->[1][1]";	# @hoge1 の第2要素が入っていると思っている(hogeのアドレスが入っている)。
+				# 出力結果：@booをデリファレンス($boo[0]->[1][1])：ARRAY(0x7fdda280a388)
+	say '@booをデリファレンス($boo[0]->[1][1][0])：' . "$boo[0]->[1][1][0]";	# @hoge の第1要素が入っていると思っている。
+				# 出力結果：@booをデリファレンス($boo[0]->[1][1][0])：20210923
+	say '@booをデリファレンス($boo[0]->[1][1][1])：' . "$boo[0]->[1][1][1]";	# @hoge の第2要素が入っていると思っている。
+				# 出力結果：@booをデリファレンス($boo[0]->[1][1][1])：Perl難しい
+
+	say;
+	say \@hoge1;	# ARRAY(0x7fdda280aaf0)	←☆上記と同じ結果が出ている。
+	say \@_;		# ARRAY(0x7fdda28181d8)
+}
+&arrayReference();
+```
+要は、これこそが2次元配列と言うことか？  
+
+
+以下、配列のリファレンスを変数に代入し、その変数のリファレンスを変数に代入している。
+```perl
+sub arrayReference() {
+	my $refhoge = \@hoge;			# 変数に配列リファレンスを代入する。
+	my $refbar = \$refhoge;	# それをリファレンスとして別の変数に代入する。
+	my $hoge = \$refbar;		# さらに、リファレンス変数が代入されている変数を別の変数にリファレンスとして代入する(混乱する)。
+
+	say '@hogeの値を出力：' . "@hoge";	# そもそもの値確認。
+					# 出力結果：@hogeの値を出力：20210923 Perl難しい
+
+	say;
+	say '$hogeの値を出力  ：' . "$hoge";	# $refbar のアドレスが入っていると思っている(最終結果)。
+					# 出力結果：$hogeの値を出力  ：REF(0x7fba480140e8)
+	say '$refbarのアドレス：' . \$refbar;	# $refbarのアドレス：REF(0x7fba480140e8)
+	say '$hogeをデリファレンス：' . "$$hoge";	# $refbar が入っていると思っている。
+					# 出力結果：$hogeをデリファレンス：REF(0x7fba48014160)
+	say '$refhogeのアドレス   ：' . \$refhoge;	# $refhogeのアドレス   ：REF(0x7fba48014160)
+
+	say;
+	my $dehoge = $$hoge;	# $refbar が代入されたと思っている。
+	say '$dehogeを出力：' . "$dehoge";	# $refbar が入っていると思っている。
+					# 出力結果：$dehogeを出力：REF(0x7fba48014160)
+	say '$dehogeを出力：' . "$$hoge";	# $refbar が入っていると思っている。
+					# 出力結果：$dehogeを出力：REF(0x7fba48014160)
+
+	say;
+	my $dedehoge = $$dehoge;
+	say '$dedehogeを出力：' . "$dedehoge";	# $refhoge が入っていると思っている。
+					# 出力結果：$dedehogeを出力：ARRAY(0x7fba48005d88)
+	say '$dedehogeを出力：' . "$$$hoge";	# $refhoge が入っていると思っている。
+					# 出力結果：$dedehogeを出力：ARRAY(0x7fba48005d88)
+
+	say;
+	say '@hogeを出力：' . "@$$$hoge";	# $hoge が入っていると思っている。
+					# 出力結果：@hogeを出力：20210923 Perl難しい
+	say '$hoge[0]を出力：' . "$$$$hoge[0]";	# $hoge が入っていると思っている。
+					# 出力結果：$hoge[0]を出力：20210923
+	say '$hoge[1]を出力：' . "$$$$hoge[1]";	# $hoge が入っていると思っている。
+					# 出力結果：$hoge[1]を出力：Perl難しい
+
+}
+&arrayReference();
+```
+これをするだけの利益はあるのだろうか。  
+
+以下、ハッシュをリファレンスとして変数に代入し、その変数をリファレンスとして変数に代入している。
+```perl
+sub hashReference() {
+	my %hogehash = (%hoge);			# ハッシュにハッシュリファレンスを代入する。
+	my $barhash = \%hogehash;	# それをリファレンスとして別のハッシュに代入する。
+	my $boo = \$barhash;	# さらに、ハッシュリファレンスが代入されているハッシュを別のハッシュにリファレンスとして代入する(混乱する)。
+
+	my $deboo = $$boo;	# ハッシュのリファレンスをデリファレンスした($barhashになっている)。
+	my %dedeboo = %$deboo;	# ハッシュのリファレンスをデリファレンスした($hogehashになっている)。
+	while( my ($key, $value) = each %dedeboo ) {
+		say '%dedebooの要素を出力($boo[0])：' . "$key -> $value";	# %barhash が入っていると思っている。
+			# 出力結果：
+#					%dedebooの要素を出力($boo[0])：hoge -> 20210923
+#					%dedebooの要素を出力($boo[0])：boo -> 本日は晴天なり。
+#					%dedebooの要素を出力($boo[0])：bar -> Perl難しい
+	}
+
+	while( my ($key, $value) = each %$$boo ) {
+		say '%hogeの要素を出力(%$$boo)：' . "$key -> $value";	# %barhash が入っていると思っている。
+			# 出力結果：
+#					%hogeの要素を出力(%$$boo)：hoge -> 20210923
+#					%hogeの要素を出力(%$$boo)：bar -> Perl難しい
+#					%hogeの要素を出力(%$$boo)：boo -> 本日は晴天なり。
+	}
+}
+&hashReference();
+```
+本当にやりたかったことは、ハッシュのネストであって、これではない。  
+
+
+#### スコープ
+
+
+#### サブルーチンへのリファレンス
+
+
+#### 応用利用
+
+</details>
+
+
+<a name="practicaluseHash"></a>
+<details><summary>応用知識-ハッシュ(連想配列)</summary>
+
+### [ハッシュ(連想配列)](https://perldoc.jp/func/values)
+> リストコンテキストでは、指定したハッシュのすべての値を返します。  
+
+[キー/値のハッシュスライス](https://perldoc.jp/docs/perl/5.34.0/perldata.pod#Key47Value32Hash32Slices)  
+
+
+* 3つの特徴  
+  * キーは重複不可(一意であること)。  
+  * 値は重複可能。  
+  * 順番は存在しない。  
+
+* Perlへの哲学の適用  
+  * ハッシュの大きさに制限はない。  
+
+
+#### 作成方法
+様式：`%ハッシュ名 = ('キー1', 値1, 'キー2', 値2, ・・・ );`  
+例）
+```perl
+my %hoge = (
+	hoge => 20210922,
+	bar  => 9784873118246,
+	boo  => "本日は晴天なり。",
+);
+```
+※キーは、シングルクォーテーションで囲む(`=>`を使う場合は省略可能)。  
+
+
+コピーもできるが、負担が掛かるため、止めた方が良い。
+`my %new_has = %old_hash;`  
+
+
+#### 取得方法
+愚痴：作成方法が丸括弧で、取得方法が波括弧なのは混乱する。  
+`$ハッシュ名{'キー'}`;
+
+
+```perl
+sub associativearray() {
+	my %hoge = (
+		'hoge' => 100006601775326,
+		'boo'  => 100011324721840,
+		'bar'  => "300505",
+	);
+
+	say "$hoge{'hoge'}";			# 100006601775326
+	say "$hoge{'100006601775326'}";	# 空文字列
+
+	for my $key (keys(%hoge)) {
+		my $value = $hoge{$key};
+		say "$key -> $value";
+		# 出力結果：
+#				hoge -> 100006601775326
+#				boo -> 100011324721840
+#				bar -> 300505
+	}
+	say "%hoge";	# %hoge
+	say %hoge;		# hoge100006601775326boo100011324721840bar300505	←☆当然実行ごとに値が変わる。
+}
+&associativearray();
+```
+
+
+#### 変更方法
+様式：
+`$ハッシュ名{'キー'} = 値`;
+
+
+##### キーと値を入れ替える。
+**reverse**により、入れ替えが可能。  
+
+```perl
+sub associativearray() {
+	my %hoge = (
+		hoge => 100006601775326,
+		boo  => 100011324721840,
+		bar  => "300505",
+	);
+
+	for my $key (keys(%hoge)) {
+		my $value = $hoge{$key};
+		say "$key -> $value";
+		# 出力結果：
+#				hoge -> 100006601775326
+#				boo -> 100011324721840
+#				bar -> 300505
+	}
+	say "-" x 30;
+	my %revershoge = reverse %hoge;
+	for my $key (keys(%revershoge)) {
+		my $value = $revershoge{$key};
+		say "$key -> $value";
+		# 出力結果：
+#				100006601775326 -> hoge
+#				100011324721840 -> boo
+#				300505 -> bar
+	}
+}
+&associativearray();
+```
+
+
+##### keys関数・values関数
+順不同ではあるが、かならず対になる取得ができる。  
+
+```perl
+sub associativearray() {
+	my %hoge = (
+		hoge => 100006601775326,
+		boo  => 100011324721840,
+		bar  => "300505",
+	);
+
+	my @key = keys %hoge;
+	my @value = values %hoge;
+	say "キー：@key";	# キー：hoge bar boo
+	say "値：@value";	# 値：100006601775326 300505 100011324721840
+
+	say "以下、組数";
+	my $count = keys %hoge;
+	say "個数：$count";	# 個数：3
+	my $count = values %hoge;
+	say "個数：$count";	# 個数：3
+
+	if (%hoge) {
+		say "ハッシュ内容がある。";	# ハッシュ内容がある。
+	}
+}
+&associativearray();
+```
+
+
+##### キーの並べ替え
+正しいやり方が分からない。  
+
+```perl
+	my %hoge = (
+		hoge => 20210922,
+		boo => 4873118247,
+		bar => "sort",
+	);
+
+	foreach ( sort keys %hoge ) {
+		say "$_ -> $hoge{$_}";
+	}
+```
+
+
+##### 値での並べ替え
+正しいやり方が分からない。  
+
+```perl
+	my %hoge = (
+		hoge => 20210922,
+		boo => 4873118247,
+		bar => "sort",
+	);
+
+	foreach ( sort { $hoge{$a} <=> $hoge{$b} } keys %hoge ) {
+		say "$_ -> $hoge{$_}";
+	}
+```
+
+
+#### キーの重複
+上書きされる。  
+
+追加代入様式：
+`$既存のハッシュ名{追加したいキー名} = 追加したい値;`  
+
+
+#### 繰り返し処理(`each`関数)。
+
+```perl
+sub associativearray() {
+	my %hoge = (
+		hoge => 20210922,
+		boo => 20180120,
+		bar => "続・初めてのPerl 改訂第2版",
+	);
+
+	while( my ($key, $value) = each %hoge ) {
+		say "$key -> $value";
+		# 出力結果：
+#					bar -> 続・初めてのPerl 改訂第2版
+#					boo -> 20180120
+#					hoge -> 20210922
+	}
+}
+&associativearray();
+```
+ループ内であれば、eachが実行されるたびに、次のキーと値の対が取得される。  
+これは、反復子(イテレータ：iterator)技術により、現在値を保持しているため。  
+
+
+##### 既存キーの確認方法(`exists`関数)。
+キーが存在すれば、どのようなキーだろうが、存在するとして扱われる。  
+
+```perl
+sub associativearray() {
+	my %hoge = (
+		hoge => 20210923,
+		boo  => 20210922,
+	);
+
+	if ( exists $hoge{"hoge"} ) {
+		say '$hoge{"hoge"}が存在する。';
+				# 出力結果：$hoge{"hoge"}が存在する。
+	}
+	if ( exists $hoge{"bar"} ) {
+		say '$hoge{"bar"}が存在する。';
+				# 出力結果：
+				# 出力しない。
+	}
+}
+&associativearray();
+```
+
+
+#### 値の削除方法(`delete`関数)。
+削除すると言うことは、ハッシュ定義内から消すと言うことであり、`undef`を代入することではない。  
+
+```perl
+sub associativearray() {
+	my %hoge = (
+		hoge => 4873118247,
+		boo => 20210922,
+		bar => "本日は晴天なり。",
+	);
+
+	while( my ($key, $value) = each %hoge ) {
+		say "$key -> $value";
+		# 出力結果：
+#				hoge -> 4873118247
+#				boo -> 20210922
+#				bar -> 本日は晴天なり。
+	}
+
+	say "-" x 30;
+	delete $hoge{'hoge'};
+	while( my ($key, $value) = each %hoge ) {
+		say "$key -> $value";
+		# 出力結果：
+#				boo -> 20210922
+#				bar -> 本日は晴天なり。
+	}
+}
+&associativearray();
+```
+
+
+#### OSの環境変数(`%ENV`)
+
+以下、環境変数をPerlで取得する。
+```terminal
+$ set | grep HISTCONTROL
+HISTCONTROL=ignoreboth
+$
+```
+
+以下、取得できている。
+```perl
+say "$ENV{HISTCONTROL}";	# ignoreboth
+```
+
+何に使うのか分からないが、GoでのGUI開発は日本語文字を取得するのに環境変数を利用しているな・・・。  
+
+</details>
+
+
+<a name="gitflow"></a>
+## ※Gitのマージルール
 study2programmingに取り込むときのマージは、3方向マージ(`--no-ff`)を使う。  
-例外作業として、masterに取り込む場合はチェリーピッキングでピンポイントに必要最小限のコミットのみを取り込む(しつこいが、masterに取り込むことはしたくない)。  
-あわよくば、Gitの勉強にもなればと思ったが、思った以上に難しい。  
+
+* [ ] "study2programming"にマージする時のルール。  
+  * [ ] 誤字脱字程度のコミットはスカッシュしたい。  
+  * [ ] マージ後"study2programming"をPushする。  
+    ※masterにマージすることはない。  
+  * [ ] マージごとにタグ付けをする(そしてPush実施)。  
+
+* 例外としてmasterに取り込む場合は、チェリーピッキングでピンポイントに必要最小限のコミットのみを取り込む(しつこいが、masterに取り込むことはしたくない)。  
+  言いたいことは、履歴を複数にしたくないと言うこと。  
 
 
 以上。
+<!-- vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=markdown expandtab: -->
