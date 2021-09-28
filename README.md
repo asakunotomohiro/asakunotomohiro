@@ -16,6 +16,9 @@
 しかし、それだけでは面白くないため、そのアルゴリズムを他の言語にも流用するつもりで、他の言語も並行して勉強していくことを考えている。  
 それが仇になり、一向にアルゴリズムの勉強に手を出せないでいる。  
 
+新しくプログラミング言語の勉強を始める場合、[手順](#PythonSpecificAlgorithmStudyProcedure)に従って環境を用意すること。  
+
+
 <details><summary>アルゴリズムの勉強に使うプログラミング言語一覧</summary>
 
 今回勉強するプログラミング言語が以下になる。  
@@ -30,7 +33,8 @@
     * [x] 関数2021/08/23  
   * [Go](https://golang.org)  
     * [x] 変数2021/08/07  
-    * [ ] 配列  
+    * [x] 配列2021/09/28  
+      スライスを優先利用した方が良い？  
     * [ ] 条件分岐  
     * [ ] 繰り返し  
     * [ ] 関数  
@@ -119,9 +123,9 @@
 
 </details>
 
-
 ついでに、Gitの勉強にもなれば良いと思っている。  
 さらについでに、Markdownの勉強にもなれば良いと思っている。  
+
 
 <a name="PythonAcquireKnowledgeAndSkillsOfLifelongThings"></a>
 ### 「Pythonで学ぶアルゴリズムの教科書」
@@ -695,13 +699,14 @@
 
 </details>
 
+
+<a name="PythonSpecificBasicKnowledgeProcedures"></a>
 <details><summary>具体的な基礎知識を勉強する準備</summary>
 
 構造化プログラミングの勉強とも言える。  
 しかし、本当に触り部分だけ。  
 それだけで十分ではあるのだが、プログラミング言語によっては、範囲が広がるだろう。  
 
-<a name="PythonSpecificBasicKnowledgeProcedures"></a>
 #### 具体的な基礎知識5種類の手順
 
 [ ] 手順1. 勉強用のブランチに移動する。  
@@ -716,18 +721,17 @@
 
 </details>
 
+
+<a name="PythonSpecificAlgorithmStudyProcedure"></a>
 <details><summary>Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける</summary>
 
 ここでは、以下の手順でアルゴリズムの勉強を進める。
 
-<a name="PythonSpecificAlgorithmStudyProcedure"></a>
 #### 具体的なアルゴリズムの勉強手順
 
 [ ] 手順1. 勉強用のブランチに移動する。  
-[ ] 手順2. その(ディレクトリ配下にある)"ひな形/README.md"を参考に作業を進める。  
-[x] 手順2-1. これ以降は、そのファイルを元に作業を進める。
-[ ] 手順3. 手順4での「5種類の基礎知識」が終わり次第、このディレクトリにある当ファイルの作業を再開する。  
-[ ] 手順4. 書籍上の1チャプター終了ごとに、"study2programming"ブランチにマージする。  
+[ ] 手順2. "ひな形/README.md"を参考に作業を進める。  
+[x] 手順2-1. これ以降は、そのファイルを元に作業を進める。  
 
 </details>
 
@@ -747,6 +751,7 @@
 
 ※study2programmingに取り込むときのマージは、3方向マージ(`--no-ff`)を使う。  
 例外作業として、masterに取り込む場合はチェリーピッキングでピンポイントに必要最小限のコミットのみを取り込む(しつこいが、masterに取り込むことはしたくない)。  
+
 
 以上。
 <!-- vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=markdown expandtab: -->
