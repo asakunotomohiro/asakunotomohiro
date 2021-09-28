@@ -39,6 +39,14 @@ int main(void)
 	printf("asakuno = %d\n", asakuno[3]);	// asakuno = 20210906
 	printf("asakuno = %d\n", asakuno[4]);	// asakuno = 20210907
 
+	printf("asakuno配列の大きさ%ld\n", sizeof(asakuno)/sizeof(asakuno[0]));	// asakuno配列の大きさ5
+
+	// 以下、2次元配列の大きさ確認
+	printf("intの大きさ%ld\n", sizeof(int));	// intの大きさ4
+	printf("asa配列の大きさ%ld\n", sizeof(asa));	// asa配列の大きさ60	←☆4*5*3=60
+	printf("asa配列の大きさ%ld\n", sizeof(asa)/sizeof(asa[0]));	// asa配列の大きさ5	←☆asa[*]の大きさ。
+	printf("asa配列の大きさ%ld\n", sizeof(asa[0])/sizeof(asa[0][0]));	// asa配列の大きさ3	←☆asa[][*]の大きさ。
+
 	printf("tomohiro = %s\n", tomohiro);	// tomohiro = 朝来野智博
 	printf("tomo = %s\n", tomo);	// tomo = 朝来野智博
 

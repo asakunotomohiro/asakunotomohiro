@@ -713,6 +713,9 @@ int main(void)
 	printf("hoge = %d\n", hoge[2]);		// hoge = 20210905
 	printf("hoge = %d\n", hoge[3]);		// hoge = 20210906
 	printf("hoge = %d\n", *(hoge+4) );	// hoge = 20210907
+
+	// 以下、1次元配列の場合。
+	printf("hoge配列サイズ%ld\n", sizeof(hoge)/sizeof(hoge[0]));	// hoge配列サイズ5
 }
 ```
 
@@ -1283,7 +1286,7 @@ int hogefunc(int hoge[], int size) {
   基礎的なプログラミングの力を養っていく。  
   例えば、配列利用の関数定義・繰り返し・再帰関数・条件分岐など。  
   以下、各項目(目次)。  
-  [ ] [平均値を求める。](#findTheAverageValueChapter2)  
+  [x] [平均値を求める。](#findTheAverageValueChapter2)2021/09/28  
   [ ] [1からnまで足し合わせる。](#addFrom1tonChapter2)  
   [ ] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
   [ ] [素数を求める。](#findAPrimeNumberChapter2)  
@@ -1372,6 +1375,38 @@ int hogefunc(int hoge[], int size) {
 
 <a name="findTheAverageValueChapter2"></a>
 #### 平均値を求める。
+勉強内容はPythonと基本同じ。  
+それをPerl用に移植する。  
+
+* ルールもPythonと同じ。  
+  * 点数を配列で定義する。  
+    `my @score = (70, 98, 92, 88, 64);`  
+  * `for`を用いる。  
+
+```c
+int main(void)
+{
+	// 以下の配列に入っている数字を使い、合計点及び平均点を求める。
+	int score[] = {70, 98, 92, 88, 64};
+	int scorecount = 0;	// 配列の大きさを格納する。
+	int total = 0;		// 合計値用変数。
+	int average = 0;	// 平均値用変数。
+	float faverage = 0;	// 平均値用変数。
+
+	scorecount = sizeof(score)/sizeof(score[0]);
+	for( int ii = 0; scorecount > ii; ii++ ) {
+		// 以下、合算。
+		total += score[ii];
+	}
+	average = total / scorecount;	// 平均値を求める。
+	faverage = (float)total / scorecount;	// 平均値を求める。
+
+	printf("合計点     ：%d\n", total);		// 合計点     ：412
+	printf("平均点int  ：%d\n", average);	// 平均点int  ：82
+	printf("平均点float：%f\n", faverage);	// 平均点float：82.400002
+}
+```
+
 
 <a name="addFrom1tonChapter2"></a>
 #### 1からnまで足し合わせる。
