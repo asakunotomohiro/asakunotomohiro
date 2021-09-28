@@ -37,7 +37,7 @@
 ※プログラミングに使う基礎知識を統一する(簡単に済ませられる量に絞り込む)。  
 * 基礎知識5種類  
   * [x] [変数](#variable変数)2021/08/07  
-  * [ ] [配列](#arrangement配列)  
+  * [x] [配列](#arrangement配列)2021/09/28  
   * [ ] [条件分岐](#Conditional条件分岐)  
   * [ ] [繰り返し](#repetition繰り返し)  
   * [ ] [関数](#function関数)  
@@ -48,8 +48,7 @@
 ※基礎知識5種類の勉強終了後、ここを解放する。  
 
 * [アルゴリズム勉強目次](#algorithmTextbookLearnedinPython)  
-  * [x] [Chapter 1 プログラミングの基礎知識](#basicKnowledgeFiveTypesOfStudyRange)  
-    現時点で完了している(上記の基礎知識5種類として)。  
+  * [ ] [Chapter 1 プログラミングの基礎知識](#basicKnowledgeFiveTypesOfStudyRange)  
   * [ ] [Chapter 2 プログラミングの力を養う](#algorithmTextbookLearnedinPythonChapter2)  
   * [ ] [Chapter 3 データ構造を学ぶ](#algorithmTextbookLearnedinPythonChapter3)  
   * [ ] [Chapter 4 サーチ](#algorithmTextbookLearnedinPythonChapter4)  
@@ -560,36 +559,134 @@ func main() {
 ※配列とリストを分けている場合はリストの勉強を後回しにし、配列がない状態でリストがある場合はリストを勉強する。  
 
 * 絶対的に勉強する一覧  
-  * [ ] [配列の宣言方法](#subArrangement1)  
-        [ ] 要素とは。  
-        [ ] 要素数とは。  
-        [ ] 添え字とは。  
-  * [ ] [配列への追加方法](#subArrangement2)  
-  * [ ] [二次元配列の宣言方法](#subArrangement3)  
+  * [x] [配列の宣言方法](#subArrangement1)  
+        [x] 要素とは。  
+        [x] 要素数とは。  
+        [x] 添え字とは(0から数える)。  
+  * [x] [配列への追加方法](#subArrangement2)  
+  * [x] [二次元配列の宣言方法](#subArrangement3)  
 
 
 <a name="subArrangement1"></a>
 #### 配列
 様式：
+`var 配列名 [要素数]型`  
+例）
+`var hoge [10]int`  
+
 
 <a name="subArrangement2"></a>
 #### 配列への追加方法
 様式：
+`var 配列名 = [要素数]型 { 値1, 値2, ・・・ }`  
+※要素数は後から変更できず、0から数え、型はすべて同じになる。  
+※スライスは別技術で存在する(今回は配列に特化する)。  
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	// 以下、配列宣言後に代入。
+	var hoge [10]int;
+	hoge[0] = 20210928;
+	fmt.Println(hoge[0]);	// 20210928
+	fmt.Println(hoge[1]);	// 0
+
+	// 以下、配列宣言と同時に代入(初期化)。
+	var boo = [10]int {20210928, 20210929 };
+	fmt.Println(boo[0]);	// 20210928
+	fmt.Println(boo[1]);	// 20210929
+	fmt.Println(boo[9]);	// 0
+
+	// 以下、別の方法での初期化。
+	arrayHoge := [10]string {"hoge", "bar", };
+	fmt.Println(arrayHoge);		// [hoge bar        ]
+	fmt.Println(arrayHoge[0]);	// hoge
+	fmt.Println(arrayHoge[1]);	// bar
+	fmt.Println(arrayHoge[2]);	// 空文字列
+
+	// 以下、要素数をコンパイラ任せにする。
+	bar := [...]string {"hoge", "bar", };
+	fmt.Println(bar);		// [hoge bar]
+	fmt.Println(bar[0]);	// hoge
+	fmt.Println(bar[1]);	// bar
+}
+```
+※末尾の`;`はなくても動く。  
 
 <a name="subArrangement3"></a>
 #### 二次元配列の宣言方法
 様式：
+`var 配列名 [要素数][要素数]型;`  
+2次元配列の場合は、要素数をコンパイラ任せに出来ない。  
+
+初期化含む様式：
+`var 配列名 = [要素数][要素数]型 {{1値1, 1値2, }, {2値1, 2値2, }, };`  
+
+以下、2次元配列例）
+```go
+package main
+
+import "fmt"
+
+func main() {
+	// 以下、配列宣言後に代入。
+	var hoge [3][5]int;
+	hoge[2][4] = 20210928;
+	fmt.Println(hoge[0])	// [0 0 0 0 0]
+	fmt.Println(hoge[1])	// [0 0 0 0 0]
+	fmt.Println(hoge[2])	// [0 0 0 0 20210928]
+	fmt.Println(hoge[2][4])	// 20210928
+
+	// 以下、配列宣言と同時に代入(初期化)。
+	var boo = [3][5]int {{}, {}, {20210928, 20210929, }, };
+	fmt.Println(boo[0])		// [0 0 0 0 0]
+	fmt.Println(boo[1])		// [0 0 0 0 0]
+	fmt.Println(boo[2])		// [20210928 20210929 0 0 0]
+	fmt.Println(boo[2][1])	// 20210929
+	/* 1次元配列宣言を初期化と同時に要素数をコンパイラ任せにする場合
+		hoge := [...]string {"hoge", "bar", };
+	だったが、2次元配列で以下はできない(エラーになる)。
+		hoge := [...][...]string {"hoge", "bar", };
+	*/
+
+	// 以下、別の方法での初期化。
+	bar := [10]string {"本日は晴天なり。", "HelloWorld.", };
+	fmt.Println(bar)	// [本日は晴天なり。 HelloWorld.        ]
+	fmt.Println(bar[0])	// 本日は晴天なり。
+	fmt.Println(bar[1])	// HelloWorld.
+	fmt.Println(bar[2])	// 空文字列
+}
+```
+※末尾に`;`を付けても動く。  
+
+以下、スライスの2次元配列。
+```go
+slicearray := [][]string {{"HOGE", "BAR"}, };
+fmt.Println(slicearray)			// [[HOGE BAR]]
+fmt.Println(slicearray[0])		// [HOGE BAR]
+fmt.Println(slicearray[0][0])	// HOGE
+```
+
 
 <a name="subArrangement999"></a>
 #### 配列での説明しない項目。
 
-[以下、今回の言語に関係の無い項目を削除すること(対象言語に存在するが、見送るもののみ、以下残す)。]  
 <details><summary>今回は勉強を見送る一覧</summary>
 
 * 配列の応用  
   * [ ] 3次元配列以上の宣言方法。  
   * [ ] 配列を複製する方法。  
   * [ ] 配列からスライスを作成する方法。  
+
+* スライス
+  Go言語では、これが必須に思うのだが・・・。  
+  * [ ] スライス単体での宣言方法。  
+    一応プログラムはある。  
+  * [ ] スライスから削除する方法。  
+  * [ ] スライスに追加する方法。  
 
 * 構造体  
   * [ ] 構造体の複製  
@@ -606,6 +703,7 @@ func main() {
 </details>
 
 </details>
+
 
 <a name="Conditional条件分岐sub"></a>
 <details><summary>実際の条件分岐の勉強</summary>
