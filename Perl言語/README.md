@@ -1273,7 +1273,7 @@ v5.24ではできないが、最新版では出来るのか。
 * 標準的な関数  
   * [x] 可変長引数  
     Perlでは常に可変長になる。  
-  * [x] 再帰関数  
+  * [x] [再帰関数](#findTheFactorialOfNChapter2Recursivefunction)  
     アルゴリズムの勉強で使っている。  
   * [ ] 高階関数  
     変数の応用部分で説明する？  
@@ -1322,12 +1322,12 @@ Perlでオブジェクト指向開発ができるだけでなく、そのやり�
   ※今回利用するリストはアルゴリズム(概念)用語であり、Pythonで用いているリスト(配列)という用語とは別物。  
   ※例外処理(`try〜except〜finally`)の説明をしている(いずれ基礎知識として勉強に組み込む必要がある？)。  
   以下、各項目(目次)。  
-  [スタック](#stackChapter3)  
-  [キュー](#queueChapter3)  
-  [リスト](#listChapter3)  
-  [木](#woodChapter3)  
-  [グラフ](#graphChapter3)  
-  [データを保存する。](#saveTheDataChapter3)  
+  [ ] [スタック](#stackChapter3)  
+  [ ] [キュー](#queueChapter3)  
+  [ ] [リスト](#listChapter3)  
+  [ ] [木](#woodChapter3)  
+  [ ] [グラフ](#graphChapter3)  
+  [ ] [データを保存する。](#saveTheDataChapter3)  
 <a name="algorithmTextbookLearnedinPythonChapter4"></a>
 * [Chapter4 サーチ](#searchOverviewChapter4)  
   複数データから目的地を探し出すこと。  
@@ -1388,19 +1388,15 @@ Perlでオブジェクト指向開発ができるだけでなく、そのやり�
 ### プログラミングの力を養う
 基礎的なプログラミングの力を養っていく。  
 
-* 各項目。  
-  * [平均値を求める。](#findTheAverageValueChapter2)  
-  * [1からnまで足し合わせる。](#addFrom1tonChapter2)  
-  * [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
-  * [素数を求める。](#findAPrimeNumberChapter2)  
-  * [nの階乗を求める。](#findTheFactorialOfNChapter2)  
-  * [エラトステネスの篩](#eratosthenesSieveChapter2)  
-  * [n進法を理解する。](#understandnAryNotationChapter2)  
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)
+
 
 <a name="findTheAverageValueChapter2"></a>
 #### 平均値を求める。
-勉強内容はPythonと基本は同じ。  
-それをPerl用に移植するだけのこと。  
+勉強内容はPythonと基本同じ。  
+それをPerl用に移植する。  
+
+<details><summary>展開</summary>
 
 * ルールもPythonと同じ。  
   * 点数を配列で定義する。  
@@ -1426,6 +1422,10 @@ say "平均点：$average";	# 平均点：82.4
 ```
 Pythonより作りやすい言語ではある。  
 しかし、暗黙的な`$_`を多用した場合、保守できないのがPerlなんだよな・・・。  
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)
 
 
 <a name="addFrom1tonChapter2"></a>
@@ -1514,6 +1514,9 @@ say &addup3(10, 20);	# 55
     * 開始の数字を任意にする。  
     * 終了の数字を任意にする。  
 
+<details><summary>展開</summary>
+
+以下、実際のプログラム。
 ```Perl
 sub AddupGauss() {
 	my ($start, $end) = @_;
@@ -1543,11 +1546,17 @@ say &AddupGauss(1, 10);	# 55
 say &AddupGauss(1, 100);	# 5050
 ```
 
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)
+
 
 <a name="outputTheMultiplicationTableChapter2"></a>
 #### 九九の式を出力する。
 Pythonでやったように、九九の式を出すのではなく、九九表を出すことにする。  
 ルールはPythonと同じ。  
+
+<details><summary>展開</summary>
 
 * 作業ルール。  
   * 二重ループを使う。  
@@ -1581,7 +1590,11 @@ sub kukuTable() {
 ```
 九九表完成。
 
+</details>
+
 `sprintf`は、今回初めて使った。  
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)
 
 
 <a name="findAPrimeNumberChapter2"></a>
@@ -1592,6 +1605,8 @@ Pythonに倣い、試す数は**2〜2分のn**までの数で割ることを調�
 例えば、10を調べる場合、その半分より大きい数(**6**・**7**・**8**・**9**)では、10を割ることが出来ない。  
 そのことを利用した方法で素数を求める。  
 後日、[エラトステネスの篩](#eratosthenesSieveChapter2)を使った効率のいいアルゴリズムを勉強する。  
+
+<details><summary>展開</summary>
 
 * 素数を求めるルール  
   * 二重ループを使う。  
@@ -1630,11 +1645,19 @@ say;
 ```
 [比較演算子](#subConditional3)の扱いにてんやわんやする。  
 
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)
+
 
 <a name="findTheFactorialOfNChapter2"></a>
 #### nの階乗を求める。
 **階乗とは**
 1からnまでの全ての整数の積をnの階乗という。  
+
+<a name="findTheFactorialOfNChapter2Recursivefunction"></a>
+<details><summary>再帰関数</summary>
+
 **再帰関数**
 関数内から自身の関数を呼び出すことを再帰処理という。
 また、その呼び出す仕組みの関数を再帰関数という。  
@@ -1661,6 +1684,10 @@ sub factorial() {
 再帰関数3回目の実行及び出力内容：hog
 再帰関数4回目の実行及び出力内容：hoge
 ```
+
+</details>
+
+<details><summary>展開</summary>
 
 * ルール1  
   再帰関数を使わない。  
@@ -1721,6 +1748,10 @@ say &factorial(20);
 2432902008176640000
 ```
 他のプログラミング言語とちゃんぽんで進めるのは間違っていることを実感している・・・が、やめられない。  
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)
 
 
 <a name="eratosthenesSieveChapter2"></a>
@@ -1856,11 +1887,15 @@ sub prime_eratosthenes() {
 
 </details>
 
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)
+
 
 <a name="understandnAryNotationChapter2"></a>
 #### n進法を理解する。
 アルゴリズムの1つとして勉強することではない。  
 普通の一般説明。  
+
+<details><summary>展開</summary>
 
 ```perl
 sub main() {
@@ -1883,6 +1918,10 @@ sub main() {
 }
 &main("asakuno");
 ```
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)
 
 
 <a name="learnDataStructuresOverviewChapter3"></a>
