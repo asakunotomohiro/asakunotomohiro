@@ -1,0 +1,1657 @@
+# Go言語
+ここは、プログラミング言語のGo言語を勉強するブランチになる。  
+
+
+<a name="algorithmHowToUseTheBranch"></a>
+## ブランチの利用方法
+アルゴリズムの勉強用に、まずは、構造化プログラミングの勉強を行う。  
+
+
+<a name="algorithmHowToStudy"></a>
+## 勉強方法
+本格的に勉強するプログラミング言語の一つとしている。  
+[公式ドキュメント](https://golang.org/doc/)  
+[とほほのGo言語入門](https://www.tohoho-web.com/ex/golang.html)  
+[Go言語の記述の迷いどころについて](https://zenn.dev/nobonobo/articles/19c84c231aff46)  
+
+
+<a name="algorithmDevelopmentEnvironment"></a>
+## 開発環境
+できる限り`MacVim`を使うつもり。  
+開発規模が大きくなった場合、`Visual Studio Code(VSCode)`に逃げるかもしれない。  
+そうならないように、Vimエディタの環境も整備していこうと思う。  
+
+保存時に[インポート](https://pkg.go.dev/golang.org/x/tools/cmd/goimports)の変更が行われるはずなのに、動かなくなった。  
+```terminal
+$ go get golang.org/x/tools/cmd/goimports
+go: downloading golang.org/x/tools v0.1.7
+go: downloading golang.org/x/sys v0.0.0-20210809222454-d867a43fc93e
+go get: installing executables with 'go get' in module mode is deprecated.
+    Use 'go install pkg@version' instead.
+    For more information, see https://golang.org/doc/go-get-install-deprecation
+    or run 'go help get' or 'go help install'.
+$ echo $?
+0
+$
+```
+成功しているように見えて失敗している？  
+[go get](https://golang.org/doc/go1.16#go-command)は、非推奨？  
+
+```terminal
+$ go install golang.org/x/tools/cmd/goimports
+go install: version is required when current directory is not in a module
+    Try 'go install golang.org/x/tools/cmd/goimports@latest' to install the latest version
+$ go install golang.org/x/tools/cmd/goimports@latest	←☆インストール実施。
+$ echo $?
+0
+$
+```
+
+以下、インストールしているのは確認できている。
+```terminal
+$ ll $HOME/.local/share/vim-lsp-settings/servers
+total 0
+drwxr-xr-x   3 asakunotomohiro  staff   96  9 30 01:48 gopls/
+drwxr-xr-x   4 asakunotomohiro  staff  128  9 17 13:16 pylsp-all/
+drwxr-xr-x   3 asakunotomohiro  staff   96  9 16 02:27 efm-langserver/
+drwxr-xr-x   8 asakunotomohiro  staff  256  9 16 02:24 clangd/
+drwxr-xr-x   9 asakunotomohiro  staff  288  7 25 17:49 omnisharp-lsp/
+drwxr-xr-x   4 asakunotomohiro  staff  128  2  3  2021 pyls-all/
+drwxr-xr-x  13 asakunotomohiro  staff  416  9  7  2020 eclipse-jdt-ls/
+$
+```
+
+だめだ。  
+全く解決できない。  
+
+私がviエディタを使い出して10年とは言えない年月を費やしているのに、未だに使いこなせない。  
+私には時期尚早なエディタなのだろう・・・素直にIDEに手を出そうかな・・・情けない。  
+
+
+<a name="algorithmTextbookLearnedinPythonBook"></a>
+## 「[Pythonで学ぶアルゴリズムの教科書](https://book.impress.co.jp/books/1120101024)」
+本の概要。  
+> エンジニアの基礎体力を身につける  
+
+<a name="basicKnowledgeFiveTypesOfStudyRange"></a>
+※プログラミングに使う基礎知識を統一する(簡単に済ませられる量に絞り込む)。  
+* 基礎知識5種類  
+  * [x] [変数](#variable変数)2021/08/07  
+  * [x] [配列](#arrangement配列)2021/09/28  
+  * [x] [条件分岐](#Conditional条件分岐)2021/09/29  
+  * [x] [繰り返し](#repetition繰り返し)2021/09/29  
+  * [x] [関数](#function関数)2021/09/29  
+
+<a name="algorithmTextbookLearnedinPythonContents"></a>
+<details><summary>アルゴリズムの勉強項目</summary>
+
+* [アルゴリズム勉強目次](#algorithmTextbookLearnedinPython)  
+  * [x] [Chapter 1 プログラミングの基礎知識](#basicKnowledgeFiveTypesOfStudyRange)  
+  * [ ] [Chapter 2 プログラミングの力を養う](#algorithmTextbookLearnedinPythonChapter2)  
+  * [ ] [Chapter 3 データ構造を学ぶ](#algorithmTextbookLearnedinPythonChapter3)  
+  * [ ] [Chapter 4 サーチ](#algorithmTextbookLearnedinPythonChapter4)  
+  * [ ] [Chapter 5 ソート](#algorithmTextbookLearnedinPythonChapter5)  
+  * [ ] [Chapter 6 ハッシュ](#algorithmTextbookLearnedinPythonChapter6)  
+  * [ ] [Chapter 7 さまざまなアルゴリズムを学ぶ](#algorithmTextbookLearnedinPythonChapter7)  
+  * [ ] [Chapter 8 アルゴリズムを見える化する](#algorithmTextbookLearnedinPythonChapter8)  
+  * Appendix 1 Pythonのインストール方法
+  * Appendix 2 テキストエディタと統合開発環境
+  * Appendix 3 Pythonの記述ルール
+
+</details>
+
+<a name="breakingAwayFromBasicKnowledge"></a>
+<details><summary>応用知識の項目</summary>
+
+<a name="expandTheScopeOfBasicKnowledge"></a>
+### 基礎知識5種類の勉強範囲を広げる
+基礎知識5種類の勉強は、アルゴリズムの勉強用に特化していたが、この部分は、通常開発ができる範囲に手を広げる。  
+
+* 基礎知識5種類の範囲を広げる  
+  * [ ] [変数](#practicaluseVariable変数)  
+  * [ ] [配列](#practicaluseArrangement配列)  
+  * [ ] [条件分岐](#practicaluseConditional条件分岐)  
+  * [ ] [繰り返し](#practicaluseRepetition繰り返し)  
+  * [ ] [関数](#practicaluseFunction関数)  
+
+
+<a name="rangeOtherThanBasicKnowledge"></a>
+### 基礎知識5種類の勉強以外の項目
+基礎知識5種類に納められない範囲の勉強に手を広げる。  
+
+* [応用知識](#appliedknowledge)  
+  * [ ] [ポインタ・リファレンス](#practicalusePointer)  
+  * [ ] [NULL・nil](#practicaluseNull)  
+  * [ ] [ハッシュ(連想配列)](#practicaluseHash)  
+  * [ ] [ファイル操作](#practicaluseFileoperation)  
+  * [ ] [ディレクトリ操作](#practicaluseDirectorymanipulation)  
+  * [ ] [オブジェクト指向](#practicaluseObjectorientation)  
+  * [ ] [テスト方法](#practicaluseTester)  
+  * [ ] [標準関数(モジュール)](#practicaluseModule)  
+  * [ ] [プロセス管理](#practicaluseSystemfunc)  
+
+</details>
+
+
+<a name="algorithmSpecificBasicKnowledge"></a>
+<details><summary>基礎知識5種類の作業手順</summary>
+
+## 具体的な基礎知識
+何はともあれ、まずは、"Hello World"を表示するプログラムを作る。  
+その後で、基礎中の基礎となる制御構造(構造化プログラミング)を簡略化しながら勉強する。  
+そのため、以下の手順で勉強を進めることにする。  
+
+* 以下、手順。  
+  * [x] 手順1. 勉強用のブランチに移動する。  
+  * [x] 手順2. ルートディレクトリのひな形ディレクトリをコピーしてくる。  
+  * [x] 手順2-1. 当ファイル(`README.md`)の書き換えを行う。  
+        ※ 開発環境を記録する。  
+        ※ アルゴリズムの勉強用項目は隠しておく(`details`・`summary`)代わりに、基礎知識5種類の勉強用の項目は出しておく。  
+  * [x] 手順2-2. `helloWorld.[言語用の拡張子]`のファイルを作り、おなじみ"Hello World."プログラムを作る。  
+  * [x] 手順2-3. main関数不要であれば、"**実行済み**"ディレクトリを削除すること。  
+  * [x] 手順2-4. コミットする。  
+  * [ ] 手順3. 各ディレクトリで、5種類の"絶対的に勉強する一覧"を箇条書きごとに勉強する。  
+    * 以下、5種類の内訳。  
+      ※そのとき、(できる限り)プログラムファイルに[モードライン](../エディタ活用メモ/Vimエディタ_作業メモなど何でも詰め込む.md)を記載する。  
+      `/* vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=go noexpandtab: */`  
+      ※チェックリストは上記にある。  
+      変数  
+      配列  
+      条件分岐  
+      繰り返し  
+      関数  
+  * [ ] 手順3-1. 箇条書きごとにコミット実施する。  
+  * [ ] 手順4. 1つのプログラミング言語で、手順3の勉強1種類を終えた時に、次のプログラミング言語に移る。  
+         (細かく分けることでやる気が維持される・・・はず)  
+  * [ ] 手順4-1. 今回のプログラミング言語に戻ってきたことにより、次の箇条書きに移り、勉強を継続(再開)する。  
+  * [ ] 手順5. 上記、5種類の基礎知識を終わるまで繰り返す。  
+  * [ ] 手順6. 5種類の基礎知識終了にて、"study2programming"ブランチにマージする。  
+
+</details>
+
+
+<a name="algorithmSpecificAlgorithmPreSolvingProcedure"></a>
+<details><summary>アルゴリズム問題解決の作業手順</summary>
+
+## 具体的なアルゴリズム問題解決前手順
+アルゴリズムの勉強に、以下の手順を行う。  
+
+* 以下、手順。  
+  * [x] 手順1. 勉強用のブランチに移動する(上記[目次](#algorithmTextbookLearnedinPythonContents)の1チャプター分専用ブランチとする)。  
+  * [ ] 手順2. ルートディレクトリのひな形ディレクトリ配下の必要なディレクトリをコピーする。  
+    **Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける** ディレクトリ配下の必要なチャプター用ディレクトリ。  
+  * [ ] 手順3. 当ファイル(`README.md`)の書き換えを行う。  
+    [ ] アルゴリズムの勉強用に変更する。  
+    [ ] アルゴリズムの勉強用項目を出すが、基礎知識5種類の勉強項目は隠す(`details`・`summary`)。  
+  * [ ] 編集後、コミットする。  
+  * [ ] 手順4. 各ディレクトリで、チャプタごとに勉強を進める。  
+    ※そのとき、(できる限り)プログラムファイルに[モードライン](https://vim-jp.org/vim-users-jp/2009/06/02/Hack-20.html)を記載する。  
+    ※チェックリストは上記にある。  
+    Chapter 2 プログラミングの力を養う  
+    Chapter 3 データ構造を学ぶ  
+    Chapter 4 サーチ  
+    Chapter 5 ソート  
+    Chapter 6 ハッシュ  
+    Chapter 7 さまざまなアルゴリズムを学ぶ  
+    Chapter 8 アルゴリズムを見える化する  
+  * [ ] 手順5. 1つのプログラミング言語で、手順4の勉強1種類(要は、1チャプタ分の子部分)を終えた時に、次のプログラミング言語に移る。  
+  * [ ] 手順6. 1チャプタ分終了にて、"study2programming"ブランチにマージする。  
+
+</details>
+
+
+<a name="algorithmCheckTheStatusOfTheActualWorkingEnvironment"></a>
+## 実際に作業する環境の状況確認
+
+* 勉強環境。  
+  * 勉強環境のコンパイルバージョン：go1.17  
+```terminal
+$ go version
+go version go1.17.1 darwin/amd64
+$
+```
+
+  * プログラムファイルの拡張子：`*.go`  
+    <https://play.golang.org>  
+  * 実行方式：コンパイラ方式  
+  * 標準の文字コード(プログラムファイル)：UTF-8？  
+  * 文字コードの扱い：UTF-8  
+    runeは、Unicode(符号化文字集合)を扱う。  
+  * 文字区切り(行末記号)：波括弧`{}`の位置・要は改行(セミコロンなど行末に付けるものはない)  
+    セミコロン`;`を付けても動く。  
+  * インデント：タブ文字・波括弧`{}`の位置  
+    `gofmt`を使うこと。  
+```terminal
+$ cat test.go
+package main
+
+func main(){
+	fmt.Println("hello world.")
+	}
+$ gofmt test.go
+package main
+
+func main() {
+	fmt.Println("hello world.")
+}
+$
+```
+フォーマットが掛けられた。  
+
+  * 標準の出力関数：  
+    `fmt.Print`(出力後の改行なし)
+    `fmt.Println`(出力後の改行あり)
+  * 標準のフォーマット関数：`fmt.Printf`(書式付き出力)  
+  * 単数行コメント方法：`//`  
+  * 複数行コメント方法：`/* 〜 */`  
+  * デバッガ機能(デバッグ技法)：  
+　　例）`gdb`・`perldebug`・`pdb`など。  
+
+<details><summary>Go環境のアップグレード実施</summary>
+
+```terminal
+$ brew upgrade go
+Updating Homebrew...
+==> Auto-updated Homebrew!
+Updated 1 tap (homebrew/core).
+==> Updated Formulae
+Updated 1 formula.
+
+Warning: go 1.17.1 already installed
+$ echo $?
+0
+$
+```
+すでに最新版が導入済みとのこと。  
+
+</details>
+
+<a name="algorithmHelloWorld"></a>
+### ハローワールドプログラム
+
+以下、ビルド及び実行(`go build Goプログラムファイル`)。
+```terminal
+$ ll
+total 144
+-rw-r--r--  1 asakunotomohiro  staff  50686  9 30 01:30 README.md
+-rw-r--r--  1 asakunotomohiro  staff  15319  9 30 01:24 開発環境構築.md
+drwxr-xr-x  8 asakunotomohiro  staff    256  9 30 01:00 基礎知識用の勉強/
+-rw-r--r--  1 asakunotomohiro  staff    180  9 30 00:49 helloWorld.go
+$ cat helloWorld.go
+package main
+
+import "fmt"
+
+func main() {
+	fmt.Println("Hello World.")
+	// 出力結果：Hello World.
+}
+$ go build helloWorld.go
+$ ll
+total 3800
+-rwxr-xr-x  1 asakunotomohiro  staff  1869456  9 30 01:32 helloWorld*
+-rw-r--r--  1 asakunotomohiro  staff    50686  9 30 01:30 README.md
+-rw-r--r--  1 asakunotomohiro  staff    15319  9 30 01:24 開発環境構築.md
+drwxr-xr-x  8 asakunotomohiro  staff      256  9 30 01:00 基礎知識用の勉強/
+-rw-r--r--  1 asakunotomohiro  staff      180  9 30 00:49 helloWorld.go
+$ ./helloWorld
+Hello World.
+$
+```
+
+以下、ビルドと実行をまとめる(`go run Goプログラムファイル`)。
+```terminal
+$ ll
+total 144
+-rw-r--r--  1 asakunotomohiro  staff  51482  9 30 01:33 README.md
+-rw-r--r--  1 asakunotomohiro  staff  15319  9 30 01:24 開発環境構築.md
+drwxr-xr-x  8 asakunotomohiro  staff    256  9 30 01:00 基礎知識用の勉強/
+-rw-r--r--  1 asakunotomohiro  staff    180  9 30 00:49 helloWorld.go
+$ go run helloWorld.go	←☆通常は、これを使う。
+Hello World.
+$ ll
+total 144
+-rw-r--r--  1 asakunotomohiro  staff  51482  9 30 01:33 README.md
+-rw-r--r--  1 asakunotomohiro  staff  15319  9 30 01:24 開発環境構築.md
+drwxr-xr-x  8 asakunotomohiro  staff    256  9 30 01:00 基礎知識用の勉強/
+-rw-r--r--  1 asakunotomohiro  staff    180  9 30 00:49 helloWorld.go
+$
+```
+
+
+<a name="algorithmNotes"></a>
+### ※注意事項
+「アルゴリズムを勉強することが目的」であるということを理解すること。  
+しかし、やる気を維持するためにも1冊分を読了させることも目的としており、深掘りせずに進めることも考慮すること。  
+要は、深く踏み込むか、流し読み程度に抑えるかどうかはそのときに決める。  
+
+
+<a name="algorithmOverview"></a>
+#### 概要。
+基礎知識として5種類を勉強するが、その目的はアルゴリズムの勉強用であって、5種類を本格的に極めるためではない。  
+そのため、1つ1つを最小限に絞り込み、1つを10分前後の勉強時間に収まるように気をつけること。  
+※現時点で守れていないため、何とかして短い時間に抑え、アルゴリズムの勉強を本格的に勉強できるように考慮すること。  
+
+<a name="variable変数"></a>
+* [変数](#variable変数sub)  
+  * 変数の宣言方法  
+    数値の代入  
+    文字列の代入  
+    代入したそれらの出力  
+  * 代入した値の変更方法  
+    変数を用いた計算  
+    * 計算用演算子の説明  
+    * データ型の説明  
+      数値-整数型  
+      数値-小数型  
+      文字列  
+      論理値  
+    * データ型の変換(キャスト)  
+  * ※スコープは"関数"で説明する。  
+
+<a name="arrangement配列"></a>
+* [配列(リスト)](#arrangement配列sub)  
+  * 宣言方法  
+    要素  
+    要素数  
+    添え字(インデックス)  
+  * 要素追加方法  
+  * 2次元配列  
+  * ※取り出しは"for"で説明する。  
+
+<a name="Conditional条件分岐"></a>
+* [条件分岐](#Conditional条件分岐sub)  
+  * if文  
+    条件式  
+    * if文からの派生  
+      if〜elif〜else  
+    * 演算子  
+      論理演算子  
+      比較演算子  
+
+<a name="repetition繰り返し"></a>
+* [繰り返し](#repetition繰り返しsub)  
+  * for文  
+    条件式  
+    多重(入れ子)利用  
+    break  
+    continue  
+    拡張for文  
+    　例）range  
+    配列からの取り出し。  
+  * while文  
+    条件式  
+    無限ループ  
+
+<a name="function関数"></a>
+* [関数](#function関数sub)  
+  書式  
+  引数  
+  戻り値  
+  * 組み合わせ  
+    引数無し-戻り値無し  
+    引数あり-戻り値無し  
+    引数無し-戻り値あり  
+    引数あり-戻り値あり  
+  * 変数の有効範囲(スコープ)  
+    グローバル変数  
+    ローカル変数  
+
+
+<a name="variable変数sub"></a>
+<details><summary>実際の変数の勉強</summary>
+
+### 変数
+値の格納方法について。  
+※複雑な説明はしない。  
+
+* 絶対的に勉強する一覧  
+  * [変数の宣言方法](#subVariable1)  
+  * [変数への代入方法及び変数の利用](#subVariable2)  
+    * [x] 代入演算子(`=`)  
+      `var hoge = 1234;`  
+      `var hoge int = 1234;`  
+      `hoge := 1234;`  
+  * [変数値の出力方法](#subVariable3)  
+  * [データ型](#subVariable4)  
+    * [x] 整数(`int`)  
+    * [x] 浮動小数点型(`float`)  
+    * [x] 文字型(`string`)  
+    * [x] 真偽型(`bool`)  
+  * [変数値を使った計算方法](#subVariable5)  
+    * [x] 算術演算子  
+      * [x] 足し算(`+`)  
+      * [x] 引き算(`-`)  
+      * [x] 掛け算(`*`)  
+      * [x] 割り算(`/`)  
+      * 累乗(`**`)  
+        ないようだ。  
+      * 割り算の商(`//`)  
+        ないようだ。  
+      * [x] 割り算の余り(`%`)  
+  * [型変換(キャスト)方法](#subVariable6)  
+    * [x] 明示変換  
+
+<a name="subVariable1"></a>
+#### 変数
+他のプログラミング言語と比べて珍しく、複数バイト文字を変数名にできる。  
+しかし、昔ExcelのVBAで多バイト文字を使った変数名のプログラムに関わることがあったとき、私は多バイト文字を変数名にするのは止めようと思った。  
+それほど醜いプログラムになるため、通常は英数文字にしたほうがいい。  
+
+様式：
+`var 変数 型`  
+`var 変数1, 変数2, ・・・ 型`  
+
+* 変数宣言の省略  
+  関数内に限り、省略が出来る。  
+  * 本来：var hoge string  
+  例）var aName, bName string = "hoge.txt", "bar.md"  
+  * 省略：name := "hoge"  
+  例）aName, bName := "hoge.txt", "bar.md"  
+  `string`も省略している(型推論)。  
+
+
+<a name="subVariable2"></a>
+#### 変数への代入方法及び変数の利用
+様式：
+`var 変数 型 = 値`  
+`var 変数 = 値`  
+`変数 := 値`  
+
+
+<a name="subVariable3"></a>
+#### 変数値の出力方法
+型推論での変数宣言後の値出力。  
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	// 以下、変数宣言の省略。
+	hoge := 20210807
+	// 以下、変数宣言付き。
+	var bar = 1813
+
+    // 以下、多バイト文字を変数名に使っている(使うな)。
+	var (
+		今日 float32 = 35.64849
+		晴天  float64 = 139.718305
+	)
+
+	// 以下、定数(const)。
+	const 本日は晴天なり, go勉強 = "今日 晴天", "頑張るぞぉ"
+
+	fmt.Println(hoge, bar)
+		// 出力結果：20210807 1813
+	fmt.Printf("今日は%vです。\n桁を増やして%vです。\n", 今日, 晴天)
+		// 出力結果：今日は35.64849です。
+		// 桁を増やして139.718305です。
+	fmt.Print(本日は晴天なり, go勉強)
+		// 出力結果：今日 晴天頑張るぞぉ
+}
+```
+
+
+<a name="subVariable4"></a>
+#### データ型
+
+|データ型|サイズ|備考|
+|--------|------|----|
+|int||環境依存(int32またはint64に相当)|
+|float32||`float`単体ではないようだ。|
+|float64||`float`単体ではないようだ。|
+|string||要素は`byte`型|
+|bool||`true`・`false`の2種類のみ|
+
+<details><summary>今回のアルゴリズムの勉強に関係ないのが多数</summary>
+
+* 整数型  
+
+|  型  | 説明 | 範囲 |
+|------|------|------|
+|uint8|符号なし8ビット整数|0〜255|
+|uint16|符号なし16ビット整数|0〜65535|
+|uint32|符号なし32ビット整数|0〜4294967295|
+|uint64|符号なし64ビット整数|0〜18446744073709551615|
+|int8|符号あり8ビット整数|-128〜127|
+|int16|符号あり16ビット整数|-32768〜32767|
+|int32|符号あり32ビット整数|-2147483648〜2147483647|
+|int64|符号あり64ビット整数|-9223372036854775808〜9223372036854775807|
+|uint|32ビットまたは64ビットの符号なし整数(システム依存)|
+|int|32ビットまたは64ビットの符号あり整数(システム依存)|
+|uintptr|ポインタ値をそのまま保存するのに十分な大きさの符号なし整数|
+|byte|バイトを表現する符号なし8ビット整数|0〜255|
+|rune|Unicodeを表現する符号あり32ビット整数|-2147483648〜2147483647|
+
+`long`型がなくて驚く。  
+
+* 浮動小数点型(実数型)  
+
+|  型  | 説明 | 範囲 |
+|------|------|------|
+|float32|32ビット浮動小数点数|IEEE-754|
+|float64|64ビット浮動小数点数|IEEE-754|
+
+* 文字列型
+0文字以上の文字からなる文字列の値を指す。  
+型は`string`。  
+要素は、`byte`型の配列扱いするため、`b = "hoge"`の場合、`b[0]==h``b[3]==e`になる。  
+要素数は、`len()`関数で調べることができる。  
+多バイトの場合は、1文字3バイトのようだ。  
+
+* 真偽型  
+
+|  型  | 説明 | 範囲 |
+|------|------|------|
+|true|比較した結果が等しければ`true`になる。|
+|false|比較した結果が等しくなければ`false`になる。|
+
+```go:
+func main() {
+	hoge := "hoge"
+
+	fmt.Println(hoge == "hoge")		// true
+	fmt.Println(hoge == "ho ge")	// false
+}
+```
+
+Go言語での真偽値は、この2種類しか存在しない。  
+※他のプログラミング言語では、`1`とか`0`で代替する。もしくは、補える場合がある。  
+
+</details>
+
+
+<a name="subVariable5"></a>
+#### 変数値を使った計算方法
+
+|演算子|意味|備考|
+|------|----|----|
+|`+`|加算|文字連結にも使う。|
+|`-`|減算||
+|`*`|乗算||
+|`/`|除算||
+|`**`|累乗|ない？|
+|`//`|除算の商|ない？|
+|`%`|剰余演算||
+
+
+<a name="subVariable6"></a>
+#### 型変換(キャスト)方法
+様式：
+`変数名 = (代入先のデータ型)変数`  
+※Go言語に、暗黙の型変換は存在しない。  
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	var hoge int32 = 20210916		// 整数型
+	var bar int64 = 20210917		// 整数型
+	var boo float32 = 2021.0916		// 浮動小数点型
+
+	fmt.Println("代入前の値：", hoge, bar, boo)	// 代入前の値： 20210916 20210917 2021.0916
+
+	bar = int64(hoge)	// int32からint64にキャスト成功
+	fmt.Println("代入後の値：", hoge, bar, boo)	// 代入後の値： 20210916 20210916 2021.0916
+
+	boo = float32(hoge)
+	fmt.Println("代入後の値：", hoge, bar, boo)	// 代入後の値： 20210916 20210916 2.0210916e+07
+
+}
+```
+
+
+<a name="subVariable999"></a>
+#### 変数での説明しない項目。
+
+<details><summary>今回は勉強を見送る一覧</summary>
+
+* [ ] 定数  
+* [ ] データ型  
+  * [ ] 整数(`long`など)  
+    **long**型はない。  
+  * [ ] 浮動小数点型(`double`など)  
+    **double**型もない。  
+  * [x] 型推論  
+    Goでは型推論利用が一般的なようだ。  
+  * [x] 複素数型  
+
+|  型  | 説明 | 範囲 |
+|------|------|------|
+|complex64|float32の実数部と虚数部を持つ複素数|
+|complex128|float128の実数部と虚数部を持つ複素数|
+
+  * [ ] 配列型  
+  * [ ] スライス型  
+  * [ ] 構造体型  
+  * [ ] ポインタ型  
+  * [ ] 関数型  
+  * [ ] インタフェイス型  
+  * [ ] マップ型  
+  * [ ] チャネル型  
+  * [ ] キャスト(型変換)  
+* [ ] リテラル  
+  * [ ] 整数リテラル  
+  * [ ] 浮動小数点リテラル  
+  * [ ] 文字リテラル  
+  * [ ] 文字列リテラル  
+* [ ] キャスト  
+  * 暗黙変換  
+    Go言語にそんなものはない。  
+* [ ] 演算子  
+  * [ ] 二項演算子  
+  * [ ] 単項演算子  
+  * [ ] 比較演算子  
+  * [ ] 論理演算子  
+  * [ ] 代入演算子  
+  * [ ] アドレス演算子(`&`・`*`)  
+  * [ ] 送受信演算子  
+  * [ ] 演算子の優先順位  
+
+* ちょっと高度な話題  
+  * [ ] ポインタ  
+
+</details>
+
+</details>
+
+
+<a name="arrangement配列sub"></a>
+<details><summary>実際の配列の勉強</summary>
+
+### 配列
+変数を連ならせる格納方法。  
+今回のPythonではリストを配列と呼ぶ。  
+※配列とリストを分けている場合はリストの勉強を後回しにし、配列がない状態でリストがある場合はリストを勉強する。  
+
+* 絶対的に勉強する一覧  
+  * [x] [配列の宣言方法](#subArrangement1)  
+        [x] 要素とは。  
+        [x] 要素数とは。  
+        [x] 添え字とは(0から数える)。  
+  * [x] [配列への追加方法](#subArrangement2)  
+  * [x] [二次元配列の宣言方法](#subArrangement3)  
+
+
+<a name="subArrangement1"></a>
+#### 配列
+様式：
+`var 配列名 [要素数]型`  
+例）
+`var hoge [10]int`  
+
+
+<a name="subArrangement2"></a>
+#### 配列への追加方法
+様式：
+`var 配列名 = [要素数]型 { 値1, 値2, ・・・ }`  
+※要素数は後から変更できず、0から数え、型はすべて同じになる。  
+※スライスは別技術で存在する(今回は配列に特化する)。  
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	// 以下、配列宣言後に代入。
+	var hoge [10]int;
+	hoge[0] = 20210928;
+	fmt.Println(hoge[0]);	// 20210928
+	fmt.Println(hoge[1]);	// 0
+
+	// 以下、配列宣言と同時に代入(初期化)。
+	var boo = [10]int {20210928, 20210929 };
+	fmt.Println(boo[0]);	// 20210928
+	fmt.Println(boo[1]);	// 20210929
+	fmt.Println(boo[9]);	// 0
+
+	// 以下、別の方法での初期化。
+	arrayHoge := [10]string {"hoge", "bar", };
+	fmt.Println(arrayHoge);		// [hoge bar        ]
+	fmt.Println(arrayHoge[0]);	// hoge
+	fmt.Println(arrayHoge[1]);	// bar
+	fmt.Println(arrayHoge[2]);	// 空文字列
+
+	// 以下、要素数をコンパイラ任せにする。
+	bar := [...]string {"hoge", "bar", };
+	fmt.Println(bar);		// [hoge bar]
+	fmt.Println(bar[0]);	// hoge
+	fmt.Println(bar[1]);	// bar
+}
+```
+※末尾の`;`はなくても動く。  
+
+<a name="subArrangement3"></a>
+#### 二次元配列の宣言方法
+様式：
+`var 配列名 [要素数][要素数]型;`  
+2次元配列の場合は、要素数をコンパイラ任せに出来ない。  
+
+初期化含む様式：
+`var 配列名 = [要素数][要素数]型 {{1値1, 1値2, }, {2値1, 2値2, }, };`  
+
+以下、2次元配列例）
+```go
+package main
+
+import "fmt"
+
+func main() {
+	// 以下、配列宣言後に代入。
+	var hoge [3][5]int;
+	hoge[2][4] = 20210928;
+	fmt.Println(hoge[0])	// [0 0 0 0 0]
+	fmt.Println(hoge[1])	// [0 0 0 0 0]
+	fmt.Println(hoge[2])	// [0 0 0 0 20210928]
+	fmt.Println(hoge[2][4])	// 20210928
+
+	// 以下、配列宣言と同時に代入(初期化)。
+	var boo = [3][5]int {{}, {}, {20210928, 20210929, }, };
+	fmt.Println(boo[0])		// [0 0 0 0 0]
+	fmt.Println(boo[1])		// [0 0 0 0 0]
+	fmt.Println(boo[2])		// [20210928 20210929 0 0 0]
+	fmt.Println(boo[2][1])	// 20210929
+	/* 1次元配列宣言を初期化と同時に要素数をコンパイラ任せにする場合
+		hoge := [...]string {"hoge", "bar", };
+	だったが、2次元配列で以下はできない(エラーになる)。
+		hoge := [...][...]string {"hoge", "bar", };
+	*/
+
+	// 以下、別の方法での初期化。
+	bar := [10]string {"本日は晴天なり。", "HelloWorld.", };
+	fmt.Println(bar)	// [本日は晴天なり。 HelloWorld.        ]
+	fmt.Println(bar[0])	// 本日は晴天なり。
+	fmt.Println(bar[1])	// HelloWorld.
+	fmt.Println(bar[2])	// 空文字列
+}
+```
+※末尾に`;`を付けても動く。  
+
+以下、スライスの2次元配列。
+```go
+slicearray := [][]string {{"HOGE", "BAR"}, };
+fmt.Println(slicearray)			// [[HOGE BAR]]
+fmt.Println(slicearray[0])		// [HOGE BAR]
+fmt.Println(slicearray[0][0])	// HOGE
+```
+
+
+<a name="subArrangement999"></a>
+#### 配列での説明しない項目。
+
+<details><summary>今回は勉強を見送る一覧</summary>
+
+配列などのことをコンポジット型という。  
+コンポジット型とは、複数のデータを1つの集合として表す型のこと。  
+そのため、配列はもちろんのこと構造体・スライス・マップ・チャネルなどある。  
+
+* 配列の応用  
+  * [ ] 3次元配列以上の宣言方法。  
+  * [ ] 配列を複製する方法。  
+  * [ ] 配列からスライスを作成する方法。  
+
+* スライス
+  Go言語では、これが必須に思うのだが・・・。  
+  * [ ] スライス単体での宣言方法。  
+    一応プログラムはある。  
+  * [ ] スライスから削除する方法。  
+  * [ ] スライスに追加する方法。  
+
+* 構造体  
+  * [ ] 構造体の複製  
+  * [ ] 構造体からのスライス作成  
+  * [ ] 共用体  
+  * [ ] 列挙体  
+
+* コレクション  
+  * [ ] List?  
+  * [ ] Set  
+  * [ ] Map  
+  * [ ] Queue  
+
+</details>
+
+</details>
+
+
+<a name="Conditional条件分岐sub"></a>
+<details><summary>実際の条件分岐の勉強</summary>
+
+### 条件分岐
+
+* 絶対的に勉強する一覧  
+  * [x] [単純分岐-"もし"1つ。](#subConditional1)  
+    基本構造例：if  
+  * [x] [多岐分岐-"もし"2つ以上。](#subConditional1)  
+    基本構造例：if〜else if〜  
+  * [x] [論理演算子(ド・モルガンの法則)](#subConditional2)  
+    * [x] 論理積(`AND`・`&&`)  
+    * [x] 論理和(`OR`・`||`)  
+  * [x] [比較演算子](#subConditional3)  
+    * [x] 等しい(`==`)  
+    * [x] 等しくない(`!=`)  
+    * [x] より大きい(`>`)  
+    * [x] より小さい(`<`)  
+    * [x] 以上(`>=`)  
+    * [x] 以下(`<=`)  
+
+
+<a name="subConditional1"></a>
+#### 条件分岐
+様式：
+`if 条件式 { 処理 }`  
+
+多分岐用の様式：
+```go
+if 条件式 {
+    処理
+} else if 条件式 {
+    処理
+} else {
+    処理
+}
+```
+
+以下、例）
+```go
+package main
+
+import "fmt"
+
+func main() {
+	var hoge = "本日は晴天なり。"
+
+	if hoge == "hoge" {
+		fmt.Println("hoge")
+	} else if hoge == "本日は晴天なり。" {
+		fmt.Println(hoge)
+	} else{
+		fmt.Println("その他")
+	}
+	// 出力結果：本日は晴天なり。
+}
+```
+
+
+<a name="subConditional2"></a>
+#### 論理演算子(ド・モルガンの法則)
+
+|演算子|意味|備考|
+|------|----|----|
+|`&&`|論理積||
+|`||`|論理和||
+
+
+<a name="subConditional3"></a>
+#### 比較演算子
+
+|演算子|意味|備考|
+|------|----|----|
+|`==`|等号||
+|`!=`|不等||
+|`>`|左辺が右辺より大きい||
+|`<`|左辺が右辺より小さい||
+|`>=`|以上||
+|`<=`|以下||
+
+
+<a name="subConditional999"></a>
+#### 条件分岐での説明しない項目。
+
+<details><summary>今回は勉強を見送る一覧</summary>
+
+* 多岐分岐-条件にて複数から選ぶ。  
+  基本構造例：switch  
+  `fallthrouth`  
+
+* 関係演算子  
+  * [ ] 三項演算子(`?:`)  
+  * [ ] 論理演算子  
+    * [ ] 排他的論理和(`^`)  
+    * [ ] 否定(`!`)単体で存在する？  
+    * [ ] 否定論理積(`&^`)  
+    * [ ] ビット演算子(`&`・`|`)  
+    * [ ] 算術シフト(`<<`・`>>`)  
+
+* チャネル  
+
+* 他の話題例  
+  * [ ] 変数の比較  
+  * [ ] 配列の比較  
+
+* ジャンプ  
+  * [ ] goto文  
+
+</details>
+
+</details>
+
+
+<a name="repetition繰り返しsub"></a>
+<details><summary>実際の繰り返しの勉強</summary>
+
+### 繰り返し
+
+* 絶対的に勉強する一覧  
+  * [x] [指定回数条件での繰り返し](#subRepetition1)  
+    [x] [基本構造例：for( 条件式 )](#subRepetition2)  
+    [x] [基本構造例：拡張for命令(`in`)](#subRepetition3)  
+    [x] [`for`の入れ子。](#subRepetition4)  
+  * [ジャンプ処理](#subRepetition5)  
+    * [x] break  
+    * [x] continue  
+  * [x] [真偽条件での繰り返し](#subRepetition6)  
+    [x] [基本構造例：while( 条件式 )](#subRepetition6)  
+    Goにwhileは存在しない。  
+    [x] [無限ループ](#subRepetition7)  
+
+
+<a name="subRepetition1"></a>
+#### 繰り返し
+様式：
+
+
+<a name="subRepetition2"></a>
+##### 指定回数条件での繰り返し：for 条件式
+様式：
+`for 初期化式; 継続条件式; 増減式 { 処理 }`  
+
+以下、使用例）
+```go
+package main
+
+import "fmt"
+
+func main() {
+	hoge := [10]int {20210929, 20210930 };
+	count := len(hoge)
+
+	for ii := 0; count > ii; ii++ {
+		fmt.Println(hoge[ii])
+	}
+	// 出力結果：
+//				20210929
+//				20210930
+//				0
+//				0
+//				0
+//				0
+//				0
+//				0
+//				0
+//				0
+}
+```
+
+
+<a name="subRepetition3"></a>
+##### 指定回数条件での繰り返し：拡張for命令
+様式：
+`for 要素数目, 要素値 := range 配列名 { 処理 }`  
+要素数目というのは、繰り返しの回数を表す(要は、カウンタ)。  
+要素値は、配列内容を1つづつ取り出して代入している。  
+どちらかが必要ない項目の場合`_`で無効化できる。  
+
+※今回のアルゴリズムの勉強では勉強する気が無いため省略するが、配列だけでなくスライス・文字列・マップ・チャネルを使える(他にもある？)。  
+
+以下、使用例）
+```go
+package main
+
+import "fmt"
+
+func main() {
+	hoge := [10]int {20210929, 20210930 };
+
+	for ii, value := range hoge {
+		fmt.Println(ii, value)
+	}
+	// 出力結果：
+//				20210929
+//				20210930
+//				0
+//				0
+//				0
+//				0
+//				0
+//				0
+//				0
+//				0
+	fmt.Println("-----------------------");
+}
+```
+
+
+<a name="subRepetition4"></a>
+#### `for`の入れ子。
+他のプログラミング言語と同様に普通に使える。  
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	boo := [...]int {20210929, 20211001 };
+	bar := [...]string {"本日は晴天なり。", "bar" };
+
+	for ii, value := range boo {
+		for jj, valuf := range bar {
+			fmt.Printf("ii：%d-jj：%d, boo[%d], bar[%s]\n", ii, jj, value, valuf)
+		}
+	}
+	// 出力結果：
+//				ii：0-jj：0, boo[20210929], bar[本日は晴天なり。]
+//				ii：0-jj：1, boo[20210929], bar[bar]
+//				ii：1-jj：0, boo[20211001], bar[本日は晴天なり。]
+//				ii：1-jj：1, boo[20211001], bar[bar]
+}
+```
+
+
+<a name="subRepetition5"></a>
+#### ジャンプ処理
+
+* ジャンプ種類  
+  * [**continue**](#subRepetition5break)  
+    繰り返しの最初に戻る。  
+  * [**break**](#subRepetition5continue)  
+    繰り返しを抜ける。  
+
+<a name="subRepetition5break"></a>
+以下、ブレーク文。
+```go
+func main() {
+	array := [...]string {"本", "日", "は", "晴", "天", "な", "り", }
+
+	for ii, value := range array {
+		fmt.Println(ii, value)
+		if ii == 2 {
+			break
+		}
+	}
+	// 出力結果：
+//				0 本
+//				1 日
+//				2 は
+}
+```
+配列内の添え字が2になったときにfor文を抜け出るため、"**晴**"以降の文字が出力されない。  
+
+<a name="subRepetition5continue"></a>
+以下、コンテニュ文。
+```go
+func main() {
+	array := [...]string {"本", "日", "は", "晴", "天", "な", "り", }
+
+	for ii, value := range array {
+		if ii == 2 {
+			continue
+		}
+		fmt.Println(ii, value)
+	}
+	// 出力結果：
+//				0 本
+//				1 日
+//				3 晴
+//				4 天
+//				5 な
+//				6 り
+}
+```
+配列内の添え字が2になったときにfor文の最初の処理から行われるため、その添え字以降の処理が飛ばされてしまい、"**は**"の文字が出力されない。  
+
+
+<a name="subRepetition6"></a>
+#### 真偽条件での繰り返し：while( 条件式 )
+※Go言語に`while`文は存在しない。
+すべて、`for`文で処理を作る必要がある。  
+
+様式：
+`for 条件式 { 処理 }`  
+
+以下、while文の代わり。
+```go
+package main
+
+import "fmt"
+
+func main() {
+	hoge := [5]int {20210929, 20210930 };
+	count := len(hoge)
+	ii := 0
+
+	for count > ii {
+            // for ii := 0; count > ii {	←☆と言うことは出来ない。;記号を使う場合、2個必要になる(見栄えが悪くなる)。
+		fmt.Println(ii, hoge[ii])
+		ii++
+	}
+	// 出力結果：
+//				0 20210929
+//				1 20210930
+//				2 0
+//				3 0
+//				4 0
+}
+```
+
+
+<a name="subRepetition7"></a>
+#### 無限ループ
+様式：
+`for { 処理 }`  
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+
+	for {
+		fmt.Println("無限ループ")
+	}
+}
+```
+
+
+<a name="subRepetition999"></a>
+#### 繰り返しでの説明しない項目。
+
+<details><summary>今回は勉強を見送る一覧</summary>
+
+* 真偽条件での繰り返し  
+  基本構造例：do〜while( 条件式 )  
+  Go言語には存在しない。  
+
+</details>
+
+</details>
+
+
+<a name="function関数sub"></a>
+<details><summary>実際の関数の勉強</summary>
+
+### 関数
+
+* 絶対的に勉強する一覧  
+  * [x] 使い回せるようにまとめること。  
+    * [x] [引数と戻り値の組み合わせ。](#subFunction1)  
+      [x] 引数無し-戻り値無し  
+      [x] 引数あり-戻り値無し  
+      [x] 引数無し-戻り値あり  
+      [x] 引数あり-戻り値あり  
+    * [スコープ](#subFunction2)  
+      [x] グローバルスコープ変数  
+      [x] ローカルスコープ変数  
+
+
+<a name="subFunction1"></a>
+#### 関数
+様式：
+```go
+func 関数名 ( 引数1, 引数2, ・・・ ) 戻り値 {
+    処理
+}
+```
+※パッケージ外からの利用を可能にする場合、関数名の先頭を大文字にする(小文字の場合は非公開になる)。  
+※戻り値を複数にする場合、括弧で囲む(`(戻り値1, 戻り値2, ・・・ )`)。  
+　例）
+`func 関数名 ( 引数 ) (戻り値1, 戻り値2, ・・・ ) { 処理 }`  
+※戻り値に名前を付ける場合、括弧で囲む必要がある(`(戻り値名 戻り値型)`)。  
+　例）
+`func 関数名 ( 引数 ) (戻り値名 戻り値型) { 処理 }`  
+
+よく分からないが、**関数名と変数名が同じ場合エラーが発生**する。  
+そうなの？  
+Perlではそんなことなかったのに・・・悲しい。  
+
+
+以下、引数無し-戻り値無し。
+```go
+package main
+
+import "fmt"
+
+func hoge() {
+	fmt.Println("hoge関数内からの出力(引数なし-戻り値なし)")
+}
+
+func main() {
+	hoge()
+	// hoge関数内からの出力(引数なし-戻り値なし)
+}
+```
+
+以下、引数あり-戻り値無し。
+```go
+package main
+
+import "fmt"
+
+func hoge( arg [10]int ) {
+	fmt.Printf("hoge関数内からの出力(引数%d-戻り値なし)\n", arg[0])
+}
+
+func main() {
+	var hoge [10]int;
+	hoge[0] = 20210929;
+
+	hoge( hoge )
+	// hoge関数内からの出力(引数20210929-戻り値なし)
+}
+```
+
+以下、引数無し-戻り値あり。
+```go
+package main
+
+import "fmt"
+
+func hoge() (ret int) {
+	ret = 20211001
+	fmt.Println("hoge関数内からの出力(引数なし-戻り値あり)")
+	return
+}
+
+func main() {
+	retint := hoge()
+	// hoge関数内からの出力(引数なし-戻り値あり)
+	fmt.Println("hogeからの戻り値：", retint)
+	// hogeからの戻り値： 20211001
+}
+```
+名前付き戻り値の場合、括弧で囲む必要がある。  
+また、`return`の後ろに付ける必要がなくなる。  
+
+以下、引数あり-戻り値あり。
+```go
+package main
+
+import "fmt"
+
+func hoge( arg string ) int {
+	fmt.Printf("hoge関数内からの出力(引数%s-戻り値あり)\n", arg)
+	return 9784798063997
+}
+
+func main() {
+	retstr := hoge( "本日は晴天なり" )
+	// hoge関数内からの出力(引数本日は晴天なり-戻り値あり)
+	fmt.Println("hogeからの戻り値：", retstr)
+	// hogeからの戻り値： 9784798063997
+}
+```
+int型に収まらない桁数だと思うのに、普通に表示されるのには驚く(このまま平気で使い続けた場合、ゆくゆく取れないバグになってしまうのだろう)。  
+
+
+
+※プロトタイプ宣言利用可能(Goではシグニチャと言う)。  
+
+
+<a name="subFunction2"></a>
+#### スコープ
+宣言した場所で使える。  
+特別な接頭辞など不要。  
+
+
+<a name="subFunction999"></a>
+#### 関数での説明しない項目。
+
+<details><summary>今回は勉強を見送る一覧</summary>
+
+
+* Go言語専用  
+  * メソッド  
+    Go特有の記述方法として優先的に勉強した方が良い？  
+  * 関数を変数に代入  
+  * 関数を引数に渡す  
+  * ポインタ  
+
+
+* 標準的な関数  
+  * [ ] 可変長引数  
+  * [ ] 再帰関数  
+  * [ ] 高階関数  
+    変数の応用部分で説明する？  
+* オブジェクト指向  
+  * [ ] クラスの定義  
+  * [ ] フィールド  
+  * [ ] コンストラクタ  
+* オブジェクト指向  
+  * [ ] カプセル化  
+  * [ ] 継承  
+  * [ ] ポリモーフィズム  
+* オブジェクト指向  
+  * [ ] 例外処理  
+  * [ ] 列挙型  
+  * [ ] 入れ子クラス  
+  * [ ] ジェネリクス  
+  * [ ] ラムダ式(無名関数？)  
+
+</details>
+
+</details>
+
+
+<a name="algorithmTextbookLearnedinPython"></a>
+#### ☆アルゴリズムの勉強チャプタ概要☆
+<a name="algorithmTextbookLearnedinPythonChapter2"></a>
+* [Chapter2 プログラミングの力を養う](#developProgrammingSkillsOverviewChapter2)  
+  基礎的なプログラミングの力を養っていく。  
+  例えば、配列利用の関数定義・繰り返し・再帰関数・条件分岐など。  
+  以下、各項目(目次)。  
+  [平均値を求める。](#findTheAverageValueChapter2)  
+  [1からnまで足し合わせる。](#addFrom1tonChapter2)  
+  [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
+  [素数を求める。](#findAPrimeNumberChapter2)  
+  [nの階乗を求める。](#findTheFactorialOfNChapter2)  
+  [エラトステネスの篩](#eratosthenesSieveChapter2)  
+  [n進法を理解する。](#understandnAryNotationChapter2)  
+<a name="algorithmTextbookLearnedinPythonChapter3"></a>
+* [Chapter3 データ構造を学ぶ](#learnDataStructuresOverviewChapter3)  
+  今までに勉強した配列を発展させる。  
+  ※ここ以降、配列ではなくスライスを使おうかと思う・・・(配列を発展させる話どこ行った)。  
+  ※例外処理(`try〜except〜finally`)を使っている。  
+  以下、各項目(目次)。  
+  [スタック](#stackChapter3)  
+  [キュー](#queueChapter3)  
+  [リスト](#listChapter3)  
+  [木](#woodChapter3)  
+  [グラフ](#graphChapter3)  
+  [データを保存する。](#saveTheDataChapter3)  
+<a name="algorithmTextbookLearnedinPythonChapter4"></a>
+* [Chapter4 サーチ](#searchOverviewChapter4)  
+  複数データから目的地を探し出すこと。  
+  ※有名な探索アルゴリズムのみに限定している。  
+  以下、各項目(目次)。  
+  [線形探索](#linearSearchChapter4)  
+  [二分探索](#binarySearchChapter4)  
+  [木探索](#treeExplorationChapter4)  
+  [計算量について知る](#knowAboutComputationalComplexityChapter4)  
+  [ランダウの記号](#landauSignChapter4)  
+  [数当てゲーム](#numberGuessingGameChapter4)  
+  [ビット演算を学ぶ](#learnBitwiseOperationsChapter4)  
+<a name="algorithmTextbookLearnedinPythonChapter5"></a>
+* [Chapter5 ソート](#sortOverviewChapter5)  
+  一定の規則に従い並び替えること。  
+  ※他にもまだある。  
+  以下、各項目(目次)。  
+  [選択ソート](#selectionSortChapter5)  
+  [バブルソート](#bubbleSortChapter5)  
+  [挿入ソート](#insertionSortChapter5)  
+  [クイックソート](#quickSortChapter5)  
+  [マージソート](#mergeSortChapter5)  
+  [ヒープソート](#heapsortChapter5)  
+  [クイックソートの再起の過程を出力する。](#outputTheProcessOfQuicksortRecurrenceChapter5)  
+  [再帰関数を用いたマージソート。](#mergeSortUsingARecursiveFunctionChapter5)  
+  [プログラミング言語用のソート・ヒープ・キュー関数の使い方。](#howToUsePythonSortInstructionsAndHeapqModuleChapter5)  
+  [ソートの計算量と計算時間。](#sortCalculationComplexityAndCalculationTimeChapter5)  
+<a name="algorithmTextbookLearnedinPythonChapter6"></a>
+* [Chapter6 ハッシュ](#hashOverviewChapter6)  
+  ハッシュとは、データから算出した小さな値のこと。  
+  今回は、そのハッシュとしての値を算出する方法を勉強する。  
+  以下、各項目(目次)。  
+  [ハッシュとは。](#whatIsAHashChapter6)  
+  [ハッシュ関数](#hashFunctionChapter6)  
+  [ハッシュテーブル](#hashTableChapter6)  
+  [衝突を回避する。](#avoidCollisionsChapter6)  
+  [暗号学的ハッシュ関数](#cryptographicHashFunctionChapter6)  
+<a name="algorithmTextbookLearnedinPythonChapter7"></a>
+* [Chapter7 さまざまなアルゴリズムを学ぶ](#learnVariousAlgorithmsOverviewChapter7)  
+  アルゴリズムを勉強する上で必ず関わるアルゴリズムになる。  
+  むしろ、ここまで勉強できてアルゴリズムを勉強したと言えるのではないだろうか。  
+  以下、各項目(目次)。  
+  [ユークリッドの互除法](#euclideanAlgorithmChapter7)  
+  [文字列探索](#stringSearchChapter7)  
+  [アルゴリズムを理解するヒント(処理の過程の出力)。](#tipsForUnderstandingTheAlgorithmChapter7)  
+<a name="algorithmTextbookLearnedinPythonChapter8"></a>
+* [Chapter8 アルゴリズムを見える化する](#visualizeTheAlgorithmOverviewChapter8)  
+  今回のアルゴリズムを勉強することで、アルゴリズム(もしくはデータ)を可視化する方法を勉強できる。  
+  以下、各項目(目次)。  
+  [n次関数の曲線を描く。](#drawACurveOfTheNthOrderFunctionChapter8)  
+  [フラクタル図形を描く。](#drawAFractalFigureChapter8)  
+  [迷路を解く過程を描く。](#drawTheProcessOfSolvingTheMazeChapter8)  
+  [アルゴリズムを使い分ける。](#useDifferentAlgorithmsChapter8)  
+  [マンデルブロー集合を描こう。](#letsDrawTheMandelbrotSetChapter8)  
+
+<a name="developProgrammingSkillsOverviewChapter2"></a>
+### プログラミングの力を養う
+基礎的なプログラミングの力を養っていく。  
+
+* 各項目。  
+  * [平均値を求める。](#findTheAverageValueChapter2)  
+  * [1からnまで足し合わせる。](#addFrom1tonChapter2)  
+  * [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
+  * [素数を求める。](#findAPrimeNumberChapter2)  
+  * [nの階乗を求める。](#findTheFactorialOfNChapter2)  
+  * [エラトステネスの篩](#eratosthenesSieveChapter2)  
+  * [n進法を理解する。](#understandnAryNotationChapter2)  
+
+<a name="findTheAverageValueChapter2"></a>
+#### 平均値を求める。
+
+<a name="addFrom1tonChapter2"></a>
+#### 1からnまで足し合わせる。
+
+<a name="outputTheMultiplicationTableChapter2"></a>
+#### 九九の式を出力する。
+
+<a name="findAPrimeNumberChapter2"></a>
+#### 素数を求める。
+
+<a name="findTheFactorialOfNChapter2"></a>
+#### nの階乗を求める。
+
+<a name="eratosthenesSieveChapter2"></a>
+#### エラトステネスの篩
+
+<a name="understandnAryNotationChapter2"></a>
+#### n進法を理解する。
+
+<a name="learnDataStructuresOverviewChapter3"></a>
+### データ構造を学ぶ
+
+* 各項目。  
+  * [スタック](#stackChapter3)  
+  * [キュー](#queueChapter3)  
+  * [リスト](#listChapter3)  
+  * [木](#woodChapter3)  
+  * [グラフ](#graphChapter3)  
+  * [データを保存する。](#saveTheDataChapter3)  
+
+<a name="stackChapter3"></a>
+#### スタック
+
+<a name="queueChapter3"></a>
+#### キュー
+
+<a name="listChapter3"></a>
+#### リスト
+
+<a name="woodChapter3"></a>
+#### 木
+
+<a name="graphChapter3"></a>
+#### グラフ
+
+<a name="saveTheDataChapter3"></a>
+#### データを保存する。
+
+<a name="searchOverviewChapter4"></a>
+### サーチ
+
+* 各項目。  
+  * [線形探索](#linearSearchChapter4)  
+  * [二分探索](#binarySearchChapter4)  
+  * [木探索](#treeExplorationChapter4)  
+  * [計算量について知る](#knowAboutComputationalComplexityChapter4)  
+  * [ランダウの記号](#landauSignChapter4)  
+  * [数当てゲーム](#numberGuessingGameChapter4)  
+  * [ビット演算を学ぶ](#learnBitwiseOperationsChapter4)  
+
+<a name="linearSearchChapter4"></a>
+#### 線形探索
+
+<a name="binarySearchChapter4"></a>
+#### 二分探索
+
+<a name="treeExplorationChapter4"></a>
+#### 木探索
+
+<a name="knowAboutComputationalComplexityChapter4"></a>
+#### 計算量について知る
+
+<a name="landauSignChapter4"></a>
+#### ランダウの記号
+
+<a name="numberGuessingGameChapter4"></a>
+#### 数当てゲーム
+
+<a name="learnBitwiseOperationsChapter4"></a>
+#### ビット演算を学ぶ
+
+<a name="sortOverviewChapter5"></a>
+### ソート
+
+* 各項目。  
+  * [選択ソート](#selectionSortChapter5)  
+  * [バブルソート](#bubbleSortChapter5)  
+  * [挿入ソート](#insertionSortChapter5)  
+  * [クイックソート](#quickSortChapter5)  
+  * [マージソート](#mergeSortChapter5)  
+  * [ヒープソート](#heapsortChapter5)  
+  * [クイックソートの再起の過程を出力する。](#outputTheProcessOfQuicksortRecurrenceChapter5)  
+  * [再帰関数を用いたマージソート。](#mergeSortUsingARecursiveFunctionChapter5)  
+  * [プログラミング言語用のソート・ヒープ・キュー関数の使い方。](#howToUsePythonSortInstructionsAndHeapqModuleChapter5)  
+  * [ソートの計算量と計算時間。](#sortCalculationComplexityAndCalculationTimeChapter5)  
+
+<a name="selectionSortChapter5"></a>
+#### 選択ソート
+
+<a name="bubbleSortChapter5"></a>
+#### バブルソート
+
+<a name="insertionSortChapter5"></a>
+#### 挿入ソート
+
+<a name="quickSortChapter5"></a>
+#### クイックソート
+
+<a name="mergeSortChapter5"></a>
+#### マージソート
+
+<a name="heapsortChapter5"></a>
+#### ヒープソート
+
+<a name="outputTheProcessOfQuicksortRecurrenceChapter5"></a>
+#### クイックソートの再起の過程を出力する。
+
+<a name="mergeSortUsingARecursiveFunctionChapter5"></a>
+#### 再帰関数を用いたマージソート。
+
+<a name="howToUsePythonSortInstructionsAndHeapqModuleChapter5"></a>
+#### プログラミング言語用のソート・ヒープ・キュー関数の使い方。
+Python限定にしたくなかったが、他のプログラミング言語にはない可能性がある。  
+
+<a name="sortCalculationComplexityAndCalculationTimeChapter5"></a>
+#### ソートの計算量と計算時間。
+
+<a name="hashOverviewChapter6"></a>
+### ハッシュ
+
+* 各項目。  
+  * [ハッシュとは。](#whatIsAHashChapter6)  
+  * [ハッシュ関数](#hashFunctionChapter6)  
+  * [ハッシュテーブル](#hashTableChapter6)  
+  * [衝突を回避する。](#avoidCollisionsChapter6)  
+  * [暗号学的ハッシュ関数](#cryptographicHashFunctionChapter6)  
+
+<a name="whatIsAHashChapter6"></a>
+#### ハッシュとは。
+
+<a name="hashFunctionChapter6"></a>
+#### ハッシュ関数
+
+<a name="hashTableChapter6"></a>
+#### ハッシュテーブル
+
+<a name="avoidCollisionsChapter6"></a>
+#### 衝突を回避する。
+
+<a name="cryptographicHashFunctionChapter6"></a>
+#### 暗号学的ハッシュ関数
+
+<a name="learnVariousAlgorithmsOverviewChapter7"></a>
+### さまざまなアルゴリズムを学ぶ
+
+* 各項目。  
+  * [ユークリッドの互除法](#euclideanAlgorithmChapter7)  
+  * [文字列探索](#stringSearchChapter7)  
+  * [アルゴリズムを理解するヒント(処理の過程の出力)。](#tipsForUnderstandingTheAlgorithmChapter7)  
+
+<a name="euclideanAlgorithmChapter7"></a>
+#### ユークリッドの互除法
+
+<a name="stringSearchChapter7"></a>
+#### 文字列探索
+
+<a name="tipsForUnderstandingTheAlgorithmChapter7"></a>
+#### アルゴリズムを理解するヒント(処理の過程の出力)。
+
+<a name="visualizeTheAlgorithmOverviewChapter8"></a>
+### アルゴリズムを見える化する
+
+* 各項目。  
+  * [n次関数の曲線を描く。](#drawACurveOfTheNthOrderFunctionChapter8)  
+  * [フラクタル図形を描く。](#drawAFractalFigureChapter8)  
+  * [迷路を解く過程を描く。](#drawTheProcessOfSolvingTheMazeChapter8)  
+  * [アルゴリズムを使い分ける。](#useDifferentAlgorithmsChapter8)  
+  * [マンデルブロー集合を描こう。](#letsDrawTheMandelbrotSetChapter8)  
+
+<a name="drawACurveOfTheNthOrderFunctionChapter8"></a>
+#### n次関数の曲線を描く。
+
+<a name="drawAFractalFigureChapter8"></a>
+#### フラクタル図形を描く。
+
+<a name="drawTheProcessOfSolvingTheMazeChapter8"></a>
+#### 迷路を解く過程を描く。
+
+<a name="useDifferentAlgorithmsChapter8"></a>
+#### アルゴリズムを使い分ける。
+
+<a name="letsDrawTheMandelbrotSetChapter8"></a>
+#### マンデルブロー集合を描こう。
+
+
+<a name="appliedknowledge"></a>
+## 応用知識
+基礎知識5種類だけでは不足する知識を補う。  
+
+* 応用部分  
+  * 何を勉強したか記載する。  
+  * 並行処理(ゴルーチン)  
+
+
+<a name="gitflow"></a>
+## ※Gitのマージルール
+study2programmingに取り込むときのマージは、3方向マージ(`--no-ff`)を使う。  
+
+* [ ] "study2programming"にマージする時のルール。  
+  * [ ] 誤字脱字程度のコミットはスカッシュしたい。  
+  * [ ] マージ後"study2programming"をPushする。  
+    ※masterにマージすることはない。  
+  * [ ] マージごとにタグ付けをする(そしてPush実施)。  
+
+* 例外としてmasterに取り込む場合は、チェリーピッキングでピンポイントに必要最小限のコミットのみを取り込む(しつこいが、masterに取り込むことはしたくない)。  
+  言いたいことは、履歴を複数にしたくないと言うこと。  
+
+
+以上。
+<!-- vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=markdown expandtab: -->
