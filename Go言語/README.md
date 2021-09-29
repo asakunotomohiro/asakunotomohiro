@@ -39,7 +39,7 @@
   * [x] [変数](#variable変数)2021/08/07  
   * [x] [配列](#arrangement配列)2021/09/28  
   * [x] [条件分岐](#Conditional条件分岐)2021/09/29  
-  * [ ] [繰り返し](#repetition繰り返し)  
+  * [x] [繰り返し](#repetition繰り返し)2021/09/29  
   * [ ] [関数](#function関数)  
 
 <a name="algorithmTextbookLearnedinPythonContents"></a>
@@ -822,16 +822,17 @@ func main() {
 ### 繰り返し
 
 * 絶対的に勉強する一覧  
-  * [ ] [指定回数条件での繰り返し](#subRepetition1)  
-    [ ] [基本構造例：for( 条件式 )](#subRepetition2)  
-    [ ] [基本構造例：拡張for命令(`in`)](#subRepetition3)  
-    [ ] [`for`の入れ子。](#subRepetition4)  
+  * [x] [指定回数条件での繰り返し](#subRepetition1)  
+    [x] [基本構造例：for( 条件式 )](#subRepetition2)  
+    [x] [基本構造例：拡張for命令(`in`)](#subRepetition3)  
+    [x] [`for`の入れ子。](#subRepetition4)  
   * [ジャンプ処理](#subRepetition5)  
-    * [ ] break  
-    * [ ] continue  
-  * [ ] [真偽条件での繰り返し](#subRepetition6)  
-    [ ] [基本構造例：while( 条件式 )](#subRepetition6)  
-    [ ] [無限ループ](#subRepetition7)  
+    * [x] break  
+    * [x] continue  
+  * [x] [真偽条件での繰り返し](#subRepetition6)  
+    [x] [基本構造例：while( 条件式 )](#subRepetition6)  
+    Goにwhileは存在しない。  
+    [x] [無限ループ](#subRepetition7)  
 
 
 <a name="subRepetition1"></a>
@@ -839,39 +840,221 @@ func main() {
 様式：
 
 <a name="subRepetition2"></a>
-##### 指定回数条件での繰り返し：for( 条件式 )
+##### 指定回数条件での繰り返し：for 条件式
 様式：
+`for 初期化式; 継続条件式; 増減式 { 処理 }`  
+
+以下、使用例）
+```go
+package main
+
+import "fmt"
+
+func main() {
+	hoge := [10]int {20210929, 20210930 };
+	count := len(hoge)
+
+	for ii := 0; count > ii; ii++ {
+		fmt.Println(hoge[ii])
+	}
+	// 出力結果：
+//				20210929
+//				20210930
+//				0
+//				0
+//				0
+//				0
+//				0
+//				0
+//				0
+//				0
+}
+```
+
 
 <a name="subRepetition3"></a>
 ##### 指定回数条件での繰り返し：拡張for命令
 様式：
+`for 要素数目, 要素値 := range 配列名 { 処理 }`  
+要素数目というのは、繰り返しの回数を表す(要は、カウンタ)。  
+要素値は、配列内容を1つづつ取り出して代入している。  
+どちらかが必要ない項目の場合`_`で無効化できる。  
+
+※今回のアルゴリズムの勉強では勉強する気が無いため省略するが、配列だけでなくスライス・文字列・マップ・チャネルを使える(他にもある？)。  
+
+以下、使用例）
+```go
+package main
+
+import "fmt"
+
+func main() {
+	hoge := [10]int {20210929, 20210930 };
+
+	for ii, value := range hoge {
+		fmt.Println(ii, value)
+	}
+	// 出力結果：
+//				20210929
+//				20210930
+//				0
+//				0
+//				0
+//				0
+//				0
+//				0
+//				0
+//				0
+	fmt.Println("-----------------------");
+}
+```
+
 
 <a name="subRepetition4"></a>
 #### `for`の入れ子。
+他のプログラミング言語と同様に普通に使える。  
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	boo := [...]int {20210929, 20211001 };
+	bar := [...]string {"本日は晴天なり。", "bar" };
+
+	for ii, value := range boo {
+		for jj, valuf := range bar {
+			fmt.Printf("ii：%d-jj：%d, boo[%d], bar[%s]\n", ii, jj, value, valuf)
+		}
+	}
+	// 出力結果：
+//				ii：0-jj：0, boo[20210929], bar[本日は晴天なり。]
+//				ii：0-jj：1, boo[20210929], bar[bar]
+//				ii：1-jj：0, boo[20211001], bar[本日は晴天なり。]
+//				ii：1-jj：1, boo[20211001], bar[bar]
+}
+```
+
 
 <a name="subRepetition5"></a>
 #### ジャンプ処理
 
+* ジャンプ種類  
+  * [**continue**](#subRepetition5break)  
+    繰り返しの最初に戻る。  
+  * [**break**](#subRepetition5continue)  
+    繰り返しを抜ける。  
+
+<a name="subRepetition5break"></a>
+以下、ブレーク文。
+```go
+func main() {
+	array := [...]string {"本", "日", "は", "晴", "天", "な", "り", }
+
+	for ii, value := range array {
+		fmt.Println(ii, value)
+		if ii == 2 {
+			break
+		}
+	}
+	// 出力結果：
+//				0 本
+//				1 日
+//				2 は
+}
+```
+配列内の添え字が2になったときにfor文を抜け出るため、"**晴**"以降の文字が出力されない。  
+
+<a name="subRepetition5continue"></a>
+以下、コンテニュ文。
+```go
+func main() {
+	array := [...]string {"本", "日", "は", "晴", "天", "な", "り", }
+
+	for ii, value := range array {
+		if ii == 2 {
+			continue
+		}
+		fmt.Println(ii, value)
+	}
+	// 出力結果：
+//				0 本
+//				1 日
+//				3 晴
+//				4 天
+//				5 な
+//				6 り
+}
+```
+配列内の添え字が2になったときにfor文の最初の処理から行われるため、その添え字以降の処理が飛ばされてしまい、"**は**"の文字が出力されない。  
+
+
 <a name="subRepetition6"></a>
 #### 真偽条件での繰り返し：while( 条件式 )
+※Go言語に`while`文は存在しない。
+すべて、`for`文で処理を作る必要がある。  
+
 様式：
+`for 条件式 { 処理 }`  
+
+以下、while文の代わり。
+```go
+package main
+
+import "fmt"
+
+func main() {
+	hoge := [5]int {20210929, 20210930 };
+	count := len(hoge)
+	ii := 0
+
+	for count > ii {
+            // for ii := 0; count > ii {	←☆と言うことは出来ない。;記号を使う場合、2個必要になる(見栄えが悪くなる)。
+		fmt.Println(ii, hoge[ii])
+		ii++
+	}
+	// 出力結果：
+//				0 20210929
+//				1 20210930
+//				2 0
+//				3 0
+//				4 0
+}
+```
 
 <a name="subRepetition7"></a>
 #### 無限ループ
 様式：
+`for { 処理 }`  
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+
+	for {
+		fmt.Println("無限ループ")
+	}
+}
+```
+
 
 <a name="subRepetition999"></a>
 #### 繰り返しでの説明しない項目。
 
-[以下、今回の言語に関係の無い項目を削除すること(対象言語に存在するが、見送るもののみ、以下残す)。]  
 <details><summary>今回は勉強を見送る一覧</summary>
 
-* [ ] 真偽条件での繰り返し  
+* 真偽条件での繰り返し  
   基本構造例：do〜while( 条件式 )  
+  Go言語には存在しない。  
 
 </details>
 
 </details>
+
 
 <a name="function関数sub"></a>
 <details><summary>実際の関数の勉強</summary>
