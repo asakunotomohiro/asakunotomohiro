@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.810.6
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "無限ループfor", "無限ループfor\無限ループfor.csproj", "{401B39D5-4209-4E48-823B-C42FD6315DDF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|anycpu = Debug|anycpu
+		Release|anycpu = Release|anycpu
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{401B39D5-4209-4E48-823B-C42FD6315DDF}.Debug|anycpu.ActiveCfg = Debug|anycpu
+		{401B39D5-4209-4E48-823B-C42FD6315DDF}.Debug|anycpu.Build.0 = Debug|anycpu
+		{401B39D5-4209-4E48-823B-C42FD6315DDF}.Release|anycpu.ActiveCfg = Release|anycpu
+		{401B39D5-4209-4E48-823B-C42FD6315DDF}.Release|anycpu.Build.0 = Release|anycpu
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {18000108-531F-41E0-8F99-FEE8226A7D17}
+	EndGlobalSection
+EndGlobal

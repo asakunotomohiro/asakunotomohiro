@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.810.6
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "拡張for命令での繰り返し処理", "拡張for命令での繰り返し処理\拡張for命令での繰り返し処理.csproj", "{666390D4-EDDF-4337-B333-3AED1E537B7A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|anycpu = Debug|anycpu
+		Release|anycpu = Release|anycpu
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{666390D4-EDDF-4337-B333-3AED1E537B7A}.Debug|anycpu.ActiveCfg = Debug|anycpu
+		{666390D4-EDDF-4337-B333-3AED1E537B7A}.Debug|anycpu.Build.0 = Debug|anycpu
+		{666390D4-EDDF-4337-B333-3AED1E537B7A}.Release|anycpu.ActiveCfg = Release|anycpu
+		{666390D4-EDDF-4337-B333-3AED1E537B7A}.Release|anycpu.Build.0 = Release|anycpu
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {505591FD-D03C-46CD-92C5-44A59C8A67E6}
+	EndGlobalSection
+EndGlobal

@@ -38,7 +38,7 @@
   * [x] [変数](#variable変数)2021/08/20  
   * [x] [配列](#arrangement配列)2021/09/19  
   * [x] [条件分岐](#Conditional条件分岐)2021/09/30  
-  * [ ] [繰り返し](#repetition繰り返し)  
+  * [x] [繰り返し](#repetition繰り返し)2021/09/30  
   * [ ] [関数](#function関数)  
 
 <details><summary>大本の目的であるアルゴリズムの勉強用目次</summary>
@@ -181,10 +181,10 @@ $
 $ mcs ./helloWorld.cs	←☆コンパイル。
 $ ll
 total 48
--rwxr-xr-x  1 asakunotomohiro  staff   3072  8 20 15:43 helloWorld.exe*	←☆コンパイル結果ファイル。
--rw-r--r--  1 asakunotomohiro  staff     91  8 20 15:42 helloWorld.cs	←☆コンパイル対象ファイル。
-drwxr-xr-x  9 asakunotomohiro  staff    288  8 20 15:40 基礎知識用の勉強/
--rw-r--r--@ 1 asakunotomohiro  staff  13053  8 20 15:19 README.md
+-rwxr-xr-x  1 hoge本日は  staff   3072  8 20 15:43 helloWorld.exe*	←☆コンパイル結果ファイル。
+-rw-r--r--  1 hoge本日は  staff     91  8 20 15:42 helloWorld.cs	←☆コンパイル対象ファイル。
+drwxr-xr-x  9 hoge本日は  staff    288  8 20 15:40 基礎知識用の勉強/
+-rw-r--r--@ 1 hoge本日は  staff  13053  8 20 15:19 README.md
 $ ./helloWorld.exe	←☆コンパイル結果ファイル単体での実行は不可。
 -bash: ./helloWorld.exe: cannot execute binary file
 $ mono ./helloWorld.exe 	←☆"mono"プログラムによる実行にて、成功する。
@@ -198,10 +198,10 @@ $ ./helloWorld.exe 	←☆当たり前だが、単体実行失敗。
 -bash: ./helloWorld.exe: cannot execute binary file
 $ ll
 total 48
--rwxr-xr-x  1 asakunotomohiro  staff   3584  8 20 15:44 helloWorld.exe*	←☆コンパイル結果ファイル。
--rw-r--r--  1 asakunotomohiro  staff     91  8 20 15:42 helloWorld.cs	←☆コンパイル対象ファイル。
-drwxr-xr-x  9 asakunotomohiro  staff    288  8 20 15:40 基礎知識用の勉強/
--rw-r--r--@ 1 asakunotomohiro  staff  13053  8 20 15:19 README.md
+-rwxr-xr-x  1 hoge本日は  staff   3584  8 20 15:44 helloWorld.exe*	←☆コンパイル結果ファイル。
+-rw-r--r--  1 hoge本日は  staff     91  8 20 15:42 helloWorld.cs	←☆コンパイル対象ファイル。
+drwxr-xr-x  9 hoge本日は  staff    288  8 20 15:40 基礎知識用の勉強/
+-rw-r--r--@ 1 hoge本日は  staff  13053  8 20 15:19 README.md
 $ mono ./helloWorld.exe 	←☆"mono"プログラムによる実行にて、成功する。
 Hello World.
 $
@@ -566,8 +566,6 @@ namespace 二次元配列
 	{
 		public static void Main(string[] args)
 		{
-			Console.WriteLine("Hello World!");
-
 			int[,] array = new int[5, 10];
 			var twoarray = new int[,]
 			{
@@ -754,48 +752,275 @@ namespace 条件分岐
 ### 繰り返し
 
 * 絶対的に勉強する一覧  
-  * [ ] [指定回数条件での繰り返し](#subRepetition1)  
-    [ ] [基本構造例：for( 条件式 )](#subRepetition2)  
-    [ ] [基本構造例：拡張for命令(`in`)](#subRepetition3)  
-    [ ] [`for`の入れ子。](#subRepetition4)  
+  * [x] [指定回数条件での繰り返し](#subRepetition1)  
+    [x] [基本構造例：for( 条件式 )](#subRepetition2)  
+    [x] [基本構造例：拡張for命令(`in`)](#subRepetition3)  
+    `foreach( データ型 変数名 in コレクション ){〜}`  
+    [x] [`for`の入れ子。](#subRepetition4)  
   * [ジャンプ処理](#subRepetition5)  
-    * [ ] break  
-    * [ ] continue  
-  * [ ] [真偽条件での繰り返し](#subRepetition6)  
-    [ ] [基本構造例：while( 条件式 )](#subRepetition6)  
-    [ ] [無限ループ](#subRepetition7)  
+    * [x] break  
+    * [x] continue  
+  * [x] [真偽条件での繰り返し](#subRepetition6)  
+    [x] [基本構造例：while( 条件式 )](#subRepetition6)  
+    `while ( 条件式) { 処理; }`  
+    [x] [無限ループ](#subRepetition7)  
 
 
 <a name="subRepetition1"></a>
 #### 繰り返し
-様式：
+
 
 <a name="subRepetition2"></a>
 ##### 指定回数条件での繰り返し：for( 条件式 )
 様式：
+```csharp
+for ( 初期化式; 継続条件式; 増減式 )
+{
+    処理;
+}
+```
+
+以下、実際のプログラム。
+```c#
+using System;
+
+namespace 指定回数条件での繰り返しfor
+{
+	class MainClass
+	{
+		public static void Main(string[] args)
+		{
+			for (int ii = 0; ii < 5; ii++)
+			{
+				Console.WriteLine(ii + "回目の実行");
+			}
+			// 実行結果：
+//						0回目の実行
+//						1回目の実行
+//						2回目の実行
+//						3回目の実行
+//						4回目の実行
+		}
+	}
+}
+```
+※IDEが勝手に行うフォーマッタ機能を無効化したい。  
+
 
 <a name="subRepetition3"></a>
 ##### 指定回数条件での繰り返し：拡張for命令
 様式：
+```csharp
+foreach ( データ型 変数名 in コレクション )
+{
+    処理;
+}
+```
+
+以下、実際のプログラム例）
+```c#
+using System;
+
+namespace 拡張for命令での繰り返し処理
+{
+	class MainClass
+	{
+		public static void Main(string[] args)
+		{
+			var hoge = new[] { "hoge", "boo", "bar", "本日は", };
+			int ii = 0;
+
+			foreach (var value in hoge)
+			{
+				Console.WriteLine("hoge[{0}]の値：{1}", ii, value);
+				ii++;
+			}
+			// 出力結果：
+//						hoge[0]の値：hoge
+//						hoge[1]の値：boo
+//						hoge[2]の値：bar
+//						hoge[3]の値：本日は
+		}
+	}
+}
+```
+
 
 <a name="subRepetition4"></a>
 #### `for`の入れ子。
 
+
+```c#
+using System;
+
+namespace forの入れ子
+{
+	class MainClass
+	{
+		public static void Main(string[] args)
+		{
+			var array1 = new[] { "本日は", "晴天なり", };
+			var array2 = new[] { "hoge", "bar", };
+			foreach (var ii in array1)
+			{
+				foreach (var jj in array2)
+				{
+					Console.WriteLine("1つ目のfor文の値：{0}\n　　2つ目のfor文の値：{1}", ii, jj);
+				}
+
+			}
+			// 出力結果：
+//						1つ目のfor文の値：本日は
+//						　　2つ目のfor文の値：hoge
+//						1つ目のfor文の値：本日は
+//						　　2つ目のfor文の値：bar
+//						1つ目のfor文の値：晴天なり
+//						　　2つ目のfor文の値：hoge
+//						1つ目のfor文の値：晴天なり
+//						　　2つ目のfor文の値：bar
+		}
+	}
+}
+```
+
 <a name="subRepetition5"></a>
 #### ジャンプ処理
+
+* 種類。  
+  * [break](#subRepetition5break)  
+  * [continue](#)  
+
+<a name="subRepetition5break"></a>
+以下、break文用のプログラム例）
+```c#
+using System;
+
+namespace ジャンプ処理break
+{
+	class MainClass
+	{
+		public static void Main(string[] args)
+		{
+			for (int ii = 0; 10 > ii; ii++)
+			{
+				if (ii == 3)
+				{
+					break;
+				}
+				Console.WriteLine("{0}回目の実行", ii + 1);
+			}
+			// 実行結果：
+//						1回目の実行
+//						2回目の実行
+//						3回目の実行
+		}
+	}
+}
+```
+3回目になった場合、break文が走る処理を入れているため、繰り返し処理を抜け出ている。  
+
+<a name="subRepetition5continue"></a>
+以下、continue文用のプログラム例）
+```c#
+using System;
+
+namespace ジャンプ処理continue
+{
+	class MainClass
+	{
+		public static void Main(string[] args)
+		{
+			for (int ii = 0; 5 > ii; ii++)
+			{
+				if (ii == 2)
+				{
+					continue;
+				}
+				Console.WriteLine("{0}回目の実行。", ii + 1);
+			}
+			// 実行結果：
+//						1回目の実行。
+//						2回目の実行。
+//						4回目の実行。
+//						5回目の実行。
+		}
+	}
+}
+```
+3回目の実行時に処理を抜け、繰り返しの先頭に戻る。  
+そのため、3回目の出力結果が成されていない。  
+
 
 <a name="subRepetition6"></a>
 #### 真偽条件での繰り返し：while( 条件式 )
 様式：
+```csharp
+while ( 条件式)
+{
+    処理;
+}
+```
+
+
+以下、プログラム例）
+```c#
+using System;
+
+namespace 真偽条件での繰り返しwhile
+{
+	class MainClass
+	{
+		public static void Main(string[] args)
+		{
+			int ii = 0;
+			while (3 > ii)
+			{
+				Console.WriteLine("{0}回目の実行。", ii + 1);
+				ii++;
+			}
+			// 実行結果：
+//						1回目の実行。
+//						2回目の実行。
+//						3回目の実行。
+		}
+	}
+}
+```
+
 
 <a name="subRepetition7"></a>
 #### 無限ループ
 様式：
+`for(;;){〜;}`  
+
+以下、for文での無限ループ例）
+```c#
+using System;
+
+namespace 無限ループfor
+{
+	class MainClass
+	{
+		public static void Main(string[] args)
+		{
+			int ii = 0;
+			for (; ; )
+			{
+				Console.WriteLine("無限ループ{0}回目", ii + 1);
+				ii++;
+			}
+		}
+	}
+}
+```
+
+while文でもできるはず。  
+`while(){〜;}`  
+
 
 <a name="subRepetition999"></a>
 #### 繰り返しでの説明しない項目。
 
-[以下、今回の言語に関係の無い項目を削除すること(対象言語に存在するが、見送るもののみ、以下残す)。]  
 <details><summary>今回は勉強を見送る一覧</summary>
 
 * [ ] 真偽条件での繰り返し  
@@ -804,6 +1029,7 @@ namespace 条件分岐
 </details>
 
 </details>
+
 
 <a name="function関数sub"></a>
 <details><summary>実際の関数の勉強</summary>
