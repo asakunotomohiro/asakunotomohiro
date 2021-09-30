@@ -33,17 +33,11 @@
 本の概要。  
 > エンジニアの基礎体力を身につける  
 
-<details><summary>基礎知識5種類の項目</summary>
-
-以下の基礎知識5種類の勉強が終わり次第、ここに移動する。  
-
-</details>
-
 ※プログラミングに使う基礎知識を統一する(簡単に済ませられる量に絞り込む)。  
 * 基礎知識5種類  
   * [x] [変数](#variable変数)2021/08/20  
   * [x] [配列](#arrangement配列)2021/09/19  
-  * [ ] [条件分岐](#Conditional条件分岐)  
+  * [x] [条件分岐](#Conditional条件分岐)2021/09/30  
   * [ ] [繰り返し](#repetition繰り返し)  
   * [ ] [関数](#function関数)  
 
@@ -54,7 +48,6 @@
 <a name="algorithmTextbookLearnedinPythonContents"></a>
 * [アルゴリズム勉強目次](#algorithmTextbookLearnedinPython)  
   * [ ] Chapter 1 プログラミングの基礎知識  
-    現時点で完了している(上記の基礎知識5種類として)。  
   * [ ] [Chapter 2 プログラミングの力を養う](#algorithmTextbookLearnedinPythonChapter2)  
   * [ ] [Chapter 3 データ構造を学ぶ](#algorithmTextbookLearnedinPythonChapter3)  
   * [ ] [Chapter 4 サーチ](#algorithmTextbookLearnedinPythonChapter4)  
@@ -220,19 +213,13 @@ $
 しかし、やる気を維持するためにも1冊分を読了させることも目的としており、深掘りせずに進めることも考慮すること。  
 要は、深く踏み込むか、流し読み程度に抑えるかどうかはそのときに決める。  
 
-<a name="variable変数"></a>
-<a name="arrangement配列"></a>
-<a name="Conditional条件分岐"></a>
-<a name="repetition繰り返し"></a>
-<a name="function関数"></a>
-<details><summary>基礎知識5種類の各項目</summary>
 
+#### 概要。
 基礎知識として5種類を勉強するが、その目的はアルゴリズムの勉強用であって、5種類を本格的に極めるためではない。  
 そのため、1つ1つを最小限に絞り込み、1つを10分前後の勉強時間に収まるように気をつけること。  
 ※現時点で守れていないため、何とかして短い時間に抑え、アルゴリズムの勉強を本格的に勉強できるように考慮すること。  
 
-
-#### 概要。
+<a name="variable変数"></a>
 * [変数](#variable変数sub)  
   * 変数の宣言方法  
     数値の代入  
@@ -249,6 +236,7 @@ $
     * データ型の変換(キャスト)  
   * ※スコープは"関数"で説明する。  
 
+<a name="arrangement配列"></a>
 * [配列(リスト)](#arrangement配列sub)  
   * 宣言方法  
     要素  
@@ -258,6 +246,7 @@ $
   * 2次元配列  
   * ※取り出しは"for"で説明する。  
 
+<a name="Conditional条件分岐"></a>
 * [条件分岐](#Conditional条件分岐sub)  
   * if文  
     条件式  
@@ -267,6 +256,7 @@ $
       論理演算子  
       比較演算子  
 
+<a name="repetition繰り返し"></a>
 * [繰り返し](#repetition繰り返しsub)  
   * for文  
     条件式  
@@ -280,6 +270,7 @@ $
     条件式  
     無限ループ  
 
+<a name="function関数"></a>
 * [関数](#function関数sub)  
   書式  
   引数  
@@ -292,8 +283,6 @@ $
   * 変数の有効範囲(スコープ)  
     グローバル変数  
     ローカル変数  
-
-</details>
 
 <a name="variable変数sub"></a>
 <details><summary>実際の変数の勉強</summary>
@@ -394,6 +383,8 @@ World.}";
 
 }
 ```
+`Console.WriteLine(hoge + boo + hoo + bar + har + bee);`
+
 
 <a name="subVariable4"></a>
 #### データ型
@@ -641,55 +632,102 @@ namespace 二次元配列
 ### 条件分岐
 
 * 絶対的に勉強する一覧  
-  * [ ] [単純分岐-"もし"1つ。](#subConditional1)  
+  * [x] [単純分岐-"もし"1つ。](#subConditional1)  
     基本構造例：if  
-  * [ ] [多岐分岐-"もし"2つ以上。](#subConditional1)  
+  * [x] [多岐分岐-"もし"2つ以上。](#subConditional1)  
     基本構造例：if〜else if〜  
-  * [ ] [論理演算子(ド・モルガンの法則)](#subConditional2)  
-    * [ ] 論理積(`AND`・`&&`)  
-    * [ ] 論理和(`OR`・`||`)  
-  * [ ] [比較演算子](#subConditional3)  
-    * [ ] 等しい(`==`)  
-    * [ ] 等しくない(`!=`)  
-    * [ ] より大きい(`>`)  
-    * [ ] より小さい(`<`)  
-    * [ ] 以上(`>=`)  
-    * [ ] 以下(`<=`)  
+  * [x] [論理演算子(ド・モルガンの法則)](#subConditional2)  
+    * [x] 論理積(`AND`・`&&`)  
+    * [x] 論理和(`OR`・`||`)  
+  * [x] [比較演算子](#subConditional3)  
+    * [x] 等しい(`==`)  
+    * [x] 等しくない(`!=`)  
+    * [x] より大きい(`>`)  
+    * [x] より小さい(`<`)  
+    * [x] 以上(`>=`)  
+    * [x] 以下(`<=`)  
 
 <a name="subConditional1"></a>
 #### 条件分岐
 様式：
+```csharp
+if ( 条件式1 )
+{
+    処理A;
+}
+else if ( 条件式2 )
+{
+    処理B;
+}
+else
+{
+    処理C;
+}
+```
+
+以下、プログラム例）
+```c#
+using System;
+
+namespace 条件分岐
+{
+	class MainClass
+	{
+		public static void Main(string[] args)
+		{
+			string hoge = "本日は晴天なり";
+			if (hoge == "hoge")
+			{
+				Console.WriteLine("hoge==" + hoge);
+			}
+			else if (hoge == "本日は晴天なり")
+			{
+				// 文字列の比較もイコール記号で可能。
+				Console.WriteLine("本日は晴天なり==" + hoge);
+				// 出力結果：本日は晴天なり==本日は晴天なり
+			}
+			else
+			{
+				Console.WriteLine("else：" + hoge);
+			}
+		}
+	}
+}
+```
+
 
 <a name="subConditional2"></a>
 #### 論理演算子(ド・モルガンの法則)
 
 |演算子|意味|備考|
 |------|----|----|
-|`&&`|論理積|別表記`AND`|
-|`||`|論理和|別表記`OR`|
+|`&&`|論理積||
+|`||`|論理和||
+
 
 <a name="subConditional3"></a>
 #### 比較演算子
 
 |演算子|意味|備考|
 |------|----|----|
-|`==`|等号||
+|`==`|等号|`string x == "xyz;"`<br>`bool tf = x == "xxx;"`(tf変数値はfalse)|
 |`!=`|不等||
 |`>`|より大きい||
 |`<`|より小さい||
 |`>=`|以上||
 |`<=`|以下||
 
+
 <a name="subConditional999"></a>
 #### 条件分岐での説明しない項目。
 
-[以下、今回の言語に関係の無い項目を削除すること(対象言語に存在するが、見送るもののみ、以下残す)。]  
 <details><summary>今回は勉強を見送る一覧</summary>
 
 * 多岐分岐-条件にて複数から選ぶ。  
   基本構造例：switch  
 
 * 関係演算子  
+  * [ ] 複合代入演算子(`+=`・`%=`など)  
   * [ ] 三項演算子(`?:`)  
   * [ ] 論理演算子  
     * [ ] 排他的論理和(`XOR`・`NOT OR`・`^`)  
@@ -708,6 +746,7 @@ namespace 二次元配列
 </details>
 
 </details>
+
 
 <a name="repetition繰り返しsub"></a>
 <details><summary>実際の繰り返しの勉強</summary>
