@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.810.6
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "指定回数条件での繰り返しfor", "指定回数条件での繰り返しfor\指定回数条件での繰り返しfor.csproj", "{556F4C75-2982-4478-AB9F-CBBA1FEE1A80}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|anycpu = Debug|anycpu
+		Release|anycpu = Release|anycpu
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{556F4C75-2982-4478-AB9F-CBBA1FEE1A80}.Debug|anycpu.ActiveCfg = Debug|anycpu
+		{556F4C75-2982-4478-AB9F-CBBA1FEE1A80}.Debug|anycpu.Build.0 = Debug|anycpu
+		{556F4C75-2982-4478-AB9F-CBBA1FEE1A80}.Release|anycpu.ActiveCfg = Release|anycpu
+		{556F4C75-2982-4478-AB9F-CBBA1FEE1A80}.Release|anycpu.Build.0 = Release|anycpu
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7823ACC3-EC8C-46AC-8254-092E4AFC29FD}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.810.6
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "配列", "配列\配列.csproj", "{B435A3C3-C605-4F5B-B8CB-0679CE0A52A9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|anycpu = Debug|anycpu
+		Release|anycpu = Release|anycpu
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B435A3C3-C605-4F5B-B8CB-0679CE0A52A9}.Debug|anycpu.ActiveCfg = Debug|anycpu
+		{B435A3C3-C605-4F5B-B8CB-0679CE0A52A9}.Debug|anycpu.Build.0 = Debug|anycpu
+		{B435A3C3-C605-4F5B-B8CB-0679CE0A52A9}.Release|anycpu.ActiveCfg = Release|anycpu
+		{B435A3C3-C605-4F5B-B8CB-0679CE0A52A9}.Release|anycpu.Build.0 = Release|anycpu
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {52C8AFC1-3A4A-4302-8CDC-476F2FE388D8}
+	EndGlobalSection
+EndGlobal

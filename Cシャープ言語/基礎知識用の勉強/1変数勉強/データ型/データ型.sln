@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.810.6
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "データ型", "データ型\データ型.csproj", "{441D1C26-65B0-44E2-9428-37EF2056BB27}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|anycpu = Debug|anycpu
+		Release|anycpu = Release|anycpu
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{441D1C26-65B0-44E2-9428-37EF2056BB27}.Debug|anycpu.ActiveCfg = Debug|anycpu
+		{441D1C26-65B0-44E2-9428-37EF2056BB27}.Debug|anycpu.Build.0 = Debug|anycpu
+		{441D1C26-65B0-44E2-9428-37EF2056BB27}.Release|anycpu.ActiveCfg = Release|anycpu
+		{441D1C26-65B0-44E2-9428-37EF2056BB27}.Release|anycpu.Build.0 = Release|anycpu
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {613884CB-A751-4E34-8921-0EA2C6951BC2}
+	EndGlobalSection
+EndGlobal
