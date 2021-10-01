@@ -39,7 +39,7 @@
   * [x] [配列](#arrangement配列)2021/09/19  
   * [x] [条件分岐](#Conditional条件分岐)2021/09/30  
   * [x] [繰り返し](#repetition繰り返し)2021/09/30  
-  * [ ] [関数](#function関数)  
+  * [x] [関数](#function関数)2021/10/01  
 
 <details><summary>大本の目的であるアルゴリズムの勉強用目次</summary>
 
@@ -1037,31 +1037,158 @@ while文でもできるはず。
 ### 関数
 
 * 絶対的に勉強する一覧  
-  * [ ] 使い回せるようにまとめること。  
-    * [ ] [引数と戻り値の組み合わせ。](#subFunction1)  
-      [ ] 引数無し-戻り値無し  
-      [ ] 引数あり-戻り値無し  
-      [ ] 引数無し-戻り値あり  
-      [ ] 引数あり-戻り値あり  
+  * [x] 使い回せるようにまとめること。  
+    * [x] [引数と戻り値の組み合わせ。](#subFunction1)  
+      [x] 引数無し-戻り値無し  
+      [x] 引数あり-戻り値無し  
+      [x] 引数無し-戻り値あり  
+      [x] 引数あり-戻り値あり  
     * [スコープ](#subFunction2)  
-      [ ] グローバルスコープ変数  
-      [ ] ローカルスコープ変数  
+      [x] グローバルスコープ変数  
+      [x] ローカルスコープ変数  
+
 
 <a name="subFunction1"></a>
 #### 関数
-様式：
+今回は、メソッドを関数として扱う(当然クラスもゆくゆくは勉強していく)。  
+逆に、メソッドを勉強しているかと言われてもそんなことないのだが・・・(アルゴリズム用の勉強範囲はどこまでにすべきだ？)。  
+
+クラス作成様式：
+```csharp
+属性 修飾子 class クラス名 引数 : 継承元1, 継承元2, ・・・ 引数制約指定節
+{
+    処理;
+}
+```
+
+メソッド作成様式：
+```csharp
+属性 修飾子 戻り値の型 メソッド名 引数 (引数一覧) 引数型制約指定節
+{
+    処理;
+}
+```
+
+以下、「引数無し-戻り値無し」の関数呼び出し。
+```c#
+using System;
+
+namespace 関数
+{
+	class func
+	{
+		public void nofuncno()
+		{
+			Console.WriteLine("引数なし-戻り値なし");
+		}
+	}
+
+	class MainClass
+	{
+		public static void Main(string[] args)
+		{
+			func hoge = new func();
+			hoge.nofuncno();
+			// 引数なし-戻り値なし
+		}
+	}
+}
+```
+
+以下、「引数あり-戻り値無し」の関数呼び出し。
+```c#
+using System;
+
+namespace 関数
+{
+	class func
+	{
+		public void nofunc(string args)
+		{
+			Console.WriteLine("引数{0}-戻り値なし", args);
+		}
+	}
+
+	class MainClass
+	{
+		public static void Main(string[] args)
+		{
+			func hoge = new func();
+			hoge.nofunc("bar");
+			// 引数bar-戻り値なし
+		}
+	}
+}
+```
+
+以下、「引数無し-戻り値あり」の関数呼び出し。
+```c#
+using System;
+
+namespace 関数
+{
+	class func
+	{
+		public string funcno()
+		{
+			Console.WriteLine("関数内出力");
+			return "引数なし-戻り値あり";
+		}
+	}
+
+	class MainClass
+	{
+		public static void Main(string[] args)
+		{
+			func hoge = new func();
+			string ret = hoge.funcno();
+			Console.WriteLine("　　" + ret);
+			// 関数内出力
+			// 　　引数なし-戻り値あり
+		}
+	}
+}
+```
+
+以下、「引数あり-戻り値あり」の関数呼び出し。
+```c#
+using System;
+
+namespace 関数
+{
+	class func
+	{
+		public string function(int args)
+		{
+			Console.WriteLine("引数{0}-戻り値あり", args);
+			return "本日は晴天なり。";
+		}
+	}
+
+	class MainClass
+	{
+		public static void Main(string[] args)
+		{
+			func hoge = new func();
+			ret = hoge.function(20211001);
+			Console.WriteLine("　　" + ret);
+			// 引数20211001-戻り値あり
+			// 　　本日は晴天なり。
+		}
+	}
+}
+```
+
 
 <a name="subFunction2"></a>
 #### スコープ
+ブロックで囲まれた範囲がスコープとして有効範囲になっている。  
+
 
 <a name="subFunction999"></a>
 #### 関数での説明しない項目。
 
-[以下、今回の言語に関係の無い項目を削除すること(対象言語に存在するが、見送るもののみ、以下残す)。]  
 <details><summary>今回は勉強を見送る一覧</summary>
-
-そもそもPythonは、普通に必要？  
-しかし、アルゴリズムの勉強には不要なのだろう。  
 
 * 標準的な関数  
   * [ ] 可変長引数  
@@ -1088,9 +1215,8 @@ while文でもできるはず。
 
 </details>
 
-<details><summary>アルゴリズムの勉強用の詳細記述場所</summary>
 
-※基礎知識5種類の勉強終了後に、ここを解放する。  
+<details><summary>アルゴリズムの勉強用の詳細記述場所</summary>
 
 <a name="algorithmTextbookLearnedinPython"></a>
 #### ☆アルゴリズムの勉強チャプタ概要☆
@@ -1388,6 +1514,7 @@ Python限定にしたくなかったが、他のプログラミング言語に�
 #### マンデルブロー集合を描こう。
 
 </details>
+
 
 ## ※Gitのマージルール
 study2programmingに取り込むときのマージは、3方向マージ(`--no-ff`)を使う。  
