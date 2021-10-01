@@ -4,7 +4,10 @@
 
 <a name="algorithmHowToUseTheBranch"></a>
 ## ブランチの利用方法
-アルゴリズムの勉強用に、まずは、構造化プログラミングの勉強を行う。
+ここのブランチは、Python書籍からのアルゴリズム問題をC#言語に置き換えて勉強するのに使う。  
+また、具体的なアルゴリズムの種類は、下記書籍の目次チャプターに限定する。  
+書籍名：[Pythonで学ぶアルゴリズムの教科書](#algorithmTextbookLearnedinPythonBook)  
+※チャプターごとにブランチを分けていく。  
 
 
 <a name="algorithmHowToStudy"></a>
@@ -27,141 +30,8 @@
 デバッグ環境まで用意する必要があるようなのだが、やり方が分からないため、VS2019を使うことにした。  
 開発環境を用意するのに時間を使いたくないからな。  
 
-
-<a name="algorithmTextbookLearnedinPythonBook"></a>
-## 「[Pythonで学ぶアルゴリズムの教科書](https://book.impress.co.jp/books/1120101024)」
-本の概要。  
-> エンジニアの基礎体力を身につける  
-
-<a name="basicKnowledgeFiveTypesOfStudyRange"></a>
-※プログラミングに使う基礎知識を統一する(簡単に済ませられる量に絞り込む)。  
-* 基礎知識5種類  
-  * [x] [変数](#variable変数)2021/08/20  
-  * [x] [配列](#arrangement配列)2021/09/19  
-  * [x] [条件分岐](#Conditional条件分岐)2021/09/30  
-  * [x] [繰り返し](#repetition繰り返し)2021/09/30  
-  * [x] [関数](#function関数)2021/10/01  
-
-<details><summary>大本の目的であるアルゴリズムの勉強用目次</summary>
-
-<a name="algorithmTextbookLearnedinPythonContents"></a>
-* [アルゴリズム勉強目次](#algorithmTextbookLearnedinPython)  
-  * [ ] [Chapter 1 プログラミングの基礎知識](#basicKnowledgeFiveTypesOfStudyRange)  
-  * [ ] [Chapter 2 プログラミングの力を養う](#algorithmTextbookLearnedinPythonChapter2)  
-  * [ ] [Chapter 3 データ構造を学ぶ](#algorithmTextbookLearnedinPythonChapter3)  
-  * [ ] [Chapter 4 サーチ](#algorithmTextbookLearnedinPythonChapter4)  
-  * [ ] [Chapter 5 ソート](#algorithmTextbookLearnedinPythonChapter5)  
-  * [ ] [Chapter 6 ハッシュ](#algorithmTextbookLearnedinPythonChapter6)  
-  * [ ] [Chapter 7 さまざまなアルゴリズムを学ぶ](#algorithmTextbookLearnedinPythonChapter7)  
-  * [ ] [Chapter 8 アルゴリズムを見える化する](#algorithmTextbookLearnedinPythonChapter8)  
-  * Appendix 1 Pythonのインストール方法
-  * Appendix 2 テキストエディタと統合開発環境
-  * Appendix 3 Pythonの記述ルール
-
-</details>
-
-<a name="breakingAwayFromBasicKnowledge"></a>
-<details><summary>応用知識の項目</summary>
-
-<a name="expandTheScopeOfBasicKnowledge"></a>
-### 基礎知識5種類の勉強範囲を広げる
-基礎知識5種類の勉強は、アルゴリズムの勉強用に特化していたが、この部分は、通常開発ができる範囲に手を広げる。  
-
-* 基礎知識5種類の範囲を広げる  
-  * [ ] [変数](#practicaluseVariable変数)  
-  * [ ] [配列](#practicaluseArrangement配列)  
-  * [ ] [条件分岐](#practicaluseConditional条件分岐)  
-  * [ ] [繰り返し](#practicaluseRepetition繰り返し)  
-  * [ ] [関数](#practicaluseFunction関数)  
-
-
-<a name="rangeOtherThanBasicKnowledge"></a>
-### 基礎知識5種類の勉強以外の項目
-基礎知識5種類に納められない範囲の勉強に手を広げる。  
-
-* [応用知識](#appliedknowledge)  
-  * [ ] [ポインタ・リファレンス](#practicalusePointer)  
-  * [ ] [NULL・nil](#practicaluseNull)  
-  * [ ] [ハッシュ(連想配列)](#practicaluseHash)  
-  * [ ] [ファイル操作](#practicaluseFileoperation)  
-  * [ ] [ディレクトリ操作](#practicaluseDirectorymanipulation)  
-  * [ ] [オブジェクト指向](#practicaluseObjectorientation)  
-  * [ ] [テスト方法](#practicaluseTester)  
-  * [ ] [標準関数(モジュール)](#practicaluseModule)  
-  * [ ] [プロセス管理](#practicaluseSystemfunc)  
-
-</details>
-
-
-<a name="algorithmSpecificBasicKnowledge"></a>
-<details><summary>基礎知識5種類の作業手順</summary>
-
-## 具体的な基礎知識
-何はともあれ、まずは、"Hello World"を表示するプログラムを作る。  
-その後で、基礎中の基礎となる制御構造(構造化プログラミング)を簡略化しながら勉強する。  
-そのため、以下の手順で勉強を進めることにする。  
-
-* 以下、手順。  
-  * [x] 手順1. 勉強用のブランチに移動する。  
-  * [x] 手順2. ルートディレクトリのひな形ディレクトリをコピーしてくる。  
-    ※ディレクトリ名をプログラミング言語に変更する。  
-    ※配下の**Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける**ディレクトリは削除。  
-  * [x] 手順2-1. 当ファイル(`README.md`)の書き換えを行う。  
-        ※ 開発環境を記録する。  
-        ※ アルゴリズムの勉強用項目は隠しておく(`details`・`summary`)代わりに、基礎知識5種類の勉強用の項目は出しておく。  
-  * [x] 手順2-2. `helloWorld.[言語用の拡張子]`のファイルを作り、おなじみ"Hello World."プログラムを作る。  
-  * [x] 手順2-3. main関数不要であれば、"**実行済み**"ディレクトリを削除すること。  
-  * [x] 手順2-4. コミットする。  
-  * [x] 手順3. 各ディレクトリで、5種類の"絶対的に勉強する一覧"を箇条書きごとに勉強する。  
-    * 以下、5種類の内訳。  
-      ※チェックリストは上記にある。  
-      変数  
-      配列  
-      条件分岐  
-      繰り返し  
-      関数  
-  * [x] 手順3-1. 箇条書きごとにコミット実施する。  
-  * [x] 手順4. 1つのプログラミング言語で、手順3の勉強1種類を終えた時に、次のプログラミング言語に移る。  
-         (細かく分けることでやる気が維持される・・・はず)  
-  * [x] 手順4-1. 今回のプログラミング言語に戻ってきたことにより、次の箇条書きに移り、勉強を継続(再開)する。  
-  * [x] 手順5. 上記、5種類の基礎知識を終わるまで繰り返す。  
-  * [x] 手順6. 5種類の基礎知識終了にて、"study2programming"ブランチにマージする。  
-
-</details>
-
-
-<a name="algorithmSpecificAlgorithmPreSolvingProcedure"></a>
-<details><summary>アルゴリズム問題解決の作業手順</summary>
-
-## 具体的なアルゴリズム問題解決前手順
-アルゴリズムの勉強に、以下の手順を行う。  
-
-* 以下、手順。  
-  * [ ] 手順1. 勉強用のブランチに移動する(上記[目次](#algorithmTextbookLearnedinPythonContents)の1チャプター分専用ブランチとする)。  
-  * [ ] 手順2. ルートディレクトリのひな形ディレクトリ配下の必要なディレクトリをコピーする。  
-    **Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける** ディレクトリ配下の必要なチャプター用ディレクトリ。  
-  * [ ] 手順3. 当ファイル(`README.md`)の書き換えを行う。  
-    [ ] アルゴリズムの勉強用に変更する。  
-    [ ] アルゴリズムの勉強用項目を出すが、基礎知識5種類の勉強項目は隠す(`details`・`summary`)。  
-  * [ ] 編集後、コミットする。  
-  * [ ] 手順4. 各ディレクトリで、チャプタごとに勉強を進める。  
-    ※そのとき、(できる限り)プログラムファイルに[モードライン](https://vim-jp.org/vim-users-jp/2009/06/02/Hack-20.html)を記載する。  
-    ※チェックリストは上記にある。  
-    Chapter 2 プログラミングの力を養う  
-    Chapter 3 データ構造を学ぶ  
-    Chapter 4 サーチ  
-    Chapter 5 ソート  
-    Chapter 6 ハッシュ  
-    Chapter 7 さまざまなアルゴリズムを学ぶ  
-    Chapter 8 アルゴリズムを見える化する  
-  * [ ] 手順5. 1つのプログラミング言語で、手順4の勉強1種類(要は、1チャプタ分の子部分)を終えた時に、次のプログラミング言語に移る。  
-  * [ ] 手順6. 1チャプタ分終了にて、"study2programming"ブランチにマージする。  
-
-</details>
-
-
 <a name="algorithmCheckTheStatusOfTheActualWorkingEnvironment"></a>
-## 実際に作業する環境の状況確認
+<details><summary>実際に作業する環境の状況確認</summary>
 
 * 勉強環境。  
   * 勉強[環境](https://docs.microsoft.com/ja-jp/dotnet/csharp/language-reference/language-specification/introduction)のコンパイルバージョン：version 6.12.0.0  
@@ -246,6 +116,140 @@ Hello World.
 $
 ```
 
+</details>
+
+
+<a name="algorithmTextbookLearnedinPythonBook"></a>
+## 「[Pythonで学ぶアルゴリズムの教科書](https://book.impress.co.jp/books/1120101024)」
+本の概要。  
+> エンジニアの基礎体力を身につける  
+
+<a name="basicKnowledgeFiveTypesOfStudyRange"></a>
+<details><summary>基礎知識5種類の項目</summary>
+
+※プログラミングに使う基礎知識を統一する(簡単に済ませられる量に絞り込む)。  
+* 基礎知識5種類  
+  * [x] [変数](#variable変数)  
+  * [x] [配列](#arrangement配列)  
+  * [x] [条件分岐](#Conditional条件分岐)  
+  * [x] [繰り返し](#repetition繰り返し)  
+  * [x] [関数](#function関数)  
+
+</details>
+
+<a name="algorithmTextbookLearnedinPythonContents"></a>
+* [アルゴリズム勉強目次](#algorithmTextbookLearnedinPython)  
+  * [x] [Chapter 1 プログラミングの基礎知識](#basicKnowledgeFiveTypesOfStudyRange)  
+    現時点で完了している(上記の基礎知識5種類として)。  
+  * [ ] [Chapter 2 プログラミングの力を養う](#algorithmTextbookLearnedinPythonChapter2)  
+  * [ ] [Chapter 3 データ構造を学ぶ](#algorithmTextbookLearnedinPythonChapter3)  
+  * [ ] [Chapter 4 サーチ](#algorithmTextbookLearnedinPythonChapter4)  
+  * [ ] [Chapter 5 ソート](#algorithmTextbookLearnedinPythonChapter5)  
+  * [ ] [Chapter 6 ハッシュ](#algorithmTextbookLearnedinPythonChapter6)  
+  * [ ] [Chapter 7 さまざまなアルゴリズムを学ぶ](#algorithmTextbookLearnedinPythonChapter7)  
+  * [ ] [Chapter 8 アルゴリズムを見える化する](#algorithmTextbookLearnedinPythonChapter8)  
+  * Appendix 1 Pythonのインストール方法
+  * Appendix 2 テキストエディタと統合開発環境
+  * Appendix 3 Pythonの記述ルール
+
+<a name="breakingAwayFromBasicKnowledge"></a>
+<details><summary>応用知識の項目</summary>
+
+<a name="expandTheScopeOfBasicKnowledge"></a>
+### 基礎知識5種類の勉強範囲を広げる
+基礎知識5種類の勉強は、アルゴリズムの勉強用に特化していたが、この部分は、通常開発ができる範囲に手を広げる。  
+
+* 基礎知識5種類の範囲を広げる  
+  * [ ] [変数](#practicaluseVariable変数)  
+  * [ ] [配列](#practicaluseArrangement配列)  
+  * [ ] [条件分岐](#practicaluseConditional条件分岐)  
+  * [ ] [繰り返し](#practicaluseRepetition繰り返し)  
+  * [ ] [関数](#practicaluseFunction関数)  
+
+
+<a name="rangeOtherThanBasicKnowledge"></a>
+### 基礎知識5種類の勉強以外の項目
+基礎知識5種類に納められない範囲の勉強に手を広げる。  
+
+* [応用知識](#appliedknowledge)  
+  * [ ] [ポインタ・リファレンス](#practicalusePointer)  
+  * [ ] [NULL・nil](#practicaluseNull)  
+  * [ ] [ハッシュ(連想配列)](#practicaluseHash)  
+  * [ ] [ファイル操作](#practicaluseFileoperation)  
+  * [ ] [ディレクトリ操作](#practicaluseDirectorymanipulation)  
+  * [ ] [オブジェクト指向](#practicaluseObjectorientation)  
+  * [ ] [テスト方法](#practicaluseTester)  
+  * [ ] [標準関数(モジュール)](#practicaluseModule)  
+  * [ ] [プロセス管理](#practicaluseSystemfunc)  
+
+</details>
+
+
+<a name="algorithmSpecificBasicKnowledge"></a>
+<details><summary>基礎知識5種類の作業手順</summary>
+
+## 具体的な基礎知識
+何はともあれ、まずは、"Hello World"を表示するプログラムを作る。  
+その後で、基礎中の基礎となる制御構造(構造化プログラミング)を簡略化しながら勉強する。  
+そのため、以下の手順で勉強を進めることにする。  
+
+* 以下、手順。  
+  * [x] 手順1. 勉強用のブランチに移動する。  
+  * [x] 手順2. ルートディレクトリのひな形ディレクトリをコピーしてくる。  
+    ※ディレクトリ名をプログラミング言語に変更する。  
+    ※配下の**Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける**ディレクトリは削除。  
+  * [x] 手順2-1. 当ファイル(`README.md`)の書き換えを行う。  
+        ※ 開発環境を記録する。  
+        ※ アルゴリズムの勉強用項目は隠しておく(`details`・`summary`)代わりに、基礎知識5種類の勉強用の項目は出しておく。  
+  * [x] 手順2-2. `helloWorld.[言語用の拡張子]`のファイルを作り、おなじみ"Hello World."プログラムを作る。  
+  * [x] 手順2-3. main関数不要であれば、"**実行済み**"ディレクトリを削除すること。  
+  * [x] 手順2-4. コミットする。  
+  * [x] 手順3. 各ディレクトリで、5種類の"絶対的に勉強する一覧"を箇条書きごとに勉強する。  
+    * 以下、5種類の内訳。  
+      ※チェックリストは上記にある。  
+      変数  
+      配列  
+      条件分岐  
+      繰り返し  
+      関数  
+  * [x] 手順3-1. 箇条書きごとにコミット実施する。  
+  * [x] 手順4. 1つのプログラミング言語で、手順3の勉強1種類を終えた時に、次のプログラミング言語に移る。  
+         (細かく分けることでやる気が維持される・・・はず)  
+  * [x] 手順4-1. 今回のプログラミング言語に戻ってきたことにより、次の箇条書きに移り、勉強を継続(再開)する。  
+  * [x] 手順5. 上記、5種類の基礎知識を終わるまで繰り返す。  
+  * [x] 手順6. 5種類の基礎知識終了にて、"study2programming"ブランチにマージする。  
+
+</details>
+
+
+<a name="algorithmSpecificAlgorithmPreSolvingProcedure"></a>
+<details><summary>アルゴリズム問題解決の作業手順</summary>
+
+## 具体的なアルゴリズム問題解決前手順
+アルゴリズムの勉強に、以下の手順を行う。  
+
+* 以下、手順。  
+  * [x] 手順1. 勉強用のブランチに移動する(上記[目次](#algorithmTextbookLearnedinPythonContents)の1チャプター分専用ブランチとする)。  
+  * [x] 手順2. ルートディレクトリのひな形ディレクトリ配下の必要なディレクトリをコピーする。  
+    **Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける** ディレクトリ配下の必要なチャプター用ディレクトリ。  
+  * [x] 手順3. 当ファイル(`README.md`)の書き換えを行う。  
+    [x] アルゴリズムの勉強用に変更する。  
+    [x] アルゴリズムの勉強用項目を出すが、基礎知識5種類の勉強項目は隠す(`details`・`summary`)。  
+  * [x] 編集後、コミットする。  
+  * [ ] 手順4. 各ディレクトリで、チャプタごとに勉強を進める。  
+    ※チェックリストは上記にある。  
+    Chapter 2 プログラミングの力を養う  
+    Chapter 3 データ構造を学ぶ  
+    Chapter 4 サーチ  
+    Chapter 5 ソート  
+    Chapter 6 ハッシュ  
+    Chapter 7 さまざまなアルゴリズムを学ぶ  
+    Chapter 8 アルゴリズムを見える化する  
+  * [ ] 手順5. 1つのプログラミング言語で、手順4の勉強1種類(要は、1チャプタ分の子部分)を終えた時に、次のプログラミング言語に移る。  
+  * [ ] 手順6. 1チャプタ分終了にて、"study2programming"ブランチにマージする。  
+
+</details>
+
 
 <a name="algorithmNotes"></a>
 ### ※注意事項
@@ -254,79 +258,7 @@ $
 要は、深く踏み込むか、流し読み程度に抑えるかどうかはそのときに決める。  
 
 
-<a name="algorithmOverview"></a>
-#### 概要。
-基礎知識として5種類を勉強するが、その目的はアルゴリズムの勉強用であって、5種類を本格的に極めるためではない。  
-そのため、1つ1つを最小限に絞り込み、1つを10分前後の勉強時間に収まるように気をつけること。  
-※現時点で守れていないため、何とかして短い時間に抑え、アルゴリズムの勉強を本格的に勉強できるように考慮すること。  
-
 <a name="variable変数"></a>
-* [変数](#variable変数sub)  
-  * 変数の宣言方法  
-    数値の代入  
-    文字列の代入  
-    代入したそれらの出力  
-  * 代入した値の変更方法  
-    変数を用いた計算  
-    * 計算用演算子の説明  
-    * データ型の説明  
-      数値-整数型  
-      数値-小数型  
-      文字列  
-      論理値  
-    * データ型の変換(キャスト)  
-  * ※スコープは"関数"で説明する。  
-
-<a name="arrangement配列"></a>
-* [配列(リスト)](#arrangement配列sub)  
-  * 宣言方法  
-    要素  
-    要素数  
-    添え字(インデックス)  
-  * 要素追加方法  
-  * 2次元配列  
-  * ※取り出しは"for"で説明する。  
-
-<a name="Conditional条件分岐"></a>
-* [条件分岐](#Conditional条件分岐sub)  
-  * if文  
-    条件式  
-    * if文からの派生  
-      if〜elif〜else  
-    * 演算子  
-      論理演算子  
-      比較演算子  
-
-<a name="repetition繰り返し"></a>
-* [繰り返し](#repetition繰り返しsub)  
-  * for文  
-    条件式  
-    多重(入れ子)利用  
-    break  
-    continue  
-    拡張for文  
-    　例）range  
-    配列からの取り出し。  
-  * while文  
-    条件式  
-    無限ループ  
-
-<a name="function関数"></a>
-* [関数](#function関数sub)  
-  書式  
-  引数  
-  戻り値  
-  * 組み合わせ  
-    引数無し-戻り値無し  
-    引数あり-戻り値無し  
-    引数無し-戻り値あり  
-    引数あり-戻り値あり  
-  * 変数の有効範囲(スコープ)  
-    グローバル変数  
-    ローカル変数  
-
-
-<a name="variable変数sub"></a>
 <details><summary>実際の変数の勉強</summary>
 
 ### 変数
@@ -357,6 +289,7 @@ $
   * [型変換(キャスト)方法](#subVariable6)  
     * [x] 明示変換  
       `代入先変数名 = (データ型)変数名`  
+
 
 <a name="subVariable1"></a>
 #### 変数
@@ -519,7 +452,7 @@ Console.WriteLine(over);
 </details>
 
 
-<a name="arrangement配列sub"></a>
+<a name="arrangement配列"></a>
 <details><summary>実際の配列の勉強</summary>
 
 ### 配列
@@ -674,7 +607,7 @@ namespace 二次元配列
 </details>
 
 
-<a name="Conditional条件分岐sub"></a>
+<a name="Conditional条件分岐"></a>
 <details><summary>実際の条件分岐の勉強</summary>
 
 ### 条件分岐
@@ -796,7 +729,7 @@ namespace 条件分岐
 </details>
 
 
-<a name="repetition繰り返しsub"></a>
+<a name="repetition繰り返し"></a>
 <details><summary>実際の繰り返しの勉強</summary>
 
 ### 繰り返し
@@ -1080,7 +1013,7 @@ while文でもできるはず。
 </details>
 
 
-<a name="function関数sub"></a>
+<a name="function関数"></a>
 <details><summary>実際の関数の勉強</summary>
 
 ### 関数
@@ -1263,8 +1196,6 @@ namespace 関数
 </details>
 
 
-<details><summary>アルゴリズムの勉強用の詳細記述場所</summary>
-
 <a name="algorithmTextbookLearnedinPython"></a>
 #### ☆アルゴリズムの勉強チャプタ概要☆
 <a name="algorithmTextbookLearnedinPythonChapter2"></a>
@@ -1285,66 +1216,66 @@ namespace 関数
   ※今回利用するリストはアルゴリズム(概念)用語であり、Pythonで用いているリスト(配列)という用語とは別物。  
   ※例外処理(`try〜except〜finally`)の説明をしている(いずれ基礎知識として勉強に組み込む必要がある？)。  
   以下、各項目(目次)。  
-  [ ] [スタック](#stackChapter3)  
-  [ ] [キュー](#queueChapter3)  
-  [ ] [リスト](#listChapter3)  
-  [ ] [木](#woodChapter3)  
-  [ ] [グラフ](#graphChapter3)  
-  [ ] [データを保存する。](#saveTheDataChapter3)  
+  [スタック](#stackChapter3)  
+  [キュー](#queueChapter3)  
+  [リスト](#listChapter3)  
+  [木](#woodChapter3)  
+  [グラフ](#graphChapter3)  
+  [データを保存する。](#saveTheDataChapter3)  
 <a name="algorithmTextbookLearnedinPythonChapter4"></a>
 * [Chapter4 サーチ](#searchOverviewChapter4)  
   複数データから目的地を探し出すこと。  
   ※有名な探索アルゴリズムのみに限定している。  
   以下、各項目(目次)。  
-  [ ] [線形探索](#linearSearchChapter4)  
-  [ ] [二分探索](#binarySearchChapter4)  
-  [ ] [木探索](#treeExplorationChapter4)  
-  [ ] [計算量について知る](#knowAboutComputationalComplexityChapter4)  
-  [ ] [ランダウの記号](#landauSignChapter4)  
-  [ ] [数当てゲーム](#numberGuessingGameChapter4)  
-  [ ] [ビット演算を学ぶ](#learnBitwiseOperationsChapter4)  
+  [線形探索](#linearSearchChapter4)  
+  [二分探索](#binarySearchChapter4)  
+  [木探索](#treeExplorationChapter4)  
+  [計算量について知る](#knowAboutComputationalComplexityChapter4)  
+  [ランダウの記号](#landauSignChapter4)  
+  [数当てゲーム](#numberGuessingGameChapter4)  
+  [ビット演算を学ぶ](#learnBitwiseOperationsChapter4)  
 <a name="algorithmTextbookLearnedinPythonChapter5"></a>
 * [Chapter5 ソート](#sortOverviewChapter5)  
   一定の規則に従い並び替えること。  
   ※有名な並べ替えアルゴリズムのみに限定している。  
   以下、各項目(目次)。  
-  [ ] [選択ソート](#selectionSortChapter5)  
-  [ ] [バブルソート](#bubbleSortChapter5)  
-  [ ] [挿入ソート](#insertionSortChapter5)  
-  [ ] [クイックソート](#quickSortChapter5)  
-  [ ] [マージソート](#mergeSortChapter5)  
-  [ ] [ヒープソート](#heapsortChapter5)  
-  [ ] [クイックソートの再起の過程を出力する。](#outputTheProcessOfQuicksortRecurrenceChapter5)  
-  [ ] [再帰関数を用いたマージソート。](#mergeSortUsingARecursiveFunctionChapter5)  
-  [ ] [プログラミング言語用のソート・ヒープ・キュー関数の使い方。](#howToUsePythonSortInstructionsAndHeapqModuleChapter5)  
-  [ ] [ソートの計算量と計算時間。](#sortCalculationComplexityAndCalculationTimeChapter5)  
+  [選択ソート](#selectionSortChapter5)  
+  [バブルソート](#bubbleSortChapter5)  
+  [挿入ソート](#insertionSortChapter5)  
+  [クイックソート](#quickSortChapter5)  
+  [マージソート](#mergeSortChapter5)  
+  [ヒープソート](#heapsortChapter5)  
+  [クイックソートの再起の過程を出力する。](#outputTheProcessOfQuicksortRecurrenceChapter5)  
+  [再帰関数を用いたマージソート。](#mergeSortUsingARecursiveFunctionChapter5)  
+  [プログラミング言語用のソート・ヒープ・キュー関数の使い方。](#howToUsePythonSortInstructionsAndHeapqModuleChapter5)  
+  [ソートの計算量と計算時間。](#sortCalculationComplexityAndCalculationTimeChapter5)  
 <a name="algorithmTextbookLearnedinPythonChapter6"></a>
 * [Chapter6 ハッシュ](#hashOverviewChapter6)  
   ハッシュとは、データから算出した小さな値のこと。  
   今回は、そのハッシュとしての値を算出する方法を勉強する。  
   以下、各項目(目次)。  
-  [ ] [ハッシュとは。](#whatIsAHashChapter6)  
-  [ ] [ハッシュ関数](#hashFunctionChapter6)  
-  [ ] [ハッシュテーブル](#hashTableChapter6)  
-  [ ] [衝突を回避する。](#avoidCollisionsChapter6)  
-  [ ] [暗号学的ハッシュ関数](#cryptographicHashFunctionChapter6)  
+  [ハッシュとは。](#whatIsAHashChapter6)  
+  [ハッシュ関数](#hashFunctionChapter6)  
+  [ハッシュテーブル](#hashTableChapter6)  
+  [衝突を回避する。](#avoidCollisionsChapter6)  
+  [暗号学的ハッシュ関数](#cryptographicHashFunctionChapter6)  
 <a name="algorithmTextbookLearnedinPythonChapter7"></a>
 * [Chapter7 さまざまなアルゴリズムを学ぶ](#learnVariousAlgorithmsOverviewChapter7)  
   アルゴリズムを勉強する上で必ず関わるアルゴリズムになる。  
   むしろ、ここまで勉強できてアルゴリズムを勉強したと言えるのではないだろうか。  
   以下、各項目(目次)。  
-  [ ] [ユークリッドの互除法](#euclideanAlgorithmChapter7)  
-  [ ] [文字列探索](#stringSearchChapter7)  
-  [ ] [アルゴリズムを理解するヒント(処理の過程の出力)。](#tipsForUnderstandingTheAlgorithmChapter7)  
+  [ユークリッドの互除法](#euclideanAlgorithmChapter7)  
+  [文字列探索](#stringSearchChapter7)  
+  [アルゴリズムを理解するヒント(処理の過程の出力)。](#tipsForUnderstandingTheAlgorithmChapter7)  
 <a name="algorithmTextbookLearnedinPythonChapter8"></a>
 * [Chapter8 アルゴリズムを見える化する](#visualizeTheAlgorithmOverviewChapter8)  
   今回のアルゴリズムを勉強することで、アルゴリズム(もしくはデータ)を可視化する方法を勉強できる。  
   以下、各項目(目次)。  
-  [ ] [n次関数の曲線を描く。](#drawACurveOfTheNthOrderFunctionChapter8)  
-  [ ] [フラクタル図形を描く。](#drawAFractalFigureChapter8)  
-  [ ] [迷路を解く過程を描く。](#drawTheProcessOfSolvingTheMazeChapter8)  
-  [ ] [アルゴリズムを使い分ける。](#useDifferentAlgorithmsChapter8)  
-  [ ] [マンデルブロー集合を描こう。](#letsDrawTheMandelbrotSetChapter8)  
+  [n次関数の曲線を描く。](#drawACurveOfTheNthOrderFunctionChapter8)  
+  [フラクタル図形を描く。](#drawAFractalFigureChapter8)  
+  [迷路を解く過程を描く。](#drawTheProcessOfSolvingTheMazeChapter8)  
+  [アルゴリズムを使い分ける。](#useDifferentAlgorithmsChapter8)  
+  [マンデルブロー集合を描こう。](#letsDrawTheMandelbrotSetChapter8)  
 
 <a name="developProgrammingSkillsOverviewChapter2"></a>
 ### プログラミングの力を養う
@@ -1556,9 +1487,6 @@ Python限定にしたくなかったが、他のプログラミング言語に�
 #### マンデルブロー集合を描こう。
 
 
-</details>
-
-
 <a name="appliedknowledge"></a>
 <details><summary>構造化プログラミングの勉強範囲外(応用知識)</summary>
 
@@ -1575,9 +1503,9 @@ Python限定にしたくなかったが、他のプログラミング言語に�
 ## ※Gitのマージルール
 study2programmingに取り込むときのマージは、3方向マージ(`--no-ff`)を使う。  
 
-* [x] "study2programming"にマージする時のルール。  
-  * [x] 誤字脱字程度のコミットはスカッシュしたい。  
-  * [x] マージ後"study2programming"をPushする。  
+* [ ] "study2programming"にマージする時のルール。  
+  * [ ] 誤字脱字程度のコミットはスカッシュしたい。  
+  * [ ] マージ後"study2programming"をPushする。  
     ※masterにマージすることはない。  
   * [ ] マージごとにタグ付けをする(そしてPush実施)。  
 
