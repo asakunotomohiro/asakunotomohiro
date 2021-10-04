@@ -1083,10 +1083,10 @@ LASTJUMP: foreach my $boo ( @hoge ) {
 my @boo = (20210901, 20210902, );
 
 #	nextで抜け出る。
-LASTJUMP: foreach my $tomohiro ( @boo ) {
+LASTJUMP: foreach my $hoge ( @boo ) {
 	foreach my $number ( 1..10 ) {
 		if ( $number == 3 ) {
-			say "$number：$tomohiro";	# 出力なし。
+			say "$number：$hoge";	# 出力なし。
 		}
 		next LASTJUMP if ( $number == 2);
 			# 1つ目のforeach処理に戻るため、3以降にインクリメントされず、処理が終了する。
@@ -1322,7 +1322,7 @@ Perlでオブジェクト指向開発ができるだけでなく、そのやり�
   ※今回利用するリストはアルゴリズム(概念)用語であり、Pythonで用いているリスト(配列)という用語とは別物。  
   ※例外処理(`try〜except〜finally`)の説明をしている(いずれ基礎知識として勉強に組み込む必要がある？)。  
   以下、各項目(目次)。  
-  [ ] [スタック](#stackChapter3)  
+  [x] [スタック](#stackChapter3)2021/10/04  
   [ ] [キュー](#queueChapter3)  
   [ ] [リスト](#listChapter3)  
   [ ] [木](#woodChapter3)  
@@ -1916,7 +1916,7 @@ sub main() {
 	# 出力結果：255, 0, 170, -1, 1, 20210926
 
 }
-&main("asakuno");
+&main();
 ```
 
 </details>
@@ -1935,8 +1935,80 @@ sub main() {
   * [グラフ](#graphChapter3)  
   * [データを保存する。](#saveTheDataChapter3)  
 
+
 <a name="stackChapter3"></a>
 #### スタック
+後入れ先出し法。  
+後から入れたデータを先に取り出す。  
+入れることを"Push"と言い、取り出すことを"Pop"と言う。  
+
+以下、スタックアルゴリズム用プログラム。
+```perl
+use v5.24;
+
+sub push() {
+	# 第2引数をリファレンスとして受け取る。
+	my ( $ii, $stack) = @_;
+
+	push @$stack, $ii;
+}
+
+sub pop() {
+	# 第1引数をリファレンスとして受け取る。
+	my ( $stack) = @_;
+
+	if (@$stack <= 0) {
+		return "取り出すデータが存在しません。";
+	}
+	else {
+		return pop @$stack;
+	}
+}
+
+sub main() {
+	my @stack;
+
+	say "1. 0から3までを追加";
+	for my $ii ( 0..3 ) {
+		&push($ii, \@stack);
+	}
+	say "2. 99を追加";
+	&push(99, \@stack);
+	say "3. 5から9までを追加";
+	for my $ii ( 5..9 ) {
+		&push($ii, \@stack);
+	}
+	say "-- 取り出し開始 --";
+	for my $ii ( 0..10 ) {
+		my $data = &pop(\@stack);
+		say "取り出したデータ：", $data;
+	}
+	say "-- 取り出し終了 --";
+}
+&main();
+```
+Perlで関数にまとめるのが馬鹿らしいほど間抜けなプログラムになっている。  
+
+以下、出力結果。
+```terminal
+1. 0から3までを追加
+2. 99を追加
+3. 5から9までを追加
+-- 取り出し開始 --
+取り出したデータ：9
+取り出したデータ：8
+取り出したデータ：7
+取り出したデータ：6
+取り出したデータ：5
+取り出したデータ：99
+取り出したデータ：3
+取り出したデータ：2
+取り出したデータ：1
+取り出したデータ：0
+取り出したデータ：取り出すデータが存在しません。
+-- 取り出し終了 --
+```
+
 
 <a name="queueChapter3"></a>
 #### キュー
