@@ -8,7 +8,7 @@
   * [x] [変数](#variable変数)  
   * [x] [配列](#arrangement配列)  
   * [x] [条件分岐](#Conditional条件分岐)  
-  * [ ] [繰り返し](#repetition繰り返し)  
+  * [x] [繰り返し](#repetition繰り返し)  
   * [ ] [関数](#function関数)  
 
 
@@ -294,9 +294,9 @@ let hogestr = "hoge string.";
 let boostr = "boo string.";
 println!("文字列  ：{}", hogestr);	// 文字列  ：hoge string.
 println!("文字列  ：{}", boostr);	// 文字列  ：boo string.
-// let a_t_str = hogeastr + " " + boostr;	// error[E0369]: cannot add `&str` to `&str`
-let a_t_str = format!("{}と{}を連結", hogeastr, boostr);	// 
-println!("a_t_str ：{}", a_t_str);	// a_t_str ：朝来野智博とboo string.を連結
+// let a_t_str = hogestr + " " + boostr;	// error[E0369]: cannot add `&str` to `&str`
+let a_t_str = format!("{}と{}を連結", hogestr, boostr);	// 
+println!("a_t_str ：{}", a_t_str);	// a_t_str ：hoge string.とboo string.を連結
 ```
 
 文字列の抜き出し。
@@ -304,8 +304,8 @@ println!("a_t_str ：{}", a_t_str);	// a_t_str ：朝来野智博とboo string.�
 fn main() {
 	let hoge = "本日は晴天なり。本日は晴天なり。";
 
-//  let tomohiro = &asakuno[2..5];
-//  println!("エラー？：{}", tomohiro);
+//  let boo = &hoge[2..5];
+//  println!("エラー？：{}", boo);
 	// thread 'main' panicked at 'byte index 2 is not a char boundary; it is inside '本' (bytes 0..3) of `本日は晴天なり。本日は晴天なり。`', main.rs:73:21
 
 	let mut vhogev : Vec<char> = Vec::new();	//	←☆この変数にUTF-8文字列から切り出してchar型に変換した文字を追加していく。
@@ -809,55 +809,238 @@ fn comparison( x: i32, y: i32 ) -> bool {
 ### 繰り返し
 
 * 絶対的に勉強する一覧  
-  * [ ] [指定回数条件での繰り返し](#subRepetition1)  
+  * [x] [指定回数条件での繰り返し](#subRepetition1)  
     [ ] [基本構造例：for( 条件式 )](#subRepetition2)  
-    [ ] [基本構造例：拡張for命令(`in`)](#subRepetition3)  
-    [ ] [`for`の入れ子。](#subRepetition4)  
+    残念ながらwhileのみだと思う。  
+    [x] [基本構造例：拡張for命令(`in`)](#subRepetition3)  
+    [x] [`for`の入れ子。](#subRepetition4)  
   * [ジャンプ処理](#subRepetition5)  
-    * [ ] break  
-    * [ ] continue  
-  * [ ] [真偽条件での繰り返し](#subRepetition6)  
-    [ ] [基本構造例：while( 条件式 )](#subRepetition6)  
-    [ ] [無限ループ](#subRepetition7)  
+    * [x] break  
+    * [x] continue  
+  * [x] [真偽条件での繰り返し](#subRepetition6)  
+    [x] [基本構造例：while( 条件式 )](#subRepetition6)  
+    [x] [無限ループ](#subRepetition7)  
 
 
 <a name="subRepetition1"></a>
 #### 繰り返し
 様式：
+`for 変数名 in 0..10 { 処理; }`  
+for文の条件文には配列やベクタ型などの要素を取り出すときに使うのであって、他のプログラミング言語のように個別の値を指定して繰り返すことは出来ない。 　
+個別の値を使う場合は、while文を使うことになる。  
+
 
 <a name="subRepetition2"></a>
 ##### 指定回数条件での繰り返し：for( 条件式 )
 様式：
+ない。  
+
+これをやるには[while](#subRepetition6)を使う必要がある。  
+
+```rust
+fn main() {
+	for ii in 0..10 {
+		println!("ii：{}", ii);
+//					ii：0
+//					ii：1
+//					ii：2
+//					ii：3
+//					ii：4
+//					ii：5
+//					ii：6
+//					ii：7
+//					ii：8
+//					ii：9
+	}
+}
+```
+
 
 <a name="subRepetition3"></a>
 ##### 指定回数条件での繰り返し：拡張for命令
 様式：
+`for 変数名 in 配列名 { 処理; }`  
+
+以下、繰り返しの拡張for文例）
+```rust
+fn main() {
+	let array = [20211023, 20211024, 20211025, 20211026, ];
+
+	for value in array {
+		println!("array配列{}", value);
+//						array配列20211023
+//						array配列20211024
+//						array配列20211025
+//						array配列20211026
+	}
+
+}
+```
+
+以下、配列ではなく、ベクター型のイテレータを使い、添え字も一緒に取得する方法。
+```rust
+fn main() {
+	let vec = vec![20211023, 20211024, 20211025, 20211026, ];
+
+	for (ii, value) in vec.iter().enumerate() {
+		println!("vecイテレータ{}番目：{}", ii, value);
+//					vecイテレータ0番目：20211023
+//					vecイテレータ1番目：20211024
+//					vecイテレータ2番目：20211025
+//					vecイテレータ3番目：20211026
+	}
+}
+```
+
 
 <a name="subRepetition4"></a>
 #### `for`の入れ子。
+他のプログラミング言語のように、繰り返し処理を入れ子にできる。  
+
+```rust
+fn main() {
+	for ii in 0..4 {
+		for jj in 0..4 {
+			println!("1つ目のfor:{}からの2つ目のfor:{}", ii, jj);
+		}
+	}
+	// 出力結果：
+//				1つ目のfor:0からの2つ目のfor:0
+//				1つ目のfor:0からの2つ目のfor:1
+//				1つ目のfor:0からの2つ目のfor:2
+//				1つ目のfor:0からの2つ目のfor:3
+//				1つ目のfor:1からの2つ目のfor:0
+//				1つ目のfor:1からの2つ目のfor:1
+//				1つ目のfor:1からの2つ目のfor:2
+//				1つ目のfor:1からの2つ目のfor:3
+//				1つ目のfor:2からの2つ目のfor:0
+//				1つ目のfor:2からの2つ目のfor:1
+//				1つ目のfor:2からの2つ目のfor:2
+//				1つ目のfor:2からの2つ目のfor:3
+//				1つ目のfor:3からの2つ目のfor:0
+//				1つ目のfor:3からの2つ目のfor:1
+//				1つ目のfor:3からの2つ目のfor:2
+//				1つ目のfor:3からの2つ目のfor:3
+}
+```
+
 
 <a name="subRepetition5"></a>
 #### ジャンプ処理
 
+* ジャンプ  
+  * [break](#subRepetition5break)  
+  * [continue](#subRepetition5continue)  
+
+<a name="subRepetition5break"></a>
+以下、ブレーク文
+```rust
+fn main() {
+	for ii in 0..10 {
+		if ii == 3 {
+			// iiの値が3回目になった時にfor文を抜け出る。
+			break;
+		}
+		println!("{}回目", ii);
+//					0回目
+//					1回目
+//					2回目
+	}
+}
+```
+
+<a name="subRepetition5continue"></a>
+以下、コンティニュ文
+```rust
+fn main() {
+	for ii in 0..10 {
+		if ii % 2 == 0 {
+			// 偶数の時にfor文の先頭に戻る。
+			continue;
+		}
+		println!("{}回目", ii);
+//					1回目
+//					3回目
+//					5回目
+//					7回目
+//					9回目
+	}
+}
+```
+
+
 <a name="subRepetition6"></a>
 #### 真偽条件での繰り返し：while( 条件式 )
 様式：
+`for 条件式 { 処理; }`  
+
+以下、for文使用例）
+```rust
+fn main() {
+	let mut ii = 0;
+	while ii < 10 {
+		println!("{}回目の実行", ii + 1);
+		ii += 1;
+//					1回目の実行
+//					2回目の実行
+//					3回目の実行
+//					4回目の実行
+//					5回目の実行
+//					6回目の実行
+//					7回目の実行
+//					8回目の実行
+//					9回目の実行
+//					10回目の実行
+	}
+}
+```
+
 
 <a name="subRepetition7"></a>
 #### 無限ループ
 様式：
+`loop { 処理; }`  
+
+```rust
+fn main() {
+	let mut ii = 0;
+
+	loop {
+		println!("loop文による無限ループ：{}", ii);
+		if ii == 10 {
+			// 無限ループを抜け出すための処理。
+			break;
+		}
+		ii += 1;
+//					loop文による無限ループ：0
+//					loop文による無限ループ：1
+//					loop文による無限ループ：2
+//					loop文による無限ループ：3
+//					loop文による無限ループ：4
+//					loop文による無限ループ：5
+//					loop文による無限ループ：6
+//					loop文による無限ループ：7
+//					loop文による無限ループ：8
+//					loop文による無限ループ：9
+//					loop文による無限ループ：10
+	}
+}
+```
+
 
 <a name="subRepetition999"></a>
 #### 繰り返しでの説明しない項目。
 
-[以下、今回の言語に関係の無い項目を削除すること(対象言語に存在するが、見送るもののみ、以下残す)。]  
 <details><summary>今回は勉強を見送る一覧</summary>
 
 * [ ] 真偽条件での繰り返し  
   基本構造例：do〜while( 条件式 )  
+  これはない？  
 * [ ] イテレータ  
+  少しだけ説明した。  
 
 </details>
+
 
 <a name="function関数sub"></a>
 ### 関数
