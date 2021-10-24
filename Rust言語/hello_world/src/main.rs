@@ -1,5 +1,5 @@
 fn main() {
-	println!("Hello, world!");
+    println!("Hello, world!");
 	// 出力結果：
 //				Hello, world!
 }

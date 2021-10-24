@@ -4,8 +4,9 @@
 
 <a name="algorithmHowToUseTheBranch"></a>
 ## ブランチの利用方法
-まず始めに、「[Pythonで学ぶアルゴリズムの教科書](https://book.impress.co.jp/books/1120101024)」を勉強する。  
-その次に、応用として、アルゴリズムの部分をRust言語に当てはめながらRustならではのアルゴリズムを身につけていく・・・つもり。  
+「[Pythonで学ぶアルゴリズムの教科書](https://book.impress.co.jp/books/1120101024)」を勉強する。  
+その次の応用として、アルゴリズムの部分をRust言語に当てはめながらRustならではのアルゴリズムを身につけていく・・・つもり。  
+そのため、Rust言語への反映はPython言語用アルゴリズムの勉強より遅れる(当たり前か・・・重複表現？)。  
 
 
 <a name="algorithmHowToStudy"></a>
@@ -15,7 +16,7 @@
 
 また、以下のサイトも参考にする。  
 [The Rust Programming Language 日本語版](https://doc.rust-jp.rs/book-ja/index.html)  
-上記書籍で、この電子本を紹介しており、最初に読む本として最適とのこと・・・なぜ本を出した。そして、なぜ紹介した。  
+上記書籍で、この電子本を紹介しており、最初に読む本として最適とのこと。  
 [Rust言語のサンプル集](https://doc.rust-jp.rs/rust-by-example-ja/index.html)  
 
 
@@ -31,13 +32,14 @@ vimが原因か分からないが、デフォルト(?)の状態で、インデ�
 <details><summary>実際に作業する環境の状況確認</summary>
 
 * 勉強環境。  
-  * 勉強環境のコンパイルバージョン：`cargo 1.54.0`  
+  * 勉強環境のコンパイルバージョン：`cargo 1.56.0`  
+    今回のチャプター2で利用バージョンを上げている。  
 ```terminal
 $ source $HOME/.cargo/env	←☆Path通し。
 $ rustc -V	←☆コンパイラコマンド。
-rustc 1.54.0 (a178d0322 2021-07-26)
+rustc 1.56.0 (09c42c458 2021-10-18)
 $ cargo -V	←☆ビルドシステム(普段はこちらを使うようだ)。
-cargo 1.54.0 (5ae8d74b3 2021-06-22)
+cargo 1.56.0 (4ed5d137b 2021-10-04)
 $
 ```
 
@@ -83,27 +85,29 @@ fn main() {
 #### プロジェクト作成
 様式：
 `cargo new [プロジェクト名]`  
-コマンド：
-`cargo new helloWorld`  
+コマンド例）
+`cargo new hello_world`  
 
+※制約として、日本語名や単語続きなどがあるため、作成時に出力されるワーニングをよく確認すること。  
+基礎知識5種類の勉強では、そのワーニングを無視していたが、今後もプロジェクト名はわかりやすい名前を優先して付けるだろう。  
 
 以下、プロジェクト作成の実行。
 ```terminal
-$ cargo new helloWorld	←☆プロジェクト作成実施(今回手動で書き換え済み)。
-     Created binary (application) `helloWorld` package
+$ cargo new hello_world	←☆プロジェクト作成実施。
+     Created binary (application) `hello_world` package
 $ ll	←☆実行ディレクトリに指定したプロジェクト名のディレクトリが生成される。
-total 24
-drwxr-xr-x  4 asakunotomohiro  staff   128  8 22 15:00 helloWorld/	←☆コレ。
-drwxr-xr-x  9 asakunotomohiro  staff   288  8 22 14:57 基礎知識用の勉強/
--rw-r--r--  1 asakunotomohiro  staff  6189  8 22 01:13 インストールメモ.md
--rw-r--r--  1 asakunotomohiro  staff  3762  8 22 00:35 README.md
-$ ll helloWorld/	←☆中身。
+total 160
+drwxr-xr-x   5 asakunotomohiro  staff    160 10 24 17:43 hello_world/	←☆コレ。
+-rw-r--r--   1 asakunotomohiro  staff  67300 10 24 17:41 README.md
+drwxr-xr-x   7 asakunotomohiro  staff    224 10 24 16:54 基礎知識用の勉強/
+-rw-r--r--   1 asakunotomohiro  staff   8297 10 24 16:54 インストールメモ.md
+$ ll hello_world/	←☆中身。
 total 8
-drwxr-xr-x  3 asakunotomohiro  staff   96  8 22 15:00 src/
--rw-r--r--  1 asakunotomohiro  staff  179  8 22 15:00 Cargo.toml	←☆パッケージのバージョンや読み込むライブラリ設定のファイル。
-$ ll helloWorld/src/
+drwxr-xr-x  3 asakunotomohiro  staff   96 10 24 17:43 src/
+-rw-r--r--  1 asakunotomohiro  staff  180 10 24 17:42 Cargo.toml	←☆パッケージのバージョンや読み込むライブラリ設定のファイル。
+$ ll hello_world/src/
 total 8
--rw-r--r--  1 asakunotomohiro  staff  45  8 22 15:00 main.rs	←☆これがソースファイルらしい。
+-rw-r--r--@ 1 asakunotomohiro  staff  162 10 24 17:43 main.rs	←☆これがソースファイルらしい。
 $
 ```
 ※書籍通りに行けば、ソースファイル名は、**main.fs**になるはずだが、私の環境では**main.rs**になっている。  
@@ -113,83 +117,75 @@ $
 
 以下、プロジェクト内容としての**Cargo.toml**ファイルの内容。
 ```terminal
-$ cat helloWorld/Cargo.toml
+$ cat hello_world/Cargo.toml
 [package]
-name = "helloWorld"
+name = "hello_world"
 version = "0.1.0"
-edition = "2018"
+edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 $
 ```
-※`name`部分を手動で今回書き換え済み。  
 
 以下、プロジェクト内容としての**main.rs**ファイルの内容。
 ```terminal
-$ cat helloWorld/src/main.rs
+$ cat hello_world/src/main.rs
 fn main() {
     println!("Hello, world!");
+	// 出力結果：
+//				Hello, world!
 }
+
+/*	vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=rust noexpandtab: */
 $
 ```
 `println`はマクロだとさ。  
+※ファイル内容は書き換え済み。  
 
 以下、ビルド実施。
 ```terminal
+$ cd hello_world/	←☆プロジェクトに移動。
 $ ll	←☆ビルド前状況。
 total 8
-drwxr-xr-x  3 asakunotomohiro  staff   96  8 22 15:13 src/
--rw-r--r--  1 asakunotomohiro  staff  179  8 22 15:13 Cargo.toml
+drwxr-xr-x  3 asakunotomohiro  staff   96 10 24 17:43 src/
+-rw-r--r--  1 asakunotomohiro  staff  180 10 24 17:42 Cargo.toml
 $ cargo build	←☆ビルド実施(2種類のワーニングは何？)。
-   Compiling helloWorld v0.1.0 (/Users/asakunotomohiro/study勉強用Githubリポジトリ/Rust言語/helloWorld)
-warning: crate `helloWorld` should have a snake case name	←☆気になるが、書籍では何も説明していない。
-  |
-  = note: `#[warn(non_snake_case)]` on by default
-  = help: convert the identifier to snake case: `hello_world`
-
-warning: 1 warning emitted	←☆気になるが、書籍では何も説明していない。
-
-    Finished dev [unoptimized + debuginfo] target(s) in 0.97s
+   Compiling hello_world v0.1.0 (/Users/asakunotomohiro/study勉強用Githubリポジトリ/Rust言語/hello_world)
+    Finished dev [unoptimized + debuginfo] target(s) in 2.24s
 $ ll	←☆ビルド後状況。
 total 16
-drwxr-xr-x@ 5 asakunotomohiro  staff  160  8 22 15:13 target/
--rw-r--r--  1 asakunotomohiro  staff  154  8 22 15:13 Cargo.lock
-drwxr-xr-x  3 asakunotomohiro  staff   96  8 22 15:13 src/
--rw-r--r--  1 asakunotomohiro  staff  179  8 22 15:13 Cargo.toml
+drwxr-xr-x@ 5 asakunotomohiro  staff  160 10 24 17:49 target/
+-rw-r--r--  1 asakunotomohiro  staff  155 10 24 17:49 Cargo.lock
+drwxr-xr-x  3 asakunotomohiro  staff   96 10 24 17:43 src/
+-rw-r--r--  1 asakunotomohiro  staff  180 10 24 17:42 Cargo.toml
 $ ll src/	←☆ソースファイルディレクトリ状況(変化なし)。
 total 8
--rw-r--r--  1 asakunotomohiro  staff  45  8 22 15:13 main.rs
+-rw-r--r--@ 1 asakunotomohiro  staff  162 10 24 17:43 main.rs
 $ ll target/	←☆ターゲットディレクトリ状況。
 total 8
-drwxr-xr-x  10 asakunotomohiro  staff  320  8 22 15:13 debug/
--rw-r--r--   1 asakunotomohiro  staff  177  8 22 15:13 CACHEDIR.TAG
+drwxr-xr-x  10 asakunotomohiro  staff  320 10 24 17:49 debug/
+-rw-r--r--   1 asakunotomohiro  staff  177 10 24 17:49 CACHEDIR.TAG
 $ ll target/debug/	←☆デバッグディレクトリ状況(実行ファイルが作られている)。
-total 800
--rw-r--r--   1 asakunotomohiro  staff     355  8 22 15:13 helloWorld.d
-drwxr-xr-x  12 asakunotomohiro  staff     384  8 22 15:13 deps/
--rwxr-xr-x   2 asakunotomohiro  staff  402340  8 22 15:13 helloWorld*
-drwxr-xr-x   3 asakunotomohiro  staff      96  8 22 15:13 incremental/
-drwxr-xr-x   2 asakunotomohiro  staff      64  8 22 15:13 build/
-drwxr-xr-x   2 asakunotomohiro  staff      64  8 22 15:13 examples/
+total 864
+-rw-r--r--   1 asakunotomohiro  staff     358 10 24 17:49 hello_world.d
+drwxr-xr-x  14 asakunotomohiro  staff     448 10 24 17:49 deps/
+-rwxr-xr-x   2 asakunotomohiro  staff  436124 10 24 17:49 hello_world*
+drwxr-xr-x   3 asakunotomohiro  staff      96 10 24 17:49 incremental/
+drwxr-xr-x   2 asakunotomohiro  staff      64 10 24 17:49 build/
+drwxr-xr-x   2 asakunotomohiro  staff      64 10 24 17:49 examples/
 $
 ```
 
 以下、コンパイル済み実行ファイルの実行。
 ```terminal
+$ pwd
+/Users/asakunotomohiro/study勉強用Githubリポジトリ/Rust言語/hello_world
 $ cargo run	←☆動かす(2種類のワーニングは何？)。
-warning: crate `helloWorld` should have a snake case name
-  |
-  = note: `#[warn(non_snake_case)]` on by default
-  = help: convert the identifier to snake case: `hello_world`
-
-warning: 1 warning emitted
-
-    Finished dev [unoptimized + debuginfo] target(s) in 0.00s
-     Running `target/debug/helloWorld`
+    Finished dev [unoptimized + debuginfo] target(s) in 0.01s
+     Running `target/debug/hello_world`
 Hello, world!	←☆実行結果後の出力内容。
-$
 $ echo $?
 0
 $
@@ -197,16 +193,20 @@ $
 
 もしくは、以下、実行ファイルを直接叩く。
 ```terminal
+$ pwd
+/Users/asakunotomohiro/study勉強用Githubリポジトリ/Rust言語/hello_world
 $ ll target/debug/
-total 800
--rw-r--r--   1 asakunotomohiro  staff     355  8 22 15:13 helloWorld.d
-drwxr-xr-x  12 asakunotomohiro  staff     384  8 22 15:13 deps/
--rwxr-xr-x   2 asakunotomohiro  staff  402340  8 22 15:13 helloWorld*
-drwxr-xr-x   3 asakunotomohiro  staff      96  8 22 15:13 incremental/
-drwxr-xr-x   2 asakunotomohiro  staff      64  8 22 15:13 build/
-drwxr-xr-x   2 asakunotomohiro  staff      64  8 22 15:13 examples/
-$ ./target/debug/helloWorld	←☆直接実行。
+total 864
+-rw-r--r--   1 asakunotomohiro  staff     358 10 24 17:49 hello_world.d
+drwxr-xr-x  14 asakunotomohiro  staff     448 10 24 17:49 deps/
+-rwxr-xr-x   2 asakunotomohiro  staff  436124 10 24 17:49 hello_world*	←☆これ。
+drwxr-xr-x   3 asakunotomohiro  staff      96 10 24 17:49 incremental/
+drwxr-xr-x   2 asakunotomohiro  staff      64 10 24 17:49 build/
+drwxr-xr-x   2 asakunotomohiro  staff      64 10 24 17:49 examples/
+$ ./target/debug/hello_world	←☆直接実行。
 Hello, world!
+$ echo $?
+0
 $
 ```
 
@@ -216,14 +216,25 @@ $
 
 以下、実施。
 ```terminal
+$ pwd
+/Users/asakunotomohiro/study勉強用Githubリポジトリ/Rust言語/hello_world
+$ ll
+total 16
+drwxr-xr-x@ 5 asakunotomohiro  staff  160 10 24 17:49 target/
+-rw-r--r--  1 asakunotomohiro  staff  155 10 24 17:49 Cargo.lock
+drwxr-xr-x  3 asakunotomohiro  staff   96 10 24 17:43 src/	←☆ここに移動。
+-rw-r--r--  1 asakunotomohiro  staff  180 10 24 17:42 Cargo.toml
+$ cd src/
 $ ll
 total 8
--rw-r--r--  1 asakunotomohiro  staff  45  8 22 15:13 main.rs
+-rw-r--r--@ 1 asakunotomohiro  staff  162 10 24 17:43 main.rs
+$ rust
+rust-gdb   rust-lldb  rustc      rustdoc    rustfmt    rustup
 $ rustc main.rs	←☆コンパイル実施。
 $ ll
-total 792
--rwxr-xr-x  1 asakunotomohiro  staff  397372  8 22 15:43 main*	←☆実行ファイル生成。
--rw-r--r--  1 asakunotomohiro  staff      45  8 22 15:13 main.rs
+total 848
+-rwxr-xr-x  1 asakunotomohiro  staff  429972 10 24 17:57 main*	←☆実行ファイル生成。
+-rw-r--r--@ 1 asakunotomohiro  staff     162 10 24 17:43 main.rs
 $ ./main	←☆実行ファイル実行。
 Hello, world!
 $
@@ -235,38 +246,27 @@ $
 
 以下、実施。
 ```terminal
+$ pwd
+/Users/asakunotomohiro/study勉強用Githubリポジトリ/Rust言語/hello_world
 $ ll
 total 16
-drwxr-xr-x@ 5 asakunotomohiro  staff  160  8 22 15:13 target/	←☆クリーンコマンドで、これが消える。
--rw-r--r--  1 asakunotomohiro  staff  154  8 22 15:13 Cargo.lock
-drwxr-xr-x  3 asakunotomohiro  staff   96  8 22 15:13 src/
--rw-r--r--  1 asakunotomohiro  staff  179  8 22 15:13 Cargo.toml
+drwxr-xr-x  4 asakunotomohiro  staff  128 10 24 17:57 src/
+drwxr-xr-x@ 5 asakunotomohiro  staff  160 10 24 17:49 target/	←☆クリーンコマンドで、これが消える。
+-rw-r--r--  1 asakunotomohiro  staff  155 10 24 17:49 Cargo.lock
+-rw-r--r--  1 asakunotomohiro  staff  180 10 24 17:42 Cargo.toml
 $ cargo clean	←☆削除実施。
 $ ll	←☆消えているのが確認できる。
 total 16
--rw-r--r--  1 asakunotomohiro  staff  154  8 22 15:13 Cargo.lock	←☆そもそもこれも無かったはずなのに、これは消えない。
-drwxr-xr-x  3 asakunotomohiro  staff   96  8 22 15:13 src/
--rw-r--r--  1 asakunotomohiro  staff  179  8 22 15:13 Cargo.toml
+drwxr-xr-x  4 asakunotomohiro  staff  128 10 24 17:57 src/
+-rw-r--r--  1 asakunotomohiro  staff  155 10 24 17:49 Cargo.lock	←☆そもそもこれも無かったはずなのに、これは消えない(消したいが、どうやって消す？)。
+-rw-r--r--  1 asakunotomohiro  staff  180 10 24 17:42 Cargo.toml
+$ ll src/
+total 848
+-rwxr-xr-x  1 asakunotomohiro  staff  429972 10 24 17:57 main*	←☆これも一緒に消えて欲しかった。
+-rw-r--r--@ 1 asakunotomohiro  staff     162 10 24 17:43 main.rs
 $
 ```
 
-
-<a name="algorithmHelloWorldDeleteRustc"></a>
-#### 実行ファイル削除(`rustc`)
-
-この個別コンパイル方法では、`clean`で消せない。
-```terminal
-$ ll src/
-total 792
--rwxr-xr-x  1 asakunotomohiro  staff  397372  8 22 15:43 main*	←☆これを消したい。
--rw-r--r--  1 asakunotomohiro  staff      45  8 22 15:13 main.rs
-$ cargo clean	←☆削除実施。
-$ ll src/
-total 792
--rwxr-xr-x  1 asakunotomohiro  staff  397372  8 22 15:43 main*	←☆消えない。
--rw-r--r--  1 asakunotomohiro  staff      45  8 22 15:13 main.rs
-$
-```
 
 <a name="algorithmHelloWorldlockfile"></a>
 #### lockファイルの意味
@@ -298,8 +298,10 @@ $
 
 
 <a name="algorithmHelloWorldProjectWarning"></a>
-#### ワーニング
-上記で出力されたワーニングが何か分からないままになっている。  
+#### 過去にワーニング出現
+過去に作成したカーゴプロジェクトでワーニングが出た。  
+そのワーニングは、プロジェクト名に大文字及び単語区切りとして`_`を使っていなかったのが原因だった。  
+今回作り直したことで、解消した。  
 
 </details>
 
@@ -310,6 +312,8 @@ $
 > エンジニアの基礎体力を身につける  
 
 <a name="basicKnowledgeFiveTypesOfStudyRange"></a>
+<details><summary>基礎知識5種類の項目</summary>
+
 ※プログラミングに使う基礎知識を統一する(簡単に済ませられる量に絞り込む)。  
 * 基礎知識5種類  
   * [x] [変数](#variable変数)  
@@ -320,11 +324,12 @@ $
   * [ ] 所有権  
     Rust言語特有の機能になるため、別で調べた方が良いだろう。  
 
-<a name="algorithmTextbookLearnedinPythonContents"></a>
-<details><summary>アルゴリズム</summary>
+</details>
 
+<a name="algorithmTextbookLearnedinPythonContents"></a>
 * [アルゴリズム勉強目次](#algorithmTextbookLearnedinPython)  
-  * [ ] [Chapter 1 プログラミングの基礎知識](#basicKnowledgeFiveTypesOfStudyRange)  
+  * [x] [Chapter 1 プログラミングの基礎知識](#basicKnowledgeFiveTypesOfStudyRange)  
+    現時点で完了している(上記の基礎知識5種類として)。  
   * [ ] [Chapter 2 プログラミングの力を養う](#algorithmTextbookLearnedinPythonChapter2)  
   * [ ] [Chapter 3 データ構造を学ぶ](#algorithmTextbookLearnedinPythonChapter3)  
   * [ ] [Chapter 4 サーチ](#algorithmTextbookLearnedinPythonChapter4)  
@@ -335,8 +340,6 @@ $
   * Appendix 1 Pythonのインストール方法
   * Appendix 2 テキストエディタと統合開発環境
   * Appendix 3 Pythonの記述ルール
-
-</details>
 
 <a name="breakingAwayFromBasicKnowledge"></a>
 <details><summary>応用知識の項目</summary>
@@ -375,7 +378,7 @@ $
 <details><summary>基礎知識5種類の作業手順</summary>
 
 ## 具体的な基礎知識
-何はともあれ、まずは、"Hello World"を表示するプログラムを作る。  
+何はともあれ、まずは、["Hello World"](#algorithmHelloWorld)を表示するプログラムを作る。  
 その後で、基礎中の基礎となる制御構造(構造化プログラミング)を簡略化しながら勉強する。  
 そのため、以下の手順で勉強を進めることにする。  
 
@@ -415,14 +418,13 @@ $
 アルゴリズムの勉強に、以下の手順を行う。  
 
 * 以下、手順。  
-  * [ ] 手順1. 勉強用のブランチに移動する(上記[目次](#algorithmTextbookLearnedinPythonContents)の1チャプター分専用ブランチとする)。  
-  * [ ] 手順2. ルートディレクトリのひな形ディレクトリ配下の必要なディレクトリをコピーする。  
-    **Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける** ディレクトリ配下の必要なチャプター用ディレクトリ。  
-  * [ ] 手順3. 当ファイル(`README.md`)の書き換えを行う。  
-    [ ] アルゴリズムの勉強用に変更する。  
-    [ ] アルゴリズムの勉強用項目を出すが、基礎知識5種類の勉強項目は隠す(`details`・`summary`)。  
-  * [ ] 編集後、コミットする。  
-  * [ ] 手順4. 各ディレクトリで、チャプタごとに勉強を進める。  
+  * [x] 手順1. 勉強用のブランチに移動する(上記[目次](#algorithmTextbookLearnedinPythonContents)の1チャプター分専用ブランチとする)。  
+  * [x] 手順2. ルートディレクトリのひな形ディレクトリ配下の必要なディレクトリをコピーする。  
+  * [x] 手順3. 当ファイル(`README.md`)の書き換えを行う。  
+    [x] アルゴリズムの勉強用に変更する。  
+    [x] アルゴリズムの勉強用項目を出すが、基礎知識5種類の勉強項目は隠す(`details`・`summary`)。  
+  * [x] 編集後、コミットする。  
+  * [x] 手順4. 各ディレクトリで、チャプタごとに勉強を進める。  
     ※そのとき、(できる限り)プログラムファイルに[モードライン](https://vim-jp.org/vim-users-jp/2009/06/02/Hack-20.html)を記載する。  
     `/* vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=rust noexpandtab: */`  
     ※チェックリストは上記にある。  
@@ -1564,9 +1566,8 @@ fn retiffunc( hoge: i32 ) -> i32 {
 
 </details>
 
-<a name="algorithmTextbookLearnedinPython"></a>
-<details><summary>アルゴリズム用記載場所</summary>
 
+<a name="algorithmTextbookLearnedinPython"></a>
 #### ☆アルゴリズムの勉強チャプタ概要☆
 <a name="algorithmTextbookLearnedinPythonChapter2"></a>
 * [Chapter2 プログラミングの力を養う](#developProgrammingSkillsOverviewChapter2)  
@@ -1586,72 +1587,74 @@ fn retiffunc( hoge: i32 ) -> i32 {
   ※今回利用するリストはアルゴリズム(概念)用語であり、Pythonで用いているリスト(配列)という用語とは別物。  
   ※例外処理(`try〜except〜finally`)の説明をしている(いずれ基礎知識として勉強に組み込む必要がある？)。  
   以下、各項目(目次)。  
-  [ ] [スタック](#stackChapter3)  
-  [ ] [キュー](#queueChapter3)  
-  [ ] [リスト](#listChapter3)  
-  [ ] [木](#woodChapter3)  
-  [ ] [グラフ](#graphChapter3)  
-  [ ] [データを保存する。](#saveTheDataChapter3)  
+  [スタック](#stackChapter3)  
+  [キュー](#queueChapter3)  
+  [リスト](#listChapter3)  
+  [木](#woodChapter3)  
+  [グラフ](#graphChapter3)  
+  [データを保存する。](#saveTheDataChapter3)  
 <a name="algorithmTextbookLearnedinPythonChapter4"></a>
 * [Chapter4 サーチ](#searchOverviewChapter4)  
   複数データから目的地を探し出すこと。  
   ※有名な探索アルゴリズムのみに限定している。  
   以下、各項目(目次)。  
-  [ ] [線形探索](#linearSearchChapter4)  
-  [ ] [二分探索](#binarySearchChapter4)  
-  [ ] [木探索](#treeExplorationChapter4)  
-  [ ] [計算量について知る](#knowAboutComputationalComplexityChapter4)  
-  [ ] [ランダウの記号](#landauSignChapter4)  
-  [ ] [数当てゲーム](#numberGuessingGameChapter4)  
-  [ ] [ビット演算を学ぶ](#learnBitwiseOperationsChapter4)  
+  [線形探索](#linearSearchChapter4)  
+  [二分探索](#binarySearchChapter4)  
+  [木探索](#treeExplorationChapter4)  
+  [計算量について知る](#knowAboutComputationalComplexityChapter4)  
+  [ランダウの記号](#landauSignChapter4)  
+  [数当てゲーム](#numberGuessingGameChapter4)  
+  [ビット演算を学ぶ](#learnBitwiseOperationsChapter4)  
 <a name="algorithmTextbookLearnedinPythonChapter5"></a>
 * [Chapter5 ソート](#sortOverviewChapter5)  
   一定の規則に従い並び替えること。  
   ※有名な並べ替えアルゴリズムのみに限定している。  
   以下、各項目(目次)。  
-  [ ] [選択ソート](#selectionSortChapter5)  
-  [ ] [バブルソート](#bubbleSortChapter5)  
-  [ ] [挿入ソート](#insertionSortChapter5)  
-  [ ] [クイックソート](#quickSortChapter5)  
-  [ ] [マージソート](#mergeSortChapter5)  
-  [ ] [ヒープソート](#heapsortChapter5)  
-  [ ] [クイックソートの再起の過程を出力する。](#outputTheProcessOfQuicksortRecurrenceChapter5)  
-  [ ] [再帰関数を用いたマージソート。](#mergeSortUsingARecursiveFunctionChapter5)  
-  [ ] [プログラミング言語用のソート・ヒープ・キュー関数の使い方。](#howToUsePythonSortInstructionsAndHeapqModuleChapter5)  
-  [ ] [ソートの計算量と計算時間。](#sortCalculationComplexityAndCalculationTimeChapter5)  
+  [選択ソート](#selectionSortChapter5)  
+  [バブルソート](#bubbleSortChapter5)  
+  [挿入ソート](#insertionSortChapter5)  
+  [クイックソート](#quickSortChapter5)  
+  [マージソート](#mergeSortChapter5)  
+  [ヒープソート](#heapsortChapter5)  
+  [クイックソートの再起の過程を出力する。](#outputTheProcessOfQuicksortRecurrenceChapter5)  
+  [再帰関数を用いたマージソート。](#mergeSortUsingARecursiveFunctionChapter5)  
+  [プログラミング言語用のソート・ヒープ・キュー関数の使い方。](#howToUsePythonSortInstructionsAndHeapqModuleChapter5)  
+  [ソートの計算量と計算時間。](#sortCalculationComplexityAndCalculationTimeChapter5)  
 <a name="algorithmTextbookLearnedinPythonChapter6"></a>
 * [Chapter6 ハッシュ](#hashOverviewChapter6)  
   ハッシュとは、データから算出した小さな値のこと。  
   今回は、そのハッシュとしての値を算出する方法を勉強する。  
   以下、各項目(目次)。  
-  [ ] [ハッシュとは。](#whatIsAHashChapter6)  
-  [ ] [ハッシュ関数](#hashFunctionChapter6)  
-  [ ] [ハッシュテーブル](#hashTableChapter6)  
-  [ ] [衝突を回避する。](#avoidCollisionsChapter6)  
-  [ ] [暗号学的ハッシュ関数](#cryptographicHashFunctionChapter6)  
+  [ハッシュとは。](#whatIsAHashChapter6)  
+  [ハッシュ関数](#hashFunctionChapter6)  
+  [ハッシュテーブル](#hashTableChapter6)  
+  [衝突を回避する。](#avoidCollisionsChapter6)  
+  [暗号学的ハッシュ関数](#cryptographicHashFunctionChapter6)  
 <a name="algorithmTextbookLearnedinPythonChapter7"></a>
 * [Chapter7 さまざまなアルゴリズムを学ぶ](#learnVariousAlgorithmsOverviewChapter7)  
   アルゴリズムを勉強する上で必ず関わるアルゴリズムになる。  
   むしろ、ここまで勉強できてアルゴリズムを勉強したと言えるのではないだろうか。  
   以下、各項目(目次)。  
-  [ ] [ユークリッドの互除法](#euclideanAlgorithmChapter7)  
-  [ ] [文字列探索](#stringSearchChapter7)  
-  [ ] [アルゴリズムを理解するヒント(処理の過程の出力)。](#tipsForUnderstandingTheAlgorithmChapter7)  
+  [ユークリッドの互除法](#euclideanAlgorithmChapter7)  
+  [文字列探索](#stringSearchChapter7)  
+  [アルゴリズムを理解するヒント(処理の過程の出力)。](#tipsForUnderstandingTheAlgorithmChapter7)  
 <a name="algorithmTextbookLearnedinPythonChapter8"></a>
 * [Chapter8 アルゴリズムを見える化する](#visualizeTheAlgorithmOverviewChapter8)  
   今回のアルゴリズムを勉強することで、アルゴリズム(もしくはデータ)を可視化する方法を勉強できる。  
   以下、各項目(目次)。  
-  [ ] [n次関数の曲線を描く。](#drawACurveOfTheNthOrderFunctionChapter8)  
-  [ ] [フラクタル図形を描く。](#drawAFractalFigureChapter8)  
-  [ ] [迷路を解く過程を描く。](#drawTheProcessOfSolvingTheMazeChapter8)  
-  [ ] [アルゴリズムを使い分ける。](#useDifferentAlgorithmsChapter8)  
-  [ ] [マンデルブロー集合を描こう。](#letsDrawTheMandelbrotSetChapter8)  
+  [n次関数の曲線を描く。](#drawACurveOfTheNthOrderFunctionChapter8)  
+  [フラクタル図形を描く。](#drawAFractalFigureChapter8)  
+  [迷路を解く過程を描く。](#drawTheProcessOfSolvingTheMazeChapter8)  
+  [アルゴリズムを使い分ける。](#useDifferentAlgorithmsChapter8)  
+  [マンデルブロー集合を描こう。](#letsDrawTheMandelbrotSetChapter8)  
+
 
 <a name="developProgrammingSkillsOverviewChapter2"></a>
 ### プログラミングの力を養う
 基礎的なプログラミングの力を養っていく。  
 
 * 各項目。  
+  ※チェックリストは上記。  
   * [平均値を求める。](#findTheAverageValueChapter2)  
   * [1からnまで足し合わせる。](#addFrom1tonChapter2)  
   * [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
@@ -1659,6 +1662,7 @@ fn retiffunc( hoge: i32 ) -> i32 {
   * [nの階乗を求める。](#findTheFactorialOfNChapter2)  
   * [エラトステネスの篩](#eratosthenesSieveChapter2)  
   * [n進法を理解する。](#understandnAryNotationChapter2)  
+
 
 <a name="findTheAverageValueChapter2"></a>
 #### 平均値を求める。
@@ -1863,8 +1867,6 @@ Python限定にしたくなかったが、他のプログラミング言語に�
 
 * 応用部分  
   * 何を勉強したか記載する。  
-
-</details>
 
 
 <a name="gitflow"></a>
