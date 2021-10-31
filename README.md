@@ -84,6 +84,12 @@
     * [x] 条件分岐2021/10/23  
     * [x] 繰り返し2021/10/23  
     * [x] 関数2021/10/23  
+  * [JavaScript](https://developer.mozilla.org/ja/docs/Web/JavaScript)  
+    * [ ] 変数  
+    * [ ] 配列  
+    * [ ] 条件分岐  
+    * [ ] 繰り返し  
+    * [ ] 関数  
 
 さわり程度の勉強になるため、今後はここから発展させていく。  
 要は、今回たまたまアルゴリズムの勉強として上記の項目になっているだけであって、深掘りしていく場合は、この一覧を元につぎはぎしていくということ。  
@@ -97,7 +103,6 @@
 * PowerShell  
 * Kotlin  
 * Node.js  
-* JavaScript  
 * V  
 * Ruby  
 * Elm  
@@ -115,6 +120,7 @@
 * HTML  
 * Lisp  
 * Lua  
+* [Nim](https://nim-lang.org)  
 * PHP  
 * Pascal  
 * Prolog
@@ -269,6 +275,14 @@
     * nの階乗(n!)を求める。  
     * エラトステネスの篩(フルイ)  
     * n進法を理解する。  
+  * [ ] [JavaScript](https://developer.mozilla.org/ja/docs/Web/JavaScript)  
+    * 平均値を求める。  
+    * 1からnまで足し合わせる。  
+    * 九九の式を出力する。  
+    * 素数を求める。  
+    * nの階乗(n!)を求める。  
+    * エラトステネスの篩(フルイ)  
+    * n進法を理解する。  
 
 </details>
 
@@ -331,14 +345,21 @@
     * リスト  
     * 木  
     * グラフ  
-    * データを保存する(Pythonのファイル処理をJavaに置き換える)  
+    * データを保存する(Pythonのファイル処理をvim9scriptに置き換える)  
   * [ ] [Rust](https://doc.rust-jp.rs/book-ja/index.html)  
     * スタック  
     * キュー  
     * リスト  
     * 木  
     * グラフ  
-    * データを保存する(Pythonのファイル処理をJavaに置き換える)  
+    * データを保存する(Pythonのファイル処理をRustに置き換える)  
+  * [ ] [JavaScript](https://developer.mozilla.org/ja/docs/Web/JavaScript)  
+    * スタック  
+    * キュー  
+    * リスト  
+    * 木  
+    * グラフ  
+    * データを保存する(Pythonのファイル処理をJavaScriptに置き換える)  
 
 </details>
 
@@ -411,6 +432,14 @@
     * 数当てゲーム  
     * ビット演算を学ぶ  
   * [ ] [Rust](https://doc.rust-jp.rs/book-ja/index.html)  
+    * 線形探索  
+    * 二分探索  
+    * 木探索  
+    * 計算量について知る  
+    * ランダウの記号  
+    * 数当てゲーム  
+    * ビット演算を学ぶ  
+  * [ ] [JavaScript](https://developer.mozilla.org/ja/docs/Web/JavaScript)  
     * 線形探索  
     * 二分探索  
     * 木探索  
@@ -518,7 +547,7 @@
     * クイックソートの再起の過程を出力する。  
     * 再帰関数を用いたマージソート。  
     * Pythonのソート命令とheapqモジュールの使い方。  
-      Java言語に置き換え可能か調べるとこからが作業開始になる。  
+      vim9script言語に置き換え可能か調べるとこからが作業開始になる。  
     * ソートの計算量と計算時間。  
   * [ ] [Rust](https://doc.rust-jp.rs/book-ja/index.html)  
     * 選択ソート  
@@ -530,7 +559,19 @@
     * クイックソートの再起の過程を出力する。  
     * 再帰関数を用いたマージソート。  
     * Pythonのソート命令とheapqモジュールの使い方。  
-      Java言語に置き換え可能か調べるとこからが作業開始になる。  
+      Rust言語に置き換え可能か調べるとこからが作業開始になる。  
+    * ソートの計算量と計算時間。  
+  * [ ] [JavaScript](https://developer.mozilla.org/ja/docs/Web/JavaScript)  
+    * 選択ソート  
+    * バブルソート  
+    * 挿入ソート  
+    * クイックソート  
+    * マージソート  
+    * ヒープソート  
+    * クイックソートの再起の過程を出力する。  
+    * 再帰関数を用いたマージソート。  
+    * Pythonのソート命令とheapqモジュールの使い方。  
+      JavaScript言語に置き換え可能か調べるとこからが作業開始になる。  
     * ソートの計算量と計算時間。  
 
 </details>
@@ -593,6 +634,12 @@
     * ハッシュテーブル  
     * 衝突を回避する。  
     * 暗号学的ハッシュ関数  
+  * [ ] [JavaScript](https://developer.mozilla.org/ja/docs/Web/JavaScript)  
+    * ハッシュとは。  
+    * ハッシュ関数  
+    * ハッシュテーブル  
+    * 衝突を回避する。  
+    * 暗号学的ハッシュ関数  
 
 </details>
 
@@ -633,6 +680,10 @@
     * 文字列探索  
     * アルゴリズムを理解するヒント(処理の過程の出力)。  
   * [ ] [Rust](https://doc.rust-jp.rs/book-ja/index.html)  
+    * ユークリッドの互除法  
+    * 文字列探索  
+    * アルゴリズムを理解するヒント(処理の過程の出力)。  
+  * [ ] [JavaScript](https://developer.mozilla.org/ja/docs/Web/JavaScript)  
     * ユークリッドの互除法  
     * 文字列探索  
     * アルゴリズムを理解するヒント(処理の過程の出力)。  
@@ -692,6 +743,12 @@
     * アルゴリズムを使い分ける。  
     * マンデルブロー集合を描こう。  
   * [ ] [Rust](https://doc.rust-jp.rs/book-ja/index.html)  
+    * n次関数の曲線を描く。  
+    * フラクタル図形を描く。  
+    * 迷路を解く過程を描く。  
+    * アルゴリズムを使い分ける。  
+    * マンデルブロー集合を描こう。  
+  * [ ] [JavaScript](https://developer.mozilla.org/ja/docs/Web/JavaScript)  
     * n次関数の曲線を描く。  
     * フラクタル図形を描く。  
     * 迷路を解く過程を描く。  
