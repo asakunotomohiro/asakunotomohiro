@@ -7,11 +7,21 @@
 [個人メモ(総合的な優先度の高いメモ)](#memo99999)  
 
 ---
+<a id="androidOperatingSystem"></a>
+## Android
+
+
+<a id="android10OperatingSystem"></a>
+## Android8
+いま持っている携帯電話のバージョンは、8.1.0になる。  
+古いが、未だに使っている。  
+家だけで、しかもWiFi運用なので、あまり使っているとは言いがたいが・・・。  
+
+
 <a id="android10OperatingSystem"></a>
 ## Android10
 いま持っている携帯電話の最新OSとして使っているバージョンが10になる。  
 ちなみに、WindowsOSのバージョンも10だ(そして、11に対応した能力があるようだ)。  
-
 
 
 <a id="memo99999"></a>
