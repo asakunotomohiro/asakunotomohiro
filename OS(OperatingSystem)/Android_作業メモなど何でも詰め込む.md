@@ -113,6 +113,34 @@ $
   内部ストレージに72GB近くが残ったままで、microSDカードには、300MB近くが移動しただけ・・・何のために何時間も掛けてmicroSDカードの認識方法を調べたと思っているよ・・・悲しい。  
   そもそもキンドルアプリの設定項目に**SDカードにダウンロード**がない。  
 
+* ちなみに、**adb**は、[Homebrew](https://brew.sh/index_ja)にはない。  
+
+以下、その作業。
+```terminal
+$ brew install adb
+Updating Homebrew...
+Warning: No available formula or cask with the name "adb". Did you mean arb, gdb, cdb or sdb?
+==> Searching for similarly named formulae...
+These similarly named formulae were found:
+mariadb                     mariadb@10.2                qt-mariadb                  sdb
+mariadb-connector-c         mariadb@10.3                arb
+mariadb-connector-odbc      mariadb@10.4                gdb
+mariadb@10.1                mariadb@10.5                cdb
+To install one of them, run (for example):
+  brew install mariadb
+==> Searching for a previously deleted formula (in the last month)...
+Error: No previously deleted formula found.
+==> Searching taps on GitHub...
+Error: No formulae found in taps.
+$
+$ ./adb --version
+Android Debug Bridge version 1.0.41
+Version 31.0.3-7562133
+Installed as /Users/asakunotomohiro/Desktop/platform-tools/./adb
+$
+```
+そもそも**adb**単体でのインストール指定が問題だったのかもな。  
+
 
 <a id="memo99999"></a>
 ## 個人メモ(総合的な優先度の高いメモ)
