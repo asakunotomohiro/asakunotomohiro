@@ -74,22 +74,11 @@
   * 以下のコマンドを打ち込む。  
 
 ```terminal
-$ adb shell	←☆Path通しを怠っているのが原因。
--bash: adb: command not found
-$ ./adb shell	←☆携帯電話での許可対応が遅かったのが原因？
-* daemon not running; starting now at tcp:5037
-* daemon started successfully
-adb: device unauthorized.
-This adb server's $ADB_VENDOR_KEYS is not set
-Try 'adb kill-server' if that seems wrong.
-Otherwise check for a confirmation dialog on your device.
-$ ./adb shell	←☆成功。
+$ ./adb shell	←☆Path通しをしていないため、カレントディレクトリにあることを示して実行。
 Titan:/ $ sm list-disks	←☆マイクロSDカード容量の確認。
 disk:179,128
 Titan:/ $ sm partition disk:179,128 private	←☆その全容量を内部ストレージとして割り当てる。
 Titan:/ $ exit	←☆無事に抜け出る。
-$ date
-2021年 11月 3日 水曜日 23時35分45秒 JST
 $
 ```
 
@@ -112,6 +101,12 @@ $
   んで、移動後のサイズを確認したらほぼ変わらず・・・何でだよ。  
   内部ストレージに72GB近くが残ったままで、microSDカードには、300MB近くが移動しただけ・・・何のために何時間も掛けてmicroSDカードの認識方法を調べたと思っているよ・・・悲しい。  
   そもそもキンドルアプリの設定項目に**SDカードにダウンロード**がない。  
+  ⇒原因は、フォーマット形式にあった。  
+  AndroidOSが認識できるMicroSDカードのフォーマット形式があるようだ。  
+  どれが正しいのか分からないが、AndroidOSでのフォーマットでの(今回の開発者向けオプション有効化)作業は認識しなかった。  
+  正確には認識したのだが、使える認識方法では無かった。目の前にあるのにないという現象だ。  
+  次に試したのが**exFAT**形式フォーマットのアロケーションユニットサイズが**128KB**だ。  
+
 
 * ちなみに、**adb**は、[Homebrew](https://brew.sh/index_ja)にはない。  
 
