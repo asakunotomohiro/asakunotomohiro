@@ -9,7 +9,15 @@
 ---
 <a id="androidOperatingSystem"></a>
 ## Android
-バージョン別で解説することにする。  
+
+* バージョン別解説。  
+  * [Android8](#android10OperatingSystem)  
+  * [Android10](#android10OperatingSystem)  
+
+* アプリケーション別解説。  
+  * [Termux](#softwareTermux)  
+    現在のGooglePlayバージョンでは利用できない。  
+
 
 <a id="android10OperatingSystem"></a>
 ## Android8
@@ -138,6 +146,107 @@ Installed as /Users/asakunotomohiro/Desktop/platform-tools/./adb
 $
 ```
 そもそも**adb**単体でのインストール指定が問題だったのかもな。  
+
+
+<a id="softwareTermux"></a>
+## [Termux](https://termux.com)
+AndroidOSで、Linux環境を擬似的に作れるというアプリケーションのひとつ。  
+しかも、結構有名になっているため、探せばすぐに見つかる。  
+使い方もすぐに見つかる。  
+
+
+<a name="softwareTermuxstorage"></a>
+### ストレージへの可視化
+可視化とは言わないが、他のディレクトリへの接続方法として、以下のコマンドにより、可能になる。  
+`termux-setup-storage`
+
+
+<a name="softwareTermuxpackage"></a>
+### パッケージ管理
+現在のGooglePlayからのバージョンでは利用できなくなっている。  
+
+・アップグレード
+```terminal
+$ pkg upgrade
+Testing the available mirrors:
+[*] https://dl.bintray.com/termux/termux-packages-24: bad
+[*] https://grimler.se/termux-packages-24: ok
+[*] https://main.termux-mirror.ml: ok
+[*] https://termux.mentality.rip/termux-packages-24: ok
+Picking mirror: https://main.termux-mirror.ml
+Ign:1 https://dl.bintray.com/grimler/game-packages-24 games InRelease
+Ign:2 https://dl.bintray.com/grimler/science-packages-24 science InRelease
+Err:3 https://dl.bintray.com/grimler/game-packages-24 games Release
+  403  Forbidden
+Ign:4 https://main.termux-mirror.ml stable InRelease
+Err:5 https://dl.bintray.com/grimler/science-packages-24 science Release
+  403  Forbidden
+Err:6 https://main.termux-mirror.ml stable Release
+  Redirection from https to 'http://ww38.main.termux-mirror.ml/dists/stable/Release' is forbidden
+Reading package lists... Done
+E: The repository 'https://dl.bintray.com/grimler/game-packages-24 games Release' does not have a Release file.
+N: Metadata integrity can't be verified, repository is disabled now.
+N: Possible cause: repository is under maintenance or down (wrong sources.list URL?).
+E: The repository 'https://dl.bintray.com/grimler/science-packages-24 science Release' does not have a Release file.
+N: Metadata integrity can't be verified, repository is disabled now.
+N: Possible cause: repository is under maintenance or down (wrong sources.list URL?).
+E: The repository 'https://main.termux-mirror.ml stable Release' does not have a Release file.
+N: Metadata integrity can't be verified, repository is disabled now.
+N: Possible cause: repository is under maintenance or down (wrong sources.list URL?).
+$ echo !?
+bash: !?: event not found
+$
+```
+
+・アップデート
+```terminal
+$
+$ pkg update
+Checking availability of current mirror: ok
+Ign:1 https://dl.bintray.com/grimler/game-packages-24 games InRelease
+Ign:2 https://dl.bintray.com/grimler/science-packages-24 science InRelease
+Err:3 https://dl.bintray.com/grimler/game-packages-24 games Release
+403  Forbidden
+Ign:4 https://main.termux-mirror.ml stable InRelease
+Err:5 https://dl.bintray.com/grimler/science-packages-24 science Release
+403  Forbidden
+Err:6 https://main.termux-mirror.ml stable Release
+Redirection from https to 'http://ww38.main.termux-mirror.ml/dists/stable/Release' is forbidden
+Reading package lists... Done
+E: The repository 'https://dl.bintray.com/grimler/game-packages-24 games Release' does not have a Release file.
+N: Metadata integrity can't be verified, repository is disabled now.
+N: Possible cause: repository is under maintenance or down (wrong sources.list URL?).
+E: The repository 'https://dl.bintray.com/grimler/science-packages-24 science Release' does not have a Release file.
+N: Metadata integrity can't be verified, repository is disabled now.
+N: Possible cause: repository is under maintenance or down (wrong sources.list URL?).
+E: The repository 'https://main.termux-mirror.ml stable Release' does not have a Release file.
+N: Metadata integrity can't be verified, repository is disabled now.
+N: Possible cause: repository is under maintenance or down (wrong sources.list URL?).
+$
+```
+
+・ソフトウェアインストール失敗
+```terminal
+$ pkg install openssh
+Checking availability of current mirror: ok
+Reading package lists... Done
+Building dependency tree... Done
+E: Unable to locate package openssh
+$ pkg install git
+Checking availability of current mirror: ok
+Reading package lists... Done
+Building dependency tree... Done
+E: Unable to locate package git
+$
+```
+どうやら、Adroid10向けに対応できていないのが原因で、今後はGooglePlayからインストールしたTermuxは使い物にならないそうだ。  
+残念だ。  
+
+
+<a name="softwareTermuxinstallok"></a>
+### インストール可能にする対応
+野良(?)[ソフトウェア](https://f-droid.org/packages/com.termux/)をインストールすることで、Termuxの代替になるそうだ。  
+野良とは言え、公式ページのはずなので、利用には問題ないと思う。  
 
 
 <a id="memo99999"></a>
