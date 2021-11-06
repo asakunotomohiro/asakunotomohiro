@@ -1,5 +1,11 @@
 # JavaScript言語
 ここは、プログラミング言語のJavaScript言語を勉強するブランチになる。  
+本来の名前：[LiveScript言語](https://w.atwiki.jp/sevenlives/pages/1827.html)  
+現在、その名前は、[乗っ取られている](http://livescript.net)[CoffeeScript言語](https://coffeescript.org)からの派生だそうだ。  
+
+**ECMA International**により規格が統一された。  
+ここで標準化されたJavaScriptを[ECMAScript](https://www.ecma-international.org)と呼ぶ。  
+今回、2015年6月にECMAで公開されたECMAScript(ES2015・ES6)を基準に勉強を進める・・・ようだ(違う場合どうやって見極めれば良い？)。  
 
 
 <a name="algorithmHowToUseTheBranch"></a>
@@ -14,7 +20,7 @@
 以下のサイトを参考にする。  
 * [Microsoft-JScript](https://docs.microsoft.com/ja-jp/previous-versions/windows/scripting/cc427807(v=msdn.10))  
   最終更新日が2009年？  
-  参考にしてはならないな。  
+  参考にしてはならないな(そもそも本来のJavaScriptと挙動が違うそうだ)。  
 * [Mozilla-JavaScript](https://developer.mozilla.org/ja/docs/Web/JavaScript)  
 * [リズムファクトリー社-JavaScript講座](https://rfs.jp/sb/javascript)  
   有名なのか？  
@@ -208,7 +214,7 @@ Kindle本で購入したのに、訂正されていない。
     ※配下の**Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける**ディレクトリは削除。  
   * [x] 手順2-1. 当ファイル(`README.md`)の書き換えを行う。  
         ※ アルゴリズムの勉強用項目は隠しておく(`details`・`summary`)代わりに、基礎知識5種類の勉強用の項目は出しておく。  
-  * [ ] 手順2-2. 開発環境を記録する。  
+  * [x] 手順2-2. 開発環境を記録する。  
   * [ ] 手順2-3. `helloWorld.[言語用の拡張子]`のファイルを作り、おなじみ"Hello World."プログラムを作る。  
   * [ ] 手順2-4. main関数不要であれば、"**実行済み**"ディレクトリを削除すること。  
   * [ ] 手順2-5. コミットする。  
@@ -263,33 +269,33 @@ Kindle本で購入したのに、訂正されていない。
 
 <a name="algorithmCheckTheStatusOfTheActualWorkingEnvironment"></a>
 ## 実際に作業する環境の状況確認
+ブラウザは、HTMLのみ解析するようだ。  
+そのため、HTMLファイルにJavaScriptを記述する必要がある。  
 
 * 勉強環境。  
-  * 勉強環境のコンパイルバージョン：  
-  * プログラムファイルの拡張子：  
-　　※Windowsに併せるならば拡張子は必須かな。  
-  * 実行方式：  
-    例）`コンパイラ方式`・`インタプリタ方式`  
-  * 標準の文字コード(プログラムファイル)：  
-　　例）UTF-8(今時はこれに統一されている？)。  
-  * 文字コードの扱い：
+  * ~~勉強環境のコンパイルバージョン：~~  
+  * 勉強環境の実行バージョン  
+    * Firefox  
+      **Firefox Version93.0(October 5, 2021)** 以上。  
+    * Safari  
+      **バージョン14.1.2 (14611.3.10.1.7)** 以上。  
+  * プログラムファイルの拡張子：`*.html`  
+  * 実行方式：インタプリタ方式  
+    他のスクリプト言語(Perl・PHP・Ruby)はサーバ側で動くようだが、今回の言語はクライアント側で動く。  
+  * 標準の文字コード(プログラムファイル)：UTF-8  
+  * 文字コードの扱い：  
 　　例）UTF-8・Unicode  
-  * 文字区切り(行末記号)：  
-　　例）セミコロン(基本はこれ)・Pythonは改行  
-　　※リターン部分での例外があれば記載する(Rust言語・Perl言語では、付けなければそれが戻り値扱いになる)。  
-  * インデント：  
-　　例）フリーフォーマット(基本はこれ？C言語など)・Pythonは絶対的に半角スペース4つなのかな。Go言語も重要。  
-  * 標準の出力関数：  
-　　例）`print`・`printf`・`say`・`Console.WriteLine`など。  
+  * 文字区切り(行末記号)：セミコロン`;`  
+    改行は`LF`・`\n`を使うのが一般らしい。  
+    ちなみに、`CR`は、`\r`になる(2つ繋げた場合`CRLF`の組み合わせになる)。  
+  * インデント：フリーフォーマット  
+    ※半角スペースと制御文字は無視される。  
+  * 標準の出力関数：**\<body\>** と **\</body\>** に挟まれた文字列がブラウザに表示される。  
   * 標準のフォーマット関数：  
 　　例）`printf`など。
-　　※必須記入項目ではなく、勉強途中での記載でも可とする。  
-  * 1行コメント方法：  
-　　例）`//`・`"`・`REM`・`#`など。  
-  * 複数行コメント方法：  
-　　例）`/*〜*/`・`''' 〜 '''`など。  
-  * デバッガ機能(デバッグ技法)：  
-　　例）`gdb`・`perldebug`・`pdb`など。  
+  * 単数行コメント方法：`//`  
+  * 複数行コメント方法：`/*〜*/`  
+  * デバッガ機能(デバッグ技法)：ブラウザ付属のデベロッパツールを使う。  
 
 
 <a name="algorithmHelloWorld"></a>
