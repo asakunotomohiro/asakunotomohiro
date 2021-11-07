@@ -1301,7 +1301,7 @@ Hello World(引数あり-戻り値あり).
   ※例外処理(`try〜except〜finally`)の説明をしている(いずれ基礎知識として勉強に組み込む必要がある？)。  
   以下、各項目(目次)。  
   [x] [スタック](#stackChapter3)2021/10/02  
-  [ ] [キュー](#queueChapter3)  
+  [x] [キュー](#queueChapter3)2021/11/07  
   [ ] [リスト](#listChapter3)  
   [ ] [木](#woodChapter3)  
   [ ] [グラフ](#graphChapter3)  
@@ -1877,6 +1877,103 @@ PerlがそうだったのだからPythonもアルゴリズムに関係なく、�
 
 <a name="queueChapter3"></a>
 #### キュー
+**キュー**とは、最初に入れたデータを最初に取り出すこと。  
+それを先入れ先出し(First In First Out)と言い、**FIFO**と略す。  
+
+キューにデータを入れることをエンキュー(enqueue)といい、取り出すことをデキュー(dequeue)と言う。  
+
+* キュー用語  
+  * エンキュー位置  
+    **tail**  
+    要は、先頭。  
+  * デキュー位置  
+    **head**  
+    要は、後尾。  
+  * リングバッファ  
+    記憶領域を円形にする。  
+
+
+以下、キュープログラム。
+```python
+# 積み上げる最大数を5つに制限している(キューへの積み上げ最大数+1)。
+MAX = 6
+
+
+def enqueue(data, que, head, tail):
+    nt = (tail+1) % MAX
+
+    if nt == head:
+        print("これ以上、データ積み上げ不可。")
+    else:
+        que[tail] = data
+        tail = nt
+        print("データ", data, "を追加しました")
+
+    return (que, tail)
+
+
+def dequeue(que, head, tail):
+    if head == tail:
+        print("取り出しデータなし。")
+        return (que, None, head)
+    else:
+        data = que[head]
+        head = (head+1) % MAX
+        return (que, data, head)
+
+
+def main():
+    que = [0] * MAX
+    head = 0
+    tail = 0
+
+    for ii in range(6):
+        (que, tail) = enqueue(ii, que, head, tail)
+
+    for ii in range(6):
+        (que, data, head) = dequeue(que, head, tail)
+        print("取り出しデータ：", data)
+
+
+main()
+# 出力結果：
+#           データ 0 を追加しました
+#           データ 1 を追加しました
+#           データ 2 を追加しました
+#           データ 3 を追加しました
+#           データ 4 を追加しました
+#           これ以上、データ積み上げ不可。
+#           取り出しデータ： 0
+#           取り出しデータ： 1
+#           取り出しデータ： 2
+#           取り出しデータ： 3
+#           取り出しデータ： 4
+#           取り出しデータなし。
+#           取り出しデータ： None
+```
+
+
+書籍では、**queue.py**という名前を付けた場合、既存の名前と同じになり、そちらが動くことになるため、名前を変える必要があるという説明をしていた。
+しかし、私の環境では普通に動いたぞ!?
+```terminal
+$ python queue.py
+データ 0 を追加しました
+データ 1 を追加しました
+データ 2 を追加しました
+データ 3 を追加しました
+データ 4 を追加しました
+これ以上、データ積み上げ不可。
+取り出しデータ： 0
+取り出しデータ： 1
+取り出しデータ： 2
+取り出しデータ： 3
+取り出しデータ： 4
+取り出しデータなし。
+取り出しデータ： None
+$
+```
+当初の名前を**myQueue.py**にしていたが、変更した。  
+
 
 <a name="listChapter3"></a>
 #### リスト
