@@ -34,6 +34,9 @@
 
 <a name="android10peratingsystem2microsdcard4adb"></a>
 ### microSDカードの内部ストレージ化
+この対応不要。  
+外部ストレージだけで、ソフトウェアの保存先をMicroSDカードにできる。  
+
 今まで普通に使えていたmicroSDカードが認識しなくなった。  
 壊れたのかと思ったが、OSバージョンを上げたことで認識しなくなったため、仕様変更が入ったと思い、調べた。  
 む〜ん。  
@@ -139,7 +142,6 @@ $
   仕方なく、MicroSDカードをWindows端末に接続させた。  
   要は、Android開発からMicroSDカードを抜き取ったと言うことなので、正常に起動した(MicroSDカードが原因と言うことか)。  
   そして、Windows端末では、MicroSDカードを認識できず、固まるという・・・。  
-
 
 
 * ちなみに、**adb**は、[Homebrew](https://brew.sh/index_ja)にはない。  
