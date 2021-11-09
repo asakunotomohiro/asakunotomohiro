@@ -215,12 +215,13 @@ Kindle本で購入したのに、訂正されていない。
   * [x] 手順2-1. 当ファイル(`README.md`)の書き換えを行う。  
         ※ アルゴリズムの勉強用項目は隠しておく(`details`・`summary`)代わりに、基礎知識5種類の勉強用の項目は出しておく。  
   * [x] 手順2-2. 開発環境を記録する。  
-  * [ ] 手順2-3. `helloWorld.[言語用の拡張子]`のファイルを作り、おなじみ"Hello World."プログラムを作る。  
+  * [x] 手順2-3. `helloWorld.[言語用の拡張子]`のファイルを作り、おなじみ"Hello World."プログラムを作る。  
   * [ ] 手順2-4. main関数不要であれば、"**実行済み**"ディレクトリを削除すること。  
   * [ ] 手順2-5. コミットする。  
   * [ ] 手順3. 各ディレクトリで、5種類の"絶対的に勉強する一覧"を箇条書きごとに勉強する。  
     * 以下、5種類の内訳。  
       ※そのとき、(できる限り)プログラムファイルに[モードライン](../エディタ活用メモ/Vimエディタ_作業メモなど何でも詰め込む.md)を記載する。  
+        `<!-- vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=html noexpandtab: -->`  
       ※チェックリストは上記にある。  
       変数  
       配列  
@@ -295,13 +296,33 @@ Kindle本で購入したのに、訂正されていない。
 　　例）`printf`など。
   * 単数行コメント方法：`//`  
   * 複数行コメント方法：`/*〜*/`  
+  * HTML用コメント方法：`<!-- HTML用コメント -->`  
+    HTML2.0・HTML4.0・HTML5.*などにより、細かいルールが異なる。  
   * デバッガ機能(デバッグ技法)：ブラウザ付属のデベロッパツールを使う。  
 
 
 <a name="algorithmHelloWorld"></a>
 ### ハローワールドプログラム
-※実行用プログラムと実行結果だけでなく、その過程も必要ならば載せる。  
-※手順を忘れないためにも・・・。  
+普通にHTMLファイルを作成し、そこにHTMLを記述する。  
+そのHTMLのあいだに、JavaScriptを埋め込んでいく。  
+
+以下、プログラム。
+```html
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>Hello World!</title>
+</head>
+<body>
+<script type="text/javascript">
+window.alert("Hello World!");
+</script>
+<noscript>JavaScriptが利用できないブラウザです。</noscript>
+</body>
+</html>
+```
+インデントの付け方に悩むよね。  
 
 
 <a name="algorithmNotes"></a>
