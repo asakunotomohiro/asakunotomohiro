@@ -216,9 +216,9 @@ Kindle本で購入したのに、訂正されていない。
         ※ アルゴリズムの勉強用項目は隠しておく(`details`・`summary`)代わりに、基礎知識5種類の勉強用の項目は出しておく。  
   * [x] 手順2-2. 開発環境を記録する。  
   * [x] 手順2-3. `helloWorld.[言語用の拡張子]`のファイルを作り、おなじみ"Hello World."プログラムを作る。  
-  * [ ] 手順2-4. main関数不要であれば、"**実行済み**"ディレクトリを削除すること。  
-  * [ ] 手順2-5. コミットする。  
-  * [ ] 手順3. 各ディレクトリで、5種類の"絶対的に勉強する一覧"を箇条書きごとに勉強する。  
+  * [x] 手順2-4. main関数不要であれば、"**実行済み**"ディレクトリを削除すること。  
+  * [x] 手順2-5. コミットする。  
+  * [x] 手順3. 各ディレクトリで、5種類の"絶対的に勉強する一覧"を箇条書きごとに勉強する。  
     * 以下、5種類の内訳。  
       ※そのとき、(できる限り)プログラムファイルに[モードライン](../エディタ活用メモ/Vimエディタ_作業メモなど何でも詰め込む.md)を記載する。  
         `<!-- vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=html noexpandtab: -->`  
@@ -228,7 +228,7 @@ Kindle本で購入したのに、訂正されていない。
       条件分岐  
       繰り返し  
       関数  
-  * [ ] 手順3-1. 箇条書きごとにコミット実施する。  
+  * [x] 手順3-1. 箇条書きごとにコミット実施する。  
   * [ ] 手順4. 1つのプログラミング言語で、手順3の勉強1種類を終えた時に、次のプログラミング言語に移る。  
          (細かく分けることでやる気が維持される・・・はず)  
   * [ ] 手順4-1. 今回のプログラミング言語に戻ってきたことにより、次の箇条書きに移り、勉強を継続(再開)する。  
@@ -280,7 +280,8 @@ Kindle本で購入したのに、訂正されていない。
       **Firefox Version93.0(October 5, 2021)** 以上。  
     * Safari  
       **バージョン14.1.2 (14611.3.10.1.7)** 以上。  
-  * プログラムファイルの拡張子：`*.html`  
+  * HTMLプログラムファイルの拡張子：`*.html`  
+  * JavaScriptプログラムファイルの拡張子：`*.js`  
   * 実行方式：インタプリタ方式  
     他のスクリプト言語(Perl・PHP・Ruby)はサーバ側で動くようだが、今回の言語はクライアント側で動く。  
   * 標準の文字コード(プログラムファイル)：UTF-8  
@@ -299,6 +300,7 @@ Kindle本で購入したのに、訂正されていない。
   * HTML用コメント方法：`<!-- HTML用コメント -->`  
     HTML2.0・HTML4.0・HTML5.*などにより、細かいルールが異なる。  
   * デバッガ機能(デバッグ技法)：ブラウザ付属のデベロッパツールを使う。  
+    それを使う必要に迫られるようなプログラムは組みそうもないよな・・・(その説明を読み飛ばす)。  
 
 
 <a name="algorithmHelloWorld"></a>
@@ -310,19 +312,47 @@ Kindle本で購入したのに、訂正されていない。
 ```html
 <!DOCTYPE html>
 <html lang="ja">
-<head>
-<meta charset="utf-8">
-<title>Hello World!</title>
+<head>	←☆この中でJavaScriptを記述する。
+    <meta charset="utf-8">
+    <title>Hello World!</title>
 </head>
 <body>
-<script type="text/javascript">
-window.alert("Hello World!");
-</script>
-<noscript>JavaScriptが利用できないブラウザです。</noscript>
-</body>
+    <script type="text/javascript">
+        window.alert("Hello World!");
+    </script>
+    <noscript>JavaScriptが利用できないブラウザです。</noscript>
+</body>	←☆ここの直前にJavaScriptを記述する(通常)。
 </html>
 ```
 インデントの付け方に悩むよね。  
+
+上記は、HTMLファイルにJavaScriptを埋め込んでいる。  
+それでは使い回しが悪いため、以下分ける。  
+
+以下、HTMLファイル(これをブラウザで表示させ、JavaScriptを別途読み込む形にする)。
+```html
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="utf-8">
+	<title>Hello World!</title>
+</head>
+<body>
+	<script type="text/javascript" src="helloWorld_JavaScript.js">	←☆ここの"src"でJavaScriptファイルを指定している。
+		// JavaScriptファイル読み込み。
+	</script>
+		<!-- 以下は、スクリプトが動かない場合に実行される。 -->
+	<noscript>JavaScriptが利用できないブラウザです。</noscript>
+</body>
+</html>
+```
+
+以下、JavaScriptファイル。
+```javascript
+// ダイアログ出力。
+window.alert("Hello World!");
+```
+これがJavaScriptとして実行される。  
 
 
 <a name="algorithmNotes"></a>
