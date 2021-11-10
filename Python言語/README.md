@@ -1974,6 +1974,73 @@ $
 ```
 当初の名前を**myQueue.py**にしていたが、変更した。  
 
+<details><summary>コレクションデキュークラスの利用</summary>
+
+書籍の説明では、(プログラムを見れば分かるだろうが)リングバッファを簡単に実現するための仕組みとして、追加できる容量は、配列の要素数よりも1つ少ない。  
+それを無視して実用化された仕組みが[collections.deque](https://docs.python.org/ja/3/library/collections.html)クラスとして用意されている。  
+
+
+```python
+import collections
+
+
+def enqueue(data, que):
+    print("データ", data, "を追加しました")
+    que.append(data)
+    return que	←☆`return que.append(data)`には出来なかった。
+
+
+def dequeue(que):
+    data = que.pop()
+    return (que, data)
+
+
+def main():
+    que = collections.deque()
+
+    for ii in range(6):
+        que = enqueue(ii, que)
+
+    for ii in range(6):
+        (que, data) = dequeue(que)
+        print("取り出しデータ：", data)
+    # 出力結果：
+
+
+main()
+```
+
+以下、出力結果。
+```terminal
+$ python queue_class.py
+データ 0 を追加しました
+データ 1 を追加しました
+データ 2 を追加しました
+データ 3 を追加しました
+データ 4 を追加しました
+データ 5 を追加しました
+取り出しデータ： 5
+取り出しデータ： 4
+取り出しデータ： 3
+取り出しデータ： 2
+取り出しデータ： 1
+取り出しデータ： 0
+以上。
+$
+```
+
+
+ちなみに、キューへの先頭や末尾への追加・削除は最速だが、要素位置が中央にある場合、最遅になる。  
+
+* 使い分け方法。  
+  * 先端・尾端への利用頻度が高い場合、**deque**を使う。  
+  * 要素位置の中央への書き込み・削除の頻度が高い場合、**list**を使う。  
+
+</details>
+
+todo: プログラムを理解すること。  
+当初の目的通り、読破することも目的の一つにしているため、進めていることに問題は無いが、それではアルゴリズムの勉強をするのが無駄になる。  
+
 
 <a name="listChapter3"></a>
 #### リスト
