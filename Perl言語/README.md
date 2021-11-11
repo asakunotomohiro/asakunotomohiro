@@ -174,7 +174,20 @@ $
   * [ ] [ファイル操作](#practicaluseFileoperation)  
   * [ ] [ディレクトリ操作](#practicaluseDirectorymanipulation)  
   * [ ] [オブジェクト指向](#practicaluseObjectorientation)  
-    [ ] 入門  
+    [ ] オブジェクト指向入門  
+    [ ] Perl入門  
+    [ ] オブジェクト指向Perl入門  
+    [ ] 配列とスカラのbless  
+    [ ] その他のデータ型のbless  
+    [ ] 継承  
+    [ ] ポリモーフィズム  
+    [ ] クラス生成の自動化  
+    [ ] 統合  
+    [ ] 演算子のオーバーロード  
+    [ ] カプセル化  
+    [ ] 総称  
+    [ ] 多重ディスパッチ  
+    [ ] 永続オブジェクト  
   * [ ] [テスト方法](#practicaluseTester)  
   * [ ] [標準関数(モジュール)](#practicaluseModule)  
   * [ ] [プロセス管理](#practicaluseSystemfunc)  
@@ -2179,6 +2192,8 @@ Python限定にしたくなかったが、他のプログラミング言語に�
 * 応用部分  
   * [リファレンス](#practicaluseReference)  
   * [ハッシュ(連想配列)](#practicaluseHash)  
+  * [オブジェクト指向](#practicaluseObjectorientation)  
+    2021/11/11〜  
   * 今後も機会があれば増やしていく。  
 
 
@@ -2975,6 +2990,126 @@ say "$ENV{HISTCONTROL}";	# ignoreboth
 ```
 
 何に使うのか分からないが、GoでのGUI開発は日本語文字を取得するのに環境変数を利用しているな・・・。  
+
+</details>
+
+<a name="practicaluseObjectorientation"></a>
+<details><summary>応用知識-オブジェクト指向</summary>
+
+* 参考文献  
+  書籍名：オブジェクト指向Perlマスターコース―オブジェクト指向の概念とPerlによる実装方法  
+  ISBN：978-4894713000  
+  出版社：ピアソンエデュケーション  
+  URL：~~<http://www.pearsoned.co.jp>~~  
+  発売日：2001/2/1  
+  著者：ダミアン コンウェイ(Damian Conway)  
+  訳者：山根ドキュメンテーション  
+
+私が持っている本は、初版の第1版発行なのだが・・・そんな昔に購入したかな・・・。  
+出版社は[大本](https://www.pearson.com/jp/ja)から撤退して、一部を[丸善出版](https://www.maruzen-publishing.co.jp)が行っているようだが、あいにく本書の取扱いはないようだ。  
+
+概要
+> Perlによるオブジェクト指向プログラミングの実践技法を紹介します。  
+> 継承、ポリモーフィズム、カプセル化などのオブジェクト指向の概念を分かりやすく解説し、それら概念をPerlで実装する具体的な方法をサンプルコードを示しながら詳説します。  
+> 保守性と再利用性に富んだPerlプログラムを構築するためのテクニックが凝縮された一冊といえるでしょう。  
+
+* 目次  
+  1. 章 オブジェクト指向入門
+  1. 章 Perl入門
+  1. 章 オブジェクト指向Perl入門
+  1. 章 配列とスカラのbless
+  1. 章 その他のデータ型のbless
+  1. 章 継承
+  1. 章 ポリモーフィズム
+  1. 章 クラス生成の自動化
+  1. 章 統合
+  1. 章 演算子のオーバーロード
+  1. 章 カプセル化
+  1. 章 総称
+  1. 章 多重ディスパッチ
+  1. 章 永続オブジェクト
+  1. 付録
+  * 付録A クイックリファレンス
+  * 付録B 他の言語との比較
+  * 付録C 参考文献
+  * 付録D 用語集
+
+### [オブジェクト指向](https://perldoc.jp/docs/perl/5.10.0/perltoot.pod)
+オブジェクト指向とは何かという初心者として始める。  
+C言語出身なもので・・・。  
+
+
+<a name="objectorientedPerl4894713004one"></a>
+#### 第1章 オブジェクト指向入門
+
+
+<a name="objectorientedPerl4894713004two"></a>
+#### 第2章 Perl入門
+
+
+<a name="objectorientedPerl4894713004three"></a>
+#### 第3章 オブジェクト指向Perl入門
+
+
+<a name="objectorientedPerl4894713004four"></a>
+#### 第4章 配列とスカラのbless
+
+
+<a name="objectorientedPerl4894713004five"></a>
+#### 第5章 その他のデータ型のbless
+
+
+<a name="objectorientedPerl4894713004six"></a>
+#### 第6章 継承
+
+
+<a name="objectorientedPerl4894713004seven"></a>
+#### 第7章 ポリモーフィズム
+
+
+<a name="objectorientedPerl4894713004eight"></a>
+#### 第8章 クラス生成の自動化
+
+
+<a name="objectorientedPerl4894713004nine"></a>
+#### 第9章 統合
+
+
+<a name="objectorientedPerl4894713004ten"></a>
+#### 第10章 演算子のオーバーロード
+
+
+<a name="objectorientedPerl4894713004eleven"></a>
+#### 第11章 カプセル化
+
+
+<a name="objectorientedPerl4894713004twelve"></a>
+#### 第12章 総称
+
+
+<a name="objectorientedPerl4894713004thirteen"></a>
+#### 第13章 多重ディスパッチ
+
+
+<a name="objectorientedPerl4894713004fourteen"></a>
+#### 第14章 永続オブジェクト
+
+
+<a name="objectorientedPerl4894713004appendixa"></a>
+#### 付録A クイックリファレンス
+
+
+<a name="objectorientedPerl4894713004appendixb"></a>
+#### 付録B 他の言語との比較
+
+
+<a name="objectorientedPerl4894713004appendixc"></a>
+#### 付録C 参考文献
+
+
+<a name="objectorientedPerl4894713004appendixd"></a>
+#### 付録D 用語集
+
 
 </details>
 
