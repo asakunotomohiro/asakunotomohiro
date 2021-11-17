@@ -4,7 +4,28 @@ my @asakuno = (1..10);
 
 # 上記の格納方法では、1から1づつ増加し、10まで格納される。
 say "@asakuno";	# 1 2 3 4 5 6 7 8 9 10
+# 以下では、リストに振り分けている。
+my ($one, $two, $three, @any) = @asakuno;
+say "$one";		# 1
+say "$two";		# 2
+say "$three";	# 3
+say "@any";		# 4 5 6 7 8 9 10
 
+# 以下、上記のリストへの振り分けをやり直す。
+my ($one, $two, $three ) = @asakuno;
+say "$one";		# 1
+say "$two";		# 2
+say "$three";	# 3
+say "残りの値が切り捨てられる。";
+
+# 以下、値の入れ替え(他のプログラミング言語ではできないことが多い)。
+say "one:$one";		# 1
+say "two:$two";		# 2
+($one, $two) = ($two, $one);
+say "one:$one";		# 2
+say "two:$two";		# 1
+
+say "-" x 30;
 @asakuno = (1.7..5.7);	# 小数点部分が切り捨てられる。
 say "@asakuno";	# 1 2 3 4 5
 
