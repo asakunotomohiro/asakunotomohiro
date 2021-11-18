@@ -609,6 +609,17 @@ Perlでのリストとは、配列に入れるためのデータであって、�
 また、カンマなしでのリスト化をする場合は、`qw`を使う。  
 
 
+###### リストの平坦化
+リストでの入れ子はできない。  
+例）
+```perl
+my @hoge = (18, 19, (20, 17));
+say "@hoge";	# 18 19 20 17
+say "$hoge[2]";	# 20
+```
+[リファレンス](#practicaluseReference)にて、[可能](#practicaluseReferencearray)。  
+
+
 ##### デフォルト配列(`@_`)
 これは[関数](#function関数)の引数として使うのが一般的。  
 
@@ -2640,6 +2651,7 @@ sub scalarReference() {
 &scalarReference();
 ```
 
+<a name="practicaluseReferencearray"></a>
 以下、配列をリファレンスとして、配列に代入し、さらにその配列をリファレンスとして配列に代入するという入れ子をしている。
 ```perl
 sub arrayReference() {
