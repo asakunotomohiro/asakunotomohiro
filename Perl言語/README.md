@@ -672,6 +672,7 @@ $four = pop(@hoge);
 say "@hoge";	# 1 2 3
 say "$four";	# 4
 ```
+※取り出すため、元の配列からは削除される。  
 
 <a name="subArrangement2push"></a>
 * 末尾に要素を追加：
@@ -2259,20 +2260,35 @@ Python限定にしたくなかったが、他のプログラミング言語に�
 ### スプライス(任意の場所への追加・削除)
 配列への操作方法の応用として、配列途中への追加・削除を行う。  
 
+```perl
+my @hoge = (1..10);
+
+say "@hoge";	# 1 2 3 4 5 6 7 8 9 10
+say "配列のスライスとして置き換え。";
+@hoge[2, 6, 4] = (88, 20211118, 99);
+say "@hoge";	# 1 2 88 4 99 6 20211118 8 9 10
+
+say "配列のスライス。";
+my $two = 2;
+say "@hoge[$two, 6, $#hoge, -2]";	# 88 20211118 10 9
+```
+配列をリストとして扱うため、配列の接頭辞に`@`を使う。  
+
 * 配列を任意の場所で継ぎ接ぎ：
   * `$変数名 = splice @配列名, 添え字;`  
     添え字以降の要素が取り除かれ、配列最後の要素が変数に代入される。  
-  * `@配列名 = splice @配列名, 添え字;`  
+  * [`@配列名 = splice @配列名, 添え字;`](#practicaluseArrangementArraysplicetwoArg)  
     添え字の要素以降が配列に代入される。  
     要は、第2引数までの利用。  
-  * `@配列名 = splice @配列名, 添え字, 要素数;`  
+  * [`@配列名 = splice @配列名, 添え字, 要素数;`](#practicaluseArrangementArraysplicethreeArg)  
     添え字の要素以降から要素数までが配列に代入される。  
     要は、第3引数までの利用。  
-  * `@配列名 = splice @配列名, 添え字, 要素数, リスト;`  
+  * [`@配列名 = splice @配列名, 添え字, 要素数, リスト;`](#practicaluseArrangementArraysplicefourArg)  
     添え字の要素以降から要素数までが配列に代入され、その分をリストで置き換える。  
     要は、第4引数までの利用。  
     要素数の部分を0指定した場合、その場所に挿入する(置き換えではなくなる)。  
 
+<a name="practicaluseArrangementArraysplicetwoArg"></a>
 以下、`splice`演算子による添え字番号指定の取り出し(第2引数までの利用)。
 ```Perl
 my @hoge = ( 1..10 );
@@ -2282,6 +2298,7 @@ say "@hoge";	# 1 2
 say "@boo";		# 3 4 5 6 7 8 9 10
 ```
 
+<a name="practicaluseArrangementArraysplicethreeArg"></a>
 以下、`splice`演算子による添え字番号指定の取り出し(第3引数までの利用)。
 ```Perl
 my @hoge = ( 1..10 );
@@ -2291,6 +2308,7 @@ say "@hoge";	# 1 2 6 7 8 9 10
 say "@boo";		# 3 4 5
 ```
 
+<a name="practicaluseArrangementArraysplicefourArg"></a>
 以下、`splice`演算子による添え字番号指定の置換(第4引数までの利用)。
 ```Perl
 my @hoge = ( 1..10 );
