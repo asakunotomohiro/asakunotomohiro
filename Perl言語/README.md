@@ -617,7 +617,7 @@ my @hoge = (18, 19, (20, 17));
 say "@hoge";	# 18 19 20 17
 say "$hoge[2]";	# 20
 ```
-[リファレンス](#practicaluseReference)にて、[可能](#practicaluseReferencearray)。  
+[リファレンス](#practicalusePointer)にて、[可能](#practicaluseReferencearray)。  
 
 
 ##### デフォルト配列(`@_`)
@@ -2238,7 +2238,7 @@ Python限定にしたくなかったが、他のプログラミング言語に�
 基礎知識5種類だけではアルゴリズムの勉強に足りない部分が発生したため、ちょっとだけ手を広げて勉強した。  
 
 * 応用部分  
-  * [リファレンス](#practicaluseReference)  
+  * [リファレンス](#practicalusePointer)  
   * [ハッシュ(連想配列)](#practicaluseHash)  
   * [オブジェクト指向](#practicaluseObjectorientation)  
     2021/11/11〜  
@@ -2400,7 +2400,7 @@ $hoge[9] = 20210901 + 9;	# 20210901
 </details>
 
 
-<a name="practicaluseReference"></a>
+<a name="practicalusePointer"></a>
 <details><summary>応用知識-リファレンス</summary>
 
 ### [リファレンス](https://perldoc.jp/docs/perl/5.8.8/perlref.pod)
@@ -2425,9 +2425,9 @@ $hoge[9] = 20210901 + 9;	# 20210901
 利用方法は、リファレンスを取得したい対象の先頭に`\`を付けることで取得できる。  
 
 ```Perl
-$scalarref = \$foo;
-$arrayref  = \@ARGV;
-$hashref   = \%ENV;
+$scalarref = \$foo;     # 配列
+$arrayref  = \@ARGV;    # 配列
+$hashref   = \%ENV;     # ハッシュ
 $coderef   = \&handler;
 $globref   = \*foo;
 ```
@@ -2633,6 +2633,7 @@ sub dereferenceHash() {
 }
 &dereferenceHash();
 ```
+※そもそもの[ハッシュとは](#practicaluseHash)  
 
 当然関数用など他にもデリファレンスが必要なリファレンスもある。  
 
@@ -2803,19 +2804,20 @@ sub hashReference() {
 > リストコンテキストでは、指定したハッシュのすべての値を返します。  
 
 [キー/値のハッシュスライス](https://perldoc.jp/docs/perl/5.34.0/perldata.pod#Key47Value32Hash32Slices)  
-
+※[リファレンス](#practicalusePointer)のハッシュもある。
 
 * 3つの特徴  
   * キーは重複不可(一意であること)。  
   * 値は重複可能。  
   * 順番は存在しない。  
 
-* Perlへの哲学の適用  
+* Perlでの哲学  
   * ハッシュの大きさに制限はない。  
 
 
 #### 作成方法
 様式：`%ハッシュ名 = ('キー1', 値1, 'キー2', 値2, ・・・ );`  
+`%ハッシュ名 = (キー1=>値1, キー2=>値2, ・・・ );`  
 例）
 ```perl
 my %hoge = (
@@ -2824,7 +2826,9 @@ my %hoge = (
 	boo  => "本日は晴天なり。",
 );
 ```
-※キーは、シングルクォーテーションで囲む(`=>`を使う場合は省略可能)。  
+※キー(左辺)が文字列の場合は、シングルクォーテーションで囲む、もしくは、`=>`を使う場合は省略可能。  
+当然右辺が文字列の場合は、クォーテーション記号が必要になる。  
+※丸括弧`()`の意味は、リスト。  
 
 
 コピーもできるが、負担が掛かるため、止めた方が良い。
@@ -2832,8 +2836,8 @@ my %hoge = (
 
 
 #### 取得方法
-愚痴：作成方法が丸括弧で、取得方法が波括弧なのは混乱する。  
-`$ハッシュ名{'キー'}`;
+愚痴：作成方法が丸括弧で、取得方法が波括弧なのは混乱する(リストとの区別が付かないのが原因)。  
+`$ハッシュ名{キー};`  
 
 
 ```perl
@@ -3201,7 +3205,7 @@ Perlにおけるオブジェクト指向は、標準的な言語機能(ハッシ
   * [配列](#arrangement配列)  
   * [ハッシュ](#practicaluseHash)  
   * [関数(サブルーチン)](#function関数)  
-  * [リファレンス・リファレント](#practicaluseReference)  
+  * [リファレンス・リファレント](#practicalusePointer)  
   * [パッケージ](#)  
 
 * Perlの非中核要素  
