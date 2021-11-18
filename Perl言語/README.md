@@ -2868,7 +2868,8 @@ sub associativearray() {
 
 #### 変更方法
 様式：
-`$ハッシュ名{'キー'} = 値`;
+`$ハッシュ名{キー} = 値;`  
+※**キー**にスペースを含まない場合、クォーテーション記号は不要。  
 
 
 ##### キーと値を入れ替える。
@@ -2907,6 +2908,7 @@ sub associativearray() {
 
 ##### keys関数・values関数
 順不同ではあるが、かならず対になる取得ができる。  
+先頭から末尾までを1つづつ取り出すには、**keys**・**values**・[**each**](#practicaluseHasheach)の3種類が使える。  
 
 ```perl
 sub associativearray() {
@@ -2974,6 +2976,53 @@ sub associativearray() {
 `$既存のハッシュ名{追加したいキー名} = 追加したい値;`  
 
 
+<a name="practicaluseHashforeach"></a>
+#### 繰り返し処理(通常取り出し)。
+取り出すものによって、取得方法が異なる(当たり前のこと)。  
+
+以下、値のみを得る方法。
+```perl
+sub associativearray() {
+	my %hoge = (
+		hoge => 20211118,
+		booo => 9784873118246,
+		barr => "本日は晴天なり。",
+	);
+	# 左辺がキー・右辺が値。
+
+	foreach my $key ( keys %hoge ){
+		say "$hoge{$key}";
+#				9784873118246
+#				20211118
+#				本日は晴天なり。
+	}
+}
+&associativearray();
+```
+
+以下、値のみを得る方法(第2弾)。
+```perl
+sub associativearray() {
+	my %hoge = (
+		hoge => 20211118,
+		booo => 9784873118246,
+		barr => "本日は晴天なり。",
+	);
+	# 左辺がキー・右辺が値。
+
+	foreach my $value ( values %hoge ) {
+		say $value;
+#				20211118
+#				9784873118246
+#				本日は晴天なり。
+		say $hoge{$value};	# ←☆想定通りに空文字だった(当然3行分空文字として出力されている)。
+	}
+}
+&associativearray();
+```
+
+
+<a name="practicaluseHasheach"></a>
 #### 繰り返し処理(`each`関数)。
 
 ```perl
