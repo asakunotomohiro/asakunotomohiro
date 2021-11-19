@@ -857,18 +857,16 @@ say "@boo";	# 20210830 20210831 20210901 20210902
     [ ] 3次元配列以上の宣言方法。  
     [x] リファレンス(少しだけ調べた)。  
   * [x] 配列を複製する方法。  
-  * [ ] 配列からスライスを作成する方法。  
+  * [x] [配列からスライスを作成する方法。](#practicaluseArrangement配列)  
 
 * 構造体  
   Perlには[ない](https://perldoc.jp/docs/perl/5.10.0/perlfaq7.pod#How32do32I32declare47create32a32structure63)ようだ。  
-  * 構造体の複製  
-  * 構造体からのスライス作成  
   * 共用体  
   * 列挙体  
 
 * コレクション  
   * [x] [ハッシュ(`%ハッシュ名`)](#practicaluseHash)  
-    [ ] ハッシュスライス作成  
+    [x] [ハッシュスライス作成](#practicaluseHashdslice)  
   * [x] List(配列)  
   * [ ] Set  
   * [ ] Map  
@@ -2937,6 +2935,40 @@ sub associativearray() {
 ```
 
 
+<a name="practicaluseHashdslice"></a>
+##### スライス
+ハッシュへの操作方法の応用として、ハッシュ値をスライス方法にて変更する。  
+
+以下、そのプログラム。
+```perl
+sub associativearray() {
+	my %boo = (
+		boo => 20211119,
+		bar => 9784873118246,
+		hoge => "BK4873118247",
+	);
+
+	# 以下、通常の値出力方法。
+	say "$boo{boo}, $boo{bar}";	# 20211119, 9784873118246
+
+	# 以下、スライスでの出力方法。
+	say @boo{"boo", "bar"};	# 202111199784873118246
+	say @boo{qw(boo bar)};	# 202111199784873118246
+
+	# 以下、スライスでの値変更。
+	@boo{qw(boo bar)} = (123, 456);
+	say @boo{qw(boo bar)};	# 123456
+	say "$boo{boo}";	# 123
+	say "$boo{bar}";	# 456
+	say "$boo{hoge}";	# BK4873118247
+}
+&associativearray();
+```
+あいにく、削除や追加方法は分からなかった。  
+しかし、ハッシュ相手なのだから不要だろう。  
+[削除方法](#practicaluseHashdelete)は必要だよな。  
+
+
 ##### キーの並べ替え
 正しいやり方が分からない。  
 
@@ -3071,6 +3103,7 @@ sub associativearray() {
 ```
 
 
+<a name="practicaluseHashdelete"></a>
 #### 値の削除方法(`delete`関数)。
 削除すると言うことは、ハッシュ定義内から消すと言うことであり、`undef`を代入することではない。  
 
