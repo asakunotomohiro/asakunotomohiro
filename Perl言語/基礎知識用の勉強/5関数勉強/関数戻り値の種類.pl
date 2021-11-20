@@ -29,6 +29,9 @@ say $o;	# [空文字undef]
 
 my @tomohiro = asakuno();
 say "@tomohiro";	# 朝 来 野 智 博
+say "$tomohiro[0]";	# 朝
+say "$tomohiro[4]";	# 博
+say "$tomohiro[5]";	# undef
 
 say "以上。"
 # vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=perl noexpandtab:
