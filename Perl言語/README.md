@@ -137,6 +137,8 @@ $
     [ ] リスト演算子(`grep`・`map`)  
     [ ] eval  
   * [ ] [条件分岐](#practicaluseConditional条件分岐)  
+    * [x] 三項演算子(`?:`)  
+      Perlでは、[条件演算子](https://perldoc.jp/docs/perl/perlop.pod#Conditional32Operator)のこと。  
   * [ ] [繰り返し](#practicaluseRepetition繰り返し)  
   * [ ] [関数](#practicaluseFunction関数)  
 
@@ -988,6 +990,7 @@ Perlの[演算子](https://perldoc.jp/docs/perl/perlop.pod)。
 <details><summary>今回は勉強を見送る一覧</summary>
 
 * 多岐分岐  
+  * [x] [三項演算子(`?:`)](#practicaluseConditional条件分岐)  
   * if修飾子：処理に対してif文が末尾に付く。  
     例）`say "hello world." if($hoge == "hoge");`  
     if文の条件式が真だった場合に、say処理が走る。  
@@ -998,8 +1001,6 @@ Perlの[演算子](https://perldoc.jp/docs/perl/perlop.pod)。
   * unless修飾子：if修飾子と同じように使える。  
 
 * 関係演算子  
-  * [ ] 三項演算子(`?:`)  
-    Perlでは、条件演算子のこと。  
   * [ ] 論理演算子  
     * [ ] 排他的論理和(`XOR`・`NOT OR`・`^`)  
     * [ ] 否定(`NOT`・`!`・`~`)  
@@ -2399,6 +2400,60 @@ $hoge[9] = 20210901 + 9;	# 20210901
 
 </details>
 
+<a name="practicaluseConditional条件分岐"></a>
+<details><summary>応用知識-条件分岐</summary>
+
+### 三項演算子(条件演算子)`?:`
+様式：
+`条件式 ? 真の時の値 : 偽の時の値;`  
+
+[公式ページの条件演算子](https://perldoc.jp/docs/perl/perlop.pod#Conditional32Operator)  
+> "?" の前の引数が真であれば ":" の前の引数が返されますが、 真でなければ、":" の後の引数が返されます。  
+
+以下、例）
+```perl
+my @bar = (20211123, 20211124, );
+my $boo = 20211123;
+
+# 以下は、左の数字と変数内容を比較し、真であれば"数字代入"が$hogeに代入される。
+my $hoge = 20211123 == $boo ? "数字代入" : "文字列代入";
+say $hoge;	# 数字代入
+
+# 以下は、左の数字と変数内容を比較し、偽であれば"文字列代入"が$hogeに代入される。
+my $hoge = 20211123 == $bar[1] ? "数字代入" : "文字列代入";
+say $hoge;	# 文字列代入
+```
+ちなみに、`undef`・`""`・`0`・`"0"`は、全て偽になる。  
+
+<details><summary>三項演算子の入れ子</summary>
+
+見にくいため、常識として使わないこと。  
+プログラミングしているときですら大変だろうが、保守はそれ以上に大変になることが予想される。  
+
+```perl
+my @boo = (20211123, 20211124, );
+
+my $hoge = 20211120 == $boo[0] ? "11/20"
+		:  20211121 == $boo[0] ? "11/21"
+		:  20211122 == $boo[0] ? "11/22"
+		:  20211123 == $boo[0] ? "11/23"	# ←☆これが代入される。
+		:  20211124 == $boo[0] ? "11/24"
+		:  "日付なし";
+say $hoge;	# 11/23
+
+my $hoge = 20211120 == $boo[0] ? "11/20"
+		:  20211121 == $boo[0] ? "11/21"
+		:  20211122 == $boo[0] ? "11/22"
+		:  20211124 == $boo[0] ? "11/24"
+		:  "日付なし";	# ←☆これが代入される。
+say $hoge;	# 日付なし
+```
+すでに見にくい。  
+**if**文の入れ子も見にくいように思うが、これよりマシだろう。  
+
+</details>
+
+</details>
 
 <a name="practicalusePointer"></a>
 <details><summary>応用知識-リファレンス</summary>
