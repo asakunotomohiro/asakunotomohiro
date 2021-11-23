@@ -990,6 +990,7 @@ Perlの[演算子](https://perldoc.jp/docs/perl/perlop.pod)。
 <details><summary>今回は勉強を見送る一覧</summary>
 
 * 多岐分岐  
+  * [x] [三項演算子(`?:`)](#practicaluseConditional条件分岐)  
   * if修飾子：処理に対してif文が末尾に付く。  
     例）`say "hello world." if($hoge == "hoge");`  
     if文の条件式が真だった場合に、say処理が走る。  
@@ -2409,6 +2410,20 @@ $hoge[9] = 20210901 + 9;	# 20210901
 [公式ページの条件演算子](https://perldoc.jp/docs/perl/perlop.pod#Conditional32Operator)  
 > "?" の前の引数が真であれば ":" の前の引数が返されますが、 真でなければ、":" の後の引数が返されます。  
 
+以下、例）
+```perl
+my @bar = (20211123, 20211124, );
+my $boo = 20211123;
+
+# 以下は、左の数字と変数内容を比較し、真であれば"数字代入"が$hogeに代入される。
+my $hoge = 20211123 == $boo ? "数字代入" : "文字列代入";
+say $hoge;	# 数字代入
+
+# 以下は、左の数字と変数内容を比較し、偽であれば"文字列代入"が$hogeに代入される。
+my $hoge = 20211123 == $bar[1] ? "数字代入" : "文字列代入";
+say $hoge;	# 文字列代入
+```
+ちなみに、`undef`・`""`・`0`・`"0"`は、全て偽になる。  
 
 </details>
 
