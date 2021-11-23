@@ -137,6 +137,8 @@ $
     [ ] リスト演算子(`grep`・`map`)  
     [ ] eval  
   * [ ] [条件分岐](#practicaluseConditional条件分岐)  
+    * [x] 三項演算子(`?:`)  
+      Perlでは、[条件演算子](https://perldoc.jp/docs/perl/perlop.pod#Conditional32Operator)のこと。  
   * [ ] [繰り返し](#practicaluseRepetition繰り返し)  
   * [ ] [関数](#practicaluseFunction関数)  
 
@@ -998,8 +1000,6 @@ Perlの[演算子](https://perldoc.jp/docs/perl/perlop.pod)。
   * unless修飾子：if修飾子と同じように使える。  
 
 * 関係演算子  
-  * [ ] 三項演算子(`?:`)  
-    Perlでは、条件演算子のこと。  
   * [ ] 論理演算子  
     * [ ] 排他的論理和(`XOR`・`NOT OR`・`^`)  
     * [ ] 否定(`NOT`・`!`・`~`)  
@@ -2399,6 +2399,13 @@ $hoge[9] = 20210901 + 9;	# 20210901
 
 </details>
 
+<a name="practicaluseConditional条件分岐"></a>
+<details><summary>応用知識-条件分岐</summary>
+
+### 三項演算子(条件演算子)`?:`
+
+
+</details>
 
 <a name="practicalusePointer"></a>
 <details><summary>応用知識-リファレンス</summary>
