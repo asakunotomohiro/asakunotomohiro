@@ -2403,6 +2403,11 @@ $hoge[9] = 20210901 + 9;	# 20210901
 <details><summary>応用知識-条件分岐</summary>
 
 ### 三項演算子(条件演算子)`?:`
+様式：
+`条件式 ? 真の時の値 : 偽の時の値;`  
+
+[公式ページの条件演算子](https://perldoc.jp/docs/perl/perlop.pod#Conditional32Operator)  
+> "?" の前の引数が真であれば ":" の前の引数が返されますが、 真でなければ、":" の後の引数が返されます。  
 
 
 </details>
