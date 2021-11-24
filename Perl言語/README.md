@@ -137,8 +137,9 @@ $
     [ ] リスト演算子(`grep`・`map`)  
     [ ] eval  
   * [ ] [条件分岐](#practicaluseConditional条件分岐)  
-    * [x] 三項演算子(`?:`)  
+    * [x] [三項演算子](#practicaluseConditionalternary)(`?:`)  
       Perlでは、[条件演算子](https://perldoc.jp/docs/perl/perlop.pod#Conditional32Operator)のこと。  
+    * [x] [if修飾子](#practicaluseConditionalifmodifier)  
   * [ ] [繰り返し](#practicaluseRepetition繰り返し)  
   * [ ] [関数](#practicaluseFunction関数)  
 
@@ -990,8 +991,8 @@ Perlの[演算子](https://perldoc.jp/docs/perl/perlop.pod)。
 <details><summary>今回は勉強を見送る一覧</summary>
 
 * 多岐分岐  
-  * [x] [三項演算子(`?:`)](#practicaluseConditional条件分岐)  
-  * if修飾子：処理に対してif文が末尾に付く。  
+  * [x] [三項演算子(`?:`)](#practicaluseConditionalternary)  
+  * [x] [if修飾子](#practicaluseConditionalifmodifier)：処理に対してif文が末尾に付く。  
     例）`say "hello world." if($hoge == "hoge");`  
     if文の条件式が真だった場合に、say処理が走る。  
   * 基本構造例：switch  
@@ -1310,7 +1311,7 @@ print( hoge($test) );		# 戻り値がリストコンテクスト。
 
 * `wantarray`関数の戻り値  
   現在の関数から値を戻す場合の種類のこと。  
-  ※これを有効活用するために、[**三項演算子(`?:`)**](#practicaluseConditional条件分岐)を勉強したはずなのに、本来勉強が必要だったのは、**if修飾子**だった。  
+  ※これを有効活用するために、[**三項演算子(`?:`)**](#practicaluseConditional条件分岐)を勉強したはずなのに、本来勉強が必要だったのは、[**if修飾子**](#practicaluseConditionalifmodifier)だった。  
   * `undef`  
     偽の未定義であるため、戻り値を返さない。  
     ※関数の呼び出し元が何も受け取らないことを意味する。  
@@ -2426,7 +2427,8 @@ $hoge[9] = 20210901 + 9;	# 20210901
 </details>
 
 <a name="practicaluseConditional条件分岐"></a>
-<details><summary>応用知識-条件分岐</summary>
+<a name="practicaluseConditionalternary"></a>
+<details><summary>応用知識-条件分岐(三項演算子)</summary>
 
 ### 三項演算子(条件演算子)`?:`
 様式：
@@ -2477,6 +2479,42 @@ say $hoge;	# 日付なし
 **if**文の入れ子も見にくいように思うが、これよりマシだろう。  
 
 </details>
+
+</details>
+
+<a name="practicaluseConditionalifmodifier"></a>
+<details><summary>応用知識-条件分岐(if修飾子)</summary>
+
+コードを短くするために、文の後ろに修飾子を置くことができる。  
+今回は、**if**を置くことにする。  
+
+### [if修飾子](https://perldoc.jp/docs/perl/5.12.1/perlsyn.pod)
+様式：
+`文 if 条件式;`  
+
+以下、例）
+```perl
+my $hoge = 20211124;
+
+say $hoge if $hoge == 20211124;	# 20211124
+
+if ( $hoge == 20211124 ) {
+	say $hoge;	# 20211124
+}
+```
+※入れ子はできない。  
+
+以下、0判定結果
+```perl
+my $hoge;
+say $hoge	if $hoge;	# 出力なし(undef)。
+
+$hoge = 0;
+say $hoge	if $hoge;	# 出力なし。
+```
+`defined-or`演算子の出番はないと思って良いだろう。  
+
+当然ながら**if**だけでなく、**unless**・**until**・**while**・**foreach**がある。  
 
 </details>
 
