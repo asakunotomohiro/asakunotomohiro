@@ -2508,6 +2508,7 @@ say $hoge				if $hoge;	# 出力なし(undef)。
 $hoge = 0;
 say $hoge				if $hoge;	# 出力なし。
 ```
+`defined-or`演算子の出番はないと思って良いだろう。  
 
 当然ながら**if**だけでなく、**unless**・**until**・**while**・**foreach**がある。  
 

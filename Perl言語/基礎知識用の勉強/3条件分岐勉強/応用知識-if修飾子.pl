@@ -17,8 +17,15 @@ say "-" x 30;
 my $asakuno;
 say $asakuno				if $asakuno;	# 出力なし(undef)。
 
+say $asakuno				// $asakuno;	# 空文字列(undef)出力。
+say $asakuno				// "hoge";		# hoge出力。
+say $asakuno;	# 空文字列(undef)出力。
+
 $asakuno = 0;
 say $asakuno				if $asakuno;	# 出力なし。
+say $asakuno				// $asakuno;	# 0出力。
+say $asakuno				// "boo";		# 0出力。
+say $asakuno;	# 0出力。
 
 say "-" x 30;
 
