@@ -2481,8 +2481,25 @@ say $hoge;	# 日付なし
 
 <details><summary>応用知識-条件分岐(if修飾子)</summary>
 
+コードを短くするために、文の後ろに修飾子を置くことができる。  
+今回は、**if**を置くことにする。  
+
 ### if修飾子
 様式：
+`文 if 条件式;`  
+
+以下、例）
+```perl
+my $hoge = 20211124;
+
+say $hoge if $hoge == 20211124;	# 20211124
+
+if ( $hoge == 20211124 ) {
+	say $hoge;	# 20211124
+}
+```
+
+当然ながら**if**だけでなく、**unless**・**until**・**while**・**foreach**がある。  
 
 </details>
 
