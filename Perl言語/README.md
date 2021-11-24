@@ -139,6 +139,7 @@ $
   * [ ] [条件分岐](#practicaluseConditional条件分岐)  
     * [x] 三項演算子(`?:`)  
       Perlでは、[条件演算子](https://perldoc.jp/docs/perl/perlop.pod#Conditional32Operator)のこと。  
+    * [x] if修飾子  
   * [ ] [繰り返し](#practicaluseRepetition繰り返し)  
   * [ ] [関数](#practicaluseFunction関数)  
 
@@ -991,7 +992,7 @@ Perlの[演算子](https://perldoc.jp/docs/perl/perlop.pod)。
 
 * 多岐分岐  
   * [x] [三項演算子(`?:`)](#practicaluseConditional条件分岐)  
-  * if修飾子：処理に対してif文が末尾に付く。  
+  * [x] [if修飾子](#practicaluseConditional条件分岐)：処理に対してif文が末尾に付く。  
     例）`say "hello world." if($hoge == "hoge");`  
     if文の条件式が真だった場合に、say処理が走る。  
   * 基本構造例：switch  
@@ -1310,7 +1311,7 @@ print( hoge($test) );		# 戻り値がリストコンテクスト。
 
 * `wantarray`関数の戻り値  
   現在の関数から値を戻す場合の種類のこと。  
-  ※これを有効活用するために、[**三項演算子(`?:`)**](#practicaluseConditional条件分岐)を勉強したはずなのに、本来勉強が必要だったのは、**if修飾子**だった。  
+  ※これを有効活用するために、[**三項演算子(`?:`)**](#practicaluseConditional条件分岐)を勉強したはずなのに、本来勉強が必要だったのは、[**if修飾子**](https://perldoc.jp/docs/perl/5.12.1/perlsyn.pod)だった。  
   * `undef`  
     偽の未定義であるため、戻り値を返さない。  
     ※関数の呼び出し元が何も受け取らないことを意味する。  
@@ -2426,7 +2427,7 @@ $hoge[9] = 20210901 + 9;	# 20210901
 </details>
 
 <a name="practicaluseConditional条件分岐"></a>
-<details><summary>応用知識-条件分岐</summary>
+<details><summary>応用知識-条件分岐(三項演算子`?:`)</summary>
 
 ### 三項演算子(条件演算子)`?:`
 様式：
@@ -2475,6 +2476,13 @@ say $hoge;	# 日付なし
 ```
 すでに見にくい。  
 **if**文の入れ子も見にくいように思うが、これよりマシだろう。  
+
+</details>
+
+<details><summary>応用知識-条件分岐(if修飾子)</summary>
+
+### if修飾子
+様式：
 
 </details>
 
