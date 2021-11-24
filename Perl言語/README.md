@@ -2498,6 +2498,16 @@ if ( $hoge == 20211124 ) {
 	say $hoge;	# 20211124
 }
 ```
+※入れ子はできない。  
+
+以下、0判定結果
+```perl
+my $hoge;
+say $hoge				if $hoge;	# 出力なし(undef)。
+
+$hoge = 0;
+say $hoge				if $hoge;	# 出力なし。
+```
 
 当然ながら**if**だけでなく、**unless**・**until**・**while**・**foreach**がある。  
 

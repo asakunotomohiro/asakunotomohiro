@@ -9,6 +9,17 @@ if ( $tomohiro == 20211124 ) {
 	say $tomohiro;	# 20211124
 }
 
+# 以下、値が変数に入っている場合に出力する。
+say $asakuno[1]				if $asakuno[1];	# 20211125
+
+say "-" x 30;
+
+my $asakuno;
+say $asakuno				if $asakuno;	# 出力なし(undef)。
+
+$asakuno = 0;
+say $asakuno				if $asakuno;	# 出力なし。
+
 say "-" x 30;
 
 say "以下、ifの逆の判定をする。";
