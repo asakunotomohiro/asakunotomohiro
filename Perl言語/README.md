@@ -1311,7 +1311,7 @@ print( hoge($test) );		# 戻り値がリストコンテクスト。
 
 * `wantarray`関数の戻り値  
   現在の関数から値を戻す場合の種類のこと。  
-  ※これを有効活用するために、[**三項演算子(`?:`)**](#practicaluseConditional条件分岐)を勉強したはずなのに、本来勉強が必要だったのは、[**if修飾子**](#practicaluseConditionalifmodifier)だった。  
+  ※これを有効活用するために、[**if修飾子**](#practicaluseConditionalifmodifier)を使う。  
   * `undef`  
     偽の未定義であるため、戻り値を返さない。  
     ※関数の呼び出し元が何も受け取らないことを意味する。  
@@ -1319,6 +1319,45 @@ print( hoge($test) );		# 戻り値がリストコンテクスト。
     偽だが定義済みであるため、スカラを返す。  
   * `1`  
     真であり定義済みである、リストを返す。  
+
+<a name="functionReturnScalarList"></a>
+<details><summary>関数からの戻り値の挙動確認(wantarray関数)</summary>
+
+呼び出し側による戻り値の期待に沿った型で戻せる。  
+
+以下、プログラム。
+```perl
+use v5.24;
+
+# 以下、サブルーチン
+sub func
+{
+	my $boo = "本日は晴天なり。";
+	my @bar = ("boo", "bar",);
+
+	say "関数内部処理。";
+
+	return @bar if wantarray();				# 呼び出し側が配列を期待する場合は配列で戻す。
+	return $boo  if defined(wantarray());	# 呼び出し側が変数を期待する場合は変数で戻す。
+}
+
+# 以下、戻り値なし。
+func();	# 何もしない(正確な表現⇒何も戻ってこない)。
+	# 関数内部処理。
+	# は、出力された。
+
+# 以下、戻り値の種類がスカラコンテクスト。
+my $scalar = func();
+say $scalar;	# 本日は晴天なり。
+
+# 以下、戻り値の種類がリストコンテクスト。
+my @list = func();
+say "@list";	# boo bar
+say $list[0];	# boo
+say $list[1];	# bar
+```
+
+</details>
 
 * スカラーコンテキスト(長音記号不要？)。  
   これは、普通に変数1つを戻り値扱いするため、気にすることはないだろう。  
