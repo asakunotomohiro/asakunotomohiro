@@ -1383,6 +1383,24 @@ syntax error at 関数戻り値の種類.pl line 7, near "carp "戻り値は使�
 Execution of 関数戻り値の種類.pl aborted due to compilation errors.
 ```
 
+以下、関数の呼び出し元の特定関数利用プログラム。
+```perl
+use v5.24;
+
+sub asakuno {
+	say "関数内";
+
+	my ($package, $file, $line) = caller();
+
+	return ($package, $file, $line);
+}
+
+my ($retpack, $retFile, $retLine) = asakuno();
+say $retpack;	# main	←☆呼び出し元のパッケージ。
+say $retFile;	# 関数の呼び出し元.pl	←☆呼び出し元のコードを含んでいるファイルの名前。
+say $retLine;	# 11	←☆呼び出し元のファイル内の行。
+```
+
 </details>
 
 * スカラーコンテキスト(長音記号不要？)。  
