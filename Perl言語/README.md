@@ -1357,6 +1357,32 @@ say $list[0];	# boo
 say $list[1];	# bar
 ```
 
+また、戻り値を常に受け取ってもらう前提のサブルーチンの場合、以下のように警告を出せる。
+```perl
+use v5.24;
+use Carp;	# ←☆警告表示にはこれが必要。
+
+# 以下、サブルーチン
+sub function
+{
+	say "戻り値受け取り警告。";
+	carp "戻り値は使うため、受け取るようにしましょう。";
+}
+
+function();
+#	戻り値は使うため、受け取るようにしましょう。 at 関数戻り値の種類.pl line 8.
+#	main::function() called at 関数戻り値の種類.pl line 11
+#	戻り値受け取り警告。	←☆警告後に処理が走る(上から順番に処理が動くわけではないって事)。
+```
+※警告を出すための関数呼び込み(要は、インクルード)が必須。  
+付け忘れた場合、エラーが出る。  
+```terminal
+String found where operator expected at 関数戻り値の種類.pl line 7, near "carp "戻り値は使うため、受け取るようにしましょう。""
+	(Do you need to predeclare carp?)
+syntax error at 関数戻り値の種類.pl line 7, near "carp "戻り値は使うため、受け取るようにしましょう。""
+Execution of 関数戻り値の種類.pl aborted due to compilation errors.
+```
+
 </details>
 
 * スカラーコンテキスト(長音記号不要？)。  

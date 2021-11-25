@@ -1,4 +1,5 @@
 use v5.24;
+use Carp;
 
 my @asakuno = ("朝来野", "智博", );
 
@@ -62,6 +63,24 @@ my @list = func();
 say "@list";	# asakuno tomohiro
 say $list[0];	# asakuno
 say $list[1];	# tomohiro
+
+say "-" x 30;
+
+# 以下、サブルーチン
+sub function
+{
+	say "戻り値受け取り警告。";
+	my $asakuno = "朝来野智博";
+	my @tomohiro = ("asakuno", "tomohiro",);
+
+	return @tomohiro if wantarray();
+	return $asakuno  if defined(wantarray());
+	carp "戻り値は使うため、受け取るようにしましょう。";
+}
+
+function();
+#	戻り値は使うため、受け取るようにしましょう。 at 関数戻り値の種類.pl line 78.
+#	main::function() called at 関数戻り値の種類.pl line 81
 
 
 say "以上。"
