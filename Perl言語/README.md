@@ -2624,16 +2624,31 @@ say $hoge	if $hoge;	# 出力なし。
 
 #### リファレンス
 利用方法は、リファレンスを取得したい対象の先頭に`\`を付けることで取得できる。  
+元の変数のことを**リファレント**と言う(下記で言う **$foo**や **@ARGV**など)。  
 
 ```Perl
 $scalarref = \$foo;     # 配列
 $arrayref  = \@ARGV;    # 配列
 $hashref   = \%ENV;     # ハッシュ
-$coderef   = \&handler;
-$globref   = \*foo;
+$coderef   = \&handler; # 関数
+$globref   = \*foo;	←☆これ何？
 ```
 ただ、  
 > バックスラッシュ演算子を使って IO ハンドル(ファイルハンドルまたは ディレクトリハンドル)へのリファレンスを生成することはできません。  
+
+以下、戻す。
+```Perl
+say ${$scalarref};	# \$foo     配列
+say @{$arrayref} ;	# \@ARGV    配列
+    say @{$arrayref}[0];	# \@ARGV    配列の1つ目の要素。
+    say @{$arrayref}[1];	# \@ARGV    配列の2つ目の要素。
+say %{$hashref}  ;	# \%ENV     ハッシュ
+    say ${$hashref}{key1}  ;	# \%ENV     ハッシュのキー1(値を取り出す)。
+    say ${$hashref}{key2}  ;	# \%ENV     ハッシュのキー2(値を取り出す)。
+say &{$coderef}  ;	# \&handler 関数(呼び出し後、変な数字が含まれてしまう)。
+say *{$globref}  ;	# \*foo     	←☆検証方法不明でよく分からない。
+```
+当たり前だが、配列のリファレンスに対して、ハッシュのリファレント扱いした場合、エラーになる。  
 
 例）
 ```perl
