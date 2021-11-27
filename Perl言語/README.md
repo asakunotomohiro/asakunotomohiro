@@ -601,14 +601,14 @@ Perlでのリストとは、配列に入れるためのデータであって、�
 
 * 追加方法  
   * 配列末尾への対応。  
-    スタック`stack`(後入れ先出し法：Last In First Out, LIFO)  
+    スタック[`stack`](#stackChapter3)(後入れ先出し法：Last In First Out, LIFO)  
     * 取り出し[pop](#subArrangement2pop)  
       配列の**最後**から要素を**取り出す**。  
     * 追加[push](#subArrangement2push)  
       配列の**最後**に要素を**追加**する。  
       `unshift`の追加処理より**早い**。  
   * 配列先頭への対応。  
-    キュー`queue`(先入れ先出し法：First In First Out, FIFO)  
+    キュー[`queue`](#queueChapter3)(先入れ先出し法：First In First Out, FIFO)  
     * 取り出し[shift](#subArrangement2shift)  
       配列の**先頭**から要素を**取り出す**。  
       `pop`の取り出しより**早い**。  
@@ -1323,7 +1323,7 @@ Perlでオブジェクト指向開発ができるだけでなく、そのやり�
   ※例外処理(`try〜except〜finally`)の説明をしている(いずれ基礎知識として勉強に組み込む必要がある？)。  
   以下、各項目(目次)。  
   [x] [スタック](#stackChapter3)2021/10/04  
-  [ ] [キュー](#queueChapter3)  
+  [x] [キュー](#queueChapter3)2021/11/27  
   [ ] [リスト](#listChapter3)  
   [ ] [木](#woodChapter3)  
   [ ] [グラフ](#graphChapter3)  
@@ -2013,6 +2013,62 @@ Perlで関数にまとめるのが馬鹿らしいほど間抜けなプログラ�
 
 <a name="queueChapter3"></a>
 #### キュー
+**キュー(queue)**とは、最初に入れたデータを最初に取り出すこと。  
+それを先入れ先出し(First In First Out)と言い、**FIFO**と略す。  
+
+以下、キュープログラム。
+```perl
+use v5.24;
+
+sub enqueue() {
+	# データ投入。
+	my ( $ii, $enqueue) = @_;
+
+	unshift @$enqueue, $ii;
+}
+
+sub dequeue() {
+	# データ取り出し。
+	my ( $dequeue) = @_;
+
+	if (@$dequeue <= 0) {
+		return "取り出すデータが存在しません。";
+	}
+	else {
+		return shift @$dequeue;
+	}
+}
+
+sub main() {
+	my @queue;
+
+	for my $ii ( 0..3 ) {
+		&enqueue($ii, \@queue);
+	}
+	&enqueue("4番目に追加。", \@queue);
+	for my $ii ( 4..5 ) {
+		&enqueue($ii, \@queue);
+	}
+	&enqueue("最後に追加。", \@queue);
+	for my $ii ( 0..8 ) {
+		my $data = &dequeue(\@queue);
+		say "取り出したデータ：", $data;
+	}
+}
+&main();
+# 出力結果：
+#			取り出したデータ：最後に追加。
+#			取り出したデータ：5
+#			取り出したデータ：4
+#			取り出したデータ：4番目に追加。
+#			取り出したデータ：3
+#			取り出したデータ：2
+#			取り出したデータ：1
+#			取り出したデータ：0
+#			取り出したデータ：取り出すデータが存在しません。
+```
+アルゴリズムの勉強としておかしなプログラムだと思うが、あるものは使わなければならない(車輪の再開発はしません)。  
+
 
 <a name="listChapter3"></a>
 #### リスト

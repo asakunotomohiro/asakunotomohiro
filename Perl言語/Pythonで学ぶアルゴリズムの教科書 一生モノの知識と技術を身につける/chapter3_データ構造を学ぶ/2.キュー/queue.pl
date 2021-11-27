@@ -3,51 +3,51 @@ use v5.24;
 my $asakuno = "朝来野智博";
 my @asakuno = ("朝来野", "智博");
 
-say "スタック";
+say "キュー";
 
-sub push() {
-	my ( $ii, $stack) = @_;
+sub enqueue() {
+	# データ投入。
+	my ( $ii, $enqueue) = @_;
 
-	push @$stack, $ii;
+	unshift @$enqueue, $ii;
 }
 
-sub pop() {
-	my ( $stack) = @_;
+sub dequeue() {
+	# データ取り出し。
+	my ( $dequeue) = @_;
 
-	if (@$stack <= 0) {
+	if (@$dequeue <= 0) {
 		return "取り出すデータが存在しません。";
 	}
 	else {
-		return pop @$stack;
+		return shift @$dequeue;
 	}
 }
 
 sub main() {
-	# my $MAX = 5;
-	# my @stack = (0) x $MAX;
-	# say "@stack";	# 0 0 0 0 0
-	# my $sp = 0;		# スタックポインタ
-	my @stack;
+	my @queue;
 
 	for my $ii ( 0..3 ) {
-		&push($ii, \@stack);
+		&enqueue($ii, \@queue);
 	}
-	&push("asakuno", \@stack);
+	&enqueue("asakuno", \@queue);
 	for my $ii ( 4..5 ) {
-		&push($ii, \@stack);
+		&enqueue($ii, \@queue);
 	}
-	&push("tomohiro", \@stack);
+	&enqueue("tomohiro", \@queue);
 #	for my $ii ( 0..8 ) {
-#		my $data = &pop(\@stack);
+#		my $data = &dequeue(\@queue);
 #		say "取り出したデータ：", $data;
 #	}
-	say &pop(\@stack);	# tomohiro
-	say &pop(\@stack);	# 5
+		say &dequeue(\@queue);	# tomohiro
+		say &dequeue(\@queue);	# 5
 }
 &main("asakuno");
 # 出力結果：
+#			取り出したデータ：tomohiro
 #			取り出したデータ：5
 #			取り出したデータ：4
+#			取り出したデータ：asakuno
 #			取り出したデータ：3
 #			取り出したデータ：2
 #			取り出したデータ：1
