@@ -3,7 +3,7 @@ use v5.24;
 my $asakuno = "朝来野智博";
 my @asakuno = ("朝来野", "智博");
 
-say "スタック";
+say "アルゴリズムスタック";
 my $MAX = 5;
 
 sub push() {
