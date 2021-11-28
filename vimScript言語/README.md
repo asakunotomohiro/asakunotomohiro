@@ -444,7 +444,7 @@ echom hello8
     文字型から数値型へは自動キャストが行われない(vim9script)。  
   * 関数リファレンス  
     説明対象外。  
-  * [リスト](#arrangement配列sub)  
+  * [リスト](#arrangement配列)  
     `var hogeList = ['hoge1', 'hoge2', 'hoge3', ・・・]`  
   * 辞書  
     `var hogeDictionary = {'hoge': 20210909, 'boo': 20110311}`  
@@ -604,6 +604,7 @@ echom hello8
 様式：
 `const [変数名] = [何かしらの値]`  
 定数に、スコープ(接頭辞のこと)を指定するのは不可能？  
+⇒可能だった(`const g:HOGE = 20211128`)。  
 
 * script8の場合、仮の定数として作成できる。  
 `let 変数名 = 20211005`とした場合、`lockvar 変数名`により、書き込み禁止にできる(解除が出来るため、とりあえずという使い方になるだろう)。  
@@ -668,7 +669,7 @@ hogeList[0] = 99
 <details><summary>実際の配列の勉強</summary>
 
 ### 配列
-変数を連ならせる格納方法。  
+変数を連ならせる格納方法(要素は、0番目から)。  
 
 * 絶対的に勉強する一覧  
   * [x] [配列の宣言方法](#subArrangement1)  
@@ -1473,7 +1474,7 @@ vim9scriptでは`unlet`が使えないようだ(公式サイトでは[使える]
   ※例外処理(`try〜except〜finally`)をの説明をしている(いずれ基礎知識として勉強に組み込む必要がある？)。  
   以下、各項目(目次)。  
   [x] [スタック](#stackChapter3)2021/10/05  
-  [ ] [キュー](#queueChapter3)  
+  [x] [キュー](#queueChapter3)2021/11/28  
   [ ] [リスト](#listChapter3)  
   [ ] [木](#woodChapter3)  
   [ ] [グラフ](#graphChapter3)  
@@ -2125,6 +2126,88 @@ unlet! g:MAX
 
 <a name="queueChapter3"></a>
 #### キュー
+**キュー(queue)**とは、最初に入れたデータを最初に取り出すこと。  
+それを先入れ先出し(First In First Out)と言い、**FIFO**と略す。  
+
+以下、キュープログラム。
+```vim
+const t:MAX = 6
+
+def! Enqueue( argHEAD: number, argTAIL: number, data: number, queue: list<number>): list<any>
+	# データ投入関数
+	var head = argHEAD
+	var tail = argTAIL
+	var nt   = (tail + 1) % t:MAX
+
+	if nt == head
+		echo "これ以上データ追加不可。"
+	else
+		queue[tail] = data
+		tail = nt
+		echo "データ(" .. data .. ")を追加。"
+	endif
+
+	return [tail, queue]
+enddef
+
+def! Dequeue(argHEAD: number, argTAIL: number, queue: list<number>): list<any>
+	# データ取り出し関数
+	var head = argHEAD
+	var tail = argTAIL
+	var nt   = (tail + 1) % t:MAX
+	var data = 0
+
+	if head == tail
+		echo "取り出すデータが存在しない。"
+	else
+		head += 1
+		data = remove(queue, 0)
+	endif
+
+	return [head, data, queue]
+enddef
+
+def! Main()
+	var queue = [0]
+	var data = 0
+	var head = 0	# 取り出し位置。
+	var tail = 0	# 投入位置。
+
+	for ii in range(6)	# 0〜5
+		[tail, queue] = Enqueue(head, tail, ii, queue)
+	endfor
+
+	for ii in range(6)	# 0〜5
+		[head, data, queue] = Dequeue(head, tail, queue)
+		echo "取り出しデータ：" .. data
+	endfor
+
+	return
+enddef
+call Main()
+unlet! t:MAX
+```
+Pythonに比べれば作りやすい・・・とは言いがたい。  
+やはり、癖が強いため、とっつきにくい。  
+vim9scriptを本格的に使うつもりの人は、本当にエディタ好きだと言うことだろう。  
+
+以下、出力結果。
+```terminal
+データ(0)を追加。
+データ(1)を追加。
+データ(2)を追加。
+データ(3)を追加。
+データ(4)を追加。
+これ以上データ追加不可。
+取り出しデータ：0
+取り出しデータ：1
+取り出しデータ：2
+取り出しデータ：3
+取り出しデータ：4
+取り出すデータが存在しない。
+取り出しデータ：0
+```
+
 
 <a name="listChapter3"></a>
 #### リスト
