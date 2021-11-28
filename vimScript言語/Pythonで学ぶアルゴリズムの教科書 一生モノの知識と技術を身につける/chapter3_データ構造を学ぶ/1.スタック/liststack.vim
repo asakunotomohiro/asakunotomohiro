@@ -1,6 +1,6 @@
 let asakunoList=['asakuno', 'tomohiro', ]
 
-echo "アルゴリズム-スタック"
+echo "スタック(組み込み関数利用)"
 
 def! Push( data: number, stack: list<number>): list<number>
 	# 積み上げる関数
