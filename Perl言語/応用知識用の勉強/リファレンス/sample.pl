@@ -14,7 +14,7 @@ sub sample() {
 	my @ARGV = (20211126, 20211127);
 	my %ENV  = (20211126=>"朝来野智博", 20211127=>"asakunotomohiro");
 
-	my $scalarref = \$foo;     # 配列
+	my $scalarref = \$foo;     # 変数
 	my $arrayref  = \@ARGV;    # 配列
 	my $hashref   = \%ENV;     # ハッシュ
 	my $coderef   = \&refFunc;

@@ -2650,7 +2650,7 @@ say %{$hashref}  ;	# \%ENV     ハッシュ
 say $coderef->();	# \&handler 関数(呼び出し後、変な数字が含まれてしまう)。
 say *{$globref}  ;	# \*foo     	←☆検証方法不明でよく分からない。
 ```
-当たり前だが、配列のリファレンスに対して、ハッシュのリファレント扱いした場合、エラーになる。  
+当たり前だが、配列のリファレンスに対して、ハッシュのリファレント扱いした場合、エラーになる([解決っぽい何か](#practicalusePointerreferentidentification))。  
 ※上記は、配列やハッシュの個々の取得にアロー演算子を活用した。  
 
 例）
@@ -2686,6 +2686,76 @@ say $hoge[1];	# 書き換え：リファレンスを書き換える
 ```
 難しいが、C言語のポインタと思えば良いだろう。  
 しかし、記号を使い分けるのは慣れないと思う。  
+
+
+<a name="practicalusePointerreferentidentification"></a>
+##### リファレントの識別。
+配列のリファレンスを変数のリファレントとして扱う場合、エラーになる。  
+そのエラーを事前に回避するには、`ref`関数を用いることで、識別し、適切なリファレントに紐付けられる。  
+
+```perl
+use v5.24;
+
+sub refFunc(){
+	return "ハンドラー関数";
+}
+
+sub trace(){
+	my ($val) = @_;
+	if (ref($val) eq 'SCALAR'){
+		return "変数$$val";
+	}
+	elsif (ref($val) eq 'ARRAY'){
+		return "配列@$val";
+	}
+	elsif (ref($val) eq 'HASH'){
+		return "ハッシュ" . %{$val};
+	}
+	elsif (ref($val) eq 'CODE'){
+		return "関数" . &{$val}();
+	}
+	elsif (ref($val) eq 'REF'){
+		return "リファレンスのリファレンス";
+	}
+	else{
+		return "不明($val)";
+	}
+}
+
+sub referent() {
+	my $foo  = 20211128;
+	my @ARGV = (20211128, 20211129);
+	my %ENV  = (20211128=>"hoge", 20211129=>"本日は晴天なり。");
+
+	my $scalarref = \$foo;     # 変数
+	my $arrayref  = \@ARGV;    # 配列
+	my $hashref   = \%ENV;     # ハッシュ
+	my $coderef   = \&refFunc; # 関数
+	my $doublescalar = \$scalarref;	# 変数のリファレンスをリファレンス化。
+
+	say ref($scalarref);	# 変数
+					# SCALAR
+	say ref($arrayref);		# 配列
+					# ARRAY
+	say ref($hashref);		# ハッシュ
+					# HASH
+	say ref($coderef);		# 関数
+					# CODE
+	say ref($doublescalar);	# 変数のリファレンスをリファレンス化。
+					# REF
+
+	say "識別：" . &trace($scalarref);	# 識別：変数20211128
+	say "識別：" . &trace($arrayref);	# 識別：配列20211128 20211129
+	say "識別：" . &trace($hashref);	# 識別：ハッシュ2
+	say "識別：" . &trace($coderef);	# 識別：関数ハンドラー関数
+	say "識別：" . &trace($doublescalar);	# 識別：リファレンスのリファレンス
+}
+&referent();
+```
+ちょっとばかり意図していない結果になった。  
+個人的には、識別できてから何か処理ができると思ったが、わざわざ関数を作成し、そこで処理させる必要があり、しかも、その関数内で、実体化させることも出来そうに無いことに驚く。  
+その辺は私のセンスがないのが原因だろうから、今後の勉強次第で出来るようになるのだろう。  
+そのためのオブジェクト指向プログラミングだと思っているが・・・。  
 
 
 ##### 名前無し配列へのリファレンス
