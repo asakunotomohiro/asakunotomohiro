@@ -612,6 +612,7 @@ Perlでのリストとは、配列に入れるためのデータであって、�
 また、カンマなしでのリスト化をする場合は、`qw`を使う。  
 
 
+<a name="subArrangement1Arrayflattening"></a>
 ###### リストの平坦化
 リストでの入れ子はできない。  
 例）
@@ -2771,20 +2772,22 @@ refの戻り値
 |別のリファレンスへのリファレンス|"REF"|
 
 
-##### 名前無し配列へのリファレンス
+<a name="practicalusePointerAnonymousarrayreference"></a>
+##### 名前無し配列へのリファレンス(無名配列)
 ※"名前なし"とは、配列からリファレンスを作らずに、いきなり配列リファレンスを作ることを指す。  
 > 名前の無い配列へのリファレンスは、大かっこを使って作ることができます:  
 
 ```perl
-$arrayref = [1, 2, ['a', 'b', 'c']];
+my $arrayref = [1, 2, ['a', 'b', 'c']];
 
 say $arrayref->[0];		# 1
 say $arrayref->[1];		# 2
+say $arrayref->[2];		# ARRAY(0x7f91690037a8)
 say $arrayref->[2][0];	# a
 say $arrayref->[2][1];	# b
+say $arrayref->[2][2];	# c
+say $arrayref->[3];		# 空文字列(undef)
 ```
-
-これは、どういう意味？  
 
 以下、失敗
 ```perl
@@ -2798,32 +2801,20 @@ say $arrayref->[2];		# a
 say $arrayref->[3];		# b
 say $arrayref->[4];		# c
 ```
+理由：配列の[平坦化](#subArrangement1Arrayflattening)が行われるため。 
 
-以下、成功？
+以下、成功。
 ```perl
 my @two = ('a', 'b', 'c');
 my @one = (1, 2, \@two);
-my $arrayref = [@one];
+my $arrayref = [@one];  # my $arrayref = (\@one);	←☆同じ意味。
 
 say $arrayref->[0];		# 1
 say $arrayref->[1];		# 2
 say $arrayref->[2];		# ARRAY(0x7f9fb2801b08)
-say $arrayref->[2][0];	# b
-say $arrayref->[2][1];	# c
+say $arrayref->[2][0];	# a
+say $arrayref->[2][1];	# b
 say $arrayref->[2][2];	# c
-```
-
-以下ができるのであれば、上記は失敗(上記は2次元配列ではない？)？
-```perl
-my @two = ('a', 'b', 'c');
-my @one = (1, 2, \@two);
-
-say $one[0];	# 1
-say $one[1];	# 2
-say $one[2];	# ARRAY(0x7ff75c818b08)
-say $one[2][0];	# a
-say $one[2][1];	# b
-say $one[2][2];	# c
 ```
 
 難しい。  
@@ -2831,25 +2822,87 @@ C言語のポインタだと思っていたのだが難しい。
 よくよく考え直せば、もしかしてC言語のポインタを忘れている？  
 
 
-##### 名前無しハッシュへのリファレンス
+<a name="practicalusePointerAnonymoushashreference"></a>
+##### 名前無しハッシュへのリファレンス(無名ハッシュ)
 ※"名前なし"とは、ハッシュからリファレンスを作らずに、いきなりハッシュリファレンスを作ることを指す。  
 > 名前の無いハッシュへのリファレンスは、中かっこを使って作ることができます:  
 
+以下、無名のハッシュ例）
 ```perl
-$hashref = {
-	'Adam'  => 'Eve',
-	'Clyde' => 'Bonnie',
+my $hashref = {
+	Adam  => 'Eve',
+	Clyde => 'Bonnie',
 };
+
+say $hashref->{Adam};	# Eve
+say $hashref->{Clyde};	# Bonnie
+say $hashref;			# HASH(0x7fa9be8037a8)
+#say %hashref;	# Global symbol "%hashref" requires explicit package name (did you forget to declare "my %hashref"?) at test.pl line 10.
+```
+
+以下、無名ハッシュをネスト化
+```perl
+my $hashref = {
+	spiderman  => {
+		nickname1 => 'Spidey',
+		nickname2 => 'Friendly Neighborhood',
+		nickname3 => 'Web head',
+		nickname4 => 'Web slinger',
+	},
+	character => {
+		SpiderMan => 'Peter Benjamin Parker',
+		MJ => 'Mary Jane Watson',
+		firstnight => 'Gwendolyn "Gwen" Stacy',
+	},
+};
+
+say $hashref->{spiderman}{nickname1};	# Spidey
+say $hashref->{character}{SpiderMan};	# Peter Benjamin Parker
+say $hashref;				# HASH(0x7f834f00d7d0)
+say $hashref->{spiderman};	# HASH(0x7f834e8037a8)
+say $hashref->{character};	# HASH(0x7f8350000c90)
+say $hashref->{SpiderMan}{nickname1};	# 空文字列(undef)
 ```
 
 
-##### 名前無し関数(サブルーチン)へのリファレンス
+<a name="practicalusePointerAnonymousfuncreference"></a>
+##### 名前無し関数へのリファレンス(無名サブルーチン)
 ※"名前なし"とは、サブルーチンからリファレンスを作らずに、いきなりサブルーチンリファレンスを作ることを指す。  
 > 無名サブルーチンのへのリファレンスは、サブルーチン名の無い sub を使って 作ることができます:  
 
+以下、無名の関数例）
 ```perl
-$coderef = sub { print "Boink!\n" };
+use v5.24;
+
+my $boo = "本日は晴天なり。";
+my @boo = ("本日は", "晴天なり。");
+
+my $subfunc = sub {
+			say $boo;	# 本日は晴天なり。
+			$boo = "boo";
+			say "引数：" . $_[0];	# 引数：関数内から関数外の無名関数を呼ぶ。
+
+			return $boo;
+	};
+
+sub funcReference() {
+	my $bar = say $subfunc->("関数内から関数外の無名関数を呼ぶ。");
+	say $bar;	# boo
+				# 1
+	$bar = sub {
+			say $boo . "関数内の無名サブルーチンからの表記" . $boo[0];
+		};
+	say $bar->();	# boo関数内の無名サブルーチンからの表記本日は
+					# 1
+}
+my $hoge = \&funcReference;
+$hoge->($boo, \@boo);
 ```
+関数呼び出し後に表示される**1**は何？  
+毎回疑問を持っているが、毎回調べないという・・・。  
+
+※**クロージャ**によるオブジェクト指向の概念で説明が行われる。  
+また、第5章と11章にも今回の無名サブルーチンを使う。  
 
 
 #### シンボリックリファレンス
