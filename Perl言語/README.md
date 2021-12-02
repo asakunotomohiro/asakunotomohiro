@@ -194,6 +194,7 @@ $
   * [ ] [テスト方法](#practicaluseTester)  
   * [ ] [標準関数(モジュール)](#practicaluseModule)  
   * [ ] [プロセス管理](#practicaluseSystemfunc)  
+  * [x] [パッケージ](#practicalusePackages)  
 
 </details>
 
@@ -1435,6 +1436,8 @@ v5.24ではできないが、最新版では出来るのか。
 `local 変数名;`  
 この形式で[宣言](https://perldoc.jp/docs/perl/5.16.1/perlsub.pod#Temporary32Values32via32local40-41)できるはずなのだが・・・。  
 そもそも`my`を使えば良いだけなので、全く困らない(大事発言はどこへやら)。  
+
+※[パッケージ](#practicalusePackages)  
 
 
 <a name="subFunction999"></a>
@@ -3515,6 +3518,99 @@ say "$ENV{HISTCONTROL}";	# ignoreboth
 
 </details>
 
+<a name="practicalusePackages"></a>
+<details><summary>応用知識-パッケージ</summary>
+
+どちらかと言えば、基礎知識5種類の関数のうちスコープに当てはまりそうな気がする。  
+
+### パッケージ
+スコープがパッケージになったと思えば良い。  
+
+```perl
+use v5.24;
+
+sub sample() {
+	say "mainパッケージ";	←☆パッケージの区切りをしていない場合、メインパッケージ扱いされる。
+}
+
+package Subboo;	←☆ここ以降がサブbooパッケージ。
+sub sample(){
+	say "Subbooパッケージ";
+}
+&sample("boo");	←☆パッケージないのサンプル関数を呼び出す。
+#	出力結果：Subbooパッケージ
+
+main::sample();	←☆外部パッケージのサンプル関数を呼び出すため、それを明記している。
+#	出力結果：mainパッケージ
+
+Subbar::sample()	←☆外部パッケージのサンプル関数を呼び出すため、それを明記している。;
+#	出力結果：Subbarパッケージ
+
+package Subbar;	←☆ここ以降がサブbarパッケージ。
+sub sample(){
+	say "Subbarパッケージ";
+}
+```
+
+上記は、1つづつパッケージに関数などが納められている。  
+私の想定した入れ子ができると思ったが出来そうにない。  
+例えば、AパッケージにBパッケージが入っているようなこと。  
+この定義は、上記の挙動通り、別パッケージになる。  
+また、入れ子ではなく、パッケージの階層を深くすることはできる。  
+その理由は、かぶらないようにするためだろう。  
+以下、そのプログラム。
+```perl
+use v5.24;
+
+sub sample(){	←☆パッケージ名を付けていないため、メインパッケージになる。
+	say "mainパッケージ";
+}
+
+package Subboo::bar::hoge;
+sub sample(){
+	say "Subboo入れ子パッケージhoge";
+}
+&sample();
+#	出力結果：Subパッケージhoge
+
+package Subboo::bar::barboo;
+sub sample(){
+	say "Subboo入れ子パッケージbarboo";
+}
+&sample();
+#	出力結果：Subboo入れ子パッケージbarboo
+
+package Subboo;
+sub sample(){
+	say "Subboo単体パッケージ";
+}
+
+package Subboo::bar::hoge;
+sub sample(){	←☆同じパッケージ名の同じ関数名が上記にある。
+	say "Subパッケージhoge";
+}
+
+package main;
+Subboo::bar::hoge::sample();	←☆同じパッケージ名の同じ関数名の1つを呼ぶ。
+#	出力結果：Subパッケージhoge	←☆後ろにある関数が呼ばれる。
+
+Subboo::sample();
+#	出力結果：Subboo単体パッケージ
+
+Subboo::bar::hoge::sample();
+#	出力結果：Subパッケージhoge
+
+Subboo::bar::barboo::sample();
+#	出力結果：Subboo入れ子パッケージbarboo
+
+sample();	←☆先頭のメインパッケージにある関数を呼ぶ。
+#	出力結果：mainパッケージ
+```
+勝手に、パッケージの重ね掛けと命名したが、よくよく見れば入れ子かな・・・しかしな・・・。  
+とりあえず、階層を深くし、途中のパッケージ名を変えることで、機能ごとに分ける価値が生まれる・・・と思う。  
+
+</details>
+
 <a name="practicaluseObjectorientation"></a>
 <details><summary>応用知識-オブジェクト指向</summary>
 
@@ -3649,7 +3745,7 @@ Perlにおけるオブジェクト指向は、標準的な言語機能(ハッシ
   * [ハッシュ](#practicaluseHash)  
   * [関数(サブルーチン)](#function関数)  
   * [リファレンス・リファレント](#practicalusePointer)  
-  * [パッケージ](#)  
+  * [パッケージ](#practicalusePackages)  
 
 * Perlの非中核要素  
   * [モジュール](#practicaluseModule)  
