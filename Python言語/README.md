@@ -677,7 +677,7 @@ hoge.pop()
 print(hoge)	# ['hoge']
 ```
 
-以下、配列の要素へ追加・要素から削除
+以下、配列の要素へ追加。
 ```python:配列(list)複数要素追加・置換・削除.py
 # 要素の挿入
 hoge = list('Pythonest')  # 「T」がない。PythonTest(Pythonテスト)にしたい
@@ -1302,7 +1302,7 @@ Hello World(引数あり-戻り値あり).
   以下、各項目(目次)。  
   [x] [スタック](#stackChapter3)2021/10/02  
   [x] [キュー](#queueChapter3)2021/11/07  
-  [ ] [リスト](#listChapter3)  
+  [x] [リスト](#listChapter3)2021/12/04  
   [ ] [木](#woodChapter3)  
   [ ] [グラフ](#graphChapter3)  
   [ ] [データを保存する。](#saveTheDataChapter3)  
@@ -1978,6 +1978,7 @@ $
 
 書籍の説明では、(プログラムを見れば分かるだろうが)リングバッファを簡単に実現するための仕組みとして、追加できる容量は、配列の要素数よりも1つ少ない。  
 それを無視して実用化された仕組みが[collections.deque](https://docs.python.org/ja/3/library/collections.html)クラスとして用意されている。  
+※リングバッファは、[循環リスト](#listChapter3)ではない。  
 
 
 ```python
@@ -2044,6 +2045,137 @@ todo: プログラムを理解すること。
 
 <a name="listChapter3"></a>
 #### リスト
+リストの中でも線形リストに特化する。  
+※Pythonに組み込まれたリストとは別物(今回のリストはアルゴリズムの話)。  
+
+* 線形リストの種類  
+  * 片方向リスト  
+    次のノードを指し示すだけの情報だけ持つ。  
+    今回利用するリストになる。  
+  * 双方向リスト  
+    次のノードを指し示し、前のノードも指し示す。  
+  * 循環リスト  
+    次のノードを指し示すが、最後のノードは先頭ノードを指し示す。  
+  * 応用  
+    * 双方向の循環リスト  
+      双方向リストと循環リストを組み合わせたもの。  
+      前後のノードに移動でき、先頭は末尾に、末尾は先頭に移動できる。  
+  * 別名  
+    * 片方向リスト  
+      別名：単方向リスト  
+    * 線形リスト  
+      2つの組み合わせ(片方向リスト・双方向リスト)で呼ぶ。  
+    * 循環リスト  
+      2つの組み合わせ(双方向リスト・循環リスト)で呼ぶ。  
+    * 連結リスト  
+      3つの組み合わせ(片方向リスト・双方向リスト・循環リスト)で呼ぶ。  
+
+切り離されている変数同士を繋ぐような想像をすれば良いのだろうか。  
+繋ぎ方は、繋ぐための変数とデータが入っている変数を一緒にして、それを1つのノードとして扱い、繋ぐ変数にはポインタを入れる。  
+要は、ノードは構造体で作る必要があると？  
+そして、構造体に納める繋ぐ変数用ポインタの種類により、片方向リスト・双方向リスト・循環リストを使い分けることになると・・・。  
+繋ぐ先を変更すればデータの削除・追加が可能になると・・・(先頭ノードの削除は気をつける必要がある)。  
+それをC言語で実現したときは辛かった(ポインタを勉強した直後だったからな・・・学生時代が懐かしい)。  
+
+今回のプログラムは、片方向リストのみに限定する。  
+そして、構造体ではなく、配列という概念を用いてPythonプログラムを構築する。  
+
+* Python特有のリストアルゴリズムの注意点  
+  * **head**を管理者(?)として先頭ノードを管理する。  
+  * 末尾ノードは、繋ぐ先に**None**を格納する。  
+    ※NoneがPython特有。  
+  * 扱えるデータ数を5個に制限する。  
+    ※個数制限が本書特有。  
+
+以下、プログラム。
+```python
+# 紐付き数を5つに制限。
+MAX = 5
+
+
+def add_list(datalist, pointer, data):
+    n = -1
+    for ii in range(MAX):
+        if datalist[ii] is None:
+            n = ii
+            break
+
+    if n == -1:
+        print("データ領域に空きがありません")
+        return False, datalist, pointer
+
+    for ii in range(MAX):
+        if datalist[ii] is not None and pointer[ii] is None:
+            pointer[ii] = n
+            break
+
+    datalist[n] = data
+    pointer[n] = None
+    print("データ", data, "追加。")
+    return True, datalist, pointer
+
+
+def del_list(datalist, pointer, head, data):
+    n = -1
+    for ii in range(MAX):
+        if datalist[ii] == data:
+            n = ii
+            break
+    if n == -1:
+        print("データなし。")
+        return False, datalist, pointer, head
+
+    if n != head:
+        for ii in range(MAX):
+            if pointer[ii] == n:
+                pointer[ii] = pointer[n]
+    else:
+        head = pointer[n]
+        if head is None:
+            head = 0
+
+    datalist[n] = None
+    pointer[n] = None
+    print("データ", data, "削除。")
+    return True, datalist, pointer, head
+
+
+def put_list(datalist, pointer, head):
+    pp = head
+    while True:
+        print(datalist[pp], end="--->")	←☆イコール記号の部分で"invalid syntax"が発生する。
+        if pointer[pp] is None:
+            print("EOF")
+            break
+        pp = pointer[pp]
+
+
+def main():
+    datalist = [None]*MAX
+    pointer = [None]*MAX
+    head = 0
+
+    for ii in range(10, 70, 10):
+        ret, datalist, pointer = add_list(datalist, pointer, ii)
+
+    ret, datalist, pointer, head = del_list(datalist, pointer, head, 10)
+    put_list(datalist, pointer, head)
+
+
+main()
+# 出力結果：
+#       データ 10 追加。
+#       データ 20 追加。
+#       データ 30 追加。
+#       データ 40 追加。
+#       データ 50 追加。
+#       データ領域に空きがありません
+#       データ 10 削除。
+#       20--->30--->40--->50--->EOF
+```
+未だにPythonプログラム作成に慣れない。  
+ブロック単位の決め方がインデントって・・・見にくいし、わかりにくし、判別しにくいし、区別付けにくいし、、、困る。  
+
 
 <a name="woodChapter3"></a>
 #### 木
