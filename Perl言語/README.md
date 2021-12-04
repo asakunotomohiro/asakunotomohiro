@@ -1286,8 +1286,8 @@ Perlでは、サブルーチンというようだ。
       [x] 引数あり-戻り値あり  
     * [スコープ](#subFunction2)  
       [x] グローバルスコープ変数  
-      [ ] ローカルスコープ変数  
-      私の環境ではエラーになった。  
+      [x] ローカルスコープ変数  
+      利用バージョンにより、エラーになる。  
 
 
 <a name="subFunction1"></a>
@@ -1474,13 +1474,41 @@ say $retLine;	# 11	←☆呼び出し元のファイル内の行。
 v5.24ではできないが、最新版では出来るのか。  
 
 * ローカル変数。  
-大事な[local](https://perldoc.jp/func/local)を使えず、ずっとエラーになる。  
+[local](https://perldoc.jp/func/local)宣言がずっとエラーになる。  
 様式：
 `local 変数名;`  
-この形式で[宣言](https://perldoc.jp/docs/perl/5.16.1/perlsub.pod#Temporary32Values32via32local40-41)できるはずなのだが・・・。  
-そもそも`my`を使えば良いだけなので、全く困らない(大事発言はどこへやら)。  
+この形式で[宣言](https://perldoc.jp/docs/perl/5.16.1/perlsub.pod#Temporary32Values32via32local40-41)できるのは確かだ。  
 
-※[パッケージ](#practicalusePackages)  
+その理由は、利用バージョンにある。  
+レキシカル変数(**my**)付きを強制するバージョンを利用する場合は、ローカル宣言ができないようだ。  
+
+以下、ローカル変数の利用例）
+```perl
+$hoge = "本日は晴天なり。";
+$count = 0;
+$number = 0;
+
+sub hoge {
+	local $hoge = "本日はお日柄も良く";
+	local $number  = 100;
+	print $hoge . ' <$count：' . $count . '> <$number：' . "$number>\n";
+}
+
+$count++; $nubmer++;
+print $hoge . '   <$count：' . "$count>\n";
+		# 本日は晴天なり。   <$count：1>
+$count++; $nubmer++;
+&hoge();
+		# 本日はお日柄も良く <$count：2> <$number：100>
+$count++; $nubmer++;
+print $hoge . '   <$count：' . "$count>\n";
+		# 本日は晴天なり。   <$count：3>
+```
+無理して使う必要は無い・・・かな。  
+しかし、上記リンク先での説明には、ローカル変数は3カ所で使わなければならない状況があるとのこと。  
+
+
+※これらとは別に[パッケージ](#practicalusePackages)変数も存在する。  
 
 
 <a name="subFunction999"></a>
