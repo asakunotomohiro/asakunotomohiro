@@ -1324,7 +1324,7 @@ Perlでオブジェクト指向開発ができるだけでなく、そのやり�
   以下、各項目(目次)。  
   [x] [スタック](#stackChapter3)2021/10/04  
   [x] [キュー](#queueChapter3)2021/11/27  
-  [ ] [リスト](#listChapter3)  
+  [x] [リスト](#listChapter3)2021/12/04  
   [ ] [木](#woodChapter3)  
   [ ] [グラフ](#graphChapter3)  
   [ ] [データを保存する。](#saveTheDataChapter3)  
@@ -2076,6 +2076,108 @@ sub main() {
 
 <a name="listChapter3"></a>
 #### リスト
+データ格納変数とそのデータと繋ぐ変数を1つにしたのがノードであり、そのノードがいくつも繋がっている状態のこと。  
+繋ぎ方には種類があり、今回は**片方向リスト**を採用する。  
+例）**データ1--->データ2--->データ3--->End**  
+しかし、それでは普通のアルゴリズムになってしまうため、そんなものを用いずに、普通にPerl言語特有の機能を活用することにした。  
+
+以下、プログラム。
+```perl
+use v5.24;
+
+sub add_list() {
+	# データ投入。
+	my ( $listdata, $ii ) = @_;
+
+	# 以下、末尾に追加する。
+	push @$listdata, $ii;
+}
+
+sub del_list() {
+	# データ削除。
+	my ( $listdata, $data) = @_;
+	my @datalist = @$listdata;
+
+	if (@$listdata <= 0) {
+		return say "リストデータ存在せず。";
+	}
+	else {
+		my $listdataIndex = -1;
+		while( my ($index, $value) = each @$listdata ){
+			if ( "$value" eq "$data" ) {
+				$listdataIndex = $index;
+#				last;	←☆これを活かす場合、リファレンスカウントが有効のまま関数を抜けることになる(ループではなく関数)。
+			}
+		}
+		if ( $listdataIndex == -1 ) {
+			say "指定データ(" . $data . ")存在せず。";
+			return -1;
+		}
+		else {
+			splice @$listdata, $listdataIndex, 1;
+		}
+
+		return @datalist;
+	}
+}
+
+sub put_list() {
+	my ($datalist) = @_;
+
+	foreach my $value (@$datalist) {
+		print "$value--->";
+	}
+	say "EOF";
+}
+
+sub main() {
+	my @datalist;
+
+	print "空表示：\n　　";
+	&put_list(\@datalist);
+	print "空削除：\n　　";
+	&del_list(\@datalist, 0);
+
+	for my $ii ( 0..3 ) {
+		&add_list(\@datalist, $ii);	←☆最初のデータを追加。
+	}
+	&add_list(\@datalist, "bar");	←☆途中に文字列データを1件追加。
+	for my $ii ( 4..5 ) {
+		&add_list(\@datalist, $ii);	←☆2件のデータを追加。
+	}
+	&add_list(\@datalist, "boo");	←☆最後に文字列を追加。
+
+	print "完全：\n　　";
+	&put_list(\@datalist);
+	print "3削除：\n　　";
+	&del_list(\@datalist, 3);
+	&put_list(\@datalist);
+	print "bar削除：\n　　";
+	&del_list(\@datalist, "bar");
+	&put_list(\@datalist);
+	print "先頭削除：\n　　";
+	&del_list(\@datalist, 0);
+	&put_list(\@datalist);
+}
+&main();
+# 出力結果：
+#		空表示：
+#		　　EOF
+#		空削除：
+#		　　リストデータ存在せず。
+#		完全：
+#		　　0--->1--->2--->3--->bar--->4--->5--->boo--->EOF
+#		3削除：
+#		　　0--->1--->2--->bar--->4--->5--->boo--->EOF
+#		bar削除：
+#		　　0--->1--->2--->4--->5--->boo--->EOF
+#		先頭削除：
+#		　　1--->2--->4--->5--->boo--->EOF
+```
+ループ処理を途中で抜け出すことで処理速度の向上を図りたかったが、そうした場合リファレンスカウントが生きたままになり、リファレンス利用することが仇になり、バグも生む。  
+これの解決方法はないのだろうか。  
+数件だから全件精査も問題ないが、膨大な数になった場合、極端に処理速度が落ちるだろう。  
+
 
 <a name="woodChapter3"></a>
 #### 木
