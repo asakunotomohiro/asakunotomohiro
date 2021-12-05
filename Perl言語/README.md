@@ -922,6 +922,49 @@ Perlの[演算子](https://perldoc.jp/docs/perl/perlop.pod)。
 |以上(等しいもしくは大きい)|`>=`|`ge`|(greater than or equal to)|
 |以下(等しいもしくは小さい)|`<=`|`le`|(less than or equal to)|
 
+<details><summary>undefとの比較</summary>
+
+以下、**undef**の取扱い。
+```perl
+use v5.24;
+
+my @boo = (20211205, 20211206, );
+
+if ( $boo[1] == undef ) {
+	say 'undefとの比較成功, $boo[1]';
+}
+#	出力結果：	←☆出力されない(undefではないため、当然のこと)。
+
+if ( $boo[2] == undef ) {
+	say 'undefとの比較成功, $boo[2]';
+}
+#	出力結果：undefとの比較成功, $boo[2]	←☆文字列ではないが、気にせずundef
+
+if ( "$boo[2]" == undef ) {
+	say 'undefとの比較成功, $boo[2]';
+}
+#	出力結果：undefとの比較成功, $boo[2]	←☆文字列だが、気にせずundef
+
+if ( defined "$boo[2]" ) {
+	say "ここが出力されたら失敗";
+}
+#	出力結果：ここが出力されたら失敗	←☆文字列として定義されている認識をされた。
+#		いわば、この比較方法は失敗。
+
+if ( defined $boo[2] ) {
+	say "出力されないため、成功。";
+}
+#	出力結果：	←☆出力されない。
+
+unless ( defined $boo[2] ) {
+	say "出力されるため、成功。";
+}
+#	出力結果：	←☆出力されない。
+```
+**undef**との比較は、`==`だろうが、`eq`だろうが、気にしなくて良いようだな。  
+
+</details>
+
 
 <a name="subConditional999"></a>
 #### 条件分岐での説明しない項目。
