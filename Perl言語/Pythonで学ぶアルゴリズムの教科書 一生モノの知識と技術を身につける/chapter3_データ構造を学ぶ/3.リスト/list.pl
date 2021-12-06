@@ -18,44 +18,26 @@ sub add_list() {
 sub del_list() {
 	# データ削除。
 	my ( $listdata, $data) = @_;
-	my @datalist = @$listdata;
+	my @datalist = @$listdata;	# シャローコピー(浅い複製)とのこと。
 
-#say "@$listdata";
-	if (@$listdata <= 0) {
-	#if ($#datalist <= 0) {
+	if ($#datalist <= 0) {
 		return say "リストデータ存在せず。";
 	}
 	else {
 		my $listdataIndex = -1;
-		while( my ($index, $value) = each @$listdata ){
-#		while( my ($index, $value) = each @datalist ){
-#say "$index, $value";
-#			if ( $value eq $data ) {
+#		while( my ($index, $value) = each @$listdata ){
+		while( my ($index, $value) = each @datalist ){
 			if ( "$value" eq "$data" ) {
-#say "$index, $value";
 				$listdataIndex = $index;
-#say "$listdataIndex";
-#			splice @$listdata, $listdataIndex, 1;
-#				$index = 0;
-#				$value = 0;
-#				$listdata = 0;
-#				$data = 0;
-#				last;	←☆これを活かす場合、リファレンスカウントが有効のまま関数を抜けることになる(ループではなく関数)。
+				last;	# シャローコピーとは言え、元のリファレンス配列から切り離せるようで、リファレンスカウントにはならずにループを抜け出せる。
 			}
 		}
-#		$listdata = 0;
-#		say "$listdata";
 		if ( $listdataIndex == -1 ) {
-#			return say "指定データ(" . $data . ")存在せず。";
-			say "指定データ(" . $data . ")存在せず。";
-			return -1;
+			return say "指定データ(" . $data . ")存在せず。";
 		}
 		else {
 			# リストデータから削除。
-#			say "@$listdata";
 			splice @$listdata, $listdataIndex, 1;
-#			splice @datalist, $listdataIndex, 1;
-#			say "@$listdata";
 		}
 
 		return @datalist;
@@ -74,6 +56,11 @@ sub put_list() {
 sub main() {
 	my @datalist;
 
+	print "空表示：\n　　";
+	&put_list(\@datalist);
+	print "空削除：\n　　";
+	&del_list(\@datalist, 0);
+
 	for my $ii ( 0..3 ) {
 		&add_list(\@datalist, $ii);		# データ追加(用意とも言う)。
 	}
@@ -85,17 +72,17 @@ sub main() {
 
 	print "完全：\n　　";
 	&put_list(\@datalist);
-#	say "-" x 30;
-#	say "@datalist";
-#	say "-" x 30;
+
 	print "3削除：\n　　";
 	&del_list(\@datalist, 3);
 	&put_list(\@datalist);
-#	say "-" x 30;
-#	say "@datalist";
-#	say "-" x 30;
+
 	print "asakuno削除：\n　　";
 	&del_list(\@datalist, "asakuno");
+	&put_list(\@datalist);
+
+	print "先頭削除：\n　　";
+	&del_list(\@datalist, 0);
 	&put_list(\@datalist);
 }
 &main("asakuno");

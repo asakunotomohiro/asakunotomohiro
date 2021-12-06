@@ -3,6 +3,16 @@ use v5.24;
 my @asakuno = (20211205, 20211206, );
 my $tomohiro = 20211205;
 
+if ( 0 == undef ) {
+	say 'undefと0の比較, $asakuno[1]';
+}
+#	出力結果：undefと0の比較, $asakuno[1]	←☆出力されたら失敗。
+
+if ( defined 0 ) {
+	say 'undefと0の比較, 出力されたら成功';
+}
+#	出力結果：undefと0の比較, 出力されたら成功	←☆出力されたら失敗。
+
 if ( $asakuno[1] == undef ) {
 	say 'undefとの比較成功, $asakuno[1]';
 }

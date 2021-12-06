@@ -930,6 +930,11 @@ use v5.24;
 
 my @boo = (20211205, 20211206, );
 
+if ( 0 == undef ) {
+	say 'undefと0の比較, $boo[1]';
+}
+#	出力結果：undefと0の比較, $boo[1]	←☆出力されたら失敗。
+
 if ( $boo[1] == undef ) {
 	say 'undefとの比較成功, $boo[1]';
 }
@@ -945,18 +950,18 @@ if ( "$boo[2]" == undef ) {
 }
 #	出力結果：undefとの比較成功, $boo[2]	←☆文字列だが、気にせずundef
 
-if ( defined "$boo[2]" ) {
+if ( defined "$boo[2]" ) {	←☆変数に値は入っていない。
 	say "ここが出力されたら失敗";
 }
 #	出力結果：ここが出力されたら失敗	←☆文字列として定義されている認識をされた。
 #		いわば、この比較方法は失敗。
 
-if ( defined $boo[2] ) {
+if ( defined $boo[2] ) {	←☆変数に値は入っていない。
 	say "出力されないため、成功。";
 }
 #	出力結果：	←☆出力されない。
 
-unless ( defined $boo[2] ) {
+unless ( defined $boo[2] ) {	←☆変数に値は入っていない。
 	say "出力されるため、成功。";
 }
 #	出力結果：	←☆出力されない。
@@ -2139,17 +2144,18 @@ sub add_list() {
 sub del_list() {
 	# データ削除。
 	my ( $listdata, $data) = @_;
-	my @datalist = @$listdata;
+	my @datalist = @$listdata;	# シャローコピー(浅い複製)。
 
 	if (@$listdata <= 0) {
 		return say "リストデータ存在せず。";
 	}
 	else {
 		my $listdataIndex = -1;
-		while( my ($index, $value) = each @$listdata ){
+#		while( my ($index, $value) = each @$listdata ){
+		while( my ($index, $value) = each @datalist ){
 			if ( "$value" eq "$data" ) {
 				$listdataIndex = $index;
-#				last;	←☆これを活かす場合、リファレンスカウントが有効のまま関数を抜けることになる(ループではなく関数)。
+				last;	←☆シャローコピーではあるが、リファレンスカウントから解放された(★根本の解決方法を知りたい)。
 			}
 		}
 		if ( $listdataIndex == -1 ) {
@@ -2217,9 +2223,11 @@ sub main() {
 #		先頭削除：
 #		　　1--->2--->4--->5--->boo--->EOF
 ```
-ループ処理を途中で抜け出すことで処理速度の向上を図りたかったが、そうした場合リファレンスカウントが生きたままになり、リファレンス利用することが仇になり、バグも生む。  
+ループ処理を途中で抜け出すことで処理速度の向上を図りたかったが、そうした場合リファレンスカウントが生きたままになり、リファレンス利用が仇になり、バグも生む。  
 これの解決方法はないのだろうか。  
-数件だから全件精査も問題ないが、膨大な数になった場合、極端に処理速度が落ちるだろう。  
+数件だから全件走査も問題ないが、膨大な数になった場合、極端に処理速度が落ちるだろう(かろうじて解決策は施しているが・・・)。  
+
+個人的にはシャローコピーに見えない。  
 
 
 <a name="woodChapter3"></a>
