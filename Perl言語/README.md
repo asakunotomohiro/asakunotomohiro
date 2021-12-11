@@ -3230,235 +3230,6 @@ sub hashReference() {
 
 </details>
 
-<a name="practicaluseModule"></a>
-<details><summary>応用知識-モジュール</summary>
-
-基本的には[Perlドキュメント](https://perldoc.jp)を見た方が良いようだ。  
-もしくは、普通にHelpを使う。  
-例）
-```terminal
-$ perldoc File::Basename
-    File::Basename - Parse file paths into directory, filename and suffix.
-
-SYNOPSIS
-        use File::Basename;
-
-        ($name,$path,$suffix) = fileparse($fullname,@suffixlist);
-        $name = fileparse($fullname,@suffixlist);
-
-        $basename = basename($fullname,@suffixlist);
-        $dirname  = dirname($fullname);
-
-DESCRIPTION
-    These routines allow you to parse file paths into their directory,
-    filename and suffix.
-
-    NOTE: "dirname()" and "basename()" emulate the behaviours, and quirks,
-    of the shell and C functions of the same name. See each function's
-    documentation for details. If your concern is just parsing paths it is
-    safer to use File::Spec's "splitpath()" and "splitdir()" methods.
-
-    It is guaranteed that
-
-        # Where $path_separator is / for Unix, \ for Windows, etc...
-        dirname($path) . $path_separator . basename($path);
-
-    is equivalent to the original path for all systems but VMS.
-
-    "fileparse"
-            my($filename, $dirs, $suffix) = fileparse($path);
-            my($filename, $dirs, $suffix) = fileparse($path, @suffixes);
-            my $filename                  = fileparse($path, @suffixes);
-
-        The "fileparse()" routine divides a file path into its $dirs,
-        $filename and (optionally) the filename $suffix.
-
-        $dirs contains everything up to and including the last directory
-        separator in the $path including the volume (if applicable). The
-        remainder of the $path is the $filename.
-
-             # On Unix returns ("baz", "/foo/bar/", "")
-             fileparse("/foo/bar/baz");
-
-             # On Windows returns ("baz", 'C:\foo\bar\', "")
-             fileparse('C:\foo\bar\baz');
-
-             # On Unix returns ("", "/foo/bar/baz/", "")
-             fileparse("/foo/bar/baz/");
-
-        If @suffixes are given each element is a pattern (either a string or
-        a "qr//") matched against the end of the $filename. The matching
-        portion is removed and becomes the $suffix.
-
-             # On Unix returns ("baz", "/foo/bar/", ".txt")
-             fileparse("/foo/bar/baz.txt", qr/\.[^.]*/);
-
-        If type is non-Unix (see "fileparse_set_fstype") then the pattern
-        matching for suffix removal is performed case-insensitively, since
-        those systems are not case-sensitive when opening existing files.
-
-        You are guaranteed that "$dirs . $filename . $suffix" will denote
-        the same location as the original $path.
-
-    "basename"
-            my $filename = basename($path);
-            my $filename = basename($path, @suffixes);
-
-        This function is provided for compatibility with the Unix shell
-        command basename(1). It does NOT always return the file name portion
-        of a path as you might expect. To be safe, if you want the file name
-        portion of a path use "fileparse()".
-
-        "basename()" returns the last level of a filepath even if the last
-        level is clearly directory. In effect, it is acting like "pop()" for
-        paths. This differs from "fileparse()"'s behaviour.
-
-            # Both return "bar"
-            basename("/foo/bar");
-            basename("/foo/bar/");
-
-        @suffixes work as in "fileparse()" except all regex metacharacters
-        are quoted.
-
-            # These two function calls are equivalent.
-            my $filename = basename("/foo/bar/baz.txt",  ".txt");
-            my $filename = fileparse("/foo/bar/baz.txt", qr/\Q.txt\E/);
-
-        Also note that in order to be compatible with the shell command,
-        "basename()" does not strip off a suffix if it is identical to the
-        remaining characters in the filename.
-
-    "dirname"
-        This function is provided for compatibility with the Unix shell
-        command dirname(1) and has inherited some of its quirks. In spite of
-        its name it does NOT always return the directory name as you might
-        expect. To be safe, if you want the directory name of a path use
-        "fileparse()".
-
-        Only on VMS (where there is no ambiguity between the file and
-        directory portions of a path) and AmigaOS (possibly due to an
-        implementation quirk in this module) does "dirname()" work like
-        "fileparse($path)", returning just the $dirs.
-
-            # On VMS and AmigaOS
-            my $dirs = dirname($path);
-
-        When using Unix or MSDOS syntax this emulates the dirname(1) shell
-        function which is subtly different from how "fileparse()" works. It
-        returns all but the last level of a file path even if the last level
-        is clearly a directory. In effect, it is not returning the directory
-        portion but simply the path one level up acting like "chop()" for
-        file paths.
-
-        Also unlike "fileparse()", "dirname()" does not include a trailing
-        slash on its returned path.
-
-            # returns /foo/bar.  fileparse() would return /foo/bar/
-            dirname("/foo/bar/baz");
-
-            # also returns /foo/bar despite the fact that baz is clearly a 
-            # directory.  fileparse() would return /foo/bar/baz/
-            dirname("/foo/bar/baz/");
-
-            # returns '.'.  fileparse() would return 'foo/'
-            dirname("foo/");
-
-        Under VMS, if there is no directory information in the $path, then
-        the current default device and directory is used.
-
-    "fileparse_set_fstype"
-          my $type = fileparse_set_fstype();
-          my $previous_type = fileparse_set_fstype($type);
-
-        Normally File::Basename will assume a file path type native to your
-        current operating system (ie. /foo/bar style on Unix, \foo\bar on
-        Windows, etc...). With this function you can override that
-        assumption.
-
-        Valid $types are "MacOS", "VMS", "AmigaOS", "OS2", "RISCOS",
-        "MSWin32", "DOS" (also "MSDOS" for backwards bug compatibility),
-        "Epoc" and "Unix" (all case-insensitive). If an unrecognized $type
-        is given "Unix" will be assumed.
-
-        If you've selected VMS syntax, and the file specification you pass
-        to one of these routines contains a "/", they assume you are using
-        Unix emulation and apply the Unix syntax rules instead, for that
-        function call only.
-
-SEE ALSO
-    dirname(1), basename(1), File::Spec
-
-$
-```
-
-### [モジュール](https://perldoc.jp/docs/perl/5.20.1/perlmod.pod)
-車輪の再開発をせずに、望む車輪を選べ、そして使える。  
-**use**ステートメントにより、標準ディレクトリから探し出し、一致ファイルの内部コードを使えるようにする。  
-
-例）
-`use Database::Access::Control;`  
-* **::** をOSごとに、適切なPathに置き換える。  
-  * Unix・Linux・OS/2  
-    `Database/Access/Control.pm`  
-  * Windows  
-    `Database\Access\Control.pm`  
-  * MacOS  
-    `Database:Access:Control.pm`  
-  * VMS  
-    `[Database:Access]Control.pm`  
-
-* グローバグ配列変数  
-  * **@INC**  
-    以下を変更もしくは、追加できる。  
-    標準ライブラリ  
-    ユーザ定義ライブラリのディレクトリ  
-  * import文  
-    **import**と言うサブルーチンから探し出し、使う。  
-
-* モジュールのセットアップ  
-  1. モジュールを格納したい標準ライブラリディレクトリを選択する。  
-     `~/Home/`など？  
-  1. このディレクトリの存在をPerlに指示する。  
-     `use lib "/Users/asakunotomohiro/lib/perl5/";	# ←☆変数は使えないため気をつけること。`  
-     `BEGIN { push @INC, "/Users/asakunotomohiro/lib/perl5/"; }`  
-     ~~`BEGIN { unshift @INC, "/Users/asakunotomohiro/lib/perl5/"; }`~~  
-     ※`use lib`とは、ライブラリを使うのではなく、ライブラリを探すPathの設定をするだけ。  
-  1. モジュール名の各コンポーネント(最後のコンポーネントを除く)に対応するサブディレクトリを標準ライブラリの下にネストして作成する。  
-     モジュール名例）`AAAA::SSS::KKK::NNN`  
-     ディレクトリ例）`AAAA/SSS/KKK`  
-  1. 最下位のサブディレクトリにテキストファイルを作成する。  
-     ファイル名例）`NNN.pm`  
-  1. このテキストファイルにコードを挿入する。  
-  1. テキストファイルの末尾に、真に評価される付加的なステートメントを追加する。  
-     `1;`  
-
-* モジュール内のバージョン制御  
-  * 使うモジュールのバージョン指定。  
-    `use Database::Access::Control 1.20;`  
-  * [パッケージ](#practicalusePackages)内でのバージョン指定。  
-    `$VERSION = 1.00;`  
-
-* モジュール内のエクスポート制御  
-  **import**サブルーチンを呼び出すが、標準では何もしない。  
-  そして、独自に作ることで、その動作を変更できる。  
-  * 個別呼び出しに応じたモジュールも存在する。  
-    呼び出し例）
-    `use File::Basename qw(fileparse basename)`  
-    ※この場合は、サブルーチンとして**dirname**ルーチンを呼び出さないことになる。  
-    そして、dirnameを個別に呼び出したい場合、`File::Basename::dirname($hoge);`とすればいい。  
-  * サブルーチン呼び出し不可。  
-    例）
-    `use File::Basename ();`  
-    これにより、サブルーチンを呼び出さないことになる。  
-    また、`use File::Basename;`の場合は、デフォルトのサブルーチン呼び出しが発生する(モジュール開発者が決めている)。  
-
-
-上記の説明、だいたい分からない。  
-todo: もういちど読み直す。  
-
-
-</details>
-
 <a name="practicaluseHash"></a>
 <details><summary>応用知識-ハッシュ(連想配列)</summary>
 
@@ -3818,11 +3589,101 @@ say "$ENV{HISTCONTROL}";	# ignoreboth
 
 </details>
 
+<a name="practicaluseModule"></a>
+<details><summary>応用知識-モジュール</summary>
+
+基本的には[Perlドキュメント](https://perldoc.jp)を見た方が良いようだ。  
+もしくは、普通にHelpを使う。  
+例）
+```terminal
+$ perldoc File::Basename
+    File::Basename - Parse file paths into directory, filename and suffix.
+
+SYNOPSIS
+　　　・
+　　　・
+　　　・
+$
+```
+そもそもモジュールと[パッケージ](#practicalusePackages)はどう違う？  
+
+
+<a name="practicaluseModulemain"></a>
+### [モジュール](https://perldoc.jp/docs/perl/5.20.1/perlmod.pod)
+車輪の再開発をせずに、望む車輪を選べ、そして使える。  
+**use**ステートメントにより、標準ディレクトリから探し出し、一致ファイルの内部コードを使えるようにする。  
+
+例）
+`use Database::Access::Control;`  
+* **::** をOSごとに、適切なPathに置き換える。  
+  * Unix・Linux・OS/2  
+    `Database/Access/Control.pm`  
+  * Windows  
+    `Database\Access\Control.pm`  
+  * MacOS  
+    `Database:Access:Control.pm`  
+  * VMS  
+    `[Database:Access]Control.pm`  
+
+* グローバグ配列変数  
+  * **@INC**  
+    以下を変更もしくは、追加できる。  
+    標準ライブラリ  
+    ユーザ定義ライブラリのディレクトリ  
+  * import文  
+    **import**と言うサブルーチンから探し出し、使う。  
+
+* モジュールのセットアップ  
+  1. モジュールを格納したい標準ライブラリディレクトリを選択する。  
+     `~/Home/`など？  
+  1. このディレクトリの存在をPerlに指示する。  
+     `use lib "/Users/asakunotomohiro/lib/perl5/";	# ←☆変数は使えないため気をつけること。`  
+     `BEGIN { push @INC, "/Users/asakunotomohiro/lib/perl5/"; }`  
+     ~~`BEGIN { unshift @INC, "/Users/asakunotomohiro/lib/perl5/"; }`~~  
+     ※`use lib`とは、ライブラリを使うのではなく、ライブラリを探すPathの設定をするだけ。  
+  1. モジュール名の各コンポーネント(最後のコンポーネントを除く)に対応するサブディレクトリを標準ライブラリの下にネストして作成する。  
+     モジュール名例）`AAAA::SSS::KKK::NNN`  
+     ディレクトリ例）`AAAA/SSS/KKK`  
+  1. 最下位のサブディレクトリにテキストファイルを作成する。  
+     ファイル名例）`NNN.pm`  
+  1. このテキストファイルにコードを挿入する。  
+  1. テキストファイルの末尾に、真に評価される付加的なステートメントを追加する。  
+     `1;`  
+
+* モジュール内のバージョン制御  
+  * 使うモジュールのバージョン指定。  
+    `use Database::Access::Control 1.20;`  
+  * [パッケージ](#practicalusePackages)内でのバージョン指定。  
+    `$VERSION = 1.00;`  
+
+* モジュール内のエクスポート制御  
+  **import**サブルーチンを呼び出すが、標準では何もしない。  
+  そして、独自に作ることで、その動作を変更できる。  
+  * 個別呼び出しに応じたモジュールも存在する。  
+    呼び出し例）
+    `use File::Basename qw(fileparse basename)`  
+    ※この場合は、サブルーチンとして**dirname**ルーチンを呼び出さないことになる。  
+    そして、dirnameを個別に呼び出したい場合、`File::Basename::dirname($hoge);`とすればいい。  
+  * サブルーチン呼び出し不可。  
+    例）
+    `use File::Basename ();`  
+    これにより、サブルーチンを呼び出さないことになる。  
+    また、`use File::Basename;`の場合は、デフォルトのサブルーチン呼び出しが発生する(モジュール開発者が決めている)。  
+
+
+上記の説明、だいたい分からない。  
+todo: もういちど読み直す。  
+
+
+</details>
+
 <a name="practicalusePackages"></a>
 <details><summary>応用知識-パッケージ</summary>
 
 どちらかと言えば、基礎知識5種類の関数のうちスコープに当てはまりそうな気がする。  
 
+
+<a name="practicalusePackagesmain"></a>
 ### パッケージ
 スコープがパッケージになったと思えば良い。  
 
@@ -3927,6 +3788,12 @@ $Subboo::bar::hoge::VERSION = 1.00;
 利用不可。  
 バージョンの問題から変数宣言時に`my`を付ける必要がある。  
 これを付けた場合、[レキシカル変数](#subVariable2)になってしまう。  
+
+</details>
+
+<a name="practicaluseAutoload"></a>
+<details><summary>応用知識-自動ロード</summary>
+
 
 </details>
 
@@ -4068,7 +3935,7 @@ Perlにおけるオブジェクト指向は、標準的な言語機能(ハッシ
 
 * Perlの非中核要素  
   * [モジュール](#practicaluseModule)  
-  * [自動ロード](#)  
+  * [自動ロード](#practicaluseAutoload)  
   * [クロージャ](#)  
   * [型グロブ](#)  
 
