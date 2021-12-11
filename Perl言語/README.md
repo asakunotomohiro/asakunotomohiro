@@ -3837,6 +3837,36 @@ sub sample(){
 
 </details>
 
+<a name="practicaluseClosure"></a>
+<details><summary>応用知識-クロージャ</summary>
+
+今まで、[リファレンス](#practicalusePointer)での[無名関数](#practicalusePointerAnonymousfuncreference)だと思っていたが、違うようだ。  
+Perlの**クロージャ**とは、**関数外で宣言された変数を関数内で呼び出すこと**を指す。  
+
+以下、基本的なクロージャプログラム。
+```perl
+use v5.24;
+
+{	←☆このブロック外から`$hoge`変数を使えない(唯一使う方法は、sample関数経由をすること)。
+	my $hoge = "borhogebar";	←☆関数外で宣言された変数を関数内で使っていることに意味がある。
+	sub sample(){	←☆この関数名がクロージャとして宣言されたことになる。
+		say "$hoge";
+	}
+	&sample();
+	#	出力結果：borhogebar
+}
+#say "$hoge";
+#	出力結果：Global symbol "$hoge" requires explicit package name (did you forget to declare "my $hoge"?) at クロージャの基本.pl line 13.
+#			Execution of クロージャの基本.pl aborted due to compilation errors.
+
+&sample();
+#	出力結果：borhogebar
+```
+要は、関数外での変数利用は、関数内からのみにすることがクロージャの役割と言うこと。  
+それをするためには、ブロックで囲む必要があると言うこと。  
+
+</details>
+
 <a name="practicaluseObjectorientation"></a>
 <details><summary>応用知識-オブジェクト指向</summary>
 
@@ -3976,7 +4006,7 @@ Perlにおけるオブジェクト指向は、標準的な言語機能(ハッシ
 * Perlの非中核要素  
   * [モジュール](#practicaluseModule)  
   * [自動ロード](#practicaluseAutoload)  
-  * [クロージャ](#)  
+  * [クロージャ](#practicaluseClosure)  
   * [型グロブ](#)  
 
 * CPAN  
