@@ -3889,6 +3889,29 @@ sub closure
 ```
 クロージャで気をつける箇所が、この変数の生存期間(スコープ)部分になる。  
 
+以下、何とか変数の生存期間を無視できるようになった(当たり前だが、クロージャの使い方として間違っているだろう)。
+```perl
+use v5.24;
+
+sub closure
+{
+	my $hoge = "borhogebar" . $_[0];
+	my $func = sub {
+		return "$hoge";
+	};
+	say $func->();
+}
+&closure();
+#	出力結果：borhogebar
+
+&closure("引数");
+#	出力結果：borhogebar引数
+
+&closure("2回目の呼び出し");
+#	出力結果：borhogebar2回目の呼び出し
+```
+クロージャの利点は、変数の使い回しのはずなので、このプログラムは根本的に間違っているはず。  
+
 </details>
 
 <a name="practicaluseObjectorientation"></a>
