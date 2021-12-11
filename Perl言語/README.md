@@ -2710,7 +2710,7 @@ $scalarref = \$foo;     # 配列
 $arrayref  = \@ARGV;    # 配列
 $hashref   = \%ENV;     # ハッシュ
 $coderef   = \&handler; # 関数
-$globref   = \*foo;	←☆これ何？
+$globref   = \*foo;     # 型グロブ
 ```
 ただ、  
 > バックスラッシュ演算子を使って IO ハンドル(ファイルハンドルまたは ディレクトリハンドル)へのリファレンスを生成することはできません。  
@@ -2724,8 +2724,8 @@ say @{$arrayref} ;	# \@ARGV    配列
 say %{$hashref}  ;	# \%ENV     ハッシュ
     say $hashref->{key1};	# \%ENV     ハッシュのキー1(値を取り出す)。
     say $hashref->{key2};	# \%ENV     ハッシュのキー2(値を取り出す)。
-say $coderef->();	# \&handler 関数(呼び出し後、変な数字が含まれてしまう)。
-say *{$globref}  ;	# \*foo     	←☆検証方法不明でよく分からない。
+say $coderef->();	# \&handler 関数(呼び出し後、変な数字が含まれてしまうのは、リターン結果を実行結果にしているため)。
+say *{$globref}  ;	# \*foo     	←個人的には、同名の変数・配列・ハッシュ・関数を1つにまとめることができると思っている。
 ```
 当たり前だが、配列のリファレンスに対して、ハッシュのリファレント扱いした場合、エラーになる([解決っぽい何か](#practicalusePointerreferentidentification))。  
 ※上記は、配列やハッシュの個々の取得にアロー演算子を活用した。  
@@ -3950,6 +3950,70 @@ say $func->(5);	# 20211212+111+5
 
 </details>
 
+<a name="practicaluseTypeglob"></a>
+<details><summary>応用知識-型グロブ</summary>
+
+数時間調べたが、結局[型グロブ](https://perldoc.jp/docs/perl/5.8.8/perldata.pod)が何か分からなかった。  
+書籍の中で、`FILE`と言う文言に対して、`$FILE`・`@FILE`・`%FILE`・`&FILE`の説明をしているが、**FILE**に限定されていると言うことか？  
+もしくは、FILEが固有変数で、好きに割り当てることにより、柔軟なプログラムになると言うことか？  
+普通のファイルを指す変数だと思ったが、違う？  
+その場合、普通のファイルを使う場合とかぶる？  
+違うようだ。  
+`*`記号を使うことを説明しているようで、あとに続く名前は何でも良いようだ。  
+
+変数の宣言をする場合、**my**を付けてはならない。  
+付けるのは、**our**だ。  
+
+```perl
+use v5.24;
+
+our $boo = "本日は晴天なり。";
+our @boo = ("本日は", "晴天なり。");
+our %boo = (
+				1=>"boo",
+				2=>"bar",
+				3=>"hoge",
+			);
+sub boo() {
+		say "boo関数";
+		my $bar = "晴天なり。";
+		my @bar = (20211211, 20211212, );
+		my %bar = (
+						$bar[0]=>$bar . "本日は",
+						$bar[1]=>$bar . "bar",
+						);
+		return 0;
+	};
+
+# 型グロブのリファレンス作成。
+my $hoge = \*boo;
+
+say $boo;	# 本日は晴天なり。
+say *boo;	# *main::boo
+say \*boo;	# GLOB(0x7f83e581c188)
+say $hoge;	# GLOB(0x7f83e581c188)
+
+say "-" x 30;
+
+say ${*hoge};	# 空文字列(undef)
+say ${*$hoge};	# 本日は晴天なり。
+
+say "-" x 30;
+
+say &{*$hoge}();	# boo関数
+say "@{*$hoge}";	# 本日は 晴天なり。
+say ${*$hoge}[0];	# 本日は
+say ${*$hoge}[1];	# 晴天なり。
+say %{*$hoge};		# 2bar3hoge1boo
+say "%{*$hoge}{1}";	# %{*GLOB(0x7fa06a003388)}{1}
+say %{*$hoge}{1};	# 1boo
+say %{*$hoge}{2};	# 2bar
+say %{*$hoge}{3};	# 3hoge
+```
+しどろもどろで作ったプログラムのため、あっているのか分からないが、とりあえず紐付けはできた・・・ようだ。  
+
+</details>
+
 <a name="practicaluseObjectorientation"></a>
 <details><summary>応用知識-オブジェクト指向</summary>
 
@@ -4090,7 +4154,7 @@ Perlにおけるオブジェクト指向は、標準的な言語機能(ハッシ
   * [モジュール](#practicaluseModule)  
   * [自動ロード](#practicaluseAutoload)  
   * [クロージャ](#practicaluseClosure)  
-  * [型グロブ](#)  
+  * [型グロブ](#practicaluseTypeglob)  
 
 * CPAN  
   * [利用方法](#)  
