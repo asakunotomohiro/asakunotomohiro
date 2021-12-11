@@ -3794,6 +3794,46 @@ $Subboo::bar::hoge::VERSION = 1.00;
 <a name="practicaluseAutoload"></a>
 <details><summary>応用知識-自動ロード</summary>
 
+基本的に、関数呼び出し時に、その関数がない場合エラーになる。  
+それを回避するために、スタブ(?)とした関数を呼び出せるようになっている。  
+それをキャッチオールサブルーチンと言い、それをAUTOLOADとも言う。  
+※自動ロード時に発生する関数名が`$AUTOLOAD`に格納されるのだが、**v5.10**以下に限定されている(回避方法不明)。  
+
+```perl
+use v5.24;
+
+Sub::hoge::boo::sample();
+#	出力結果：Sub入れ子パッケージsample関数
+
+#	以下、キャッチオールサブルーチン未定義での呼び出し結果。
+#Sub::hoge::boo::testFunc();
+#	出力結果：Undefined subroutine &Sub::hoge::boo::testFunc called at 自動ロード(Autoload).pl line 7.
+
+#	以下、キャッチオールサブルーチン定義実施後の呼び出し結果。
+Sub::hoge::boo::testFunc();
+#	出力結果：未定義関数(Sub::hoge::boo::testFunc)呼び出し。
+
+#	以下、キャッチオールサブルーチン定義実施後の呼び出し結果(v5.11以降)。
+#Sub::hoge::boo::testFunc();
+#	出力結果：Global symbol "$AUTOLOAD" requires explicit package name (did you forget to declare "my $AUTOLOAD"?) at 自動ロード(Autoload).pl line 28.
+
+#	以下、キャッチオールサブルーチン定義実施後の呼び出し結果(v5.11以降)。
+#		my $AUTOLOAD;
+#Sub::hoge::boo::testFunc();
+#	出力結果：未定義関数()呼び出し。
+
+use v5.10;	# ここ以降、このバージョンで動く。
+
+package Sub::hoge::boo;
+sub AUTOLOAD{
+#	my $AUTOLOAD;
+	say "未定義関数($AUTOLOAD)呼び出し。";
+}
+
+sub sample(){
+	say "Sub入れ子パッケージsample関数";
+}
+```
 
 </details>
 
