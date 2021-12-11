@@ -445,7 +445,7 @@ main();
 my $hoge = "boo";
 print $hoge;	# boo
 print $hoge , $hoge;	# booboo	←☆カンマ接続の場合は1つ目のhoge変数出力及び2つ目のhoge変数出力をしている。
-print $hoge . $hoge;	# booboo	←☆ピリオド接続の場合は、1つ目と2つ目のhoge変数を連結後に出力している。
+print $hoge . $hoge;	# booboo	←☆ピリオド接続の場合は、1つ目と2つ目のhoge変数を連結後に出力している(文字列結合)。
 print "$hoge";	# boo
 print '$hoge';	# $hoge
 print "${hoge}'s";	# boo's	←☆下記のやり方では出力できないため、括弧で変数を明確にしている。
@@ -1472,6 +1472,7 @@ say $retLine;	# 11	←☆呼び出し元のファイル内の行。
 `state @配列名 = qw(値1, 値2);`  
 しかし、実際はできるんだが・・・書籍の説明が古い？  
 v5.24ではできないが、最新版では出来るのか。  
+※[クロージャ](#practicaluseClosure)を使う場合は、変数生存期間を考慮すること。  
 
 * ローカル変数。  
 [local](https://perldoc.jp/func/local)宣言がずっとエラーになる。  
@@ -3864,6 +3865,29 @@ use v5.24;
 ```
 要は、関数外での変数利用は、関数内からのみにすることがクロージャの役割と言うこと。  
 それをするためには、ブロックで囲む必要があると言うこと。  
+
+以下、変数の生存期間が呼び出され後も生きていることの確認。
+```perl
+use v5.24;
+
+sub closure
+{
+	my $hoge = "borhogebar" . $_[0];
+	sub sample(){
+		say "$hoge";
+	}
+	&sample();
+}
+&sample();
+#	出力結果：空文字列(undef)
+
+&closure();
+#	出力結果：borhogebar
+
+&closure("引数");
+#	出力結果：borhogebar	←☆上記1回目の呼び出しにて、変数が作られているため、今回の呼び出しでは、前回作成した変数を使い回している。
+```
+クロージャで気をつける箇所が、この変数の生存期間(スコープ)部分になる。  
 
 </details>
 
