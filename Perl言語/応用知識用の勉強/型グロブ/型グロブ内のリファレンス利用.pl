@@ -31,6 +31,8 @@ say "-" x 30;
 
 say ${*asakunotomohiro};	# 空文字列(undef)
 say ${*$asakunotomohiro};	# 朝来野智博
+say &{*$asakunotomohiro}();	# asakuno関数
+							# 0
 
 say "-" x 30 . "型グロブ内のリファレンス利用";
 
