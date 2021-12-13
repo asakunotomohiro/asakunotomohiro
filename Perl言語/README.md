@@ -4025,6 +4025,90 @@ say %{*$hoge}{3};	# 3hoge
 
 </details>
 
+<a name="practicalusecpan"></a>
+<details><summary>応用知識-CPAN</summary>
+
+[CPAN](https://www.cpan.org)から欲しいモジュールを探す。  
+また、サンプルスクリプトなどもあるようだ。  
+
+
+#### CPANからモジュールのインストール方法。
+CPAN.pmモジュール利用が一般的らしい。  
+
+<details><summary>起動方法と終了方法</summary>
+
+以下、起動方法及び終了。
+```terminal
+$ perl -MCPAN -e shell	←☆起動方法。
+Terminal does not support AddHistory.
+
+To fix that, maybe try>  install Term::ReadLine::Perl
+
+
+cpan shell -- CPAN exploration and modules installation (v2.28)
+Enter 'h' for help.
+
+cpan[1]> quit	←☆終了方法その1。
+Terminal does not support GetHistory.
+Lockfile removed.
+$ perl -MCPAN -e shell
+Terminal does not support AddHistory.
+
+To fix that, maybe try>  install Term::ReadLine::Perl
+
+
+cpan shell -- CPAN exploration and modules installation (v2.28)
+Enter 'h' for help.
+
+cpan[1]> exit	←☆終了方法その2。
+Terminal does not support GetHistory.
+Lockfile removed.
+$ perl -MCPAN -e shell
+Terminal does not support AddHistory.
+
+To fix that, maybe try>  install Term::ReadLine::Perl
+
+
+cpan shell -- CPAN exploration and modules installation (v2.28)
+Enter 'h' for help.
+
+cpan[1]> q	←☆終了方法その3。
+Terminal does not support GetHistory.
+Lockfile removed.
+$
+```
+1文字でも終了できるのかと思い、`d`を入力したとき、何かをインストールしてしまった。  
+そして、初起動時のメッセージが消えてしまったよ。  
+
+</details>
+
+以下、インストール。
+```terminal
+$ perl -MCPAN -e shell
+Terminal does not support AddHistory.
+
+To fix that, maybe try>  install Term::ReadLine::Perl
+
+
+cpan shell -- CPAN exploration and modules installation (v2.28)
+Enter 'h' for help.
+
+cpan[1]> install Text::Balanced	←☆インストール実施。
+Reading '/Users/asakunotomohiro/.cpan/Metadata'
+  Database was generated on Mon, 13 Dec 2021 07:17:03 GMT
+Text::Balanced is up to date (2.04).
+
+cpan[2]> q
+Terminal does not support GetHistory.
+Lockfile removed.
+$
+```
+簡単に終わったが、インストールしたことをどのように検証すればいいのだろう。  
+これを`use`する？  
+手作業でのインストールは大変とのこと。  
+
+</details>
+
 <a name="practicaluseObjectorientation"></a>
 <details><summary>応用知識-オブジェクト指向</summary>
 
@@ -4167,9 +4251,9 @@ Perlにおけるオブジェクト指向は、標準的な言語機能(ハッシ
   * [クロージャ](#practicaluseClosure)  
   * [型グロブ](#practicaluseTypeglob)  
 
-* CPAN  
-  * [利用方法](#)  
-  * [CPAN内の検索方法](#)  
+* [CPAN](#practicalusecpan)  
+  * 利用方法  
+  * CPAN内の検索方法  
 
 
 <a name="objectorientedPerl4894713004three"></a>
