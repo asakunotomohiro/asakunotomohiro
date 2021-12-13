@@ -12,8 +12,9 @@ sub associativearray() {
 		asakunotomohiro => "朝来野智博",
 	);
 
-	say "$asakuno{asakuno}";	# 20210922
-	say "$asakuno{20210922}";	# 空文字列
+	say $asakuno{asakuno};	# 20210922
+	say $asakuno{20210922};	# 空文字列
+	say "-" x 30;
 
 	for my $key (keys(%asakuno)) {
 		my $value = $asakuno{$key};
@@ -54,11 +55,12 @@ sub associativearray() {
 				# Can't modify private hash in concatenation (.) or string at ハッシュ.pl line 52, near ");"
 				# Execution of ハッシュ.pl aborted due to compilation errors.
 
+	say "-" x 30;
 	%asakuno = ('addkey', "addvalue");
 	say "$asakuno{asakuno}";	# 空文字列
 	say "$asakuno{addkey}";		# addvalue
-	# 追加することが出来ない。どうすればいい？
-	$asakuno{'today'} = 20210923;
+	say "$asakuno{today}";		# 空文字列
+	$asakuno{today} = 20210923;	# 追加。
 	say "$asakuno{addkey}";		# addvalue
 	say "$asakuno{today}";		# 20210923
 }

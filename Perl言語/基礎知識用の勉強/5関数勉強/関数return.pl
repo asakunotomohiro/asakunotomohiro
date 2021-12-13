@@ -15,11 +15,24 @@ sub asakuno {
 	return "名前err" . $two;
 }
 
+sub tomohiro {
+	say "tomohiro関数1";
+	return "tomohiro関数2";
+	say "tomohiro関数3";
+}
+
 say &asakuno();	# 名前err
+say &asakuno;	# 名前err
 say &asakuno("関数呼び出し");	# 名前err
 say asakuno "朝来野";	# 智博
 say &asakuno("智博", "朝来野");	# 名前err朝来野
+say asakuno @asakuno;	# 智博
+say asakuno "智博", "朝来野";	# 名前err朝来野
+#say &asakuno "智博", "朝来野";	# String found where operator expected at 関数return.pl line 31, near "&asakuno "智博""
 
+say &tomohiro;	# ←☆呼び出し時に括弧を付けずに呼んでいる。
+#			tomohiro関数1
+#			tomohiro関数2
 
 say "以上。"
 # vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=perl noexpandtab:
