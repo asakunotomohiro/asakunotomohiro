@@ -178,7 +178,9 @@ $
   * [ ] [ディレクトリ操作](#practicaluseDirectorymanipulation)  
   * [ ] [オブジェクト指向](#practicaluseObjectorientation)  
     [x] オブジェクト指向入門2021/11/12(読み切っていない)  
+        * [オブジェクト指向入門](#objectorientedPerl4894713004one)を読み直す(要は全般)。  
     [x] Perl入門2021/12/13(todoあり)  
+        * [モジュール](#practicaluseModulemain)部分読み直し。  
     [ ] オブジェクト指向Perl入門  
     [ ] 配列とスカラのbless  
     [ ] その他のデータ型のbless  
@@ -292,17 +294,17 @@ $
 Perlは、ワンライナープログラミング言語で有名だが、一応プログラムらしく作成した。  
 
 以下、作業記録。
-```terminal
-$ cat helloWorld.pl
-#!/usr/bin/perl -w
 
-print "Hello World.\n";
-print $^V . "\n";
-$ ./helloWorld.pl
-Hello World.
-v5.18.4
-$
-```
+    $ cat helloWorld.pl
+    #!/usr/bin/perl -w
+    
+    print "Hello World.\n";
+    print $^V . "\n";
+    $ ./helloWorld.pl
+    Hello World.
+    v5.18.4
+    $
+
 ※[シェバング](#https://www.wdic.org/w/TECH/shebang)[追加](https://perldoc.jp/docs/perl/5.34.0/perlsec.pod)で、単発実行可能になった(P14・P176)。  
 ※前は、恥ずかしながら`perl ./helloWorld.pl`で実行していた。  
 そして、今回は、恥ずかしながら古いバージョンのPerlで実行している。  
@@ -606,8 +608,8 @@ say $hoge;	# 83
     [C言語での優先順位と代わらない](https://perldoc.jp/docs/perl/5.10.0/perlfaq7.pod#Why32do32Perl32operators32have32different32precedence32than32C32operators63)  
 
 * ちょっと高度な話題  
-  * [ ] ポインタ  
-    Perlでは、リファレンスのこと(ちょっとだけ調べた)。  
+  * [x] [ポインタ](#practicalusePointer)  
+    Perlでは、リファレンスのこと(そして、調査継続)。  
 
 * 関数を変数に代入  
 * 関数を引数に使う  
@@ -901,7 +903,7 @@ say "@boo";	# 20210830 20210831 20210901 20210902
   * [ ] 置換。  
 
 * 配列の応用  
-  * [ ] 多次元配列。  
+  * [ ] 多次元配列(リファレンスで作成可能)。  
     [ ] 3次元配列以上の宣言方法。  
     [x] リファレンス(少しだけ調べた)。  
   * [x] 配列を複製する方法。  
@@ -967,15 +969,15 @@ if ( 条件式A ) {
 ```
 
 以下、使用例。
-```Perl
-my @hoge = (20210901, 20210902, );
-my $bar = 20210901;
 
-if ( $hoge[0] == $bar ) {
-	say "等しい。";
-}
-#	出力結果：等しい。
-```
+    my @hoge = (20210901, 20210902, );
+    my $bar = 20210901;
+    
+    if ( $hoge[0] == $bar ) {
+    	say "等しい。";
+    }
+    #	出力結果：等しい。
+
 
 また、`!`を使う場合、条件式の結果を否定して判定する。
 `if ( ! 条件式 ) {・・・}`  
@@ -1163,45 +1165,43 @@ foreach my $変数名1 ( リスト ) {
 
 <a name="subRepetition5last"></a>
 以下、break(last)での繰り返し処理強制中断。  
-```perl
-my @hoge = (20210901, 20210902, );
 
-# 繰り返しの入れ子。
-#	lastラベルで抜け出る。
-LASTJUMP: foreach my $boo ( @hoge ) {
-	foreach my $number ( 1..10 ) {
-		if ( $number == 3 ) {
-			say "$number：$boo";
-						# 3：20210901
-					# 以下のラベルがない場合、
-						#	3：20210902
-					# も出力している。
-					# lastのため、1つ目の繰り返しを抜け出ている。
-		}
-		last LASTJUMP if ( $number == 3);
-	}
-}
-```
+    my @hoge = (20210901, 20210902, );
+    
+    # 繰り返しの入れ子。
+    #	lastラベルで抜け出る。
+    LASTJUMP: foreach my $boo ( @hoge ) {
+    	foreach my $number ( 1..10 ) {
+    		if ( $number == 3 ) {
+    			say "$number：$boo";
+    						# 3：20210901
+    					# 以下のラベルがない場合、
+    						#	3：20210902
+    					# も出力している。
+    					# lastのため、1つ目の繰り返しを抜け出ている。
+    		}
+    		last LASTJUMP if ( $number == 3);
+    	}
+    }
 
 <a name="subRepetition5next"></a>
 以下、continue(next)での繰り返し処理強制中断。  
-```perl
-my @boo = (20210901, 20210902, );
 
-#	nextで抜け出る。
-LASTJUMP: foreach my $hoge ( @boo ) {
-	foreach my $number ( 1..10 ) {
-		if ( $number == 3 ) {
-			say "$number：$hoge";	# 出力なし。
-		}
-		next LASTJUMP if ( $number == 2);
-			# 1つ目のforeach処理に戻るため、3以降にインクリメントされず、処理が終了する。
-			# このnext処理がない場合、当然のように2行が出力される。
-#					3：20210901
-#					3：20210902
-	}
-}
-```
+    my @boo = (20210901, 20210902, );
+    
+    #	nextで抜け出る。
+    LASTJUMP: foreach my $hoge ( @boo ) {
+    	foreach my $number ( 1..10 ) {
+    		if ( $number == 3 ) {
+    			say "$number：$hoge";	# 出力なし。
+    		}
+    		next LASTJUMP if ( $number == 2);
+    			# 1つ目のforeach処理に戻るため、3以降にインクリメントされず、処理が終了する。
+    			# このnext処理がない場合、当然のように2行が出力される。
+    #					3：20210901
+    #					3：20210902
+    	}
+    }
 
 
 <a name="subRepetition6"></a>
@@ -1371,54 +1371,53 @@ print( hoge($test) );		# 戻り値がリストコンテクスト。
 呼び出し側による戻り値の期待に沿った型で戻せる。  
 
 以下、プログラム。
-```perl
-use v5.24;
 
-# 以下、サブルーチン
-sub func
-{
-	my $boo = "本日は晴天なり。";
-	my @bar = ("boo", "bar",);
-
-	say "関数内部処理。";
-
-	return @bar if wantarray();				# 呼び出し側が配列を期待する場合は配列で戻す。
-	return $boo  if defined(wantarray());	# 呼び出し側が変数を期待する場合は変数で戻す。
-}
-
-# 以下、戻り値なし。
-func();	# 何もしない(正確な表現⇒何も戻ってこない)。
-	# 関数内部処理。
-	# は、出力された。
-
-# 以下、戻り値の種類がスカラコンテクスト。
-my $scalar = func();
-say $scalar;	# 本日は晴天なり。
-
-# 以下、戻り値の種類がリストコンテクスト。
-my @list = func();
-say "@list";	# boo bar
-say $list[0];	# boo
-say $list[1];	# bar
-```
+    use v5.24;
+    
+    # 以下、サブルーチン
+    sub func
+    {
+    	my $boo = "本日は晴天なり。";
+    	my @bar = ("boo", "bar",);
+    
+    	say "関数内部処理。";
+    
+    	return @bar if wantarray();				# 呼び出し側が配列を期待する場合は配列で戻す。
+    	return $boo  if defined(wantarray());	# 呼び出し側が変数を期待する場合は変数で戻す。
+    }
+    
+    # 以下、戻り値なし。
+    func();	# 何もしない(正確な表現⇒何も戻ってこない)。
+    	# 関数内部処理。
+    	# は、出力された。
+    
+    # 以下、戻り値の種類がスカラコンテクスト。
+    my $scalar = func();
+    say $scalar;	# 本日は晴天なり。
+    
+    # 以下、戻り値の種類がリストコンテクスト。
+    my @list = func();
+    say "@list";	# boo bar
+    say $list[0];	# boo
+    say $list[1];	# bar
 
 また、戻り値を常に受け取ってもらう前提のサブルーチンの場合、以下のように警告を出せる。
-```perl
-use v5.24;
-use Carp;	# ←☆警告表示にはこれが必要。
 
-# 以下、サブルーチン
-sub function
-{
-	say "戻り値受け取り警告。";
-	carp "戻り値は使うため、受け取るようにしましょう。";
-}
+    use v5.24;
+    use Carp;	# ←☆警告表示にはこれが必要。
+    
+    # 以下、サブルーチン
+    sub function
+    {
+    	say "戻り値受け取り警告。";
+    	carp "戻り値は使うため、受け取るようにしましょう。";
+    }
+    
+    function();
+    #	戻り値は使うため、受け取るようにしましょう。 at 関数戻り値の種類.pl line 8.
+    #	main::function() called at 関数戻り値の種類.pl line 11
+    #	戻り値受け取り警告。	←☆警告後に処理が走る(上から順番に処理が動くわけではないって事)。
 
-function();
-#	戻り値は使うため、受け取るようにしましょう。 at 関数戻り値の種類.pl line 8.
-#	main::function() called at 関数戻り値の種類.pl line 11
-#	戻り値受け取り警告。	←☆警告後に処理が走る(上から順番に処理が動くわけではないって事)。
-```
 ※警告を出すための関数呼び込み(要は、インクルード)が必須。  
 付け忘れた場合、エラーが出る。  
 ```terminal
@@ -1650,23 +1649,22 @@ Perlでオブジェクト指向開発ができるだけでなく、そのやり�
     `my @score = (70, 98, 92, 88, 64);`  
   * `for`を用いる。  
 
-```Perl
-# 以下の配列に入っている数字を使い、合計点及び平均点を求める。
-my @score = (70, 98, 92, 88, 64);
+    # 以下の配列に入っている数字を使い、合計点及び平均点を求める。
+    my @score = (70, 98, 92, 88, 64);
+    
+    my $total;	# この変数に合計点を入れる。
+    for ( @score ) {
+    	# for my $value ( @score ) {	←☆取り出した値を用意した変数に代入してもいい(むしろそうしたほうが処理速度は上がる)。
+    	# 以下、合算。
+    	$total += $_;
+    }
+    # 以下、平均点を求める(合計÷個数)。
+    #	my $count = @score;	←☆配列の個数を取り出して使ってもいい。
+    my $average = $total / @score;
+    
+    say "合計点：$total";	# 合計点：412
+    say "平均点：$average";	# 平均点：82.4
 
-my $total;	# この変数に合計点を入れる。
-for ( @score ) {
-	# for my $value ( @score ) {	←☆取り出した値を用意した変数に代入してもいい(むしろそうしたほうが処理速度は上がる)。
-	# 以下、合算。
-	$total += $_;
-}
-# 以下、平均点を求める(合計÷個数)。
-#	my $count = @score;	←☆配列の個数を取り出して使ってもいい。
-my $average = $total / @score;
-
-say "合計点：$total";	# 合計点：412
-say "平均点：$average";	# 平均点：82.4
-```
 Pythonより作りやすい言語ではある。  
 しかし、暗黙的な`$_`を多用した場合、保守できないのがPerlなんだよな・・・。  
 
@@ -2553,17 +2551,16 @@ say $#hoge;	# 1
 
 ### 空確認
 空確認は、要素数0で判断できる。
-```Perl
-my @hoge = qw(20210831, 20210901, );
-# 配列要素の空確認。
-if (@hoge > 0) {
-	say "空でない。"
-}
-# 別の方法。
-if (@hoge) {
-	say "空でない。"
-}
-```
+
+    my @hoge = qw(20210831, 20210901, );
+    # 配列要素の空確認。
+    if (@hoge > 0) {
+    	say "空でない。"
+    }
+    # 別の方法。
+    if (@hoge) {
+    	say "空でない。"
+    }
 
 
 <a name="subArrangement2wrongarray"></a>
@@ -2597,18 +2594,18 @@ $hoge[9] = 20210901 + 9;	# 20210901
 > "?" の前の引数が真であれば ":" の前の引数が返されますが、 真でなければ、":" の後の引数が返されます。  
 
 以下、例）
-```perl
-my @bar = (20211123, 20211124, );
-my $boo = 20211123;
 
-# 以下は、左の数字と変数内容を比較し、真であれば"数字代入"が$hogeに代入される。
-my $hoge = 20211123 == $boo ? "数字代入" : "文字列代入";
-say $hoge;	# 数字代入
+    my @bar = (20211123, 20211124, );
+    my $boo = 20211123;
+    
+    # 以下は、左の数字と変数内容を比較し、真であれば"数字代入"が$hogeに代入される。
+    my $hoge = 20211123 == $boo ? "数字代入" : "文字列代入";
+    say $hoge;	# 数字代入
+    
+    # 以下は、左の数字と変数内容を比較し、偽であれば"文字列代入"が$hogeに代入される。
+    my $hoge = 20211123 == $bar[1] ? "数字代入" : "文字列代入";
+    say $hoge;	# 文字列代入
 
-# 以下は、左の数字と変数内容を比較し、偽であれば"文字列代入"が$hogeに代入される。
-my $hoge = 20211123 == $bar[1] ? "数字代入" : "文字列代入";
-say $hoge;	# 文字列代入
-```
 ちなみに、`undef`・`""`・`0`・`"0"`は、全て偽になる。  
 
 <details><summary>三項演算子の入れ子</summary>
@@ -2750,8 +2747,8 @@ sub arrayReferenceEdit() {
 	for my $value ( @$two ) {
 		say "$valueを書き換える。";
 		# 出力結果：
-#				配列-配列を書き換える。
-#				リファレンスを書き換える。
+		#		配列-配列を書き換える。
+		#		リファレンスを書き換える。
 		# 以下、書き換え実施。
 		$value = "書き換え：" . $value . "を書き換える";
 	}
@@ -2904,17 +2901,16 @@ C言語のポインタだと思っていたのだが難しい。
 > 名前の無いハッシュへのリファレンスは、中かっこを使って作ることができます:  
 
 以下、無名のハッシュ例）
-```perl
-my $hashref = {
-	Adam  => 'Eve',
-	Clyde => 'Bonnie',
-};
 
-say $hashref->{Adam};	# Eve
-say $hashref->{Clyde};	# Bonnie
-say $hashref;			# HASH(0x7fa9be8037a8)
-#say %hashref;	# Global symbol "%hashref" requires explicit package name (did you forget to declare "my %hashref"?) at test.pl line 10.
-```
+    my $hashref = {
+    	Adam  => 'Eve',
+    	Clyde => 'Bonnie',
+    };
+    
+    say $hashref->{Adam};	# Eve
+    say $hashref->{Clyde};	# Bonnie
+    say $hashref;			# HASH(0x7fa9be8037a8)
+    #say %hashref;	# Global symbol "%hashref" requires explicit package name (did you forget to declare "my %hashref"?) at test.pl line 10.
 
 以下、無名ハッシュをネスト化
 ```perl
@@ -2984,21 +2980,20 @@ $hoge->($boo, \@boo);
 #### シンボリックリファレンス
 リファレンスとして使われた値が既に定義されていたときには、それはシンボリックリファレンスとして扱われるようだが、何を言っている？  
 
-```perl
-$name = "foo";
+    $name = "foo";
+    
+    # 以下、全てエラーになる。
+    $$name = 1;         # Sets $foo
+    ${$name} = 2;       # Sets $foo
+    ${$name x 2} = 3;   # Sets $foofoo
+    $name->[0] = 4;     # Sets $foo[0]
+    @$name = ();        # Clears @foo
+    &$name();           # Calls &foo() (as in Perl 4)
+    
+    # 5の代入が出来ずにエラーになる。
+    $pack = "THAT";
+    ${"${pack}::$name"} = 5;    # Sets $THAT::foo without eval
 
-# 以下、全てエラーになる。
-$$name = 1;         # Sets $foo
-${$name} = 2;       # Sets $foo
-${$name x 2} = 3;   # Sets $foofoo
-$name->[0] = 4;     # Sets $foo[0]
-@$name = ();        # Clears @foo
-&$name();           # Calls &foo() (as in Perl 4)
-
-# 5の代入が出来ずにエラーになる。
-$pack = "THAT";
-${"${pack}::$name"} = 5;    # Sets $THAT::foo without eval
-```
 この書き方が出来ないように`use strict 'refs';`を宣言すれば良い。  
 宣言する場合は、ブロックで囲み、`no strict 'refs';`を宣言すれば良い。  
 
@@ -3192,32 +3187,32 @@ sub arrayReference() {
 これをするだけの利益はあるのだろうか。  
 
 以下、ハッシュをリファレンスとして変数に代入し、その変数をリファレンスとして変数に代入している。
-```perl
-sub hashReference() {
-	my %hogehash = (%hoge);			# ハッシュにハッシュリファレンスを代入する。
-	my $barhash = \%hogehash;	# それをリファレンスとして別のハッシュに代入する。
-	my $boo = \$barhash;	# さらに、ハッシュリファレンスが代入されているハッシュを別のハッシュにリファレンスとして代入する(混乱する)。
 
-	my $deboo = $$boo;	# ハッシュのリファレンスをデリファレンスした($barhashになっている)。
-	my %dedeboo = %$deboo;	# ハッシュのリファレンスをデリファレンスした($hogehashになっている)。
-	while( my ($key, $value) = each %dedeboo ) {
-		say '%dedebooの要素を出力($boo[0])：' . "$key -> $value";	# %barhash が入っていると思っている。
-			# 出力結果：
-#					%dedebooの要素を出力($boo[0])：hoge -> 20210923
-#					%dedebooの要素を出力($boo[0])：boo -> 本日は晴天なり。
-#					%dedebooの要素を出力($boo[0])：bar -> Perl難しい
-	}
+    sub hashReference() {
+    	my %hogehash = (%hoge);			# ハッシュにハッシュリファレンスを代入する。
+    	my $barhash = \%hogehash;	# それをリファレンスとして別のハッシュに代入する。
+    	my $boo = \$barhash;	# さらに、ハッシュリファレンスが代入されているハッシュを別のハッシュにリファレンスとして代入する(混乱する)。
+    
+    	my $deboo = $$boo;	# ハッシュのリファレンスをデリファレンスした($barhashになっている)。
+    	my %dedeboo = %$deboo;	# ハッシュのリファレンスをデリファレンスした($hogehashになっている)。
+    	while( my ($key, $value) = each %dedeboo ) {
+    		say '%dedebooの要素を出力($boo[0])：' . "$key -> $value";	# %barhash が入っていると思っている。
+    			# 出力結果：
+    #					%dedebooの要素を出力($boo[0])：hoge -> 20210923
+    #					%dedebooの要素を出力($boo[0])：boo -> 本日は晴天なり。
+    #					%dedebooの要素を出力($boo[0])：bar -> Perl難しい
+    	}
+    
+    	while( my ($key, $value) = each %$$boo ) {
+    		say '%hogeの要素を出力(%$$boo)：' . "$key -> $value";	# %barhash が入っていると思っている。
+    			# 出力結果：
+    #					%hogeの要素を出力(%$$boo)：hoge -> 20210923
+    #					%hogeの要素を出力(%$$boo)：bar -> Perl難しい
+    #					%hogeの要素を出力(%$$boo)：boo -> 本日は晴天なり。
+    	}
+    }
+    &hashReference();
 
-	while( my ($key, $value) = each %$$boo ) {
-		say '%hogeの要素を出力(%$$boo)：' . "$key -> $value";	# %barhash が入っていると思っている。
-			# 出力結果：
-#					%hogeの要素を出力(%$$boo)：hoge -> 20210923
-#					%hogeの要素を出力(%$$boo)：bar -> Perl難しい
-#					%hogeの要素を出力(%$$boo)：boo -> 本日は晴天なり。
-	}
-}
-&hashReference();
-```
 本当にやりたかったことは、ハッシュのネストであって、これではない。  
 
 
@@ -3289,9 +3284,9 @@ sub associativearray() {
 		my $value = $hoge{$key};
 		say "$key -> $value";
 		# 出力結果：
-#				hoge -> 100006601775326
-#				boo -> 100011324721840
-#				bar -> 300505
+		#		hoge -> 100006601775326
+		#		boo -> 100011324721840
+		#		bar -> 300505
 	}
 	say "%hoge";	# %hoge
 	say %hoge;		# hoge100006601775326boo100011324721840bar300505	←☆当然実行ごとに値が変わる。
@@ -3321,9 +3316,9 @@ sub associativearray() {
 		my $value = $hoge{$key};
 		say "$key -> $value";
 		# 出力結果：
-#				hoge -> 100006601775326
-#				boo -> 100011324721840
-#				bar -> 300505
+		#		hoge -> 100006601775326
+		#		boo -> 100011324721840
+		#		bar -> 300505
 	}
 	say "-" x 30;
 	my %revershoge = reverse %hoge;
@@ -3331,9 +3326,9 @@ sub associativearray() {
 		my $value = $revershoge{$key};
 		say "$key -> $value";
 		# 出力結果：
-#				100006601775326 -> hoge
-#				100011324721840 -> boo
-#				300505 -> bar
+		#		100006601775326 -> hoge
+		#		100011324721840 -> boo
+		#		300505 -> bar
 	}
 }
 &associativearray();
@@ -3460,9 +3455,9 @@ sub associativearray() {
 
 	foreach my $key ( keys %hoge ){
 		say "$hoge{$key}";
-#				9784873118246
-#				20211118
-#				本日は晴天なり。
+		#		9784873118246
+		#		20211118
+		#		本日は晴天なり。
 	}
 }
 &associativearray();
@@ -3480,9 +3475,9 @@ sub associativearray() {
 
 	foreach my $value ( values %hoge ) {
 		say $value;
-#				20211118
-#				9784873118246
-#				本日は晴天なり。
+		#		20211118
+		#		9784873118246
+		#		本日は晴天なり。
 		say $hoge{$value};	# ←☆想定通りに空文字だった(当然3行分空文字として出力されている)。
 	}
 }
@@ -3504,9 +3499,9 @@ sub associativearray() {
 	while( my ($key, $value) = each %hoge ) {
 		say "$key -> $value";
 		# 出力結果：
-#					bar -> 続・初めてのPerl 改訂第2版
-#					boo -> 20180120
-#					hoge -> 20210922
+		#			bar -> 続・初めてのPerl 改訂第2版
+		#			boo -> 20180120
+		#			hoge -> 20210922
 	}
 }
 &associativearray();
@@ -3554,9 +3549,9 @@ sub associativearray() {
 	while( my ($key, $value) = each %hoge ) {
 		say "$key -> $value";
 		# 出力結果：
-#				hoge -> 4873118247
-#				boo -> 20210922
-#				bar -> 本日は晴天なり。
+		#		hoge -> 4873118247
+		#		boo -> 20210922
+		#		bar -> 本日は晴天なり。
 	}
 
 	say "-" x 30;
@@ -3564,8 +3559,8 @@ sub associativearray() {
 	while( my ($key, $value) = each %hoge ) {
 		say "$key -> $value";
 		# 出力結果：
-#				boo -> 20210922
-#				bar -> 本日は晴天なり。
+		#		boo -> 20210922
+		#		bar -> 本日は晴天なり。
 	}
 }
 &associativearray();
@@ -3688,31 +3683,29 @@ todo: もういちど読み直す。
 ### パッケージ
 スコープがパッケージになったと思えば良い。  
 
-```perl
-use v5.24;
-
-sub sample() {
-	say "mainパッケージ";	←☆パッケージの区切りをしていない場合、メインパッケージ扱いされる。
-}
-
-package Subboo;	←☆ここ以降がサブbooパッケージ。
-sub sample(){
-	say "Subbooパッケージ";
-}
-&sample("boo");	←☆パッケージないのサンプル関数を呼び出す。
-#	出力結果：Subbooパッケージ
-
-main::sample();	←☆外部パッケージのサンプル関数を呼び出すため、それを明記している。
-#	出力結果：mainパッケージ
-
-Subbar::sample()	←☆外部パッケージのサンプル関数を呼び出すため、それを明記している。;
-#	出力結果：Subbarパッケージ
-
-package Subbar;	←☆ここ以降がサブbarパッケージ。
-sub sample(){
-	say "Subbarパッケージ";
-}
-```
+    use v5.24;
+    
+    sub sample() {
+    	say "mainパッケージ";	←☆パッケージの区切りをしていない場合、メインパッケージ扱いされる。
+    }
+    
+    package Subboo;	←☆ここ以降がサブbooパッケージ。
+    sub sample(){
+    	say "Subbooパッケージ";
+    }
+    &sample("boo");	←☆パッケージないのサンプル関数を呼び出す。
+    #	出力結果：Subbooパッケージ
+    
+    main::sample();	←☆外部パッケージのサンプル関数を呼び出すため、それを明記している。
+    #	出力結果：mainパッケージ
+    
+    Subbar::sample()	←☆外部パッケージのサンプル関数を呼び出すため、それを明記している。;
+    #	出力結果：Subbarパッケージ
+    
+    package Subbar;	←☆ここ以降がサブbarパッケージ。
+    sub sample(){
+    	say "Subbarパッケージ";
+    }
 
 上記は、1つづつパッケージに関数などが納められている。  
 私の想定した入れ子ができると思ったが出来そうにない。  
@@ -3721,53 +3714,53 @@ sub sample(){
 また、入れ子ではなく、パッケージの階層を深くすることはできる。  
 その理由は、かぶらないようにするためだろう。  
 以下、そのプログラム。
-```perl
-use v5.24;
 
-sub sample(){	←☆パッケージ名を付けていないため、メインパッケージになる。
-	say "mainパッケージ";
-}
+    use v5.24;
+    
+    sub sample(){	←☆パッケージ名を付けていないため、メインパッケージになる。
+    	say "mainパッケージ";
+    }
+    
+    package Subboo::bar::hoge;
+    sub sample(){
+    	say "Subboo入れ子パッケージhoge";
+    }
+    &sample();
+    #	出力結果：Subパッケージhoge
+    
+    package Subboo::bar::barboo;
+    sub sample(){
+    	say "Subboo入れ子パッケージbarboo";
+    }
+    &sample();
+    #	出力結果：Subboo入れ子パッケージbarboo
+    
+    package Subboo;
+    sub sample(){
+    	say "Subboo単体パッケージ";
+    }
+    
+    package Subboo::bar::hoge;
+    sub sample(){	←☆同じパッケージ名の同じ関数名が上記にある。
+    	say "Subパッケージhoge";
+    }
+    
+    package main;
+    Subboo::bar::hoge::sample();	←☆同じパッケージ名の同じ関数名の1つを呼ぶ。
+    #	出力結果：Subパッケージhoge	←☆後ろにある関数が呼ばれる。
+    
+    Subboo::sample();
+    #	出力結果：Subboo単体パッケージ
+    
+    Subboo::bar::hoge::sample();
+    #	出力結果：Subパッケージhoge
+    
+    Subboo::bar::barboo::sample();
+    #	出力結果：Subboo入れ子パッケージbarboo
+    
+    sample();	←☆先頭のメインパッケージにある関数を呼ぶ。
+    #	出力結果：mainパッケージ
 
-package Subboo::bar::hoge;
-sub sample(){
-	say "Subboo入れ子パッケージhoge";
-}
-&sample();
-#	出力結果：Subパッケージhoge
-
-package Subboo::bar::barboo;
-sub sample(){
-	say "Subboo入れ子パッケージbarboo";
-}
-&sample();
-#	出力結果：Subboo入れ子パッケージbarboo
-
-package Subboo;
-sub sample(){
-	say "Subboo単体パッケージ";
-}
-
-package Subboo::bar::hoge;
-sub sample(){	←☆同じパッケージ名の同じ関数名が上記にある。
-	say "Subパッケージhoge";
-}
-
-package main;
-Subboo::bar::hoge::sample();	←☆同じパッケージ名の同じ関数名の1つを呼ぶ。
-#	出力結果：Subパッケージhoge	←☆後ろにある関数が呼ばれる。
-
-Subboo::sample();
-#	出力結果：Subboo単体パッケージ
-
-Subboo::bar::hoge::sample();
-#	出力結果：Subパッケージhoge
-
-Subboo::bar::barboo::sample();
-#	出力結果：Subboo入れ子パッケージbarboo
-
-sample();	←☆先頭のメインパッケージにある関数を呼ぶ。
-#	出力結果：mainパッケージ
-```
 勝手に、パッケージの重ね掛けと命名したが、よくよく見れば入れ子かな・・・しかしな・・・。  
 とりあえず、階層を深くし、途中のパッケージ名を変えることで、機能ごとに分ける価値が生まれる・・・と思う。  
 
@@ -3800,41 +3793,39 @@ $Subboo::bar::hoge::VERSION = 1.00;
 それをキャッチオールサブルーチンと言い、それをAUTOLOADとも言う。  
 ※自動ロード時に発生する関数名が`$AUTOLOAD`に格納されるのだが、**v5.10**以下に限定されている(回避方法不明)。  
 
-```perl
-use v5.24;
-
-Sub::hoge::boo::sample();
-#	出力結果：Sub入れ子パッケージsample関数
-
-#	以下、キャッチオールサブルーチン未定義での呼び出し結果。
-#Sub::hoge::boo::testFunc();
-#	出力結果：Undefined subroutine &Sub::hoge::boo::testFunc called at 自動ロード(Autoload).pl line 7.
-
-#	以下、キャッチオールサブルーチン定義実施後の呼び出し結果。
-Sub::hoge::boo::testFunc();
-#	出力結果：未定義関数(Sub::hoge::boo::testFunc)呼び出し。
-
-#	以下、キャッチオールサブルーチン定義実施後の呼び出し結果(v5.11以降)。
-#Sub::hoge::boo::testFunc();
-#	出力結果：Global symbol "$AUTOLOAD" requires explicit package name (did you forget to declare "my $AUTOLOAD"?) at 自動ロード(Autoload).pl line 28.
-
-#	以下、キャッチオールサブルーチン定義実施後の呼び出し結果(v5.11以降)。
-#		my $AUTOLOAD;
-#Sub::hoge::boo::testFunc();
-#	出力結果：未定義関数()呼び出し。
-
-use v5.10;	# ここ以降、このバージョンで動く。
-
-package Sub::hoge::boo;
-sub AUTOLOAD{
-#	my $AUTOLOAD;
-	say "未定義関数($AUTOLOAD)呼び出し。";
-}
-
-sub sample(){
-	say "Sub入れ子パッケージsample関数";
-}
-```
+    use v5.24;
+    
+    Sub::hoge::boo::sample();
+    #	出力結果：Sub入れ子パッケージsample関数
+    
+    #	以下、キャッチオールサブルーチン未定義での呼び出し結果。
+    #Sub::hoge::boo::testFunc();
+    #	出力結果：Undefined subroutine &Sub::hoge::boo::testFunc called at 自動ロード(Autoload).pl line 7.
+    
+    #	以下、キャッチオールサブルーチン定義実施後の呼び出し結果。
+    Sub::hoge::boo::testFunc();
+    #	出力結果：未定義関数(Sub::hoge::boo::testFunc)呼び出し。
+    
+    #	以下、キャッチオールサブルーチン定義実施後の呼び出し結果(v5.11以降)。
+    #Sub::hoge::boo::testFunc();
+    #	出力結果：Global symbol "$AUTOLOAD" requires explicit package name (did you forget to declare "my $AUTOLOAD"?) at 自動ロード(Autoload).pl line 28.
+    
+    #	以下、キャッチオールサブルーチン定義実施後の呼び出し結果(v5.11以降)。
+    #		my $AUTOLOAD;
+    #Sub::hoge::boo::testFunc();
+    #	出力結果：未定義関数()呼び出し。
+    
+    use v5.10;	# ここ以降、このバージョンで動く。
+    
+    package Sub::hoge::boo;
+    sub AUTOLOAD{
+    #	my $AUTOLOAD;
+    	say "未定義関数($AUTOLOAD)呼び出し。";
+    }
+    
+    sub sample(){
+    	say "Sub入れ子パッケージsample関数";
+    }
 
 </details>
 
@@ -3845,108 +3836,107 @@ sub sample(){
 Perlの**クロージャ**とは、**関数外で宣言された変数を関数内で呼び出すこと**を指す。  
 
 以下、基本的なクロージャプログラム。
-```perl
-use v5.24;
 
-{	←☆このブロック外から`$hoge`変数を使えない(唯一使う方法は、sample関数経由をすること)。
-	my $hoge = "borhogebar";	←☆関数外で宣言された変数を関数内で使っていることに意味がある。
-	sub sample(){	←☆この関数名がクロージャとして宣言されたことになる。
-		say "$hoge";
-	}
-	&sample();
-	#	出力結果：borhogebar
-}
-#say "$hoge";
-#	出力結果：Global symbol "$hoge" requires explicit package name (did you forget to declare "my $hoge"?) at クロージャの基本.pl line 13.
-#			Execution of クロージャの基本.pl aborted due to compilation errors.
+    use v5.24;
+    
+    {	←☆このブロック外から`$hoge`変数を使えない(唯一使う方法は、sample関数経由をすること)。
+    	my $hoge = "borhogebar";	←☆関数外で宣言された変数を関数内で使っていることに意味がある。
+    	sub sample(){	←☆この関数名がクロージャとして宣言されたことになる。
+    		say "$hoge";
+    	}
+    	&sample();
+    	#	出力結果：borhogebar
+    }
+    #say "$hoge";
+    #	出力結果：Global symbol "$hoge" requires explicit package name (did you forget to declare "my $hoge"?) at クロージャの基本.pl line 13.
+    #			Execution of クロージャの基本.pl aborted due to compilation errors.
+    
+    &sample();
+    #	出力結果：borhogebar
 
-&sample();
-#	出力結果：borhogebar
-```
 要は、関数外での変数利用は、関数内からのみにすることがクロージャの役割と言うこと。  
 それをするためには、ブロックで囲む必要があると言うこと。  
 
 以下、変数の生存期間が呼び出され後も生きていることの確認。
-```perl
-use v5.24;
 
-sub closure
-{
-	my $hoge = "borhogebar" . $_[0];
-	sub sample(){
-		say "$hoge";
-	}
-	&sample();
-}
-&sample();
-#	出力結果：空文字列(undef)
+    use v5.24;
+    
+    sub closure
+    {
+    	my $hoge = "borhogebar" . $_[0];
+    	sub sample(){
+    		say "$hoge";
+    	}
+    	&sample();
+    }
+    &sample();
+    #	出力結果：空文字列(undef)
+    
+    &closure();
+    #	出力結果：borhogebar
+    
+    &closure("引数");
+    #	出力結果：borhogebar	←☆上記1回目の呼び出しにて、変数が作られているため、今回の呼び出しでは、前回作成した変数を使い回している。
 
-&closure();
-#	出力結果：borhogebar
-
-&closure("引数");
-#	出力結果：borhogebar	←☆上記1回目の呼び出しにて、変数が作られているため、今回の呼び出しでは、前回作成した変数を使い回している。
-```
 クロージャで気をつける箇所が、この変数の生存期間(スコープ)部分になる。  
 
 以下、何とか変数の生存期間を無視できるようになった(当たり前だが、クロージャの使い方として間違っているだろう)。
-```perl
-use v5.24;
 
-sub closure
-{
-	my $hoge = "borhogebar" . $_[0];
-	my $func = sub {
-		return "$hoge";
-	};
-	say $func->();
-}
-&closure();
-#	出力結果：borhogebar
+    use v5.24;
+    
+    sub closure
+    {
+    	my $hoge = "borhogebar" . $_[0];
+    	my $func = sub {
+    		return "$hoge";
+    	};
+    	say $func->();
+    }
+    &closure();
+    #	出力結果：borhogebar
+    
+    &closure("引数");
+    #	出力結果：borhogebar引数
+    
+    &closure("2回目の呼び出し");
+    #	出力結果：borhogebar2回目の呼び出し
 
-&closure("引数");
-#	出力結果：borhogebar引数
-
-&closure("2回目の呼び出し");
-#	出力結果：borhogebar2回目の呼び出し
-```
 クロージャの利点は、変数の使い回しのはずなので、このプログラムは根本的に間違っているはず。  
 
 以下、クロージャと無名関数の正しい使い方のはず(特に後半部分)。
-```perl
-use v5.24;
 
-sub closure
-{
-	my $hoge = 20211211 + $_[0];
-	sub {
-		$hoge += $_[0];	# 変数への加算
-	};
-}
-my $func = &closure(1);	# 20211212を基準になる。
-say &closure();
-#	出力結果：CODE(0x7fbc1a002ba0)
-
-say &closure->();	# 20211212
-#	出力結果：20211211
-
-say &closure->(0);	# 20211212+0
-#	出力結果：20211211
-
-say &closure->(100);	# 20211212+100
-#	出力結果：20211311
-
-say &closure->(1);	# 20211212+1
-#	出力結果：20211212
-
-say "上記は、全て単発呼び出しになっている。以下は、変数を使い回している(変数への加算が行われている)。";
-
-say $func->(111);	# 20211212+111
-#	出力結果：20211323
-
-say $func->(5);	# 20211212+111+5
-#	出力結果：20211328
-```
+    use v5.24;
+    
+    sub closure
+    {
+    	my $hoge = 20211211 + $_[0];
+    	sub {
+    		$hoge += $_[0];	# 変数への加算
+    	};
+    }
+    my $func = &closure(1);	# 20211212を基準になる。
+    say &closure();
+    #	出力結果：CODE(0x7fbc1a002ba0)
+    
+    say &closure->();	# 20211212
+    #	出力結果：20211211
+    
+    say &closure->(0);	# 20211212+0
+    #	出力結果：20211211
+    
+    say &closure->(100);	# 20211212+100
+    #	出力結果：20211311
+    
+    say &closure->(1);	# 20211212+1
+    #	出力結果：20211212
+    
+    say "上記は、全て単発呼び出しになっている。以下は、変数を使い回している(変数への加算が行われている)。";
+    
+    say $func->(111);	# 20211212+111
+    #	出力結果：20211323
+    
+    say $func->(5);	# 20211212+111+5
+    #	出力結果：20211328
 
 </details>
 
@@ -3985,8 +3975,7 @@ sub boo() {
 		return 0;
 	};
 
-# 型グロブのリファレンス作成。
-my $hoge = \*boo;
+my $hoge = \*boo;	# 型グロブのリファレンス作成。
 
 say $boo;	# 本日は晴天なり。
 say *boo;	# *main::boo
@@ -4159,7 +4148,7 @@ Perlとオブジェクト指向との関係は、後付けのものであり、�
 そして、オブジェクト経由でのメソッド呼び出しは、通常のPerlサブルーチン呼び出しよりも著しく遅いそうだ。  
 もっとも、今から20年以上前のことなので、今はどうなっているのか分からない。  
 
-非オブジェクト指向プログラムに比べて20〜50%の速度低下があるとは言え、20年以上前の出来事であるため、最近発売された[MacBook Pro-Apple M1 Maxチップ](https://www.apple.com/jp/macbook-pro-14-and-16/)を使いさえすれば、瞬く間にプログラムは正常終了することだろう。  
+非オブジェクト指向プログラムに比べて20〜50%の速度低下があるとは言え、20年以上前の出来事であるため、最近発売された[MacBook Pro-Apple M1 Maxチップ](https://www.apple.com/jp/mac/)を使いさえすれば、瞬く間にコンパイルが終わるだろう。  
 
 
 <a name="objectorientedPerl4894713004one"></a>
@@ -4327,7 +4316,7 @@ Perlにおけるオブジェクト指向は、標準的な言語機能(ハッシ
 ## ※Gitのマージルール
 study2programmingに取り込むときのマージは、3方向マージ(`--no-ff`)を使う。  
 
-* [x] "study2programming"にマージする時のルール。  
+* [ ] "study2programming"にマージする時のルール。  
   * [ ] 誤字脱字程度のコミットはスカッシュしたい。  
   * [ ] マージ後"study2programming"をPushする。  
     ※masterにマージすることはない。  
