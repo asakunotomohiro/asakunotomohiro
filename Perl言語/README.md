@@ -2693,6 +2693,7 @@ say $hoge	if $hoge;	# 出力なし。
 > デリファレンスをすることによって、自分で明示的に Perl に 教える必要があります。  
 
 ※句点で勝手に改行を入れた。  
+デリファレンスのスペル(**defreferencing**)あっていますか？  
 
 
 <a name="practicalusePointerreference"></a>
@@ -2703,7 +2704,7 @@ say $hoge	if $hoge;	# 出力なし。
 
 以下、リファレンス作成。
 ```Perl
-$scalarref = \$foo;     # 配列
+$scalarref = \$foo;     # 変数
 $arrayref  = \@ARGV;    # 配列
 $hashref   = \%ENV;     # ハッシュ
 $coderef   = \&handler; # 関数
@@ -2714,7 +2715,7 @@ $globref   = \*foo;     # 型グロブ
 
 以下、[戻す](#practicalusePointerdereference)。
 ```Perl
-say ${$scalarref};	# \$foo     配列
+say ${$scalarref};	# \$foo     変数
 say @{$arrayref} ;	# \@ARGV    配列
     say $arrayref->[0];	# \@ARGV    配列の1つ目の要素。
     say $arrayref->[1];	# \@ARGV    配列の2つ目の要素。
@@ -2724,6 +2725,8 @@ say %{$hashref}  ;	# \%ENV     ハッシュ
 say $coderef->();	# \&handler 関数(呼び出し後、変な数字が含まれてしまうのは、リターン結果を実行結果にしているため)。
 say *{$globref}  ;	# \*foo     	←個人的には、同名の変数・配列・ハッシュ・関数を1つにまとめることができると思っている。
 ```
+上記の出力で得られる参照先データを[リファレント](#practicalusePointerreferentidentification)(referent・参照先)と言う(上記で言う`$foo`変数のデータのこと)。  
+上記の出力で得られるデータをデリファレンス(dereference・参照解決)と言う(上記で言う`${$scalarref}`変数にあるデータのこと)。  
 当たり前だが、配列のリファレンスに対して、ハッシュのリファレント扱いした場合、エラーになる([解決っぽい何か](#practicalusePointerreferentidentification))。  
 ※上記は、配列やハッシュの個々の取得にアロー演算子を活用した。  
 
@@ -2765,7 +2768,8 @@ say $hoge[1];	# 書き換え：リファレンスを書き換える
 <a name="practicalusePointerreferentidentification"></a>
 ##### リファレントの識別。
 配列のリファレンスを変数のリファレントとして扱う場合、エラーになる。  
-そのエラーを事前に回避するには、`ref`関数を用いることで、識別し、適切なリファレントに紐付けられる。  
+そのエラーを事前に回避するには、`ref`関数を用いることで、識別し、適切なリファレントとして扱える。  
+※間違った使い方が可能なのは、**シンボルリファレンス(ソフトリファレンス)**のために存在しているため(私に理解できない部分)。  
 
 ```perl
 use v5.24;
@@ -4011,6 +4015,7 @@ say %{*$hoge}{3};	# 3hoge
 そもそも通常の環境ですら使われない技術とのこと。  
 オブジェクト指向プログラミングでも疲れないが、今回は無理矢理使うため、勉強項目として設けられているようだ・・・何ともかんとも・・・。  
 
+※バグの温床になる技術になるため、使わないようにすること。  
 
 </details>
 
