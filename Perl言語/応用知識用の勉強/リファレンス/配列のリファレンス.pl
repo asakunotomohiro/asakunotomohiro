@@ -63,6 +63,7 @@ sub arrayReferenceLookKaiKai() {
 	# for my $value ( ${@_[1]} ) {	# Not a SCALAR reference at 配列のリファレンス.pl line 63.
 	# for my $value ( ${$_[1]} ) {	# Not a SCALAR reference at 配列のリファレンス.pl line 64.
 	# for my $value ( ${$_}[1] ) {	# エラーにはならないが、中身を取り出せなかった。
+	# for my $value ( @{$_[1]} ) {	←☆こちらでも成功したが、どう違う？
 	for my $value ( @{@_[1]} ) {
 		say "$value";
 	}
@@ -86,10 +87,13 @@ sub arrayReferenceEdit() {
 	for my $value ( @$two ) {
 		say "$valueを書き換える。";
 		$value = "書き換え：" . $value . "を書き換える";
+#			朝来野を書き換える。
+#			智博を書き換える。
 	}
 }
 &arrayReferenceEdit($asakuno, \@asakuno);
 
+say "-" x 30;
 say $asakuno[0];	# 書き換え：朝来野を書き換える
 say $asakuno[1];	# 書き換え：智博を書き換える
 

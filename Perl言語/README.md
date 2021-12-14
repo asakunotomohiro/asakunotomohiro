@@ -2730,14 +2730,12 @@ say *{$globref}  ;	# \*foo     	←個人的には、同名の変数・配列・
 当たり前だが、配列のリファレンスに対して、ハッシュのリファレント扱いした場合、エラーになる([解決っぽい何か](#practicalusePointerreferentidentification))。  
 ※上記は、配列やハッシュの個々の取得にアロー演算子を活用した。  
 
-例）
+配列リファレンス例）
 ```perl
 use v5.24;
 
 my $hoge = "Perlプログラム";
 my @hoge = ("配列-配列", "リファレンス");	# この末尾に文字列を追加する。
-
-say "配列リファレンス";
 
 sub arrayReferenceEdit() {
 	my $one = shift @_;
@@ -2871,22 +2869,43 @@ sub scalarReference() {
 ※"名前なし"とは、配列からリファレンスを作らずに、いきなり配列リファレンスを作ることを指す。  
 > 名前の無い配列へのリファレンスは、大かっこを使って作ることができます:  
 
+以下、無名配列リファレンスを活用した配列の入れ子(二次元配列)。
 ```perl
-my $arrayref = [1, 2, ['a', 'b', 'c']];
+use v5.24;
 
-say $arrayref->[0];		# 1
-say $arrayref->[1];		# 2
-say $arrayref->[2];		# ARRAY(0x7f91690037a8)
+my $arrayref = [
+				100,
+				200,
+				[
+					'a',
+					'ABCDEF',
+					'c',
+				],
+			];
+
+say $arrayref;			# ARRAY(0x7fc7e4014bb8)	←☆デバッグ文字列。
+say $arrayref->[0];		# 100
+say $arrayref->[1];		# 200
+say $arrayref->[2];		# ARRAY(0x7fc7e4003448)	←☆デバッグ文字列。
 say $arrayref->[2][0];	# a
-say $arrayref->[2][1];	# b
+say $arrayref->[2][1];	# ABCDEF
 say $arrayref->[2][2];	# c
+say $arrayref->[2][3];	# 空文字列(undef)
 say $arrayref->[3];		# 空文字列(undef)
+say "@$arrayref";		# 100 200 ARRAY(0x7faf78803448)
+say "@{$arrayref->[2]}";	# a ABCDEF c
+#say "@$arrayref->[2]";		# Can't use an array as a reference at sample.pl line 24.
+#say "$$arrayref->[2]";		# Not a SCALAR reference at sample.pl line 25.
+say "@{$arrayref->[2]}[0]";	# a
+say "@{$arrayref->[2]}[1]";	# ABCDEF
+say "@{$arrayref->[2]}[2]";	# c
+#say "@{$arrayref->[2][0]}";	# Can't use string ("a") as an ARRAY ref while "strict refs" in use at sample.pl line 30.
 ```
 
-以下、失敗
+以下、失敗(配列リファレンス利用で配列の入れ子を想定していた)
 ```perl
 my @two = ('a', 'b', 'c');
-my @one = (1, 2, @two);
+my @one = (1, 2, @two);	←☆入れ子をするが、平坦化が行われる。
 my $arrayref = [@one];
 
 say $arrayref->[0];		# 1
@@ -2895,25 +2914,27 @@ say $arrayref->[2];		# a
 say $arrayref->[3];		# b
 say $arrayref->[4];		# c
 ```
-理由：配列の[平坦化](#subArrangement1Arrayflattening)が行われるため。 
+入れ子失敗理由：配列の[平坦化](#subArrangement1Arrayflattening)が行われるため。  
 
-以下、成功。
+以下、成功(配列の入れ子)(二次元配列)。
 ```perl
+use v5.24;
+
 my @two = ('a', 'b', 'c');
 my @one = (1, 2, \@two);
 my $arrayref = [@one];  # my $arrayref = (\@one);	←☆同じ意味。
 
+say $arrayref;			# ARRAY(0x7f9a18001be8)
 say $arrayref->[0];		# 1
 say $arrayref->[1];		# 2
-say $arrayref->[2];		# ARRAY(0x7f9fb2801b08)
+say $arrayref->[2];		# ARRAY(0x7f9a18005328)
 say $arrayref->[2][0];	# a
 say $arrayref->[2][1];	# b
 say $arrayref->[2][2];	# c
+say "@{$arrayref}";			# 1 2 ARRAY(0x7f9a18005328)
+say "@{$arrayref->[2]}";	# a b c
 ```
-
 難しい。  
-C言語のポインタだと思っていたのだが難しい。  
-よくよく考え直せば、もしかしてC言語のポインタを忘れている？  
 
 
 <a name="practicalusePointerAnonymoushashreference"></a>
