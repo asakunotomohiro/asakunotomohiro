@@ -2916,26 +2916,6 @@ say $arrayref->[4];		# c
 ```
 入れ子失敗理由：配列の[平坦化](#subArrangement1Arrayflattening)が行われるため。  
 
-以下、成功(配列の入れ子)(二次元配列)。
-```perl
-use v5.24;
-
-my @two = ('a', 'b', 'c');
-my @one = (1, 2, \@two);
-my $arrayref = [@one];  # my $arrayref = (\@one);	←☆同じ意味。
-
-say $arrayref;			# ARRAY(0x7f9a18001be8)
-say $arrayref->[0];		# 1
-say $arrayref->[1];		# 2
-say $arrayref->[2];		# ARRAY(0x7f9a18005328)
-say $arrayref->[2][0];	# a
-say $arrayref->[2][1];	# b
-say $arrayref->[2][2];	# c
-say "@{$arrayref}";			# 1 2 ARRAY(0x7f9a18005328)
-say "@{$arrayref->[2]}";	# a b c
-```
-難しい。  
-
 
 <a name="practicalusePointerAnonymoushashreference"></a>
 ##### 名前無しハッシュへのリファレンス(無名ハッシュ)
@@ -3121,6 +3101,7 @@ sub dereferenceHash() {
 * 未確認  
   * 関数  
 
+<a name="practicaluseReferencescalar"></a>
 以下、変数の入れ子・・・変数を入れ子するというのは可笑しいと言うか、不可能だよね。
 ```perl
 sub scalarReference() {
@@ -3145,88 +3126,42 @@ sub scalarReference() {
 <a name="practicaluseReferencearray"></a>
 以下、配列をリファレンスとして、配列に代入し、さらにその配列をリファレンスとして配列に代入するという入れ子をしている。
 ```perl
-sub arrayReference() {
-	say '@hogeの値：' . "@hoge";					# @hogeの値：20210923 Perl難しい
-	my @hoge1 = ("hogeのアドレス格納用配列リファレンス", \@hoge);		# 配列に配列リファレンスを代入する。
-	say '@hogeのアドレス：' . \@hoge;				# @hogeのアドレス：ARRAY(0x7fdda280a388)
-	say '@hoge1の値：' . "@hoge1";					# @hoge1の値：hogeのアドレス格納用配列リファレンス ARRAY(0x7fdda280a388)
-	my @bar = ("hoge1のアドレス格納用配列リファレンス", \@hoge1);	# それをリファレンスとして別の配列に代入する。
-	say '@hoge1のアドレス：' . \@hoge1;				# @hoge1のアドレス：ARRAY(0x7fdda280aaf0)
-	say '@barの値：' . "@bar";						# @barの値：hoge1のアドレス格納用配列リファレンス ARRAY(0x7fdda280aaf0)
-	my @boo = (\@bar);		# さらに、リファレンス配列が代入されている配列を別の配列にリファレンスとして代入する(混乱する)。
-	say '@barのアドレス：' . \@bar;					# @barのアドレス：ARRAY(0x7fdda280abb0)
-	say '@booの値：' . "@boo";						# @booの値：ARRAY(0x7fdda280abb0)
-					# 出力結果：
+use v5.24;
 
-	say;
-	say '@booの要素を出力($boo[0])：' . "$boo[0]";	# @bar のアドレスが入っていると思っている。
-				# 出力結果：@booの要素を出力($boo[0])：ARRAY(0x7fdda280abb0)
-	say '@booをデリファレンス($boo[0]->[0])：' . "$boo[0]->[0]";	# @bar の第1要素目が入っていると思っている。
-				# 出力結果：@booをデリファレンス($boo[0]->[0])：hoge1のアドレス格納用配列リファレンス
-	say '@booをデリファレンス($boo[0]->[1])：' . "$boo[0]->[1]";	# @bar の第2要素目が入っていると思っている(ここにhoge1のアドレスが入っている)。
-				# 出力結果：@booをデリファレンス($boo[0]->[1])：ARRAY(0x7fdda280aaf0)
-	say '@booをデリファレンス($boo[0]->[1][0])：' . "$boo[0]->[1][0]";	# @hoge1 の第1要素が入っていると思っている。
-				# 出力結果：@booをデリファレンス($boo[0]->[1][0])：hogeのアドレス格納用配列リファレンス
-	say '@booをデリファレンス($boo[0]->[1][1])：' . "$boo[0]->[1][1]";	# @hoge1 の第2要素が入っていると思っている(hogeのアドレスが入っている)。
-				# 出力結果：@booをデリファレンス($boo[0]->[1][1])：ARRAY(0x7fdda280a388)
-	say '@booをデリファレンス($boo[0]->[1][1][0])：' . "$boo[0]->[1][1][0]";	# @hoge の第1要素が入っていると思っている。
-				# 出力結果：@booをデリファレンス($boo[0]->[1][1][0])：20210923
-	say '@booをデリファレンス($boo[0]->[1][1][1])：' . "$boo[0]->[1][1][1]";	# @hoge の第2要素が入っていると思っている。
-				# 出力結果：@booをデリファレンス($boo[0]->[1][1][1])：Perl難しい
+my @two = ('a', 'b', 'c');	# 2次元配列部分として使う1次元配列。
+my @one = (1, 2, \@two);	# 2次元配列作成。
+my @array = ("配列1番目の要素", \@one, );		# 3次元配列作成。
+my @twoArray = (\@array, "配列最後の要素", );	# 4次元配列作成。
+my $arrayref = [@twoArray];  # ☆同じ意味。→	my $arrayref = (\@twoArray);
 
-	say;
-	say \@hoge1;	# ARRAY(0x7fdda280aaf0)	←☆上記と同じ結果が出ている。
-	say \@_;		# ARRAY(0x7fdda28181d8)
-}
-&arrayReference();
+say $arrayref;					# twoArrayの番地表示。					ARRAY(0x7f9e57802120)
+say \@twoArray;					#										ARRAY(0x7f9e57805cb0)
+say $arrayref->[0];				# arrayの番地表示。						ARRAY(0x7f9e57805c68)
+say \@array;					#										ARRAY(0x7f9e57805c68)
+say $arrayref->[1];				# twoArray[1]の値表示。					配列最後の要素
+say $arrayref->[0][0];			# array[0]の値表示。					配列1番目の要素
+say $arrayref->[0][1];			# array[1]の値表示(要はoneの番地表示)。	ARRAY(0x7f9e57805c08)
+say \@one;						#										ARRAY(0x7f9e57805c08)
+say $arrayref->[0][1][0];		# oneの値表示。							1
+say $arrayref->[0][1][1];		# oneの値表示。							2
+say $arrayref->[0][1][2];		# oneの番地表示(要はtwoの番地表示)。	ARRAY(0x7f9e57805728)
+say \@two;						#										ARRAY(0x7f9e57805728)
+say $arrayref->[0][1][2][0];	# two[0]の値表示。						a
+say $arrayref->[0][1][2][1];	# two[1]の値表示。						b
+say $arrayref->[0][1][2][2];	# two[2]の値表示。						c
+say "-" x 30;
+say "@{$arrayref}";					# ARRAY(0x7f8e9d805e68) 配列最後の要素
+say "@{$arrayref}[0]->[0]";			# 配列1番目の要素
+say "@{$arrayref}[0]->[1]";			# ARRAY(0x7f8e9d805e08)
+say "@{$arrayref}[0]->[1][0]";		# 1
+say "@{$arrayref}[0]->[1][1]";		# 2
+say "@{$arrayref}[0]->[1][2]";		# ARRAY(0x7f8e9d805928)
+say "@{$arrayref}[0]->[1][2][0]";	# a
+say "@{$arrayref}[0]->[1][2][1]";	# b
 ```
-要は、これこそが2次元配列と言うことか？  
-
-
-以下、配列のリファレンスを変数に代入し、その変数のリファレンスを変数に代入している。
-```perl
-sub arrayReference() {
-	my $refhoge = \@hoge;			# 変数に配列リファレンスを代入する。
-	my $refbar = \$refhoge;	# それをリファレンスとして別の変数に代入する。
-	my $hoge = \$refbar;		# さらに、リファレンス変数が代入されている変数を別の変数にリファレンスとして代入する(混乱する)。
-
-	say '@hogeの値を出力：' . "@hoge";	# そもそもの値確認。
-					# 出力結果：@hogeの値を出力：20210923 Perl難しい
-
-	say;
-	say '$hogeの値を出力  ：' . "$hoge";	# $refbar のアドレスが入っていると思っている(最終結果)。
-					# 出力結果：$hogeの値を出力  ：REF(0x7fba480140e8)
-	say '$refbarのアドレス：' . \$refbar;	# $refbarのアドレス：REF(0x7fba480140e8)
-	say '$hogeをデリファレンス：' . "$$hoge";	# $refbar が入っていると思っている。
-					# 出力結果：$hogeをデリファレンス：REF(0x7fba48014160)
-	say '$refhogeのアドレス   ：' . \$refhoge;	# $refhogeのアドレス   ：REF(0x7fba48014160)
-
-	say;
-	my $dehoge = $$hoge;	# $refbar が代入されたと思っている。
-	say '$dehogeを出力：' . "$dehoge";	# $refbar が入っていると思っている。
-					# 出力結果：$dehogeを出力：REF(0x7fba48014160)
-	say '$dehogeを出力：' . "$$hoge";	# $refbar が入っていると思っている。
-					# 出力結果：$dehogeを出力：REF(0x7fba48014160)
-
-	say;
-	my $dedehoge = $$dehoge;
-	say '$dedehogeを出力：' . "$dedehoge";	# $refhoge が入っていると思っている。
-					# 出力結果：$dedehogeを出力：ARRAY(0x7fba48005d88)
-	say '$dedehogeを出力：' . "$$$hoge";	# $refhoge が入っていると思っている。
-					# 出力結果：$dedehogeを出力：ARRAY(0x7fba48005d88)
-
-	say;
-	say '@hogeを出力：' . "@$$$hoge";	# $hoge が入っていると思っている。
-					# 出力結果：@hogeを出力：20210923 Perl難しい
-	say '$hoge[0]を出力：' . "$$$$hoge[0]";	# $hoge が入っていると思っている。
-					# 出力結果：$hoge[0]を出力：20210923
-	say '$hoge[1]を出力：' . "$$$$hoge[1]";	# $hoge が入っていると思っている。
-					# 出力結果：$hoge[1]を出力：Perl難しい
-
-}
-&arrayReference();
-```
+要は、これこそが多次元配列と言うことか？  
 これをするだけの利益はあるのだろうか。  
+
 
 以下、ハッシュをリファレンスとして変数に代入し、その変数をリファレンスとして変数に代入している。
 
