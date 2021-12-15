@@ -2902,6 +2902,40 @@ say "@{$arrayref->[2]}[2]";	# c
 #say "@{$arrayref->[2][0]}";	# Can't use string ("a") as an ARRAY ref while "strict refs" in use at sample.pl line 30.
 ```
 
+以下、上記と違い、無名配列を変数に入れるのではなく、無名配列を配列に入れる。
+```perl
+use v5.24;
+
+my @arrayref = (
+				[
+				100,
+				200,
+				[
+					'a',
+					'ABCDEF',
+					'c',
+				],
+			]
+			);
+
+say "@arrayref";				# ARRAY(0x7fb00e801bb8)
+say "$arrayref[0]";				# ARRAY(0x7fb00e801bb8)
+say "@{$arrayref[0]}";			# 100 200 ARRAY(0x7fb00e003448)
+say "@{$arrayref[0]}[0]";		# 100	←☆1次元配列目の1番目の要素(見にくい)。
+say "@{$arrayref[0]}[1]";		# 200
+say "@{$arrayref[0]}[2]";		# ARRAY(0x7fb00e003448)
+say "@{$arrayref[0]}[2]->[0]";	# a	←☆1次元配列目の1番目の要素(見にくい)。
+say "@{$arrayref[0]}[2]->[1]";	# ABCDEF
+say "@{$arrayref[0]}[2]->[2]";	# c
+say "$arrayref[2]";				# 空文字列(undef)
+say "$arrayref[0]->[0]";		# 100	←☆1次元配列目の1番目の要素(これが通常の利用方法だと思う)。
+say "$arrayref[0]->[1]";		# 200
+say "$arrayref[0]->[2]";		# ARRAY(0x7fb00e003448)
+say "$arrayref[0]->[2][0]";		# a	←☆1次元配列目の1番目の要素(これが通常の利用方法だと思う)。
+say "$arrayref[0]->[2][1]";		# ABCDEF
+say "$arrayref[0]->[2][2]";		# c
+```
+
 以下、失敗(配列リファレンス利用で配列の入れ子を想定していた)
 ```perl
 my @two = ('a', 'b', 'c');
