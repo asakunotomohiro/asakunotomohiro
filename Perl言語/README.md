@@ -2730,14 +2730,12 @@ say *{$globref}  ;	# \*foo     	←個人的には、同名の変数・配列・
 当たり前だが、配列のリファレンスに対して、ハッシュのリファレント扱いした場合、エラーになる([解決っぽい何か](#practicalusePointerreferentidentification))。  
 ※上記は、配列やハッシュの個々の取得にアロー演算子を活用した。  
 
-例）
+配列リファレンス例）
 ```perl
 use v5.24;
 
 my $hoge = "Perlプログラム";
 my @hoge = ("配列-配列", "リファレンス");	# この末尾に文字列を追加する。
-
-say "配列リファレンス";
 
 sub arrayReferenceEdit() {
 	my $one = shift @_;
@@ -2871,22 +2869,77 @@ sub scalarReference() {
 ※"名前なし"とは、配列からリファレンスを作らずに、いきなり配列リファレンスを作ることを指す。  
 > 名前の無い配列へのリファレンスは、大かっこを使って作ることができます:  
 
+以下、無名配列リファレンスを活用した配列の入れ子(二次元配列)。
 ```perl
-my $arrayref = [1, 2, ['a', 'b', 'c']];
+use v5.24;
 
-say $arrayref->[0];		# 1
-say $arrayref->[1];		# 2
-say $arrayref->[2];		# ARRAY(0x7f91690037a8)
+my $arrayref = [
+				100,
+				200,
+				[
+					'a',
+					'ABCDEF',
+					'c',
+				],
+			];
+
+say $arrayref;			# ARRAY(0x7fc7e4014bb8)	←☆デバッグ文字列。
+say $arrayref->[0];		# 100
+say $arrayref->[1];		# 200
+say $arrayref->[2];		# ARRAY(0x7fc7e4003448)	←☆デバッグ文字列。
 say $arrayref->[2][0];	# a
-say $arrayref->[2][1];	# b
+say $arrayref->[2][1];	# ABCDEF
 say $arrayref->[2][2];	# c
+say $arrayref->[2][3];	# 空文字列(undef)
 say $arrayref->[3];		# 空文字列(undef)
+say "@$arrayref";		# 100 200 ARRAY(0x7faf78803448)
+say "@{$arrayref->[2]}";	# a ABCDEF c
+#say "@$arrayref->[2]";		# Can't use an array as a reference at sample.pl line 24.
+#say "$$arrayref->[2]";		# Not a SCALAR reference at sample.pl line 25.
+say "@{$arrayref->[2]}[0]";	# a
+say "@{$arrayref->[2]}[1]";	# ABCDEF
+say "@{$arrayref->[2]}[2]";	# c
+#say "@{$arrayref->[2][0]}";	# Can't use string ("a") as an ARRAY ref while "strict refs" in use at sample.pl line 30.
 ```
 
-以下、失敗
+以下、上記と違い、無名配列を変数に入れるのではなく、無名配列を配列に入れる。
+```perl
+use v5.24;
+
+my @arrayref = (
+				[
+				100,
+				200,
+				[
+					'a',
+					'ABCDEF',
+					'c',
+				],
+			]
+			);
+
+say "@arrayref";				# ARRAY(0x7fb00e801bb8)
+say "$arrayref[0]";				# ARRAY(0x7fb00e801bb8)
+say "@{$arrayref[0]}";			# 100 200 ARRAY(0x7fb00e003448)
+say "@{$arrayref[0]}[0]";		# 100	←☆1次元配列目の1番目の要素(見にくい)。
+say "@{$arrayref[0]}[1]";		# 200
+say "@{$arrayref[0]}[2]";		# ARRAY(0x7fb00e003448)
+say "@{$arrayref[0]}[2]->[0]";	# a	←☆1次元配列目の1番目の要素(見にくい)。
+say "@{$arrayref[0]}[2]->[1]";	# ABCDEF
+say "@{$arrayref[0]}[2]->[2]";	# c
+say "$arrayref[2]";				# 空文字列(undef)
+say "$arrayref[0]->[0]";		# 100	←☆1次元配列目の1番目の要素(これが通常の利用方法だと思う)。
+say "$arrayref[0]->[1]";		# 200
+say "$arrayref[0]->[2]";		# ARRAY(0x7fb00e003448)
+say "$arrayref[0]->[2][0]";		# a	←☆1次元配列目の1番目の要素(これが通常の利用方法だと思う)。
+say "$arrayref[0]->[2][1]";		# ABCDEF
+say "$arrayref[0]->[2][2]";		# c
+```
+
+以下、失敗(配列リファレンス利用で配列の入れ子を想定していた)
 ```perl
 my @two = ('a', 'b', 'c');
-my @one = (1, 2, @two);
+my @one = (1, 2, @two);	←☆入れ子をするが、平坦化が行われる。
 my $arrayref = [@one];
 
 say $arrayref->[0];		# 1
@@ -2895,25 +2948,37 @@ say $arrayref->[2];		# a
 say $arrayref->[3];		# b
 say $arrayref->[4];		# c
 ```
-理由：配列の[平坦化](#subArrangement1Arrayflattening)が行われるため。 
+入れ子失敗理由：配列の[平坦化](#subArrangement1Arrayflattening)が行われるため。  
 
-以下、成功。
+以下、宣言後の代入により、利用方法が異なる。
 ```perl
-my @two = ('a', 'b', 'c');
-my @one = (1, 2, \@two);
-my $arrayref = [@one];  # my $arrayref = (\@one);	←☆同じ意味。
+use v5.24;
 
-say $arrayref->[0];		# 1
-say $arrayref->[1];		# 2
-say $arrayref->[2];		# ARRAY(0x7f9fb2801b08)
-say $arrayref->[2][0];	# a
-say $arrayref->[2][1];	# b
-say $arrayref->[2][2];	# c
+my @two = ('a', 'b', 'c');	# 1次元配列。
+my $array = \@two;			# それをリファレンスとして変数に代入する。
+
+say $$array[0];	# a	←☆これらは変数に配列リファレンスを参照している。
+say $$array[1];	# b
+say $$array[2];	# c
+
+my $one = "一代入";	# 変数利用。
+my $two = "二代入";	# 変数利用。
+my @array = (\$one, \$two, );	# 変数リファレンスとして配列に代入する。
+
+say "以下のarrayは配列扱い。";
+say "@array";		# SCALAR(0x7fb408805868) SCALAR(0x7fb408805898)
+say $array[0];		# SCALAR(0x7fb408805868)
+say \$one;			# SCALAR(0x7fb408805868)
+say ${$array[0]};	# 一代入	←☆これらは配列に変数リファレンスを参照している。
+say ${$array[1]};	# 二代入
+
+say "以下のarrayは変数扱い。";
+say @{$array}[0];	# a
+say @$array[0];		# a
+say "@$array";		# a b c
+say $$array[0];		# a
+say $$array[1];		# b
 ```
-
-難しい。  
-C言語のポインタだと思っていたのだが難しい。  
-よくよく考え直せば、もしかしてC言語のポインタを忘れている？  
 
 
 <a name="practicalusePointerAnonymoushashreference"></a>
@@ -3100,6 +3165,7 @@ sub dereferenceHash() {
 * 未確認  
   * 関数  
 
+<a name="practicaluseReferencescalar"></a>
 以下、変数の入れ子・・・変数を入れ子するというのは可笑しいと言うか、不可能だよね。
 ```perl
 sub scalarReference() {
@@ -3124,88 +3190,108 @@ sub scalarReference() {
 <a name="practicaluseReferencearray"></a>
 以下、配列をリファレンスとして、配列に代入し、さらにその配列をリファレンスとして配列に代入するという入れ子をしている。
 ```perl
-sub arrayReference() {
-	say '@hogeの値：' . "@hoge";					# @hogeの値：20210923 Perl難しい
-	my @hoge1 = ("hogeのアドレス格納用配列リファレンス", \@hoge);		# 配列に配列リファレンスを代入する。
-	say '@hogeのアドレス：' . \@hoge;				# @hogeのアドレス：ARRAY(0x7fdda280a388)
-	say '@hoge1の値：' . "@hoge1";					# @hoge1の値：hogeのアドレス格納用配列リファレンス ARRAY(0x7fdda280a388)
-	my @bar = ("hoge1のアドレス格納用配列リファレンス", \@hoge1);	# それをリファレンスとして別の配列に代入する。
-	say '@hoge1のアドレス：' . \@hoge1;				# @hoge1のアドレス：ARRAY(0x7fdda280aaf0)
-	say '@barの値：' . "@bar";						# @barの値：hoge1のアドレス格納用配列リファレンス ARRAY(0x7fdda280aaf0)
-	my @boo = (\@bar);		# さらに、リファレンス配列が代入されている配列を別の配列にリファレンスとして代入する(混乱する)。
-	say '@barのアドレス：' . \@bar;					# @barのアドレス：ARRAY(0x7fdda280abb0)
-	say '@booの値：' . "@boo";						# @booの値：ARRAY(0x7fdda280abb0)
-					# 出力結果：
+use v5.24;
 
-	say;
-	say '@booの要素を出力($boo[0])：' . "$boo[0]";	# @bar のアドレスが入っていると思っている。
-				# 出力結果：@booの要素を出力($boo[0])：ARRAY(0x7fdda280abb0)
-	say '@booをデリファレンス($boo[0]->[0])：' . "$boo[0]->[0]";	# @bar の第1要素目が入っていると思っている。
-				# 出力結果：@booをデリファレンス($boo[0]->[0])：hoge1のアドレス格納用配列リファレンス
-	say '@booをデリファレンス($boo[0]->[1])：' . "$boo[0]->[1]";	# @bar の第2要素目が入っていると思っている(ここにhoge1のアドレスが入っている)。
-				# 出力結果：@booをデリファレンス($boo[0]->[1])：ARRAY(0x7fdda280aaf0)
-	say '@booをデリファレンス($boo[0]->[1][0])：' . "$boo[0]->[1][0]";	# @hoge1 の第1要素が入っていると思っている。
-				# 出力結果：@booをデリファレンス($boo[0]->[1][0])：hogeのアドレス格納用配列リファレンス
-	say '@booをデリファレンス($boo[0]->[1][1])：' . "$boo[0]->[1][1]";	# @hoge1 の第2要素が入っていると思っている(hogeのアドレスが入っている)。
-				# 出力結果：@booをデリファレンス($boo[0]->[1][1])：ARRAY(0x7fdda280a388)
-	say '@booをデリファレンス($boo[0]->[1][1][0])：' . "$boo[0]->[1][1][0]";	# @hoge の第1要素が入っていると思っている。
-				# 出力結果：@booをデリファレンス($boo[0]->[1][1][0])：20210923
-	say '@booをデリファレンス($boo[0]->[1][1][1])：' . "$boo[0]->[1][1][1]";	# @hoge の第2要素が入っていると思っている。
-				# 出力結果：@booをデリファレンス($boo[0]->[1][1][1])：Perl難しい
+my @two = ('a', 'b', 'c');	# 2次元配列部分として使う1次元配列。
+my @one = (1, 2, \@two);	# 2次元配列作成。
+my @array = ("配列1番目の要素", \@one, );		# 3次元配列作成。
+my @twoArray = (\@array, "配列最後の要素", );	# 4次元配列作成。
+my $arrayref = [@twoArray];  # ☆同じ意味。→	my $arrayref = (\@twoArray);
 
-	say;
-	say \@hoge1;	# ARRAY(0x7fdda280aaf0)	←☆上記と同じ結果が出ている。
-	say \@_;		# ARRAY(0x7fdda28181d8)
-}
-&arrayReference();
+say $arrayref;					# twoArrayの番地表示。					ARRAY(0x7f9e57802120)
+say \@twoArray;					#										ARRAY(0x7f9e57805cb0)
+say $arrayref->[0];				# arrayの番地表示。						ARRAY(0x7f9e57805c68)
+say \@array;					#										ARRAY(0x7f9e57805c68)
+say $arrayref->[1];				# twoArray[1]の値表示。					配列最後の要素
+say $arrayref->[0][0];			# array[0]の値表示。					配列1番目の要素
+say $arrayref->[0][1];			# array[1]の値表示(要はoneの番地表示)。	ARRAY(0x7f9e57805c08)
+say \@one;						#										ARRAY(0x7f9e57805c08)
+say $arrayref->[0][1][0];		# oneの値表示。							1
+say $arrayref->[0][1][1];		# oneの値表示。							2
+say $arrayref->[0][1][2];		# oneの番地表示(要はtwoの番地表示)。	ARRAY(0x7f9e57805728)
+say \@two;						#										ARRAY(0x7f9e57805728)
+say $arrayref->[0][1][2][0];	# two[0]の値表示。						a
+say $arrayref->[0][1][2][1];	# two[1]の値表示。						b
+say $arrayref->[0][1][2][2];	# two[2]の値表示。						c
+say "-" x 30;
+say "@$arrayref";				# ARRAY(0x7f8e9d805e68) 配列最後の要素
+say "@$arrayref[0]->[0]";		# 配列1番目の要素
+say "@$arrayref[0]->[1]";		# ARRAY(0x7f8e9d805e08)
+say "@$arrayref[0]->[1][0]";	# 1
+say "@$arrayref[0]->[1][1]";	# 2
+say "@$arrayref[0]->[1][2]";	# ARRAY(0x7f8e9d805928)
+say "@$arrayref[0]->[1][2][0]";	# a
+say "@$arrayref[0]->[1][2][1]";	# b
 ```
-要は、これこそが2次元配列と言うことか？  
-
-
-以下、配列のリファレンスを変数に代入し、その変数のリファレンスを変数に代入している。
-```perl
-sub arrayReference() {
-	my $refhoge = \@hoge;			# 変数に配列リファレンスを代入する。
-	my $refbar = \$refhoge;	# それをリファレンスとして別の変数に代入する。
-	my $hoge = \$refbar;		# さらに、リファレンス変数が代入されている変数を別の変数にリファレンスとして代入する(混乱する)。
-
-	say '@hogeの値を出力：' . "@hoge";	# そもそもの値確認。
-					# 出力結果：@hogeの値を出力：20210923 Perl難しい
-
-	say;
-	say '$hogeの値を出力  ：' . "$hoge";	# $refbar のアドレスが入っていると思っている(最終結果)。
-					# 出力結果：$hogeの値を出力  ：REF(0x7fba480140e8)
-	say '$refbarのアドレス：' . \$refbar;	# $refbarのアドレス：REF(0x7fba480140e8)
-	say '$hogeをデリファレンス：' . "$$hoge";	# $refbar が入っていると思っている。
-					# 出力結果：$hogeをデリファレンス：REF(0x7fba48014160)
-	say '$refhogeのアドレス   ：' . \$refhoge;	# $refhogeのアドレス   ：REF(0x7fba48014160)
-
-	say;
-	my $dehoge = $$hoge;	# $refbar が代入されたと思っている。
-	say '$dehogeを出力：' . "$dehoge";	# $refbar が入っていると思っている。
-					# 出力結果：$dehogeを出力：REF(0x7fba48014160)
-	say '$dehogeを出力：' . "$$hoge";	# $refbar が入っていると思っている。
-					# 出力結果：$dehogeを出力：REF(0x7fba48014160)
-
-	say;
-	my $dedehoge = $$dehoge;
-	say '$dedehogeを出力：' . "$dedehoge";	# $refhoge が入っていると思っている。
-					# 出力結果：$dedehogeを出力：ARRAY(0x7fba48005d88)
-	say '$dedehogeを出力：' . "$$$hoge";	# $refhoge が入っていると思っている。
-					# 出力結果：$dedehogeを出力：ARRAY(0x7fba48005d88)
-
-	say;
-	say '@hogeを出力：' . "@$$$hoge";	# $hoge が入っていると思っている。
-					# 出力結果：@hogeを出力：20210923 Perl難しい
-	say '$hoge[0]を出力：' . "$$$$hoge[0]";	# $hoge が入っていると思っている。
-					# 出力結果：$hoge[0]を出力：20210923
-	say '$hoge[1]を出力：' . "$$$$hoge[1]";	# $hoge が入っていると思っている。
-					# 出力結果：$hoge[1]を出力：Perl難しい
-
-}
-&arrayReference();
-```
+要は、これこそが多次元配列と言うことか？  
 これをするだけの利益はあるのだろうか。  
+
+ちなみに、配列リファレンスの見にくい表記が以下になる。
+```perl
+say "以下、2種類を別表記。";
+say $arrayref->[0][1][2][2];	# c
+say  @$arrayref[0]->[1][2][2];	# c
+say "以下、別表記後";
+say $$arrayref[0][1][2][2];		# c
+say $$arrayref[0]->[1][2][2];	# c
+```
+矢印記法(アロー演算子)を用いた方がいいだろう。  
+* `$$arrayref[0][1][2][2]`の解釈方法。  
+  1. 英数字など(**arrayref**)を探し出す。  
+  1. 英数字列の前に記号が付いている場合、変数などのPerlとして意味のある解釈が必要と判断する。  
+  1. 名前の左側部分を確認する。  
+  1. 左側部分に付いている記号が複数の場合、内側(最も後ろ・名前寄り)から解釈する。  
+     例）`$$arrayref[0][1][2][2]`  
+     1つ前のドル記号`$`(左から2番目)から解釈する。  
+  1. 次に、外側に向かって解決していく。  
+     要は、上記例で言う、左端のドル記号`$`(左から1番目)  
+  1. それが終わり次第、英数列の右側(**arrayref[** の **[記号** 以降)を確認していく。  
+     例）`$$arrayref[0][1][2][2]`  
+     1つ目の括弧`[0]`を解釈する。  
+  1. 右側の確認は、右に向かって進んでいく。  
+     1. 2つ目の括弧`[1]`を解釈する。  
+     1. 3つ目の括弧`[2]`を解釈する。  
+     1. 4つ目の括弧`[2]`を解釈する。  
+
+以下、通常の2次元配列(無名配列リファレンスを配列に代入)。
+```perl
+use v5.24;
+
+my @arrayref = (
+				[ 100, 200, ],
+				[ 'a', "b", ],
+				[ "本日は", "晴天なり。", ],
+			);
+
+say "@arrayref";			# ARRAY(0x7fe474003448) ARRAY(0x7fe4740189a0) ARRAY(0x7fe474018a78)
+say "$arrayref[0]";			# ARRAY(0x7fe474003448)
+say "$arrayref[1]";			# ARRAY(0x7fe4740189a0)
+say "$arrayref[2]";			# ARRAY(0x7fe474018a78)
+say "$arrayref[0]->[0]";	# 100			←☆2次元配列の1番目の要素の1番目の要素。
+say "$arrayref[0]->[1]";	# 200			←☆2次元配列の1番目の要素の2番目の要素。
+say "$arrayref[1]->[0]";	# a				←☆2次元配列の2番目の要素の1番目の要素。
+say "$arrayref[1]->[1]";	# b				←☆2次元配列の2番目の要素の2番目の要素。
+say "$arrayref[2]->[0]";	# 本日は		←☆2次元配列の3番目の要素の1番目の要素。
+say "$arrayref[2]->[1]";	# 晴天なり。	←☆2次元配列の3番目の要素の2番目の要素。
+```
+
+以下、3次元配列の自動生成。
+```perl
+use v5.24;
+
+my @arrayref;
+$arrayref[2021][12][15] = "コミット実施。";
+
+say "$arrayref[2021][12][15]";		# コミット実施。
+say "@arrayref";					#                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ARRAY(0x7ffab4003460)
+say "$arrayref[2021]->[12][15]";	# コミット実施。
+say @arrayref;						# ARRAY(0x7ffab4003460)
+say "$arrayref->[2021][12][15]";	# Global symbol "$arrayref" requires explicit package name (did you forget to declare "my $arrayref"?) at sample.pl line 9.	←☆arrayrefは変数ではなく配列なので、この書き方は出来ない。
+```
+上記は、文字列を代入していない部分は空文字列(undef)が代入されている。  
+そのため、出力時に、空白文字が無茶苦茶多く表示されている。  
+よって、ダブルクォーテーションで括らなければ、無駄な出力せずに必要な部分のみが出る。  
+
 
 以下、ハッシュをリファレンスとして変数に代入し、その変数をリファレンスとして変数に代入している。
 
