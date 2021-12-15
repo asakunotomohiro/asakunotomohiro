@@ -3275,6 +3275,23 @@ say "$arrayref[2]->[0]";	# 本日は		←☆2次元配列の3番目の要素の1
 say "$arrayref[2]->[1]";	# 晴天なり。	←☆2次元配列の3番目の要素の2番目の要素。
 ```
 
+以下、3次元配列の自動生成。
+```perl
+use v5.24;
+
+my @arrayref;
+$arrayref[2021][12][15] = "コミット実施。";
+
+say "$arrayref[2021][12][15]";		# コミット実施。
+say "@arrayref";					#                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ARRAY(0x7ffab4003460)
+say "$arrayref[2021]->[12][15]";	# コミット実施。
+say @arrayref;						# ARRAY(0x7ffab4003460)
+say "$arrayref->[2021][12][15]";	# Global symbol "$arrayref" requires explicit package name (did you forget to declare "my $arrayref"?) at sample.pl line 9.	←☆arrayrefは変数ではなく配列なので、この書き方は出来ない。
+```
+上記は、文字列を代入していない部分は空文字列(undef)が代入されている。  
+そのため、出力時に、空白文字が無茶苦茶多く表示されている。  
+よって、ダブルクォーテーションで括らなければ、無駄な出力せずに必要な部分のみが出る。  
+
 
 以下、ハッシュをリファレンスとして変数に代入し、その変数をリファレンスとして変数に代入している。
 
