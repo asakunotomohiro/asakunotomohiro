@@ -3212,8 +3212,11 @@ say ${$array[0]};	# 一代入	←☆これらは配列に変数リファレン�
 say ${$array[1]};	# 二代入
 
 say "以下のarrayは変数扱い。";
-say $$array[0];	# a
-say $$array[1];	# b
+say @{$array}[0];	# a
+say @$array[0];		# a
+say "@$array";		# a b c
+say $$array[0];		# a
+say $$array[1];		# b
 ```
 
 
