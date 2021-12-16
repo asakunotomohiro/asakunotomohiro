@@ -2739,7 +2739,7 @@ say %{$hashref}  ;	# \%ENV     ハッシュ
     say $hashref->{key1};	# \%ENV     ハッシュのキー1(値を取り出す)。
     say $hashref->{key2};	# \%ENV     ハッシュのキー2(値を取り出す)。
 say $coderef->();	# \&handler 関数(呼び出し後、変な数字が含まれてしまうのは、リターン結果を実行結果にしているため)。
-say *{$globref}  ;	# \*foo     	←個人的には、同名の変数・配列・ハッシュ・関数を1つにまとめることができると思っている。
+say *{$globref}  ;	# \*foo     	←☆個人的には、同名の変数・配列・ハッシュ・関数を1つにまとめることができると思っている。
 ```
 上記の出力で得られる参照先データを[リファレント](#practicalusePointerreferentidentification)(referent・参照先)と言う(上記で言う`$foo`変数のデータのこと)。  
 上記の出力で得られるデータを[デリファレンス](#practicalusePointerdereference)(dereference・参照解決)と言う(上記で言う`${$scalarref}`変数にあるデータのこと)。  
@@ -2777,6 +2777,39 @@ say $hoge[1];	# 書き換え：リファレンスを書き換える
 ```
 難しいが、C言語のポインタと思えば良いだろう。  
 しかし、記号を使い分けるのは慣れないと思う。  
+
+ハッシュリファレンス例）
+```perl
+use v5.24;
+
+my %hoge = (20211216=>"Perlのハッシュリファレンス", 20211217=>"本日は晴天なり。");
+
+sub hashReference() {
+	my $refHash   = shift;	# ハッシュのアドレスを取得している。
+
+	say "以下、ハッシュリファレンス ";
+	say "%$refHash";	# %HASH(0x7f9fc5805328)
+	say %$refHash;		# 20211216Perlのハッシュリファレンス20211217本日は晴天なり。
+	say "-" x 10;
+	say "$$refHash{20211216}";	# Perlのハッシュリファレンス
+	say "$$refHash{20211217}";	# 本日は晴天なり。
+	say "-" x 10;
+	my @boo = sort keys %$refHash;
+	say "@boo";	# 20211216 20211217
+	foreach my $value (@boo) {
+		say "$$refHash{$value}";
+		# Perlのハッシュリファレンス
+		# 本日は晴天なり。
+	}
+	# 以下、上記と同じ事。
+	foreach my $value (@boo) {
+		say "$refHash->{$value}";
+		# Perlのハッシュリファレンス
+		# 本日は晴天なり。
+	}
+}
+&hashReference(\%hoge);
+```
 
 
 <a name="practicalusePointerreferentidentification"></a>
