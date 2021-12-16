@@ -223,6 +223,8 @@ $
 > <> あるファイルハンドルからレコードを入力するのに使われます。  
 > \  なにかのリファレンスを取ります。  
 
+上記記号は、ファニー文字と言う表現でも合っていると思って良いのか？  
+
 
 ## 具体的な基礎知識
 何はともあれ、まずは、"Hello World"を表示するプログラムを作る。  
@@ -3386,9 +3388,12 @@ sub associativearray() {
 		'bar'  => "300505",
 	);
 
-	say "$hoge{'hoge'}";			# 100006601775326
-	say "$hoge{'100006601775326'}";	# 空文字列
+	# 以下、キーから値を取り出している。
+	say "$hoge{hoge}";			# 100006601775326
+	# 以下、値を基準に探すことは出来ない(この形式ではキーから探すのみ可能)。
+	say "$hoge{100006601775326}";	# 空文字列
 
+	# 以下、keys関数からキー値を取り出し、そのキー値からハッシュ値を取り出して表示している。
 	for my $key (keys(%hoge)) {
 		my $value = $hoge{$key};
 		say "$key -> $value";
@@ -3398,7 +3403,7 @@ sub associativearray() {
 		#		bar -> 300505
 	}
 	say "%hoge";	# %hoge
-	say %hoge;		# hoge100006601775326boo100011324721840bar300505	←☆当然実行ごとに値が変わる。
+	say %hoge;		# hoge100006601775326boo100011324721840bar300505	←☆当然実行ごとに表示順番が変わる。
 }
 &associativearray();
 ```
@@ -3514,35 +3519,35 @@ sub associativearray() {
 
 <a name="practicaluseHashkeysort"></a>
 ##### キーの並べ替え
-正しいやり方が分からない。  
+以下のプログラムで良いようだ。
 
 ```perl
-	my %hoge = (
-		hoge => 20210922,
-		boo => 4873118247,
-		bar => "sort",
-	);
+my %hoge = (
+	hoge => 20210922,
+	boo => 4873118247,
+	bar => "sort",
+);
 
-	foreach ( sort keys %hoge ) {
-		say "$_ -> $hoge{$_}";
-	}
+foreach ( sort keys %hoge ) {
+	say "$_ -> $hoge{$_}";
+}
 ```
 
 
 <a name="practicaluseHashvaluesort"></a>
 ##### 値での並べ替え
-正しいやり方が分からない。  
+以下のプログラムで良いようだ。
 
 ```perl
-	my %hoge = (
-		hoge => 20210922,
-		boo => 4873118247,
-		bar => "sort",
-	);
+my %hoge = (
+	hoge => 20210922,
+	boo => 4873118247,
+	bar => "sort",
+);
 
-	foreach ( sort { $hoge{$a} <=> $hoge{$b} } keys %hoge ) {
-		say "$_ -> $hoge{$_}";
-	}
+foreach ( sort { $hoge{$a} <=> $hoge{$b} } keys %hoge ) {
+	say "$_ -> $hoge{$_}";
+}
 ```
 
 
