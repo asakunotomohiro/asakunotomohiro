@@ -2461,7 +2461,7 @@ say "@hoge[$two, 6, $#hoge, -2]";	# 88 20211118 10 9
 配列をリストとして扱うため、配列の接頭辞に`@`を使う。  
 
 * 配列を任意の場所で継ぎ接ぎ：
-  * `$変数名 = splice @配列名, 添え字;`  
+  * [`$変数名 = splice @配列名, 添え字;`](#practicaluseArrangementArraysplicescalar)  
     添え字以降の要素が取り除かれ、配列最後の要素が変数に代入される。  
   * [`@配列名 = splice @配列名, 添え字;`](#practicaluseArrangementArraysplicetwoArg)  
     添え字の要素以降が配列に代入される。  
@@ -2473,6 +2473,20 @@ say "@hoge[$two, 6, $#hoge, -2]";	# 88 20211118 10 9
     添え字の要素以降から要素数までが配列に代入され、その分をリストで置き換える。  
     要は、第4引数までの利用。  
     要素数の部分を0指定した場合、その場所に挿入する(置き換えではなくなる)。  
+
+<a name="practicaluseArrangementArraysplicescalar"></a>
+以下、`splice`演算子による添え字番号指定の取り出し(第2引数までの利用結果を変数に代入)。
+```Perl
+use v5.24;
+
+my @hoge = ( 1..10 );
+say "@hoge";	# 1 2 3 4 5 6 7 8 9 10
+my $boo = splice @hoge, 2;
+say "@hoge";	# 1 2
+say "$boo";		# 10
+```
+意図したとおり、配列最後の要素が変数に代入されている。  
+そして、第2引数に指定した添え字以降が配列から削除されている。  
 
 <a name="practicaluseArrangementArraysplicetwoArg"></a>
 以下、`splice`演算子による添え字番号指定の取り出し(第2引数までの利用)。
