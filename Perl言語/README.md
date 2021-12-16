@@ -3351,9 +3351,10 @@ say "$arrayref->[2021][12][15]";	# Global symbol "$arrayref" requires explicit p
   * ハッシュの大きさに制限はない。  
 
 
+<a name="practicaluseHashmake"></a>
 #### 作成方法
-様式：`%ハッシュ名 = ('キー1', 値1, 'キー2', 値2, ・・・ );`  
-`%ハッシュ名 = (キー1=>値1, キー2=>値2, ・・・ );`  
+様式1：`%ハッシュ名 = ('キー1', 値1, 'キー2', 値2, ・・・ );`  
+様式2：`%ハッシュ名 = (キー1 => 値1, キー2 => 値2, ・・・ );`  
 例）
 ```perl
 my %hoge = (
@@ -3367,10 +3368,11 @@ my %hoge = (
 ※丸括弧`()`の意味は、リスト。  
 
 
-コピーもできるが、負担が掛かるため、止めた方が良い。
+コピーもできるが、負担が大きいため、止めた方が良い。
 `my %new_has = %old_hash;`  
 
 
+<a name="practicaluseHashhowget"></a>
 #### 取得方法
 愚痴：作成方法が丸括弧で、取得方法が波括弧なのは混乱する(リストとの区別が付かないのが原因)。  
 `$ハッシュ名{キー};`  
@@ -3402,12 +3404,14 @@ sub associativearray() {
 ```
 
 
+<a name="practicaluseHashmod"></a>
 #### 変更方法
 様式：
 `$ハッシュ名{キー} = 値;`  
 ※**キー**にスペースを含まない場合、クォーテーション記号は不要。  
 
 
+<a name="practicaluseHashchange"></a>
 ##### キーと値を入れ替える。
 **reverse**により、入れ替えが可能。  
 
@@ -3442,6 +3446,7 @@ sub associativearray() {
 ```
 
 
+<a name="practicaluseHashkeysvaluesfunc"></a>
 ##### keys関数・values関数
 順不同ではあるが、かならず対になる取得ができる。  
 先頭から末尾までを1つづつ取り出すには、**keys**・**values**・[**each**](#practicaluseHasheach)の3種類が使える。  
@@ -3507,6 +3512,7 @@ sub associativearray() {
 [削除方法](#practicaluseHashdelete)は必要だよな。  
 
 
+<a name="practicaluseHashkeysort"></a>
 ##### キーの並べ替え
 正しいやり方が分からない。  
 
@@ -3523,6 +3529,7 @@ sub associativearray() {
 ```
 
 
+<a name="practicaluseHashvaluesort"></a>
 ##### 値での並べ替え
 正しいやり方が分からない。  
 
@@ -3539,6 +3546,7 @@ sub associativearray() {
 ```
 
 
+<a name="practicaluseHashkeyduplicate"></a>
 #### キーの重複
 上書きされる。  
 
@@ -3617,6 +3625,7 @@ sub associativearray() {
 これは、反復子(イテレータ：iterator)技術により、現在値を保持しているため。  
 
 
+<a name="practicaluseHashexists"></a>
 ##### 既存キーの確認方法(`exists`関数)。
 キーが存在すれば、どのようなキーだろうが、存在するとして扱われる。  
 
@@ -3674,6 +3683,7 @@ sub associativearray() {
 ```
 
 
+<a name="practicaluseHashenv"></a>
 #### OSの環境変数(`%ENV`)
 
 以下、環境変数をPerlで取得する。
