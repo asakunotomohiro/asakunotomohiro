@@ -3692,8 +3692,8 @@ sub associativearray() {
 		#		bar -> 本日は晴天なり。
 	}
 
-	say "-" x 30;
-	delete $hoge{'hoge'};
+	say "以下、削除実施。";
+	delete $hoge{hoge};	←☆削除実施(複数の場合は配列扱いするため`@hoge{'boo', 'bar'}`などになる)。
 	while( my ($key, $value) = each %hoge ) {
 		say "$key -> $value";
 		# 出力結果：
@@ -3703,6 +3703,7 @@ sub associativearray() {
 }
 &associativearray();
 ```
+記号の使い分けが慣れない。  
 
 
 <a name="practicaluseHashenv"></a>
