@@ -3503,6 +3503,8 @@ sub associativearray() {
 
 以下、そのプログラム。
 ```perl
+use v5.24;
+
 sub associativearray() {
 	my %boo = (
 		boo => 20211119,
@@ -3510,25 +3512,26 @@ sub associativearray() {
 		hoge => "BK4873118247",
 	);
 
-	# 以下、通常の値出力方法。
+	say "以下、通常の値出力方法。";
 	say "$boo{boo}, $boo{bar}";	# 20211119, 9784873118246
 
-	# 以下、スライスでの出力方法。
-	say @boo{"boo", "bar"};	# 202111199784873118246
-	say @boo{qw(boo bar)};	# 202111199784873118246
+	say "以下、スライスでの出力方法。";
+	say @boo{"boo", "bar"};		# 202111199784873118246
+	say @boo{qw(boo bar)};		# 202111199784873118246
+	say "@boo{'boo', 'bar'}";	# 20211119 9784873118246
+	say "@boo{qw(boo bar)}";	# 20211119 9784873118246
 
-	# 以下、スライスでの値変更。
+	say "以下、スライスでの値変更。";
 	@boo{qw(boo bar)} = (123, 456);
 	say @boo{qw(boo bar)};	# 123456
-	say "$boo{boo}";	# 123
-	say "$boo{bar}";	# 456
-	say "$boo{hoge}";	# BK4873118247
+	say "$boo{boo}";		# 123
+	say "$boo{bar}";		# 456
+	say "$boo{hoge}";		# BK4873118247
+    #   {}括弧を[]括弧にした場合、意味が変わってくるため、今回の場合はエラーになる。
 }
 &associativearray();
 ```
-あいにく、削除や追加方法は分からなかった。  
-しかし、ハッシュ相手なのだから不要だろう。  
-[削除方法](#practicaluseHashdelete)は必要だよな。  
+[削除方法](#practicaluseHashdelete)は別途ある。  
 
 
 <a name="practicaluseHashkeysort"></a>
