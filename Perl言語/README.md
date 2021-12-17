@@ -3076,7 +3076,7 @@ sub hashReference() {
 &hashReference();
 ```
 
-以下、無名ハッシュをネスト化
+以下、無名ハッシュをネスト化(要は、入れ子)
 ```perl
 my $hashref = {
 	spiderman  => {
@@ -3371,34 +3371,63 @@ say "$arrayref->[2021][12][15]";	# Global symbol "$arrayref" requires explicit p
 よって、ダブルクォーテーションで括らなければ、無駄な出力せずに必要な部分のみが出る。  
 
 
-以下、ハッシュをリファレンスとして変数に代入し、その変数をリファレンスとして変数に代入している。
+<a name="practicaluseReferencehash"></a>
+以下、ハッシュの無名リファレンスを入れ子にして変数に代入している。
+```perl
+use v5.24;
 
-    sub hashReference() {
-    	my %hogehash = (%hoge);			# ハッシュにハッシュリファレンスを代入する。
-    	my $barhash = \%hogehash;	# それをリファレンスとして別のハッシュに代入する。
-    	my $boo = \$barhash;	# さらに、ハッシュリファレンスが代入されているハッシュを別のハッシュにリファレンスとして代入する(混乱する)。
-    
-    	my $deboo = $$boo;	# ハッシュのリファレンスをデリファレンスした($barhashになっている)。
-    	my %dedeboo = %$deboo;	# ハッシュのリファレンスをデリファレンスした($hogehashになっている)。
-    	while( my ($key, $value) = each %dedeboo ) {
-    		say '%dedebooの要素を出力($boo[0])：' . "$key -> $value";	# %barhash が入っていると思っている。
-    			# 出力結果：
-    #					%dedebooの要素を出力($boo[0])：hoge -> 20210923
-    #					%dedebooの要素を出力($boo[0])：boo -> 本日は晴天なり。
-    #					%dedebooの要素を出力($boo[0])：bar -> Perl難しい
-    	}
-    
-    	while( my ($key, $value) = each %$$boo ) {
-    		say '%hogeの要素を出力(%$$boo)：' . "$key -> $value";	# %barhash が入っていると思っている。
-    			# 出力結果：
-    #					%hogeの要素を出力(%$$boo)：hoge -> 20210923
-    #					%hogeの要素を出力(%$$boo)：bar -> Perl難しい
-    #					%hogeの要素を出力(%$$boo)：boo -> 本日は晴天なり。
-    	}
-    }
-    &hashReference();
+sub hashReference() {
+	my $hogeRef = {
+				20211217=>{
+					20211218=>"本日は",
+					4774135046=>"[Perl]",
+					20080620=>"[gihyo]",
+				},
+				20211219=>{
+					20211220=>"晴天なり。",
+					9784774135045=>"[オブジェクト指向]",
+					196903=>"[設立]",
+				},
+			};
+	say $hogeRef;								# HASH(0x7fb8bd806d20)
+	say $hogeRef->{20211217};					# HASH(0x7fb8bd003448)
+	say @{$hogeRef}{20211217};					# HASH(0x7fb8bd003448)
+	say $hogeRef->{20211217}{20211218};			# 本日は
+	say $hogeRef->{20211217}{4774135046};		# [Perl]
+	say $hogeRef->{20211219}{20211220};			# 晴天なり。
+	say $hogeRef->{20211219}{9784774135045};	# [オブジェクト指向]
+}
+&hashReference();
+```
+また、以下は、無名ハッシュリファレンスを配列に代入している。
+```perl
+use v5.24;
 
-本当にやりたかったことは、ハッシュのネストであって、これではない。  
+sub hashReference() {
+	my $arrayRef = [
+				{
+					20211218=>"本日は",
+					4774135046=>"[Perl]",
+					20080620=>"[gihyo]",
+				},
+				{
+					20211220=>"晴天なり。",
+					9784774135045=>"[オブジェクト指向]",
+					196903=>"[設立]",
+				},
+			];
+	say $arrayRef;						# ARRAY(0x7f94aa818b20)
+	say $arrayRef->[0];					# HASH(0x7f94aa803448)
+	say @{$arrayRef}[0];				# HASH(0x7f94aa803448)
+	say $arrayRef->[1];					# HASH(0x7f94aa8189b8)
+	say $arrayRef->[0]{20211218};		# 本日は
+	say $arrayRef->[0]{4774135046};		# [Perl]
+	say $arrayRef->[1]{20211220};		# 晴天なり。
+	say $arrayRef->[1]{9784774135045};	# [オブジェクト指向]
+}
+&hashReference();
+```
+どちらが見やすいかは人それぞれだろうか。  
 
 
 #### スコープ
