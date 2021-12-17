@@ -3043,16 +3043,38 @@ say $$array[1];		# b
 > 名前の無いハッシュへのリファレンスは、中かっこを使って作ることができます:  
 
 以下、無名のハッシュ例）
+```perl
+use v5.24;
 
-    my $hashref = {
-    	Adam  => 'Eve',
-    	Clyde => 'Bonnie',
-    };
-    
-    say $hashref->{Adam};	# Eve
-    say $hashref->{Clyde};	# Bonnie
-    say $hashref;			# HASH(0x7fa9be8037a8)
-    #say %hashref;	# Global symbol "%hashref" requires explicit package name (did you forget to declare "my %hashref"?) at test.pl line 10.
+sub hashReference() {
+	# 以下、無名ハッシュリファレンス。
+	our $hogeRef = {20211217=>"本日は", 20211218=>"晴天なり。"};
+
+	say "以下、ハッシュリファレンス";
+	say "%$hogeRef";	# %HASH(0x7fa6a0002448)
+	say %$hogeRef;		# 20211218晴天なり。20211217本日は
+	say "以下、ちょっと見にくいハッシュリファレンス利用。";
+	say "$$hogeRef{20211217}";	# 本日は
+	say "$$hogeRef{20211218}";	# 晴天なり。
+	say "以下、ちょっとましになったハッシュリファレンス利用。";
+	say "$hogeRef->{20211217}";	# 本日は
+	say "$hogeRef->{20211218}";	# 晴天なり。
+	say "以下、キーを並び替えて取り出す。";
+	my @boo = sort keys %$hogeRef;
+	say "@boo";	# 20211217 20211218
+	foreach my $value (@boo) {
+		say "$$hogeRef{$value}";
+		# 本日は
+		# 晴天なり。
+	}
+	foreach my $value (@boo) {
+		say "$hogeRef->{$value}";
+		# 本日は
+		# 晴天なり。
+	}
+}
+&hashReference();
+```
 
 以下、無名ハッシュをネスト化
 ```perl
