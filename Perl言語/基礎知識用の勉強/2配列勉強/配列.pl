@@ -21,7 +21,6 @@ my $count_asakuno = @asakuno;
 say $count_asakuno;	# 2
 
 say "-" x 30;
-# 計算結果の代入。
 say "以下、計算結果の代入。";
 $asakuno[9] = $asakuno[1] + 9;
 say $asakuno[8];	# 空
@@ -29,11 +28,13 @@ say $asakuno[9];	# 20210910
 
 say "-" x 30;
 
-# 最後の要素取り出し。
+say "以下、最後の要素取り出し。";
+say "@asakuno";		# 20210831 20210901        20210910
 say $asakuno[-1];	# 20210910
-say $#asakuno;	# 9
+say $#asakuno;		# 9
 say $asakuno[$#asakuno];	# 20210910
 say $asakuno[10];	# 空undef
+say $asakuno[-2];	# 空文字列(undef)
 
 say "-" x 30;
 
@@ -53,21 +54,26 @@ foreach my $tomohiro (@asakuno) {
 }
 say @asakuno;	# 202108312021090120210910
 
-# 存在しない配列番号の要素出力。
+say "存在しない配列番号の要素出力。";
 say "-";
 say $asakuno[99];	# 空行が出力されるようだ。
 say "-";
 
+say "以下、スライスでの代入";
 @asakuno[999] = (20210901 + 9, );
 say $asakuno[999];	# 20210910
 @asakuno[999] = 20210901 + 9;
 say $asakuno[999];	# 20210910
+say "以下、通常代入";
 $asakuno[8] = 'asakuno';
 $asakuno[7] = "tomohiro";
 say $asakuno[8];	# asakuno
 say $asakuno[7];	# tomohiro
+$asakuno[999] = (20210901 + 9);
+say $asakuno[999];	# 20210910
 
-# qw関数による代入。
+say;
+say "以下、qw関数による代入。";
 my @asakuno = qw(a s a k u n o , );
 say @asakuno;	# asakuno
 
@@ -81,7 +87,7 @@ foreach (@asakuno) {
 			# o
 }
 
-# ダブル(シングル)クォーテーションで括る。
+say "以下、ダブル(シングル)クォーテーションで括る。";
 say "@asakuno";	# a s a k u n o
 say '@asakuno';	# @asakuno
 
@@ -112,10 +118,10 @@ if (@asakuno > 0) {
 else {
 	say "空。";
 	say scalar(@asakuno);	# 0		要素数がないため、0になる。
-	say $#asakuno;	# -1		要素数がないため、最後の添え字は-1になる。
+	say $#asakuno;			# -1	要素数がないため、最後の添え字は-1になる。
 }
 
-# 小数点以下のリストからの添え字利用。
+say "以下、小数点以下のリストからの添え字利用。";
 @asakuno = (20210831, 20210901, );
 my $tomohiro = 1.1234;
 say $asakuno[$tomohiro];	# 20210901

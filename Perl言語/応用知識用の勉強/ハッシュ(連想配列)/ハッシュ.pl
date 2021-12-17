@@ -12,7 +12,9 @@ sub associativearray() {
 		asakunotomohiro => "朝来野智博",
 	);
 
+	# 以下、キーから値を取り出している。
 	say $asakuno{asakuno};	# 20210922
+	# 以下、値を基準に探すことは出来ない(この形式ではキーから探すのみ可能)。
 	say $asakuno{20210922};	# 空文字列
 	say "-" x 30;
 

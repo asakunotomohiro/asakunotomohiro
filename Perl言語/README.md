@@ -223,6 +223,9 @@ $
 > <> あるファイルハンドルからレコードを入力するのに使われます。  
 > \  なにかのリファレンスを取ります。  
 
+上記記号は、別名ファニー文字(funny characters・おかしな文字)と言う。  
+このシジルを採用しているがために、予約語というものが存在しないようだ(他のプログラミング言語では考えられない)。  
+
 
 ## 具体的な基礎知識
 何はともあれ、まずは、"Hello World"を表示するプログラムを作る。  
@@ -2459,7 +2462,7 @@ say "@hoge[$two, 6, $#hoge, -2]";	# 88 20211118 10 9
 配列をリストとして扱うため、配列の接頭辞に`@`を使う。  
 
 * 配列を任意の場所で継ぎ接ぎ：
-  * `$変数名 = splice @配列名, 添え字;`  
+  * [`$変数名 = splice @配列名, 添え字;`](#practicaluseArrangementArraysplicescalar)  
     添え字以降の要素が取り除かれ、配列最後の要素が変数に代入される。  
   * [`@配列名 = splice @配列名, 添え字;`](#practicaluseArrangementArraysplicetwoArg)  
     添え字の要素以降が配列に代入される。  
@@ -2471,6 +2474,20 @@ say "@hoge[$two, 6, $#hoge, -2]";	# 88 20211118 10 9
     添え字の要素以降から要素数までが配列に代入され、その分をリストで置き換える。  
     要は、第4引数までの利用。  
     要素数の部分を0指定した場合、その場所に挿入する(置き換えではなくなる)。  
+
+<a name="practicaluseArrangementArraysplicescalar"></a>
+以下、`splice`演算子による添え字番号指定の取り出し(第2引数までの利用結果を変数に代入)。
+```Perl
+use v5.24;
+
+my @hoge = ( 1..10 );
+say "@hoge";	# 1 2 3 4 5 6 7 8 9 10
+my $boo = splice @hoge, 2;
+say "@hoge";	# 1 2
+say "$boo";		# 10
+```
+意図したとおり、配列最後の要素が変数に代入されている。  
+そして、第2引数に指定した添え字以降が配列から削除されている。  
 
 <a name="practicaluseArrangementArraysplicetwoArg"></a>
 以下、`splice`演算子による添え字番号指定の取り出し(第2引数までの利用)。
@@ -2723,7 +2740,7 @@ say %{$hashref}  ;	# \%ENV     ハッシュ
     say $hashref->{key1};	# \%ENV     ハッシュのキー1(値を取り出す)。
     say $hashref->{key2};	# \%ENV     ハッシュのキー2(値を取り出す)。
 say $coderef->();	# \&handler 関数(呼び出し後、変な数字が含まれてしまうのは、リターン結果を実行結果にしているため)。
-say *{$globref}  ;	# \*foo     	←個人的には、同名の変数・配列・ハッシュ・関数を1つにまとめることができると思っている。
+say *{$globref}  ;	# \*foo     	←☆個人的には、同名の変数・配列・ハッシュ・関数を1つにまとめることができると思っている。
 ```
 上記の出力で得られる参照先データを[リファレント](#practicalusePointerreferentidentification)(referent・参照先)と言う(上記で言う`$foo`変数のデータのこと)。  
 上記の出力で得られるデータを[デリファレンス](#practicalusePointerdereference)(dereference・参照解決)と言う(上記で言う`${$scalarref}`変数にあるデータのこと)。  
@@ -2762,6 +2779,39 @@ say $hoge[1];	# 書き換え：リファレンスを書き換える
 難しいが、C言語のポインタと思えば良いだろう。  
 しかし、記号を使い分けるのは慣れないと思う。  
 
+ハッシュリファレンス例）
+```perl
+use v5.24;
+
+my %hoge = (20211216=>"Perlのハッシュリファレンス", 20211217=>"本日は晴天なり。");
+
+sub hashReference() {
+	my $refHash   = shift;	# ハッシュのアドレスを取得している。
+
+	say "以下、ハッシュリファレンス ";
+	say "%$refHash";	# %HASH(0x7f9fc5805328)
+	say %$refHash;		# 20211216Perlのハッシュリファレンス20211217本日は晴天なり。
+	say "-" x 10;
+	say "$$refHash{20211216}";	# Perlのハッシュリファレンス
+	say "$$refHash{20211217}";	# 本日は晴天なり。
+	say "-" x 10;
+	my @boo = sort keys %$refHash;
+	say "@boo";	# 20211216 20211217
+	foreach my $value (@boo) {
+		say "$$refHash{$value}";
+		# Perlのハッシュリファレンス
+		# 本日は晴天なり。
+	}
+	# 以下、上記と同じ事。
+	foreach my $value (@boo) {
+		say "$refHash->{$value}";
+		# Perlのハッシュリファレンス
+		# 本日は晴天なり。
+	}
+}
+&hashReference(\%hoge);
+```
+
 
 <a name="practicalusePointerreferentidentification"></a>
 ##### リファレントの識別。
@@ -2785,7 +2835,14 @@ sub trace(){
 		return "配列@$val";
 	}
 	elsif (ref($val) eq 'HASH'){
-		return "ハッシュ" . %{$val};
+		my @sumstring;
+		my $hoge;
+		# 以下、ハッシュの中身を取り出している。
+		foreach my $tmp (keys %$val) {
+			$hoge = $tmp . "=>" . $$val{$tmp};
+			push (@sumstring, $hoge . ",");
+		}
+		return "ハッシュ" . "(@sumstring)"
 	}
 	elsif (ref($val) eq 'CODE'){
 		return "関数" . &{$val}();
@@ -2801,28 +2858,28 @@ sub trace(){
 sub referent() {
 	my $foo  = 20211128;
 	my @ARGV = (20211128, 20211129);
-	my %ENV  = (20211128=>"hoge", 20211129=>"本日は晴天なり。");
+	my %HASH  = (20211128=>"hoge", 20211129=>"本日は晴天なり。");
 
 	my $scalarref = \$foo;     # 変数
 	my $arrayref  = \@ARGV;    # 配列
-	my $hashref   = \%ENV;     # ハッシュ
+	my $hashref   = \%HASH;    # ハッシュ
 	my $coderef   = \&refFunc; # 関数
 	my $doublescalar = \$scalarref;	# 変数のリファレンスをリファレンス化。
 
 	say ref($scalarref);	# 変数
-					# SCALAR
+	# 出力結果：SCALAR
 	say ref($arrayref);		# 配列
-					# ARRAY
+	# 出力結果：ARRAY
 	say ref($hashref);		# ハッシュ
-					# HASH
+	# 出力結果：HASH
 	say ref($coderef);		# 関数
-					# CODE
+	# 出力結果：CODE
 	say ref($doublescalar);	# 変数のリファレンスをリファレンス化。
-					# REF
+	# 出力結果：REF
 
 	say "識別：" . &trace($scalarref);	# 識別：変数20211128
 	say "識別：" . &trace($arrayref);	# 識別：配列20211128 20211129
-	say "識別：" . &trace($hashref);	# 識別：ハッシュ2
+	say "識別：" . &trace($hashref);	# 識別：ハッシュ(20211129=>本日は晴天なり。, 20211128=>hoge,)
 	say "識別：" . &trace($coderef);	# 識別：関数ハンドラー関数
 	say "識別：" . &trace($doublescalar);	# 識別：リファレンスのリファレンス
 }
@@ -2987,18 +3044,40 @@ say $$array[1];		# b
 > 名前の無いハッシュへのリファレンスは、中かっこを使って作ることができます:  
 
 以下、無名のハッシュ例）
+```perl
+use v5.24;
 
-    my $hashref = {
-    	Adam  => 'Eve',
-    	Clyde => 'Bonnie',
-    };
-    
-    say $hashref->{Adam};	# Eve
-    say $hashref->{Clyde};	# Bonnie
-    say $hashref;			# HASH(0x7fa9be8037a8)
-    #say %hashref;	# Global symbol "%hashref" requires explicit package name (did you forget to declare "my %hashref"?) at test.pl line 10.
+sub hashReference() {
+	# 以下、無名ハッシュリファレンス。
+	our $hogeRef = {20211217=>"本日は", 20211218=>"晴天なり。"};
 
-以下、無名ハッシュをネスト化
+	say "以下、ハッシュリファレンス";
+	say "%$hogeRef";	# %HASH(0x7fa6a0002448)
+	say %$hogeRef;		# 20211218晴天なり。20211217本日は
+	say "以下、ちょっと見にくいハッシュリファレンス利用。";
+	say "$$hogeRef{20211217}";	# 本日は
+	say "$$hogeRef{20211218}";	# 晴天なり。
+	say "以下、ちょっとましになったハッシュリファレンス利用。";
+	say "$hogeRef->{20211217}";	# 本日は
+	say "$hogeRef->{20211218}";	# 晴天なり。
+	say "以下、キーを並び替えて取り出す。";
+	my @boo = sort keys %$hogeRef;
+	say "@boo";	# 20211217 20211218
+	foreach my $value (@boo) {
+		say "$$hogeRef{$value}";
+		# 本日は
+		# 晴天なり。
+	}
+	foreach my $value (@boo) {
+		say "$hogeRef->{$value}";
+		# 本日は
+		# 晴天なり。
+	}
+}
+&hashReference();
+```
+
+以下、無名ハッシュをネスト化(要は、入れ子)
 ```perl
 my $hashref = {
 	spiderman  => {
@@ -3293,34 +3372,63 @@ say "$arrayref->[2021][12][15]";	# Global symbol "$arrayref" requires explicit p
 よって、ダブルクォーテーションで括らなければ、無駄な出力せずに必要な部分のみが出る。  
 
 
-以下、ハッシュをリファレンスとして変数に代入し、その変数をリファレンスとして変数に代入している。
+<a name="practicaluseReferencehash"></a>
+以下、ハッシュの無名リファレンスを入れ子にして変数に代入している。
+```perl
+use v5.24;
 
-    sub hashReference() {
-    	my %hogehash = (%hoge);			# ハッシュにハッシュリファレンスを代入する。
-    	my $barhash = \%hogehash;	# それをリファレンスとして別のハッシュに代入する。
-    	my $boo = \$barhash;	# さらに、ハッシュリファレンスが代入されているハッシュを別のハッシュにリファレンスとして代入する(混乱する)。
-    
-    	my $deboo = $$boo;	# ハッシュのリファレンスをデリファレンスした($barhashになっている)。
-    	my %dedeboo = %$deboo;	# ハッシュのリファレンスをデリファレンスした($hogehashになっている)。
-    	while( my ($key, $value) = each %dedeboo ) {
-    		say '%dedebooの要素を出力($boo[0])：' . "$key -> $value";	# %barhash が入っていると思っている。
-    			# 出力結果：
-    #					%dedebooの要素を出力($boo[0])：hoge -> 20210923
-    #					%dedebooの要素を出力($boo[0])：boo -> 本日は晴天なり。
-    #					%dedebooの要素を出力($boo[0])：bar -> Perl難しい
-    	}
-    
-    	while( my ($key, $value) = each %$$boo ) {
-    		say '%hogeの要素を出力(%$$boo)：' . "$key -> $value";	# %barhash が入っていると思っている。
-    			# 出力結果：
-    #					%hogeの要素を出力(%$$boo)：hoge -> 20210923
-    #					%hogeの要素を出力(%$$boo)：bar -> Perl難しい
-    #					%hogeの要素を出力(%$$boo)：boo -> 本日は晴天なり。
-    	}
-    }
-    &hashReference();
+sub hashReference() {
+	my $hogeRef = {
+				20211217=>{
+					20211218=>"本日は",
+					4774135046=>"[Perl]",
+					20080620=>"[gihyo]",
+				},
+				20211219=>{
+					20211220=>"晴天なり。",
+					9784774135045=>"[オブジェクト指向]",
+					196903=>"[設立]",
+				},
+			};
+	say $hogeRef;								# HASH(0x7fb8bd806d20)
+	say $hogeRef->{20211217};					# HASH(0x7fb8bd003448)
+	say @{$hogeRef}{20211217};					# HASH(0x7fb8bd003448)
+	say $hogeRef->{20211217}{20211218};			# 本日は
+	say $hogeRef->{20211217}{4774135046};		# [Perl]
+	say $hogeRef->{20211219}{20211220};			# 晴天なり。
+	say $hogeRef->{20211219}{9784774135045};	# [オブジェクト指向]
+}
+&hashReference();
+```
+また、以下は、無名ハッシュリファレンスを配列に代入している。
+```perl
+use v5.24;
 
-本当にやりたかったことは、ハッシュのネストであって、これではない。  
+sub hashReference() {
+	my $arrayRef = [
+				{
+					20211218=>"本日は",
+					4774135046=>"[Perl]",
+					20080620=>"[gihyo]",
+				},
+				{
+					20211220=>"晴天なり。",
+					9784774135045=>"[オブジェクト指向]",
+					196903=>"[設立]",
+				},
+			];
+	say $arrayRef;						# ARRAY(0x7f94aa818b20)
+	say $arrayRef->[0];					# HASH(0x7f94aa803448)
+	say @{$arrayRef}[0];				# HASH(0x7f94aa803448)
+	say $arrayRef->[1];					# HASH(0x7f94aa8189b8)
+	say $arrayRef->[0]{20211218};		# 本日は
+	say $arrayRef->[0]{4774135046};		# [Perl]
+	say $arrayRef->[1]{20211220};		# 晴天なり。
+	say $arrayRef->[1]{9784774135045};	# [オブジェクト指向]
+}
+&hashReference();
+```
+どちらが見やすいかは人それぞれだろうか。  
 
 
 #### スコープ
@@ -3351,9 +3459,10 @@ say "$arrayref->[2021][12][15]";	# Global symbol "$arrayref" requires explicit p
   * ハッシュの大きさに制限はない。  
 
 
+<a name="practicaluseHashmake"></a>
 #### 作成方法
-様式：`%ハッシュ名 = ('キー1', 値1, 'キー2', 値2, ・・・ );`  
-`%ハッシュ名 = (キー1=>値1, キー2=>値2, ・・・ );`  
+様式1：`%ハッシュ名 = ('キー1', 値1, 'キー2', 値2, ・・・ );`  
+様式2：`%ハッシュ名 = (キー1 => 値1, キー2 => 値2, ・・・ );`  
 例）
 ```perl
 my %hoge = (
@@ -3367,10 +3476,11 @@ my %hoge = (
 ※丸括弧`()`の意味は、リスト。  
 
 
-コピーもできるが、負担が掛かるため、止めた方が良い。
+コピーもできるが、負担が大きいため、止めた方が良い。
 `my %new_has = %old_hash;`  
 
 
+<a name="practicaluseHashhowget"></a>
 #### 取得方法
 愚痴：作成方法が丸括弧で、取得方法が波括弧なのは混乱する(リストとの区別が付かないのが原因)。  
 `$ハッシュ名{キー};`  
@@ -3384,9 +3494,12 @@ sub associativearray() {
 		'bar'  => "300505",
 	);
 
-	say "$hoge{'hoge'}";			# 100006601775326
-	say "$hoge{'100006601775326'}";	# 空文字列
+	# 以下、キーから値を取り出している。
+	say "$hoge{hoge}";			# 100006601775326
+	# 以下、値を基準に探すことは出来ない(この形式ではキーから探すのみ可能)。
+	say "$hoge{100006601775326}";	# 空文字列
 
+	# 以下、keys関数からキー値を取り出し、そのキー値からハッシュ値を取り出して表示している。
 	for my $key (keys(%hoge)) {
 		my $value = $hoge{$key};
 		say "$key -> $value";
@@ -3396,18 +3509,20 @@ sub associativearray() {
 		#		bar -> 300505
 	}
 	say "%hoge";	# %hoge
-	say %hoge;		# hoge100006601775326boo100011324721840bar300505	←☆当然実行ごとに値が変わる。
+	say %hoge;		# hoge100006601775326boo100011324721840bar300505	←☆当然実行ごとに表示順番が変わる。
 }
 &associativearray();
 ```
 
 
+<a name="practicaluseHashmod"></a>
 #### 変更方法
 様式：
 `$ハッシュ名{キー} = 値;`  
 ※**キー**にスペースを含まない場合、クォーテーション記号は不要。  
 
 
+<a name="practicaluseHashchange"></a>
 ##### キーと値を入れ替える。
 **reverse**により、入れ替えが可能。  
 
@@ -3442,6 +3557,7 @@ sub associativearray() {
 ```
 
 
+<a name="practicaluseHashkeysvaluesfunc"></a>
 ##### keys関数・values関数
 順不同ではあるが、かならず対になる取得ができる。  
 先頭から末尾までを1つづつ取り出すには、**keys**・**values**・[**each**](#practicaluseHasheach)の3種類が使える。  
@@ -3479,6 +3595,8 @@ sub associativearray() {
 
 以下、そのプログラム。
 ```perl
+use v5.24;
+
 sub associativearray() {
 	my %boo = (
 		boo => 20211119,
@@ -3486,59 +3604,63 @@ sub associativearray() {
 		hoge => "BK4873118247",
 	);
 
-	# 以下、通常の値出力方法。
+	say "以下、通常の値出力方法。";
 	say "$boo{boo}, $boo{bar}";	# 20211119, 9784873118246
 
-	# 以下、スライスでの出力方法。
-	say @boo{"boo", "bar"};	# 202111199784873118246
-	say @boo{qw(boo bar)};	# 202111199784873118246
+	say "以下、スライスでの出力方法。";
+	say @boo{"boo", "bar"};		# 202111199784873118246
+	say @boo{qw(boo bar)};		# 202111199784873118246
+	say "@boo{'boo', 'bar'}";	# 20211119 9784873118246
+	say "@boo{qw(boo bar)}";	# 20211119 9784873118246
 
-	# 以下、スライスでの値変更。
+	say "以下、スライスでの値変更。";
 	@boo{qw(boo bar)} = (123, 456);
 	say @boo{qw(boo bar)};	# 123456
-	say "$boo{boo}";	# 123
-	say "$boo{bar}";	# 456
-	say "$boo{hoge}";	# BK4873118247
+	say "$boo{boo}";		# 123
+	say "$boo{bar}";		# 456
+	say "$boo{hoge}";		# BK4873118247
+    #   {}括弧を[]括弧にした場合、意味が変わってくるため、今回の場合はエラーになる。
 }
 &associativearray();
 ```
-あいにく、削除や追加方法は分からなかった。  
-しかし、ハッシュ相手なのだから不要だろう。  
-[削除方法](#practicaluseHashdelete)は必要だよな。  
+[削除方法](#practicaluseHashdelete)は別途ある。  
 
 
+<a name="practicaluseHashkeysort"></a>
 ##### キーの並べ替え
-正しいやり方が分からない。  
+以下のプログラムで良いようだ。
 
 ```perl
-	my %hoge = (
-		hoge => 20210922,
-		boo => 4873118247,
-		bar => "sort",
-	);
+my %hoge = (
+	hoge => 20210922,
+	boo => 4873118247,
+	bar => "sort",
+);
 
-	foreach ( sort keys %hoge ) {
-		say "$_ -> $hoge{$_}";
-	}
+foreach ( sort keys %hoge ) {
+	say "$_ -> $hoge{$_}";
+}
 ```
 
 
+<a name="practicaluseHashvaluesort"></a>
 ##### 値での並べ替え
-正しいやり方が分からない。  
+以下のプログラムで良いようだ。
 
 ```perl
-	my %hoge = (
-		hoge => 20210922,
-		boo => 4873118247,
-		bar => "sort",
-	);
+my %hoge = (
+	hoge => 20210922,
+	boo => 4873118247,
+	bar => "sort",
+);
 
-	foreach ( sort { $hoge{$a} <=> $hoge{$b} } keys %hoge ) {
-		say "$_ -> $hoge{$_}";
-	}
+foreach ( sort { $hoge{$a} <=> $hoge{$b} } keys %hoge ) {
+	say "$_ -> $hoge{$_}";
+}
 ```
 
 
+<a name="practicaluseHashkeyduplicate"></a>
 #### キーの重複
 上書きされる。  
 
@@ -3617,6 +3739,7 @@ sub associativearray() {
 これは、反復子(イテレータ：iterator)技術により、現在値を保持しているため。  
 
 
+<a name="practicaluseHashexists"></a>
 ##### 既存キーの確認方法(`exists`関数)。
 キーが存在すれば、どのようなキーだろうが、存在するとして扱われる。  
 
@@ -3661,8 +3784,8 @@ sub associativearray() {
 		#		bar -> 本日は晴天なり。
 	}
 
-	say "-" x 30;
-	delete $hoge{'hoge'};
+	say "以下、削除実施。";
+	delete $hoge{hoge};	←☆削除実施(複数の場合は配列扱いするため`@hoge{'boo', 'bar'}`などになる)。
 	while( my ($key, $value) = each %hoge ) {
 		say "$key -> $value";
 		# 出力結果：
@@ -3672,8 +3795,10 @@ sub associativearray() {
 }
 &associativearray();
 ```
+記号の使い分けが慣れない。  
 
 
+<a name="practicaluseHashenv"></a>
 #### OSの環境変数(`%ENV`)
 
 以下、環境変数をPerlで取得する。

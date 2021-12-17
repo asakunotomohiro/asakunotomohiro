@@ -142,47 +142,46 @@ say $asakuno[0]->[0][0][2];	# 空文字列
 
 say;
 say "以下、ハッシュリファレンス";
-	# 本当にやりたかったことは、ハッシュのリファレンスをハッシュに代入し、それをさらにリファレンスとしてハッシュに代入するという入れ子をやりたかった。
 sub hashReference() {
-	# my %asakunohash = (\(@_));			# ハッシュにハッシュリファレンスを代入する。	←☆引数展開に失敗する。
-	# my %asakunohash = \((@_));			# ハッシュにハッシュリファレンスを代入する。	←☆引数展開に失敗する。
-	# my %asakunohash = \(@_);			# ハッシュにハッシュリファレンスを代入する。	←☆引数展開に失敗する。
-	# my %asakunohash = (\"@_");			# ハッシュにハッシュリファレンスを代入する。	←☆引数展開に失敗する。
-	# my %asakunohash = (shift);			# ハッシュにハッシュリファレンスを代入する。
-	my %asakunohash = (%asakuno);			# ハッシュにハッシュリファレンスを代入する。
-	my $tomohirohash = \%asakunohash;	# それをリファレンスとして別のハッシュに代入する。
-	my $asakunotomohiro = \$tomohirohash;	# さらに、ハッシュリファレンスが代入されているハッシュを別のハッシュにリファレンスとして代入する(混乱する)。
+	my $refasakuno = shift;
 
-	# while( my ($key, $value) = each %$asakunotomohiro ) {
-			# Global symbol "%tomohirohash" requires explicit package name (did you forget to declare "my %tomohirohash"?) at 入れ子(ネスト).pl line 94.
-			# Execution of 入れ子(ネスト).pl aborted due to compilation errors.
+#	以下、失敗(呼び出し方法不明)。
+#	my $asakunoRef = {
+#					{
+#						20211217=>"本日は",
+#						asakuno=>"朝来野",
+#						tomohiro=>"智博",
+#					}=>
+#					{
+#						20211217=>"晴天なり。",
+#						asakuno=>"朝来野",
+#						tomohiro=>"智博",
+#					},
+#				};
+#	say $asakunoRef;
+#	say %$asakunoRef;
 
-	# my $deasakunotomohiro = %$asakunotomohiro;	# ハッシュのリファレンスをデリファレンスした($tomohirohashになっている？)。
-			# Not a HASH reference at 入れ子(ネスト).pl line 100.
-	# while( my ($key, $value) = each %$deasakunotomohiro ) {
-			# Not a HASH reference at 入れ子(ネスト).pl line 100.
-
-	my $deasakunotomohiro = $$asakunotomohiro;	# ハッシュのリファレンスをデリファレンスした($tomohirohashになっている)。
-	# while( my ($key, $value) = each %deasakunotomohiro ) {
-			# Global symbol "%deasakunotomohiro" requires explicit package name (did you forget to declare "my %deasakunotomohiro"?) at 入れ子(ネスト).pl line 106.
-
-	# my %dedeasakunotomohiro = $$deasakunotomohiro;	# ハッシュのリファレンスをデリファレンスした($asakunohashになっている)。
-			# Not a SCALAR reference at 入れ子(ネスト).pl line 109.
-
-	# my $dedeasakunotomohiro = $$deasakunotomohiro;	# ハッシュのリファレンスをデリファレンスした($asakunohashになっている)。
-			# Global symbol "%dedeasakunotomohiro" requires explicit package name (did you forget to declare "my %dedeasakunotomohiro"?) at 入れ子(ネスト).pl line 113.
-			#Execution of 入れ子(ネスト).pl aborted due to compilation errors.
-
-	my %dedeasakunotomohiro = %$deasakunotomohiro;	# ハッシュのリファレンスをデリファレンスした($asakunohashになっている)。
-	while( my ($key, $value) = each %dedeasakunotomohiro ) {
-		say '%asakunotomohiroの要素を出力($asakunotomohiro[0])：' . "$key -> $value";	# %tomohirohash が入っていると思っている。
-			# 出力結果：
-#					%asakunotomohiroの要素を出力($asakunotomohiro[0])：asakunotomohiro -> 朝来野智博
-#					%asakunotomohiroの要素を出力($asakunotomohiro[0])：tomohiro -> 智博
-#					%asakunotomohiroの要素を出力($asakunotomohiro[0])：asakuno -> 朝来野
-	}
+	my $asakunoRef = {
+				20211217=>{
+					20211218=>"本日は",
+					asakuno=>"[asakuno]",
+					tomohiro=>"[tomohiro]",
+				},
+				20211219=>{
+					20211220=>"晴天なり。",
+					asakuno=>"[朝来野]",
+					tomohiro=>"[智博]",
+				},
+			};
+	say $asakunoRef;						# HASH(0x7fbed4005700)
+	say $asakunoRef->{20211217};			# HASH(0x7fbed40053a0)
+	say @{$asakunoRef}{20211217};			# HASH(0x7fbed40053a0)
+	say $asakunoRef->{20211217}{20211218};	# 本日は
+	say $asakunoRef->{20211217}{asakuno};	# [asakuno]
+	say $asakunoRef->{20211219}{20211220};	# 晴天なり。
+	say $asakunoRef->{20211219}{tomohiro};	# [智博]
 }
-&hashReference(%asakuno);
+&hashReference(\%asakuno);
 
 
 say "以上。"
