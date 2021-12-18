@@ -400,8 +400,17 @@ foreach ( @hoge ) {
 また、古いバージョン利用時に宣言を明確にする場合は、`use strict;`を付ける。  
 
 
+<a name="subVariable2global"></a>
+##### グローバル変数
+**our**キーワードを変数宣言時に付ける。  
+様式：
+`our $変数名 = 値;`  
+
+異なる[パッケージ](#practicalusePackages)からの変数利用呼び出しにも宣言で対応できるようになる。  
+
+
 <a name="subVariable2lexical"></a>
-##### レキシカル変数
+##### レキシカル(lexical)変数
 **my**キーワードを変数宣言時に付ける。  
 
 * 特徴  
@@ -438,6 +447,18 @@ main();
 関数内でのレキシカル変数barを宣言しており、関数を抜けたときにその関数が破棄されるはずだが、リファレンスとして値を戻しているため、メイン関数内でbarに追加された変数を利用できる。  
 利用し終えたことをPerlプログラムが検知したときに、その変数が破棄される。  
 また、メイン関数内か直接bar変数を利用することは出来ない(ゆえに、配列を変数にリファレンスとして代入しているのは、[無名配列](#practicalusePointerAnonymousarrayreference)と同義`$test = ["boo", "bar", "hoge",];`)。  
+
+以下、main側で宣言した変数を呼び出す。
+```perl
+use v5.24;
+
+my $hoge = "ほげぇ";	←☆レキシカル変数(my)は違うパッケージ(今回はSubStaticScope)から利用できない。
+our $boo = "boo";
+
+package SubStaticScope;
+say $main::hoge;	# 空文字列(undef)
+say $main::boo;		# boo	←☆myを付けなければ、違うパッケージから利用できる。
+```
 
 ※[リファレンス](#practicalusePointer)は、別途説明している。  
 ※[パッケージ変数](#practicalusePackages)は応用知識として説明している。  
@@ -1485,7 +1506,7 @@ v5.24ではできないが、最新版では出来るのか。
 この形式で[宣言](https://perldoc.jp/docs/perl/5.16.1/perlsub.pod#Temporary32Values32via32local40-41)できるのは確かだ。  
 
 その理由は、利用バージョンにある。  
-レキシカル変数(**my**)付きを強制するバージョンを利用する場合は、ローカル宣言ができないようだ。  
+[レキシカル変数](#subVariable1)(**my**)付きを強制するバージョンを利用する場合は、ローカル宣言ができないようだ。  
 
 以下、ローカル変数の利用例）
 ```perl
@@ -4027,31 +4048,30 @@ todo: もういちど読み直す。
 
 <a name="practicalusePackagesmain"></a>
 ### パッケージ
-スコープがパッケージになったと思えば良い。  
+パッケージはスコープ(範囲対象)のひとつと思えば良い。  
 
-    use v5.24;
-    
-    sub sample() {
-    	say "mainパッケージ";	←☆パッケージの区切りをしていない場合、メインパッケージ扱いされる。
-    }
-    
-    package Subboo;	←☆ここ以降がサブbooパッケージ。
-    sub sample(){
-    	say "Subbooパッケージ";
-    }
-    &sample("boo");	←☆パッケージないのサンプル関数を呼び出す。
-    #	出力結果：Subbooパッケージ
-    
-    main::sample();	←☆外部パッケージのサンプル関数を呼び出すため、それを明記している。
-    #	出力結果：mainパッケージ
-    
-    Subbar::sample()	←☆外部パッケージのサンプル関数を呼び出すため、それを明記している。;
-    #	出力結果：Subbarパッケージ
-    
-    package Subbar;	←☆ここ以降がサブbarパッケージ。
-    sub sample(){
-    	say "Subbarパッケージ";
-    }
+```perl
+use v5.24;
+
+sub sample() {
+	say "mainパッケージ";	←☆パッケージの区切りをしていない場合、メインパッケージ扱いされる。
+}
+
+package Subboo;	←☆ここ以降がサブbooパッケージ。
+sub sample(){
+	say "Subbooパッケージ";
+}
+&sample("boo");	# Subbooパッケージ	←☆パッケージないのサンプル関数を呼び出す。
+
+main::sample();	# mainパッケージ	←☆外部パッケージのサンプル関数を呼び出すため、それを明記している。
+
+Subbar::sample();	# Subbarパッケージ	←☆外部パッケージのサンプル関数を呼び出すため、それを明記している。;
+
+package Subbar;	←☆ここ以降がサブbarパッケージ。
+sub sample(){
+	say "Subbarパッケージ";
+}
+```
 
 上記は、1つづつパッケージに関数などが納められている。  
 私の想定した入れ子ができると思ったが出来そうにない。  
@@ -4061,54 +4081,66 @@ todo: もういちど読み直す。
 その理由は、かぶらないようにするためだろう。  
 以下、そのプログラム。
 
-    use v5.24;
-    
-    sub sample(){	←☆パッケージ名を付けていないため、メインパッケージになる。
-    	say "mainパッケージ";
-    }
-    
-    package Subboo::bar::hoge;
-    sub sample(){
-    	say "Subboo入れ子パッケージhoge";
-    }
-    &sample();
-    #	出力結果：Subパッケージhoge
-    
-    package Subboo::bar::barboo;
-    sub sample(){
-    	say "Subboo入れ子パッケージbarboo";
-    }
-    &sample();
-    #	出力結果：Subboo入れ子パッケージbarboo
-    
-    package Subboo;
-    sub sample(){
-    	say "Subboo単体パッケージ";
-    }
-    
-    package Subboo::bar::hoge;
-    sub sample(){	←☆同じパッケージ名の同じ関数名が上記にある。
-    	say "Subパッケージhoge";
-    }
-    
-    package main;
-    Subboo::bar::hoge::sample();	←☆同じパッケージ名の同じ関数名の1つを呼ぶ。
-    #	出力結果：Subパッケージhoge	←☆後ろにある関数が呼ばれる。
-    
-    Subboo::sample();
-    #	出力結果：Subboo単体パッケージ
-    
-    Subboo::bar::hoge::sample();
-    #	出力結果：Subパッケージhoge
-    
-    Subboo::bar::barboo::sample();
-    #	出力結果：Subboo入れ子パッケージbarboo
-    
-    sample();	←☆先頭のメインパッケージにある関数を呼ぶ。
-    #	出力結果：mainパッケージ
+```perl
+use v5.24;
+
+sub sample(){	←☆パッケージ名を付けていないため、メインパッケージになる。
+	say "mainパッケージ";
+}
+my $hoge = "本日は晴天なり。" . __PACKAGE__;
+
+package Subboo::bar::hoge;
+sub sample(){
+	say "Subboo入れ子パッケージhoge";
+}
+&sample();	# Subパッケージhoge
+
+package Subboo::bar::barboo;
+my $hoge = "本日はお日柄も良く" . __PACKAGE__;
+sub sample(){
+	say "Subboo入れ子パッケージbarboo";
+}
+&sample();	# Subboo入れ子パッケージbarboo
+
+package Subboo;
+sub sample(){
+	say "Subboo単体パッケージ";
+}
+say $hoge;	# 本日はお日柄も良くSubboo::bar::barboo
+
+package Subboo::bar::hoge;
+my $hoge = "はれときどきぶた" . __PACKAGE__;
+sub sample(){	←☆同じパッケージ名の同じ関数名が上記にある。
+	say "Subパッケージhoge";
+}
+
+say $hoge;	# はれときどきぶたSubboo::bar::hoge
+
+package main;	←☆ここ以降メインパッケージだと思っているが、違うのか？
+Subboo::bar::hoge::sample();	←☆同じパッケージ名の同じ関数名の1つを呼ぶ。
+								# Subパッケージhoge	←☆後ろにある関数が呼ばれる。
+
+Subboo::sample();	# Subboo単体パッケージ
+
+Subboo::bar::hoge::sample();	# Subパッケージhoge
+
+say $hoge;	# はれときどきぶたSubboo::bar::hoge	←☆メインパッケージの変数を利用したつもりだったが(myもourも駄目)？
+say $main::hoge;	# 空文字列(undef)	←☆変数宣言がmyの場合空文字なのはなぜ？
+say $main::hoge;	# 本日は晴天なり。main	←☆変数宣言をmyからourにした結果。
+
+Subboo::bar::barboo::sample();	# Subboo入れ子パッケージbarboo
+
+sample();	←☆先頭のメインパッケージにある関数を呼ぶ。
+			#	出力結果：mainパッケージ
+```
+上記の後半にメインパッケージを宣言し、冒頭のメインパッケージで変数宣言したが、それが後半で利用できなくなっている。  
+要は、レキシカル変数と言うのはパッケージに属していないという説明に合致する。  
+なるほど・・・こういう意味だったのか・・・なかなか文字だけの説明では理解できない部分があり、やってみるだけの価値があると思わせる結果が出てきた。  
 
 勝手に、パッケージの重ね掛けと命名したが、よくよく見れば入れ子かな・・・しかしな・・・。  
 とりあえず、階層を深くし、途中のパッケージ名を変えることで、機能ごとに分ける価値が生まれる・・・と思う。  
+
+外部パッケージ内の[レキシカル変数](#subVariable1)を利用できない説明をしている。  
 
 
 #### パッケージ内でのバージョン指定
