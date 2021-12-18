@@ -143,7 +143,8 @@ $
     * [x] [if修飾子](#practicaluseConditionalifmodifier)  
   * [ ] [繰り返し](#practicaluseRepetition繰り返し)  
   * [ ] [関数](#practicaluseFunction関数)  
-    [x] ライブラリ作成  
+    [x] [ライブラリ作成(`require`)](#practicaluseFunctionLibrequire)  
+    [x] [ライブラリ作成(`use`)](#practicaluseFunctionLibuse)  
 
 
 <a name="rangeOtherThanBasicKnowledge"></a>
@@ -2714,7 +2715,8 @@ say $hoge	if $hoge;	# 出力なし。
 </details>
 
 <a name="practicaluseFunction関数"></a>
-<details><summary>応用知識-関数(ライブラリ作成)</summary>
+<a name="practicaluseFunctionLibrequire"></a>
+<details><summary>応用知識-関数(ライブラリ作成require)</summary>
 
 ### [ライブラリ](https://perldoc.jp/docs/perl/5.8.8/perlmodlib.pod)
 ライブラリにしておけば、後から使い回すときも使い勝手がよくなるという配慮により、本来の処理とは切り出す。  
@@ -2747,6 +2749,14 @@ sub hoge {
 
 1;	←☆真を返すための決まり事。
 ```
+
+</details>
+
+<a name="practicaluseFunctionLibuse"></a>
+<details><summary>応用知識-関数(ライブラリ作成use)</summary>
+
+### [ライブラリ](https://perldoc.jp/func/use)
+
 
 </details>
 
