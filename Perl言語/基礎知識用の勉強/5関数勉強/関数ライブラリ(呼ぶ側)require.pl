@@ -8,7 +8,7 @@ use v5.24;
 	# /Users/asakunotomohiro/perl5/perl-5.34.0/lib/5.34.0
 # なぜにカレントディレクトリがないのだろう(上記は手動で改行済み)。
 
-@INC = (".", @INC);
+#@INC = (".", @INC);
 #require "関数ライブラリ(呼ばれる側).pl";
 	# エラーになる。
 	# Can't locate 関数ライブラリ(呼ばれる側).pl in @INC (@INC contains:
@@ -20,9 +20,29 @@ use v5.24;
 	# at 関数ライブラリ(呼ぶ側).pl line 12.
 #require "関数ライブラリ.pl";
 		# 駄目だった。
+#BEGIN { unshift @INC, "."; }	# 先頭に追加。
+#BEGIN { push @INC, "."; }	# 末尾に追加。
+#say join "\n", @INC;
+#		/Users/asakunotomohiro/perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level
+#		/Users/asakunotomohiro/perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0
+#		/Users/asakunotomohiro/perl5/perlbrew/perls/perl-5.34.0/lib/5.34.0/darwin-2level
+#		/Users/asakunotomohiro/perl5/perlbrew/perls/perl-5.34.0/lib/5.34.0
+#		.
+BEGIN { use File::Basename; my $pwd = dirname($0); push @INC, $pwd; }	# 末尾に追加。
+
+#use lib ".";	# @INCの先頭に追加。
+#		.
+#		/Users/asakunotomohiro/perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level
+#		/Users/asakunotomohiro/perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0
+#		/Users/asakunotomohiro/perl5/perlbrew/perls/perl-5.34.0/lib/5.34.0/darwin-2level
+#		/Users/asakunotomohiro/perl5/perlbrew/perls/perl-5.34.0/lib/5.34.0
 
 	# 以下、"/Users/asakunotomohiro/perl5/perl-5.34.0/lib/5.34.0"に配置した。
-require "asakuno/funcLib.pl";	# 関数ライブラリ読み込み終了
+#require "asakuno/funcLib.pl";
+#	出力結果：関数ライブラリ読み込み終了
+#require "関数ライブラリ(呼ばれる側)require.pl";	# 関数ライブラリ読み込み終了
+#require "/Users/asakunotomohiro/study勉強用Githubリポジトリ/Perl言語/基礎知識用の勉強/5関数勉強/関数ライブラリ(呼ばれる側)require.pl";	# 関数ライブラリ読み込み終了
+require "関数ライブラリ(呼ばれる側)require.pl";
 my @asakuno = ("朝来野", "智博", );
 
 &asakuno(@asakuno);			# 関数：朝来野 智博
