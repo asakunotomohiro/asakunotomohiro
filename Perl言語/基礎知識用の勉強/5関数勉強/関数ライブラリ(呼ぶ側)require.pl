@@ -37,12 +37,8 @@ BEGIN { use File::Basename; my $pwd = dirname($0); push @INC, $pwd; }	# 末尾�
 #		/Users/asakunotomohiro/perl5/perlbrew/perls/perl-5.34.0/lib/5.34.0/darwin-2level
 #		/Users/asakunotomohiro/perl5/perlbrew/perls/perl-5.34.0/lib/5.34.0
 
-	# 以下、"/Users/asakunotomohiro/perl5/perl-5.34.0/lib/5.34.0"に配置した。
-#require "asakuno/funcLib.pl";
-#	出力結果：関数ライブラリ読み込み終了
-#require "関数ライブラリ(呼ばれる側)require.pl";	# 関数ライブラリ読み込み終了
-#require "/Users/asakunotomohiro/study勉強用Githubリポジトリ/Perl言語/基礎知識用の勉強/5関数勉強/関数ライブラリ(呼ばれる側)require.pl";	# 関数ライブラリ読み込み終了
 require "関数ライブラリ(呼ばれる側)require.pl";
+#	出力結果：関数ライブラリ読み込み終了
 my @asakuno = ("朝来野", "智博", );
 
 &asakuno(@asakuno);			# 関数：朝来野 智博

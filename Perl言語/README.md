@@ -2730,7 +2730,7 @@ say $hoge	if $hoge;	# 出力なし。
 
 
 ### 余談(@INC)
-[**Perl 5.26**](https://metacpan.org/release/XSAWYERX/perl-5.26.0/view/pod/perldelta.pod)から**@INC**に標準で備わっていたカレントディレクトリが消えた。  
+[**Perl 5.26**](https://metacpan.org/release/XSAWYERX/perl-5.26.0/view/pod/perldelta.pod)から**@INC**に標準で備わっていたカレントディレクトリが消えた(2017/05/30？)。  
 その経緯は、UnixOS系界隈では有名らしく、カレントディレクトリに実行ファイルがある場合、意図せずに実行することがあり、セキュリティ的に問題があるとのことだった。  
 そのため、標準でカレントディレクトリのファイルを読み込むことを取りやめたようだ。  
 今まで、**@INC**に追加されていたカレントディレクトリは、末尾だったようだ。  
