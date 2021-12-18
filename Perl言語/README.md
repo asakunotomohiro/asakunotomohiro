@@ -60,8 +60,9 @@ $
 　　※Prologのプログラムファイル拡張子と同じ。  
 　　※本来であれば、Perlプログラムの拡張子は付けない。しかし、Windows向けに開発環境を用意する場合は拡張子を付けることになるため、関数ライブラリ(`*.pl`)と同じ拡張子が使われ出した(区別するために、プログラム用拡張子を`*.plx`にする案もあるようだが・・・定着せず)。  
 　　※他にも`*.cgi`を使えるそうだ。  
-　　※[`*.pm`](#practicaluseModule)は、Perlプログラムとは異なる(モジュール用プログラム)。  
+　　※[`*.pm`](#practicaluseModule)は、Perlプログラムとは異なる(モジュール用プログラム**Perl Module**の略)。  
   * 実行方式：インタプリタ方式  
+    実行手順：**コンパイル**⇒**中間コード生成**⇒**インタプリタ実行**  
   * 標準の文字コード(プログラムファイル)：UTF-8  
 　　※プラグマ(`use utf8;`)宣言が必要。  
   * 文字コードの扱い：
@@ -73,11 +74,11 @@ $
   * 標準の出力関数：`print`・`printf`・`say`  
     整形関数：[`sprintf`](https://perldoc.jp/func/sprintf)  
   * 標準のフォーマット関数：  
-　　例）`printf`など。
+　　例）`printf`など。  
 　　※必須記入項目ではなく、勉強途中での記載でも可とする。  
   * 単数行コメント方法：`#`  
   * 複数行コメント方法：
-    [大きなブロックで囲む方法](https://perldoc.jp/docs/perl/5.10.0/perlfaq7.pod#How32can32I32comment32out32a32large32block32of32perl32code63)：
+    [大きなブロックで囲む方法](https://perldoc.jp/docs/perl/5.10.0/perlfaq7.pod#How32can32I32comment32out32a32large32block32of32perl32code63)⇒
     PODマーカーで囲むこと。  
   * デバッガ機能(デバッグ技法)：  
 
@@ -2718,6 +2719,15 @@ say $hoge	if $hoge;	# 出力なし。
 <a name="practicaluseFunctionLibrequire"></a>
 <details><summary>応用知識-関数(ライブラリ作成require)</summary>
 
+* Perlのプログラム実行順序  
+  ※以下、requireでのライブラリ読み込み前提説明。  
+  1. コンパイル  
+  1. 中間コード生成  
+  1. インタプリタ実行  
+  1. インタプリタ(Perlプログラム)実行時にrequireがあれば指定のファイルを読み込む。  
+     そのため、実行直前まで文法エラーに気づかない。  
+     しかし、未宣言変数の検出はできる。  
+
 ### [ライブラリ](https://perldoc.jp/docs/perl/5.8.8/perlmodlib.pod)
 ライブラリにしておけば、後から使い回すときも使い勝手がよくなるという配慮により、本来の処理とは切り出す。  
 他のプログラムからも呼び出せるようにしている。  
@@ -2753,9 +2763,16 @@ sub hoge {
 </details>
 
 <a name="practicaluseFunctionLibuse"></a>
-<details><summary>応用知識-関数(ライブラリ作成use)</summary>
+<details><summary>応用知識-関数(モジュール作成use)</summary>
 
-### [ライブラリ](https://perldoc.jp/func/use)
+* Perlのプログラム実行順序  
+  ※以下、useでのファイル読み込み前提説明。  
+  1. コンパイル  
+     コンパイル実行時にuseがあれば指定のファイルを読み込む。  
+  1. 中間コード生成  
+  1. インタプリタ実行  
+
+### [モジュール](https://perldoc.jp/func/use)
 
 
 </details>
