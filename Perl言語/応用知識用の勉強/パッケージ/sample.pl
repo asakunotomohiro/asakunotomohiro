@@ -6,27 +6,30 @@ my @asakuno = ("朝来野", "智博");
 say "パッケージ";
 
 sub sample() {
-	say "mainパッケージ";
+	say __PACKAGE__ . "パッケージ";
 }
 #&sample("asakuno");
 #	出力結果：mainパッケージ
 
 package Subasakuno;
 sub sample(){
-	say "Subasakunoパッケージ";
+	say __PACKAGE__ . "パッケージ";
 }
 &sample("asakuno");
 #	出力結果：Subasakunoパッケージ
+
+# 以下、突然パッケージの変数を用いたが、そもそもこのパッケージはどこにも宣言していない(こんな突拍子もない使い方ができるのがPerl)。
+$Subtomohiroasakuno::asakuno = "tomohiro asakuno";
 
 main::sample();
 #	出力結果：mainパッケージ
 
 Subtomohiro::sample();
-#	出力結果：Subtomohiroパッケージ
+#	出力結果：Subtomohiroパッケージ->別パッケージの変数：tomohiro asakuno
 
 package Subtomohiro;
 sub sample(){
-	say "Subtomohiroパッケージ";
+	say __PACKAGE__ . "パッケージ->別パッケージの変数：" . $Subtomohiroasakuno::asakuno;
 }
 #&sample("asakuno");
 #	出力結果：Subtomohiroパッケージ
