@@ -58,6 +58,7 @@ $
 
   * プログラムファイルの拡張子：`*.pl`  
 　　※Prologのプログラムファイル拡張子と同じ。  
+　　※本来であれば、Perlプログラムの拡張子は付けない。しかし、Windows向けに開発環境を用意する場合は拡張子を付けることになるため、関数ライブラリ(`*.pl`)と同じ拡張子が使われ出した(区別するために、プログラム用拡張子を`*.plx`にする案もあるようだが・・・定着せず)。  
 　　※他にも`*.cgi`を使えるそうだ。  
 　　※[`*.pm`](#practicaluseModule)は、Perlプログラムとは異なる(モジュール用プログラム)。  
   * 実行方式：インタプリタ方式  
@@ -142,6 +143,7 @@ $
     * [x] [if修飾子](#practicaluseConditionalifmodifier)  
   * [ ] [繰り返し](#practicaluseRepetition繰り返し)  
   * [ ] [関数](#practicaluseFunction関数)  
+    [x] ライブラリ作成  
 
 
 <a name="rangeOtherThanBasicKnowledge"></a>
@@ -2689,6 +2691,44 @@ say $hoge	if $hoge;	# 出力なし。
 当然ながら**if**だけでなく、**unless**・**until**・**while**・**foreach**がある。  
 
 </details>
+
+<a name="practicaluseFunction関数"></a>
+<details><summary>応用知識-関数(ライブラリ作成)</summary>
+
+### [ライブラリ](https://perldoc.jp/docs/perl/5.8.8/perlmodlib.pod)
+ライブラリにしておけば、後から使い回すときも使い勝手がよくなるという配慮により、本来の処理とは切り出す。  
+他のプログラムからも呼び出せるようにしている。  
+
+以下、呼び出し側のプログラム例）
+```perl
+use v5.24;
+say join "\n", @INC;	←☆カレントディレクトリが存在しない。
+
+unshift @INC, ".";	←☆カレントディレクトリ追加。
+say join "\n", @INC;
+		# .	←☆カレントディレクトリ追加完了するが、認識せず。
+
+	# 以下、"@INCに記載されているディレクトリ"に配置した。
+require "hoge/関数ライブラリ(呼ばれる側).pl";	# 関数ライブラリ読み込み終了
+my @hoge = ("本日は", "晴天なり。");
+
+&hoge(@hoge);			# 関数ライブラリ：本日は 晴天なり。
+&hoge("関数呼び出し");	# 関数：関数呼び出し
+```
+
+以下、呼ばれる側のプログラム例）
+```perl
+use v5.24;
+
+sub hoge {
+	say "関数ライブラリ：@_";
+}
+
+1;	←☆真を返すための決まり事。
+```
+
+</details>
+
 
 <a name="practicalusePointer"></a>
 <details><summary>応用知識-リファレンス</summary>
