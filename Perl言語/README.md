@@ -2805,6 +2805,79 @@ sub hoge {
 
 </details>
 
+<a name="practicaluseModule"></a>
+<details><summary>応用知識-モジュール</summary>
+
+基本的には[Perlドキュメント](https://perldoc.jp)を見た方が良いようだ。  
+もしくは、普通にHelpを使う。  
+例）
+```terminal
+$ perldoc File::Basename
+    File::Basename - Parse file paths into directory, filename and suffix.
+
+SYNOPSIS
+　　　・
+　　　・
+　　　・
+$
+```
+そもそもモジュールと[パッケージ](#practicalusePackages)はどう違う？  
+
+
+<a name="practicaluseModulemain"></a>
+### [モジュール](https://perldoc.jp/docs/perl/5.20.1/perlmod.pod)利用方法
+車輪の再開発をせずに、望む車輪を選べ、そして使える。  
+**use**ステートメントにより、標準ディレクトリから探し出し、一致ファイルの内部コードを使えるようにする。  
+
+例）
+`use Database::Access::Control;`  
+* **::** をOSごとに、適切なPathに置き換える。  
+  * Unix・Linux・OS/2  
+    `Database/Access/Control.pm`  
+  * Windows  
+    `Database\Access\Control.pm`  
+  * MacOS  
+    `Database:Access:Control.pm`  
+  * VMS  
+    `[Database:Access]Control.pm`  
+
+* モジュールのセットアップ  
+  以下、開発と利用がごちゃ混ぜになっていないか？  
+  1. モジュールを格納したい標準ライブラリディレクトリを選択する。  
+     `~/Home/`など？  
+  1. このディレクトリの存在をPerlに指示する。  
+     `use lib "/Users/asakunotomohiro/lib/perl5/";	# ←☆変数は使えないため気をつけること。`  
+     `BEGIN { push @INC, "/Users/asakunotomohiro/lib/perl5/"; }	←☆このブロック内であれば変数は使える。`  
+     ~~`BEGIN { unshift @INC, "/Users/asakunotomohiro/lib/perl5/"; }	←☆先頭への追加は止めた方が良いようだ。`~~  
+     ※`use lib`とは、ライブラリを使うのではなく、ライブラリを探すPathの設定をするだけ。  
+  1. モジュール名の各コンポーネント(最後のコンポーネントを除く)に対応するサブディレクトリを標準ライブラリの下にネストして作成する。  
+     モジュール名例）`AAAA::SSS::KKK::NNN`  
+     ディレクトリ例）`AAAA/SSS/KKK`  
+  1. 最下位のサブディレクトリにテキストファイルを作成する。  
+     ファイル名例）`NNN.pm`  
+  1. このテキストファイルにコードを挿入する。  
+  1. テキストファイルの末尾に、真に評価される付加的なステートメントを追加する。  
+     `1;`  
+
+* モジュール内のエクスポート制御  
+  **import**サブルーチンを呼び出すが、標準では何もしない。  
+  そして、独自に作ることで、その動作を変更できる。  
+  * 個別呼び出しに応じたモジュールも存在する。  
+    呼び出し例）
+    `use File::Basename qw(fileparse basename)`  
+    ※この場合は、サブルーチンとして**dirname**ルーチンを呼び出さないことになる。  
+    そして、dirnameを個別に呼び出したい場合、`File::Basename::dirname($hoge);`とすればいい。  
+  * サブルーチン呼び出し不可。  
+    例）
+    `use File::Basename ();`  
+    これにより、サブルーチンを呼び出さないことになる。  
+    また、`use File::Basename;`の場合は、デフォルトのサブルーチン呼び出しが発生する(モジュール開発者が決めている)。  
+
+上記の説明、だいたい分からない。  
+todo: もういちど読み直す。  
+
+
+</details>
 
 <a name="practicalusePointer"></a>
 <details><summary>応用知識-リファレンス</summary>
@@ -4007,79 +4080,6 @@ for (1..1000000) {
 
 </details>
 
-<a name="practicaluseModule"></a>
-<details><summary>応用知識-モジュール</summary>
-
-基本的には[Perlドキュメント](https://perldoc.jp)を見た方が良いようだ。  
-もしくは、普通にHelpを使う。  
-例）
-```terminal
-$ perldoc File::Basename
-    File::Basename - Parse file paths into directory, filename and suffix.
-
-SYNOPSIS
-　　　・
-　　　・
-　　　・
-$
-```
-そもそもモジュールと[パッケージ](#practicalusePackages)はどう違う？  
-
-
-<a name="practicaluseModulemain"></a>
-### [モジュール](https://perldoc.jp/docs/perl/5.20.1/perlmod.pod)利用方法
-車輪の再開発をせずに、望む車輪を選べ、そして使える。  
-**use**ステートメントにより、標準ディレクトリから探し出し、一致ファイルの内部コードを使えるようにする。  
-
-例）
-`use Database::Access::Control;`  
-* **::** をOSごとに、適切なPathに置き換える。  
-  * Unix・Linux・OS/2  
-    `Database/Access/Control.pm`  
-  * Windows  
-    `Database\Access\Control.pm`  
-  * MacOS  
-    `Database:Access:Control.pm`  
-  * VMS  
-    `[Database:Access]Control.pm`  
-
-* モジュールのセットアップ  
-  以下、開発と利用がごちゃ混ぜになっていないか？  
-  1. モジュールを格納したい標準ライブラリディレクトリを選択する。  
-     `~/Home/`など？  
-  1. このディレクトリの存在をPerlに指示する。  
-     `use lib "/Users/asakunotomohiro/lib/perl5/";	# ←☆変数は使えないため気をつけること。`  
-     `BEGIN { push @INC, "/Users/asakunotomohiro/lib/perl5/"; }	←☆このブロック内であれば変数は使える。`  
-     ~~`BEGIN { unshift @INC, "/Users/asakunotomohiro/lib/perl5/"; }	←☆先頭への追加は止めた方が良いようだ。`~~  
-     ※`use lib`とは、ライブラリを使うのではなく、ライブラリを探すPathの設定をするだけ。  
-  1. モジュール名の各コンポーネント(最後のコンポーネントを除く)に対応するサブディレクトリを標準ライブラリの下にネストして作成する。  
-     モジュール名例）`AAAA::SSS::KKK::NNN`  
-     ディレクトリ例）`AAAA/SSS/KKK`  
-  1. 最下位のサブディレクトリにテキストファイルを作成する。  
-     ファイル名例）`NNN.pm`  
-  1. このテキストファイルにコードを挿入する。  
-  1. テキストファイルの末尾に、真に評価される付加的なステートメントを追加する。  
-     `1;`  
-
-* モジュール内のエクスポート制御  
-  **import**サブルーチンを呼び出すが、標準では何もしない。  
-  そして、独自に作ることで、その動作を変更できる。  
-  * 個別呼び出しに応じたモジュールも存在する。  
-    呼び出し例）
-    `use File::Basename qw(fileparse basename)`  
-    ※この場合は、サブルーチンとして**dirname**ルーチンを呼び出さないことになる。  
-    そして、dirnameを個別に呼び出したい場合、`File::Basename::dirname($hoge);`とすればいい。  
-  * サブルーチン呼び出し不可。  
-    例）
-    `use File::Basename ();`  
-    これにより、サブルーチンを呼び出さないことになる。  
-    また、`use File::Basename;`の場合は、デフォルトのサブルーチン呼び出しが発生する(モジュール開発者が決めている)。  
-
-上記の説明、だいたい分からない。  
-todo: もういちど読み直す。  
-
-
-</details>
 
 <a name="practicalusePackages"></a>
 <details><summary>応用知識-パッケージ</summary>
