@@ -145,7 +145,7 @@ $
   * [ ] [繰り返し](#practicaluseRepetition繰り返し)  
   * [ ] [関数](#practicaluseFunction関数)  
     [x] [ライブラリ作成(`require`)](#practicaluseFunctionLibrequire)  
-    [x] [ライブラリ作成(`use`)](#practicaluseFunctionLibuse)  
+    [x] [モジュール作成(`use`)](#practicaluseFunctionLibuse)  
 
 
 <a name="rangeOtherThanBasicKnowledge"></a>
@@ -2785,7 +2785,22 @@ sub hoge {
   1. 中間コード生成  
   1. インタプリタ実行  
 
-### [モジュール](https://perldoc.jp/func/use)
+* グローバグ配列変数  
+  * **@INC**  
+    以下を変更もしくは、追加できる。  
+    標準ライブラリ  
+    ユーザ定義ライブラリのディレクトリ  
+  * import文  
+    **import**と言うサブルーチンから探し出し、使う。  
+
+* モジュール内のバージョン制御  
+  * 使うモジュールのバージョン指定。  
+    `use Database::Access::Control 1.20;`  
+  * [パッケージ](#practicalusePackages)内でのバージョン指定。  
+    `$VERSION = 1.00;`  
+
+### [モジュール](https://perldoc.jp/func/use)開発方法
+開発と作成のどちらの言葉が適切なのだろう。  
 
 
 </details>
@@ -4012,7 +4027,7 @@ $
 
 
 <a name="practicaluseModulemain"></a>
-### [モジュール](https://perldoc.jp/docs/perl/5.20.1/perlmod.pod)
+### [モジュール](https://perldoc.jp/docs/perl/5.20.1/perlmod.pod)利用方法
 車輪の再開発をせずに、望む車輪を選べ、そして使える。  
 **use**ステートメントにより、標準ディレクトリから探し出し、一致ファイルの内部コードを使えるようにする。  
 
@@ -4028,21 +4043,14 @@ $
   * VMS  
     `[Database:Access]Control.pm`  
 
-* グローバグ配列変数  
-  * **@INC**  
-    以下を変更もしくは、追加できる。  
-    標準ライブラリ  
-    ユーザ定義ライブラリのディレクトリ  
-  * import文  
-    **import**と言うサブルーチンから探し出し、使う。  
-
 * モジュールのセットアップ  
+  以下、開発と利用がごちゃ混ぜになっていないか？  
   1. モジュールを格納したい標準ライブラリディレクトリを選択する。  
      `~/Home/`など？  
   1. このディレクトリの存在をPerlに指示する。  
      `use lib "/Users/asakunotomohiro/lib/perl5/";	# ←☆変数は使えないため気をつけること。`  
-     `BEGIN { push @INC, "/Users/asakunotomohiro/lib/perl5/"; }`  
-     ~~`BEGIN { unshift @INC, "/Users/asakunotomohiro/lib/perl5/"; }`~~  
+     `BEGIN { push @INC, "/Users/asakunotomohiro/lib/perl5/"; }	←☆このブロック内であれば変数は使える。`  
+     ~~`BEGIN { unshift @INC, "/Users/asakunotomohiro/lib/perl5/"; }	←☆先頭への追加は止めた方が良いようだ。`~~  
      ※`use lib`とは、ライブラリを使うのではなく、ライブラリを探すPathの設定をするだけ。  
   1. モジュール名の各コンポーネント(最後のコンポーネントを除く)に対応するサブディレクトリを標準ライブラリの下にネストして作成する。  
      モジュール名例）`AAAA::SSS::KKK::NNN`  
@@ -4052,12 +4060,6 @@ $
   1. このテキストファイルにコードを挿入する。  
   1. テキストファイルの末尾に、真に評価される付加的なステートメントを追加する。  
      `1;`  
-
-* モジュール内のバージョン制御  
-  * 使うモジュールのバージョン指定。  
-    `use Database::Access::Control 1.20;`  
-  * [パッケージ](#practicalusePackages)内でのバージョン指定。  
-    `$VERSION = 1.00;`  
 
 * モジュール内のエクスポート制御  
   **import**サブルーチンを呼び出すが、標準では何もしない。  
@@ -4072,7 +4074,6 @@ $
     `use File::Basename ();`  
     これにより、サブルーチンを呼び出さないことになる。  
     また、`use File::Basename;`の場合は、デフォルトのサブルーチン呼び出しが発生する(モジュール開発者が決めている)。  
-
 
 上記の説明、だいたい分からない。  
 todo: もういちど読み直す。  
