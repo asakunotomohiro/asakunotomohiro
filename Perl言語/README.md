@@ -2853,7 +2853,7 @@ sub hoge {
      `1;`  
      ※真になれば何でも構わないが、慣例的に**1**を使う(固定文字列と思うべし)。  
 
-* グローバグ配列変数  
+* グローバル配列変数  
   * **@INC**  
     以下を変更もしくは、追加できる。  
     標準ライブラリ  
@@ -2873,6 +2873,43 @@ sub hoge {
 ### [useモジュール](https://perldoc.jp/func/use)開発方法
 [モジュール](https://perldoc.jp/docs/perl/5.20.1/perlmod.pod)の説明は別途あり。  
 ※開発と作成のどちらの言葉が適切なのだろう。  
+
+以下、呼び出し側のプログラム例）  
+ファイル名：[**関数モジュール(呼ぶ側)use.pl**](./基礎知識用の勉強/5関数勉強/関数モジュール(呼ぶ側)use.pl)
+```perl
+use v5.24;
+BEGIN { use File::Basename; my $pwd = dirname($0); push @INC, $pwd; }	# 末尾に追加(追加しない場合、以下のuse呼び出しがエラーになる)。
+
+use hoge;	# 出力結果：呼ぶ側のプログラムになる。
+			# 出力結果：ライブラリ読み込み完了
+my @hoge = ("boo", "bar", );
+
+sub hoge {
+	say "$hogebarboo::VERSION";	# 0.99
+	#&xxxyyyzzz();	# err
+	#	Undefined subroutine &main::xxxyyyzzz called at 関数モジュール(呼ぶ側)use.pl line 9.
+	&hogebarboo::xxxyyyzzz(@hoge);			# 関数ライブラリ：boo bar
+	&hogebarboo::xxxyyyzzz("関数呼び出し");	# 関数ライブラリ：関数呼び出し
+}
+&hoge();
+```
+
+以下、呼ばれる側のプログラム例）
+ファイル名：[**hoge.pm**](./基礎知識用の勉強/5関数勉強/関数モジュール(呼ばれる側)use.pm)
+```perl
+package hogebarboo;
+$VERSION = 0.99;
+
+use v5.24;
+
+use Exporter;
+our @ISA = qw(Exporter);
+our @EXPORT = qw(asakuno);
+
+sub xxxyyyzzz {
+	say "関数ライブラリ：@_";
+}
+```
 
 
 </details>
