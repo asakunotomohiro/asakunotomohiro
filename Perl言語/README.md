@@ -542,6 +542,7 @@ say $hoge;	# 83
     右シフト演算子。  
     ビット否定演算子。  
   * [x] [マッチ演算子(正規表現)](#practicaluseRegularexpression)  
+    [x] 結合演算子`=~`  
   * [ ] 優先順位  
     [C言語での優先順位と代わらない](https://perldoc.jp/docs/perl/5.10.0/perlfaq7.pod#Why32do32Perl32operators32have32different32precedence32than32C32operators63)  
 
@@ -994,6 +995,7 @@ unless ( defined $boo[2] ) {	←☆変数に値は入っていない。
   * [ ] 論理演算子  
     * [ ] 排他的論理和(`XOR`・`NOT OR`・`^`)  
     * [ ] 否定(`NOT`・`!`・`~`)  
+      ※`=~`は正規表現になるため、気をつけること。  
     * [ ] ビット演算子(`&`・`|`)  
     * [ ] defined-or演算子(以下説明)  
 
@@ -3341,7 +3343,7 @@ sub regexSample {
 	}
 }
 &regexSample("hoge");	# hogeにマッチした。
-&regexSample("hoge");	# 検索に掛からず(hoge)。
+&regexSample("Hoge");	# 検索に掛からず(hoge)。
 ```
 
 
@@ -3362,6 +3364,32 @@ sub regexSample {
 また、文字の解釈も変更できる。  
 例えば、ASCIIコード文字を扱う`/a`・Unicodeを扱う`/u`・ロケールに従う`/l`など。  
 
+
+<a name="practicaluseRegularexpressionJoinoperator"></a>
+### 結合演算子(binding operator)=~
+右側にあるパターンを左側の文字にマッチさせる。  
+※代入演算子ではないため、気をつけること。  
+
+以下、例）
+```perl
+use v5.24;
+
+sub regexSample {
+	my $hoge = shift;
+	# 以下のパターンを任意の変数で検索する。
+	if( $hoge =~ /hoge/ ) {
+		say "hogeにマッチした(大小文字区別あり)。";
+	}
+	elsif( $hoge =~ m!hoge!i ) {
+		say "hogeにマッチした(大小文字区別なし)。";
+	}
+	else{
+		say "検索に掛からず($_)。";
+	}
+}
+&regexSample("hoge");	# hogeにマッチした(大小文字区別あり)。
+&regexSample("Hoge");	# hogeにマッチした(大小文字区別なし)。
+```
 
 </details>
 
