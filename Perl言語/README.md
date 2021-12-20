@@ -3253,7 +3253,7 @@ sub givenwhen {
 &givenwhen(20211220);	# previous case not true
 ```
 
-以下、普通にif文を使う。
+以下、if文を使う(しかし、スマートマッチ演算子の併用をした場合、上記の"Given-when"と変わらないどころか見にくくなる)。
 ```perl
 use v5.24;
 no warnings 'experimental::smartmatch';	←☆スマートマッチ演算子`~~`を使うため、警告表示の抑止処理が必要。
@@ -3280,6 +3280,34 @@ sub switchIf {
 ```
 何の役にも立たない。  
 スマートマッチ演算子をif文で使う場合、**given-when**を使えば良い。  
+
+以下、if文を使う(正規表現との組み合わせのため、望ましい結果は出てこない)。
+```perl
+use v5.24;
+no warnings 'experimental::smartmatch';	# 警告抑止(スマートマッチ演算子~~のために必要)。
+
+sub switchIf {
+	$_ = shift;
+	my @array = ('hoge', 42, 20211220, );
+	my %hash  = (20211220=>'hoge', boo=>20211221, );
+	if(    /1/          ){ say "number 1" }
+	elsif( /"a"/        ){ say "string a" }
+	elsif( /[1..10,42]/ ){ say "number in list v1" }
+	elsif( /@array/     ){ say "number in list v2" }
+	elsif( /\w+/        ){ say "pattern v1" }
+	elsif( qr/\w+/      ){ say "pattern v2" }
+	elsif( /%hash/      ){ say "entry in hash v1" }
+	elsif( /\%hash/     ){ say "entry in hash v2" }
+	elsif( /\&sub/      ){ say "arg to subroutine" }
+	else { say "previous case not true" }
+}
+&switchIf(1);	# number 1	←☆本来の挙動とあっているだろう。
+&switchIf('a');	# pattern v1	←☆本来の挙動からズレている(思惑と違う)。
+&switchIf(42);	# number in list v1	←☆本来の挙動とあっているだろう。
+&switchIf(20211220);	# number 1	←☆本来の挙動からズレている(ハッシュの中身を正規表現で検索できるのか？)。
+```
+良い具合に動いてくれない。  
+
 
 </details>
 
