@@ -3226,6 +3226,82 @@ Perl5.10.0で今回のスマートマッチ演算子が導入された。
 どのような挙動が正解か不明。  
 どのように勉強すれば良い？  
 
+以下、きっと正しい解釈だと思う(コメント含め)。
+```perl
+use v5.10.1;
+no warnings 'experimental::smartmatch';	# 警告抑止(スマートマッチ演算子~~のために必要)。
+
+sub smartMatch {
+	my $val = shift;
+	my @array = ('本日は(晴天)なり。', 42, 'abc', );
+	my %hash  = (20211220=>'本日は晴天なり。', hoge=>20211221, );
+
+	# %hashに$valが含まれていれば発見したことになる。
+	if(     $val   ~~ %hash   ){ say "ハッシュキー発見($val)。" }
+	# $valに'a'が含まれていれば発見したことになる。
+	elsif ( 'a'    ~~ $val    ){ say "a発見($val)。" }
+	# @arrayに$valが含まれていれば発見したことになる。
+	elsif ( $val   ~~ @array  ){ say "配列値発見($val)。" }
+	# どれにも当てはまらなければその他のメッセージが出力される。
+	else { say "previous case not true" }
+}
+&smartMatch(1);						# previous case not true
+&smartMatch(20211220);				# ハッシュキー発見(20211220)。
+&smartMatch('本日は(晴天)なり。');	# 配列値発見(本日は(晴天)なり。)。
+&smartMatch('a');					# a発見(a)。
+```
+
+以下、スマートマッチ演算子を使わず、ハッシュのキーを完全一致で探す方法例）
+```perl
+use v5.10.1;
+no warnings 'experimental::smartmatch';	# 警告抑止(スマートマッチ演算子~~のために必要)。
+
+sub smartMatch {
+	my $val = shift;
+	my @array = ('本日は(晴天)なり。', 42, 'abc', );
+	my %hash  = (20211220=>'本日は晴天なり。', hoge=>20211221, );
+
+	# 以下、%hashに指定のキー($val)がある場合、メッセージを出す。
+	if ( exists $hash{$val} ) {
+		# キーの完全一致が大前提
+		say $hash{$val} . "発見。";
+	}
+}
+&smartMatch(1);						# 空文字列
+&smartMatch(20211220);				# 本日は晴天なり。発見。
+&smartMatch('本日は晴天なり。');	# 空文字列
+&smartMatch('a');					# 空文字列
+```
+
+以下、スマートマッチ演算子を使わず、ハッシュのキーを正規表現で探す方法例）
+```perl
+use v5.10.1;
+no warnings 'experimental::smartmatch';	# 警告抑止(スマートマッチ演算子~~のために必要)。
+
+sub smartMatch {
+	my $val = shift;
+	my @array = ('本日は(晴天)なり。', 42, 'abc', );
+	my %hash  = (20211220=>'本日は晴天なり。', hoge=>20211221, );
+
+	# 以下は、キーの一部でも一致していた場合、キーと同じと判断する(乱暴)。
+	my $matched = 0;
+	foreach my $key ( keys %hash ) {
+		# key値が$valの正規表現パターンに一致する場合、マッチ変数にkey値を代入後、for文を抜ける。
+		do { $matched = $key; last } if $key =~ /$val/;
+	}
+	if ( $matched ) {
+		# 上記検索に掛かった場合、以下のメッセージを出力する。
+		say "$valはハッシュのキーと一致した($hash{$matched})。";
+	}
+}
+&smartMatch(1);	# 1はハッシュのキーと一致した(本日は晴天なり。)。	←☆引き数値が含まれているかどうかなのでこうなる(想定通り)。
+&smartMatch(20211220);				# 20211220はハッシュのキーと一致した(本日は晴天なり。)。
+&smartMatch('本日は晴天なり。');	# 空文字列
+&smartMatch('a');					# 空文字列
+&smartMatch('hoge');				# hogeはハッシュのキーと一致した(20211221)。
+&smartMatch(20211221);				# 空文字列
+```
+この時点で混乱してきた。
 
 
 </details>

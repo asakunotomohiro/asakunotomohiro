@@ -12,22 +12,28 @@ sub asakunoSwitch {
 
 	my $matched = 0;
 	foreach my $key ( keys %hash ) {
-		do { $matched = 1; last } if $key =~ /$val/;
+		# key値が$valの正規表現パターンに一致する場合、マッチ変数にkey値を代入後、for文を抜ける。
+		do { $matched = $key; last } if $key =~ /$val/;
 	}
 	if ( $matched ) {
-		say "$valをハッシュの値と一致した($hash{$val})。";
+		# 上記検索に掛かった場合、以下のメッセージを出力する。
+		say "$valをハッシュの値と一致した($hash{$matched})。";
 	}
 
+	# %hasとのスマートマッチは、$valが含まれていれば発見したと見なす。
 	if(     $val   ~~ %hash   ){ say "ハッシュキー発見($val)。" }
-	elsif ( /$val/ ~~ %hash   ){ say "ハッシュ値発見(前：$val)。" }
-	elsif ( %hash  ~~ /$val/  ){ say "ハッシュ値発見(後：$val)。" }
-	elsif ( $val   ~~ 'a'     ){ say "a発見($val)。" }
+	elsif ( $val   ~~ %hash   ){ say "ハッシュ値発見(前：$val)。" }
+	elsif ( %hash  ~~ $val    ){ say "ハッシュ値発見(後：$val)。" }
+	# $valにaが含まれていれば発見したと見なす。
+#	elsif ( $val   ~~ 'a'     ){ say "a発見($val)。" }
+	elsif ( 'a'    ~~ $val    ){ say "a発見($val)。" }	# 上記と変わらない結果が出てきた(順序大事なんだよね？)。
+	# @arrayに$valが含まれてば発見したと見なす。
 	elsif ( $val   ~~ @array  ){ say "配列値発見($val)。" }
 	else { say "previous case not true" }
 }
 &asakunoSwitch(1);
-#	出力結果：1をハッシュの値と一致した()。
-#	出力結果：ハッシュ値発見(前：1)。
+#	出力結果：1をハッシュの値と一致した(asakuno)。
+#	出力結果：previous case not true
 
 &asakunoSwitch(20211220);
 #	出力結果：asakuno発見。
@@ -35,6 +41,9 @@ sub asakunoSwitch {
 #	出力結果：ハッシュキー発見(20211220)。
 &asakunoSwitch('asakuno');
 #	出力結果：配列値発見(asakuno)。
+
+&asakunoSwitch('a');
+#	出力結果：a発見(a)。
 
 
 say "以上。"
