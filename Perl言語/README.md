@@ -178,6 +178,7 @@ $
   * [ ] [テスト方法](#practicaluseTester)  
   * [ ] [標準関数(モジュール)](#practicaluseModule)  
   * [ ] [プロセス管理](#practicaluseSystemfunc)  
+  * [ ] [正規表現](#practicaluseRegularexpression)  
 
 </details>
 
@@ -409,10 +410,10 @@ print "$hoge's" . $hoge;	# boo	←☆なぜこの表記になるのか分から�
 |`""`|`qq//`|リテラル文字列|する|
 |``` `` ```|`qx//`|コマンド実行|する|
 |`()`|`qw//`|ワードリスト|しない|
-|`//`|`m//`|パターンマッチ|する|
 |`s///`|`s///`|パターン置換|する|
 |`y///`|`tr///`|文字変換|しない|
-|`""`|`qr//`|正規表現|する|
+|`//`|`m//`|[正規表現](#practicaluseRegularexpression)|する|
+|`""`|`qr//`|[正規表現](#practicaluseRegularexpression)|する|
 
 
 <a name="subVariable4"></a>
@@ -540,6 +541,8 @@ say $hoge;	# 83
     左シフト演算子。  
     右シフト演算子。  
     ビット否定演算子。  
+  * [x] [マッチ演算子(正規表現)](#practicaluseRegularexpression)  
+    [x] 結合演算子`=~`  
   * [ ] 優先順位  
     [C言語での優先順位と代わらない](https://perldoc.jp/docs/perl/5.10.0/perlfaq7.pod#Why32do32Perl32operators32have32different32precedence32than32C32operators63)  
 
@@ -992,6 +995,7 @@ unless ( defined $boo[2] ) {	←☆変数に値は入っていない。
   * [ ] 論理演算子  
     * [ ] 排他的論理和(`XOR`・`NOT OR`・`^`)  
     * [ ] 否定(`NOT`・`!`・`~`)  
+      ※`=~`は正規表現になるため、気をつけること。  
     * [ ] ビット演算子(`&`・`|`)  
     * [ ] defined-or演算子(以下説明)  
 
@@ -3308,6 +3312,113 @@ sub switchIf {
 ```
 良い具合に動いてくれない。  
 
+
+</details>
+
+
+<a name="practicaluseRegularexpression"></a>
+<details><summary>応用知識-正規表現(Regular expression)</summary>
+
+### [正規表現](#practicaluseRegularexpression)
+言わずもがな。  
+Perlの正規表現は各界隈で有名になっているため、「Perl互換性正規表現(Perl-Compatible Regualr Expression・PCRE)」と呼ばれる技術でPerlの正規表現に近づけた正規表現を謳い文句にした検索能力を持つツールが多い。  
+
+実際の細かい正規表現仕様は別途「[正規表現の勉強\_作業メモなど何でも詰め込む.md](../検索利用メモ/正規表現の勉強_作業メモなど何でも詰め込む.md)」ファイルに譲ることにする。  
+同ディレクトリ配下に正規表現用の勉強資材が散在しているため、参考になれば幸い。  
+
+
+<a name="practicaluseRegularexpressionMatchoperator"></a>
+### マッチ演算子(match operator)
+正規表現の利用方法例）
+```perl
+use v5.24;
+
+sub regexSample {
+	$_ = shift;
+	if( /hoge/ ) {	←☆スラッシュに囲まれた文字を正規表現で検索する。
+		say "hogeにマッチした。";
+	}
+	else{
+		say "検索に掛からず($_)。";
+	}
+}
+&regexSample("hoge");	# hogeにマッチした。
+&regexSample("Hoge");	# 検索に掛からず(Hoge)。
+```
+
+
+<a name="practicaluseRegularexpressionPatternmatchoperator"></a>
+### パターンマッチ演算子(pattern match operator)
+上記のマッチ演算子は、スラッシュ記号で挟んであっただけだが、今回は正規表現検索を明記する。  
+そのため、囲む記号は任意に変更できる。  
+
+例えば、`m(パターン)`・`m[パターン]`など。  
+そして、対にならない記号の場合は、同じ記号を用いることで囲みを表現できる。  
+例えば、`m!パターン!`・`m^パターン^`など。  
+
+
+<a name="practicaluseRegularexpressionMatchmodifier"></a>
+### マッチ修飾子
+[マッチ演算子](#practicaluseRegularexpressionMatchoperator)の閉じ括弧(デリミタ)の後ろに付けるフラグのこと。  
+このフラグにより、大小文字区別有無`/i`・ドット記号の挙動変更`/s`・空白文字の認識変更`/x`などを制御する。  
+また、文字の解釈も変更できる。  
+例えば、ASCIIコード文字を扱う`/a`・Unicodeを扱う`/u`・ロケールに従う`/l`など。  
+
+
+<a name="practicaluseRegularexpressionJoinoperator"></a>
+### 結合演算子(binding operator)=~
+右側にあるパターンを左側の文字にマッチさせる。  
+※代入演算子ではないため、気をつけること。  
+
+以下、例）
+```perl
+use v5.24;
+
+sub regexSample {
+	my $hoge = shift;
+	# 以下のパターンを任意の変数で検索する。
+	if( $hoge =~ /hoge/ ) {
+		say "hogeにマッチした(大小文字区別あり)。";
+	}
+	elsif( $hoge =~ m!hoge!i ) {
+		say "hogeにマッチした(大小文字区別なし)。";
+	}
+	else{
+		say "検索に掛からず($hoge)。";
+	}
+}
+&regexSample("hoge");	# hogeにマッチした(大小文字区別あり)。
+&regexSample("Hoge");	# hogeにマッチした(大小文字区別なし)。
+```
+
+
+<a name="practicaluseRegularexpressionMatchvariable"></a>
+### マッチ変数
+キャプチャ機能を使うために、括弧`()`で囲む必要がある。  
+
+以下、例）
+```perl
+use v5.24;
+
+sub regexSample {
+	my $hoge = shift;
+	# 括弧で囲んだ文字列をキャプチャ機能で記録し、$[数字]で呼び出す。
+	if( $hoge =~ /本日は晴天なり2021(年12月)20日/ ) {
+		say "マッチした(大小文字区別あり)。$1";
+	}
+	elsif( $hoge =~ m,本日は晴天(なり2021)/12/20,i ) {
+		say "マッチした(大小文字区別なし)。$1";
+		say '$0：' . $0;
+	}
+	else{
+		say "検索に掛からず($hoge)。";
+	}
+}
+&regexSample("本日は晴天なり2021年12月20日");	# マッチした(大小文字区別あり)。年12月
+&regexSample("本日は晴天なり2021/12/20");		# マッチした(大小文字区別なし)。なり2021
+												# $0：マッチ変数.pl
+```
+上記2つ目の検索に[パターンマッチ演算子](#practicaluseRegularexpressionPatternmatchoperator)を使うことでスラッシュ記号へのエスケープシーケンスが不要になっている。  
 
 </details>
 
