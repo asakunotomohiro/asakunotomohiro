@@ -3233,6 +3233,7 @@ sub switch {
 &switch('a');	# string a
 &switch(20211220);	# previous case not true
 ```
+[メッセージ診断](https://perldoc.jp/docs/perl/5.22.1/perldiag.pod)  
 
 以下、警告抑止後のプログラム例）
 ```perl
@@ -3251,6 +3252,24 @@ sub givenwhen {
 &givenwhen('a');		# string a
 &givenwhen(20211220);	# previous case not true
 ```
+
+以下、普通にif文を使う。
+```perl
+use v5.24;
+
+sub switchIf {
+	my $val = shift;
+	if(    $val == 1          ){ say "number 1" }
+	elsif( $val eq "a"        ){ say "string a" }
+	# elsif(         [1..10,42] ){ say "number in list" }
+	else { say "previous case not true" }
+}
+&switchIf(1);			# number 1
+&switchIf('a');			# string a
+&switchIf(42);			# previous case not true
+&switchIf(20211220);	# previous case not true
+```
+何の役にも立たない。  
 
 </details>
 
