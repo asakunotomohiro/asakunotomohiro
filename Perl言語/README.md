@@ -178,6 +178,7 @@ $
   * [ ] [テスト方法](#practicaluseTester)  
   * [ ] [標準関数(モジュール)](#practicaluseModule)  
   * [ ] [プロセス管理](#practicaluseSystemfunc)  
+  * [ ] [正規表現](#practicaluseRegularexpression)  
 
 </details>
 
@@ -412,7 +413,7 @@ print "$hoge's" . $hoge;	# boo	←☆なぜこの表記になるのか分から�
 |`//`|`m//`|パターンマッチ|する|
 |`s///`|`s///`|パターン置換|する|
 |`y///`|`tr///`|文字変換|しない|
-|`""`|`qr//`|正規表現|する|
+|`""`|`qr//`|[正規表現](#practicaluseRegularexpression)|する|
 
 
 <a name="subVariable4"></a>
@@ -3307,6 +3308,15 @@ sub switchIf {
 &switchIf(20211220);	# number 1	←☆本来の挙動からズレている(ハッシュの中身を正規表現で検索できるのか？)。
 ```
 良い具合に動いてくれない。  
+
+
+</details>
+
+
+<a name="practicaluseRegularexpression"></a>
+<details><summary>応用知識-正規表現(Regular expression)</summary>
+
+### [正規表現](#practicaluseRegularexpression)
 
 
 </details>
