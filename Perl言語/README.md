@@ -3256,20 +3256,30 @@ sub givenwhen {
 以下、普通にif文を使う。
 ```perl
 use v5.24;
+no warnings 'experimental::smartmatch';	←☆スマートマッチ演算子`~~`を使うため、警告表示の抑止処理が必要。
 
 sub switchIf {
 	my $val = shift;
-	if(    $val == 1          ){ say "number 1" }
-	elsif( $val eq "a"        ){ say "string a" }
-	# elsif(         [1..10,42] ){ say "number in list" }
+	my @array = ('hoge', 42, 20211220, );
+	my %hash  = (20211220=>'hoge', boo=>20211221, );
+	if(    $val ~~ 1          ){ say "number 1" }
+	elsif( $val ~~ "a"        ){ say "string a" }
+	elsif( $val ~~ [1..10,42] ){ say "number in list v1" }
+	elsif( $val ~~ @array     ){ say "number in list v2" }
+	elsif( $val ~~ /\w+/      ){ say "pattern v1" }
+	elsif( $val ~~ qr/\w+/    ){ say "pattern v2" }
+	elsif( $val ~~ %hash      ){ say "entry in hash v1" }
+	elsif( $val ~~ \%hash     ){ say "entry in hash v2" }
+	elsif( $val ~~ \&sub      ){ say "arg to subroutine" }
 	else { say "previous case not true" }
 }
 &switchIf(1);			# number 1
 &switchIf('a');			# string a
-&switchIf(42);			# previous case not true
-&switchIf(20211220);	# previous case not true
+&switchIf(42);			# number in list v1
+&switchIf(20211220);	# number in list v2
 ```
 何の役にも立たない。  
+スマートマッチ演算子をif文で使う場合、**given-when**を使えば良い。  
 
 </details>
 
