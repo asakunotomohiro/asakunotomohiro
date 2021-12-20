@@ -3325,6 +3325,7 @@ Perlの正規表現は各界隈で有名になっているため、「Perl互換
 同ディレクトリ配下に正規表現用の勉強資材が散在しているため、参考になれば幸い。  
 
 
+<a name="practicaluseRegularexpressionMatchoperator"></a>
 ### マッチ演算子(match operator)
 正規表現の利用方法例）
 ```perl
@@ -3344,6 +3345,7 @@ sub regexSample {
 ```
 
 
+<a name="practicaluseRegularexpressionPatternmatchoperator"></a>
 ### パターンマッチ演算子(pattern match operator)
 上記のマッチ演算子は、スラッシュ記号で挟んであっただけだが、今回は正規表現検索を明記する。  
 そのため、囲む記号は任意に変更できる。  
@@ -3351,6 +3353,15 @@ sub regexSample {
 例えば、`m(パターン)`・`m[パターン]`など。  
 そして、対にならない記号の場合は、同じ記号を用いることで囲みを表現できる。  
 例えば、`m!パターン!`・`m^パターン^`など。  
+
+
+<a name="practicaluseRegularexpressionMatchmodifier"></a>
+### マッチ修飾子
+[マッチ演算子](#practicaluseRegularexpressionMatchoperator)の閉じ括弧(デリミタ)の後ろに付けるフラグのこと。  
+このフラグにより、大小文字区別有無`/i`・ドット記号の挙動変更`/s`・空白文字の認識変更`/x`などを制御する。  
+また、文字の解釈も変更できる。  
+例えば、ASCIIコード文字を扱う`/a`・Unicodeを扱う`/u`・ロケールに従う`/l`など。  
+
 
 </details>
 
