@@ -3391,6 +3391,35 @@ sub regexSample {
 &regexSample("Hoge");	# hogeにマッチした(大小文字区別なし)。
 ```
 
+
+<a name="practicaluseRegularexpressionMatchvariable"></a>
+### マッチ変数
+キャプチャ機能を使うために、括弧`()`で囲む必要がある。  
+
+以下、例）
+```perl
+use v5.24;
+
+sub regexSample {
+	my $hoge = shift;
+	# 括弧で囲んだ文字列をキャプチャ機能で記録し、$[数字]で呼び出す。
+	if( $hoge =~ /本日は晴天なり2021(年12月)20日/ ) {
+		say "マッチした(大小文字区別あり)。$1";
+	}
+	elsif( $hoge =~ m,本日は晴天(なり2021)/12/20,i ) {
+		say "マッチした(大小文字区別なし)。$1";
+		say '$0：' . $0;
+	}
+	else{
+		say "検索に掛からず($hoge)。";
+	}
+}
+&regexSample("本日は晴天なり2021年12月20日");	# マッチした(大小文字区別あり)。年12月
+&regexSample("本日は晴天なり2021/12/20");		# マッチした(大小文字区別なし)。なり2021
+												# $0：マッチ変数.pl
+```
+上記2つ目の検索に[パターンマッチ演算子](#practicaluseRegularexpressionPatternmatchoperator)を使うことでスラッシュ記号へのエスケープシーケンスが不要になっている。  
+
 </details>
 
 
