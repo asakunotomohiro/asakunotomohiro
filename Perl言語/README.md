@@ -541,6 +541,7 @@ say $hoge;	# 83
     左シフト演算子。  
     右シフト演算子。  
     ビット否定演算子。  
+  * [x] [マッチ演算子(正規表現)](#practicaluseRegularexpression)  
   * [ ] 優先順位  
     [C言語での優先順位と代わらない](https://perldoc.jp/docs/perl/5.10.0/perlfaq7.pod#Why32do32Perl32operators32have32different32precedence32than32C32operators63)  
 
@@ -3317,6 +3318,27 @@ sub switchIf {
 <details><summary>応用知識-正規表現(Regular expression)</summary>
 
 ### [正規表現](#practicaluseRegularexpression)
+言わずもがな。  
+Perlの正規表現は各界隈で有名になっているため、「Perl互換性正規表現(Perl-Compatible Regualr Expression・PCRE)」と呼ばれる技術でPerlの正規表現に近づけた正規表現を謳い文句にした検索能力を持つツールが多い。  
+
+
+### マッチ演算子(match operator)
+正規表現の利用方法例）
+```perl
+use v5.24;
+
+sub regexSample {
+	$_ = shift;
+	if( /hoge/ ) {	←☆スラッシュに囲まれた文字を正規表現で検索する。
+		say "hogeにマッチした。";
+	}
+	else{
+		say "検索に掛からず($_)。";
+	}
+}
+&regexSample("hoge");	# hogeにマッチした。
+&regexSample("hoge");	# 検索に掛からず(hoge)。
+```
 
 
 </details>
