@@ -982,7 +982,7 @@ unless ( defined $boo[2] ) {	←☆変数に値は入っていない。
     if文の条件式が真だった場合に、say処理が走る。  
   * 基本構造例：switch  
     [スイッチ構文](https://perldoc.jp/docs/perl/5.10.0/perlfaq7.pod#How32do32I32create32a32switch32or32case32statement63)はない？  
-    v5.10以降であれば使える。  
+    [v5.10以降](#practicaluseGivenwhen)であれば使える。  
   * if文の否定：unless  
   * unless修飾子：if修飾子と同じように使える。  
 
@@ -2393,6 +2393,7 @@ Python限定にしたくなかったが、他のプログラミング言語に�
 * 応用部分  
   * [リファレンス](#practicaluseReference)  
   * [ハッシュ(連想配列)](#practicaluseHash)  
+  * [switchステートメント](#practicaluseGivenwhen)  
   * 今後も機会があれば増やしていく。  
 
 
@@ -3189,6 +3190,18 @@ say "$ENV{HISTCONTROL}";	# ignoreboth
 ```
 
 何に使うのか分からないが、GoでのGUI開発は日本語文字を取得するのに環境変数を利用しているな・・・。  
+
+</details>
+
+
+<a name="practicaluseGivenwhen"></a>
+<details><summary>応用知識-switchステートメント(given-when)</summary>
+
+基本的に、Perlは、C言語の構文を拝借している。  
+そのため、goto文なども採用しているのがその理由だ。  
+しかし、Switch文だけは採用を見送ったようだが、開発者から文句を付けられたことで、v5.10で取り込んだだけでなく、改良されたとのこと。  
+
+### [switchステートメント](https://perldoc.jp/docs/modules/Switch-2.09/Switch.pod)
 
 </details>
 
