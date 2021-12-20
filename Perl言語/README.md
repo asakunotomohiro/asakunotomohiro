@@ -146,6 +146,8 @@ $
 基礎知識5種類に納められない範囲の勉強に手を広げる。  
 
 * [応用知識](#appliedknowledge)  
+  * [ ] [スマートマッチ演算子`~~`](#practicaluseSmartmatch)  
+    * [x] [switch(given-when)](#practicaluseGivenwhen)  
   * [ ] [ポインタ・リファレンス](#practicalusePointer)  
     * [x] リファレンス  
       [x] 変数  
@@ -3190,6 +3192,15 @@ say "$ENV{HISTCONTROL}";	# ignoreboth
 ```
 
 何に使うのか分からないが、GoでのGUI開発は日本語文字を取得するのに環境変数を利用しているな・・・。  
+
+</details>
+
+
+<a name="practicaluseSmartmatch"></a>
+<details><summary>応用知識-スマートマッチ演算子</summary>
+
+この技術を使うことで、[given-when](#practicaluseGivenwhen)と組み合わせ、Switch構文を構築する。  
+
 
 </details>
 
