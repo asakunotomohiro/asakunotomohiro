@@ -3234,6 +3234,24 @@ sub switch {
 &switch(20211220);	# previous case not true
 ```
 
+以下、警告抑止後のプログラム例）
+```perl
+use v5.24;
+no warnings 'experimental::smartmatch';	# 警告抑止。
+
+sub givenwhen {
+	my $val = shift;
+	given ($val) {
+			when (1)    { say "number 1" }
+			when ("a")  { say "string a" }
+			default     { say "previous case not true" };
+	};
+}
+&givenwhen(1);			# number 1
+&givenwhen('a');		# string a
+&givenwhen(20211220);	# previous case not true
+```
+
 </details>
 
 
