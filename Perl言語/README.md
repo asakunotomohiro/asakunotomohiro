@@ -3216,6 +3216,24 @@ say "$ENV{HISTCONTROL}";	# ignoreboth
 これらは、[第7版](https://www.oreilly.co.jp/books/9784873118246/)に記載されていない。  
 ぬぅ。  
 
+警告が出て構わないのであれば、以下のプログラムでSwitch文が使える。
+```perl
+use v5.24;
+
+sub switch {
+	my $val = shift;
+	given ($val) {
+		# given is experimental at givenWhen_v5.24失敗v2.pl line 5.
+		when (1)    { say "number 1" }	# when is experimental at givenWhen_v5.24失敗v2.pl line 7.
+		when ("a")  { say "string a" }	# when is experimental at givenWhen_v5.24失敗v2.pl line 8.
+		default     { say "previous case not true" };
+	};
+}
+&switch(1);	# number 1
+&switch('a');	# string a
+&switch(20211220);	# previous case not true
+```
+
 </details>
 
 
