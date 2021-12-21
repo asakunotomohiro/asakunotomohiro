@@ -3304,6 +3304,76 @@ sub smartMatch {
 この時点で混乱してきた。
 
 
+#### 変数の扱い。
+今回は、3種類実行した。  
+
+以下、スマートマッチ演算子のみを用いた比較(比較という言葉が適切なのか？)。
+```perl
+use v5.10.1;
+no warnings 'experimental::smartmatch';	# 警告抑止(スマートマッチ演算子~~のために必要)。
+
+package mainSmartMatch::main;
+sub smartmatch {
+	my $val = shift;
+	my $matchChar = "本日は晴天なり。";
+
+	if( $matchChar ~~ $val ) {
+		say "$matchCharに$valが含まれている。";
+	}
+}
+say "以下、実行。";
+&smartmatch(1);						# 出力なし。
+&smartmatch('本');					# 出力なし。
+&smartmatch('本日は晴天なり。');	# 本日は晴天なり。に本日は晴天なり。が含まれている。
+&smartmatch('本日は 晴天なり。');	# 出力なし。
+&smartmatch('なり');				# 出力なし。
+```
+完全一致するものだけが検索にかかった。  
+
+以下、スマートマッチ演算子及び正規表現検索を組み合わせた比較。
+```perl
+package mainSmartMatch::regex;
+sub smartmatch {
+	my $val = shift;
+	my $matchChar = "本日は晴天なり。";
+
+	if( $matchChar ~~ /$val/ ) {
+		say "$matchCharに$valが含まれている。";
+	}
+}
+say "以下、実行。";
+&smartmatch(1);						# 出力なし。
+&smartmatch('本');					# 本日は晴天なり。に本が含まれている。
+&smartmatch('本日は晴天なり。');	# 本日は晴天なり。に本日は晴天なり。が含まれている。
+&smartmatch('本日は 晴天なり。');	# 出力なし。
+&smartmatch('なり');				# 本日は晴天なり。になりが含まれている。
+```
+1文字でも含まれていることで、検索に掛かるようになった。  
+
+
+以下、スマートマッチ演算子を使わず、正規表現検索のみで比較した。
+```perl
+package subPackage::Function;
+sub smartmatch {
+	my $val = shift;
+	my $variable = "本日は晴天なり。";
+
+	if( $variable =~ /$val/ ) {
+		say "$variableに$valが含まれている。";
+	}
+}
+say "以下、実行。";
+&smartmatch(1);						# 出力なし。
+&smartmatch('本');					# 本日は晴天なり。に本が含まれている。
+&smartmatch('本日は晴天なり。');	# 本日は晴天なり。に本日は晴天なり。が含まれている。
+&smartmatch('本日は 晴天なり。');	# 出力なし。
+&smartmatch('なり。');				# 本日は晴天なり。になり。が含まれている。
+```
+スマートマッチ演算子との組み合わせ結果と同じになった。  
+変数に対してはこんなものなのだろう。  
+リファレンスを絡ませたらどうなるのだろう・・・。  
+
+
 </details>
 
 
