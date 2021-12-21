@@ -3746,9 +3746,10 @@ sub smartMatch {
 [初めてのPerl](https://www.oreilly.co.jp/books/)[第6版](https://www.oreilly.co.jp/books/9784873115672/)を見返すことで、15章にそれらしいことが書いてある。  
 
 * 15章目次：スマートマッチとgiven-when  
-  1. スマートマッチ演算子  
-  1. スマートマッチの優先順位  
-  1. given文  
+  1. [スマートマッチ演算子](#practicaluseSmartmatch)  
+  1. [スマートマッチの優先順位](#practicaluseSmartmatchoperand)  
+  1. [given文](#practicaluseGivenwhen)  
+     ※ここで説明している。  
   1. ダムマッチ  
   1. 多くの項目に対してwhenを使う  
   1. 練習問題  
