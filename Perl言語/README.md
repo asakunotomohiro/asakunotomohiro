@@ -3463,6 +3463,179 @@ sub smartMatch {
 これはこれで実用性があるだろう・・・要は、スマートマッチ演算子のみのプログラムで十分だと言うこと。  
 
 
+#### ハッシュの扱い。
+配列と同じように、検証した。  
+
+* 組み合わせ。  
+  * スマートマッチ演算子のみ。  
+  * スマートマッチ演算子と正規表現検索の組み合わせ。  
+  * 正規表現検索のみ。  
+  * ハッシュのキーと完全一致のみ。  
+  * ハッシュの値と完全一致のみ(直接値を取り出して比較)(スマートマッチ演算子は使えない)。  
+  * ハッシュの値と完全一致のみ(キー取り出し後に値と比較)(スマートマッチ演算子は使えない)。  
+  * 配列要素のひとつがハッシュのキーのひとつに一致する。  
+
+以下、スマートマッチ演算子のみのプログラム例）
+```perl
+use v5.10.1;
+no warnings 'experimental::smartmatch';	# 警告抑止(スマートマッチ演算子~~のために必要)。
+
+my @arrayChar = ("本日は晴天なり。", "クリスマス", "ジングルベル", "シングルベル", );
+my %matchChar = ("本日は晴天なり。"=>20211221, 4774135046=>"オブジェクト指向", singlebell=>"ジングルベル", );
+
+package mainSmartMatch::main;
+say "以下、" . __PACKAGE__;
+sub smartMatch {
+	my $val = shift;
+
+	if( $val ~~ %matchChar ) {
+		say "\"%matchChar\"に\"$val\"が含まれている。";
+	}
+}
+say "以下、実行。";
+&smartMatch(1);						# 出力なし。
+&smartMatch('晴');					# 出力なし。
+&smartMatch('本日は晴天なり。');	# "%matchChar"に"本日は晴天なり。"が含まれている。
+&smartMatch('本日は 晴天なり。');	# 出力なし。
+&smartMatch('ジングルベル');		# 出力なし。
+&smartMatch(20211221);				# 出力なし。
+```
+普通の結果が出てきたように感じるが、ハッシュからキーを取り出す作業が発生しない分、使い勝手はよさげかな。  
+
+以下、スマートマッチ演算子と正規表現検索の組み合わせプログラム例）
+```perl
+package subPackage::regex;
+say "以下、" . __PACKAGE__;
+sub smartMatch {
+	my $val = shift;
+
+	if( %matchChar ~~ /$val/ ) {
+		say "\"%matchChar\"に\"$val\"が含まれている。";
+	}
+}
+say "以下、実行。";
+&smartMatch(1);						# "%matchChar"に"1"が含まれている。
+&smartMatch('晴');					# "%matchChar"に"晴"が含まれている。
+&smartMatch('本日は晴天なり。');	# "%matchChar"に"本日は晴天なり。"が含まれている。
+&smartMatch('本日は 晴天なり。');	# 出力なし。
+&smartMatch('ジングルベル');		# 出力なし。
+&smartMatch(20211221);				# 出力なし。
+```
+股が緩い感じ・・・信用できない結果が出てきたが、これも用途に応じて使い分ける必要があるのだろう。  
+
+以下、正規表現検索のみのプログラム例）
+```perl
+package subPackage::Function::regex;
+say "以下、" . __PACKAGE__;
+sub smartMatch {
+	my $val = shift;
+
+	foreach my $singlebell (keys %matchChar) {
+		# 今回の場合は、右のパターンに一致するかどうかを見ている(本来の挙動通り)。
+		if( $singlebell =~ /$val/ ) {
+			say "\"%matchChar($singlebell)\"に\"$val\"が含まれている。";
+		}
+	}
+}
+say "以下、実行。";
+&smartMatch(1);						# "%matchChar(4774135046)"に"1"が含まれている。
+&smartMatch('晴');					# "%matchChar(本日は晴天なり。)"に"晴"が含まれている。
+&smartMatch('本日は晴天なり。');	# "%matchChar(本日は晴天なり。)"に"本日は晴天なり。"が含まれている。
+&smartMatch('本日は 晴天なり。');	# 出力なし。
+&smartMatch('ジングルベル');		# 出力なし。
+&smartMatch(20211221);				# 出力なし。
+```
+スマートマッチ演算子と正規表現検索の組み合わせ結果と同じなんだが・・・どういうこと!?  
+
+ハッシュのキーのみと完全一致するプログラム例）
+```perl
+package subPackage::Function::normal;
+say "以下、" . __PACKAGE__;
+sub smartMatch {
+	my $val = shift;
+
+	foreach my $singlebell ( keys %matchChar ) {
+		# 今回の場合は、右のパターンに一致するかどうかを見ている(本来の挙動通り)。
+		if( "$singlebell" eq "$val" ) {
+			say "\"%matchChar($singlebell)\"に\"$val\"が含まれている。";
+		}
+	}
+}
+say "以下、実行。";
+&smartMatch(1);						# 出力なし。
+&smartMatch('晴');					# 出力なし。
+&smartMatch('本日は晴天なり。');	# "%matchChar(本日は晴天なり。)"に"本日は晴天なり。"が含まれている。
+&smartMatch('本日は 晴天なり。');	# 出力なし。
+&smartMatch('ジングルベル');		# 出力なし。
+&smartMatch(20211221);				# 出力なし。
+```
+スマートマッチ演算子のみのプログラムと全く同じ結果になっているように思うため、使う価値はあるかもね。  
+
+以下、ハッシュの値を取り出すのはスマートマッチ演算子ではできないようだ。
+```perl
+package subPackage::Function::values;
+say "以下、" . __PACKAGE__;
+sub smartMatch {
+	my $val = shift;
+
+	foreach my $singlebell ( values %matchChar ) {
+		# 今回の場合は、右のパターンに一致するかどうかを見ている(本来の挙動通り)。
+		if( "$singlebell" eq "$val" ) {
+			say "\"%matchChar($singlebell)\"に\"$val\"が含まれている。";
+		}
+	}
+}
+say "以下、実行。";
+&smartMatch(1);						# 出力なし。
+&smartMatch('晴');					# 出力なし。
+&smartMatch('本日は晴天なり。');	# 出力なし。
+&smartMatch('本日は 晴天なり。');	# 出力なし。
+&smartMatch('ジングルベル');		# "%matchChar(ジングルベル)"に"ジングルベル"が含まれている。
+&smartMatch(20211221);				# "%matchChar(20211221)"に"20211221"が含まれている。
+```
+まぁ当然かな。  
+
+上記と同じ(キーを取り出し、そのキーを基準に値を取り出して比較している)。
+```perl
+package subPackage::Function::keys;
+say "以下、" . __PACKAGE__;
+sub smartMatch {
+	my $val = shift;
+
+	foreach my $singlebell ( keys %matchChar ) {
+		# 今回の場合は、右のパターンに一致するかどうかを見ている(本来の挙動通り)。
+		if( "$matchChar{$singlebell}" eq "$val" ) {
+			say "\"%matchChar($singlebell->$matchChar{$singlebell})\"に\"$val\"が含まれている。";
+		}
+	}
+}
+say "以下、実行。";
+&smartMatch(1);						# 出力なし。
+&smartMatch('晴');					# 出力なし。
+&smartMatch('本日は晴天なり。');	# 出力なし。
+&smartMatch('本日は 晴天なり。');	# 出力なし。
+&smartMatch('ジングルベル');		# "%matchChar(singlebell->ジングルベル)"に"ジングルベル"が含まれている。
+&smartMatch(20211221);				# "%matchChar(本日は晴天なり。->20211221)"に"20211221"が含まれている。
+```
+回りくどいことをするだけ無駄なのだが、試しにやってみた。  
+
+以下、配列要素のひとつがハッシュのキーのひとつに一致することの比較プログラム例）
+```perl
+package subPackage::Function::array;
+say "以下、" . __PACKAGE__;
+sub smartMatch {
+	my $val = shift;
+
+	if(%matchChar ~~ @arrayChar) {
+		say "マッチ。"
+	}
+}
+say "以下、実行。";
+&smartMatch();	# マッチ。
+```
+何に使うのか分からないが、とりあえず、このようなことができる。  
+
+
 </details>
 
 
