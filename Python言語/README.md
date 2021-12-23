@@ -1303,7 +1303,7 @@ Hello World(引数あり-戻り値あり).
   [x] [スタック](#stackChapter3)2021/10/02  
   [x] [キュー](#queueChapter3)2021/11/07  
   [x] [リスト](#listChapter3)2021/12/04  
-  [ ] [木](#woodChapter3)  
+  [x] [木](#woodChapter3)2021/12/22  
   [ ] [グラフ](#graphChapter3)  
   [ ] [データを保存する。](#saveTheDataChapter3)  
 <a name="algorithmTextbookLearnedinPythonChapter4"></a>
@@ -2179,6 +2179,141 @@ main()
 
 <a name="woodChapter3"></a>
 #### 木
+[リスト](#listChapter3)のように連なっており、接点とそれを繋ぐ方法を有している必要がある。  
+頂点(出発点)を根(親)と呼び、それぞれの接点を葉(子)と呼び、それらを繋ぐ方法を枝(辺とも)呼ぶ。  
+根・枝・葉を漏れなく表した全体を木構造と言い、一部の表す場合は部分木と呼ぶ。  
+根と葉の2種類をノードと言う。  
+このノードは、既出のリストのように、データ部分・繋ぐ枝情報が含まれる。  
+また、リストとの違いは、葉が二股に分かれることに違いがあり、今回の場合は、次に繋がる葉情報用の枝部分を2種類有していること。  
+※要は、リストの場合は、数珠つなぎになっているため、枝分かれしない。そこに違いがある。  
+
+以下、二分木例）
+```text
+         根
+    |-----|-----|
+    |           |
+   葉          葉
+|---|---|   |---|---|
+|       |   |       |
+葉     葉   葉     葉
+        |           |
+    |---|---|   |---|
+    |       |   |
+   葉      葉  葉
+```
+
+今回のプログラム例も他と同じように、本来のやり方を採用せず、未来のない作り方をする。  
+要は、構造体などでノードを作らず、配列でノードを構築する。  
+正確に言えば、2次元配列から **[左の葉・右の葉・データ]** を作成する。  
+以下、その例）
+```python
+node = [
+    [1, 2, 10],
+    [3, 4, 20],
+    [5, None, 30],
+]
+```
+
+以下、プログラム。
+```python
+LEFT = 0    # 左ノード番号用定数
+RIGHT = 1   # 右ノード番号用定数
+DATA = 2    # データ値用定数
+
+
+def tree(node):
+    MAX = len(node)
+
+    print("指定番号のノード調査。")
+    print("入力なしのEnterにて終了。")
+
+    while True:
+        inString = input("number：")
+        if inString == "":
+            break
+        number = int(inString)
+        if 0 <= number and number < MAX:
+            print("node{}の値は{}".format(number, node[number][DATA]))
+            leftNumber = node[number][LEFT]
+            if leftNumber is not None:
+                print("左の葉は" + str(node[leftNumber][DATA]))
+            else:
+                print("左の葉は存在しない。")
+            rightNumber = node[number][RIGHT]
+            if rightNumber is not None:
+                print("右の葉は" + str(node[rightNumber][DATA]))
+            else:
+                print("右の葉は存在しない。")
+        else:
+            print("0から" + str(MAX-1) + "の範囲必須。")
+
+
+def main():
+    node = [
+        [1,    2,    10],
+        [3,    4,    20],
+        [5,    None, 30],
+        [None, None, 40],
+        [6,    7,    50],
+        [None, None, 60],
+        [None, None, 70],
+        [None, None, 80],
+    ]
+    tree(node)
+
+
+main()
+```
+
+以下、実行結果。
+```terminal
+指定番号のノード調査。
+入力なしのEnterにて終了。
+number：0
+node0の値は10
+左の葉は20
+右の葉は30
+number：1
+node1の値は20
+左の葉は40
+右の葉は50
+number：2
+node2の値は30
+左の葉は60
+右の葉は存在しない。
+number：3
+node3の値は40
+左の葉は存在しない。
+右の葉は存在しない。
+number：4
+node4の値は50
+左の葉は70
+右の葉は80
+number：5
+node5の値は60
+左の葉は存在しない。
+右の葉は存在しない。
+number：6
+node6の値は70
+左の葉は存在しない。
+右の葉は存在しない。
+number：7
+node7の値は80
+左の葉は存在しない。
+右の葉は存在しない。
+number：8
+0から7の範囲必須。
+number：
+```
+
+
+* 語弊を生む表現。  
+  P108の「木とリストの違い」の後半説明に、
+  > 閉路とは図3-4-1で、例えば⑤と⑦がつながるようなノードが枝によって閉じられた構造を意味します。  
+  
+  とある。  
+  どう考えても5と7は繋がらない。  
+
 
 <a name="graphChapter3"></a>
 #### グラフ
