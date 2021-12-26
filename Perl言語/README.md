@@ -3865,6 +3865,55 @@ sub switchIf {
 例）`when('a')`の場合`when($_ ~~ 'a')`のこと。  
 例）`when($_ eq 'a')`の場合、`when($_ eq 'a')`のこと。  
 
+
+<a name="practicaluseGivenwhencontinue"></a>
+#### コンティニュ文付きの処理。
+以下、**continue**文付きのプログラム例）
+```perl
+use v5.24;
+no warnings 'experimental::smartmatch';	# 警告抑止。
+
+sub switchIF {
+	my $val = shift;
+	given ($val) {
+		say "$valをwhen句で比較する。";
+		when (1)   { say "number 1" }
+		say "以下、aと比較。";
+		when ("h") { say "string a" }
+		say "以下、1文字と比較。";
+		when (/o/) { say "string o"; continue}
+		when (/g/) { say "string g"; continue}
+		when (/e/) { say "string e"; continue}
+		default    { say "previous case not true" };
+	};
+}
+&switchIF(1);
+		# 1をwhen句で比較する。
+		# number 1
+
+&switchIF("h");
+		# hをwhen句で比較する。
+		# 以下、aと比較。
+		# string a
+
+&switchIF("hoge");
+		# hogeをwhen句で比較する。
+		# 以下、aと比較。
+		# 以下、1文字と比較。
+		# string o
+		# string g
+		# string e
+		# previous case not true
+
+&switchIF("hoge");
+	# 以下、continue文がない場合の出力結果。
+		# hogeをwhen句で比較する。
+		# 以下、aと比較。
+		# 以下、1文字と比較。
+		# string o
+```
+continueがあることにより、文字列が尽きるまで**given**に戻り、比較処理が続く・・・ようだ。  
+
 </details>
 
 
