@@ -3757,6 +3757,8 @@ sub smartMatch {
 これらは、[第7版](https://www.oreilly.co.jp/books/9784873118246/)に記載されていない。  
 ぬぅ。  
 
+<details><summary>警告出力ありのスマートマッチ演算子利用例</summary>
+
 警告が出て構わないのであれば、以下のプログラムでSwitch文が使える。
 ```perl
 use v5.24;
@@ -3765,8 +3767,8 @@ sub switch {
 	my $val = shift;
 	given ($val) {
 		# given is experimental at givenWhen_v5.24失敗v2.pl line 5.
-		when (1)    { say "number 1" }	# when is experimental at givenWhen_v5.24失敗v2.pl line 7.
-		when ("a")  { say "string a" }	# when is experimental at givenWhen_v5.24失敗v2.pl line 8.
+		when (1)    { say "number 1" }	# when is experimental at givenWhen_v5.24失敗v2.pl line 7.	←☆このメッセージ出力余分。
+		when ("a")  { say "string a" }	# when is experimental at givenWhen_v5.24失敗v2.pl line 8.	←☆このメッセージ出力余分。
 		default     { say "previous case not true" };
 	};
 }
@@ -3776,7 +3778,9 @@ sub switch {
 ```
 [メッセージ診断](https://perldoc.jp/docs/perl/5.22.1/perldiag.pod)  
 
-以下、警告抑止後のプログラム例）
+</details>
+
+上記の余分なメッセージを抑止したのが、以下の警告抑止後のプログラム例になる。
 ```perl
 use v5.24;
 no warnings 'experimental::smartmatch';	# 警告抑止。
@@ -3784,15 +3788,17 @@ no warnings 'experimental::smartmatch';	# 警告抑止。
 sub givenwhen {
 	my $val = shift;
 	given ($val) {
-			when (1)    { say "number 1" }
-			when ("a")  { say "string a" }
-			default     { say "previous case not true" };
+		when (1)    { say "number 1" }
+		when ("a")  { say "string a" }
+		default     { say "previous case not true" };
 	};
 }
 &givenwhen(1);			# number 1
 &givenwhen('a');		# string a
 &givenwhen(20211220);	# previous case not true
 ```
+
+<details><summary>if文とスマートマッチ演算子の併用(見にくい結果になった)</summary>
 
 以下、if文を使う(しかし、スマートマッチ演算子の併用をした場合、上記の"Given-when"と変わらないどころか見にくくなる)。
 ```perl
@@ -3822,6 +3828,10 @@ sub switchIf {
 何の役にも立たない。  
 スマートマッチ演算子をif文で使う場合、**given-when**を使えば良い。  
 
+</details>
+
+<details><summary>if文と正規表現検索の組み合わせ(望んでいない結果が出てくる)</summary>
+
 以下、if文を使う(正規表現との組み合わせのため、望ましい結果は出てこない)。
 ```perl
 use v5.24;
@@ -3849,6 +3859,7 @@ sub switchIf {
 ```
 良い具合に動いてくれない。  
 
+</details>
 
 </details>
 

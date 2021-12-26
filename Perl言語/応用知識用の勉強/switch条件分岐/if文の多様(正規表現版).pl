@@ -17,7 +17,7 @@ sub asakunoSwitch {
 	else { say "previous case not true" }
 }
 &asakunoSwitch(1);
-#	出力結果：number 1	←☆本来"number 1"なので、あっているようにみえる。
+#	出力結果：number 1	←☆本来"number 1"なので、あっているようにみえる(しかし、1を渡したわけでは無いため、間違った振る舞いになっている)。
 
 &asakunoSwitch('a');
 #	出力結果：pattern v1	←☆本来"string a"なので、間違っている(正規表現ゆえの間違いだろう)。

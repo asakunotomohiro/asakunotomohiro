@@ -5,6 +5,7 @@ sub asakunoSwitch {
 	my $val = shift;
 	my @array = ('asakuno', 42, 20211220, );
 	my %hash  = (20211220=>'asakuno', tomohiro=>20211221, );
+	# 以下、スマートマッチ演算子を用いるため、if文と併用するのが無駄になっている(given-whenを使えよ)。
 	if(    $val ~~ 1          ){ say "number 1" }
 	elsif( $val ~~ "a"        ){ say "string a" }
 	elsif( $val ~~ [1..10,42] ){ say "number in list v1" }
