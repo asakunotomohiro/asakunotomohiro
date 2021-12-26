@@ -146,6 +146,8 @@ $
 基礎知識5種類に納められない範囲の勉強に手を広げる。  
 
 * [応用知識](#appliedknowledge)  
+  * [ ] [スマートマッチ演算子`~~`](#practicaluseSmartmatch)  
+    * [x] [switch(given-when)](#practicaluseGivenwhen)  
   * [ ] [ポインタ・リファレンス](#practicalusePointer)  
     * [x] リファレンス  
       [x] 変数  
@@ -178,6 +180,7 @@ $
   * [ ] [テスト方法](#practicaluseTester)  
   * [ ] [標準関数(モジュール)](#practicaluseModule)  
   * [ ] [プロセス管理](#practicaluseSystemfunc)  
+  * [ ] [正規表現](#practicaluseRegularexpression)  
 
 </details>
 
@@ -409,10 +412,10 @@ print "$hoge's" . $hoge;	# boo	←☆なぜこの表記になるのか分から�
 |`""`|`qq//`|リテラル文字列|する|
 |``` `` ```|`qx//`|コマンド実行|する|
 |`()`|`qw//`|ワードリスト|しない|
-|`//`|`m//`|パターンマッチ|する|
 |`s///`|`s///`|パターン置換|する|
 |`y///`|`tr///`|文字変換|しない|
-|`""`|`qr//`|正規表現|する|
+|`//`|`m//`|[正規表現](#practicaluseRegularexpression)|する|
+|`""`|`qr//`|[正規表現](#practicaluseRegularexpression)|する|
 
 
 <a name="subVariable4"></a>
@@ -540,6 +543,8 @@ say $hoge;	# 83
     左シフト演算子。  
     右シフト演算子。  
     ビット否定演算子。  
+  * [x] [マッチ演算子(正規表現)](#practicaluseRegularexpression)  
+    [x] 結合演算子`=~`  
   * [ ] 優先順位  
     [C言語での優先順位と代わらない](https://perldoc.jp/docs/perl/5.10.0/perlfaq7.pod#Why32do32Perl32operators32have32different32precedence32than32C32operators63)  
 
@@ -867,7 +872,7 @@ my $bar = 20210901;
 if ( $hoge[0] == $bar ) {
 	say "等しい。";
 }
-#	出力結果：等しい。
+	# 出力結果：等しい。
 ```
 
 また、`!`を使う場合、条件式の結果を否定して判定する。
@@ -933,38 +938,38 @@ my @boo = (20211205, 20211206, );
 if ( 0 == undef ) {
 	say 'undefと0の比較, $boo[1]';
 }
-#	出力結果：undefと0の比較, $boo[1]	←☆出力されたら失敗。
+	# 出力結果：undefと0の比較, $boo[1]	←☆出力されたら失敗。
 
 if ( $boo[1] == undef ) {
 	say 'undefとの比較成功, $boo[1]';
 }
-#	出力結果：	←☆出力されない(undefではないため、当然のこと)。
+	# 出力結果：	←☆出力されない(undefではないため、当然のこと)。
 
 if ( $boo[2] == undef ) {
 	say 'undefとの比較成功, $boo[2]';
 }
-#	出力結果：undefとの比較成功, $boo[2]	←☆文字列ではないが、気にせずundef
+	# 出力結果：undefとの比較成功, $boo[2]	←☆文字列ではないが、気にせずundef
 
 if ( "$boo[2]" == undef ) {
 	say 'undefとの比較成功, $boo[2]';
 }
-#	出力結果：undefとの比較成功, $boo[2]	←☆文字列だが、気にせずundef
+	# 出力結果：undefとの比較成功, $boo[2]	←☆文字列だが、気にせずundef
 
 if ( defined "$boo[2]" ) {	←☆変数に値は入っていない。
 	say "ここが出力されたら失敗";
 }
-#	出力結果：ここが出力されたら失敗	←☆文字列として定義されている認識をされた。
-#		いわば、この比較方法は失敗。
+	# 出力結果：ここが出力されたら失敗	←☆文字列として定義されている認識をされた。
+	# 	いわば、この比較方法は失敗。
 
 if ( defined $boo[2] ) {	←☆変数に値は入っていない。
 	say "出力されないため、成功。";
 }
-#	出力結果：	←☆出力されない。
+	# 出力結果：	←☆出力されない。
 
 unless ( defined $boo[2] ) {	←☆変数に値は入っていない。
 	say "出力されるため、成功。";
 }
-#	出力結果：	←☆出力されない。
+	# 出力結果：	←☆出力されない。
 ```
 **undef**との比較は、`==`だろうが、`eq`だろうが、気にしなくて良いようだな。  
 
@@ -982,7 +987,7 @@ unless ( defined $boo[2] ) {	←☆変数に値は入っていない。
     if文の条件式が真だった場合に、say処理が走る。  
   * 基本構造例：switch  
     [スイッチ構文](https://perldoc.jp/docs/perl/5.10.0/perlfaq7.pod#How32do32I32create32a32switch32or32case32statement63)はない？  
-    v5.10以降であれば使える。  
+    [v5.10以降](#practicaluseGivenwhen)であれば使える。  
   * if文の否定：unless  
   * unless修飾子：if修飾子と同じように使える。  
 
@@ -992,6 +997,7 @@ unless ( defined $boo[2] ) {	←☆変数に値は入っていない。
   * [ ] 論理演算子  
     * [ ] 排他的論理和(`XOR`・`NOT OR`・`^`)  
     * [ ] 否定(`NOT`・`!`・`~`)  
+      ※`=~`は正規表現になるため、気をつけること。  
     * [ ] ビット演算子(`&`・`|`)  
     * [ ] defined-or演算子(以下説明)  
 
@@ -1076,6 +1082,8 @@ unless ( defined $boo[2] ) {	←☆変数に値は入っていない。
 例）`foreach my $変数名 ( sort(リスト) ) { ・・・ }`  
 当たり前だが、foreach前にsort演算子が実行され、実行後にforeachが実行されるため、sort演算子の実行は最初の1回だけと言うことになる。  
 
+※[スマートマッチ演算子](#practicaluseSmartmatch)の[foreachとwhenの組み合わせ](#practicaluseSmartmatchforeach)も存在する。  
+
 
 <a name="subRepetition4"></a>
 #### `for`の入れ子。
@@ -1108,9 +1116,8 @@ foreach my $変数名1 ( リスト ) {
 ```perl
 my @hoge = (20210901, 20210902, );
 
-# 繰り返しの入れ子。
-#	lastラベルで抜け出る。
 LASTJUMP: foreach my $boo ( @hoge ) {
+	# 繰り返しの入れ子。
 	foreach my $number ( 1..10 ) {
 		if ( $number == 3 ) {
 			say "$number：$boo";
@@ -1120,6 +1127,7 @@ LASTJUMP: foreach my $boo ( @hoge ) {
 					# も出力している。
 					# lastのため、1つ目の繰り返しを抜け出ている。
 		}
+		# 以下、lastラベルで抜け出る。
 		last LASTJUMP if ( $number == 3);
 	}
 }
@@ -1130,8 +1138,9 @@ LASTJUMP: foreach my $boo ( @hoge ) {
 ```perl
 my @boo = (20210901, 20210902, );
 
-#	nextで抜け出る。
 LASTJUMP: foreach my $hoge ( @boo ) {
+	# nextで抜け出る。
+
 	foreach my $number ( 1..10 ) {
 		if ( $number == 3 ) {
 			say "$number：$hoge";	# 出力なし。
@@ -1139,8 +1148,8 @@ LASTJUMP: foreach my $hoge ( @boo ) {
 		next LASTJUMP if ( $number == 2);
 			# 1つ目のforeach処理に戻るため、3以降にインクリメントされず、処理が終了する。
 			# このnext処理がない場合、当然のように2行が出力される。
-#					3：20210901
-#					3：20210902
+			#		3：20210901
+			#		3：20210902
 	}
 }
 ```
@@ -1452,8 +1461,7 @@ Perlでオブジェクト指向開発ができるだけでなく、そのやり�
   * `for`を用いる。  
 
 ```Perl
-# 以下の配列に入っている数字を使い、合計点及び平均点を求める。
-my @score = (70, 98, 92, 88, 64);
+my @score = (70, 98, 92, 88, 64);	# 配列に入っている数字を使い、合計点及び平均点を求める。
 
 my $total;	# この変数に合計点を入れる。
 for ( @score ) {
@@ -1461,9 +1469,8 @@ for ( @score ) {
 	# 以下、合算。
 	$total += $_;
 }
-# 以下、平均点を求める(合計÷個数)。
-#	my $count = @score;	←☆配列の個数を取り出して使ってもいい。
-my $average = $total / @score;
+	# 以下、平均点を求める(合計÷個数)。
+my $average = $total / @score;	# `my $count = @score;`	←☆配列の個数を取り出して使ってもいい。
 
 say "合計点：$total";	# 合計点：412
 say "平均点：$average";	# 平均点：82.4
@@ -2106,16 +2113,19 @@ sub main() {
 	}
 }
 &main();
-# 出力結果：
-#			取り出したデータ：0
-#			取り出したデータ：1
-#			取り出したデータ：2
-#			取り出したデータ：3
-#			取り出したデータ：途中に追加。
-#			取り出したデータ：4
-#			取り出したデータ：5
-#			取り出したデータ：最後に追加。
-#			取り出したデータ：取り出すデータが存在しません。
+```
+
+以下、出力結果。
+```terminal
+取り出したデータ：0
+取り出したデータ：1
+取り出したデータ：2
+取り出したデータ：3
+取り出したデータ：途中に追加。
+取り出したデータ：4
+取り出したデータ：5
+取り出したデータ：最後に追加。
+取り出したデータ：取り出すデータが存在しません。
 ```
 アルゴリズムの勉強としておかしなプログラムだと思うが、あるものは使わなければならない(車輪の再開発はしません)。  
 ※上記のプログラムは、末尾から入れて、先頭を取り出している。  
@@ -2151,7 +2161,7 @@ sub del_list() {
 	}
 	else {
 		my $listdataIndex = -1;
-#		while( my ($index, $value) = each @$listdata ){
+		# while( my ($index, $value) = each @$listdata ){
 		while( my ($index, $value) = each @datalist ){
 			if ( "$value" eq "$data" ) {
 				$listdataIndex = $index;
@@ -2209,19 +2219,22 @@ sub main() {
 	&put_list(\@datalist);
 }
 &main();
-# 出力結果：
-#		空表示：
-#		　　EOF
-#		空削除：
-#		　　リストデータ存在せず。
-#		完全：
-#		　　0--->1--->2--->3--->bar--->4--->5--->boo--->EOF
-#		3削除：
-#		　　0--->1--->2--->bar--->4--->5--->boo--->EOF
-#		bar削除：
-#		　　0--->1--->2--->4--->5--->boo--->EOF
-#		先頭削除：
-#		　　1--->2--->4--->5--->boo--->EOF
+```
+
+以下、出力結果。
+```terminal
+空表示：
+　　EOF
+空削除：
+　　リストデータ存在せず。
+完全：
+　　0--->1--->2--->3--->bar--->4--->5--->boo--->EOF
+3削除：
+　　0--->1--->2--->bar--->4--->5--->boo--->EOF
+bar削除：
+　　0--->1--->2--->4--->5--->boo--->EOF
+先頭削除：
+　　1--->2--->4--->5--->boo--->EOF
 ```
 ループ処理を途中で抜け出すことで処理速度の向上を図りたかったが、そうした場合リファレンスカウントが生きたままになり、リファレンス利用が仇になり、バグも生む。  
 これの解決方法はないのだろうか。  
@@ -2501,6 +2514,7 @@ Python限定にしたくなかったが、他のプログラミング言語に�
 * 応用部分  
   * [リファレンス](#practicaluseReference)  
   * [ハッシュ(連想配列)](#practicaluseHash)  
+  * [switchステートメント](#practicaluseGivenwhen)  
   * 今後も機会があれば増やしていく。  
 
 
@@ -2602,12 +2616,13 @@ say $#hoge;	# 1
 空確認は、要素数0で判断できる。
 ```Perl
 my @hoge = qw(20210831, 20210901, );
-# 配列要素の空確認。
 if (@hoge > 0) {
+	# 配列要素の空確認。
 	say "空でない。"
 }
-# 別の方法。
+
 if (@hoge) {
+	# 別の方法。
 	say "空でない。"
 }
 ```
@@ -2687,8 +2702,8 @@ sub arrayReferenceEdit() {
 	for my $value ( @$two ) {
 		say "$valueを書き換える。";
 		# 出力結果：
-#				配列-配列を書き換える。
-#				リファレンスを書き換える。
+		#		配列-配列を書き換える。
+		#		リファレンスを書き換える。
 		# 以下、書き換え実施。
 		$value = "書き換え：" . $value . "を書き換える";
 	}
@@ -2773,7 +2788,7 @@ $hashref = {
 
 
 ##### 名前無し関数(サブルーチン)へのリファレンス
-> 無名サブルーチンのへのリファレンスは、サブルーチン名の無い sub を使って 作ることができます:  
+> 無名サブルーチンのへのリファレンスは、サブルーチン名の無いsubを使って作ることができます:  
 
 ```perl
 $coderef = sub { print "Boink!\n" };
@@ -2786,7 +2801,7 @@ $coderef = sub { print "Boink!\n" };
 ```perl
 $name = "foo";
 
-# 以下、全てエラーになる。
+	# 以下、全てエラーになる。
 $$name = 1;         # Sets $foo
 ${$name} = 2;       # Sets $foo
 ${$name x 2} = 3;   # Sets $foofoo
@@ -2794,8 +2809,7 @@ $name->[0] = 4;     # Sets $foo[0]
 @$name = ();        # Clears @foo
 &$name();           # Calls &foo() (as in Perl 4)
 
-# 5の代入が出来ずにエラーになる。
-$pack = "THAT";
+$pack = "THAT";     # 5の代入が出来ずにエラーになる。
 ${"${pack}::$name"} = 5;    # Sets $THAT::foo without eval
 ```
 この書き方が出来ないように`use strict 'refs';`を宣言すれば良い。  
@@ -2999,17 +3013,17 @@ sub hashReference() {
 	while( my ($key, $value) = each %dedeboo ) {
 		say '%dedebooの要素を出力($boo[0])：' . "$key -> $value";	# %barhash が入っていると思っている。
 			# 出力結果：
-#					%dedebooの要素を出力($boo[0])：hoge -> 20210923
-#					%dedebooの要素を出力($boo[0])：boo -> 本日は晴天なり。
-#					%dedebooの要素を出力($boo[0])：bar -> Perl難しい
+			#		%dedebooの要素を出力($boo[0])：hoge -> 20210923
+			#		%dedebooの要素を出力($boo[0])：boo -> 本日は晴天なり。
+			#		%dedebooの要素を出力($boo[0])：bar -> Perl難しい
 	}
 
 	while( my ($key, $value) = each %$$boo ) {
 		say '%hogeの要素を出力(%$$boo)：' . "$key -> $value";	# %barhash が入っていると思っている。
 			# 出力結果：
-#					%hogeの要素を出力(%$$boo)：hoge -> 20210923
-#					%hogeの要素を出力(%$$boo)：bar -> Perl難しい
-#					%hogeの要素を出力(%$$boo)：boo -> 本日は晴天なり。
+			#		%hogeの要素を出力(%$$boo)：hoge -> 20210923
+			#		%hogeの要素を出力(%$$boo)：bar -> Perl難しい
+			#		%hogeの要素を出力(%$$boo)：boo -> 本日は晴天なり。
 	}
 }
 &hashReference();
@@ -3083,9 +3097,9 @@ sub associativearray() {
 		my $value = $hoge{$key};
 		say "$key -> $value";
 		# 出力結果：
-#				hoge -> 100006601775326
-#				boo -> 100011324721840
-#				bar -> 300505
+		#		hoge -> 100006601775326
+		#		boo -> 100011324721840
+		#		bar -> 300505
 	}
 	say "%hoge";	# %hoge
 	say %hoge;		# hoge100006601775326boo100011324721840bar300505	←☆当然実行ごとに値が変わる。
@@ -3114,9 +3128,9 @@ sub associativearray() {
 		my $value = $hoge{$key};
 		say "$key -> $value";
 		# 出力結果：
-#				hoge -> 100006601775326
-#				boo -> 100011324721840
-#				bar -> 300505
+		#		hoge -> 100006601775326
+		#		boo -> 100011324721840
+		#		bar -> 300505
 	}
 	say "-" x 30;
 	my %revershoge = reverse %hoge;
@@ -3124,9 +3138,9 @@ sub associativearray() {
 		my $value = $revershoge{$key};
 		say "$key -> $value";
 		# 出力結果：
-#				100006601775326 -> hoge
-#				100011324721840 -> boo
-#				300505 -> bar
+		#		100006601775326 -> hoge
+		#		100011324721840 -> boo
+		#		300505 -> bar
 	}
 }
 &associativearray();
@@ -3215,9 +3229,9 @@ sub associativearray() {
 	while( my ($key, $value) = each %hoge ) {
 		say "$key -> $value";
 		# 出力結果：
-#					bar -> 続・初めてのPerl 改訂第2版
-#					boo -> 20180120
-#					hoge -> 20210922
+		#			bar -> 続・初めてのPerl 改訂第2版
+		#			boo -> 20180120
+		#			hoge -> 20210922
 	}
 }
 &associativearray();
@@ -3264,9 +3278,9 @@ sub associativearray() {
 	while( my ($key, $value) = each %hoge ) {
 		say "$key -> $value";
 		# 出力結果：
-#				hoge -> 4873118247
-#				boo -> 20210922
-#				bar -> 本日は晴天なり。
+		#		hoge -> 4873118247
+		#		boo -> 20210922
+		#		bar -> 本日は晴天なり。
 	}
 
 	say "-" x 30;
@@ -3274,8 +3288,8 @@ sub associativearray() {
 	while( my ($key, $value) = each %hoge ) {
 		say "$key -> $value";
 		# 出力結果：
-#				boo -> 20210922
-#				bar -> 本日は晴天なり。
+		#		boo -> 20210922
+		#		bar -> 本日は晴天なり。
 	}
 }
 &associativearray();
@@ -3297,6 +3311,898 @@ say "$ENV{HISTCONTROL}";	# ignoreboth
 ```
 
 何に使うのか分からないが、GoでのGUI開発は日本語文字を取得するのに環境変数を利用しているな・・・。  
+
+</details>
+
+
+<a name="practicaluseSmartmatch"></a>
+<details><summary>応用知識-スマートマッチ演算子</summary>
+
+この技術(`~~`)を使うことで、[given-when](#practicaluseGivenwhen)と組み合わせ、Switch構文を構築可能になる。  
+今回参考にする書籍は、[初めてのPerl-第6版](https://www.oreilly.co.jp/books/9784873115672/)の**2012/07/24初版第1版発行**になる。  
+ダムマッチの説明はしない。  
+
+
+### 利用バージョンの歴史。
+Perl5.10.0で今回のスマートマッチ演算子が導入された。  
+そして、このときは問題点があり、Perl5.10.1で解消した。  
+そのため、Perl5.10.0を使わず、Perl5.10.1以降を使うために、正確なバージョン指定が必要になる。  
+記入例）
+`use 5.010001;	# 最低5.10.1必須。`  
+
+詳しくは、[Perlの文法(perlsyn)](https://perldoc.jp/docs/perl/5.8.8/perlsyn.pod)を参照すること。  
+
+
+#### 初期v5.10.0
+可変(commutative)扱いとのこと。  
+オペランドの順序は関係ないということ。  
+※今回、このバージョンの検証はしない。  
+
+
+#### 初期v5.10.1
+非可変になった。  
+そのため、オペランドの順序が意味を持つようになった。  
+
+
+<a name="practicaluseSmartmatchoperand"></a>
+##### スマートマッチ演算子とオペランドの組み合わせ。
+オペランドの順序が重要になる。  
+
+以下、まとめた表。  
+|プログラム例|正規表現型|
+|------------|----------|
+|`%bar ~~ %boo`|ハッシュのキーが全て等しい。|
+|`%bar ~~ @bar`または`@boo ~~ %boo`|最低でもハッシュのキーの1つが配列に含まれている。|
+|`%bar ~~ /$bar/`または`/$boo/ ~~ %boo`|最低でもキーの1つが正規表現に一致する。|
+|`$bar ~~ %hoge`|`$hoge{$bar}`が存在する。|
+|`@bar ~~ @boo`|配列の内容が等しい。|
+|`@bar ~~ /$boo/`|最低でも@barの1つの要素が正規表現に一致する。|
+|`$bar ~~ undef`|`$bar`が未定義である。|
+|`$bar ~~ /$boo/`|正規表現。|
+|`20211221 ~~ '2021.1221'`|**数値風文字列**に、数値として等しい。|
+|`'bar' ~~ 'bar'`|文字列として等しい。|
+|`20211221 ~~ 12212021`|数値として等しい。|
+
+* 組み合わせ例  
+  * [大まかなプログラム例](#practicaluseSmartmatchProgram)  
+  * [変数の扱い。](#practicaluseSmartmatchVariable)  
+  * [配列の扱い。](#practicaluseSmartmatchArray)  
+  * [ハッシュの扱い。](#practicaluseSmartmatchHash)  
+  * [無名関数リファレンス(無名サブルーチン)の扱い。](#practicaluseSmartmatchfunction)  
+
+
+<a name="practicaluseSmartmatchProgram"></a>
+### 実際のプログラム。
+どのような挙動が正解か不明。  
+
+以下、正しい解釈だと思う(コメント含め)。
+```perl
+use v5.10.1;
+no warnings 'experimental::smartmatch';	# 警告抑止(スマートマッチ演算子~~のために必要)。
+
+sub smartMatch {
+	my $val = shift;
+	my @array = ('本日は(晴天)なり。', 42, 'abc', );
+	my %hash  = (20211220=>'本日は晴天なり。', hoge=>20211221, );
+
+	# 以下、%hashに$valが含まれていれば発見したことになる(正規表現を使わなくて良いのか？)。
+	if(     $val   ~~ %hash   ){ say "ハッシュキー発見($val)。" }
+	# 以下、$valに'a'が含まれていれば発見したことになる。
+	elsif ( 'a'    ~~ $val    ){ say "a発見($val)。" }
+	# 以下、@arrayに$valが含まれていれば発見したことになる(正規表現を使わなくて良いのか？何より、順序はこれでいいのか？)。
+	elsif ( $val   ~~ @array  ){ say "配列値発見($val)。" }
+	# 以下、どれにも当てはまらなければその他のメッセージが出力される。
+	else { say "previous case not true" }
+}
+&smartMatch(1);						# previous case not true
+&smartMatch(20211220);				# ハッシュキー発見(20211220)。
+&smartMatch('本日は(晴天)なり。');	# 配列値発見(本日は(晴天)なり。)。
+&smartMatch('a');					# a発見(a)。
+```
+
+以下、スマートマッチ演算子を使わず、ハッシュのキーを完全一致で探す方法例）
+```perl
+use v5.10.1;
+no warnings 'experimental::smartmatch';	# 警告抑止(スマートマッチ演算子~~のために必要)。
+
+sub smartMatch {
+	my $val = shift;
+	my @array = ('本日は(晴天)なり。', 42, 'abc', );
+	my %hash  = (20211220=>'本日は晴天なり。', hoge=>20211221, );
+
+	# 以下、%hashに指定のキー($val)がある場合、メッセージを出す。
+	if ( exists $hash{$val} ) {
+		# キーの完全一致が大前提
+		say $hash{$val} . "発見。";
+	}
+}
+&smartMatch(1);						# 空文字列
+&smartMatch(20211220);				# 本日は晴天なり。発見。
+&smartMatch('本日は晴天なり。');	# 空文字列
+&smartMatch('a');					# 空文字列
+```
+
+以下、スマートマッチ演算子を使わず、ハッシュのキーを正規表現で探す方法-例）
+```perl
+use v5.10.1;
+no warnings 'experimental::smartmatch';	# 警告抑止(スマートマッチ演算子~~のために必要)。
+
+sub smartMatch {
+	my $val = shift;
+	my @array = ('本日は(晴天)なり。', 42, 'abc', );
+	my %hash  = (20211220=>'本日は晴天なり。', hoge=>20211221, );
+
+	# 以下は、キーの一部でも一致していた場合、キーと同じと判断する(乱暴)。
+	my $matched = 0;
+	foreach my $key ( keys %hash ) {
+		# key値が$valの正規表現パターンに一致する場合、マッチ変数にkey値を代入後、for文を抜ける。
+		do { $matched = $key; last } if $key =~ /$val/;
+	}
+	if ( $matched ) {
+		# 上記検索に掛かった場合、以下のメッセージを出力する。
+		say "$valはハッシュのキーと一致した($hash{$matched})。";
+	}
+}
+&smartMatch(1);	# 1はハッシュのキーと一致した(本日は晴天なり。)。	←☆引き数値が含まれているかどうかなのでこうなる(想定通り)。
+&smartMatch(20211220);				# 20211220はハッシュのキーと一致した(本日は晴天なり。)。
+&smartMatch('本日は晴天なり。');	# 空文字列
+&smartMatch('a');					# 空文字列
+&smartMatch('hoge');				# hogeはハッシュのキーと一致した(20211221)。
+&smartMatch(20211221);				# 空文字列
+```
+この時点で混乱している。
+
+
+<a name="practicaluseSmartmatchVariable"></a>
+#### 変数の扱い。
+変数へのスマートマッチ演算子の検証。  
+
+* 検証内容。  
+  * [スマートマッチ演算子のみ。](#practicaluseSmartmatchVariablesmart)  
+  * [スマートマッチ演算子及び正規表現検索を組み合わせ。](#practicaluseSmartmatchVariablesmartregular)  
+  * [正規表現検索のみ(スマートマッチ演算子なし)。](#practicaluseSmartmatchVariableregularexpression)  
+
+<a name="practicaluseSmartmatchVariablesmart"></a>
+以下、スマートマッチ演算子のみを用いた比較(比較という言葉が適切なのか？)。
+```perl
+use v5.10.1;
+no warnings 'experimental::smartmatch';	# 警告抑止(スマートマッチ演算子~~のために必要)。
+
+package mainSmartMatch::main;
+sub smartmatch {
+	my $val = shift;
+	my $matchChar = "本日は晴天なり。";
+
+	if( $matchChar ~~ $val ) {
+		say "$matchCharに$valが含まれている。";
+	}
+}
+say "以下、実行。";
+&smartmatch(1);						# 出力なし。
+&smartmatch('本');					# 出力なし。
+&smartmatch('本日は晴天なり。');	# 本日は晴天なり。に本日は晴天なり。が含まれている。
+&smartmatch('本日は 晴天なり。');	# 出力なし。
+&smartmatch('なり');				# 出力なし。
+```
+完全一致するものだけが検索にかかった。  
+
+
+<a name="practicaluseSmartmatchVariablesmartregular"></a>
+以下、スマートマッチ演算子及び正規表現検索を組み合わせた比較。
+```perl
+package mainSmartMatch::regex;
+sub smartmatch {
+	my $val = shift;
+	my $matchChar = "本日は晴天なり。";
+
+	if( $matchChar ~~ /$val/ ) {
+		say "$matchCharに$valが含まれている。";
+	}
+}
+say "以下、実行。";
+&smartmatch(1);						# 出力なし。
+&smartmatch('本');					# 本日は晴天なり。に本が含まれている。
+&smartmatch('本日は晴天なり。');	# 本日は晴天なり。に本日は晴天なり。が含まれている。
+&smartmatch('本日は 晴天なり。');	# 出力なし。
+&smartmatch('なり');				# 本日は晴天なり。になりが含まれている。
+```
+1文字でも含まれていることで、検索に掛かるようになった。  
+
+
+<a name="practicaluseSmartmatchVariableregularexpression"></a>
+以下、スマートマッチ演算子を使わず、正規表現検索のみで比較した。
+```perl
+package subPackage::Function;
+sub smartmatch {
+	my $val = shift;
+	my $variable = "本日は晴天なり。";
+
+	if( $variable =~ /$val/ ) {
+		say "$variableに$valが含まれている。";
+	}
+}
+say "以下、実行。";
+&smartmatch(1);						# 出力なし。
+&smartmatch('本');					# 本日は晴天なり。に本が含まれている。
+&smartmatch('本日は晴天なり。');	# 本日は晴天なり。に本日は晴天なり。が含まれている。
+&smartmatch('本日は 晴天なり。');	# 出力なし。
+&smartmatch('なり。');				# 本日は晴天なり。になり。が含まれている。
+```
+スマートマッチ演算子との組み合わせ結果と同じになった。  
+変数に対してはこんなものなのだろう。  
+リファレンスを絡ませたらどうなるのだろう・・・。  
+
+
+<a name="practicaluseSmartmatchArray"></a>
+#### 配列の扱い。
+配列へのスマートマッチ演算子の検証。  
+
+* 検証内容。  
+  * [スマートマッチ演算子のみ。](#practicaluseSmartmatchArraysmart)  
+  * [正規表現検索のみ。](#practicaluseSmartmatchArrayregularexpression)  
+  * [スマートマッチ演算子と正規表現検索の組み合わせ。](#practicaluseSmartmatchArraysmartregular)  
+  * [比較演算子のみを用いている。](#practicaluseSmartmatchArraycomparisonoperator)  
+
+<a name="practicaluseSmartmatchArraysmart"></a>
+以下、スマートマッチ演算子のみのプログラム例）
+```perl
+use v5.10.1;
+no warnings 'experimental::smartmatch';	# 警告抑止(スマートマッチ演算子~~のために必要)。
+
+sub smartMatch {
+	my $val = shift;
+	my @matchChar = ("本日は晴天なり。", "就職活動", "収入欲す", "hoge", );
+
+	# 左の値が右に含まれているかを調べる。
+	if( $val ~~ @matchChar ) {
+	#if( @matchChar ~~ $val ) {	←☆これは何も検索に掛からず。
+		say "\"@matchChar\"に\"$val\"が含まれている。";
+	}
+}
+&smartMatch(1);						# 出力なし。
+&smartMatch('入');					# 出力なし。
+&smartMatch('本日は晴天なり。');	# "本日は晴天なり。 就職活動 収入欲す hoge"に"本日は晴天なり。"が含まれている。
+&smartMatch('就職活動 収入欲す');	# 出力なし。
+```
+柔軟性はないようにみえるが、配列から要素を取り出す必要が無いのは便利だと思う。  
+※柔軟性ありの認識は、このプログラムに正規表現検索をあわせたものを指す。  
+
+<a name="practicaluseSmartmatchArrayregularexpression"></a>
+以下、正規表現検索のみのプログラム例）
+```perl
+sub smartMatch {
+	my $val = shift;
+	my @matchChar = ("本日は晴天なり。", "就職活動", "収入欲す", "hoge", );
+
+	foreach my $hoge (@matchChar) {
+		# 今回の場合は、右のパターンに一致するかどうかを見ている。
+		if( $hoge =~ /$val/ ) {
+			say "\"@matchChar\"に\"$val\"が含まれている。";
+		}
+	}
+}
+&smartMatch(1);						# 出力なし。
+&smartMatch('入');					# "本日は晴天なり。 就職活動 収入欲す hoge"に"入"が含まれている。
+&smartMatch('本日は晴天なり。');	# "本日は晴天なり。 就職活動 収入欲す hoge"に"本日は晴天なり。"が含まれている。
+&smartMatch('就職活動 収入欲す');	# 出力なし。
+```
+当たり前だが、配列要素を検索するため、配列から1つづつ取り出す必要がある。  
+その検索結果は、直後プログラムのスマートマッチ演算子と正規表現検索の組み合わせプログラム例と同等。  
+
+<a name="practicaluseSmartmatchArraysmartregular"></a>
+以下、スマートマッチ演算子と正規表現検索の組み合わせプログラム例）
+```perl
+sub smartMatch {
+	my $val = shift;
+	my @matchChar = ("本日は晴天なり。", "就職活動", "収入欲す", "hoge", );
+
+	# 以下、どちらの処理でも同じ結果が得られる。
+	#if( /$val/ ~~ @matchChar ) {
+	if( @matchChar ~~ /$val/ ) {
+		say "\"@matchChar\"に\"$val\"が含まれている。";
+	}
+}
+&smartMatch(1);						# 出力なし。
+&smartMatch('入');					# "本日は晴天なり。 就職活動 収入欲す hoge"に"入"が含まれている。
+&smartMatch('本日は晴天なり。');	# "本日は晴天なり。 就職活動 収入欲す hoge"に"本日は晴天なり。"が含まれている。
+&smartMatch('就職活動 収入欲す');	# 出力なし。
+```
+**入**の1文字だけでも一致したことで検索成功の判断をする。  
+これこそがスマートマッチ演算子の最短プログラムの尤もたる例だろう。  
+
+
+<a name="practicaluseSmartmatchArraycomparisonoperator"></a>
+以下は、[比較演算子](#Conditional条件分岐)のみを用いているプログラム例）
+```perl
+sub smartMatch {
+	my $val = shift;
+	my @matchChar = ("本日は晴天なり。", "就職活動", "収入欲す", "hoge", );
+
+	foreach my $hoge (@matchChar) {
+		# 今回の場合は、右のパターンに一致するかどうかを見ている。
+		if( "$hoge" eq "$val" ) {
+			say "\"@matchChar\"に\"$val\"が含まれている。";
+		}
+	}
+}
+&smartMatch(1);						# 出力なし。
+&smartMatch('入');					# 出力なし。
+&smartMatch('本日は晴天なり。');	# "本日は晴天なり。 就職活動 収入欲す hoge"に"本日は晴天なり。"が含まれている。
+&smartMatch('就職活動 収入欲す');	# 出力なし。
+```
+これはこれで実用性があるだろう・・・要は、スマートマッチ演算子のみのプログラムで十分だと言うこと。  
+
+
+<a name="practicaluseSmartmatchHash"></a>
+#### ハッシュの扱い。
+ハッシュへのスマートマッチ演算子の検証。  
+
+* 組み合わせ。  
+  * [スマートマッチ演算子のみ。](#practicaluseSmartmatchHashsmart)  
+  * [スマートマッチ演算子と正規表現検索の組み合わせ。](#practicaluseSmartmatchHashsmartregular)  
+  * [正規表現検索のみ。](#practicaluseSmartmatchHashsmartregularexpression)  
+  * [ハッシュのキーと完全一致のみ。](#practicaluseSmartmatchHashKeycomparisonoperator)  
+  * [ハッシュの値と完全一致のみ(直接値を取り出して比較)(スマートマッチ演算子は使えない)。](#practicaluseSmartmatchHashvaluecomparisonoperator)  
+  * [ハッシュの値と完全一致のみ(キー取り出し後に値と比較)(スマートマッチ演算子は使えない)。](#practicaluseSmartmatchHashkeyandvaluecomparison)  
+  * [配列要素のひとつがハッシュのキーのひとつに一致する。](#practicaluseSmartmatchHasharraymatch)  
+
+<a name="practicaluseSmartmatchHashsmart"></a>
+以下、スマートマッチ演算子のみのプログラム例）
+```perl
+use v5.10.1;
+no warnings 'experimental::smartmatch';	# 警告抑止(スマートマッチ演算子~~のために必要)。
+
+my @arrayChar = ("本日は晴天なり。", "クリスマス", "ジングルベル", "シングルベル", );
+my %matchChar = ("本日は晴天なり。"=>20211221, 4774135046=>"オブジェクト指向", singlebell=>"ジングルベル", );
+
+package mainSmartMatch::main;
+say "以下、" . __PACKAGE__;
+sub smartMatch {
+	my $val = shift;
+
+	if( $val ~~ %matchChar ) {
+		say "\"%matchChar\"に\"$val\"が含まれている。";
+	}
+}
+say "以下、実行。";
+&smartMatch(1);						# 出力なし。
+&smartMatch('晴');					# 出力なし。
+&smartMatch('本日は晴天なり。');	# "%matchChar"に"本日は晴天なり。"が含まれている。
+&smartMatch('本日は 晴天なり。');	# 出力なし。
+&smartMatch('ジングルベル');		# 出力なし。
+&smartMatch(20211221);				# 出力なし。
+```
+普通の結果が出てきたように感じるが、ハッシュからキーを取り出す作業が発生しない分、使い勝手はよさげかな。  
+
+<a name="practicaluseSmartmatchHashsmartregular"></a>
+以下、スマートマッチ演算子と正規表現検索の組み合わせプログラム例）
+```perl
+package subPackage::regex;
+say "以下、" . __PACKAGE__;
+sub smartMatch {
+	my $val = shift;
+
+	if( %matchChar ~~ /$val/ ) {
+		say "\"%matchChar\"に\"$val\"が含まれている。";
+	}
+}
+say "以下、実行。";
+&smartMatch(1);						# "%matchChar"に"1"が含まれている。
+&smartMatch('晴');					# "%matchChar"に"晴"が含まれている。
+&smartMatch('本日は晴天なり。');	# "%matchChar"に"本日は晴天なり。"が含まれている。
+&smartMatch('本日は 晴天なり。');	# 出力なし。
+&smartMatch('ジングルベル');		# 出力なし。
+&smartMatch(20211221);				# 出力なし。
+```
+股が緩い感じ・・・信用できない結果が出てきたが、これも用途に応じて使い分ける必要があるのだろう。  
+
+<a name="practicaluseSmartmatchHashsmartregularexpression"></a>
+以下、正規表現検索のみのプログラム例）
+```perl
+package subPackage::Function::regex;
+say "以下、" . __PACKAGE__;
+sub smartMatch {
+	my $val = shift;
+
+	foreach my $singlebell (keys %matchChar) {
+		# 今回の場合は、右のパターンに一致するかどうかを見ている(本来の挙動通り)。
+		if( $singlebell =~ /$val/ ) {
+			say "\"%matchChar($singlebell)\"に\"$val\"が含まれている。";
+		}
+	}
+}
+say "以下、実行。";
+&smartMatch(1);						# "%matchChar(4774135046)"に"1"が含まれている。
+&smartMatch('晴');					# "%matchChar(本日は晴天なり。)"に"晴"が含まれている。
+&smartMatch('本日は晴天なり。');	# "%matchChar(本日は晴天なり。)"に"本日は晴天なり。"が含まれている。
+&smartMatch('本日は 晴天なり。');	# 出力なし。
+&smartMatch('ジングルベル');		# 出力なし。
+&smartMatch(20211221);				# 出力なし。
+```
+スマートマッチ演算子と正規表現検索の組み合わせ結果と同じなんだが・・・どういうこと!?  
+
+<a name="practicaluseSmartmatchHashKeycomparisonoperator"></a>
+ハッシュのキーのみと完全一致するプログラム例）
+```perl
+package subPackage::Function::normal;
+say "以下、" . __PACKAGE__;
+sub smartMatch {
+	my $val = shift;
+
+	foreach my $singlebell ( keys %matchChar ) {
+		# 今回の場合は、右のパターンに一致するかどうかを見ている(本来の挙動通り)。
+		if( "$singlebell" eq "$val" ) {
+			say "\"%matchChar($singlebell)\"に\"$val\"が含まれている。";
+		}
+	}
+}
+say "以下、実行。";
+&smartMatch(1);						# 出力なし。
+&smartMatch('晴');					# 出力なし。
+&smartMatch('本日は晴天なり。');	# "%matchChar(本日は晴天なり。)"に"本日は晴天なり。"が含まれている。
+&smartMatch('本日は 晴天なり。');	# 出力なし。
+&smartMatch('ジングルベル');		# 出力なし。
+&smartMatch(20211221);				# 出力なし。
+```
+スマートマッチ演算子のみのプログラムと全く同じ結果になっているように思うため、使う価値はあるかもね。  
+
+<a name="practicaluseSmartmatchHashvaluecomparisonoperator"></a>
+以下、ハッシュの値を取り出すのはスマートマッチ演算子ではできないようだ。
+```perl
+package subPackage::Function::values;
+say "以下、" . __PACKAGE__;
+sub smartMatch {
+	my $val = shift;
+
+	foreach my $singlebell ( values %matchChar ) {
+		# 今回の場合は、右のパターンに一致するかどうかを見ている(本来の挙動通り)。
+		if( "$singlebell" eq "$val" ) {
+			say "\"%matchChar($singlebell)\"に\"$val\"が含まれている。";
+		}
+	}
+}
+say "以下、実行。";
+&smartMatch(1);						# 出力なし。
+&smartMatch('晴');					# 出力なし。
+&smartMatch('本日は晴天なり。');	# 出力なし。
+&smartMatch('本日は 晴天なり。');	# 出力なし。
+&smartMatch('ジングルベル');		# "%matchChar(ジングルベル)"に"ジングルベル"が含まれている。
+&smartMatch(20211221);				# "%matchChar(20211221)"に"20211221"が含まれている。
+```
+まぁ当然かな。  
+
+<a name="practicaluseSmartmatchHashkeyandvaluecomparison"></a>
+上記と同じ(キーを取り出し、そのキーを基準に値を取り出して比較している)。
+```perl
+package subPackage::Function::keys;
+say "以下、" . __PACKAGE__;
+sub smartMatch {
+	my $val = shift;
+
+	foreach my $singlebell ( keys %matchChar ) {
+		# 今回の場合は、右のパターンに一致するかどうかを見ている(本来の挙動通り)。
+		if( "$matchChar{$singlebell}" eq "$val" ) {
+			say "\"%matchChar($singlebell->$matchChar{$singlebell})\"に\"$val\"が含まれている。";
+		}
+	}
+}
+say "以下、実行。";
+&smartMatch(1);						# 出力なし。
+&smartMatch('晴');					# 出力なし。
+&smartMatch('本日は晴天なり。');	# 出力なし。
+&smartMatch('本日は 晴天なり。');	# 出力なし。
+&smartMatch('ジングルベル');		# "%matchChar(singlebell->ジングルベル)"に"ジングルベル"が含まれている。
+&smartMatch(20211221);				# "%matchChar(本日は晴天なり。->20211221)"に"20211221"が含まれている。
+```
+回りくどいことをするだけ無駄なのだが、試しにやってみた。  
+
+<a name="practicaluseSmartmatchHasharraymatch"></a>
+以下、配列要素のひとつがハッシュのキーのひとつに一致することの比較プログラム例）
+```perl
+package subPackage::Function::array;
+say "以下、" . __PACKAGE__;
+sub smartMatch {
+	my $val = shift;
+
+	if(%matchChar ~~ @arrayChar) {
+		say "マッチ。"
+	}
+}
+say "以下、実行。";
+&smartMatch();	# マッチ。
+```
+何に使うのか分からないが、とりあえず、このようなことができる。  
+
+
+<a name="practicaluseSmartmatchfunction"></a>
+#### 無名関数リファレンスの扱い。
+比較プログラムは作ってみたが、挙動がいまいちつかめず、何のために比較するのか分からなかった。  
+
+<a name="practicaluseSmartmatchfunctionsample"></a>
+以下、例）
+```perl
+use v5.10.1;
+no warnings 'experimental::smartmatch';	# 警告抑止(スマートマッチ演算子~~のために必要)。
+
+sub smartMatch {
+	my $val = shift;
+	my $boo = sub {
+			say "無名関数リファレンス";
+			1;
+		};
+	my $bar = sub {
+			say "無名関数リファレンス";
+			0;
+		};
+
+	say "無名関数リファレンス呼び出し。";
+	$boo->();	# 無名関数リファレンス
+
+	if( $val ~~ $boo ) {
+		say "無名関数リファレンスに引数($val)を渡せる。";
+	}
+}
+&smartMatch("boo");	# 無名関数リファレンスに引数(boo)を渡せる。
+```
+よく分かっていないのだが、if文にスマートマッチ演算子と関数リファレンスを組み合わせた場合、関数呼び出しが発生する。  
+そのため、何のために比較をしたのかよく分からない。  
+呼び出さずに比較できないだろうか。  
+
+<a name="practicaluseSmartmatchforeach"></a>
+#### foreachとwhenの組み合わせ。
+[switch-case(given-when)](#practicaluseGivenwhen)で説明すべきか迷うぐらい、扱いに困る組み合わせ。  
+**when**部分のみと**foreach**の組み合わせでループ処理が成立する。  
+
+以下、サンプル
+```perl
+use v5.24;
+no warnings 'experimental::smartmatch';	# 警告抑止。
+
+sub hoge {
+	my $val = shift;
+	my $countO = 0;	# oのみをカウントする変数。
+	my $countZ = 0;	# o以外をカウントする変数。
+	my @string = split //, $val;
+	foreach (@string) {
+		when (/[o]/)   { $countO++ }
+		when (/[^o]/)  { $countZ++ }
+		default        { say "その他の選択結果。" };
+	};
+	say '$countO：' . "$countO";
+	say '$countZ：' . "$countZ";
+}
+
+&hoge("boo");
+		# $countO：2
+		# $countZ：1
+```
+引数として渡した文字列を1文字づつ数えるプログラム。  
+配列の中に入っている文字列を**foreach**で取り出し、**when**で仕分ける。  
+
+</details>
+
+
+<a name="practicaluseGivenwhen"></a>
+<details><summary>応用知識-switchステートメント(given-when)</summary>
+
+基本的に、Perlは、C言語の構文を拝借している。  
+そのため、goto文なども採用しているのがその理由だ。  
+しかし、Switch文だけは採用を見送ったようだが、v5.10で取り込んだだけでなく、改良されたとのこと。  
+その後、v5.18で採用が見送られそうな感じになったようだ(現在の最新はv5.24)。  
+
+
+<a name="practicaluseGivenwhenswitch"></a>
+### [switchステートメント](https://perldoc.jp/docs/modules/Switch-2.09/Switch.pod)
+[初めてのPerl-第5版](https://www.oreilly.co.jp/books/9784873114279/)の付録Dにて、新機能として**switch**が紹介されているだけで、安定バージョンはない。  
+何より、未だに実験扱い。  
+
+以下、`use`で読み込むだけのプログラム。
+```perl
+use v5.24;
+use Switch;
+
+say "switchを使いたい。";
+```
+
+以下、出力結果。
+```terminal
+Can't locate Switch.pm in @INC (you may need to install the Switch module) (@INC contains: 〜 ) at switch.pl line 2.
+BEGIN failed--compilation aborted at switch失敗.pl line 2.
+```
+要は、標準搭載していないってことだよね。  
+何でやねん。  
+
+
+<a name="practicaluseGivenwhensmartmatchandgivenwhen"></a>
+### スマートマッチとギブンフェン
+[初めてのPerl](https://www.oreilly.co.jp/books/)[第6版](https://www.oreilly.co.jp/books/9784873115672/)を見返すことで、15章にそれらしいことが書いてある。  
+
+* 15章目次：スマートマッチとgiven-when  
+  1. [スマートマッチ演算子](#practicaluseSmartmatch)  
+  1. [スマートマッチの優先順位](#practicaluseSmartmatchoperand)  
+  1. [given文](#practicaluseGivenwhen)  
+     ※ここで説明している。  
+  1. ダムマッチ  
+  1. 多くの項目に対してwhenを使う  
+  1. 練習問題  
+
+これらは、[第7版](https://www.oreilly.co.jp/books/9784873118246/)に記載されていない。  
+ぬぅ。  
+※[foreachとwhenの組み合わせ](#practicaluseSmartmatch)は、別途説明あり。  
+
+<details><summary>警告出力ありのスマートマッチ演算子利用例</summary>
+
+警告が出て構わないのであれば、以下のプログラムでSwitch文が使える。
+```perl
+use v5.24;
+
+sub hoge {
+	my $val = shift;
+	given ($val) {
+		# given is experimental at givenWhen_v5.24失敗v2.pl line 5.
+		when (1)    { say "number 1" }	# when is experimental at givenWhen_v5.24失敗v2.pl line 7.	←☆このメッセージ出力余分。
+		when ("a")  { say "string a" }	# when is experimental at givenWhen_v5.24失敗v2.pl line 8.	←☆このメッセージ出力余分。
+		default     { say "previous case not true" };
+	};
+}
+&hoge(1);	# number 1
+&hoge('a');	# string a
+&hoge(20211220);	# previous case not true
+```
+[メッセージ診断](https://perldoc.jp/docs/perl/5.22.1/perldiag.pod)  
+
+</details>
+
+上記の余分なメッセージを抑止したのが、以下の警告抑止後のプログラム例になる。
+```perl
+use v5.24;
+no warnings 'experimental::smartmatch';	# 警告抑止。
+
+sub givenwhen {
+	my $val = shift;
+	given ($val) {
+		when (1)    { say "number 1" }
+		when ("a")  { say "string a" }
+		default     { say "previous case not true" };
+	};
+}
+&givenwhen(1);			# number 1
+&givenwhen('a');		# string a
+&givenwhen(20211220);	# previous case not true
+```
+
+<details><summary>if文とスマートマッチ演算子の併用(見にくい結果になった)</summary>
+
+以下、if文を使う(しかし、スマートマッチ演算子の併用をした場合、上記の"Given-when"と変わらないどころか見にくくなる)。
+```perl
+use v5.24;
+no warnings 'experimental::smartmatch';	←☆スマートマッチ演算子`~~`を使うため、警告表示の抑止処理が必要。
+
+sub hoge {
+	my $val = shift;
+	my @array = ('hoge', 42, 20211220, );
+	my %hash  = (20211220=>'hoge', boo=>20211221, );
+	if(    $val ~~ 1          ){ say "number 1" }
+	elsif( $val ~~ "a"        ){ say "string a" }
+	elsif( $val ~~ [1..10,42] ){ say "number in list v1" }
+	elsif( $val ~~ @array     ){ say "number in list v2" }
+	elsif( $val ~~ /\w+/      ){ say "pattern v1" }
+	elsif( $val ~~ qr/\w+/    ){ say "pattern v2" }
+	elsif( $val ~~ %hash      ){ say "entry in hash v1" }
+	elsif( $val ~~ \%hash     ){ say "entry in hash v2" }
+	elsif( $val ~~ \&sub      ){ say "arg to subroutine" }
+	else { say "previous case not true" }
+}
+&hoge(1);			# number 1
+&hoge('a');			# string a
+&hoge(42);			# number in list v1
+&hoge(20211220);	# number in list v2
+```
+何の役にも立たない。  
+スマートマッチ演算子をif文で使う場合、**given-when**を使えば良い。  
+
+</details>
+
+<details><summary>if文と正規表現検索の組み合わせ(望んでいない結果が出てくる)</summary>
+
+以下、if文を使う(正規表現との組み合わせのため、望ましい結果は出てこない)。
+```perl
+use v5.24;
+no warnings 'experimental::smartmatch';	# 警告抑止(スマートマッチ演算子~~のために必要)。
+
+sub hoge {
+	$_ = shift;
+	my @array = ('hoge', 42, 20211220, );
+	my %hash  = (20211220=>'hoge', boo=>20211221, );
+	if(    /1/          ){ say "number 1" }
+	elsif( /"a"/        ){ say "string a" }
+	elsif( /[1..10,42]/ ){ say "number in list v1" }
+	elsif( /@array/     ){ say "number in list v2" }
+	elsif( /\w+/        ){ say "pattern v1" }
+	elsif( qr/\w+/      ){ say "pattern v2" }
+	elsif( /%hash/      ){ say "entry in hash v1" }
+	elsif( /\%hash/     ){ say "entry in hash v2" }
+	elsif( /\&sub/      ){ say "arg to subroutine" }
+	else { say "previous case not true" }
+}
+&hoge(1);	# number 1	←☆本来の挙動とあっているだろう。
+&hoge('a');	# pattern v1	←☆本来の挙動からズレている(思惑と違う)。
+&hoge(42);	# number in list v1	←☆本来の挙動とあっているだろう。
+&hoge(20211220);	# number 1	←☆本来の挙動からズレている(ハッシュの中身を正規表現で検索できるのか？)。
+```
+良い具合に動いてくれない。  
+
+</details>
+
+※when部分で比較方法を省略した場合スマートマッチ演算子`~~`が用いられる。  
+例）`when('a')`の場合`when($_ ~~ 'a')`のこと。  
+例）`when($_ eq 'a')`の場合、`when($_ eq 'a')`のこと。  
+
+
+<a name="practicaluseGivenwhencontinue"></a>
+#### コンティニュ文付きの処理。
+以下、**continue**文付きのプログラム例）
+```perl
+use v5.24;
+no warnings 'experimental::smartmatch';	# 警告抑止。
+
+sub hoge {
+	my $val = shift;
+	given ($val) {
+		say "$valをwhen句で比較する。";
+		when (1)   { say "number 1" }
+		say "以下、hと比較。";
+		when ("h") { say "string h" }
+		say "以下、1文字と比較。";
+		when (/o/) { say "string o"; continue}
+		when (/g/) { say "string g"; continue}
+		when (/e/) { say "string e"; continue}
+		default    { say "previous case not true" };
+	};
+}
+&hoge(1);
+		# 1をwhen句で比較する。
+		# number 1
+
+&hoge("h");
+		# hをwhen句で比較する。
+		# 以下、hと比較。
+		# string h
+
+&hoge("hoge");
+		# hogeをwhen句で比較する。
+		# 以下、hと比較。
+		# 以下、1文字と比較。
+		# string o
+		# string g
+		# string e
+		# previous case not true
+
+&hoge("hoge");
+	# 以下、continue文がない場合の出力結果。
+		# hogeをwhen句で比較する。
+		# 以下、hと比較。
+		# 以下、1文字と比較。
+		# string o
+```
+continueがあることにより、文字列が尽きるまで**given**に戻り、比較処理が続く・・・ようだ。  
+
+当たり前のことだが、**when**での比較文字列は、長いのを先に持ってこなければ処理が届かない場合がある。  
+上記のプログラム例で言えば、**string h**を検知した時点で、(**continue**がない場合)処理が終了するため、短いのを前に持ってきた場合は意図していない結果が出てくると言うこと。  
+※**注意**：検証した結果、長短関係なかった(最初に配置したのが優先されるだけでした)。  
+
+
+気になるのは、**continue**文を置くことで、**default**が実行されると言うこと(困る)。回避方法はないものか。  
+回避させるには最後の**when**の`/e/`から**continue**を取り除けば良いのだろうけど・・・。  
+
+</details>
+
+
+<a name="practicaluseRegularexpression"></a>
+<details><summary>応用知識-正規表現(Regular expression)</summary>
+
+### [正規表現](#practicaluseRegularexpression)
+言わずもがな。  
+Perlの正規表現は各界隈で有名になっているため、「Perl互換性正規表現(Perl-Compatible Regualr Expression・PCRE)」と呼ばれる技術でPerlの正規表現に近づけた正規表現を謳い文句にした検索能力を持つツールが多い。  
+
+実際の細かい正規表現仕様は別途「[正規表現の勉強\_作業メモなど何でも詰め込む.md](../検索利用メモ/正規表現の勉強_作業メモなど何でも詰め込む.md)」ファイルに譲ることにする。  
+同ディレクトリ配下に正規表現用の勉強資材が散在しているため、参考になれば幸い。  
+
+今回[tr演算子](https://perldoc.jp/docs/perl/5.10.0/perlop.pod)は説明していない(そもそも正規表現ではなく、置換演算子)。  
+
+
+<a name="practicaluseRegularexpressionMatchoperator"></a>
+### マッチ演算子(match operator)
+正規表現の利用方法例）
+```perl
+use v5.24;
+
+sub regexSample {
+	$_ = shift;
+	if( /hoge/ ) {	←☆スラッシュに囲まれた文字を正規表現で検索する。
+		say "hogeにマッチした。";
+	}
+	else{
+		say "検索に掛からず($_)。";
+	}
+}
+&regexSample("hoge");	# hogeにマッチした。
+&regexSample("Hoge");	# 検索に掛からず(Hoge)。
+```
+
+
+<a name="practicaluseRegularexpressionPatternmatchoperator"></a>
+### パターンマッチ演算子(pattern match operator)
+上記のマッチ演算子は、スラッシュ記号で挟んであっただけだが、今回は正規表現検索を明記する。  
+そのため、囲む記号は任意に変更できる。  
+
+例えば、`m(パターン)`・`m[パターン]`など。  
+そして、対にならない記号の場合は、同じ記号を用いることで囲みを表現できる。  
+例えば、`m!パターン!`・`m^パターン^`など。  
+
+
+<a name="practicaluseRegularexpressionMatchmodifier"></a>
+### マッチ修飾子
+[マッチ演算子](#practicaluseRegularexpressionMatchoperator)の閉じ括弧(デリミタ)の後ろに付けるフラグのこと。  
+このフラグにより、大小文字区別有無`/i`・ドット記号の挙動変更`/s`・空白文字の認識変更`/x`などを制御する。  
+また、文字の解釈も変更できる。  
+例えば、ASCIIコード文字を扱う`/a`・Unicodeを扱う`/u`・ロケールに従う`/l`など。  
+
+
+<a name="practicaluseRegularexpressionJoinoperator"></a>
+### 結合演算子(binding operator)=~
+右側にあるパターンを左側の文字にマッチさせる。  
+※代入演算子ではないため、気をつけること。  
+
+以下、例）
+```perl
+use v5.24;
+
+sub regexSample {
+	my $hoge = shift;
+	# 以下のパターンを任意の変数で検索する。
+	if( $hoge =~ /hoge/ ) {
+		say "hogeにマッチした(大小文字区別あり)。";
+	}
+	elsif( $hoge =~ m!hoge!i ) {
+		say "hogeにマッチした(大小文字区別なし)。";
+	}
+	else{
+		say "検索に掛からず($hoge)。";
+	}
+}
+&regexSample("hoge");	# hogeにマッチした(大小文字区別あり)。
+&regexSample("Hoge");	# hogeにマッチした(大小文字区別なし)。
+```
+
+
+<a name="practicaluseRegularexpressionMatchvariable"></a>
+### マッチ変数
+キャプチャ機能を使うために、括弧`()`で囲む必要がある。  
+
+以下、例）
+```perl
+use v5.24;
+
+sub regexSample {
+	my $hoge = shift;
+	# 括弧で囲んだ文字列をキャプチャ機能で記録し、$[数字]で呼び出す。
+	if( $hoge =~ /本日は晴天なり2021(年12月)20日/ ) {
+		say "マッチした(大小文字区別あり)。$1";
+	}
+	elsif( $hoge =~ m,本日は晴天(なり2021)/12/20,i ) {
+		say "マッチした(大小文字区別なし)。$1";
+		say '$0：' . $0;
+	}
+	else{
+		say "検索に掛からず($hoge)。";
+	}
+}
+&regexSample("本日は晴天なり2021年12月20日");	# マッチした(大小文字区別あり)。年12月
+&regexSample("本日は晴天なり2021/12/20");		# マッチした(大小文字区別なし)。なり2021
+												# $0：マッチ変数.pl
+```
+上記2つ目の検索に[パターンマッチ演算子](#practicaluseRegularexpressionPatternmatchoperator)を使うことでスラッシュ記号へのエスケープシーケンスが不要になっている。  
 
 </details>
 
