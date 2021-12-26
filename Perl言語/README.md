@@ -3878,8 +3878,8 @@ sub switchIF {
 	given ($val) {
 		say "$valをwhen句で比較する。";
 		when (1)   { say "number 1" }
-		say "以下、aと比較。";
-		when ("h") { say "string a" }
+		say "以下、hと比較。";
+		when ("h") { say "string h" }
 		say "以下、1文字と比較。";
 		when (/o/) { say "string o"; continue}
 		when (/g/) { say "string g"; continue}
@@ -3893,12 +3893,12 @@ sub switchIF {
 
 &switchIF("h");
 		# hをwhen句で比較する。
-		# 以下、aと比較。
-		# string a
+		# 以下、hと比較。
+		# string h
 
 &switchIF("hoge");
 		# hogeをwhen句で比較する。
-		# 以下、aと比較。
+		# 以下、hと比較。
 		# 以下、1文字と比較。
 		# string o
 		# string g
@@ -3908,11 +3908,19 @@ sub switchIF {
 &switchIF("hoge");
 	# 以下、continue文がない場合の出力結果。
 		# hogeをwhen句で比較する。
-		# 以下、aと比較。
+		# 以下、hと比較。
 		# 以下、1文字と比較。
 		# string o
 ```
 continueがあることにより、文字列が尽きるまで**given**に戻り、比較処理が続く・・・ようだ。  
+
+当たり前のことだが、**when**での比較文字列は、長いのを先に持ってこなければ処理が届かない場合がある。  
+上記のプログラム例で言えば、**string h**を検知した時点で、(**continue**がない場合)処理が終了するため、短いのを前に持ってきた場合は意図していない結果が出てくると言うこと。  
+※**注意**：検証した結果、長短関係なかった(最初に配置したのが優先されるだけでした)。  
+
+
+気になるのは、**continue**文を置くことで、**default**が実行されると言うこと(困る)。回避方法はないものか。  
+回避させるには最後の**when**の`/e/`から**continue**を取り除けば良いのだろうけど・・・。  
 
 </details>
 

@@ -60,5 +60,56 @@ sub asakunoSwitch {
 #以下、1文字と比較。
 #string s
 
+say "-" x 30;
+
+sub tomohiroSwitch {
+	my $val = shift;
+	my @array = ('asakuno', 42, 20211220, );
+	given ($val) {
+		say "$valをwhen句で比較する。";
+#		say "以下、配列(@array)と比較。";
+		when (@array)     { say "array in list v2"; continue }
+		say "以下、正規表現で比較。";
+		when (/s/)        { say "string s"; continue}
+		when (/k/)        { say "string k"; continue}
+		when (/u/)        { say "string u"; continue}
+		when (/n/)        { say "string n"; continue}
+		when (/o/)        { say "string o"; continue}
+		when (/asakuno/)  { say "strings asakuno"; continue}
+		default           { say "previous case not true" };
+	};
+}
+&tomohiroSwitch("asakuno");
+
+say "-" x 30;
+
+sub switchTomohiro {
+	my $val = shift;
+	given ($val) {
+		say "$valをwhen句の正規表現で比較する。";
+		when (/asakuno/)  { say "strings asakuno"}	#	←☆当たり前だが、これだけが処理対象となる。
+		when (/a/)        { say "string a"}			#	←☆実行されず。
+		default           { say "previous case not true" };
+	};
+}
+&switchTomohiro("asakuno");
+#		asakunoをwhen句の正規表現で比較する。
+#		strings asakuno
+
+say "-" x 30;
+
+sub switchAsakuno {
+	my $val = shift;
+	given ($val) {
+		say "$valをwhen句の正規表現で比較する。";
+		when (/a/)        { say "string a"}			#	←☆当たり前だが、これだけが処理対象となる。
+		when (/asakuno/)  { say "strings asakuno"}	#	←☆実行されず。
+		default           { say "previous case not true" };
+	};
+}
+&switchAsakuno("asakuno");
+#		asakunoをwhen句の正規表現で比較する。
+#		string a
+
 say "以上。"
 # vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=perl noexpandtab:
