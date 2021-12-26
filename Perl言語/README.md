@@ -1082,6 +1082,8 @@ unless ( defined $boo[2] ) {	←☆変数に値は入っていない。
 例）`foreach my $変数名 ( sort(リスト) ) { ・・・ }`  
 当たり前だが、foreach前にsort演算子が実行され、実行後にforeachが実行されるため、sort演算子の実行は最初の1回だけと言うことになる。  
 
+※[スマートマッチ演算子](#practicaluseSmartmatch)の[foreachとwhenの組み合わせ](#practicaluseSmartmatchforeach)も存在する。  
+
 
 <a name="subRepetition4"></a>
 #### `for`の入れ子。
@@ -3746,14 +3748,11 @@ sub switchIF {
 	my $countO = 0;	# oのみをカウントする変数。
 	my $countZ = 0;	# o以外をカウントする変数。
 	my @string = split //, $val;
-	#foreach my $an (@string){
-		#given ($an) {
-		foreach (@string) {
-			when (/[o]/)   { $countO++ }
-			when (/[^o]/)  { $countZ++ }
-			default        { say "その他の選択結果。" };
-		};
-	#};
+	foreach (@string) {
+		when (/[o]/)   { $countO++ }
+		when (/[^o]/)  { $countZ++ }
+		default        { say "その他の選択結果。" };
+	};
 	say '$countO：' . "$countO";
 	say '$countZ：' . "$countZ";
 }
@@ -3807,7 +3806,7 @@ sub switch {
 		default     { say "previous case not true" };
 	};
 }
-&switch(1);	# number 1
+&switch(1);		# number 1
 &switch('a');	# string a
 &switch(20211220);	# previous case not true
 ```
