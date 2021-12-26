@@ -3861,6 +3861,10 @@ sub switchIf {
 
 </details>
 
+※when部分で比較方法を省略した場合スマートマッチ演算子`~~`が用いられる。  
+例）`when('a')`の場合`when($_ ~~ 'a')`のこと。  
+例）`when($_ eq 'a')`の場合、`when($_ eq 'a')`のこと。  
+
 </details>
 
 
