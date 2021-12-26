@@ -1373,7 +1373,7 @@ Perlでオブジェクト指向開発ができるだけでなく、そのやり�
   [x] [スタック](#stackChapter3)2021/10/04  
   [x] [キュー](#queueChapter3)2021/11/27  
   [x] [リスト](#listChapter3)2021/12/04  
-  [ ] [木](#woodChapter3)  
+  [x] [木](#woodChapter3)2021/12/26  
   [ ] [グラフ](#graphChapter3)  
   [ ] [データを保存する。](#saveTheDataChapter3)  
 <a name="algorithmTextbookLearnedinPythonChapter4"></a>
@@ -2232,6 +2232,114 @@ sub main() {
 
 <a name="woodChapter3"></a>
 #### 木
+[リスト](#listChapter3)のようにノードがあり、そのノードにデータとそれを繋ぐ情報を持つ。  
+繋ぎ方は木を逆さまにしような形として、頂点を根とし、下に向けて2種類の枝を伸ばし、それぞれ葉が付く。
+そして、その葉から枝が2種類下に伸び、それぞれ葉が付く。
+それを繰り返す。  
+
+以下、プログラム。
+```perl
+use v5.24;
+
+my $LEFT = 0;	# 左ノード番号用定数
+my $RIGHT = 1;	# 右ノード番号用定数
+my $DATA = 2;	# データ値用定数
+
+sub tree() {
+	my $node = shift;
+	say "指定番号のノード調査。";
+	say "入力なしのEnter押下にてプログラム終了。";
+	my $MAX = @$node;
+
+	while(){	# 無限ループ
+		my $inputNumber = <STDIN>;	# ユーザからの入力用ファイルハンドル
+		chomp $inputNumber;
+		if( $inputNumber eq undef ) {
+			# 空文字列(undef)の場合、プログラム終了。
+			last;
+		}
+		if( 0 <= $inputNumber and $inputNumber < $MAX){
+			say "node$inputNumberの値は$node->[$inputNumber][$DATA]";
+			my $leftNumber = $node->[$inputNumber][$LEFT];
+			if( $leftNumber != undef ){
+				say "左の葉は$node->[$leftNumber][$DATA]";
+			}
+			else{
+				say "左の葉は存在しない。";
+			}
+			my $rightNumber = $node->[$inputNumber][$RIGHT];
+			if( $rightNumber ne undef ){
+				say "右の葉は$node->[$rightNumber][$DATA]";
+			}
+			else{
+				say "右の葉は存在しない。";
+			}
+		}
+		else{
+			say "0から" . ($MAX - 1) . "の範囲に納めること。";
+		}
+	}
+}
+
+sub main() {
+	# 以下、2次元配列。
+	my $nodeData = [
+			[1,	2,	10],
+			[3,	4,	20],
+			[5,	undef,	30],
+			[undef,	undef,	40],
+			[6,	7,	50],
+			[undef,	undef,	60],
+			[undef,	undef,	70],
+			[undef,	undef,	80],
+		];
+
+	&tree($nodeData);
+}
+&main();
+```
+
+以下、出力結果。
+```terminal
+指定番号のノード調査。
+入力なしのEnter押下にてプログラム終了。
+0
+node0の値は10
+左の葉は20
+右の葉は30
+1
+node1の値は20
+左の葉は40
+右の葉は50
+2
+node2の値は30
+左の葉は60
+右の葉は存在しない。
+3
+node3の値は40
+左の葉は存在しない。
+右の葉は存在しない。
+4
+node4の値は50
+左の葉は70
+右の葉は80
+5
+node5の値は60
+左の葉は存在しない。
+右の葉は存在しない。
+6
+node6の値は70
+左の葉は存在しない。
+右の葉は存在しない。
+7
+node7の値は80
+左の葉は存在しない。
+右の葉は存在しない。
+8
+0から7の範囲に納めること。
+```
+本来は、構造体で管理すべきなのだろうが、なかなか大変そうなので、諦めた(Perlにはない概念だからな)。  
+
 
 <a name="graphChapter3"></a>
 #### グラフ
