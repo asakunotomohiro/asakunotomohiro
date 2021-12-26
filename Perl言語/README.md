@@ -3731,6 +3731,40 @@ sub smartMatch {
 そのため、何のために比較をしたのかよく分からない。  
 呼び出さずに比較できないだろうか。  
 
+<a name="practicaluseSmartmatchforeach"></a>
+#### foreachとwhenの組み合わせ。
+[switch-case(given-when)](#practicaluseGivenwhen)で説明すべきか迷うぐらい、扱いに困る組み合わせ。  
+**when**部分のみと**foreach**の組み合わせでループ処理が成立する。  
+
+以下、サンプル
+```perl
+use v5.24;
+no warnings 'experimental::smartmatch';	# 警告抑止。
+
+sub switchIF {
+	my $val = shift;
+	my $countO = 0;	# oのみをカウントする変数。
+	my $countZ = 0;	# o以外をカウントする変数。
+	my @string = split //, $val;
+	#foreach my $an (@string){
+		#given ($an) {
+		foreach (@string) {
+			when (/[o]/)   { $countO++ }
+			when (/[^o]/)  { $countZ++ }
+			default        { say "その他の選択結果。" };
+		};
+	#};
+	say '$countO：' . "$countO";
+	say '$countZ：' . "$countZ";
+}
+
+&switchIF("boo");
+		# $countO：2
+		# $countZ：1
+```
+引数として渡した文字列を1文字づつ数えるプログラム。  
+配列の中に入っている文字列を**foreach**で取り出し、**when**で仕分ける。  
+
 </details>
 
 
@@ -3756,6 +3790,7 @@ sub smartMatch {
 
 これらは、[第7版](https://www.oreilly.co.jp/books/9784873118246/)に記載されていない。  
 ぬぅ。  
+※[foreachとwhenの組み合わせ](#practicaluseSmartmatch)は、別途説明あり。  
 
 <details><summary>警告出力ありのスマートマッチ演算子利用例</summary>
 
