@@ -1,9 +1,11 @@
-package asakunotomohiro;
-$VERSION = 1.00;
+#package asakunotomohiro;
+$VERSION = 1.00;	# ←☆パッケージ直後・use v5.xx直前に記述するのが吉。
 
 use v5.24;
+#$VERSION = 1.00;	←☆ここに記述した場合、宣言なしで変数を用いることになり、エラーが発生する(ourが必須)。
 say "呼ぶ側のプログラムになる。";
 
+#require Exporter;
 use Exporter;
 our @ISA = qw(Exporter);
 our @EXPORT = qw(asakuno);
