@@ -1,4 +1,4 @@
-#package asakunotomohiro;
+package main;
 use v5.24;
 say "呼ぶ側のプログラムになる。";
 
@@ -7,6 +7,7 @@ BEGIN { use File::Basename; my $pwd = dirname($0); push @INC, $pwd; }	# 末尾�
 #require "関数ライブラリ(呼ばれる側)require.pl";
 #	出力結果：関数ライブラリ読み込み終了
 use 関数モジュール(呼ばれる側)use;	←☆本来は2バイト文字を認識しない(ファイル名をパッケージ名に合わせる必要がある)。
+import asakunotomohiro;	←☆モジュール内部のパッケージを指定しているが、内部を調べる必要があるのはイケていないよね。
 #use 関数モジュール(呼ばれる側)use 2.00;	←☆バージョン指定することができる(存在しない場合エラーになる。)。
 	# 以下、エラー内容。
 	#	関数モジュール(呼ばれる側)use version 2 required--this is only version 1.01 at 関数モジュール(呼ぶ側)use.pl line 10.

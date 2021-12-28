@@ -1,4 +1,4 @@
-#package asakunotomohiro;
+package asakunotomohiro;
 $VERSION = "1.01";	# ←☆パッケージ直後・use v5.xx直前に記述するのが吉。
 
 use v5.24;
