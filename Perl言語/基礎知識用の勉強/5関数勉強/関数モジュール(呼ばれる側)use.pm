@@ -8,7 +8,8 @@ say "呼ぶ側のプログラムになる。";
 #require Exporter;
 use Exporter;
 our @ISA = qw(Exporter);
-our @EXPORT = qw(asakuno $VERSION);
+#our @EXPORT = qw(asakuno $VERSION);
+our @EXPORT = qw(asakuno);
 
 sub asakuno {
 	say "関数ライブラリ：@_";

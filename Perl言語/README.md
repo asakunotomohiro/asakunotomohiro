@@ -2906,7 +2906,7 @@ use v5.24;
 
 use Exporter;
 our @ISA = qw(Exporter);
-our @EXPORT = qw(asakuno);
+our @EXPORT = qw(asakuno);	←☆バージョン番号を外部から呼び出したい場合もここに追加するが、個々のモジュールバージョンを知りたい人がいないため、追加不要。
 
 sub xxxyyyzzz {
 	say "関数ライブラリ：@_";
