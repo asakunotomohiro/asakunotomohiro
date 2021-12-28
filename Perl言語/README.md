@@ -146,6 +146,7 @@ $
   * [ ] [関数](#practicaluseFunction関数)  
     [x] [ライブラリ作成(`require`)](#practicaluseFunctionLibrequire)  
     [x] [モジュール作成(`use`)](#practicaluseFunctionLibuse)  
+    **todo**あり。  
 
 
 <a name="rangeOtherThanBasicKnowledge"></a>
@@ -2917,6 +2918,9 @@ sub xxxyyyzzz {
 パッケージを直接呼び出すことで使えるようになる？(`import パッケージ名;`)  
 しかし、それではパッケージ名を知っておく必要が出てくるわけで、不便になる。  
 どうやって回避する？  
+
+todo: ファイル名とパッケージ名の相違がある場合のuse方法について調べる。  
+また、他にも調べることがあるため、後日本来の作業が落ち着いてから調べ直す。  
 
 
 #### useモジュールの実体
