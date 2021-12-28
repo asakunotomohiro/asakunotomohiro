@@ -6,7 +6,7 @@ BEGIN { use File::Basename; my $pwd = dirname($0); push @INC, $pwd; }	# 末尾�
 
 #require "関数ライブラリ(呼ばれる側)require.pl";
 #	出力結果：関数ライブラリ読み込み終了
-use 関数モジュール(呼ばれる側)use;	←☆本来は2バイト文字を認識しない。
+use 関数モジュール(呼ばれる側)use;	←☆本来は2バイト文字を認識しない(ファイル名をパッケージ名に合わせる必要がある)。
 #	出力結果：呼ぶ側のプログラムになる。
 #	出力結果：ライブラリ読み込み完了
 my @asakuno = ("朝来野", "智博", );
@@ -18,6 +18,8 @@ my @asakuno = ("朝来野", "智博", );
 					# そのため、パッケージ名を付けて呼び出すか、同じパッケージ内から呼び出す必要が出てきている。
 #&asakunotomohiro::asakuno(@asakuno);		# 関数：朝来野 智博
 #&asakunotomohiro::asakuno("関数呼び出し");	# 関数：関数呼び出し
+
+say $VERSION;	# 1.01	←☆ここにある変数ではなく、useで呼んだファイル内の変数値を出している。
 
 say "以上。"
 # vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=perl noexpandtab:
