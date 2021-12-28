@@ -1482,7 +1482,7 @@ vim9scriptでは`unlet`が使えないようだ(公式サイトでは[使える]
   [x] [スタック](#stackChapter3)2021/10/05  
   [x] [キュー](#queueChapter3)2021/11/28  
   [ ] [リスト](#listChapter3)中断2021/12/08  
-  [ ] [木](#woodChapter3)  
+  [x] [木](#woodChapter3)2021/12/28  
   [ ] [グラフ](#graphChapter3)  
   [ ] [データを保存する。](#saveTheDataChapter3)  
 <a name="algorithmTextbookLearnedinPythonChapter4"></a>
@@ -2229,6 +2229,107 @@ todo: いずれ解決する。
 
 <a name="woodChapter3"></a>
 #### 木
+[リスト](#listChapter3)のようにノードがあり、そのノードにデータとそれを繋ぐ情報を持つ。  
+繋ぎ方は木を逆さまにしような形として、頂点を根とし、下に向けて2種類の枝を伸ばし、それぞれ葉が付く。
+そして、その葉から枝が2種類下に伸び、それぞれ葉が付く。
+それを繰り返す。  
+
+以下、プログラム。
+```vim
+const s:LEFT  = 0	" 左ノード番号用定数
+const s:RIGHT = 1	" 右ノード番号用定数
+const s:DATA  = 2	" データ値用定数
+
+def! Tree( argNode: list<any>, argMAX: number )
+	echo "指定番号のノード調査開始(入力なしのEnter押下にて、プログラム終了)。"
+	var inputString = ""
+
+	# 無限ループのやり方(ダサいぞ)。
+	while true
+		inputString = input("ユーザ入力：")
+		# 以下、文字列を数値に変換する。
+		var inputNumber = str2nr(inputString)
+		if inputString == ""
+			break
+		endif
+		# var inputNumber = キャスト不要と判断した。	←☆必要だった。
+		if 0 <= inputNumber && inputNumber < argMAX
+			echom "node" .. inputString .. "の値は" .. argNode[inputNumber][s:DATA]
+			# 以下、v:nullを文字列のnullに変換した。
+			var leftNodedata = printf("%s", argNode[inputNumber][s:LEFT])
+			if leftNodedata ==? "null"
+				echom "左の葉は存在しない。"
+			else
+				# 以下、文字列を数値に変換する。
+				var leftNumber = str2nr(leftNodedata)
+				echom "左の葉は[" .. argNode[leftNumber][s:DATA] .. "]"
+			endif
+			# 以下、v:nullを文字列のnullに変換した。
+			var rightNodedata = printf("%s", argNode[inputNumber][s:RIGHT])
+			if rightNodedata ==? "null"
+				echom "右の葉は存在しない。"
+			else
+				# 以下、文字列を数値に変換する。
+				var rightNumber = str2nr(rightNodedata)
+				echom "右の葉は[" .. argNode[rightNumber][s:DATA] .. "]"
+			endif
+		else
+			echom "0から" .. (argMAX - 1) .. "の範囲入力必須。"
+		endif
+	endwhile
+
+enddef
+
+def! Main()
+	var node = [
+			[1,     2,      10],
+			[3,     4,      20],
+			[5,     null,   30],
+			[null,  null,   40],
+			[6,     7,      50],
+			[null,  null,   60],
+			[null,  null,   70],
+			[null,  null,   80],
+		]
+	var MAX = len(node)
+
+	Tree(node, MAX)
+
+	return
+enddef
+call Main()
+"	以下、出力結果。
+"			指定番号のノード調査開始(入力なしのEnter押下にて、プログラム終了)。
+"			node0の値は10
+"			左の葉は[20]
+"			右の葉は[30]
+"			node1の値は20
+"			左の葉は[40]
+"			右の葉は[50]
+"			node2の値は30
+"			左の葉は[60]
+"			右の葉は存在しない。
+"			node3の値は40
+"			左の葉は存在しない。
+"			右の葉は存在しない。
+"			node4の値は50
+"			左の葉は[70]
+"			右の葉は[80]
+"			node5の値は60
+"			左の葉は存在しない。
+"			右の葉は存在しない。
+"			node6の値は70
+"			左の葉は存在しない。
+"			右の葉は存在しない。
+"			node7の値は80
+"			左の葉は存在しない。
+"			右の葉は存在しない。
+"			0から7の範囲入力必須。
+
+unlet! s:LEFT
+unlet! s:RIGHT
+unlet! s:DATA
+```
 
 <a name="graphChapter3"></a>
 #### グラフ
