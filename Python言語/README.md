@@ -1303,7 +1303,7 @@ Hello World(引数あり-戻り値あり).
   [x] [スタック](#stackChapter3)2021/10/02  
   [x] [キュー](#queueChapter3)2021/11/07  
   [x] [リスト](#listChapter3)2021/12/04  
-  [x] [木](#woodChapter3)2021/12/22  
+  [x] [木](#woodChapter3)2021/12/29  
   [ ] [グラフ](#graphChapter3)  
   [ ] [データを保存する。](#saveTheDataChapter3)  
 <a name="algorithmTextbookLearnedinPythonChapter4"></a>
@@ -2214,6 +2214,8 @@ node = [
 ]
 ```
 
+<details><summary>例外対応なしのプログラム。</summary>
+
 以下、プログラム。
 ```python
 LEFT = 0    # 左ノード番号用定数
@@ -2265,10 +2267,98 @@ def main():
 main()
 ```
 
+以下、数字以外の入力結果。
+```terminal
+$ python tree.py
+指定番号のノード調査。
+入力なしのEnterにて終了。
+number：a
+Traceback (most recent call last):
+  File "/Users/asakunotomohiro/study勉強用Githubリポジトリ/Python言語/Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける/chapter3_データ構造を学ぶ/4.木/tree.py", line 57, in <module>
+    main()
+  File "/Users/asakunotomohiro/study勉強用Githubリポジトリ/Python言語/Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける/chapter3_データ構造を学ぶ/4.木/tree.py", line 54, in main
+    tree(node)
+  File "/Users/asakunotomohiro/study勉強用Githubリポジトリ/Python言語/Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける/chapter3_データ構造を学ぶ/4.木/tree.py", line 25, in tree
+    number = int(inString)
+ValueError: invalid literal for int() with base 10: 'a'
+$
+```
+例外が発生するため、数字以外の入力にも対応できるように変更する。  
+
+以下、例外のひな形(?)
+```text
+try:
+    例外が発生する可能性のある処理。
+except:
+    例外が発生したときに行う処理。
+finally:
+    例外が発生してもしなくても必ず行う処理。
+```
+
+</details>
+
+以下、例外対応を含むプログラム。
+```perl
+LEFT = 0    # 左ノード番号用定数
+RIGHT = 1   # 右ノード番号用定数
+DATA = 2    # データ値用定数
+
+
+def tree(node):
+    MAX = len(node)
+
+    print("指定番号のノード調査。")
+    print("入力なしのEnterにて終了。")
+
+    while True:
+        inString = input("number：")
+        if inString == "":
+            break
+        # 以下、例外対応。
+        try:
+            number = int(inString)
+        except:	←☆"E722: do not use bare 'except'"が発生している(これは何？)。
+            print("数値入力に限る。")
+            continue
+        if 0 <= number and number < MAX:
+            print("node{}の値は{}".format(number, node[number][DATA]))
+            leftNumber = node[number][LEFT]
+            if leftNumber is not None:
+                print("左の葉は" + str(node[leftNumber][DATA]))
+            else:
+                print("左の葉は存在しない。")
+            rightNumber = node[number][RIGHT]
+            if rightNumber is not None:
+                print("右の葉は" + str(node[rightNumber][DATA]))
+            else:
+                print("右の葉は存在しない。")
+        else:
+            print("0から" + str(MAX-1) + "の範囲必須。")
+
+
+def main():
+    node = [
+        [1,    2,    10],
+        [3,    4,    20],
+        [5,    None, 30],
+        [None, None, 40],
+        [6,    7,    50],
+        [None, None, 60],
+        [None, None, 70],
+        [None, None, 80],
+    ]
+    tree(node)
+
+
+main()
+```
+
 以下、実行結果。
 ```terminal
 指定番号のノード調査。
 入力なしのEnterにて終了。
+number：a	←☆数字以外の入力のため、はじかれた。
+数値入力に限る。
 number：0
 node0の値は10
 左の葉は20
@@ -2303,6 +2393,8 @@ node7の値は80
 右の葉は存在しない。
 number：8
 0から7の範囲必須。
+number： 	←☆半角スペースを入力したため、はじかれた。
+数値入力に限る。
 number：
 ```
 

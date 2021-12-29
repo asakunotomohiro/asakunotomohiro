@@ -22,7 +22,11 @@ def tree(node):
         inString = input("number：")
         if inString == "":
             break
-        number = int(inString)
+        try:
+            number = int(inString)
+        except:
+            print("数値入力に限る。")
+            continue
         if 0 <= number and number < MAX:
             print("node{}の値は{}".format(number, node[number][DATA]))
             leftNumber = node[number][LEFT]
