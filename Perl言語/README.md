@@ -138,6 +138,7 @@ $
     [x] 空確認  
     [ ] リスト演算子(`grep`・`map`)  
     [ ] eval  
+    [x] [構造体](#practicaluseArrangementArrayStructure)  
   * [ ] [条件分岐](#practicaluseConditional条件分岐)  
     * [x] [三項演算子](#practicaluseConditionalternary)(`?:`)  
       Perlでは、[条件演算子](https://perldoc.jp/docs/perl/perlop.pod#Conditional32Operator)のこと。  
@@ -948,10 +949,12 @@ say "@boo";	# 20210830 20210831 20210901 20210902
   * [x] 配列を複製する方法。  
   * [x] [配列からスライスを作成する方法。](#practicaluseArrangement配列)  
 
-* 構造体  
-  Perlには[ない](https://perldoc.jp/docs/perl/5.10.0/perlfaq7.pod#How32do32I32declare47create32a32structure63)ようだ。  
+* [構造体](#practicaluseArrangementArrayStructure)  
+  Perlにはない(無理矢理説明しているが)。  
   * 共用体  
+    ない。  
   * 列挙体  
+    ない。  
 
 * コレクション  
   * [x] [ハッシュ(`%ハッシュ名`)](#practicaluseHash)  
@@ -2984,6 +2987,20 @@ if (@hoge) {
 $hoge[9] = 20210901 + 9;	# 20210901
 ```
 ※この場合、[2]から[8]は、`undef`が自動的に格納されている。  
+
+</details>
+
+<a name="practicaluseArrangementArrayStructure"></a>
+<details><summary>応用知識-配列(構造体)</summary>
+
+配列としているのは、基礎知識5種類のひとつとして、[配列](#arrangement配列)で勉強するつもりだったから。  
+
+
+<a name="practicaluseArrangementArrayStructuretypedef"></a>
+### 構造体
+基本的に、Perlに構造体は[ない](https://perldoc.jp/docs/perl/5.10.0/perlfaq7.pod#How32do32I32declare47create32a32structure63)。  
+データ型の種類には、[スカラー](#variable変数)・[配列](#arrangement配列)・[ハッシュ](#practicaluseHash)・[サブルーチン](#function関数)・ファイルハンドルぐらいがあるだけだ。  
+大雑把に使えるというのも善し悪しだというのが実感できるほど不便だ。  
 
 </details>
 
