@@ -23,12 +23,19 @@ sub associativearray() {
 	say "-" x 30;
 	say "$asakuno{'asakuno'}";	# 20210922
 	say "-" x 30;
-	delete $asakuno{'asakuno'};
+	say "以下、削除実施(1つなのでスカラー)。";
+	delete $asakuno{asakuno};
 	while( my ($key, $value) = each %asakuno ) {
 		say "$key -> $value";
 		# 出力結果：
 #				asakunotomohiro -> 朝来野智博
 #				tomohiro -> 4873118247
+	}
+	say "以下、並べ替え(並び替えてくれず、入れ替わる)。";
+	foreach ( sort {$a <=> $b} keys %asakuno) {
+		say "$_ -> $asakuno{$_}";
+#				tomohiro -> 4873118247
+#				asakunotomohiro -> 朝来野智博
 	}
 
 	say "-" x 30;
@@ -42,6 +49,13 @@ sub associativearray() {
 #				tomohiro -> 
 	}
 
+	say "以下、削除実施(複数なので配列)。";
+	delete @asakuno{qw(asakunotomohiro tomohiro)};
+	foreach ( sort {$a <=> $b} keys %asakuno) {
+		say "$_ -> $asakuno{$_}";
+		# 出力結果：
+#				空文字列(undef)
+	}
 }
 &associativearray();
 
