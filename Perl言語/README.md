@@ -138,6 +138,7 @@ $
     [x] 空確認  
     [ ] リスト演算子(`grep`・`map`)  
     [ ] eval  
+    [x] [構造体](#practicaluseArrangementArrayStructure)  
   * [ ] [条件分岐](#practicaluseConditional条件分岐)  
     * [x] [三項演算子](#practicaluseConditionalternary)(`?:`)  
       Perlでは、[条件演算子](https://perldoc.jp/docs/perl/perlop.pod#Conditional32Operator)のこと。  
@@ -948,10 +949,12 @@ say "@boo";	# 20210830 20210831 20210901 20210902
   * [x] 配列を複製する方法。  
   * [x] [配列からスライスを作成する方法。](#practicaluseArrangement配列)  
 
-* 構造体  
-  Perlには[ない](https://perldoc.jp/docs/perl/5.10.0/perlfaq7.pod#How32do32I32declare47create32a32structure63)ようだ。  
+* [構造体](#practicaluseArrangementArrayStructure)  
+  Perlにはない(無理矢理説明しているが)。  
   * 共用体  
+    ない。  
   * 列挙体  
+    ない。  
 
 * コレクション  
   * [x] [ハッシュ(`%ハッシュ名`)](#practicaluseHash)  
@@ -2987,6 +2990,104 @@ $hoge[9] = 20210901 + 9;	# 20210901
 
 </details>
 
+<a name="practicaluseArrangementArrayStructure"></a>
+<details><summary>応用知識-配列(構造体)</summary>
+
+配列としているのは、基礎知識5種類のひとつとして、[配列](#arrangement配列)で勉強するつもりだったから。  
+
+
+<a name="practicaluseArrangementArrayStructuretypedef"></a>
+### 構造体
+基本的に、Perlに構造体は[ない](https://perldoc.jp/docs/perl/5.10.0/perlfaq7.pod#How32do32I32declare47create32a32structure63)。  
+データ型の種類には、[スカラー](#variable変数)・[配列](#arrangement配列)・[ハッシュ](#practicaluseHash)・[サブルーチン](#function関数)・ファイルハンドルぐらいがあるだけだ。  
+大雑把に使えるというのも善し悪しだというのが実感できるほど不便だ。  
+
+以下、プログラム例）
+```perl
+use v5.24;
+
+sub typedefresemble() {
+	my %hoge;	# ハッシュ宣言
+
+	say "構造体から1を取得：" . $hoge{1};	# 当たり前だが、何も値を設定していないのだから空文字列が出力される。
+	$hoge{1} = 1;	# 1のキーに1の値を代入する。
+	say "構造体から1を取得：" . $hoge{1};	# 1が出力される。
+
+	$hoge{value} = "本日は晴天なり。";	# 値の設定
+	say "構造体からvalueを取得：" . $hoge{value};	# 本日は晴天なり。が出力される。
+		# valueを取得するからvalueが出てくるわけではない。
+		# "構造体もどき"と言われる所以である。
+}
+&typedefresemble();
+```
+
+<a name="practicaluseArrangementArrayStructurehashreference"></a>
+#### 無名ハッシュリファレンス
+当然ハッシュ形式であれば、どのような形態でも扱うことができる。  
+以下、例）
+```perl
+use v5.24;
+
+sub typedef() {
+	my $hoge = {
+				1=>1,
+				key=>'key',
+				value=>'今日',
+			};
+	say $$hoge{1};		# 1
+	say $$hoge{value};	# 今日
+	say $hoge->{key};	# key
+	say $hoge->{value};	# 今日
+
+	# 以下、追加で値を設定できる(当たり前)。
+	$hoge->{today} = 20211229;	# 数字代入
+	say $hoge->{today};			# 20211229
+
+	# 以下、変数宣言と同時に値の設定が可能(当たり前)。
+	my $boo->{bar} = 'hoge';
+	say $boo->{bar};	# hoge
+	say $boo;			# HASH(0x7fb35c8025b8)
+	say $$boo{bar};		# hoge
+}
+&typedef();
+```
+後半のプログラムは、構造体関係ないよね。
+
+
+#### 無名ハッシュリファレンスを関数に渡す。
+[ハッシュ](#practicaluseHash)の時に、ハッシュそのものをコピーするのは高負荷が掛かることを説明した(したうちに入らない)。  
+それは、如何なる時にも通じるため、構造体もどきを関数に渡すときもリファレンスとして渡すべし。  
+
+以下、悪手。
+```perl
+sub hoge{
+    my %bar = @_;	←☆引数のハッシュがコピーとして受け取る。
+}
+&hoge(%boo);	←☆ハッシュを引数に指定する。
+```
+大変無駄な処理になっている。  
+
+以下、通常の関数への渡し方。
+```perl
+use v5.24;
+
+sub resembleTypedef() {
+	my ($boo, $bar) = @_;	# 引数を変数に代入する。
+
+	say $boo->{20211229};	# boo
+	say $boo->{boo};		# 空文字列(undef)
+
+	say $bar->{20211230};	# 空文字列(undef)
+	say $bar->{bar};		# 晴天なり	←☆このハッシュのこのキーに紐付いた値が出力された。
+}
+
+my %boo  = (20211229=>'boo', 20211230=>'bar',);	# 普通のハッシュ。
+my $bar = {boo=>'本日は', bar=>'晴天なり',};	# 無名ハッシュ
+&resembleTypedef(\%boo, $bar);
+```
+
+</details>
+
 <a name="practicaluseConditional条件分岐"></a>
 <a name="practicaluseConditionalternary"></a>
 <details><summary>応用知識-条件分岐(三項演算子)</summary>
@@ -4109,6 +4210,8 @@ say $function;	# CODE(0x7f90fc01c608)
 
 * Perlでの哲学  
   * ハッシュの大きさに制限はない。  
+
+[構造体もどき](#practicaluseArrangementArrayStructuretypedef)が扱えるようになる。  
 
 
 <a name="practicaluseHashmake"></a>
