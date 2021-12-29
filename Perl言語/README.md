@@ -3042,9 +3042,16 @@ sub typedef() {
 	# 以下、追加で値を設定できる(当たり前)。
 	$hoge->{today} = 20211229;	# 数字代入
 	say $hoge->{today};			# 20211229
+
+	# 以下、変数宣言と同時に値の設定が可能(当たり前)。
+	my $boo->{bar} = 'hoge';
+	say $boo->{bar};	# hoge
+	say $boo;			# HASH(0x7fb35c8025b8)
+	say $$boo{bar};		# hoge
 }
 &typedef();
 ```
+後半のプログラムは、構造体関係ないよね。
 
 </details>
 
