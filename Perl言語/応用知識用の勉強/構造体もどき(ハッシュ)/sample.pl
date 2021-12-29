@@ -44,6 +44,9 @@ sub asakunoHashTypedef() {
 	say $$tomohiro{value};	# 智博
 	say $tomohiro->{key};	# key
 	say $tomohiro->{value};	# 智博
+
+	$tomohiro->{asakuno} = "$asakuno";	# 値代入
+	say $tomohiro->{asakuno};			# 朝来野智博
 }
 &asakunoHashTypedef();
 

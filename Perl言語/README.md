@@ -3038,6 +3038,10 @@ sub typedef() {
 	say $$hoge{value};	# 今日
 	say $hoge->{key};	# key
 	say $hoge->{value};	# 今日
+
+	# 以下、追加で値を設定できる(当たり前)。
+	$hoge->{today} = 20211229;	# 数字代入
+	say $hoge->{today};			# 20211229
 }
 &typedef();
 ```
