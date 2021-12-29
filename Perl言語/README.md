@@ -2551,9 +2551,8 @@ my $DATA = 2;	# データ値用定数
 
 sub tree() {
 	my $node = shift;
-	say "指定番号のノード調査。";
-	say "入力なしのEnter押下にてプログラム終了。";
-	my $MAX = @$node;
+	say "指定番号のノード調査(入力なしのEnter押下にてプログラム終了)。";
+	my $MAX = @$node;	# 2次元配列の個数が取得できる？
 
 	while(){	# 無限ループ
 		my $inputNumber = <STDIN>;	# ユーザからの入力用ファイルハンドル
@@ -2562,17 +2561,25 @@ sub tree() {
 			# 空文字列(undef)の場合、プログラム終了。
 			last;
 		}
+		elsif( $inputNumber =~ /[\D]+/ ) {
+			# 数字以外の文字が1個以上来た場合、処理を先頭に戻すことにした(正規表現での切り分け)。
+			say "入力値($inputNumber)は数字のみ。";
+			next;
+		}
 		if( 0 <= $inputNumber and $inputNumber < $MAX){
 			say "node$inputNumberの値は$node->[$inputNumber][$DATA]";
 			my $leftNumber = $node->[$inputNumber][$LEFT];
-			if( $leftNumber != undef ){
+			# undefの場合、偽になるため、以下の状態(変数のみ)でも問題ない(混乱するか、見にくくなるけど)。
+			#	ただし、0が変数に入っていた場合も偽になるため、バグとして問題になる。
+			if( $leftNumber ){
 				say "左の葉は$node->[$leftNumber][$DATA]";
 			}
 			else{
 				say "左の葉は存在しない。";
 			}
 			my $rightNumber = $node->[$inputNumber][$RIGHT];
-			if( $rightNumber ne undef ){
+			if( defined $rightNumber ){
+				# 変数に値が入っている場合、真になる(そのため、以下が出力される)。
 				say "右の葉は$node->[$rightNumber][$DATA]";
 			}
 			else{
@@ -2603,10 +2610,10 @@ sub main() {
 &main();
 ```
 
-以下、出力結果。
+以下、実行結果。
 ```terminal
-指定番号のノード調査。
-入力なしのEnter押下にてプログラム終了。
+$ perl algorithmTree.pl
+指定番号のノード調査(入力なしのEnter押下にてプログラム終了)。
 0
 node0の値は10
 左の葉は20
@@ -2641,8 +2648,17 @@ node7の値は80
 右の葉は存在しない。
 8
 0から7の範囲に納めること。
+1a	←☆数字以外を含む。
+入力値(1a)は数字のみ。
+a1
+入力値(a1)は数字のみ。	←☆数字以外を含む。
+1a2
+入力値(1a2)は数字のみ。	←☆数字以外を含む。
+ 	←☆半角スペース1つ入力。
+入力値( )は数字のみ。
+	←☆何も入力せずにエンターキー押下にて、終了した。
+$
 ```
-本来は、構造体で管理すべきなのだろうが、なかなか大変そうなので、諦めた(Perlにはない概念だからな)。  
 
 
 <a name="graphChapter3"></a>

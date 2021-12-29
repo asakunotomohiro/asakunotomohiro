@@ -44,6 +44,11 @@ sub tree() {
 			# 空文字列(undef)の場合、プログラム終了。
 			last;
 		}
+		elsif( $inputNumber =~ /[\D]+/ ) {
+			# 数字以外の文字が1個以上来た場合、処理を先頭に戻すことにした(正規表現での切り分け)。
+			say "入力値($inputNumber)は数字のみ。";
+			next;
+		}
 		#my $number = 	←☆キャスト不要と判断した。
 		if( 0 <= $inputNumber and $inputNumber < $MAX){
 			say "node$inputNumberの値は$node->[$inputNumber][$DATA]";
