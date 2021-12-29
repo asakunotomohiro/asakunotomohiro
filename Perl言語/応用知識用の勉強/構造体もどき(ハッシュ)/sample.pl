@@ -32,6 +32,18 @@ sub asakunoHashTypedef() {
 	#	Global symbol "%tomohiro" requires explicit package name (did you forget to declare "my %tomohiro"?) at sample.pl line 29.
 	#	syntax error at sample.pl line 30, near "}"
 	#	Execution of sample.pl aborted due to compilation errors.
+
+	say "-" x 30;
+	say "以下、無名ハッシュリファレンス";
+	my $tomohiro = {
+				1=>1,
+				key=>'key',
+				value=>'智博',
+			};
+	say $$tomohiro{1};		# 1
+	say $$tomohiro{value};	# 智博
+	say $tomohiro->{key};	# key
+	say $tomohiro->{value};	# 智博
 }
 &asakunoHashTypedef();
 

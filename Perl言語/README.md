@@ -3021,6 +3021,27 @@ sub typedefresemble() {
 &typedefresemble();
 ```
 
+<a name="practicaluseArrangementArrayStructurehashreference"></a>
+#### 無名ハッシュリファレンス
+当然ハッシュ形式であれば、どのような形態でも扱うことができる。  
+以下、例）
+```perl
+use v5.24;
+
+sub typedef() {
+	my $hoge = {
+				1=>1,
+				key=>'key',
+				value=>'今日',
+			};
+	say $$hoge{1};		# 1
+	say $$hoge{value};	# 今日
+	say $hoge->{key};	# key
+	say $hoge->{value};	# 今日
+}
+&typedef();
+```
+
 </details>
 
 <a name="practicaluseConditional条件分岐"></a>
@@ -4145,6 +4166,8 @@ say $function;	# CODE(0x7f90fc01c608)
 
 * Perlでの哲学  
   * ハッシュの大きさに制限はない。  
+
+[構造体もどき](#practicaluseArrangementArrayStructuretypedef)が扱えるようになる。  
 
 
 <a name="practicaluseHashmake"></a>
