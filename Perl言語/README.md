@@ -60,8 +60,9 @@ $
 　　※Prologのプログラムファイル拡張子と同じ。  
 　　※本来であれば、Perlプログラムの拡張子は付けない。しかし、Windows向けに開発環境を用意する場合は拡張子を付けることになるため、関数ライブラリ(`*.pl`)と同じ拡張子が使われ出した(区別するために、プログラム用拡張子を`*.plx`にする案もあるようだが・・・定着せず)。  
 　　※他にも`*.cgi`を使えるそうだ。  
-　　※[`*.pm`](#practicaluseModule)は、Perlプログラムとは異なる(モジュール用プログラム)。  
+　　※[`*.pm`](#practicaluseFunctionLibuse)は、Perlプログラムとは異なる(モジュール用プログラム**Perl Module**の略)。  
   * 実行方式：インタプリタ方式  
+    実行手順：**コンパイル**⇒**中間コード生成**⇒**インタプリタ実行**  
   * 標準の文字コード(プログラムファイル)：UTF-8  
 　　※プラグマ(`use utf8;`)宣言が必要。  
   * 文字コードの扱い：
@@ -73,11 +74,11 @@ $
   * 標準の出力関数：`print`・`printf`・`say`  
     整形関数：[`sprintf`](https://perldoc.jp/func/sprintf)  
   * 標準のフォーマット関数：  
-　　例）`printf`など。
+　　例）`printf`など。  
 　　※必須記入項目ではなく、勉強途中での記載でも可とする。  
   * 単数行コメント方法：`#`  
   * 複数行コメント方法：
-    [大きなブロックで囲む方法](https://perldoc.jp/docs/perl/5.10.0/perlfaq7.pod#How32can32I32comment32out32a32large32block32of32perl32code63)：
+    [大きなブロックで囲む方法](https://perldoc.jp/docs/perl/5.10.0/perlfaq7.pod#How32can32I32comment32out32a32large32block32of32perl32code63)⇒
     PODマーカーで囲むこと。  
   * デバッガ機能(デバッグ技法)：  
 
@@ -143,7 +144,9 @@ $
     * [x] [if修飾子](#practicaluseConditionalifmodifier)  
   * [ ] [繰り返し](#practicaluseRepetition繰り返し)  
   * [ ] [関数](#practicaluseFunction関数)  
-    [x] ライブラリ作成  
+    [x] [ライブラリ作成(`require`)](#practicaluseFunctionLibrequire)  
+    [x] [モジュール作成(`use`)](#practicaluseFunctionLibuse)  
+    **todo**あり。  
 
 
 <a name="rangeOtherThanBasicKnowledge"></a>
@@ -181,7 +184,7 @@ $
     [x] オブジェクト指向入門2021/11/12(読み切っていない)  
         * [オブジェクト指向入門](#objectorientedPerl4894713004one)を読み直す(要は全般)。  
     [x] Perl入門2021/12/13(todoあり)  
-        * [モジュール](#practicaluseModulemain)部分読み直し。  
+        * [モジュール](#practicaluseFunctionLibuse)部分読み直し。  
     [ ] オブジェクト指向Perl入門  
     [ ] 配列とスカラのbless  
     [ ] その他のデータ型のbless  
@@ -195,7 +198,7 @@ $
     [ ] 多重ディスパッチ  
     [ ] 永続オブジェクト  
   * [ ] [テスト方法](#practicaluseTester)  
-  * [x] [標準関数(モジュール)](#practicaluseModule)  
+  * [x] [標準関数(モジュール)](#practicaluseFunctionLibuse)  
   * [ ] [プロセス管理](#practicaluseSystemfunc)  
   * [x] [パッケージ](#practicalusePackages)  
 
@@ -2714,10 +2717,31 @@ say $hoge	if $hoge;	# 出力なし。
 </details>
 
 <a name="practicaluseFunction関数"></a>
-<details><summary>応用知識-関数(ライブラリ作成)</summary>
+<a name="practicaluseFunctionLibrequire"></a>
+<details><summary>応用知識-関数(ライブラリ作成require)</summary>
+
+* Perlのプログラム実行順序  
+  ※以下、requireでのライブラリ読み込み前提説明。  
+  1. コンパイル  
+  1. 中間コード生成  
+  1. インタプリタ実行  
+  1. インタプリタ(Perlプログラム)実行時にrequireがあれば指定のファイルを読み込む。  
+     そのため、実行直前まで文法エラーに気づかない。  
+     しかし、未宣言変数の検出はできる。  
+
+
+### 余談(@INC)
+[**Perl 5.26**](https://metacpan.org/release/XSAWYERX/perl-5.26.0/view/pod/perldelta.pod)から **@INC** に標準で備わっていたカレントディレクトリが消えた(2017/05/30？)。  
+その経緯は、Unix界隈では有名らしく、カレントディレクトリに実行ファイルがある場合、意図せずに実行することがあり、セキュリティ的に問題があるとのことだった。  
+そのため、標準でカレントディレクトリのファイルを読み込むことを取りやめたようだ。  
+今まで、**@INC**に追加されていたカレントディレクトリは、末尾だったようだ。  
+今後もプログラム作成をする場合にカレントディレクトリを追加する場合は、末尾が良いようだ(`BEGIN { push @INC, "."; }`)。  
+そもそもセキュリティの観点からカレントディレクトリにあるプログラム実行を廃止したことを考えれば、わざわざセキュリティを甘くする必要は無い。  
+そのため、追加するのであれば、ディレクトリを指定した方が良い。  
+
 
 ### [ライブラリ](https://perldoc.jp/docs/perl/5.8.8/perlmodlib.pod)
-ライブラリにしておけば、後から使い回すときも使い勝手がよくなるという配慮により、本来の処理とは切り出す。  
+ライブラリにしておけば、後から使い回すときも使い勝手がよくなるという配慮により、本来の処理から切り出す。  
 他のプログラムからも呼び出せるようにしている。  
 
 以下、呼び出し側のプログラム例）
@@ -2725,12 +2749,14 @@ say $hoge	if $hoge;	# 出力なし。
 use v5.24;
 say join "\n", @INC;	←☆カレントディレクトリが存在しない。
 
-unshift @INC, ".";	←☆カレントディレクトリ追加。
+BEGIN { push @INC, "."; };	←☆カレントディレクトリ末尾追加。
+    # unshift @INC, ".";	←☆カレントディレクトリ追加失敗。
 say join "\n", @INC;
-		# .	←☆カレントディレクトリ追加完了するが、認識せず。
+    # .	←☆カレントディレクトリ追加完了するが、認識せず。
 
-	# 以下、"@INCに記載されているディレクトリ"に配置した。
-require "hoge/関数ライブラリ(呼ばれる側).pl";	# 関数ライブラリ読み込み終了
+    # 以下、"@INCに記載されているディレクトリ"に配置した。
+require "関数ライブラリ(呼ばれる側)require.pl";
+    # 出力結果：関数ライブラリ読み込み終了
 my @hoge = ("本日は", "晴天なり。");
 
 &hoge(@hoge);			# 関数ライブラリ：本日は 晴天なり。
@@ -2747,8 +2773,169 @@ sub hoge {
 
 1;	←☆真を返すための決まり事。
 ```
+この決まり事があるが故に、関数呼び出し後に1が返ってきていた過去がある。  
 
 </details>
+
+<a name="practicaluseFunctionLibuse"></a>
+<details><summary>応用知識-関数(モジュール作成use)</summary>
+
+車輪の再開発をせずに、既存の車輪を使い回すことを優先し、なければ作成することになるが、使い回せるような作りにすること。  
+汎用性を高める場合、限度を超える場合は使い勝手が低下してしまうため、設計をしっかり行い、役割と目的をしっかり認識して作成に取り組むこと。  
+**use**ステートメントにより、標準ディレクトリから探し出し、一致ファイルの内部コードを使えるようにする。  
+
+* モジュール  
+  利用のためのヘルプ利用例）`perldoc File::Basename`  
+
+* Perlのプログラム実行順序  
+  ※以下、useでのファイル読み込み前提説明。  
+  1. コンパイル  
+     コンパイル実行時にuseがあれば指定のファイルを読み込む。  
+  1. 中間コード生成  
+  1. インタプリタ実行  
+
+  * 以下、上記の実行順序をさらに正確に表現(できていない)。  
+    モジュール内のエクスポート制御について。  
+    1. コンパイル  
+       コンパイル実行時にuseがあれば指定のファイル(サブルーチン)を読み込む。  
+    1. そのサブルーチンのimportサブルーチンが自動呼び出しされる。  
+    1. 中間コード生成  
+    1. インタプリタ実行  
+
+    **import**サブルーチンを呼び出すが、標準では何もしない。  
+    そして、独自に作ることで、その動作を変更できる。  
+    * 個別呼び出しに応じたモジュールも存在する。  
+      呼び出し例）
+      `use File::Basename qw(fileparse basename)`  
+      ※この場合は、サブルーチンとして**dirname**ルーチンを呼び出さないことになる。  
+      そして、dirnameを個別に呼び出したい場合、`File::Basename::dirname($hoge);`とすればいい。  
+    * サブルーチン呼び出し不可。  
+      例）
+      `use File::Basename ();`  
+      これにより、サブルーチンを呼び出さないことになる。  
+      また、`use File::Basename;`の場合は、デフォルトのサブルーチン呼び出しが発生する(モジュール開発者が決めている)。  
+
+    ※あ・・・ありのまま、今起こった事を話すぜ！  
+    私がモジュール説明書の前でモジュールの理解に努めていたと思ったらいつのまにか混乱していた。
+    な・・・何を言っているのかわからねーと思うが、私も何をされたのかわからなかった・・・
+    頭がどうにかなりそうだった。
+    催眠術だとか超スピードだとか、そんなチャチなもんじゃあ断じてねえ。
+    もっと恐ろしいものの片鱗を味わったぜ・・・。
+
+* OSごとに、**::** を適切なPathに置き換える。  
+  利用している最中の出来事に関係するため、開発に影響ない？  
+  利用例）`use Database::Access::Control;`  
+  以下のように書き換わる。  
+  * Unix・Linux・OS/2  
+    `Database/Access/Control.pm`  
+  * Windows  
+    `Database\Access\Control.pm`  
+  * MacOS  
+    `Database:Access:Control.pm`  
+  * VMS  
+    `[Database:Access]Control.pm`  
+
+* モジュールの作成手順  
+  1. モジュールの配置場所の決定。  
+     `~/Hoge/`など？  
+     ※これは、最初だけの作業だと思われるが、開発に関係あるのか？  
+  1. このディレクトリの存在をPerlに指示する。  
+     `use lib "/Users/asakunotomohiro/lib/perl5/";	# ←☆変数は使えないため気をつけること(ハードコーディングになる)。`  
+     もしくは、以下で追加する(上記のほうが優れたやり方だそうだ)。  
+     `BEGIN { use File::Basename; my $pwd = dirname($0); push @INC, $pwd; }	←☆このブロック内であれば変数は使える(プログラムファイルのPathを末尾に追加)。`  
+     ~~`BEGIN { unshift @INC, "/Users/asakunotomohiro/lib/perl5/"; }`~~	←☆先頭への追加は止めた方が良いようだ。  
+     ※`use lib`とは、ライブラリを使うのではなく、ライブラリを探すPathの設定をするだけ。  
+  1. モジュール名の各コンポーネント(最後のコンポーネントを除く)に対応するサブディレクトリを標準ライブラリの下にネストして作成する。  
+     モジュール名例）`AAAA::SSS::KKK::NNN`  
+     ディレクトリ例）`AAAA/SSS/KKK`  
+     補足：**NNN**はファイル名になる。
+  1. 最下位の(適切な)サブディレクトリにテキストファイルを作成する。  
+     ファイル名例）`NNN.pm`  
+     ※ちなみに、ファイル名とパッケージ名は一致させておいた方が吉。  
+  1. このテキストファイル(Perlプログラムファイル)にコーディングする。  
+  1. テキストファイルの末尾に、真に評価される付加的なステートメントを追加する。  
+     `1;`  
+     ※真になれば何でも構わないが、慣例的に**1**を使う(固定文字列と思うべし)。  
+
+* グローバル配列変数  
+  * **@INC**  
+    以下を変更もしくは、追加できる。  
+    標準ライブラリ  
+    ユーザ定義ライブラリのディレクトリ  
+  * import文  
+    **import**と言うサブルーチンから探し出し、使う。  
+
+* モジュール内のバージョン制御  
+  * 使うモジュールのバージョン指定。  
+    `use Database::Access::Control 1.20;`  
+  * [パッケージ](#practicalusePackages)内でのバージョン指定。  
+    `$VERSION = 1.00;`  
+    ※パッケージ変数にするため、変数名先頭に**my**を置いてはならない(**package**直後に配置するのが望ましい)。  
+
+
+<a name="practicaluseFunctionLibuseProgram"></a>
+### [useモジュール](https://perldoc.jp/func/use)開発方法
+[モジュール](https://perldoc.jp/docs/perl/5.20.1/perlmod.pod)の説明は別途あり。  
+※開発と作成のどちらの言葉が適切なのだろう。  
+
+以下、呼び出し側のプログラム例）  
+ファイル名：[**関数モジュール(呼ぶ側)use.pl**](./基礎知識用の勉強/5関数勉強/関数モジュール(呼ぶ側)use.pl)
+```perl
+use v5.24;
+BEGIN { use File::Basename; my $pwd = dirname($0); push @INC, $pwd; }	# 末尾に追加(追加しない場合、以下のuse呼び出しがエラーになる)。
+
+use hogebarboo;	# 出力結果：呼ぶ側のプログラムになる。
+				# 出力結果：ライブラリ読み込み完了
+my @hoge = ("boo", "bar", );
+
+sub hoge {
+	say "$VERSION";	# 0.99
+	# 以下、パッケージ名をつけて呼ぶこともできるが、利便性が下がる(*.pmのファイル名とパッケージ名が不一致の場合にパッケージ名を付ける必要が出てくる)。
+	#&hogebarboo::xxxyyyzzz();
+	#	Undefined subroutine &main::xxxyyyzzz called at 関数モジュール(呼ぶ側)use.pl line 9.	←☆上記のBEGINがない場合のエラー。
+	&xxxyyyzzz(@hoge);			# 関数ライブラリ：boo bar
+	&xxxyyyzzz("関数呼び出し");	# 関数ライブラリ：関数呼び出し
+}
+&hoge();
+```
+
+以下、呼ばれる側のプログラム例）
+ファイル名：[**hogebarboo.pm**](./基礎知識用の勉強/5関数勉強/関数モジュール(呼ばれる側)use.pm)
+```perl
+package hogebarboo;
+$VERSION = 0.99;
+
+use v5.24;
+
+use Exporter;
+our @ISA = qw(Exporter);
+our @EXPORT = qw(asakuno);	←☆バージョン番号を外部から呼び出したい場合もここに追加するが、個々のモジュールバージョンを知りたい人がいないため、追加不要。
+
+sub xxxyyyzzz {
+	say "関数ライブラリ：@_";
+}
+```
+ファイル名とパッケージ名は一致させる前提がある。  
+異なる名前を付ける場合は、`*.pm`にパッケージを付けてはならない(私の技術力が甘く、適切に関数を呼び出せないため)。  
+呼び出し側のプログラムからパッケージを呼び出すことで使えるようになる？(`import パッケージ名;`)  
+しかし、それではパッケージ名を知っておく必要が出てくるため、オブジェクト指向の考え方から遠ざかる。  
+どうやって回避する？  
+
+
+#### useモジュールの実体
+`use モジュール名;`の実体は、内部で、以下の動きをしている。
+```perl
+BEGIN{
+    require モジュール名;
+    import  モジュール名;
+}
+```
+`BEGIN`は、コンパイル時に読み込まれる部分(何度useしようが、1回のみ読み込まれる)。  
+
+</details>
+
+todo: ファイル名とパッケージ名の相違がある場合のuse方法について調べる。  
+また、他にも調べることがあるため、後日本来の作業が落ち着いてから調べ直す。  
 
 
 <a name="practicalusePointer"></a>
@@ -3952,93 +4139,6 @@ for (1..1000000) {
 
 </details>
 
-<a name="practicaluseModule"></a>
-<details><summary>応用知識-モジュール</summary>
-
-基本的には[Perlドキュメント](https://perldoc.jp)を見た方が良いようだ。  
-もしくは、普通にHelpを使う。  
-例）
-```terminal
-$ perldoc File::Basename
-    File::Basename - Parse file paths into directory, filename and suffix.
-
-SYNOPSIS
-　　　・
-　　　・
-　　　・
-$
-```
-そもそもモジュールと[パッケージ](#practicalusePackages)はどう違う？  
-
-
-<a name="practicaluseModulemain"></a>
-### [モジュール](https://perldoc.jp/docs/perl/5.20.1/perlmod.pod)
-車輪の再開発をせずに、望む車輪を選べ、そして使える。  
-**use**ステートメントにより、標準ディレクトリから探し出し、一致ファイルの内部コードを使えるようにする。  
-
-例）
-`use Database::Access::Control;`  
-* **::** をOSごとに、適切なPathに置き換える。  
-  * Unix・Linux・OS/2  
-    `Database/Access/Control.pm`  
-  * Windows  
-    `Database\Access\Control.pm`  
-  * MacOS  
-    `Database:Access:Control.pm`  
-  * VMS  
-    `[Database:Access]Control.pm`  
-
-* グローバグ配列変数  
-  * **@INC**  
-    以下を変更もしくは、追加できる。  
-    標準ライブラリ  
-    ユーザ定義ライブラリのディレクトリ  
-  * import文  
-    **import**と言うサブルーチンから探し出し、使う。  
-
-* モジュールのセットアップ  
-  1. モジュールを格納したい標準ライブラリディレクトリを選択する。  
-     `~/Home/`など？  
-  1. このディレクトリの存在をPerlに指示する。  
-     `use lib "/Users/asakunotomohiro/lib/perl5/";	# ←☆変数は使えないため気をつけること。`  
-     `BEGIN { push @INC, "/Users/asakunotomohiro/lib/perl5/"; }`  
-     ~~`BEGIN { unshift @INC, "/Users/asakunotomohiro/lib/perl5/"; }`~~  
-     ※`use lib`とは、ライブラリを使うのではなく、ライブラリを探すPathの設定をするだけ。  
-  1. モジュール名の各コンポーネント(最後のコンポーネントを除く)に対応するサブディレクトリを標準ライブラリの下にネストして作成する。  
-     モジュール名例）`AAAA::SSS::KKK::NNN`  
-     ディレクトリ例）`AAAA/SSS/KKK`  
-  1. 最下位のサブディレクトリにテキストファイルを作成する。  
-     ファイル名例）`NNN.pm`  
-  1. このテキストファイルにコードを挿入する。  
-  1. テキストファイルの末尾に、真に評価される付加的なステートメントを追加する。  
-     `1;`  
-
-* モジュール内のバージョン制御  
-  * 使うモジュールのバージョン指定。  
-    `use Database::Access::Control 1.20;`  
-  * [パッケージ](#practicalusePackages)内でのバージョン指定。  
-    `$VERSION = 1.00;`  
-
-* モジュール内のエクスポート制御  
-  **import**サブルーチンを呼び出すが、標準では何もしない。  
-  そして、独自に作ることで、その動作を変更できる。  
-  * 個別呼び出しに応じたモジュールも存在する。  
-    呼び出し例）
-    `use File::Basename qw(fileparse basename)`  
-    ※この場合は、サブルーチンとして**dirname**ルーチンを呼び出さないことになる。  
-    そして、dirnameを個別に呼び出したい場合、`File::Basename::dirname($hoge);`とすればいい。  
-  * サブルーチン呼び出し不可。  
-    例）
-    `use File::Basename ();`  
-    これにより、サブルーチンを呼び出さないことになる。  
-    また、`use File::Basename;`の場合は、デフォルトのサブルーチン呼び出しが発生する(モジュール開発者が決めている)。  
-
-
-上記の説明、だいたい分からない。  
-todo: もういちど読み直す。  
-
-
-</details>
 
 <a name="practicalusePackages"></a>
 <details><summary>応用知識-パッケージ</summary>
@@ -4614,7 +4714,7 @@ Perlにおけるオブジェクト指向は、標準的な言語機能(ハッシ
   * [パッケージ](#practicalusePackages)  
 
 * Perlの非中核要素  
-  * [モジュール](#practicaluseModule)  
+  * [モジュール](#practicaluseFunctionLibuse)  
   * [自動ロード](#practicaluseAutoload)  
   * [クロージャ](#practicaluseClosure)  
   * [型グロブ](#practicaluseTypeglob)  
