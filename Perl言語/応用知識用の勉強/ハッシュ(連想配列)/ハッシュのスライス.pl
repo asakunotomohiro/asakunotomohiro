@@ -20,6 +20,9 @@ sub associativearray() {
 #	say "@asakuno{"asakuno", "tomohiro"}";	Missing right curly or square bracket at ハッシュのスライス.pl line 20, within string
 	say @asakuno{"asakuno", "tomohiro"};	# 202109224873118247
 	say @asakuno{qw(asakuno tomohiro)};	# 202109224873118247
+	say "-" x 30;
+#	say "@asakuno{asakuno, tomohiro}";	# Bareword "asakuno" not allowed while "strict subs" in use at ハッシュのスライス.pl line 24.
+	say "@asakuno{'asakuno', 'tomohiro'}";	# 20210922 4873118247
 }
 &associativearray();
 

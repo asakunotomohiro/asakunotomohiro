@@ -10,15 +10,15 @@ sub refFunc(){
 }
 
 sub sample() {
-	my $foo  = 20211126;
+	our $scalar  = 20211126;
 	my @ARGV = (20211126, 20211127);
-	my %ENV  = (20211126=>"朝来野智博", 20211127=>"asakunotomohiro");
+	my %Hash  = (20211126=>"朝来野智博", 20211127=>"asakunotomohiro");
 
-	my $scalarref = \$foo;     # 変数
-	my $arrayref  = \@ARGV;    # 配列
-	my $hashref   = \%ENV;     # ハッシュ
-	my $coderef   = \&refFunc;
-#	my $globref   = \*foo;
+	my $scalarref = \$scalar;	# 変数
+	my $arrayref  = \@ARGV;		# 配列
+	my $hashref   = \%Hash;		# ハッシュ
+	my $coderef   = \&refFunc;	# 関数
+	my $globref   = \*scalar;	# グロブ
 
 	say $scalarref;	# SCALAR(0x7fcfa201c728)
 	say $arrayref;	# ARRAY(0x7fcfa201c758)
@@ -29,13 +29,13 @@ sub sample() {
 
 	say $$scalarref;			# 20211126
 	say @$arrayref;				# 2021112620211127
-	say @{$arrayref}[0];		# 20211126
-	say @{$arrayref}[1];		# 20211127
+		say @{$arrayref}[0];	# 20211126
+		say @{$arrayref}[1];	# 20211127
 	say %$hashref;				# 20211127asakunotomohiro20211126朝来野智博
 	say ${$hashref}{20211126};	# 朝来野智博
 	say ${$hashref}{20211127};	# asakunotomohiro
 	say &$coderef;				# ハンドラー関数
-	# 1	←☆これ何？
+								# 1	←☆これ何？戻り値？
 
 	say "-" x 30;
 

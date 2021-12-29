@@ -58,9 +58,11 @@ $
 
   * プログラムファイルの拡張子：`*.pl`  
 　　※Prologのプログラムファイル拡張子と同じ。  
+　　※本来であれば、Perlプログラムの拡張子は付けない。しかし、Windows向けに開発環境を用意する場合は拡張子を付けることになるため、関数ライブラリ(`*.pl`)と同じ拡張子が使われ出した(区別するために、プログラム用拡張子を`*.plx`にする案もあるようだが・・・定着せず)。  
 　　※他にも`*.cgi`を使えるそうだ。  
-　　※[`*.pm`](#practicaluseModule)は、Perlプログラムとは異なる(モジュール用プログラム)。  
+　　※[`*.pm`](#practicaluseFunctionLibuse)は、Perlプログラムとは異なる(モジュール用プログラム**Perl Module**の略)。  
   * 実行方式：インタプリタ方式  
+    実行手順：**コンパイル**⇒**中間コード生成**⇒**インタプリタ実行**  
   * 標準の文字コード(プログラムファイル)：UTF-8  
 　　※プラグマ(`use utf8;`)宣言が必要。  
   * 文字コードの扱い：
@@ -72,11 +74,11 @@ $
   * 標準の出力関数：`print`・`printf`・`say`  
     整形関数：[`sprintf`](https://perldoc.jp/func/sprintf)  
   * 標準のフォーマット関数：  
-　　例）`printf`など。
+　　例）`printf`など。  
 　　※必須記入項目ではなく、勉強途中での記載でも可とする。  
   * 単数行コメント方法：`#`  
   * 複数行コメント方法：
-    [大きなブロックで囲む方法](https://perldoc.jp/docs/perl/5.10.0/perlfaq7.pod#How32can32I32comment32out32a32large32block32of32perl32code63)：
+    [大きなブロックで囲む方法](https://perldoc.jp/docs/perl/5.10.0/perlfaq7.pod#How32can32I32comment32out32a32large32block32of32perl32code63)⇒
     PODマーカーで囲むこと。  
   * デバッガ機能(デバッグ技法)：  
 
@@ -142,6 +144,9 @@ $
     * [x] [if修飾子](#practicaluseConditionalifmodifier)  
   * [ ] [繰り返し](#practicaluseRepetition繰り返し)  
   * [ ] [関数](#practicaluseFunction関数)  
+    [x] [ライブラリ作成(`require`)](#practicaluseFunctionLibrequire)  
+    [x] [モジュール作成(`use`)](#practicaluseFunctionLibuse)  
+    **todo**あり。  
 
 
 <a name="rangeOtherThanBasicKnowledge"></a>
@@ -154,14 +159,12 @@ $
       [x] 変数  
       [x] 配列  
       [x] ハッシュ  
-      [ ] 関数(サブルーチン)  
+      [x] 関数(サブルーチン)  
       [ ] OSの環境変数  
       [ ] ファイルハンドルへのリファレンス  
-    * [x] デリファレンス  
+    * [x] [デリファレンス](#practicalusePointerdereference)  
     * [x] 入れ子  
       本当は途中。  
-    * [ ] スコープ  
-    * [ ] サブルーチンへのリファレンス  
     * [ ] 応用利用  
   * [ ] [NULL・nil](#practicaluseNull)  
   * [ ] [ハッシュ(連想配列)](#practicaluseHash)  
@@ -174,13 +177,14 @@ $
     [x] 既存キーの確認方法。  
     [x] 値の削除方法。  
     [x] OSの環境変数  
+    [x] OSのシグナル  
   * [ ] [ファイル操作](#practicaluseFileoperation)  
   * [ ] [ディレクトリ操作](#practicaluseDirectorymanipulation)  
   * [ ] [オブジェクト指向](#practicaluseObjectorientation)  
     [x] オブジェクト指向入門2021/11/12(読み切っていない)  
         * [オブジェクト指向入門](#objectorientedPerl4894713004one)を読み直す(要は全般)。  
     [x] Perl入門2021/12/13(todoあり)  
-        * [モジュール](#practicaluseModulemain)部分読み直し。  
+        * [モジュール](#practicaluseFunctionLibuse)部分読み直し。  
     [ ] オブジェクト指向Perl入門  
     [ ] 配列とスカラのbless  
     [ ] その他のデータ型のbless  
@@ -194,7 +198,7 @@ $
     [ ] 多重ディスパッチ  
     [ ] 永続オブジェクト  
   * [ ] [テスト方法](#practicaluseTester)  
-  * [x] [標準関数(モジュール)](#practicaluseModule)  
+  * [x] [標準関数(モジュール)](#practicaluseFunctionLibuse)  
   * [ ] [プロセス管理](#practicaluseSystemfunc)  
   * [x] [パッケージ](#practicalusePackages)  
 
@@ -222,6 +226,9 @@ $
 > \* シンボル名に対する全ての型。バージョン4ではポインタのように使われていましたが、新しいperlではリファレンスが使えます。  
 > <> あるファイルハンドルからレコードを入力するのに使われます。  
 > \  なにかのリファレンスを取ります。  
+
+上記記号は、別名ファニー文字(funny characters・おかしな文字)と言う。  
+このシジルを採用しているがために、予約語というものが存在しないようだ(他のプログラミング言語では考えられない)。  
 
 
 ## 具体的な基礎知識
@@ -396,8 +403,17 @@ foreach ( @hoge ) {
 また、古いバージョン利用時に宣言を明確にする場合は、`use strict;`を付ける。  
 
 
+<a name="subVariable2global"></a>
+##### グローバル変数
+**our**キーワードを変数宣言時に付ける。  
+様式：
+`our $変数名 = 値;`  
+
+異なる[パッケージ](#practicalusePackages)からの変数利用呼び出しにも宣言で対応できるようになる。  
+
+
 <a name="subVariable2lexical"></a>
-##### レキシカル変数
+##### レキシカル(lexical)変数
 **my**キーワードを変数宣言時に付ける。  
 
 * 特徴  
@@ -434,6 +450,18 @@ main();
 関数内でのレキシカル変数barを宣言しており、関数を抜けたときにその関数が破棄されるはずだが、リファレンスとして値を戻しているため、メイン関数内でbarに追加された変数を利用できる。  
 利用し終えたことをPerlプログラムが検知したときに、その変数が破棄される。  
 また、メイン関数内か直接bar変数を利用することは出来ない(ゆえに、配列を変数にリファレンスとして代入しているのは、[無名配列](#practicalusePointerAnonymousarrayreference)と同義`$test = ["boo", "bar", "hoge",];`)。  
+
+以下、main側で宣言した変数を呼び出す。
+```perl
+use v5.24;
+
+my $hoge = "ほげぇ";	←☆レキシカル変数(my)は違うパッケージ(今回はSubStaticScope)から利用できない。
+our $boo = "boo";
+
+package SubStaticScope;
+say $main::hoge;	# 空文字列(undef)
+say $main::boo;		# boo	←☆myを付けなければ、違うパッケージから利用できる。
+```
 
 ※[リファレンス](#practicalusePointer)は、別途説明している。  
 ※[パッケージ変数](#practicalusePackages)は応用知識として説明している。  
@@ -1298,6 +1326,7 @@ sub 関数名 {
 	処理;
 }
 ```
+処理が正常終了した場合、戻り値として1を返す。  
 
 引数の受け取り方は、可変長引数として[デフォルト配列(`@_`)](#subArrangement1)を使う。  
 
@@ -1371,52 +1400,52 @@ print( hoge($test) );		# 戻り値がリストコンテクスト。
 呼び出し側による戻り値の期待に沿った型で戻せる。  
 
 以下、プログラム。
+```perl
+use v5.24;
 
-    use v5.24;
-    
-    # 以下、サブルーチン
-    sub func
-    {
-    	my $boo = "本日は晴天なり。";
-    	my @bar = ("boo", "bar",);
-    
-    	say "関数内部処理。";
-    
-    	return @bar if wantarray();				# 呼び出し側が配列を期待する場合は配列で戻す。
-    	return $boo  if defined(wantarray());	# 呼び出し側が変数を期待する場合は変数で戻す。
-    }
-    
-    # 以下、戻り値なし。
-    func();	# 何もしない(正確な表現⇒何も戻ってこない)。
-    	# 関数内部処理。
-    	# は、出力された。
-    
-    # 以下、戻り値の種類がスカラコンテクスト。
-    my $scalar = func();
-    say $scalar;	# 本日は晴天なり。
-    
-    # 以下、戻り値の種類がリストコンテクスト。
-    my @list = func();
-    say "@list";	# boo bar
-    say $list[0];	# boo
-    say $list[1];	# bar
+sub func
+{
+	# ここは、サブルーチン
+	my $boo = "本日は晴天なり。";
+	my @bar = ("boo", "bar",);
+
+	say "関数内部処理。";
+
+	return @bar if wantarray();				# 呼び出し側が配列を期待する場合は配列で戻す。
+	return $boo  if defined(wantarray());	# 呼び出し側が変数を期待する場合は変数で戻す。
+}
+
+func();	# 戻り値を受け取らないため、何も返されない。
+			# 関数内部処理。
+		# は、出力された。
+
+my $scalar = func();	# 戻り値の種類がスカラコンテクスト。
+say $scalar;	# 本日は晴天なり。
+
+my @list = func();	# 戻り値の種類がリストコンテクスト。
+say "@list";	# boo bar
+say $list[0];	# boo
+say $list[1];	# bar
+```
 
 また、戻り値を常に受け取ってもらう前提のサブルーチンの場合、以下のように警告を出せる。
+```perl
+use v5.24;
+use Carp;	# ←☆警告表示にはこれが必要。
 
-    use v5.24;
-    use Carp;	# ←☆警告表示にはこれが必要。
-    
-    # 以下、サブルーチン
-    sub function
-    {
-    	say "戻り値受け取り警告。";
-    	carp "戻り値は使うため、受け取るようにしましょう。";
-    }
-    
-    function();
-    #	戻り値は使うため、受け取るようにしましょう。 at 関数戻り値の種類.pl line 8.
-    #	main::function() called at 関数戻り値の種類.pl line 11
-    #	戻り値受け取り警告。	←☆警告後に処理が走る(上から順番に処理が動くわけではないって事)。
+sub function
+{
+	# ここは、サブルーチン。
+	say "戻り値受け取り警告。";
+	carp "戻り値は使うため、受け取るようにしましょう。";
+}
+
+function();
+	# 以下、出力結果。
+	#	戻り値は使うため、受け取るようにしましょう。 at 関数戻り値の種類.pl line 8.
+	#	main::function() called at 関数戻り値の種類.pl line 11
+	#	戻り値受け取り警告。	←☆警告後に処理が走る(上から順番に処理が動くわけではないって事)。
+```
 
 ※警告を出すための関数呼び込み(要は、インクルード)が必須。  
 付け忘れた場合、エラーが出る。  
@@ -1480,7 +1509,7 @@ v5.24ではできないが、最新版では出来るのか。
 この形式で[宣言](https://perldoc.jp/docs/perl/5.16.1/perlsub.pod#Temporary32Values32via32local40-41)できるのは確かだ。  
 
 その理由は、利用バージョンにある。  
-レキシカル変数(**my**)付きを強制するバージョンを利用する場合は、ローカル宣言ができないようだ。  
+[レキシカル変数](#subVariable1)(**my**)付きを強制するバージョンを利用する場合は、ローカル宣言ができないようだ。  
 
 以下、ローカル変数の利用例）
 ```perl
@@ -1506,7 +1535,6 @@ print $hoge . '   <$count：' . "$count>\n";
 ```
 無理して使う必要は無い・・・かな。  
 しかし、上記リンク先での説明には、ローカル変数は3カ所で使わなければならない状況があるとのこと。  
-
 
 ※これらとは別に[パッケージ](#practicalusePackages)変数も存在する。  
 
@@ -2459,7 +2487,7 @@ say "@hoge[$two, 6, $#hoge, -2]";	# 88 20211118 10 9
 配列をリストとして扱うため、配列の接頭辞に`@`を使う。  
 
 * 配列を任意の場所で継ぎ接ぎ：
-  * `$変数名 = splice @配列名, 添え字;`  
+  * [`$変数名 = splice @配列名, 添え字;`](#practicaluseArrangementArraysplicescalar)  
     添え字以降の要素が取り除かれ、配列最後の要素が変数に代入される。  
   * [`@配列名 = splice @配列名, 添え字;`](#practicaluseArrangementArraysplicetwoArg)  
     添え字の要素以降が配列に代入される。  
@@ -2471,6 +2499,20 @@ say "@hoge[$two, 6, $#hoge, -2]";	# 88 20211118 10 9
     添え字の要素以降から要素数までが配列に代入され、その分をリストで置き換える。  
     要は、第4引数までの利用。  
     要素数の部分を0指定した場合、その場所に挿入する(置き換えではなくなる)。  
+
+<a name="practicaluseArrangementArraysplicescalar"></a>
+以下、`splice`演算子による添え字番号指定の取り出し(第2引数までの利用結果を変数に代入)。
+```Perl
+use v5.24;
+
+my @hoge = ( 1..10 );
+say "@hoge";	# 1 2 3 4 5 6 7 8 9 10
+my $boo = splice @hoge, 2;
+say "@hoge";	# 1 2
+say "$boo";		# 10
+```
+意図したとおり、配列最後の要素が変数に代入されている。  
+そして、第2引数に指定した添え字以降が配列から削除されている。  
 
 <a name="practicaluseArrangementArraysplicetwoArg"></a>
 以下、`splice`演算子による添え字番号指定の取り出し(第2引数までの利用)。
@@ -2674,6 +2716,228 @@ say $hoge	if $hoge;	# 出力なし。
 
 </details>
 
+<a name="practicaluseFunction関数"></a>
+<a name="practicaluseFunctionLibrequire"></a>
+<details><summary>応用知識-関数(ライブラリ作成require)</summary>
+
+* Perlのプログラム実行順序  
+  ※以下、requireでのライブラリ読み込み前提説明。  
+  1. コンパイル  
+  1. 中間コード生成  
+  1. インタプリタ実行  
+  1. インタプリタ(Perlプログラム)実行時にrequireがあれば指定のファイルを読み込む。  
+     そのため、実行直前まで文法エラーに気づかない。  
+     しかし、未宣言変数の検出はできる。  
+
+
+### 余談(@INC)
+[**Perl 5.26**](https://metacpan.org/release/XSAWYERX/perl-5.26.0/view/pod/perldelta.pod)から **@INC** に標準で備わっていたカレントディレクトリが消えた(2017/05/30？)。  
+その経緯は、Unix界隈では有名らしく、カレントディレクトリに実行ファイルがある場合、意図せずに実行することがあり、セキュリティ的に問題があるとのことだった。  
+そのため、標準でカレントディレクトリのファイルを読み込むことを取りやめたようだ。  
+今まで、**@INC**に追加されていたカレントディレクトリは、末尾だったようだ。  
+今後もプログラム作成をする場合にカレントディレクトリを追加する場合は、末尾が良いようだ(`BEGIN { push @INC, "."; }`)。  
+そもそもセキュリティの観点からカレントディレクトリにあるプログラム実行を廃止したことを考えれば、わざわざセキュリティを甘くする必要は無い。  
+そのため、追加するのであれば、ディレクトリを指定した方が良い。  
+
+
+### [ライブラリ](https://perldoc.jp/docs/perl/5.8.8/perlmodlib.pod)
+ライブラリにしておけば、後から使い回すときも使い勝手がよくなるという配慮により、本来の処理から切り出す。  
+他のプログラムからも呼び出せるようにしている。  
+
+以下、呼び出し側のプログラム例）
+```perl
+use v5.24;
+say join "\n", @INC;	←☆カレントディレクトリが存在しない。
+
+BEGIN { push @INC, "."; };	←☆カレントディレクトリ末尾追加。
+    # unshift @INC, ".";	←☆カレントディレクトリ追加失敗。
+say join "\n", @INC;
+    # .	←☆カレントディレクトリ追加完了するが、認識せず。
+
+    # 以下、"@INCに記載されているディレクトリ"に配置した。
+require "関数ライブラリ(呼ばれる側)require.pl";
+    # 出力結果：関数ライブラリ読み込み終了
+my @hoge = ("本日は", "晴天なり。");
+
+&hoge(@hoge);			# 関数ライブラリ：本日は 晴天なり。
+&hoge("関数呼び出し");	# 関数：関数呼び出し
+```
+
+以下、呼ばれる側のプログラム例）
+```perl
+use v5.24;
+
+sub hoge {
+	say "関数ライブラリ：@_";
+}
+
+1;	←☆真を返すための決まり事。
+```
+この決まり事があるが故に、関数呼び出し後に1が返ってきていた過去がある。  
+
+</details>
+
+<a name="practicaluseFunctionLibuse"></a>
+<details><summary>応用知識-関数(モジュール作成use)</summary>
+
+車輪の再開発をせずに、既存の車輪を使い回すことを優先し、なければ作成することになるが、使い回せるような作りにすること。  
+汎用性を高める場合、限度を超える場合は使い勝手が低下してしまうため、設計をしっかり行い、役割と目的をしっかり認識して作成に取り組むこと。  
+**use**ステートメントにより、標準ディレクトリから探し出し、一致ファイルの内部コードを使えるようにする。  
+
+* モジュール  
+  利用のためのヘルプ利用例）`perldoc File::Basename`  
+
+* Perlのプログラム実行順序  
+  ※以下、useでのファイル読み込み前提説明。  
+  1. コンパイル  
+     コンパイル実行時にuseがあれば指定のファイルを読み込む。  
+  1. 中間コード生成  
+  1. インタプリタ実行  
+
+  * 以下、上記の実行順序をさらに正確に表現(できていない)。  
+    モジュール内のエクスポート制御について。  
+    1. コンパイル  
+       コンパイル実行時にuseがあれば指定のファイル(サブルーチン)を読み込む。  
+    1. そのサブルーチンのimportサブルーチンが自動呼び出しされる。  
+    1. 中間コード生成  
+    1. インタプリタ実行  
+
+    **import**サブルーチンを呼び出すが、標準では何もしない。  
+    そして、独自に作ることで、その動作を変更できる。  
+    * 個別呼び出しに応じたモジュールも存在する。  
+      呼び出し例）
+      `use File::Basename qw(fileparse basename)`  
+      ※この場合は、サブルーチンとして**dirname**ルーチンを呼び出さないことになる。  
+      そして、dirnameを個別に呼び出したい場合、`File::Basename::dirname($hoge);`とすればいい。  
+    * サブルーチン呼び出し不可。  
+      例）
+      `use File::Basename ();`  
+      これにより、サブルーチンを呼び出さないことになる。  
+      また、`use File::Basename;`の場合は、デフォルトのサブルーチン呼び出しが発生する(モジュール開発者が決めている)。  
+
+    ※あ・・・ありのまま、今起こった事を話すぜ！  
+    私がモジュール説明書の前でモジュールの理解に努めていたと思ったらいつのまにか混乱していた。
+    な・・・何を言っているのかわからねーと思うが、私も何をされたのかわからなかった・・・
+    頭がどうにかなりそうだった。
+    催眠術だとか超スピードだとか、そんなチャチなもんじゃあ断じてねえ。
+    もっと恐ろしいものの片鱗を味わったぜ・・・。
+
+* OSごとに、**::** を適切なPathに置き換える。  
+  利用している最中の出来事に関係するため、開発に影響ない？  
+  利用例）`use Database::Access::Control;`  
+  以下のように書き換わる。  
+  * Unix・Linux・OS/2  
+    `Database/Access/Control.pm`  
+  * Windows  
+    `Database\Access\Control.pm`  
+  * MacOS  
+    `Database:Access:Control.pm`  
+  * VMS  
+    `[Database:Access]Control.pm`  
+
+* モジュールの作成手順  
+  1. モジュールの配置場所の決定。  
+     `~/Hoge/`など？  
+     ※これは、最初だけの作業だと思われるが、開発に関係あるのか？  
+  1. このディレクトリの存在をPerlに指示する。  
+     `use lib "/Users/asakunotomohiro/lib/perl5/";	# ←☆変数は使えないため気をつけること(ハードコーディングになる)。`  
+     もしくは、以下で追加する(上記のほうが優れたやり方だそうだ)。  
+     `BEGIN { use File::Basename; my $pwd = dirname($0); push @INC, $pwd; }	←☆このブロック内であれば変数は使える(プログラムファイルのPathを末尾に追加)。`  
+     ~~`BEGIN { unshift @INC, "/Users/asakunotomohiro/lib/perl5/"; }`~~	←☆先頭への追加は止めた方が良いようだ。  
+     ※`use lib`とは、ライブラリを使うのではなく、ライブラリを探すPathの設定をするだけ。  
+  1. モジュール名の各コンポーネント(最後のコンポーネントを除く)に対応するサブディレクトリを標準ライブラリの下にネストして作成する。  
+     モジュール名例）`AAAA::SSS::KKK::NNN`  
+     ディレクトリ例）`AAAA/SSS/KKK`  
+     補足：**NNN**はファイル名になる。
+  1. 最下位の(適切な)サブディレクトリにテキストファイルを作成する。  
+     ファイル名例）`NNN.pm`  
+     ※ちなみに、ファイル名とパッケージ名は一致させておいた方が吉。  
+  1. このテキストファイル(Perlプログラムファイル)にコーディングする。  
+  1. テキストファイルの末尾に、真に評価される付加的なステートメントを追加する。  
+     `1;`  
+     ※真になれば何でも構わないが、慣例的に**1**を使う(固定文字列と思うべし)。  
+
+* グローバル配列変数  
+  * **@INC**  
+    以下を変更もしくは、追加できる。  
+    標準ライブラリ  
+    ユーザ定義ライブラリのディレクトリ  
+  * import文  
+    **import**と言うサブルーチンから探し出し、使う。  
+
+* モジュール内のバージョン制御  
+  * 使うモジュールのバージョン指定。  
+    `use Database::Access::Control 1.20;`  
+  * [パッケージ](#practicalusePackages)内でのバージョン指定。  
+    `$VERSION = 1.00;`  
+    ※パッケージ変数にするため、変数名先頭に**my**を置いてはならない(**package**直後に配置するのが望ましい)。  
+
+
+<a name="practicaluseFunctionLibuseProgram"></a>
+### [useモジュール](https://perldoc.jp/func/use)開発方法
+[モジュール](https://perldoc.jp/docs/perl/5.20.1/perlmod.pod)の説明は別途あり。  
+※開発と作成のどちらの言葉が適切なのだろう。  
+
+以下、呼び出し側のプログラム例）  
+ファイル名：[**関数モジュール(呼ぶ側)use.pl**](./基礎知識用の勉強/5関数勉強/関数モジュール(呼ぶ側)use.pl)
+```perl
+use v5.24;
+BEGIN { use File::Basename; my $pwd = dirname($0); push @INC, $pwd; }	# 末尾に追加(追加しない場合、以下のuse呼び出しがエラーになる)。
+
+use hogebarboo;	# 出力結果：呼ぶ側のプログラムになる。
+				# 出力結果：ライブラリ読み込み完了
+my @hoge = ("boo", "bar", );
+
+sub hoge {
+	say "$VERSION";	# 0.99
+	# 以下、パッケージ名をつけて呼ぶこともできるが、利便性が下がる(*.pmのファイル名とパッケージ名が不一致の場合にパッケージ名を付ける必要が出てくる)。
+	#&hogebarboo::xxxyyyzzz();
+	#	Undefined subroutine &main::xxxyyyzzz called at 関数モジュール(呼ぶ側)use.pl line 9.	←☆上記のBEGINがない場合のエラー。
+	&xxxyyyzzz(@hoge);			# 関数ライブラリ：boo bar
+	&xxxyyyzzz("関数呼び出し");	# 関数ライブラリ：関数呼び出し
+}
+&hoge();
+```
+
+以下、呼ばれる側のプログラム例）
+ファイル名：[**hogebarboo.pm**](./基礎知識用の勉強/5関数勉強/関数モジュール(呼ばれる側)use.pm)
+```perl
+package hogebarboo;
+$VERSION = 0.99;
+
+use v5.24;
+
+use Exporter;
+our @ISA = qw(Exporter);
+our @EXPORT = qw(asakuno);	←☆バージョン番号を外部から呼び出したい場合もここに追加するが、個々のモジュールバージョンを知りたい人がいないため、追加不要。
+
+sub xxxyyyzzz {
+	say "関数ライブラリ：@_";
+}
+```
+ファイル名とパッケージ名は一致させる前提がある。  
+異なる名前を付ける場合は、`*.pm`にパッケージを付けてはならない(私の技術力が甘く、適切に関数を呼び出せないため)。  
+呼び出し側のプログラムからパッケージを呼び出すことで使えるようになる？(`import パッケージ名;`)  
+しかし、それではパッケージ名を知っておく必要が出てくるため、オブジェクト指向の考え方から遠ざかる。  
+どうやって回避する？  
+
+
+#### useモジュールの実体
+`use モジュール名;`の実体は、内部で、以下の動きをしている。
+```perl
+BEGIN{
+    require モジュール名;
+    import  モジュール名;
+}
+```
+`BEGIN`は、コンパイル時に読み込まれる部分(何度useしようが、1回のみ読み込まれる)。  
+
+</details>
+
+todo: ファイル名とパッケージ名の相違がある場合のuse方法について調べる。  
+また、他にも調べることがあるため、後日本来の作業が落ち着いてから調べ直す。  
+
+
 <a name="practicalusePointer"></a>
 <details><summary>応用知識-リファレンス</summary>
 
@@ -2681,18 +2945,19 @@ say $hoge	if $hoge;	# 出力なし。
 データの複雑な相互関係を表現するのに適している。  
 
 公式サイトの説明を一部引用
-> Perl はシンボリックリファレンスを変数として使うことを簡単にしただけでなく、 任意のデータについて「ハード」リファレンスを持つことを可能としたのです。  
+> Perlはシンボリックリファレンスを変数として使うことを簡単にしただけでなく、任意のデータについて「ハード」リファレンスを持つことを可能としたのです。  
 > 任意のスカラはハードリファレンスを保持することができます。  
-> 配列とハッシュはスカラから構成されているので、あなたはいまや配列の配列、 ハッシュの配列、配列のハッシュ、関数のハッシュの配列等々を簡単に 組み立てることができるのです。  
+> 配列とハッシュはスカラから構成されているので、あなたはいまや配列の配列、ハッシュの配列、配列のハッシュ、関数のハッシュの配列等々を簡単に組み立てることができるのです。  
 ・・・中略・・・  
 > Perlでリファレンスを使うのは非常に簡単です。  
 > 原則のオーバーライドが一つあるだけです。  
-> Perl はリファレンス(referencing)やデリファレンス(defreferencing)を 暗黙に行うことはありません。  
-> スカラがリファレンスを保持しているとき、それは常に単純なスカラとして 振る舞います。  
+> Perlはリファレンス(referencing)やデリファレンス(defreferencing)を暗黙に行うことはありません。  
+> スカラがリファレンスを保持しているとき、それは常に単純なスカラとして振る舞います。  
 > 勝手に配列や、ハッシュ、サブルーチンとして振る舞うようなことはありません。  
-> デリファレンスをすることによって、自分で明示的に Perl に 教える必要があります。  
+> デリファレンスをすることによって、自分で明示的にPerlに教える必要があります。  
 
-※句点で勝手に改行を入れた。  
+※句点で勝手に改行を入れた(不要スペース削除)。  
+デリファレンスのスペル(**defreferencing**)あっていますか？  
 
 
 <a name="practicalusePointerreference"></a>
@@ -2703,7 +2968,7 @@ say $hoge	if $hoge;	# 出力なし。
 
 以下、リファレンス作成。
 ```Perl
-$scalarref = \$foo;     # 配列
+$scalarref = \$foo;     # 変数
 $arrayref  = \@ARGV;    # 配列
 $hashref   = \%ENV;     # ハッシュ
 $coderef   = \&handler; # 関数
@@ -2714,7 +2979,7 @@ $globref   = \*foo;     # 型グロブ
 
 以下、[戻す](#practicalusePointerdereference)。
 ```Perl
-say ${$scalarref};	# \$foo     配列
+say ${$scalarref};	# \$foo     変数
 say @{$arrayref} ;	# \@ARGV    配列
     say $arrayref->[0];	# \@ARGV    配列の1つ目の要素。
     say $arrayref->[1];	# \@ARGV    配列の2つ目の要素。
@@ -2722,19 +2987,19 @@ say %{$hashref}  ;	# \%ENV     ハッシュ
     say $hashref->{key1};	# \%ENV     ハッシュのキー1(値を取り出す)。
     say $hashref->{key2};	# \%ENV     ハッシュのキー2(値を取り出す)。
 say $coderef->();	# \&handler 関数(呼び出し後、変な数字が含まれてしまうのは、リターン結果を実行結果にしているため)。
-say *{$globref}  ;	# \*foo     	←個人的には、同名の変数・配列・ハッシュ・関数を1つにまとめることができると思っている。
+say *{$globref}  ;	# \*foo     	←☆個人的には、同名の変数・配列・ハッシュ・関数を1つにまとめることができると思っている。
 ```
+上記の出力で得られる参照先データを[リファレント](#practicalusePointerreferentidentification)(referent・参照先)と言う(上記で言う`$foo`変数のデータのこと)。  
+上記の出力で得られるデータを[デリファレンス](#practicalusePointerdereference)(dereference・参照解決)と言う(上記で言う`${$scalarref}`変数にあるデータのこと)。  
 当たり前だが、配列のリファレンスに対して、ハッシュのリファレント扱いした場合、エラーになる([解決っぽい何か](#practicalusePointerreferentidentification))。  
 ※上記は、配列やハッシュの個々の取得にアロー演算子を活用した。  
 
-例）
+配列リファレンス例）
 ```perl
 use v5.24;
 
 my $hoge = "Perlプログラム";
 my @hoge = ("配列-配列", "リファレンス");	# この末尾に文字列を追加する。
-
-say "配列リファレンス";
 
 sub arrayReferenceEdit() {
 	my $one = shift @_;
@@ -2761,11 +3026,45 @@ say $hoge[1];	# 書き換え：リファレンスを書き換える
 難しいが、C言語のポインタと思えば良いだろう。  
 しかし、記号を使い分けるのは慣れないと思う。  
 
+ハッシュリファレンス例）
+```perl
+use v5.24;
+
+my %hoge = (20211216=>"Perlのハッシュリファレンス", 20211217=>"本日は晴天なり。");
+
+sub hashReference() {
+	my $refHash   = shift;	# ハッシュのアドレスを取得している。
+
+	say "以下、ハッシュリファレンス ";
+	say "%$refHash";	# %HASH(0x7f9fc5805328)
+	say %$refHash;		# 20211216Perlのハッシュリファレンス20211217本日は晴天なり。
+	say "-" x 10;
+	say "$$refHash{20211216}";	# Perlのハッシュリファレンス
+	say "$$refHash{20211217}";	# 本日は晴天なり。
+	say "-" x 10;
+	my @boo = sort keys %$refHash;
+	say "@boo";	# 20211216 20211217
+	foreach my $value (@boo) {
+		say "$$refHash{$value}";
+		# Perlのハッシュリファレンス
+		# 本日は晴天なり。
+	}
+	# 以下、上記と同じ事。
+	foreach my $value (@boo) {
+		say "$refHash->{$value}";
+		# Perlのハッシュリファレンス
+		# 本日は晴天なり。
+	}
+}
+&hashReference(\%hoge);
+```
+
 
 <a name="practicalusePointerreferentidentification"></a>
 ##### リファレントの識別。
 配列のリファレンスを変数のリファレントとして扱う場合、エラーになる。  
-そのエラーを事前に回避するには、`ref`関数を用いることで、識別し、適切なリファレントに紐付けられる。  
+そのエラーを事前に回避するには、`ref`関数を用いることで、識別し、適切なリファレントとして扱える。  
+※間違った使い方が可能なのは、**シンボルリファレンス(ソフトリファレンス)**のために存在しているため(私に理解できない部分)。  
 
 ```perl
 use v5.24;
@@ -2783,7 +3082,14 @@ sub trace(){
 		return "配列@$val";
 	}
 	elsif (ref($val) eq 'HASH'){
-		return "ハッシュ" . %{$val};
+		my @sumstring;
+		my $hoge;
+		# 以下、ハッシュの中身を取り出している。
+		foreach my $tmp (keys %$val) {
+			$hoge = $tmp . "=>" . $$val{$tmp};
+			push (@sumstring, $hoge . ",");
+		}
+		return "ハッシュ" . "(@sumstring)"
 	}
 	elsif (ref($val) eq 'CODE'){
 		return "関数" . &{$val}();
@@ -2799,28 +3105,28 @@ sub trace(){
 sub referent() {
 	my $foo  = 20211128;
 	my @ARGV = (20211128, 20211129);
-	my %ENV  = (20211128=>"hoge", 20211129=>"本日は晴天なり。");
+	my %HASH  = (20211128=>"hoge", 20211129=>"本日は晴天なり。");
 
 	my $scalarref = \$foo;     # 変数
 	my $arrayref  = \@ARGV;    # 配列
-	my $hashref   = \%ENV;     # ハッシュ
+	my $hashref   = \%HASH;    # ハッシュ
 	my $coderef   = \&refFunc; # 関数
 	my $doublescalar = \$scalarref;	# 変数のリファレンスをリファレンス化。
 
 	say ref($scalarref);	# 変数
-					# SCALAR
+	# 出力結果：SCALAR
 	say ref($arrayref);		# 配列
-					# ARRAY
+	# 出力結果：ARRAY
 	say ref($hashref);		# ハッシュ
-					# HASH
+	# 出力結果：HASH
 	say ref($coderef);		# 関数
-					# CODE
+	# 出力結果：CODE
 	say ref($doublescalar);	# 変数のリファレンスをリファレンス化。
-					# REF
+	# 出力結果：REF
 
 	say "識別：" . &trace($scalarref);	# 識別：変数20211128
 	say "識別：" . &trace($arrayref);	# 識別：配列20211128 20211129
-	say "識別：" . &trace($hashref);	# 識別：ハッシュ2
+	say "識別：" . &trace($hashref);	# 識別：ハッシュ(20211129=>本日は晴天なり。, 20211128=>hoge,)
 	say "識別：" . &trace($coderef);	# 識別：関数ハンドラー関数
 	say "識別：" . &trace($doublescalar);	# 識別：リファレンスのリファレンス
 }
@@ -2845,27 +3151,99 @@ refの戻り値
 |別のリファレンスへのリファレンス|"REF"|
 
 
+<a name="practicalusePointerAnonymousscalarreference"></a>
+##### 名前無し変数へのリファレンス(無名変数)
+※"名前なし"とは、変数からリファレンスを作らずに、いきなり変数リファレンスを作ることを指す。  
+
+```perl
+use v5.10;
+
+sub scalarReference() {
+	my $hogeRef = \"本日は晴天なり。";
+	say $hogeRef;	# SCALAR(0x7fb80781c7e8)
+	say $$hogeRef;	# 本日は晴天なり。
+}
+&scalarReference();
+```
+変数を無名リファレンスにする利点は全くない。  
+
+
 <a name="practicalusePointerAnonymousarrayreference"></a>
 ##### 名前無し配列へのリファレンス(無名配列)
 ※"名前なし"とは、配列からリファレンスを作らずに、いきなり配列リファレンスを作ることを指す。  
 > 名前の無い配列へのリファレンスは、大かっこを使って作ることができます:  
 
+以下、無名配列リファレンスを活用した配列の入れ子(二次元配列)。
 ```perl
-my $arrayref = [1, 2, ['a', 'b', 'c']];
+use v5.24;
 
-say $arrayref->[0];		# 1
-say $arrayref->[1];		# 2
-say $arrayref->[2];		# ARRAY(0x7f91690037a8)
+my $arrayref = [
+				100,
+				200,
+				[
+					'a',
+					'ABCDEF',
+					'c',
+				],
+			];
+
+say $arrayref;			# ARRAY(0x7fc7e4014bb8)	←☆デバッグ文字列。
+say $arrayref->[0];		# 100
+say $arrayref->[1];		# 200
+say $arrayref->[2];		# ARRAY(0x7fc7e4003448)	←☆デバッグ文字列。
 say $arrayref->[2][0];	# a
-say $arrayref->[2][1];	# b
+say $arrayref->[2][1];	# ABCDEF
 say $arrayref->[2][2];	# c
+say $arrayref->[2][3];	# 空文字列(undef)
 say $arrayref->[3];		# 空文字列(undef)
+say "@$arrayref";		# 100 200 ARRAY(0x7faf78803448)
+say "@{$arrayref->[2]}";	# a ABCDEF c
+#say "@$arrayref->[2]";		# Can't use an array as a reference at sample.pl line 24.
+#say "$$arrayref->[2]";		# Not a SCALAR reference at sample.pl line 25.
+say "@{$arrayref->[2]}[0]";	# a
+say "@{$arrayref->[2]}[1]";	# ABCDEF
+say "@{$arrayref->[2]}[2]";	# c
+#say "@{$arrayref->[2][0]}";	# Can't use string ("a") as an ARRAY ref while "strict refs" in use at sample.pl line 30.
 ```
 
-以下、失敗
+以下、上記と違い、無名配列を変数に入れるのではなく、無名配列を配列に入れる。
+```perl
+use v5.24;
+
+my @arrayref = (
+				[
+				100,
+				200,
+				[
+					'a',
+					'ABCDEF',
+					'c',
+				],
+			]
+			);
+
+say "@arrayref";				# ARRAY(0x7fb00e801bb8)
+say "$arrayref[0]";				# ARRAY(0x7fb00e801bb8)
+say "@{$arrayref[0]}";			# 100 200 ARRAY(0x7fb00e003448)
+say "@{$arrayref[0]}[0]";		# 100	←☆1次元配列目の1番目の要素(見にくい)。
+say "@{$arrayref[0]}[1]";		# 200
+say "@{$arrayref[0]}[2]";		# ARRAY(0x7fb00e003448)
+say "@{$arrayref[0]}[2]->[0]";	# a	←☆1次元配列目の1番目の要素(見にくい)。
+say "@{$arrayref[0]}[2]->[1]";	# ABCDEF
+say "@{$arrayref[0]}[2]->[2]";	# c
+say "$arrayref[2]";				# 空文字列(undef)
+say "$arrayref[0]->[0]";		# 100	←☆1次元配列目の1番目の要素(これが通常の利用方法だと思う)。
+say "$arrayref[0]->[1]";		# 200
+say "$arrayref[0]->[2]";		# ARRAY(0x7fb00e003448)
+say "$arrayref[0]->[2][0]";		# a	←☆1次元配列目の1番目の要素(これが通常の利用方法だと思う)。
+say "$arrayref[0]->[2][1]";		# ABCDEF
+say "$arrayref[0]->[2][2]";		# c
+```
+
+以下、失敗(配列リファレンス利用で配列の入れ子を想定していた)
 ```perl
 my @two = ('a', 'b', 'c');
-my @one = (1, 2, @two);
+my @one = (1, 2, @two);	←☆入れ子をするが、平坦化が行われる。
 my $arrayref = [@one];
 
 say $arrayref->[0];		# 1
@@ -2874,25 +3252,37 @@ say $arrayref->[2];		# a
 say $arrayref->[3];		# b
 say $arrayref->[4];		# c
 ```
-理由：配列の[平坦化](#subArrangement1Arrayflattening)が行われるため。 
+入れ子失敗理由：配列の[平坦化](#subArrangement1Arrayflattening)が行われるため。  
 
-以下、成功。
+以下、宣言後の代入により、利用方法が異なる。
 ```perl
-my @two = ('a', 'b', 'c');
-my @one = (1, 2, \@two);
-my $arrayref = [@one];  # my $arrayref = (\@one);	←☆同じ意味。
+use v5.24;
 
-say $arrayref->[0];		# 1
-say $arrayref->[1];		# 2
-say $arrayref->[2];		# ARRAY(0x7f9fb2801b08)
-say $arrayref->[2][0];	# a
-say $arrayref->[2][1];	# b
-say $arrayref->[2][2];	# c
+my @two = ('a', 'b', 'c');	# 1次元配列。
+my $array = \@two;			# それをリファレンスとして変数に代入する。
+
+say $$array[0];	# a	←☆これらは変数に配列リファレンスを参照している。
+say $$array[1];	# b
+say $$array[2];	# c
+
+my $one = "一代入";	# 変数利用。
+my $two = "二代入";	# 変数利用。
+my @array = (\$one, \$two, );	# 変数リファレンスとして配列に代入する。
+
+say "以下のarrayは配列扱い。";
+say "@array";		# SCALAR(0x7fb408805868) SCALAR(0x7fb408805898)
+say $array[0];		# SCALAR(0x7fb408805868)
+say \$one;			# SCALAR(0x7fb408805868)
+say ${$array[0]};	# 一代入	←☆これらは配列に変数リファレンスを参照している。
+say ${$array[1]};	# 二代入
+
+say "以下のarrayは変数扱い。";
+say @{$array}[0];	# a
+say @$array[0];		# a
+say "@$array";		# a b c
+say $$array[0];		# a
+say $$array[1];		# b
 ```
-
-難しい。  
-C言語のポインタだと思っていたのだが難しい。  
-よくよく考え直せば、もしかしてC言語のポインタを忘れている？  
 
 
 <a name="practicalusePointerAnonymoushashreference"></a>
@@ -2901,18 +3291,40 @@ C言語のポインタだと思っていたのだが難しい。
 > 名前の無いハッシュへのリファレンスは、中かっこを使って作ることができます:  
 
 以下、無名のハッシュ例）
+```perl
+use v5.24;
 
-    my $hashref = {
-    	Adam  => 'Eve',
-    	Clyde => 'Bonnie',
-    };
-    
-    say $hashref->{Adam};	# Eve
-    say $hashref->{Clyde};	# Bonnie
-    say $hashref;			# HASH(0x7fa9be8037a8)
-    #say %hashref;	# Global symbol "%hashref" requires explicit package name (did you forget to declare "my %hashref"?) at test.pl line 10.
+sub hashReference() {
+	# 以下、無名ハッシュリファレンス。
+	our $hogeRef = {20211217=>"本日は", 20211218=>"晴天なり。"};
 
-以下、無名ハッシュをネスト化
+	say "以下、ハッシュリファレンス";
+	say "%$hogeRef";	# %HASH(0x7fa6a0002448)
+	say %$hogeRef;		# 20211218晴天なり。20211217本日は
+	say "以下、ちょっと見にくいハッシュリファレンス利用。";
+	say "$$hogeRef{20211217}";	# 本日は
+	say "$$hogeRef{20211218}";	# 晴天なり。
+	say "以下、ちょっとましになったハッシュリファレンス利用。";
+	say "$hogeRef->{20211217}";	# 本日は
+	say "$hogeRef->{20211218}";	# 晴天なり。
+	say "以下、キーを並び替えて取り出す。";
+	my @boo = sort keys %$hogeRef;
+	say "@boo";	# 20211217 20211218
+	foreach my $value (@boo) {
+		say "$$hogeRef{$value}";
+		# 本日は
+		# 晴天なり。
+	}
+	foreach my $value (@boo) {
+		say "$hogeRef->{$value}";
+		# 本日は
+		# 晴天なり。
+	}
+}
+&hashReference();
+```
+
+以下、無名ハッシュをネスト化(要は、入れ子)
 ```perl
 my $hashref = {
 	spiderman  => {
@@ -2970,8 +3382,8 @@ sub funcReference() {
 my $hoge = \&funcReference;
 $hoge->($boo, \@boo);
 ```
-関数呼び出し後に表示される**1**は何？  
-毎回疑問を持っているが、毎回調べないという・・・。  
+関数呼び出し後に表示される**1**は、抑止できない？  
+正常終了したかどうかを暗黙的に教えてもらいたいとは思っていない。  
 
 ※**クロージャ**によるオブジェクト指向の概念で説明が行われる。  
 また、第5章と11章にも今回の無名サブルーチンを使う。  
@@ -3002,7 +3414,7 @@ $hoge->($boo, \@boo);
 #### デリファレンス
 リファレンスの実体化？  
 
-> 変数名やサブルーチン名の一部として識別子を置くところでは、適切な 型のリファレンスを持った単純スカラ変数でその識別子を 置き換えることができます:  
+> 変数名やサブルーチン名の一部として識別子を置くところでは、適切な型のリファレンスを持った単純スカラ変数でその識別子を置き換えることができます:  
 
 以下、変数用のデリファレンス。
 ```perl
@@ -3072,13 +3484,12 @@ sub dereferenceHash() {
 入れ子にできる種類は、複数ある。  
 
 * 現在の確認項目  
-  * 変数  
-  * 配列  
-  * ハッシュ  
+  * [変数](#practicaluseReferencescalar)  
+  * [配列](#practicaluseReferencearray)  
+  * [ハッシュ](#practicaluseReferencehash)  
+  * [関数](#practicaluseReferencefunc)  
 
-* 未確認  
-  * 関数  
-
+<a name="practicaluseReferencescalar"></a>
 以下、変数の入れ子・・・変数を入れ子するというのは可笑しいと言うか、不可能だよね。
 ```perl
 sub scalarReference() {
@@ -3103,123 +3514,213 @@ sub scalarReference() {
 <a name="practicaluseReferencearray"></a>
 以下、配列をリファレンスとして、配列に代入し、さらにその配列をリファレンスとして配列に代入するという入れ子をしている。
 ```perl
-sub arrayReference() {
-	say '@hogeの値：' . "@hoge";					# @hogeの値：20210923 Perl難しい
-	my @hoge1 = ("hogeのアドレス格納用配列リファレンス", \@hoge);		# 配列に配列リファレンスを代入する。
-	say '@hogeのアドレス：' . \@hoge;				# @hogeのアドレス：ARRAY(0x7fdda280a388)
-	say '@hoge1の値：' . "@hoge1";					# @hoge1の値：hogeのアドレス格納用配列リファレンス ARRAY(0x7fdda280a388)
-	my @bar = ("hoge1のアドレス格納用配列リファレンス", \@hoge1);	# それをリファレンスとして別の配列に代入する。
-	say '@hoge1のアドレス：' . \@hoge1;				# @hoge1のアドレス：ARRAY(0x7fdda280aaf0)
-	say '@barの値：' . "@bar";						# @barの値：hoge1のアドレス格納用配列リファレンス ARRAY(0x7fdda280aaf0)
-	my @boo = (\@bar);		# さらに、リファレンス配列が代入されている配列を別の配列にリファレンスとして代入する(混乱する)。
-	say '@barのアドレス：' . \@bar;					# @barのアドレス：ARRAY(0x7fdda280abb0)
-	say '@booの値：' . "@boo";						# @booの値：ARRAY(0x7fdda280abb0)
-					# 出力結果：
+use v5.24;
 
-	say;
-	say '@booの要素を出力($boo[0])：' . "$boo[0]";	# @bar のアドレスが入っていると思っている。
-				# 出力結果：@booの要素を出力($boo[0])：ARRAY(0x7fdda280abb0)
-	say '@booをデリファレンス($boo[0]->[0])：' . "$boo[0]->[0]";	# @bar の第1要素目が入っていると思っている。
-				# 出力結果：@booをデリファレンス($boo[0]->[0])：hoge1のアドレス格納用配列リファレンス
-	say '@booをデリファレンス($boo[0]->[1])：' . "$boo[0]->[1]";	# @bar の第2要素目が入っていると思っている(ここにhoge1のアドレスが入っている)。
-				# 出力結果：@booをデリファレンス($boo[0]->[1])：ARRAY(0x7fdda280aaf0)
-	say '@booをデリファレンス($boo[0]->[1][0])：' . "$boo[0]->[1][0]";	# @hoge1 の第1要素が入っていると思っている。
-				# 出力結果：@booをデリファレンス($boo[0]->[1][0])：hogeのアドレス格納用配列リファレンス
-	say '@booをデリファレンス($boo[0]->[1][1])：' . "$boo[0]->[1][1]";	# @hoge1 の第2要素が入っていると思っている(hogeのアドレスが入っている)。
-				# 出力結果：@booをデリファレンス($boo[0]->[1][1])：ARRAY(0x7fdda280a388)
-	say '@booをデリファレンス($boo[0]->[1][1][0])：' . "$boo[0]->[1][1][0]";	# @hoge の第1要素が入っていると思っている。
-				# 出力結果：@booをデリファレンス($boo[0]->[1][1][0])：20210923
-	say '@booをデリファレンス($boo[0]->[1][1][1])：' . "$boo[0]->[1][1][1]";	# @hoge の第2要素が入っていると思っている。
-				# 出力結果：@booをデリファレンス($boo[0]->[1][1][1])：Perl難しい
+my @two = ('a', 'b', 'c');	# 2次元配列部分として使う1次元配列。
+my @one = (1, 2, \@two);	# 2次元配列作成。
+my @array = ("配列1番目の要素", \@one, );		# 3次元配列作成。
+my @twoArray = (\@array, "配列最後の要素", );	# 4次元配列作成。
+my $arrayref = [@twoArray];  # ☆同じ意味。→	my $arrayref = (\@twoArray);
 
-	say;
-	say \@hoge1;	# ARRAY(0x7fdda280aaf0)	←☆上記と同じ結果が出ている。
-	say \@_;		# ARRAY(0x7fdda28181d8)
-}
-&arrayReference();
+say $arrayref;					# twoArrayの番地表示。					ARRAY(0x7f9e57802120)
+say \@twoArray;					#										ARRAY(0x7f9e57805cb0)
+say $arrayref->[0];				# arrayの番地表示。						ARRAY(0x7f9e57805c68)
+say \@array;					#										ARRAY(0x7f9e57805c68)
+say $arrayref->[1];				# twoArray[1]の値表示。					配列最後の要素
+say $arrayref->[0][0];			# array[0]の値表示。					配列1番目の要素
+say $arrayref->[0][1];			# array[1]の値表示(要はoneの番地表示)。	ARRAY(0x7f9e57805c08)
+say \@one;						#										ARRAY(0x7f9e57805c08)
+say $arrayref->[0][1][0];		# oneの値表示。							1
+say $arrayref->[0][1][1];		# oneの値表示。							2
+say $arrayref->[0][1][2];		# oneの番地表示(要はtwoの番地表示)。	ARRAY(0x7f9e57805728)
+say \@two;						#										ARRAY(0x7f9e57805728)
+say $arrayref->[0][1][2][0];	# two[0]の値表示。						a
+say $arrayref->[0][1][2][1];	# two[1]の値表示。						b
+say $arrayref->[0][1][2][2];	# two[2]の値表示。						c
+say "-" x 30;
+say "@$arrayref";				# ARRAY(0x7f8e9d805e68) 配列最後の要素
+say "@$arrayref[0]->[0]";		# 配列1番目の要素
+say "@$arrayref[0]->[1]";		# ARRAY(0x7f8e9d805e08)
+say "@$arrayref[0]->[1][0]";	# 1
+say "@$arrayref[0]->[1][1]";	# 2
+say "@$arrayref[0]->[1][2]";	# ARRAY(0x7f8e9d805928)
+say "@$arrayref[0]->[1][2][0]";	# a
+say "@$arrayref[0]->[1][2][1]";	# b
 ```
-要は、これこそが2次元配列と言うことか？  
-
-
-以下、配列のリファレンスを変数に代入し、その変数のリファレンスを変数に代入している。
-```perl
-sub arrayReference() {
-	my $refhoge = \@hoge;			# 変数に配列リファレンスを代入する。
-	my $refbar = \$refhoge;	# それをリファレンスとして別の変数に代入する。
-	my $hoge = \$refbar;		# さらに、リファレンス変数が代入されている変数を別の変数にリファレンスとして代入する(混乱する)。
-
-	say '@hogeの値を出力：' . "@hoge";	# そもそもの値確認。
-					# 出力結果：@hogeの値を出力：20210923 Perl難しい
-
-	say;
-	say '$hogeの値を出力  ：' . "$hoge";	# $refbar のアドレスが入っていると思っている(最終結果)。
-					# 出力結果：$hogeの値を出力  ：REF(0x7fba480140e8)
-	say '$refbarのアドレス：' . \$refbar;	# $refbarのアドレス：REF(0x7fba480140e8)
-	say '$hogeをデリファレンス：' . "$$hoge";	# $refbar が入っていると思っている。
-					# 出力結果：$hogeをデリファレンス：REF(0x7fba48014160)
-	say '$refhogeのアドレス   ：' . \$refhoge;	# $refhogeのアドレス   ：REF(0x7fba48014160)
-
-	say;
-	my $dehoge = $$hoge;	# $refbar が代入されたと思っている。
-	say '$dehogeを出力：' . "$dehoge";	# $refbar が入っていると思っている。
-					# 出力結果：$dehogeを出力：REF(0x7fba48014160)
-	say '$dehogeを出力：' . "$$hoge";	# $refbar が入っていると思っている。
-					# 出力結果：$dehogeを出力：REF(0x7fba48014160)
-
-	say;
-	my $dedehoge = $$dehoge;
-	say '$dedehogeを出力：' . "$dedehoge";	# $refhoge が入っていると思っている。
-					# 出力結果：$dedehogeを出力：ARRAY(0x7fba48005d88)
-	say '$dedehogeを出力：' . "$$$hoge";	# $refhoge が入っていると思っている。
-					# 出力結果：$dedehogeを出力：ARRAY(0x7fba48005d88)
-
-	say;
-	say '@hogeを出力：' . "@$$$hoge";	# $hoge が入っていると思っている。
-					# 出力結果：@hogeを出力：20210923 Perl難しい
-	say '$hoge[0]を出力：' . "$$$$hoge[0]";	# $hoge が入っていると思っている。
-					# 出力結果：$hoge[0]を出力：20210923
-	say '$hoge[1]を出力：' . "$$$$hoge[1]";	# $hoge が入っていると思っている。
-					# 出力結果：$hoge[1]を出力：Perl難しい
-
-}
-&arrayReference();
-```
+要は、これこそが多次元配列と言うことか？  
 これをするだけの利益はあるのだろうか。  
 
-以下、ハッシュをリファレンスとして変数に代入し、その変数をリファレンスとして変数に代入している。
+ちなみに、配列リファレンスの見にくい表記が以下になる。
+```perl
+say "以下、2種類を別表記。";
+say $arrayref->[0][1][2][2];	# c
+say  @$arrayref[0]->[1][2][2];	# c
+say "以下、別表記後";
+say $$arrayref[0][1][2][2];		# c
+say $$arrayref[0]->[1][2][2];	# c
+```
+矢印記法(アロー演算子)を用いた方がいいだろう。  
+* `$$arrayref[0][1][2][2]`の解釈方法。  
+  1. 英数字など(**arrayref**)を探し出す。  
+  1. 英数字列の前に記号が付いている場合、変数などのPerlとして意味のある解釈が必要と判断する。  
+  1. 名前の左側部分を確認する。  
+  1. 左側部分に付いている記号が複数の場合、内側(最も後ろ・名前寄り)から解釈する。  
+     例）`$$arrayref[0][1][2][2]`  
+     1つ前のドル記号`$`(左から2番目)から解釈する。  
+  1. 次に、外側に向かって解決していく。  
+     要は、上記例で言う、左端のドル記号`$`(左から1番目)  
+  1. それが終わり次第、英数列の右側(**arrayref[** の **[記号** 以降)を確認していく。  
+     例）`$$arrayref[0][1][2][2]`  
+     1つ目の括弧`[0]`を解釈する。  
+  1. 右側の確認は、右に向かって進んでいく。  
+     1. 2つ目の括弧`[1]`を解釈する。  
+     1. 3つ目の括弧`[2]`を解釈する。  
+     1. 4つ目の括弧`[2]`を解釈する。  
 
-    sub hashReference() {
-    	my %hogehash = (%hoge);			# ハッシュにハッシュリファレンスを代入する。
-    	my $barhash = \%hogehash;	# それをリファレンスとして別のハッシュに代入する。
-    	my $boo = \$barhash;	# さらに、ハッシュリファレンスが代入されているハッシュを別のハッシュにリファレンスとして代入する(混乱する)。
-    
-    	my $deboo = $$boo;	# ハッシュのリファレンスをデリファレンスした($barhashになっている)。
-    	my %dedeboo = %$deboo;	# ハッシュのリファレンスをデリファレンスした($hogehashになっている)。
-    	while( my ($key, $value) = each %dedeboo ) {
-    		say '%dedebooの要素を出力($boo[0])：' . "$key -> $value";	# %barhash が入っていると思っている。
-    			# 出力結果：
-    #					%dedebooの要素を出力($boo[0])：hoge -> 20210923
-    #					%dedebooの要素を出力($boo[0])：boo -> 本日は晴天なり。
-    #					%dedebooの要素を出力($boo[0])：bar -> Perl難しい
-    	}
-    
-    	while( my ($key, $value) = each %$$boo ) {
-    		say '%hogeの要素を出力(%$$boo)：' . "$key -> $value";	# %barhash が入っていると思っている。
-    			# 出力結果：
-    #					%hogeの要素を出力(%$$boo)：hoge -> 20210923
-    #					%hogeの要素を出力(%$$boo)：bar -> Perl難しい
-    #					%hogeの要素を出力(%$$boo)：boo -> 本日は晴天なり。
-    	}
-    }
-    &hashReference();
+以下、通常の2次元配列(無名配列リファレンスを配列に代入)。
+```perl
+use v5.24;
 
-本当にやりたかったことは、ハッシュのネストであって、これではない。  
+my @arrayref = (
+				[ 100, 200, ],
+				[ 'a', "b", ],
+				[ "本日は", "晴天なり。", ],
+			);
+
+say "@arrayref";			# ARRAY(0x7fe474003448) ARRAY(0x7fe4740189a0) ARRAY(0x7fe474018a78)
+say "$arrayref[0]";			# ARRAY(0x7fe474003448)
+say "$arrayref[1]";			# ARRAY(0x7fe4740189a0)
+say "$arrayref[2]";			# ARRAY(0x7fe474018a78)
+say "$arrayref[0]->[0]";	# 100			←☆2次元配列の1番目の要素の1番目の要素。
+say "$arrayref[0]->[1]";	# 200			←☆2次元配列の1番目の要素の2番目の要素。
+say "$arrayref[1]->[0]";	# a				←☆2次元配列の2番目の要素の1番目の要素。
+say "$arrayref[1]->[1]";	# b				←☆2次元配列の2番目の要素の2番目の要素。
+say "$arrayref[2]->[0]";	# 本日は		←☆2次元配列の3番目の要素の1番目の要素。
+say "$arrayref[2]->[1]";	# 晴天なり。	←☆2次元配列の3番目の要素の2番目の要素。
+```
+
+以下、3次元配列の自動生成。
+```perl
+use v5.24;
+
+my @arrayref;
+$arrayref[2021][12][15] = "コミット実施。";
+
+say "$arrayref[2021][12][15]";		# コミット実施。
+say "@arrayref";					#                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      ARRAY(0x7ffab4003460)
+say "$arrayref[2021]->[12][15]";	# コミット実施。
+say @arrayref;						# ARRAY(0x7ffab4003460)
+say "$arrayref->[2021][12][15]";	# Global symbol "$arrayref" requires explicit package name (did you forget to declare "my $arrayref"?) at sample.pl line 9.	←☆arrayrefは変数ではなく配列なので、この書き方は出来ない。
+```
+上記は、文字列を代入していない部分は空文字列(undef)が代入されている。  
+そのため、出力時に、空白文字が無茶苦茶多く表示されている。  
+よって、ダブルクォーテーションで括らなければ、無駄な出力せずに必要な部分のみが出る。  
 
 
-#### スコープ
+<a name="practicaluseReferencehash"></a>
+以下、ハッシュの無名リファレンスを入れ子にして変数に代入している。
+```perl
+use v5.24;
+
+sub hashReference() {
+	my $hogeRef = {
+				20211217=>{
+					20211218=>"本日は",
+					4774135046=>"[Perl]",
+					20080620=>"[gihyo]",
+				},
+				20211219=>{
+					20211220=>"晴天なり。",
+					9784774135045=>"[オブジェクト指向]",
+					196903=>"[設立]",
+				},
+			};
+	say $hogeRef;								# HASH(0x7fb8bd806d20)
+	say $hogeRef->{20211217};					# HASH(0x7fb8bd003448)
+	say @{$hogeRef}{20211217};					# HASH(0x7fb8bd003448)
+	say $hogeRef->{20211217}{20211218};			# 本日は
+	say $hogeRef->{20211217}{4774135046};		# [Perl]
+	say $hogeRef->{20211219}{20211220};			# 晴天なり。
+	say $hogeRef->{20211219}{9784774135045};	# [オブジェクト指向]
+}
+&hashReference();
+```
+また、以下は、無名ハッシュリファレンスを配列に代入している。
+```perl
+use v5.24;
+
+sub hashReference() {
+	my $arrayRef = [
+				{
+					20211218=>"本日は",
+					4774135046=>"[Perl]",
+					20080620=>"[gihyo]",
+				},
+				{
+					20211220=>"晴天なり。",
+					9784774135045=>"[オブジェクト指向]",
+					196903=>"[設立]",
+				},
+			];
+	say $arrayRef;						# ARRAY(0x7f94aa818b20)
+	say $arrayRef->[0];					# HASH(0x7f94aa803448)
+	say @{$arrayRef}[0];				# HASH(0x7f94aa803448)
+	say $arrayRef->[1];					# HASH(0x7f94aa8189b8)
+	say $arrayRef->[0]{20211218};		# 本日は
+	say $arrayRef->[0]{4774135046};		# [Perl]
+	say $arrayRef->[1]{20211220};		# 晴天なり。
+	say $arrayRef->[1]{9784774135045};	# [オブジェクト指向]
+}
+&hashReference();
+```
+どちらが見やすいかは人それぞれだろうか。  
 
 
-#### サブルーチンへのリファレンス
+<a name="practicaluseReferencefunc"></a>
+#### サブルーチンへのリファレンス(別名コードレフと言う)。
+コードレフ(coderef)  
+関数呼び出し時には、関数名を記載するだけで呼び出せた。  
+通常の関数呼び出し例）
+```per
+use v5.24;
+sub function
+{
+	say "関数";
+}
+function();	←☆関数呼び出し。
+```
+その関数を無名関数リファレンスにする場合、必ずアンパサンド`&`記号を関数名の先頭に付ける必要が出てくる(上記で言う`\&function`となる)。  
+
+以下、関数リファレンスの作成及び利用例）
+```perl
+use v5.24;
+
+sub function
+{
+	say "関数";
+}
+
+my $funcRef = \&function;
+$funcRef->();
+	# 出力結果：関数
+
+say $funcRef;	# CODE(0x7fc6db002850)
+```
+また、`&$funcRef();`の呼び出し方法も可能(見にくいように思うが、人それぞれ)。  
+
+以下、無名関数リファレンスの作成及び利用例）
+```perl
+use v5.24;
+
+our $function = sub
+{
+	say "無名関数リファレンス";
+};	←☆最後の;記号を付け忘れないこと。
+$function->();
+	# 出力結果：無名関数リファレンス
+
+say $function;	# CODE(0x7f90fc01c608)
+```
 
 
 #### 応用利用
@@ -3244,9 +3745,10 @@ sub arrayReference() {
   * ハッシュの大きさに制限はない。  
 
 
+<a name="practicaluseHashmake"></a>
 #### 作成方法
-様式：`%ハッシュ名 = ('キー1', 値1, 'キー2', 値2, ・・・ );`  
-`%ハッシュ名 = (キー1=>値1, キー2=>値2, ・・・ );`  
+様式1：`%ハッシュ名 = ('キー1', 値1, 'キー2', 値2, ・・・ );`  
+様式2：`%ハッシュ名 = (キー1 => 値1, キー2 => 値2, ・・・ );`  
 例）
 ```perl
 my %hoge = (
@@ -3260,10 +3762,11 @@ my %hoge = (
 ※丸括弧`()`の意味は、リスト。  
 
 
-コピーもできるが、負担が掛かるため、止めた方が良い。
+コピーもできるが、負担が大きいため、止めた方が良い。
 `my %new_has = %old_hash;`  
 
 
+<a name="practicaluseHashhowget"></a>
 #### 取得方法
 愚痴：作成方法が丸括弧で、取得方法が波括弧なのは混乱する(リストとの区別が付かないのが原因)。  
 `$ハッシュ名{キー};`  
@@ -3277,9 +3780,12 @@ sub associativearray() {
 		'bar'  => "300505",
 	);
 
-	say "$hoge{'hoge'}";			# 100006601775326
-	say "$hoge{'100006601775326'}";	# 空文字列
+	# 以下、キーから値を取り出している。
+	say "$hoge{hoge}";			# 100006601775326
+	# 以下、値を基準に探すことは出来ない(この形式ではキーから探すのみ可能)。
+	say "$hoge{100006601775326}";	# 空文字列
 
+	# 以下、keys関数からキー値を取り出し、そのキー値からハッシュ値を取り出して表示している。
 	for my $key (keys(%hoge)) {
 		my $value = $hoge{$key};
 		say "$key -> $value";
@@ -3289,18 +3795,20 @@ sub associativearray() {
 		#		bar -> 300505
 	}
 	say "%hoge";	# %hoge
-	say %hoge;		# hoge100006601775326boo100011324721840bar300505	←☆当然実行ごとに値が変わる。
+	say %hoge;		# hoge100006601775326boo100011324721840bar300505	←☆当然実行ごとに表示順番が変わる。
 }
 &associativearray();
 ```
 
 
+<a name="practicaluseHashmod"></a>
 #### 変更方法
 様式：
 `$ハッシュ名{キー} = 値;`  
 ※**キー**にスペースを含まない場合、クォーテーション記号は不要。  
 
 
+<a name="practicaluseHashchange"></a>
 ##### キーと値を入れ替える。
 **reverse**により、入れ替えが可能。  
 
@@ -3335,6 +3843,7 @@ sub associativearray() {
 ```
 
 
+<a name="practicaluseHashkeysvaluesfunc"></a>
 ##### keys関数・values関数
 順不同ではあるが、かならず対になる取得ができる。  
 先頭から末尾までを1つづつ取り出すには、**keys**・**values**・[**each**](#practicaluseHasheach)の3種類が使える。  
@@ -3372,6 +3881,8 @@ sub associativearray() {
 
 以下、そのプログラム。
 ```perl
+use v5.24;
+
 sub associativearray() {
 	my %boo = (
 		boo => 20211119,
@@ -3379,59 +3890,63 @@ sub associativearray() {
 		hoge => "BK4873118247",
 	);
 
-	# 以下、通常の値出力方法。
+	say "以下、通常の値出力方法。";
 	say "$boo{boo}, $boo{bar}";	# 20211119, 9784873118246
 
-	# 以下、スライスでの出力方法。
-	say @boo{"boo", "bar"};	# 202111199784873118246
-	say @boo{qw(boo bar)};	# 202111199784873118246
+	say "以下、スライスでの出力方法。";
+	say @boo{"boo", "bar"};		# 202111199784873118246
+	say @boo{qw(boo bar)};		# 202111199784873118246
+	say "@boo{'boo', 'bar'}";	# 20211119 9784873118246
+	say "@boo{qw(boo bar)}";	# 20211119 9784873118246
 
-	# 以下、スライスでの値変更。
+	say "以下、スライスでの値変更。";
 	@boo{qw(boo bar)} = (123, 456);
 	say @boo{qw(boo bar)};	# 123456
-	say "$boo{boo}";	# 123
-	say "$boo{bar}";	# 456
-	say "$boo{hoge}";	# BK4873118247
+	say "$boo{boo}";		# 123
+	say "$boo{bar}";		# 456
+	say "$boo{hoge}";		# BK4873118247
+    #   {}括弧を[]括弧にした場合、意味が変わってくるため、今回の場合はエラーになる。
 }
 &associativearray();
 ```
-あいにく、削除や追加方法は分からなかった。  
-しかし、ハッシュ相手なのだから不要だろう。  
-[削除方法](#practicaluseHashdelete)は必要だよな。  
+[削除方法](#practicaluseHashdelete)は別途ある。  
 
 
+<a name="practicaluseHashkeysort"></a>
 ##### キーの並べ替え
-正しいやり方が分からない。  
+以下のプログラムで良いようだ。
 
 ```perl
-	my %hoge = (
-		hoge => 20210922,
-		boo => 4873118247,
-		bar => "sort",
-	);
+my %hoge = (
+	hoge => 20210922,
+	boo => 4873118247,
+	bar => "sort",
+);
 
-	foreach ( sort keys %hoge ) {
-		say "$_ -> $hoge{$_}";
-	}
+foreach ( sort keys %hoge ) {
+	say "$_ -> $hoge{$_}";
+}
 ```
 
 
+<a name="practicaluseHashvaluesort"></a>
 ##### 値での並べ替え
-正しいやり方が分からない。  
+以下のプログラムで良いようだ。
 
 ```perl
-	my %hoge = (
-		hoge => 20210922,
-		boo => 4873118247,
-		bar => "sort",
-	);
+my %hoge = (
+	hoge => 20210922,
+	boo => 4873118247,
+	bar => "sort",
+);
 
-	foreach ( sort { $hoge{$a} <=> $hoge{$b} } keys %hoge ) {
-		say "$_ -> $hoge{$_}";
-	}
+foreach ( sort { $hoge{$a} <=> $hoge{$b} } keys %hoge ) {
+	say "$_ -> $hoge{$_}";
+}
 ```
 
 
+<a name="practicaluseHashkeyduplicate"></a>
 #### キーの重複
 上書きされる。  
 
@@ -3510,6 +4025,7 @@ sub associativearray() {
 これは、反復子(イテレータ：iterator)技術により、現在値を保持しているため。  
 
 
+<a name="practicaluseHashexists"></a>
 ##### 既存キーの確認方法(`exists`関数)。
 キーが存在すれば、どのようなキーだろうが、存在するとして扱われる。  
 
@@ -3554,8 +4070,8 @@ sub associativearray() {
 		#		bar -> 本日は晴天なり。
 	}
 
-	say "-" x 30;
-	delete $hoge{'hoge'};
+	say "以下、削除実施。";
+	delete $hoge{hoge};	←☆削除実施(複数の場合は配列扱いするため`@hoge{'boo', 'bar'}`などになる)。
 	while( my ($key, $value) = each %hoge ) {
 		say "$key -> $value";
 		# 出力結果：
@@ -3565,8 +4081,10 @@ sub associativearray() {
 }
 &associativearray();
 ```
+記号の使い分けが慣れない。  
 
 
+<a name="practicaluseHashenv"></a>
 #### OSの環境変数(`%ENV`)
 
 以下、環境変数をPerlで取得する。
@@ -3583,95 +4101,44 @@ say "$ENV{HISTCONTROL}";	# ignoreboth
 
 何に使うのか分からないが、GoでのGUI開発は日本語文字を取得するのに環境変数を利用しているな・・・。  
 
-</details>
 
-<a name="practicaluseModule"></a>
-<details><summary>応用知識-モジュール</summary>
+<a name="practicaluseHashsigint"></a>
+#### OSのシグナル(`%SIG`)
+OSのシグナルをPerl側で制御できるようになる。  
+以下、利用例）
+```perl
+use v5.24;
 
-基本的には[Perlドキュメント](https://perldoc.jp)を見た方が良いようだ。  
-もしくは、普通にHelpを使う。  
-例）
-```terminal
-$ perldoc File::Basename
-    File::Basename - Parse file paths into directory, filename and suffix.
+$SIG{'INT'} = sub {say "割り込み信号(2)受け取り"};	←☆この関数をシグナルハンドラと言う。
 
-SYNOPSIS
-　　　・
-　　　・
-　　　・
-$
+for (1..1000000) {
+	say $_ . "回目の実行";
+}
 ```
-そもそもモジュールと[パッケージ](#practicalusePackages)はどう違う？  
-
-
-<a name="practicaluseModulemain"></a>
-### [モジュール](https://perldoc.jp/docs/perl/5.20.1/perlmod.pod)
-車輪の再開発をせずに、望む車輪を選べ、そして使える。  
-**use**ステートメントにより、標準ディレクトリから探し出し、一致ファイルの内部コードを使えるようにする。  
-
-例）
-`use Database::Access::Control;`  
-* **::** をOSごとに、適切なPathに置き換える。  
-  * Unix・Linux・OS/2  
-    `Database/Access/Control.pm`  
-  * Windows  
-    `Database\Access\Control.pm`  
-  * MacOS  
-    `Database:Access:Control.pm`  
-  * VMS  
-    `[Database:Access]Control.pm`  
-
-* グローバグ配列変数  
-  * **@INC**  
-    以下を変更もしくは、追加できる。  
-    標準ライブラリ  
-    ユーザ定義ライブラリのディレクトリ  
-  * import文  
-    **import**と言うサブルーチンから探し出し、使う。  
-
-* モジュールのセットアップ  
-  1. モジュールを格納したい標準ライブラリディレクトリを選択する。  
-     `~/Home/`など？  
-  1. このディレクトリの存在をPerlに指示する。  
-     `use lib "/Users/asakunotomohiro/lib/perl5/";	# ←☆変数は使えないため気をつけること。`  
-     `BEGIN { push @INC, "/Users/asakunotomohiro/lib/perl5/"; }`  
-     ~~`BEGIN { unshift @INC, "/Users/asakunotomohiro/lib/perl5/"; }`~~  
-     ※`use lib`とは、ライブラリを使うのではなく、ライブラリを探すPathの設定をするだけ。  
-  1. モジュール名の各コンポーネント(最後のコンポーネントを除く)に対応するサブディレクトリを標準ライブラリの下にネストして作成する。  
-     モジュール名例）`AAAA::SSS::KKK::NNN`  
-     ディレクトリ例）`AAAA/SSS/KKK`  
-  1. 最下位のサブディレクトリにテキストファイルを作成する。  
-     ファイル名例）`NNN.pm`  
-  1. このテキストファイルにコードを挿入する。  
-  1. テキストファイルの末尾に、真に評価される付加的なステートメントを追加する。  
-     `1;`  
-
-* モジュール内のバージョン制御  
-  * 使うモジュールのバージョン指定。  
-    `use Database::Access::Control 1.20;`  
-  * [パッケージ](#practicalusePackages)内でのバージョン指定。  
-    `$VERSION = 1.00;`  
-
-* モジュール内のエクスポート制御  
-  **import**サブルーチンを呼び出すが、標準では何もしない。  
-  そして、独自に作ることで、その動作を変更できる。  
-  * 個別呼び出しに応じたモジュールも存在する。  
-    呼び出し例）
-    `use File::Basename qw(fileparse basename)`  
-    ※この場合は、サブルーチンとして**dirname**ルーチンを呼び出さないことになる。  
-    そして、dirnameを個別に呼び出したい場合、`File::Basename::dirname($hoge);`とすればいい。  
-  * サブルーチン呼び出し不可。  
-    例）
-    `use File::Basename ();`  
-    これにより、サブルーチンを呼び出さないことになる。  
-    また、`use File::Basename;`の場合は、デフォルトのサブルーチン呼び出しが発生する(モジュール開発者が決めている)。  
-
-
-上記の説明、だいたい分からない。  
-todo: もういちど読み直す。  
-
+以下、実行結果
+```terminal
+　　　省略）
+760490回目の実行
+760491回目の実行
+760492回目の実行
+760493回目^C760494回目の実行
+760495回目の実行
+760496回目の実行
+760497回目の実行
+760498回目の実行
+760499回目の実行
+760500回目の実行
+割り込み信号(2)受け取り	←☆`Ctrl+c`押下による反応。
+760501回目の実行
+760502回目の実行
+760503回目の実行
+760504回目の実行
+　　　省略）
+```
+**760493回目**直後にキー入力を行い、**760500回目**直後に反応した。  
 
 </details>
+
 
 <a name="practicalusePackages"></a>
 <details><summary>応用知識-パッケージ</summary>
@@ -3681,31 +4148,30 @@ todo: もういちど読み直す。
 
 <a name="practicalusePackagesmain"></a>
 ### パッケージ
-スコープがパッケージになったと思えば良い。  
+パッケージはスコープ(範囲対象)のひとつと思えば良い。  
 
-    use v5.24;
-    
-    sub sample() {
-    	say "mainパッケージ";	←☆パッケージの区切りをしていない場合、メインパッケージ扱いされる。
-    }
-    
-    package Subboo;	←☆ここ以降がサブbooパッケージ。
-    sub sample(){
-    	say "Subbooパッケージ";
-    }
-    &sample("boo");	←☆パッケージないのサンプル関数を呼び出す。
-    #	出力結果：Subbooパッケージ
-    
-    main::sample();	←☆外部パッケージのサンプル関数を呼び出すため、それを明記している。
-    #	出力結果：mainパッケージ
-    
-    Subbar::sample()	←☆外部パッケージのサンプル関数を呼び出すため、それを明記している。;
-    #	出力結果：Subbarパッケージ
-    
-    package Subbar;	←☆ここ以降がサブbarパッケージ。
-    sub sample(){
-    	say "Subbarパッケージ";
-    }
+```perl
+use v5.24;
+
+sub sample() {
+	say "mainパッケージ";	←☆パッケージの区切りをしていない場合、メインパッケージ扱いされる。
+}
+
+package Subboo;	←☆ここ以降がサブbooパッケージ。
+sub sample(){
+	say "Subbooパッケージ";
+}
+&sample("boo");	# Subbooパッケージ	←☆パッケージないのサンプル関数を呼び出す。
+
+main::sample();	# mainパッケージ	←☆外部パッケージのサンプル関数を呼び出すため、それを明記している。
+
+Subbar::sample();	# Subbarパッケージ	←☆外部パッケージのサンプル関数を呼び出すため、それを明記している。;
+
+package Subbar;	←☆ここ以降がサブbarパッケージ。
+sub sample(){
+	say "Subbarパッケージ";
+}
+```
 
 上記は、1つづつパッケージに関数などが納められている。  
 私の想定した入れ子ができると思ったが出来そうにない。  
@@ -3715,54 +4181,66 @@ todo: もういちど読み直す。
 その理由は、かぶらないようにするためだろう。  
 以下、そのプログラム。
 
-    use v5.24;
-    
-    sub sample(){	←☆パッケージ名を付けていないため、メインパッケージになる。
-    	say "mainパッケージ";
-    }
-    
-    package Subboo::bar::hoge;
-    sub sample(){
-    	say "Subboo入れ子パッケージhoge";
-    }
-    &sample();
-    #	出力結果：Subパッケージhoge
-    
-    package Subboo::bar::barboo;
-    sub sample(){
-    	say "Subboo入れ子パッケージbarboo";
-    }
-    &sample();
-    #	出力結果：Subboo入れ子パッケージbarboo
-    
-    package Subboo;
-    sub sample(){
-    	say "Subboo単体パッケージ";
-    }
-    
-    package Subboo::bar::hoge;
-    sub sample(){	←☆同じパッケージ名の同じ関数名が上記にある。
-    	say "Subパッケージhoge";
-    }
-    
-    package main;
-    Subboo::bar::hoge::sample();	←☆同じパッケージ名の同じ関数名の1つを呼ぶ。
-    #	出力結果：Subパッケージhoge	←☆後ろにある関数が呼ばれる。
-    
-    Subboo::sample();
-    #	出力結果：Subboo単体パッケージ
-    
-    Subboo::bar::hoge::sample();
-    #	出力結果：Subパッケージhoge
-    
-    Subboo::bar::barboo::sample();
-    #	出力結果：Subboo入れ子パッケージbarboo
-    
-    sample();	←☆先頭のメインパッケージにある関数を呼ぶ。
-    #	出力結果：mainパッケージ
+```perl
+use v5.24;
+
+sub sample(){	←☆パッケージ名を付けていないため、メインパッケージになる。
+	say "mainパッケージ";
+}
+my $hoge = "本日は晴天なり。" . __PACKAGE__;
+
+package Subboo::bar::hoge;
+sub sample(){
+	say "Subboo入れ子パッケージhoge";
+}
+&sample();	# Subパッケージhoge
+
+package Subboo::bar::barboo;
+my $hoge = "本日はお日柄も良く" . __PACKAGE__;
+sub sample(){
+	say "Subboo入れ子パッケージbarboo";
+}
+&sample();	# Subboo入れ子パッケージbarboo
+
+package Subboo;
+sub sample(){
+	say "Subboo単体パッケージ";
+}
+say $hoge;	# 本日はお日柄も良くSubboo::bar::barboo
+
+package Subboo::bar::hoge;
+my $hoge = "はれときどきぶた" . __PACKAGE__;
+sub sample(){	←☆同じパッケージ名の同じ関数名が上記にある。
+	say "Subパッケージhoge";
+}
+
+say $hoge;	# はれときどきぶたSubboo::bar::hoge
+
+package main;	←☆ここ以降メインパッケージだと思っているが、違うのか？
+Subboo::bar::hoge::sample();	←☆同じパッケージ名の同じ関数名の1つを呼ぶ。
+								# Subパッケージhoge	←☆後ろにある関数が呼ばれる。
+
+Subboo::sample();	# Subboo単体パッケージ
+
+Subboo::bar::hoge::sample();	# Subパッケージhoge
+
+say $hoge;	# はれときどきぶたSubboo::bar::hoge	←☆メインパッケージの変数を利用したつもりだったが(myもourも駄目)？
+say $main::hoge;	# 空文字列(undef)	←☆変数宣言がmyの場合空文字なのはなぜ？
+say $main::hoge;	# 本日は晴天なり。main	←☆変数宣言をmyからourにした結果。
+
+Subboo::bar::barboo::sample();	# Subboo入れ子パッケージbarboo
+
+sample();	←☆先頭のメインパッケージにある関数を呼ぶ。
+			#	出力結果：mainパッケージ
+```
+上記の後半にメインパッケージを宣言し、冒頭のメインパッケージで変数宣言したが、それが後半で利用できなくなっている。  
+要は、レキシカル変数と言うのはパッケージに属していないという説明に合致する。  
+なるほど・・・こういう意味だったのか・・・なかなか文字だけの説明では理解できない部分があり、やってみるだけの価値があると思わせる結果が出てきた。  
 
 勝手に、パッケージの重ね掛けと命名したが、よくよく見れば入れ子かな・・・しかしな・・・。  
 とりあえず、階層を深くし、途中のパッケージ名を変えることで、機能ごとに分ける価値が生まれる・・・と思う。  
+
+外部パッケージ内の[レキシカル変数](#subVariable1)を利用できない説明をしている。  
 
 
 #### パッケージ内でのバージョン指定
@@ -4011,6 +4489,7 @@ say %{*$hoge}{3};	# 3hoge
 そもそも通常の環境ですら使われない技術とのこと。  
 オブジェクト指向プログラミングでも疲れないが、今回は無理矢理使うため、勉強項目として設けられているようだ・・・何ともかんとも・・・。  
 
+※バグの温床になる技術になるため、使わないようにすること。  
 
 </details>
 
@@ -4235,7 +4714,7 @@ Perlにおけるオブジェクト指向は、標準的な言語機能(ハッシ
   * [パッケージ](#practicalusePackages)  
 
 * Perlの非中核要素  
-  * [モジュール](#practicaluseModule)  
+  * [モジュール](#practicaluseFunctionLibuse)  
   * [自動ロード](#practicaluseAutoload)  
   * [クロージャ](#practicaluseClosure)  
   * [型グロブ](#practicaluseTypeglob)  

@@ -61,7 +61,14 @@ sub trace(){
 		return "配列@$val";
 	}
 	elsif (ref($val) eq 'HASH'){
-		return "ハッシュ" . %{$val};
+		my @sumstring;
+		my $hoge;
+		# 以下、ハッシュの中身を取り出している。
+		foreach my $tmp (keys %$val) {
+			$hoge = $tmp . "=>" . $$val{$tmp};
+			push (@sumstring, $hoge . ",");
+		}
+		return "ハッシュ" . "(@sumstring)"
 	}
 	elsif (ref($val) eq 'CODE'){
 		return "関数" . &{$val}();
@@ -75,39 +82,39 @@ sub trace(){
 }
 
 sub referent() {
-	my $foo  = 20211128;
+	our $foo = 20211128;
 	my @ARGV = (20211128, 20211129);
-	my %ENV  = (20211128=>"朝来野智博", 20211129=>"asakunotomohiro");
+	my %Hash = (20211128=>"朝来野智博", 20211129=>"asakunotomohiro");
 
 	my $scalarref = \$foo;     # 変数
 	my $arrayref  = \@ARGV;    # 配列
-	my $hashref   = \%ENV;     # ハッシュ
+	my $hashref   = \%Hash;     # ハッシュ
 	my $coderef   = \&refFunc; # 関数
-#	my $globref   = \*foo;
+	my $globref   = \*foo;
 	my $doublescalar = \$scalarref;	# 変数のリファレンスをリファレンス化。
 
 	say ref($scalarref);	# 変数
-					# SCALAR
+		# 出力結果：SCALAR
 	say ref($arrayref);		# 配列
-					# ARRAY
+		# 出力結果：ARRAY
 	say ref($hashref);		# ハッシュ
-					# HASH
+		# 出力結果：HASH
 	say ref($coderef);		# 関数
-					# CODE
+		# 出力結果：CODE
 	say ref($doublescalar);	# 変数のリファレンスをリファレンス化。
-					# REF
-	# 他にもまだある。
+		# 出力結果：REF
+	# ※他にもまだある。
 
 	say "-" x 30;
 
 	say "識別：" . &trace($scalarref);	# 識別：変数20211128
 	say "識別：" . &trace($arrayref);	# 識別：配列20211128 20211129
-	say "識別：" . &trace($hashref);	# 識別：ハッシュ2
+	say "識別：" . &trace($hashref);	# 識別：ハッシュ(20211129=>asakunotomohiro, 20211128=>朝来野智博,)
 	say "識別：" . &trace($coderef);	# 識別：関数ハンドラー関数
 	say "識別：" . &trace($doublescalar);	# 識別：リファレンスのリファレンス
 	say "-" x 30;
 	say foreach &trace($scalarref, $arrayref, $hashref, $coderef, $doublescalar);
-#			変数20211128
+#			出力結果：変数20211128
 #	他の文字列は？
 }
 &referent("asakuno");

@@ -34,6 +34,44 @@ sub associativearray() {
 #				tomohiro -> 4873118247
 	}
 
+	say "以下、別の方法で並べ替え(文字コード順の降順)。";
+	foreach ( sort {$b cmp $a} keys %asakuno) {
+		say "$_ -> $asakuno{$_}";
+	}
+#			tomohiro -> 4873118247
+#			asakunotomohiro -> 朝来野智博
+#			asakuno -> 20210922
+
+	say "以下、ハッシュ値を数字順・昇順で並べ替え。";
+	foreach ( sort {$asakuno{$a} <=> $asakuno{$b}} keys %asakuno) {
+		say "$_ -> $asakuno{$_}";
+	}
+#			asakunotomohiro -> 朝来野智博
+#			asakuno -> 20210922
+#			tomohiro -> 4873118247
+
+	my %asakuno = (
+		20210922 => "asakuno",
+		4873118247 => "tomohiro",
+		"朝来野智博" => "asakunotomohiro",
+	);
+
+	say "以下、数字順・降順で並べ替え。";
+	foreach ( sort {$b <=> $a} keys %asakuno) {
+		say "$_ -> $asakuno{$_}";
+	}
+#			4873118247 -> tomohiro
+#			20210922 -> asakuno
+#			朝来野智博 -> asakunotomohiro
+
+	say "以下、数字順・昇順で並べ替え。";
+	foreach ( sort {$a <=> $b} keys %asakuno) {
+		say "$_ -> $asakuno{$_}";
+	}
+#			朝来野智博 -> asakunotomohiro
+#			20210922 -> asakuno
+#			4873118247 -> tomohiro
+
 	say "-" x 30;
 	say "以下、値基準の並べ替え。";
 	foreach ( sort { $asakuno{$a} <=> $asakuno{$b} } keys %asakuno ) {
