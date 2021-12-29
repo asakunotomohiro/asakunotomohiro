@@ -3002,6 +3002,25 @@ $hoge[9] = 20210901 + 9;	# 20210901
 データ型の種類には、[スカラー](#variable変数)・[配列](#arrangement配列)・[ハッシュ](#practicaluseHash)・[サブルーチン](#function関数)・ファイルハンドルぐらいがあるだけだ。  
 大雑把に使えるというのも善し悪しだというのが実感できるほど不便だ。  
 
+以下、プログラム例）
+```perl
+use v5.24;
+
+sub typedefresemble() {
+	my %hoge;	# ハッシュ宣言
+
+	say "構造体から1を取得：" . $hoge{1};	# 当たり前だが、何も値を設定していないのだから空文字列が出力される。
+	$hoge{1} = 1;	# 1のキーに1の値を代入する。
+	say "構造体から1を取得：" . $hoge{1};	# 1が出力される。
+
+	$hoge{value} = "本日は晴天なり。";	# 値の設定
+	say "構造体からvalueを取得：" . $hoge{value};	# 本日は晴天なり。が出力される。
+		# valueを取得するからvalueが出てくるわけではない。
+		# "構造体もどき"と言われる所以である。
+}
+&typedefresemble();
+```
+
 </details>
 
 <a name="practicaluseConditional条件分岐"></a>
