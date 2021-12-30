@@ -135,6 +135,8 @@ echo HelloWorld()
 ```
 出力結果：`hello world(By.vim script 9).`  
 
+script9のヘルプ(英語)：`help vim9script`  
+
 </details>
 
 
@@ -992,6 +994,8 @@ echom Function()
 `"word" =~ "\w*"`  
 ※これら3種類は、大小文字区別は設定次第となっており、`ignorecase`に依存する。  
 ただし、これはscript8に限ることであり、vim9scriptでは設定の影響を受けない。  
+
+正規表現のヘルプ(英語)：`help regex`  
 
 
 <a name="subConditional999"></a>
@@ -2244,15 +2248,20 @@ def! Tree( argNode: list<any>, argMAX: number )
 	echo "指定番号のノード調査開始(入力なしのEnter押下にて、プログラム終了)。"
 	var inputString = ""
 
-	# 無限ループのやり方(ダサいぞ)。
+	# 無限ループのやり方。
 	while true
 		inputString = input("ユーザ入力：")
 		# 以下、文字列を数値に変換する。
-		var inputNumber = str2nr(inputString)
 		if inputString == ""
 			break
+		elseif inputString =~ "\\D\\+"
+			# 正規表現での数字以外を除外する処理。
+			#	vimScriptの正規表現は地獄(専門書が欲しい)。
+			echo "数字のみ(" .. inputString .. ")入力すること。"
+			continue
 		endif
-		# var inputNumber = キャスト不要と判断した。	←☆必要だった。
+		# 以下、キャスト(文字列を数字に変換)。
+		var inputNumber = str2nr(inputString)
 		if 0 <= inputNumber && inputNumber < argMAX
 			echom "node" .. inputString .. "の値は" .. argNode[inputNumber][s:DATA]
 			# 以下、v:nullを文字列のnullに変換した。
@@ -2324,12 +2333,17 @@ call Main()
 "			node7の値は80
 "			左の葉は存在しない。
 "			右の葉は存在しない。
-"			0から7の範囲入力必須。
+"			0から7の範囲入力必須。	←☆8の入力結果。
+"			数字のみ(a)入力すること。
+"			数字のみ(1a)入力すること。
+"			数字のみ(a1)入力すること。
+"			数字のみ(1a2)入力すること。
 
 unlet! s:LEFT
 unlet! s:RIGHT
 unlet! s:DATA
 ```
+
 
 <a name="graphChapter3"></a>
 #### グラフ

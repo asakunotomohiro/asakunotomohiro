@@ -23,6 +23,22 @@ def! Tree( argNode: list<any>, argMAX: number )
 		#var inputNumber = list2str(inputString)
 		#var inputNumber = nr2char(inputString)
 		# 以下、文字列を数値に変換する。
+		if inputString == ""
+			break
+		#elseif inputString =~ "\D+"
+		#elseif inputString =~ "\[^0-9\]\+"
+		#elseif inputString =~ "[^0-9]\+"
+		#elseif inputString =~ "[^0-9]+"
+		#elseif inputString =~? "\D+"
+		#elseif inputString =~# "\D+"
+		#elseif inputString =~ "\\D\+"
+		elseif inputString =~ "\\D\\+"
+			# 正規表現での数字以外を除外する処理。
+			echo "数字のみ(" .. inputString .. ")入力すること。"
+			continue
+#		else
+#			echo ">" .. inputString .. "<"
+		endif
 		var inputNumber = str2nr(inputString)
 #		if list2str(inputString) == 0
 #		if len(inputString) == 0
@@ -35,11 +51,11 @@ def! Tree( argNode: list<any>, argMAX: number )
 		#if strlen(inputString)	←☆完全に駄目。
 		#if inputString ==? ""
 		#if inputString != ""
-		if inputString == ""
-			# E611: Using a Special as a Number
-			break
-#			return
-		endif
+#		if inputString == ""
+#			# E611: Using a Special as a Number
+#			break
+##			return
+#		endif
 #		# var inputNumber = キャスト不要と判断した。
 #		#if 0 <= inputString && inputString < s:MAX	←☆上記のエラーはここが原因。
 		if 0 <= inputNumber && inputNumber < argMAX
