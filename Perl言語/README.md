@@ -74,8 +74,7 @@ $
   * 標準の出力関数：`print`・`printf`・`say`  
     整形関数：[`sprintf`](https://perldoc.jp/func/sprintf)  
   * 標準のフォーマット関数：  
-　　例）`printf`など。  
-　　※必須記入項目ではなく、勉強途中での記載でも可とする。  
+　　例）[`printf`](#practicaluseFileoperation)など。  
   * 単数行コメント方法：`#`  
   * 複数行コメント方法：
     [大きなブロックで囲む方法](https://perldoc.jp/docs/perl/5.10.0/perlfaq7.pod#How32can32I32comment32out32a32large32block32of32perl32code63)⇒
@@ -4721,6 +4720,7 @@ for (1..1000000) {
 <a name="practicaluseFileoperation"></a>
 <details><summary>応用知識-ファイル操作(入出力・File-I/O)</summary>
 
+<a name="practicaluseFileoperationinputoutput"></a>
 ### [入力と出力](https://perldoc.jp/docs/perl/5.34.0/perlclib.pod)
 標準入力からの入力では、`<STDIN>`を使う。  
 
@@ -4783,6 +4783,51 @@ say '(2+3)*4 ==' . (2+3)*4;	# (2+3)*4 ==20
 say (2+3)*4;				# 5	←☆意図していない結果が出てきた。
 ```
 最後のは、`(say (2+3))*4;`と言う意味。  
+
+
+<a name="practicaluseFileoperationprintf"></a>
+### [フォーマット付き出力(printf)](https://perldoc.jp/func/printf)
+
+以下、プログラム例）
+```perl
+use v5.24;
+
+say "以下、%gによる都合良く整形してくれる。";
+printf "%g %g %g\n", 5/2, 51/17, 51 ** 17;	# 2.5 3 1.0683e+29
+
+say "以下、%dによる10進数出力(小数点以下切り捨て)";
+printf "%d %d %d %d\n", 10, 20220102, 2022.0102, -20220102;	# 10 20220102 2022 -20220102
+
+say "以下、%xによる16進数出力";
+printf "%x %x %x %x\n", 10, 20220102, 2022.0102, -20220102;	# a 13488c6 7e6 fffffffffecb773a
+
+say "以下、%oによる8進数出力";
+printf "%o %o %o %o\n", 10, 20220102, 2022.0102, -20220102;	# 12 115104306 3746 1777777777777662673472
+
+say "以下、%fによる小数点出力";
+printf "%f %f %f %f\n", 10, 20220102, 2022.0102, -20220102;	# 10.000000 20220102.000000 2022.010200 -20220102.000000
+printf "%.3f %.3f %.3f %.3f\n", 10, 20220102, 2022.0102, -20220102;	# 10.000 20220102.000 2022.010 -20220102.000
+
+say "以下、%記号の出力";
+printf "%%\n";	# %	←☆%記号を2つ付けるのが正しい%記号表記になる。
+
+say "以下、カラム幅を揃える。";
+printf "%8d\n%8d\n%8d\n%8d\n", 10, 20220102, 2022.0102, -20220102;
+			#      10
+			#20220102
+			#    2022
+			#-20220102
+
+say "以下、文字列出力。";
+printf "[%s]\n[%-10s]\n[%10s]\n", 'hoge', 'hoge', 'hoge';
+			#[hoge]
+			#[hoge   ]
+			#[   hoge]
+printf "[%*s]\n[%*s]\n[%*s]\n", 0, 'hoge', -10, 'hoge', 10, 'hoge';
+			#[hoge]
+			#[hoge   ]
+			#[   hoge]
+```
 
 </details>
 
