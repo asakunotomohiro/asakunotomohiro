@@ -1676,7 +1676,7 @@ Perlでオブジェクト指向開発ができるだけでなく、そのやり�
   [x] [キュー](#queueChapter3)2021/11/27  
   [x] [リスト](#listChapter3)2021/12/04  
   [x] [木](#woodChapter3)2021/12/26  
-  [ ] [グラフ](#graphChapter3)  
+  [x] [グラフ](#graphChapter3)2022/01/02  
   [ ] [データを保存する。](#saveTheDataChapter3)  
 <a name="algorithmTextbookLearnedinPythonChapter4"></a>
 * [Chapter4 サーチ](#searchOverviewChapter4)  
@@ -2666,6 +2666,114 @@ $
 
 <a name="graphChapter3"></a>
 #### グラフ
+図のことではあるが、点とそれらを結ぶ線から成る図形の構造のこと。  
+この、線で結ぶための基点になるのが既出のノードになる。  
+
+* グラフの種類  
+  * [無向グラフ](#graphChapter3Undirectedgraph)  
+    双方向に繋がっているグラフのこと。  
+  * [有向グラフ](#graphChapter3Directedgraph)  
+    一方通行に繋がっているグラフのこと。  
+
+<a name="graphChapter3Undirectedgraph"></a>
+以下、無向グラフプログラム例）
+```perl
+use v5.24;
+
+sub undirectedGraph() {
+	my ($data, $node) = @_;
+
+	foreach my $yy (0..4) {
+		foreach my $xx ($yy..4) {
+			if ( $data->[$yy][$xx] == 1 and $data->[$xx][$yy] == 1) {
+				say($node->[$yy] . "<--->" . $node->[$xx]);
+			}
+		}
+	}
+}
+
+sub main() {
+	my $data = [	# 無名配列リファレンス(二次元配列)
+			[0, 1, 1, 0, 0],
+			[1, 0, 1, 1, 0],
+			[1, 1, 0, 0, 1],
+			[0, 1, 0, 0, 1],
+			[0, 0, 1, 1, 0],
+		];
+	my $node = [
+			"(0)",
+			"(1)",
+			"(2)",
+			"(3)",
+			"(4)",
+		];
+	&undirectedGraph($data, $node);
+}
+&main();
+```
+以下、出力結果。
+```terminal
+(0)<--->(1)
+(0)<--->(2)
+(1)<--->(2)
+(1)<--->(3)
+(2)<--->(4)
+(3)<--->(4)
+```
+
+<a name="graphChapter3Directedgraph"></a>
+以下、有向グラフプログラム例）
+```perl
+sub directedGraph() {
+	my ( $data, $node, $arrow ) = @_;
+
+	foreach my $yy (0..4) {
+		foreach my $xx ($yy..4) {
+			my $e1 = $data->[$yy][$xx];
+			my $e2 = $data->[$xx][$yy];
+			my $aa = $e1 + $e2*2;
+			if ( $aa > 0 ) {
+				say $node->[$yy] . $arrow->[$aa] . $node->[$xx];
+			}
+		}
+	}
+}
+
+sub main() {
+	my $data = [	# 無名配列リファレンス(2次元配列)
+			[0, 1, 1, 0, 0],
+			[0, 0, 1, 1, 0],
+			[0, 0, 0, 0, 0],
+			[0, 1, 0, 0, 1],
+			[0, 0, 1, 1, 0],
+		];
+	my $node = [
+			"(0)",
+			"(1)",
+			"(2)",
+			"(3)",
+			"(4)",
+		];
+	my $arrow = [
+			"",
+			"-->",
+			"<--",
+			"<->",
+		];
+	say "以下、有向グラフプログラム実行。";
+	&directedGraph($data, $node, $arrow);
+}
+```
+以下、出力結果。
+```terminal
+(0)-->(1)
+(0)-->(2)
+(1)-->(2)
+(1)<->(3)
+(2)<--(4)
+(3)<->(4)
+```
+
 
 <a name="saveTheDataChapter3"></a>
 #### データを保存する。
