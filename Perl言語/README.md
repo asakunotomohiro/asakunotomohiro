@@ -4716,6 +4716,11 @@ for (1..1000000) {
 
 </details>
 
+<a name="practicaluseFileoperation"></a>
+<details><summary>応用知識-ファイル操作(入出力・File-I/O)</summary>
+
+
+</details>
 
 <a name="practicalusePackages"></a>
 <details><summary>応用知識-パッケージ</summary>
