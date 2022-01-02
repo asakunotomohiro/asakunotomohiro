@@ -16,8 +16,17 @@ sub asakunoInputOutput() {
 #	}
 	# 以下、上記のショートカットプログラム。
 	while( <STDIN> ) { #	←☆Perlerならばこれを使うそうだ。
+		chomp($_);
 		say "入力行値：$_";
 	}
+#	while( <> ) { #	←☆ダイヤモンド演算子とのことだが、どうやって使う？
+#		chomp;
+#		say "入力行値：$_";
+#	}
+#	while( <<>> ) { #	←☆ダブルダイヤモンド演算子とのことだが、どうやって使う？
+#		chomp;
+#		say "入力行値：$_";
+#	}
 #	foreach( <STDIN> ) {	←☆メモリ使用量が多い。
 #		say "入力行値：$_";
 #	}
@@ -44,6 +53,7 @@ sub asakunoInputOutput() {
 
 	say "以下、ダイヤモンド演算子";
 	say <>;	# /bin/catの実装に当たるそうだ。
+	#	ダイヤモンド演算子は、入力を読み込むためのものであり、出力用ではない。
 }
 &asakunoInputOutput();
 
