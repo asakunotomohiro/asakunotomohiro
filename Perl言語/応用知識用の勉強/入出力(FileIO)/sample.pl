@@ -21,6 +21,29 @@ sub asakunoInputOutput() {
 #	foreach( <STDIN> ) {	←☆メモリ使用量が多い。
 #		say "入力行値：$_";
 #	}
+
+	say "以下、標準出力例。";
+	my @asakuno = ("朝来野\n", "智博\n", "asakuno\ntomohiro\n", );
+	say "以下、クォートなし。";
+	print @asakuno;
+#			朝来野
+#			智博
+#			asakuno
+#			tomohiro
+	say "以下、クォートあり。";
+	print "@asakuno";
+#			朝来野
+#			 智博
+#			 asakuno
+#			tomohiro
+
+	say "以下、計算。";
+	say '(2+3) ==' . (2+3);		# (2+3) ==5
+	say '(2+3)*4 ==' . (2+3)*4;	# (2+3)*4 ==20
+	say (2+3)*4;				# 5	←☆意図していない答え。
+
+	say "以下、ダイヤモンド演算子";
+	say <>;	# /bin/catの実装に当たるそうだ。
 }
 &asakunoInputOutput();
 
