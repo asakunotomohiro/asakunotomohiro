@@ -4719,6 +4719,23 @@ for (1..1000000) {
 <a name="practicaluseFileoperation"></a>
 <details><summary>応用知識-ファイル操作(入出力・File-I/O)</summary>
 
+### [入力と出力](https://perldoc.jp/docs/perl/5.34.0/perlclib.pod)
+標準入力からの入力では、`<STDIN>`を使う。  
+
+以下、1行づつの読み込み例）
+```perl
+while( <STDIN> ) {
+	say "入力行値：$_";
+}
+```
+また、以下でも同じ結果を返す。
+```perl
+foreach( <STDIN> ) {
+	say "入力行値：$_";
+}
+```
+ただし、前半は1行づつの読み込みに対し、後半は全てを読み込み終えてから1行づつ出力する。  
+そのため、メモリを節約するためにも`while`を使うのが吉。  
 
 </details>
 
