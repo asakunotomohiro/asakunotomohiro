@@ -4829,6 +4829,63 @@ printf "[%*s]\n[%*s]\n[%*s]\n", 0, 'hoge', -10, 'hoge', 10, 'hoge';
 			#[   hoge]
 ```
 
+
+<a name="practicaluseFileoperationarrayprintf"></a>
+### 配列とprintfの組み合わせ。
+配列に格納されている個数が不明な場合、フォーマット形式を配列個数に合わせて用意することができる。  
+
+以下、例）
+```perl
+use v5.24;
+
+my @hoge = qw( 本日は 晴天なり。 マイクの テスト中。);
+
+my $format = ("%s\n" x @hoge);
+my $count = @hoge;
+print $format;
+			# %s
+			# %s
+			# %s
+			# %s
+say $count;	# 4
+printf $format, @hoge;
+			# 本日は
+			# 晴天なり。
+			# マイクの
+			# テスト中。
+
+printf ">" . $format . "<", @hoge;
+			# >本日は
+			# 晴天なり。
+			# マイクの
+			# テスト中。
+			# <
+say;
+
+my $format = (">%s<\n" x @hoge);
+printf $format, @hoge;
+			# >本日は<
+			# >晴天なり。<
+			# >マイクの<
+			# >テスト中。<
+
+printf ">" . ("%s," x @hoge) . "<\n", @hoge;
+			# >本日は,晴天なり。,マイクの,テスト中。,<
+
+printf (">%s<\n" x @hoge), @hoge;
+			# ><
+			# ><
+			# ><
+			# ><
+
+printf ">%s<\n" x @hoge, @hoge;
+			# >本日は<
+			# >晴天なり。<
+			# >マイクの<
+			# >テスト中。<
+```
+
+
 </details>
 
 <a name="practicalusePackages"></a>
