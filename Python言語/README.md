@@ -1304,7 +1304,7 @@ Hello World(引数あり-戻り値あり).
   [x] [キュー](#queueChapter3)2021/11/07  
   [x] [リスト](#listChapter3)2021/12/04  
   [x] [木](#woodChapter3)2021/12/29  
-  [ ] [グラフ](#graphChapter3)  
+  [x] [グラフ](#graphChapter3)2022/01/02  
   [ ] [データを保存する。](#saveTheDataChapter3)  
 <a name="algorithmTextbookLearnedinPythonChapter4"></a>
 * [Chapter4 サーチ](#searchOverviewChapter4)  
@@ -2540,6 +2540,46 @@ main()
 (2)<--->(4)
 (3)<--->(4)
 ```
+
+以下、有向グラフプログラム例）
+```python
+def graph(data, node, arrow):
+    for yy in range(5):
+        for xx in range(yy, 5):
+            e1 = data[yy][xx]
+            e2 = data[xx][yy]
+            aa = e1 + e2*2
+            if aa > 0:
+                print(node[yy] + arrow[aa] + node[xx])
+
+
+def main():
+    data = [    # グラフの定義。
+            [0, 1, 1, 0, 0, ],
+            [0, 0, 1, 1, 0, ],
+            [0, 0, 0, 0, 0, ],
+            [0, 0, 0, 0, 1, ],
+            [0, 0, 1, 1, 0, ],
+        ]
+    node = [
+            "(0)", "(1)", "(2)", "(3)", "(4)",
+        ]
+    arrow = ["", "-->", "<--", "<->", ]
+    graph(data, node, arrow)
+
+
+main()
+```
+以下、出力結果。
+```terminal
+(0)-->(1)
+(0)-->(2)
+(1)-->(2)
+(1)-->(3)
+(2)<--(4)
+(3)<->(4)
+```
+
 
 <a name="saveTheDataChapter3"></a>
 #### データを保存する。
