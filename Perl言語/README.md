@@ -4886,6 +4886,30 @@ printf ">%s<\n" x @hoge, @hoge;
 ```
 
 
+<a name="practicaluseFileoperationfilehandle"></a>
+### ファイルハンドル
+Perlと外部との結びつき(コネクション)を言う。  
+
+* ファイルハンドル(filehandle)の種類  
+  コネクションであり、ファイルのことではない。  
+  * 裸のワード(bareword)  
+    Perl5.6より古い場合に使われるが、それ以降でも使う。  
+    命名規則：英数字とアンダースコアを付ける(先頭は数字以外)。  
+    ※すべて大文字にすることで、将来でてくる予約語とかぶることなく使える。  
+  * リファレンス  
+    Perl5.6以降に出来た。  
+  * Perl自身が保有する特別なファイルハンドル  
+    以下は、Unix起源が主。  
+    * STDIN  
+      標準入力ストリーム(standart input stream)  
+    * STDOUT  
+      標準出力ストリーム(standard output stream)  
+    * STDERR  
+      標準エラーストリーム(standard error stream)  
+    * DATA  
+    * ARGV  
+    * ARGVOUT  
+
 </details>
 
 <a name="practicalusePackages"></a>
