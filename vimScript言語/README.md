@@ -1487,7 +1487,7 @@ vim9scriptでは`unlet`が使えないようだ(公式サイトでは[使える]
   [x] [キュー](#queueChapter3)2021/11/28  
   [ ] [リスト](#listChapter3)中断2021/12/08  
   [x] [木](#woodChapter3)2021/12/28  
-  [ ] [グラフ](#graphChapter3)  
+  [x] [グラフ](#graphChapter3)2022/01/02  
   [ ] [データを保存する。](#saveTheDataChapter3)  
 <a name="algorithmTextbookLearnedinPythonChapter4"></a>
 * [Chapter4 サーチ](#searchOverviewChapter4)  
@@ -2347,6 +2347,110 @@ unlet! s:DATA
 
 <a name="graphChapter3"></a>
 #### グラフ
+図のことではあるが、点とそれらを結ぶ線から成る図形の構造のこと。  
+この、線で結ぶための基点になるのが既出のノードになる。  
+
+* グラフの種類  
+  * [無向グラフ](#graphChapter3Undirectedgraph)  
+    双方向に繋がっているグラフのこと。  
+  * [有向グラフ](#graphChapter3Directedgraph)  
+    一方通行に繋がっているグラフのこと。  
+
+<a name="graphChapter3Undirectedgraph"></a>
+以下、無向グラフプログラム例）
+```perl
+def! UndirectedGraph( data: list<list<number>>, node: list<string> )
+	for yy in range(4)
+		for xx in range(yy, 4)
+			if data[yy][xx] == 1 && data[xx][yy] == 1
+				echom node[yy] .. '<--->' .. node[xx]
+			endif
+		endfor
+	endfor
+enddef
+
+def! Main()
+	var node = [
+				'(0)',
+				'(1)',
+				'(2)',
+				'(3)',
+				'(4)',
+			]
+
+	var undirectedData = [	# 2次元配列。
+				[0, 1, 1, 0, 0],
+				[1, 0, 1, 1, 0],
+				[1, 1, 0, 0, 1],
+				[0, 1, 0, 0, 1],
+				[0, 0, 1, 1, 0],
+			]
+	UndirectedGraph(undirectedData, node)
+enddef
+call Main()
+```
+以下、出力結果。
+```terminal
+(0)<--->(1)
+(0)<--->(2)
+(1)<--->(2)
+(1)<--->(3)
+(2)<--->(4)
+(3)<--->(4)
+```
+
+<a name="graphChapter3Directedgraph"></a>
+以下、有向グラフプログラム例）
+```perl
+def! DirectedGraph( data: list<list<number>>, node: list<string>, arrow: list<string> )
+	for yy in range(4)
+		for xx in range(yy, 4)
+			var e1 = data[yy][xx]
+			var e2 = data[xx][yy]
+			var aa = e1 + e2 * 2
+			if aa > 0
+				echom node[yy] .. arrow[aa] .. node[xx]
+			endif
+		endfor
+	endfor
+enddef
+
+def! Main()
+	var node = [
+				'(0)',
+				'(1)',
+				'(2)',
+				'(3)',
+				'(4)',
+			]
+
+	var directedData = [	# 二次元配列。
+				[0, 1, 1, 0, 0],
+				[0, 0, 1, 1, 0],
+				[0, 0, 0, 0, 0],
+				[0, 0, 0, 0, 1],
+				[0, 0, 1, 1, 0],
+			]
+	var directedArrow = [
+				'',
+				'-->',
+				'<--',
+				'<->',
+			]
+	DirectedGraph(directedData, node, directedArrow)
+enddef
+call Main()
+```
+以下、出力結果。
+```terminal
+(0)-->(1)
+(0)-->(2)
+(1)-->(2)
+(1)-->(3)
+(2)<--(4)
+(3)<->(4)
+```
+
 
 <a name="saveTheDataChapter3"></a>
 #### データを保存する。
