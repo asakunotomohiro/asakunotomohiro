@@ -4967,23 +4967,23 @@ Perlが必要と判断したときに、自動でファイルハンドルを開�
     ※この場合、改行文字をCRLFに変換するが、既にCRLFの場合は、CRが2個連続してしまうことに注意すること。  
 
 
-<a name="practicaluseFileoperationfilehandlenotopen"></a>
+<a name="practicaluseFileoperationfilehandleopenFailure"></a>
 #### ファイルハンドルオープン失敗
-どのようにすれば、正常な失敗をさせられるのか分からない。  
+ファイルを開けない場合、失敗すると言うより、ファイルハンドルに紐付けられなければ失敗すると解釈したがあっているか？  
 
-とりあえず、以下のプログラムで判定できるようだ。
+以下、プログラム例）
 ```perl
-my $success = open, '>>', 'logfile';
+my $success = open LOG, '>>', 'logfile';
 if ( ! $success ) {
-	say "open失敗。";
+    say "open失敗。";	←☆これが出力されていないぞ？
 }
 ```
 
 以下、実行。
 ```terminal
 $ perl 無効なファイルハンドル.pl
-Not enough arguments for open at 無効なファイルハンドル.pl line 11, near "open,"
-Execution of 無効なファイルハンドル.pl aborted due to compilation errors.
+無効なファイルハンドル
+以上。
 $
 ```
 
