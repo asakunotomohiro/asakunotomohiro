@@ -5070,6 +5070,35 @@ say "プログラム継続";
 ```
 
 
+<a name="practicaluseFileoperationfileopenread"></a>
+### ファイルハンドルからのファイル読み込み。
+上記のファイルハンドルを用いて、ファイル名用を読み込む。  
+以下、プログラム。
+```perl
+use v5.24;
+
+sub inputOutput() {
+	if( ! open FILE, '<', shift) {
+		die "存在するファイルを引数に渡すこと($!)。"
+	}
+	while( <FILE> ) {
+		chomp;
+		say $_;
+	}
+}
+&inputOutput(@ARGV);
+```
+
+以下、実行。
+```terminal
+$ perl ファイル読み込み.pl 名称未設定.txt
+テストファイル。
+$ perl ファイル読み込み.pl	←☆引数を渡さなければ、die関数が働くと思ったよ。
+$ perl ファイル読み込み.pl abc
+存在するファイルを引数に渡すこと(No such file or directory)。 at ファイル読み込み.pl line 5.
+$
+```
+
 </details>
 
 
