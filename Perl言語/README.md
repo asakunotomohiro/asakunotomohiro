@@ -5022,6 +5022,34 @@ if( ! open LOG, '<', 'logfile' ) {
 オープン失敗
 ```
 
+上記のプログラム作成(条件分岐)がめんどくさい場合、プラグマを使うことで回避できる。  
+以下、プログラム例
+```perl
+use autodie;	←☆プラグマ
+open LOG, '<', 'logfile';	←☆このオープン処理失敗時、dieしてくれる。
+```
+以下、実行結果。
+```terminal
+Can't open 'logfile' for reading: 'No such file or directory' at 無効なファイルハンドルdie.pl line 12
+```
+もし、このプラグマが無ければ、メッセージは何も出ず、処理が継続されるだろう。  
+そして、意図していない結果になるだろうことが目に浮かぶ。  
+
+以下、併用した場合のプログラム例
+```perl
+use autodie;
+
+my $success = open LOG, '<', 'logfile';
+if ( ! $success ) {
+	say "open失敗。";
+}
+```
+以下、実行結果。
+```terminal
+Can't open 'logfile' for reading: 'No such file or directory' at 無効なファイルハンドルdie.pl line 12
+```
+任意のメッセージを出すことが出来ないようだ。  
+
 
 <a name="practicaluseFileoperationfilehandleopenFailurewarn"></a>
 #### ファイルハンドルオープン失敗warn
