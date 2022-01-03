@@ -5395,6 +5395,14 @@ sub inputOutput() {
 ```
 
 
+<a name="practicaluseFileoperationfilehandlereference"></a>
+### IO::Handle
+**IO::Handle**を基底とした派生クラスのモジュールを使うことで使い勝手が向上するそうだ。  
+
+* 派生クラスのモジュール  
+  * IO::File  
+    ファイル操作用モジュール。  
+
 </details>
 
 
