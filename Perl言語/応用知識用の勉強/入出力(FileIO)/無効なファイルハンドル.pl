@@ -8,10 +8,19 @@ my @asakuno = ("朝来野", "智博");
 say "無効なファイルハンドル";
 
 sub asakunoInputOutput() {
-	my $success = open LOG, '<', 'logfile';
-	if ( ! $success ) {
-		say "open失敗。";
+#	my $success = open LOG, '<', 'logfile';
+#	if ( ! $success ) {
+#		say "open失敗。";
+#	}
+	if( ! open LOG, '<', 'logfile' ) {
+		die "オープン失敗：$!";
 	}
+#	if( ! open LOG, '<', 'logfile' ) {
+#		die "オープン失敗：";
+#	}
+#	if( ! open LOG, '<', 'logfile' ) {
+#		die "オープン失敗\n";
+#	}
 }
 &asakunoInputOutput();
 
