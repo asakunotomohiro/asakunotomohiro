@@ -183,6 +183,8 @@ $
   * [ ] [ファイル操作](#practicaluseFileoperation)  
     [x] 標準入力。  
     [x] 標準出力。  
+    [x] ファイル読み込み。  
+    [x] ファイル書き込み。  
   * [ ] [ディレクトリ操作](#practicaluseDirectorymanipulation)  
   * [ ] [オブジェクト指向](#practicaluseObjectorientation)  
     [x] オブジェクト指向入門2021/11/12(読み切っていない)  
@@ -5072,7 +5074,7 @@ say "プログラム継続";
 
 <a name="practicaluseFileoperationfileopenread"></a>
 ### ファイルハンドルからのファイル読み込み。
-上記のファイルハンドルを用いて、ファイル名用を読み込む。  
+上記のファイルハンドルを用いて、ファイル内容を読み込む。  
 以下、プログラム。
 ```perl
 use v5.24;
@@ -5098,6 +5100,59 @@ $ perl ファイル読み込み.pl abc
 存在するファイルを引数に渡すこと(No such file or directory)。 at ファイル読み込み.pl line 5.
 $
 ```
+
+
+<a name="practicaluseFileoperationfileopenwrite"></a>
+### ファイルハンドルからのファイル書き込み。
+上記のファイルハンドルを用いて、ファイルに書き込む。  
+以下、プログラム。
+```perl
+use v5.24;
+
+my @hoge = qw( 本日は 晴天なり。 明日も晴天だ。 );
+
+say "ファイル書き込み開始。";
+sub inputOutput() {
+	if( ! open FILE, '>>', shift) {
+		die "書き込めるファイルを引数に渡すこと($!)。"
+	}
+	foreach( @hoge ) {
+		say FILE $_;
+	}
+}
+&inputOutput(@ARGV);
+say "ファイル書き込み終了。";
+```
+以下、実行結果。
+```terminal
+$ ls abc
+ls: abc: No such file or directory
+$ perl ファイル書き込み.pl abc
+ファイル書き込み開始。
+ファイル書き込み終了。
+$ ls abc
+abc
+$ cat abc
+本日は
+晴天なり。
+明日も晴天だ。
+$
+```
+
+当たり前だが、引数を渡さない場合何も起こらない。
+```terminal
+$ ls -1 -t | head -2
+ファイル書き込み.pl
+名称未設定84.txt
+$ perl ファイル書き込み.pl	←☆コマンドライン引数なし。
+ファイル書き込み開始。
+ファイル書き込み終了。
+$ ls -1 -t | head -2
+ファイル書き込み.pl
+名称未設定84.txt
+$
+```
+
 
 </details>
 
