@@ -4900,6 +4900,8 @@ Perlと外部との結びつき(コネクション)を言う。
     ※すべて大文字にすることで、将来でてくる予約語とかぶることなく使える。  
   * [スカラー変数](#practicaluseFileoperationScalarfilehandle)  
     Perl5.6以降に出来た。  
+  * [リファレンス](#practicaluseFileoperationfilehandlereference)  
+    上記の裸のワードやスカラー変数とは別扱いとする。  
   * Perl自身が保有する特別なファイルハンドル  
     以下は、Unix起源が主。  
     ※ユーザが以下の名前を任意に使えるが、止めた方が良い。  
@@ -5340,6 +5342,58 @@ $ cat abc	←☆意図した通りに書き込まれている。
 明日も晴天だ。
 $
 ```
+
+
+<a name="practicaluseFileoperationfilehandlereference"></a>
+### ファイルハンドルへのリファレンス
+古いPerlプログラムで目にする形式として、リファレンスを使った方法がある。  
+大きなプログラムでは[スカラー変数](#practicaluseFileoperationScalarfilehandle)を使い、簡易的な短いプログラムでは[裸のワード(bareword)](#practicaluseFileoperationfilehandleopen)を使い、リファレンスを使うプログラムは既存の保守で目にするぐらいに留めた方が良いだろう。  
+
+以下、使用例にならないプログラム）
+```perl
+use v5.24;
+
+sub inputOutput() {
+	#local *FILE = $_[0];	←☆なくて動くって・・・結局リファレンス利用はどこいった？
+	open (FILE, $_[0]) or die "ファイルオープン失敗($!)";
+	while( <FILE> ) {
+		chomp;
+		say $_;
+	}
+}
+&inputOutput(@ARGV);
+```
+[全く使い方が分からない](https://perldoc.jp/docs/perl/5.8.8/perldata.pod)。  
+
+以下の使い方が正しい？
+```perl
+use v5.24;
+
+sub inputOutput() {
+	open (*FILE, $_[0]) or die "ファイルオープン失敗($!)";	←☆FILE先頭に*記号を付けた。
+	while( <FILE> ) {
+		chomp;
+		say $_;
+	}
+}
+&inputOutput(@ARGV);
+```
+しかし、**open**自体がない時代に使われた技法が型グロブ何だよね？  
+open使ったら意味ないというか、、、今回のプログラムにふさわしくない(と言うより、間違っている)。  
+以下のプログラムが動かない理由が分からない。
+```perl
+use v5.24;	←☆削除しても動かないため、バージョンの問題ではないようだ。
+
+sub inputOutput() {
+	local *FILE = $_[0];
+	while( <FILE> ) {
+		chomp;
+		say;
+	}
+}
+&inputOutput(@ARGV);
+```
+
 
 </details>
 
