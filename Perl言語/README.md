@@ -4894,11 +4894,11 @@ Perlと外部との結びつき(コネクション)を言う。
 
 * ファイルハンドル(filehandle)の種類  
   コネクションであり、ファイルのことではない。  
-  * 裸のワード(bareword)  
+  * [裸のワード(bareword)](#practicaluseFileoperationfilehandleopen)  
     Perl5.6より古い場合に使われるが、それ以降でも使う。  
     命名規則：英数字とアンダースコアを付ける(先頭は数字以外)。  
     ※すべて大文字にすることで、将来でてくる予約語とかぶることなく使える。  
-  * リファレンス  
+  * [スカラー変数](#practicaluseFileoperationScalarfilehandle)  
     Perl5.6以降に出来た。  
   * Perl自身が保有する特別なファイルハンドル  
     以下は、Unix起源が主。  
@@ -4914,7 +4914,7 @@ Perlと外部との結びつき(コネクション)を言う。
     * ARGVOUT  
 
 <a name="practicaluseFileoperationfilehandleopen"></a>
-### ファイルハンドルを開く。
+#### ファイルハンドルを開く(裸のワード)。
 Perlが必要と判断したときに、自動でファイルハンドルを開くが、手動で開く場合は、`open`演算子を使う必要がある。  
 
 * `open HOGE, 'boo';`の挙動  
@@ -4970,7 +4970,7 @@ Perlが必要と判断したときに、自動でファイルハンドルを開�
 
 
 <a name="practicaluseFileoperationfilehandleopenFailuredie"></a>
-#### ファイルハンドルオープン失敗die
+##### ファイルハンドルオープン失敗die
 ファイルを開けない場合、失敗すると言うより、ファイルハンドルに紐付けられなければ失敗すると解釈したがあっているか？  
 
 以下、プログラム例）
@@ -5054,7 +5054,7 @@ Can't open 'logfile' for reading: 'No such file or directory' at 無効なファ
 
 
 <a name="practicaluseFileoperationfilehandleopenFailurewarn"></a>
-#### ファイルハンドルオープン失敗warn
+##### ファイルハンドルオープン失敗warn
 上記の**die関数**の場合は、そこでプログラムが終了した。  
 しかし、継続したい場合は、warn関数を使うことで、プログラム終了せずに継続処理が行える。  
 
@@ -5073,7 +5073,7 @@ say "プログラム継続";
 
 
 <a name="practicaluseFileoperationfileopenread"></a>
-### ファイルハンドルからのファイル読み込み。
+#### ファイルハンドルからのファイル読み込み。
 上記のファイルハンドルを用いて、ファイル内容を読み込む。  
 以下、プログラム。
 ```perl
@@ -5103,7 +5103,7 @@ $
 
 
 <a name="practicaluseFileoperationfileopenwrite"></a>
-### ファイルハンドルからのファイル書き込み。
+#### ファイルハンドルからのファイル書き込み。
 上記のファイルハンドルを用いて、ファイルに書き込む。  
 
 <details><summary>完成前の勉強プログラム</summary>
@@ -5264,7 +5264,7 @@ $
 
 
 <a name="practicaluseFileoperationfileopenerrwrite"></a>
-### 標準エラーをファイルに書き込む。
+#### 標準エラーをファイルに書き込む。
 標準エラーの出力先をファイルに変更する。  
 ```perl
 if( ! open STDERR, '>>', '/home/hoge/.eeor_log') {
@@ -5273,6 +5273,37 @@ if( ! open STDERR, '>>', '/home/hoge/.eeor_log') {
 ```
 これでいいそうだが、どうなる？  
 （検証なし。）  
+
+
+<a name="practicaluseFileoperationScalarfilehandle"></a>
+#### ファイルハンドルを開く(スカラー変数)。
+[裸のワード](#practicaluseFileoperationfilehandleopen)の場合は、ファイルハンドルをそのまま使うことを言う。  
+そして、そうでない使い方は、スカラー変数に入れてから使うことになる。  
+リファレンスを操作すると言うより、ファイルハンドルというリファレンスをスカラー変数に入れて使うという表現が正確なようだ。  
+
+以下、読み込み用プログラム例
+```perl
+use v5.24;
+
+sub inputOutput() {
+	my $file_fh;
+	open $file_fh, '<', $_[0] or die "$_[0]のファイルオープン失敗($!)";
+	# open my $file_fh, '<', $_[0] or die "$_[0]のファイルオープン失敗($!)";	←☆変数宣言を同時に行える。
+	while( <$file_fh> ) {
+		chomp;
+		say $_;
+	}
+}
+&inputOutput(@ARGV);
+```
+以下、実行結果。
+```terminal
+$ perl ファイル読み込み_スカラー変数利用.pl test.txt
+テストファイル。
+$ cat test.txt
+テストファイル。
+$
+```
 
 
 </details>
