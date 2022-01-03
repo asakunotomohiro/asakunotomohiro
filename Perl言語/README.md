@@ -5306,6 +5306,41 @@ $
 ```
 
 
+以下、書き込み用プログラム例
+```perl
+use v5.24;
+
+my @hoge = qw( 本日は 晴天なり。 明日も晴天だ。 );
+
+say "ファイル書き込み開始。";
+sub inputOutput() {
+	open my $file_fh, '>', $_[0]
+		or die "$_[0]のファイルオープン失敗($!)";	←☆ファイル書き込み用にファイルハンドルを変数に代入する。
+	select $file_fh;	←☆書き込み先の設定。
+	foreach( @hoge ) {
+		# say $file_fh $_;
+		# say $_;
+		say;	←☆実際の書き込み。
+	}
+	select STDOUT;	←☆書き込み先を戻す。
+}
+&inputOutput(@ARGV);
+say "ファイル書き込み終了。";
+```
+以下、実行結果。
+```terminal
+$ ls abc
+ls: abc: No such file or directory
+$ perl ファイル書き込み.pl abc	←☆書き込み実施。
+ファイル書き込み開始。
+ファイル書き込み終了。
+$ cat abc	←☆意図した通りに書き込まれている。
+本日は
+晴天なり。
+明日も晴天だ。
+$
+```
+
 </details>
 
 
