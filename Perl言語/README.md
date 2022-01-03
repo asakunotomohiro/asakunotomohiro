@@ -5187,7 +5187,41 @@ $
 ```
 書き込んで欲しくない内容がファイルに書き込まれている。  
 そのため、ファイル書き込み先を戻す必要がある。  
+以下、その修正プログラム。
+```perl
+use v5.24;
 
+my @hoge = qw( 本日は 晴天なり。 明日も晴天だ。 );
+
+say "ファイル書き込み開始。";
+sub inputOutput() {
+	if( ! open FILE, '>', shift) {
+		die "書き込めるファイルを引数に渡すこと($!)。"
+	}
+	select FILE;
+	foreach( @hoge ) {
+		say $_;
+	}
+	select STDOUT;	←☆標準出力先を標準の出力先に戻した(変な日本語)。
+}
+&inputOutput(@ARGV);
+say "ファイル書き込み終了。";
+```
+以下、実行結果。
+```terminal
+$ ls abc
+ls: abc: No such file or directory
+$ perl ファイル書き込み.pl abc
+ファイル書き込み開始。
+ファイル書き込み終了。
+$ ls abc
+abc
+$ cat abc	←☆適切な内容でファイルに書き込まれている。
+本日は
+晴天なり。
+明日も晴天だ。
+$
+```
 
 </details>
 
