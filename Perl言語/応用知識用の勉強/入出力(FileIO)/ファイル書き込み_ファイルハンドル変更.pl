@@ -12,6 +12,7 @@ sub asakunoInputOutput() {
 		die "書き込めるファイルを引数に渡すこと($!)。"
 	}
 	select FILE;
+	$| = 1;	# 出力のたびにファイル書き込みをする(ため込まない)。
 	foreach( @asakuno ) {
 		say $_;
 	}

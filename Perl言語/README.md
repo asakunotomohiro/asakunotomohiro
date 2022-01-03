@@ -5105,6 +5105,9 @@ $
 <a name="practicaluseFileoperationfileopenwrite"></a>
 ### ファイルハンドルからのファイル書き込み。
 上記のファイルハンドルを用いて、ファイルに書き込む。  
+
+<details><summary>完成前の勉強プログラム</summary>
+
 以下、プログラム。
 ```perl
 use v5.24;
@@ -5195,7 +5198,7 @@ my @hoge = qw( 本日は 晴天なり。 明日も晴天だ。 );
 
 say "ファイル書き込み開始。";
 sub inputOutput() {
-	if( ! open FILE, '>', shift) {
+	if( ! open FILE, '>>', shift) {
 		die "書き込めるファイルを引数に渡すこと($!)。"
 	}
 	select FILE;
@@ -5217,6 +5220,42 @@ $ perl ファイル書き込み.pl abc
 $ ls abc
 abc
 $ cat abc	←☆適切な内容でファイルに書き込まれている。
+本日は
+晴天なり。
+明日も晴天だ。
+$
+```
+
+</details>
+
+書き込み先の標準先を指定のファイルハンドルに変更し、書き込み時はバッファせずに都度フラッシュを行い、書き込み終了時に標準の出力先を標準の出力先に戻す。  
+そのプログラムが以下になる。
+```perl
+use v5.24;
+
+my @hoge = qw( 本日は 晴天なり。 明日も晴天だ。 );
+
+say "ファイル書き込み開始。";
+sub inputOutput() {
+	if( ! open FILE, '>>', shift) {
+		die "書き込めるファイルを引数に渡すこと($!)。"
+	}
+	select FILE;	# 標準の出力先を指定のファイルハンドルに変更する。
+	$| = 1;	# 出力のたびにファイル書き込みをする(ため込まない)。
+	foreach( @hoge ) {
+		say $_;	# 配列内容を1行づつ書き込む。
+	}
+	select STDOUT;	# 標準の出力先を標準の出力先に戻す。
+}
+&inputOutput(@ARGV);
+say "ファイル書き込み終了。";
+```
+以下、実行結果。
+```terminal
+$ perl ファイル書き込み.pl abc
+ファイル書き込み開始。
+ファイル書き込み終了。
+$ cat abc	←☆書き込み完了。
 本日は
 晴天なり。
 明日も晴天だ。
