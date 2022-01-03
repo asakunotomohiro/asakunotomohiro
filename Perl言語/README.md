@@ -5262,6 +5262,19 @@ $ cat abc	←☆書き込み完了。
 $
 ```
 
+
+<a name="practicaluseFileoperationfileopenerrwrite"></a>
+### 標準エラーをファイルに書き込む。
+標準エラーの出力先をファイルに変更する。  
+```perl
+if( ! open STDERR, '>>', '/home/hoge/.eeor_log') {
+	die "エラーログファイルオープン失敗($!)。";
+}
+```
+これでいいそうだが、どうなる？  
+（検証なし。）  
+
+
 </details>
 
 
