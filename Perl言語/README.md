@@ -4967,8 +4967,8 @@ Perlが必要と判断したときに、自動でファイルハンドルを開�
     ※この場合、改行文字をCRLFに変換するが、既にCRLFの場合は、CRが2個連続してしまうことに注意すること。  
 
 
-<a name="practicaluseFileoperationfilehandleopenFailure"></a>
-#### ファイルハンドルオープン失敗
+<a name="practicaluseFileoperationfilehandleopenFailuredie"></a>
+#### ファイルハンドルオープン失敗die
 ファイルを開けない場合、失敗すると言うより、ファイルハンドルに紐付けられなければ失敗すると解釈したがあっているか？  
 
 以下、プログラム例）
@@ -4990,7 +4990,7 @@ $
 Perlerとしては、以下のやり方を採用した方がいいようだ。
 ```perl
 if( ! open LOG, '<', 'logfile' ) {
-	die "オープン失敗：$!";
+	die "オープン失敗：$!";	←☆dieが実行された場合、ここでプログラムが終了する。
 }
 ```
 処理結果が0の場合は正常と判断し、0以外の場合は以上と判断する特性を活かし、if文に直接書き込むことで、記述量を減らす。  
@@ -5021,6 +5021,26 @@ if( ! open LOG, '<', 'logfile' ) {
 ```terminal
 オープン失敗
 ```
+
+
+<a name="practicaluseFileoperationfilehandleopenFailurewarn"></a>
+#### ファイルハンドルオープン失敗warn
+上記の**die関数**の場合は、そこでプログラムが終了した。  
+しかし、継続したい場合は、warn関数を使うことで、プログラム終了せずに継続処理が行える。  
+
+以下、プログラム例）
+```perl
+if( ! open LOG, '<', 'logfile' ) {
+	warn "オープン失敗：$!";
+}
+say "プログラム継続";
+```
+以下、出力結果(警告メッセージ)。
+```terminal
+オープン失敗：No such file or directory at 無効なファイルハンドルwarn.pl line 12.
+プログラム継続
+```
+
 
 </details>
 
