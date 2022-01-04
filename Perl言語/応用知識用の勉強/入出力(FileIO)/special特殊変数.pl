@@ -5,7 +5,8 @@ use v5.24;
 my $asakuno = "朝来野智博";
 my @asakuno = ("朝来野", "智博");
 
-say "特殊変数について。";
+say "特殊変数について($0)。";
+# 出力結果：特殊変数について(special特殊変数.pl)。
 
 sub asakunoInputOutput() {
 	my $filename = shift;
