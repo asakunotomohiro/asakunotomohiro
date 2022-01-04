@@ -78,6 +78,11 @@ sub asakunoInputOutput() {
 #	}
 	say "オートスプリット配列とは、ユーザ入力から復唱的な？";
 	use v5.24;
+
+	say "以下、DATAファイルハンドル。";
+	while( <DATA> ) {
+		print;
+	}
 }
 &asakunoInputOutput(@ARGV);
 
@@ -88,4 +93,10 @@ print "以上", "(@asakuno)。";
 		# そして、$,も効果がここまで持続している。
 		# そして、$"も効果がここまで持続している。
 print "特殊変数についてのプログラム終了。"
+
+__DATA__
+__END__
+hoge
+bar
+boo
 # vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=perl noexpandtab:
