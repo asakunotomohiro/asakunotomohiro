@@ -5,7 +5,7 @@ use v5.24;
 my $asakuno = "朝来野智博";
 my @asakuno = qw( 朝来野 智博 朝来野智博 );
 
-say "ファイル読み込み。";
+say "ファイル読み込み(裸のワード)。";
 
 sub asakunoInputOutput() {
 	if( ! open FILE, '<', $_[0]) {
@@ -13,7 +13,7 @@ sub asakunoInputOutput() {
 	}
 	while( <FILE> ) {
 		chomp;
-		say $_;
+		say $. . "行目" . "内容：" . $_;	# $.は、行数を示す。
 	}
 }
 &asakunoInputOutput(@ARGV);

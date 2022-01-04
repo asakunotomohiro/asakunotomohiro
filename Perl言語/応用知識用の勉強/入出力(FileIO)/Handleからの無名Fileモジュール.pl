@@ -6,7 +6,7 @@ use IO::File;
 my $asakuno = "朝来野智博";
 my @asakuno = qw( 朝来野 智博 朝来野智博 );
 
-say "ファイル読み込み。";
+say "Handleからの無名Fileモジュール";
 
 sub asakunoInputOutput() {
 	my @file;

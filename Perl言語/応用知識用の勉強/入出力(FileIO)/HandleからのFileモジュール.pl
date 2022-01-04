@@ -6,7 +6,7 @@ use IO::File;
 my $asakuno = "朝来野智博";
 my @asakuno = qw( 朝来野 智博 朝来野智博 );
 
-say "ファイル読み込み。";
+say "HandleからのFileモジュール";
 
 sub asakunoInputOutput() {
 	my $file = IO::File->new( "< $_[0]" )
