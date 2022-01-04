@@ -14,13 +14,15 @@ sub asakunoInputOutput() {
 	while( <$file_fh> ) {
 		chomp;
 		#	以下、$.がファイル読み込みの現在行を示す。
-		say "現在$.行目->内容：$_";
+		print "現在$.行目->内容：$_";
 		#	$/に未設定を設定した場合、改行されずに出力されるのだが、ここで宣言した場合、宣言後から有効になるようだ。
-		$/ = undef;
+		#$/ = undef;
+		#	以下、出力時の区切り文字。
+		$\ = "\n";	# 改行を設定したことで、print関数の末尾が自動的に改行されるようになった。
 	}
 }
 &asakunoInputOutput(@ARGV);
 
-say "以上。";	# 上記の$/は効果が無い。
-say "特殊変数についてのプログラム終了。"
+print "以上。";	# 上記の$/は効果が無い(そう見えるだけか？)。しかし、$\は効果があった。
+print "特殊変数についてのプログラム終了。"
 # vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=perl noexpandtab:
