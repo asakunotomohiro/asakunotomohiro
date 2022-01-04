@@ -74,8 +74,7 @@ $
   * 標準の出力関数：`print`・`printf`・`say`  
     整形関数：[`sprintf`](https://perldoc.jp/func/sprintf)  
   * 標準のフォーマット関数：  
-　　例）`printf`など。  
-　　※必須記入項目ではなく、勉強途中での記載でも可とする。  
+　　例）[`printf`](#practicaluseFileoperation)など。  
   * 単数行コメント方法：`#`  
   * 複数行コメント方法：
     [大きなブロックで囲む方法](https://perldoc.jp/docs/perl/5.10.0/perlfaq7.pod#How32can32I32comment32out32a32large32block32of32perl32code63)⇒
@@ -182,6 +181,11 @@ $
     [x] OSの環境変数  
     [x] OSのシグナル  
   * [ ] [ファイル操作](#practicaluseFileoperation)  
+    [x] 標準入力。  
+    [x] 標準出力。  
+    [x] ファイル読み込み。  
+    [x] ファイル書き込み。  
+    [x] 特殊変数(`$.`・`$/`・`$\`・`$,`・`$"`・`$0`・`$^W`・`$ARGV`・`@ARGV`・`@F`・`DATAファイルハンドル`・本来はまだある)  
   * [ ] [ディレクトリ操作](#practicaluseDirectorymanipulation)  
   * [ ] [オブジェクト指向](#practicaluseObjectorientation)  
     [x] オブジェクト指向入門2021/11/12(読み切っていない)  
@@ -3558,9 +3562,9 @@ say ${$scalarref};	# \$foo     変数
 say @{$arrayref} ;	# \@ARGV    配列
     say $arrayref->[0];	# \@ARGV    配列の1つ目の要素。
     say $arrayref->[1];	# \@ARGV    配列の2つ目の要素。
-say %{$hashref}  ;	# \%ENV     ハッシュ
-    say $hashref->{key1};	# \%ENV     ハッシュのキー1(値を取り出す)。
-    say $hashref->{key2};	# \%ENV     ハッシュのキー2(値を取り出す)。
+say %{$hashref}  ;	# \%HASH     ハッシュ
+    say $hashref->{key1};	# \%HASH     ハッシュのキー1(値を取り出す)。
+    say $hashref->{key2};	# \%HASH     ハッシュのキー2(値を取り出す)。
 say $coderef->();	# \&handler 関数(呼び出し後、変な数字が含まれてしまうのは、リターン結果を実行結果にしているため)。
 say *{$globref}  ;	# \*foo     	←☆個人的には、同名の変数・配列・ハッシュ・関数を1つにまとめることができると思っている。
 ```
@@ -4676,6 +4680,15 @@ $
 say "$ENV{HISTCONTROL}";	# ignoreboth
 ```
 
+以下、ワンライナー実行結果。
+```terminal
+$ perl -E 'say "$ENV{HISTCONTROL}"';
+ignoreboth
+$ perl -E 'say "$ENV{SHELL}"';
+/bin/bash
+$
+```
+
 何に使うのか分からないが、GoでのGUI開発は日本語文字を取得するのに環境変数を利用しているな・・・。  
 
 
@@ -4713,6 +4726,783 @@ for (1..1000000) {
 　　　省略）
 ```
 **760493回目**直後にキー入力を行い、**760500回目**直後に反応した。  
+
+</details>
+
+<a name="practicaluseFileoperation"></a>
+<details><summary>応用知識-ファイル操作(入出力・File-I/O)</summary>
+
+<a name="practicaluseFileoperationinputoutput"></a>
+### [入力と出力](https://perldoc.jp/docs/perl/5.34.0/perlclib.pod)
+標準入力からの入力では、`<STDIN>`を使う。  
+
+以下、1行づつの読み込み例）
+```perl
+while( <STDIN> ) {
+	say "入力行値：$_";
+}
+```
+また、以下でも同じ結果を返す。
+```perl
+foreach( <STDIN> ) {
+	say "入力行値：$_";
+}
+```
+ただし、前半は1行づつの読み込みに対し、後半は全てを読み込み終えてから1行づつ出力する。  
+そのため、メモリを節約するためにも`while`を使うのが吉。  
+何より、さらにショートカットが利用できる。  
+以下は、上記を短くしたプログラム。
+```perl
+while( <<>> ) {
+	chomp;
+	say "入力行値：$_";
+}
+```
+ダブルダイヤモンド演算子を使うことで、標準入力を行う。  
+
+
+
+標準出力からの出力では、`print`を使う。  
+
+以下、出力例）
+```perl
+my @hoge = ("本日は\n", "晴天なり。\n", "マイクの\nテスト中。\n", );
+say "以下、クォートなし。";
+print @hoge;
+		# 本日は
+		# 晴天なり。
+		# マイクの
+		# テスト中。
+say "以下、クォートあり。";
+print "@hoge";
+		# 本日は
+		#  晴天なり。	←☆行頭に意図していないスペースがある。
+		#  マイクの	←☆行頭に意図していないスペースがある。
+		# テスト中。
+```
+後半の出力結果が意図していない理由は、改行が含まれているために起こった現象。  
+ダブルクォーテーションで括る場合、半角スペースを挟むことになる。  
+そのため、2つ目以降の要素を出力するときに、半角スペースを挟んだ後に改行が出力され、文字が出る。  
+そのため、改行前に半角スペースが付いてしまう。  
+解決策は、1つづつの要素出力時に`chomp`で改行を消す必要があること。  
+
+
+以下、Perlの仕様である「関数呼び出しのように見えるものは、関数呼び出しである」が適用されている。  
+そのため、意図していない計算結果になったのがある。
+```perl
+say '(2+3) ==' . (2+3);		# (2+3) ==5
+say '(2+3)*4 ==' . (2+3)*4;	# (2+3)*4 ==20
+say (2+3)*4;				# 5	←☆意図していない結果が出てきた。
+```
+最後のは、`(say (2+3))*4;`と言う意味。  
+
+
+<a name="practicaluseFileoperationprintf"></a>
+### [フォーマット付き出力(printf)](https://perldoc.jp/func/printf)
+
+以下、プログラム例）
+```perl
+use v5.24;
+
+say "以下、%gによる都合良く整形してくれる。";
+printf "%g %g %g\n", 5/2, 51/17, 51 ** 17;	# 2.5 3 1.0683e+29
+
+say "以下、%dによる10進数出力(小数点以下切り捨て)";
+printf "%d %d %d %d\n", 10, 20220102, 2022.0102, -20220102;	# 10 20220102 2022 -20220102
+
+say "以下、%xによる16進数出力";
+printf "%x %x %x %x\n", 10, 20220102, 2022.0102, -20220102;	# a 13488c6 7e6 fffffffffecb773a
+
+say "以下、%oによる8進数出力";
+printf "%o %o %o %o\n", 10, 20220102, 2022.0102, -20220102;	# 12 115104306 3746 1777777777777662673472
+
+say "以下、%fによる小数点出力";
+printf "%f %f %f %f\n", 10, 20220102, 2022.0102, -20220102;	# 10.000000 20220102.000000 2022.010200 -20220102.000000
+printf "%.3f %.3f %.3f %.3f\n", 10, 20220102, 2022.0102, -20220102;	# 10.000 20220102.000 2022.010 -20220102.000
+
+say "以下、%記号の出力";
+printf "%%\n";	# %	←☆%記号を2つ付けるのが正しい%記号表記になる。
+
+say "以下、カラム幅を揃える。";
+printf "%8d\n%8d\n%8d\n%8d\n", 10, 20220102, 2022.0102, -20220102;
+			#      10
+			#20220102
+			#    2022
+			#-20220102
+
+say "以下、文字列出力。";
+printf "[%s]\n[%-10s]\n[%10s]\n", 'hoge', 'hoge', 'hoge';
+			#[hoge]
+			#[hoge   ]
+			#[   hoge]
+printf "[%*s]\n[%*s]\n[%*s]\n", 0, 'hoge', -10, 'hoge', 10, 'hoge';
+			#[hoge]
+			#[hoge   ]
+			#[   hoge]
+```
+
+
+<a name="practicaluseFileoperationarrayprintf"></a>
+#### 配列とprintfの組み合わせ。
+配列に格納されている個数が不明な場合、フォーマット形式を配列個数に合わせて用意することができる。  
+
+以下、例）
+```perl
+use v5.24;
+
+my @hoge = qw( 本日は 晴天なり。 マイクの テスト中。);
+
+my $format = ("%s\n" x @hoge);
+my $count = @hoge;
+print $format;
+			# %s
+			# %s
+			# %s
+			# %s
+say $count;	# 4
+printf $format, @hoge;
+			# 本日は
+			# 晴天なり。
+			# マイクの
+			# テスト中。
+
+printf ">" . $format . "<", @hoge;
+			# >本日は
+			# 晴天なり。
+			# マイクの
+			# テスト中。
+			# <
+say;
+
+my $format = (">%s<\n" x @hoge);
+printf $format, @hoge;
+			# >本日は<
+			# >晴天なり。<
+			# >マイクの<
+			# >テスト中。<
+
+printf ">" . ("%s," x @hoge) . "<\n", @hoge;
+			# >本日は,晴天なり。,マイクの,テスト中。,<
+
+printf (">%s<\n" x @hoge), @hoge;
+			# ><
+			# ><
+			# ><
+			# ><
+
+printf ">%s<\n" x @hoge, @hoge;
+			# >本日は<
+			# >晴天なり。<
+			# >マイクの<
+			# >テスト中。<
+```
+
+
+<a name="practicaluseFileoperationfilehandle"></a>
+### ファイルハンドル
+Perlと外部との結びつき(コネクション)を言う。  
+
+* ファイルハンドル(filehandle)の種類  
+  コネクションであり、ファイルのことではない。  
+  * [裸のワード(bareword)](#practicaluseFileoperationfilehandleopen)  
+    Perl5.6より古い場合に使われるが、それ以降でも使う。  
+    命名規則：英数字とアンダースコアを付ける(先頭は数字以外)。  
+    ※すべて大文字にすることで、将来でてくる予約語とかぶることなく使える。  
+  * [スカラー変数](#practicaluseFileoperationScalarfilehandle)  
+    Perl5.6以降に出来た。  
+  * [リファレンス](#practicaluseFileoperationfilehandlereference)  
+    上記の裸のワードやスカラー変数とは別扱いとする。  
+  * Perl自身が保有する特別なファイルハンドル  
+    以下は、Unix起源が主。  
+    ※ユーザが以下の名前を任意に使えるが、止めた方が良い。  
+    * STDIN  
+      標準入力ストリーム(standart input stream)  
+    * STDOUT  
+      標準出力ストリーム(standard output stream)  
+    * STDERR  
+      標準エラーストリーム(standard error stream)  
+    * DATA  
+    * ARGV  
+    * ARGVOUT  
+
+
+<a name="practicaluseFileoperationfilehandleopen"></a>
+#### ファイルハンドルを開く(裸のワード)。
+Perlが必要と判断したときに、自動でファイルハンドルを開くが、手動で開く場合は、`open`演算子を使う必要がある。  
+
+* `open HOGE, 'boo';`の挙動  
+  **boo**という名前のファイルを**HOGE**というファイルハンドルに紐付ける。  
+  今後のPerlプログラムでは、**HOGE**を通じて**booファイル**をイジれるようになる。  
+
+* `open HOGE, '<boo';`の挙動  
+  上記と紐付けは同じだが、入力用に使うところが今回の挙動になる。  
+  ※ただし、これは、上記と同じ挙動とも言える(デフォルト動作が入力用になっているため)。  
+  また、ファイル名が変数名の場合、変数を展開することになるのだが、変数に特殊記号を埋め込まれていた場合、脆弱を含むことになる。  
+  今後の書き方：`open HOGE, '<', 'boo';`
+
+* `open HOGE, '>boo';`の挙動  
+  上記と紐付けは同じだが、出力用に使うところが今回の挙動になる。  
+  ※既存のファイルの場合は、上書きする。  
+  今後の書き方：`open HOGE, '>', 'boo';`
+
+* `open HOGE, '>>boo';`の挙動  
+  上記と紐付けは同じだが、追記出力用に使うところが今回の挙動になる。  
+  `$bar='outBar.txt'; open HOGE, "> $bar";`  
+  の場合、`>`の直後に半角スペースがある。これは、追加書き込みになる(スペースがない場合新規作成)。  
+  今後の書き方：`open HOGE, '>>', 'boo';`
+
+* エンコーディング(encoding)  
+  文字コードを指定することができる。  
+  * Perlが扱える文字コードの一覧出力プログラム。  
+    `perl -MEncode -le "print for Encode->encodings(':all')"`  
+    Perlで扱えるが、実行環境が用意できなければ使えないことに注意すること。  
+    ※私の環境では、**utf8**と出てきたのだが、以下の指定であっているのか？  
+  * 入力時の指定  
+    `open HOGE, '<:encoding(UTF-8)', 'boo';`
+  * 出力時の指定  
+    `open HOGE, '>:encoding(UTF-8)', 'boo';`
+  * 追記出力時の指定  
+    `open HOGE, '>>:encoding(UTF-8)', 'boo';`
+
+  * ディシプリン(discipline)  
+    古いPerlの場合で、行末変換をしたくない場合に限り、以下の宣言で変換を抑止できる。  
+    `binmode STDOUT;`これは、行末を変換しない(**STDERR**も同じ)。  
+    また、これに文字コードを指定することも可能になった(**v5.6**以降)。  
+    `binmode STDOUT, ':encoding(UTF-8)';`(文字コード指定が必須になった？)  
+    当たり前だが、入力にも使える。  
+    `binmode STDIN, ':encoding(UTF-8)';`
+    ※当時はディシプリンの言葉だったが、レイヤーと改名された。  
+
+* 改行指定  
+  復帰文字：**CR**(`\r`)  
+  改行文字：**LF**(`\n`)  
+  * 出力時の指定  
+    ※入力も同様。  
+    `open HOGE, '>:crlf', $bar;`  
+    ※この場合、改行文字をCRLFに変換するが、既にCRLFの場合は、CRが2個連続してしまうことに注意すること。  
+
+
+<a name="practicaluseFileoperationfilehandleopenFailuredie"></a>
+##### ファイルハンドルオープン失敗die
+ファイルを開けない場合、失敗すると言うより、ファイルハンドルに紐付けられなければ失敗すると解釈したがあっているか？  
+
+以下、プログラム例）
+```perl
+my $success = open LOG, '<', 'logfile';
+if ( ! $success ) {
+    say "open失敗。";
+}
+close LOG;
+```
+
+以下、実行。
+```terminal
+$ perl 無効なファイルハンドル.pl
+open失敗。
+以上。
+$
+```
+
+Perlerとしては、以下のやり方を採用した方がいいようだ。
+```perl
+if( ! open LOG, '<', 'logfile' ) {
+	die "オープン失敗：$!";	←☆dieが実行された場合、ここでプログラムが終了する。
+}
+```
+処理結果が0の場合は正常と判断し、0以外の場合は以上と判断する特性を活かし、if文に直接書き込むことで、記述量を減らす。  
+
+以下、実行。
+```terminal
+オープン失敗：No such file or directory at 無効なファイルハンドル.pl line 16.
+```
+失敗理由は`$!`によって呼び出せるが、これが有効なのはシステムへの要求失敗に限る。  
+また、`$!`がない場合も**die関数**結果には、ファイル名やエラー行数を示してくれる。  
+```perl
+if( ! open LOG, '<', 'logfile' ) {
+	die "オープン失敗：";
+}
+close LOG;
+```
+以下、メッセージ出力結果。
+```terminal
+オープン失敗： at 無効なファイルハンドル.pl line 19.
+```
+この情報を付けたくない場合、メッセージ末尾に改行文字を入れること。  
+以下、そのプログラム。
+```perl
+if( ! open LOG, '<', 'logfile' ) {
+	die "オープン失敗\n";
+}
+close LOG;
+```
+以下、メッセージ出力結果。
+```terminal
+オープン失敗
+```
+
+上記のプログラム作成(条件分岐)がめんどくさい場合、プラグマを使うことで回避できる。  
+以下、プログラム例
+```perl
+use autodie;	←☆プラグマ
+open LOG, '<', 'logfile';	←☆このオープン処理失敗時、dieしてくれる。
+close LOG;
+```
+以下、実行結果。
+```terminal
+Can't open 'logfile' for reading: 'No such file or directory' at 無効なファイルハンドルdie.pl line 12
+```
+もし、このプラグマが無ければ、メッセージは何も出ず、処理が継続されるだろう。  
+そして、意図していない結果になるだろうことが目に浮かぶ。  
+
+以下、併用した場合のプログラム例
+```perl
+use autodie;
+
+my $success = open LOG, '<', 'logfile';
+if ( ! $success ) {
+	say "open失敗。";
+}
+close LOG;
+```
+以下、実行結果。
+```terminal
+Can't open 'logfile' for reading: 'No such file or directory' at 無効なファイルハンドルdie.pl line 12
+```
+任意のメッセージを出すことが出来ないようだ。  
+
+
+<a name="practicaluseFileoperationfilehandleopenFailurewarn"></a>
+##### ファイルハンドルオープン失敗warn
+上記の**die関数**の場合は、そこでプログラムが終了した。  
+しかし、継続したい場合は、warn関数を使うことで、プログラム終了せずに継続処理が行える。  
+
+以下、プログラム例）
+```perl
+if( ! open LOG, '<', 'logfile' ) {
+	warn "オープン失敗：$!";
+}
+say "プログラム継続";
+close LOG;
+```
+以下、出力結果(警告メッセージ)。
+```terminal
+オープン失敗：No such file or directory at 無効なファイルハンドルwarn.pl line 12.
+プログラム継続
+```
+
+
+<a name="practicaluseFileoperationfileopenread"></a>
+#### ファイルハンドルからのファイル読み込み。
+上記のファイルハンドルを用いて、ファイル内容を読み込む。  
+以下、プログラム。
+```perl
+use v5.24;
+
+sub inputOutput() {
+	if( ! open FILE, '<', shift) {
+		die "存在するファイルを引数に渡すこと($!)。"
+	}
+	while( <FILE> ) {
+		chomp;
+		say $_;
+	}
+
+	close FILE;
+}
+&inputOutput(@ARGV);
+```
+
+以下、実行。
+```terminal
+$ perl ファイル読み込み.pl 名称未設定.txt
+テストファイル。
+$ perl ファイル読み込み.pl	←☆引数を渡さなければ、die関数が働くと思ったよ。
+$ perl ファイル読み込み.pl abc	←☆存在しないファイルもしくは開けないファイルを渡したときにdie関数が動く。
+存在するファイルを引数に渡すこと(No such file or directory)。 at ファイル読み込み.pl line 5.
+$
+```
+
+
+<a name="practicaluseFileoperationfileopenwrite"></a>
+#### ファイルハンドルからのファイル書き込み。
+上記のファイルハンドルを用いて、ファイルに書き込む。  
+
+<details><summary>完成前の勉強プログラム</summary>
+
+以下、プログラム。
+```perl
+use v5.24;
+
+my @hoge = qw( 本日は 晴天なり。 明日も晴天だ。 );
+
+say "ファイル書き込み開始。";
+sub inputOutput() {
+	if( ! open FILE, '>>', shift) {
+		die "書き込めるファイルを引数に渡すこと($!)。"
+	}
+	foreach( @hoge ) {
+		say FILE $_;
+	}
+
+	close FILE;
+}
+&inputOutput(@ARGV);
+say "ファイル書き込み終了。";
+```
+以下、実行結果。
+```terminal
+$ ls abc
+ls: abc: No such file or directory
+$ perl ファイル書き込み.pl abc
+ファイル書き込み開始。
+ファイル書き込み終了。
+$ ls abc
+abc
+$ cat abc
+本日は
+晴天なり。
+明日も晴天だ。
+$
+```
+
+当たり前だが、引数を渡さない場合何も起こらない。
+```terminal
+$ ls -1 -t | head -2
+ファイル書き込み.pl
+名称未設定84.txt
+$ perl ファイル書き込み.pl	←☆コマンドライン引数なし。
+ファイル書き込み開始。
+ファイル書き込み終了。
+$ ls -1 -t | head -2
+ファイル書き込み.pl
+名称未設定84.txt
+$
+```
+
+上記の書き込み方法では、ファイルハンドルを指定する必要がある。  
+そのため、**select演算子**を使い、ファイルハンドルを変更する。  
+以下、プログラム例）
+```perl
+use v5.24;
+
+my @hoge = qw( 本日は 晴天なり。 明日も晴天だ。 );
+
+say "ファイル書き込み開始。";
+sub inputOutput() {
+	if( ! open FILE, '>>', shift) {
+		die "書き込めるファイルを引数に渡すこと($!)。"
+	}
+	select FILE;	←☆標準の出力先を任意のファイルハンドルに変更する。
+	foreach( @hoge ) {
+		say $_;	←☆この内容が任意のファイルハンドルに出力される。
+	}
+
+	close FILE;
+}
+&inputOutput(@ARGV);
+say "ファイル書き込み終了。";	←☆上記で書き込み先を変更しているため、これもファイルに書き込まれる。
+```
+以下、実行。
+```terminal
+$ perl ファイル書き込み.pl abc
+ファイル書き込み開始。
+$ cat abc
+本日は
+晴天なり。
+明日も晴天だ。
+ファイル書き込み終了。	←☆これは、ファイルに書き込む内容ではない。
+$
+```
+書き込んで欲しくない内容がファイルに書き込まれている。  
+そのため、ファイル書き込み先を戻す必要がある。  
+以下、その修正プログラム。
+```perl
+use v5.24;
+
+my @hoge = qw( 本日は 晴天なり。 明日も晴天だ。 );
+
+say "ファイル書き込み開始。";
+sub inputOutput() {
+	if( ! open FILE, '>>', shift) {
+		die "書き込めるファイルを引数に渡すこと($!)。"
+	}
+	select FILE;
+	foreach( @hoge ) {
+		say $_;
+	}
+	select STDOUT;	←☆標準出力先を標準の出力先に戻した(変な日本語)。
+
+	close FILE;
+}
+&inputOutput(@ARGV);
+say "ファイル書き込み終了。";
+```
+以下、実行結果。
+```terminal
+$ ls abc
+ls: abc: No such file or directory
+$ perl ファイル書き込み.pl abc
+ファイル書き込み開始。
+ファイル書き込み終了。
+$ ls abc
+abc
+$ cat abc	←☆適切な内容でファイルに書き込まれている。
+本日は
+晴天なり。
+明日も晴天だ。
+$
+```
+
+</details>
+
+書き込み先の標準先を指定のファイルハンドルに変更し、書き込み時はバッファせずに都度フラッシュを行い、書き込み終了時に標準の出力先を標準の出力先に戻す。  
+そのプログラムが以下になる。
+```perl
+use v5.24;
+
+my @hoge = qw( 本日は 晴天なり。 明日も晴天だ。 );
+
+say "ファイル書き込み開始。";
+sub inputOutput() {
+	if( ! open FILE, '>>', shift) {
+		die "書き込めるファイルを引数に渡すこと($!)。"
+	}
+	select FILE;	# 標準の出力先を指定のファイルハンドルに変更する。
+	$| = 1;	# 出力のたびにファイル書き込みをする(ため込まない)。
+	foreach( @hoge ) {
+		say $_;	# 配列内容を1行づつ書き込む。
+	}
+	select STDOUT;	# 標準の出力先を標準の出力先に戻す。
+
+	close FILE;	# ファイルハンドル終了。
+}
+&inputOutput(@ARGV);
+say "ファイル書き込み終了。";
+```
+以下、実行結果。
+```terminal
+$ perl ファイル書き込み.pl abc
+ファイル書き込み開始。
+ファイル書き込み終了。
+$ cat abc	←☆書き込み完了。
+本日は
+晴天なり。
+明日も晴天だ。
+$
+```
+
+
+<a name="practicaluseFileoperationfileopenerrwrite"></a>
+#### 標準エラーをファイルに書き込む。
+標準エラーの出力先をファイルに変更する。  
+```perl
+if( ! open STDERR, '>>', '/home/hoge/.eeor_log') {
+	die "エラーログファイルオープン失敗($!)。";
+}
+```
+これでいいそうだが、どうなる？  
+（検証なし。）  
+
+
+<a name="practicaluseFileoperationScalarfilehandle"></a>
+#### ファイルハンドルを開く(スカラー変数)。
+[裸のワード](#practicaluseFileoperationfilehandleopen)の場合は、ファイルハンドルをそのまま使うことを言う。  
+そして、そうでない使い方は、スカラー変数に入れてから使うことになる。  
+リファレンスを操作すると言うより、ファイルハンドルというリファレンスをスカラー変数に入れて使うという表現が正確なようだ。  
+
+以下、読み込み用プログラム例
+```perl
+use v5.24;
+
+sub inputOutput() {
+	my $file_fh;
+	open $file_fh, '<', $_[0] or die "$_[0]のファイルオープン失敗($!)";
+	say $file_fh;	# GLOB(0x7fea16814188)	←☆リファレンスであることが証明された。
+	# open my $file_fh, '<', $_[0] or die "$_[0]のファイルオープン失敗($!)";	←☆変数宣言を同時に行える。
+	while( <$file_fh> ) {
+		chomp;
+		say $_;
+	}
+	close $file_fh;
+}
+&inputOutput(@ARGV);
+```
+以下、実行結果。
+```terminal
+$ perl ファイル読み込み_スカラー変数利用.pl test.txt
+テストファイル。
+$ cat test.txt
+テストファイル。
+$
+```
+
+
+以下、書き込み用プログラム例
+```perl
+use v5.24;
+
+my @hoge = qw( 本日は 晴天なり。 明日も晴天だ。 );
+
+say "ファイル書き込み開始。";
+sub inputOutput() {
+	open my $file_fh, '>', $_[0]
+		or die "$_[0]のファイルオープン失敗($!)";	←☆ファイル書き込み用にファイルハンドルを変数に代入する。
+	select $file_fh;	←☆書き込み先の設定。
+	foreach( @hoge ) {
+		say;	←☆実際の書き込み。
+	}
+	select STDOUT;	←☆書き込み先を戻す。
+	close $file_fh;
+}
+&inputOutput(@ARGV);
+say "ファイル書き込み終了。";
+```
+以下、実行結果。
+```terminal
+$ ls abc
+ls: abc: No such file or directory
+$ perl ファイル書き込み.pl abc	←☆書き込み実施。
+ファイル書き込み開始。
+ファイル書き込み終了。
+$ cat abc	←☆意図した通りに書き込まれている。
+本日は
+晴天なり。
+明日も晴天だ。
+$
+```
+
+
+<a name="practicaluseFileoperationfilehandlereference"></a>
+#### ファイルハンドルへのリファレンス
+古いPerlプログラムで目にする形式として、リファレンスを使った方法がある。  
+大きなプログラムでは[スカラー変数](#practicaluseFileoperationScalarfilehandle)を使い、簡易的な短いプログラムでは[裸のワード(bareword)](#practicaluseFileoperationfilehandleopen)を使い、リファレンスを使うプログラムは既存の保守で目にするぐらいに留めた方が良いだろう。  
+
+<details><summary>使い方が分からず閉鎖</summary>
+
+以下、使用例にならないプログラム）
+```perl
+use v5.24;
+
+sub inputOutput() {
+	#local *FILE = $_[0];	←☆なくて動くって・・・結局リファレンス利用はどこいった？
+	open (FILE, $_[0]) or die "ファイルオープン失敗($!)";
+	while( <FILE> ) {
+		chomp;
+		say $_;
+	}
+}
+&inputOutput(@ARGV);
+```
+[全く使い方が分からない](https://perldoc.jp/docs/perl/5.8.8/perldata.pod)。  
+
+以下の使い方が正しい？
+```perl
+use v5.24;
+
+sub inputOutput() {
+	open (*FILE, $_[0]) or die "ファイルオープン失敗($!)";	←☆FILE先頭に*記号を付けた。
+	while( <FILE> ) {
+		chomp;
+		say $_;
+	}
+	close *FILE; # アスタリスク記号のないFILEでも問題ないため、正解が分からない。
+}
+&inputOutput(@ARGV);
+```
+しかし、**open**自体がない時代に使われた技法が型グロブ何だよね？  
+open使ったら意味ないというか、、、今回のプログラムにふさわしくない(と言うより、間違っている)。  
+以下のプログラムが動かない理由が分からない。
+```perl
+use v5.24;	←☆削除しても動かないため、バージョンの問題ではないようだ。
+
+sub inputOutput() {
+	local *FILE = $_[0];
+	while( <FILE> ) {
+		chomp;
+		say;
+	}
+	close *FILE;
+}
+&inputOutput(@ARGV);
+```
+
+</details>
+
+
+<a name="practicaluseFileoperationfilehandlereference"></a>
+### IO::Handle
+**IO::Handle**を基底とした派生クラスのモジュールを使うことで使い勝手が向上するそうだ。  
+
+* 派生クラスのモジュール  
+  * IO::File  
+    ファイル操作用モジュール。  
+  * IO::Scalar  
+    文字列内に出力を組み立てる外部モジュール。  
+    ※インストールが必要。  
+  * IO::Tee  
+    複数の場所に同時出力(入力も可)を行う外部モジュール。  
+    ※インストールが必要。  
+
+
+<a name="practicaluseFileoperationSpecialvariables"></a>
+### 特殊変数
+一般的に変更不要だが、どうしても変更する場合は、処理終了後に戻すこと。  
+また、通常は変更しないため、他のプログラムに影響しないように使うこと。  
+
+* 種類。  
+  * `$.`  
+    読み取り時に、現在の行番号を保持する。  
+  * `$/`  
+    入力時の区切り文字を設定している。  
+  * `$\`  
+    出力時の区切り文字を設定している。  
+  * `$,`  
+    出力時の区切り文字を設定している。  
+    上記`$\`とは当然違う箇所の区切り文字なので気をつけること。  
+  * `$"`  
+    リストの区切り文字(ダブルクォート文字列で囲まれたリスト表示に影響する)。  
+  * `$0`  
+    現在のプログラム名。  
+  * `$^W`  
+    警告スイッチ(`-w`)の現在の値。  
+    設定により、オン／オフを切り替えられる。  
+  * `$ARGV`  
+    <ARGV>から読み込まれる現在のファイル。  
+  * `@ARGV`  
+    コマンドライン引数。  
+  * `@F`  
+    オートスプリット配列というものだが、それが何か分からない。  
+  * `DATAファイルハンドル`  
+    同じファイル内に記述した文字列を**__END__**になるまで読み込む。  
+
+
+#### DATAファイルハンドル
+一部のファイル読み取り処理の動作確認用に、同じファイル内にファイル内容を記載しておき、それを読み取るという仕組み。  
+
+以下、プログラム例）
+```perl
+sub datafilehandle() {
+	while( <DATA> ) {
+		print;
+	}
+}
+&datafilehandle(@ARGV);
+
+__END__	←☆mainパッケージでない場合、エラーになるため、そのときは__DATA__を使う。
+テスト用
+	ファイルハンドル
+読み取れているか？
+```
+
+以下、実行結果。
+```terminal
+$ perl special.pl
+テスト用
+	ファイルハンドル
+読み取れているか？
+$
+```
+この技法は今後活用していこうと思う。  
 
 </details>
 
