@@ -1,7 +1,7 @@
 package perlStudyInputOutput;
 $VERSION = "0.003";
 use v5.24;
-#use IO::Tee;	←☆これもインストールが必要なようだ。
+use IO::Tee;	←☆これもインストールが必要なようだ。
 #	Can't locate IO/Tee.pm in @INC (you may need to install the IO::Tee module) (@INC contains: . ) at HandleからのTeeモジュール.pl line 4.
 #	BEGIN failed--compilation aborted at HandleからのTeeモジュール.pl line 4.
 
@@ -45,7 +45,11 @@ sub asakunoInputOutput() {
 	open my $scalar_fh, '>>', \$asakuno;
 
 	$tee_fh = IO::Tee->new( $test_fh, $scalar_fh );
+		# これは、インストールしなければ使えず、今のままではエラーになる。
 	print $tee_fh "テスト出力。";
+
+	$test_fh->close;
+	$scalar_fh->close;
 }
 &asakunoInputOutput(@ARGV);
 

@@ -19,6 +19,8 @@ sub asakunoInputOutput() {
 		say $_;
 	}
 #	say FILE @_;
+	#close FILE;
+	close *FILE;	# 上記どちらでもエラーにならず正常終了した。
 }
 &asakunoInputOutput(@ARGV);
 

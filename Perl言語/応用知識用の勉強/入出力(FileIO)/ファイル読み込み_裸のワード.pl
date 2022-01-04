@@ -15,6 +15,7 @@ sub asakunoInputOutput() {
 		chomp;
 		say $. . "行目" . "内容：" . $_;	# $.は、行数を示す。
 	}
+	close FILE;
 }
 &asakunoInputOutput(@ARGV);
 

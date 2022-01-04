@@ -37,6 +37,9 @@ sub asakunoInputOutput() {
 				chomp;
 				say;
 			}
+
+			#close $file;	# IO::Fileを使って開いたのに、終了方法はこれでいいのか？
+			$file->close;	# これで問題ない？
 		}
 	}
 

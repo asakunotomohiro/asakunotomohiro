@@ -14,6 +14,8 @@ sub asakunoInputOutput() {
 	foreach( @asakuno ) {
 		say FILE $_;
 	}
+
+	close FILE;	# ファイルハンドル終了。
 }
 &asakunoInputOutput(@ARGV);
 

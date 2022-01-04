@@ -21,6 +21,8 @@ sub asakunoInputOutput() {
 			# syntax error at ファイル書き込み_スカラー変数利用.pl line 20, near "};"
 			# Execution of ファイル書き込み_スカラー変数利用.pl aborted due to compilation errors.
 	}
+
+	close $file_fh;
 }
 &asakunoInputOutput(@ARGV);
 

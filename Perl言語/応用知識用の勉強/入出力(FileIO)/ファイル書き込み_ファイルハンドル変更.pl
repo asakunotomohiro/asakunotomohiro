@@ -17,6 +17,8 @@ sub asakunoInputOutput() {
 		say $_;
 	}
 	select STDOUT;
+
+	close FILE;
 }
 &asakunoInputOutput(@ARGV);
 

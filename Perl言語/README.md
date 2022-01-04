@@ -4990,6 +4990,7 @@ my $success = open LOG, '<', 'logfile';
 if ( ! $success ) {
     say "open失敗。";
 }
+close LOG;
 ```
 
 以下、実行。
@@ -5018,6 +5019,7 @@ if( ! open LOG, '<', 'logfile' ) {
 if( ! open LOG, '<', 'logfile' ) {
 	die "オープン失敗：";
 }
+close LOG;
 ```
 以下、メッセージ出力結果。
 ```terminal
@@ -5029,6 +5031,7 @@ if( ! open LOG, '<', 'logfile' ) {
 if( ! open LOG, '<', 'logfile' ) {
 	die "オープン失敗\n";
 }
+close LOG;
 ```
 以下、メッセージ出力結果。
 ```terminal
@@ -5040,6 +5043,7 @@ if( ! open LOG, '<', 'logfile' ) {
 ```perl
 use autodie;	←☆プラグマ
 open LOG, '<', 'logfile';	←☆このオープン処理失敗時、dieしてくれる。
+close LOG;
 ```
 以下、実行結果。
 ```terminal
@@ -5056,6 +5060,7 @@ my $success = open LOG, '<', 'logfile';
 if ( ! $success ) {
 	say "open失敗。";
 }
+close LOG;
 ```
 以下、実行結果。
 ```terminal
@@ -5075,6 +5080,7 @@ if( ! open LOG, '<', 'logfile' ) {
 	warn "オープン失敗：$!";
 }
 say "プログラム継続";
+close LOG;
 ```
 以下、出力結果(警告メッセージ)。
 ```terminal
@@ -5098,6 +5104,8 @@ sub inputOutput() {
 		chomp;
 		say $_;
 	}
+
+	close FILE;
 }
 &inputOutput(@ARGV);
 ```
@@ -5133,6 +5141,8 @@ sub inputOutput() {
 	foreach( @hoge ) {
 		say FILE $_;
 	}
+
+	close FILE;
 }
 &inputOutput(@ARGV);
 say "ファイル書き込み終了。";
@@ -5184,6 +5194,8 @@ sub inputOutput() {
 	foreach( @hoge ) {
 		say $_;	←☆この内容が任意のファイルハンドルに出力される。
 	}
+
+	close FILE;
 }
 &inputOutput(@ARGV);
 say "ファイル書き込み終了。";	←☆上記で書き込み先を変更しているため、これもファイルに書き込まれる。
@@ -5217,6 +5229,8 @@ sub inputOutput() {
 		say $_;
 	}
 	select STDOUT;	←☆標準出力先を標準の出力先に戻した(変な日本語)。
+
+	close FILE;
 }
 &inputOutput(@ARGV);
 say "ファイル書き込み終了。";
@@ -5257,6 +5271,8 @@ sub inputOutput() {
 		say $_;	# 配列内容を1行づつ書き込む。
 	}
 	select STDOUT;	# 標準の出力先を標準の出力先に戻す。
+
+	close FILE;	# ファイルハンドル終了。
 }
 &inputOutput(@ARGV);
 say "ファイル書き込み終了。";
@@ -5304,6 +5320,7 @@ sub inputOutput() {
 		chomp;
 		say $_;
 	}
+	close $file_fh;
 }
 &inputOutput(@ARGV);
 ```
@@ -5334,6 +5351,7 @@ sub inputOutput() {
 		say;	←☆実際の書き込み。
 	}
 	select STDOUT;	←☆書き込み先を戻す。
+	close $file_fh;
 }
 &inputOutput(@ARGV);
 say "ファイル書き込み終了。";
@@ -5384,6 +5402,7 @@ sub inputOutput() {
 		chomp;
 		say $_;
 	}
+	close *FILE; # アスタリスク記号のないFILEでも問題ないため、正解が分からない。
 }
 &inputOutput(@ARGV);
 ```
@@ -5399,6 +5418,7 @@ sub inputOutput() {
 		chomp;
 		say;
 	}
+	close *FILE;
 }
 &inputOutput(@ARGV);
 ```
