@@ -3561,9 +3561,9 @@ say ${$scalarref};	# \$foo     変数
 say @{$arrayref} ;	# \@ARGV    配列
     say $arrayref->[0];	# \@ARGV    配列の1つ目の要素。
     say $arrayref->[1];	# \@ARGV    配列の2つ目の要素。
-say %{$hashref}  ;	# \%ENV     ハッシュ
-    say $hashref->{key1};	# \%ENV     ハッシュのキー1(値を取り出す)。
-    say $hashref->{key2};	# \%ENV     ハッシュのキー2(値を取り出す)。
+say %{$hashref}  ;	# \%HASH     ハッシュ
+    say $hashref->{key1};	# \%HASH     ハッシュのキー1(値を取り出す)。
+    say $hashref->{key2};	# \%HASH     ハッシュのキー2(値を取り出す)。
 say $coderef->();	# \&handler 関数(呼び出し後、変な数字が含まれてしまうのは、リターン結果を実行結果にしているため)。
 say *{$globref}  ;	# \*foo     	←☆個人的には、同名の変数・配列・ハッシュ・関数を1つにまとめることができると思っている。
 ```
@@ -4677,6 +4677,15 @@ $
 以下、取得できている。
 ```perl
 say "$ENV{HISTCONTROL}";	# ignoreboth
+```
+
+以下、ワンライナー実行結果。
+```terminal
+$ perl -E 'say "$ENV{HISTCONTROL}"';
+ignoreboth
+$ perl -E 'say "$ENV{SHELL}"';
+/bin/bash
+$
 ```
 
 何に使うのか分からないが、GoでのGUI開発は日本語文字を取得するのに環境変数を利用しているな・・・。  
