@@ -35,6 +35,49 @@ sub asakunoInputOutput() {
 	say (20220104, 20220105);	# 2022010420220105
 	say "(20220104, 20220105)";	# (20220104, 20220105)
 	say "-" x 30;
+#	say "以下、オートスプリット配列(利用前)。";
+#	my $tomohiro = "asakuno tomohiro 朝来野 智博";
+#	my @tomohiro = split(/ /, $tomohiro);
+#	foreach my $value ( @tomohiro ) {
+#		say $value;
+#		#say @F;	err
+#	}
+## 以下、出力結果。
+##			asakuno
+##			tomohiro
+##			朝来野
+##			智博
+#	say "以下、オートスプリット配列(利用後)。";
+#	use v5.10;
+#	my $tomohiro = "asakuno tomohiro 朝来野 智博";
+#	my @tomohiro = split(/ /, $tomohiro);
+#	foreach my $value ( @tomohiro ) {
+#		@F = split ' ', $value;
+#		say pop(@F);
+#	}
+#	use v5.24;
+#	say "-" x 30;
+	say "以下、オートスプリット配列(利用前)。";
+	open $_, '<', $filename or die "$filenameのファイルオープン失敗($!)";
+	while( <> ) {
+#		@F = split(' ');
+#		say pop(@F);
+		say;
+	}
+	say "以下、オートスプリット配列(利用後)。";
+	use v5.10;
+#	open my $file_fh, '<', $filename or die "$filenameのファイルオープン失敗($!)";
+#	while( <$file_fh> ) {
+#		@F = split(' ', $file_fh);
+#		say pop(@F);
+#	}
+#	open $_, '<', $filename or die "$filenameのファイルオープン失敗($!)";
+#	while( <> ) {
+#		@F = split(' ', $_);
+#		say pop(@F);
+#	}
+	say "オートスプリット配列とは、ユーザ入力から復唱的な？";
+	use v5.24;
 }
 &asakunoInputOutput(@ARGV);
 
