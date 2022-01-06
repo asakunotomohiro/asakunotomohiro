@@ -1287,7 +1287,7 @@ int hogefunc(int hoge[], int size) {
   例えば、配列利用の関数定義・繰り返し・再帰関数・条件分岐など。  
   以下、各項目(目次)。  
   [x] [平均値を求める。](#findTheAverageValueChapter2)2021/09/28  
-  [ ] [1からnまで足し合わせる。](#addFrom1tonChapter2)  
+  [x] [1からnまで足し合わせる。](#addFrom1tonChapter2)2022/01/06  
   [ ] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
   [ ] [素数を求める。](#findAPrimeNumberChapter2)  
   [ ] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
@@ -1410,6 +1410,39 @@ int main(void)
 
 <a name="addFrom1tonChapter2"></a>
 #### 1からnまで足し合わせる。
+勉強内容はPythonと基本は同じ。  
+それをC用に移植するだけのこと。  
+
+* ルール1もPythonと同じ。  
+  * `for`を用いる。  
+  * 関数は定義しない・・・無理だよね。  
+    関数で使い回すわけではないので、由としよう。  
+
+```c
+#include <stdio.h>
+
+int addup1()
+{
+	int total = 0;
+	for( int ii = 1; ii < 10; ii++ ) {
+		total += ii;
+	}
+
+	return total;
+}
+
+int main(void)
+{
+	int ret = addup1();
+	printf("1から10までの加算結果：%d\n", ret);
+		// 1から10までの加算結果：45
+
+	return 0;
+}
+```
+数ヶ月ぶりのC言語を触ったのだが、何も見せずに作れたよ。  
+知識があったからではなく、体が覚えていたのだろう。  
+
 
 <a name="outputTheMultiplicationTableChapter2"></a>
 #### 九九の式を出力する。
