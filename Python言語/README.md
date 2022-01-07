@@ -1305,6 +1305,7 @@ Hello World(引数あり-戻り値あり).
   [x] [リスト](#listChapter3)2021/12/04  
   [x] [木](#woodChapter3)2021/12/29  
   [x] [グラフ](#graphChapter3)2022/01/02  
+  [x] [スタックとキューを扱う。](#stacksAndQueuesChapter3)2022/01/07  
   [ ] [データを保存する。](#saveTheDataChapter3)  
 <a name="algorithmTextbookLearnedinPythonChapter4"></a>
 * [Chapter4 サーチ](#searchOverviewChapter4)  
@@ -2581,8 +2582,64 @@ main()
 ```
 
 
+<a name="stacksAndQueuesChapter3"></a>
+#### スタックとキューを扱う(Pythonモジュール)。
+Pythonに最初から備わっているモジュールに、[**queuemモジュール**](https://docs.python.org/ja/3/library/queue.html)がある。  
+
+以下、プログラム。
+```python
+import queue
+
+
+# 以下、キュー用関数
+def que():
+    print("キュー開始")
+    que = queue.Queue()
+    for ii in range(MAX):
+        que.put(ii)
+    for ii in range(MAX):
+        print(que.get(), end="⇒")
+    print("\n")
+
+
+# 以下、スタック用関数
+def sta():
+    print("スタック開始")
+    sta = queue.LifoQueue()
+    for ii in range(MAX):
+        sta.put(ii)
+    for ii in range(MAX):
+        print(sta.get(), end="⇒")
+    print("\n")
+
+
+# 以下、プログラム
+def main():
+    print("以下、キュー用関数呼び出し。")
+    que()
+    print("以下、スタック用関数呼び出し。")
+    sta()
+
+
+main()
+```
+
+以下、出力結果。
+```terminal
+以下、キュー用関数呼び出し。
+キュー開始
+0⇒1⇒2⇒3⇒4⇒5⇒6⇒7⇒8⇒9⇒
+
+以下、スタック用関数呼び出し。
+スタック開始
+9⇒8⇒7⇒6⇒5⇒4⇒3⇒2⇒1⇒0⇒
+```
+ちょっとだけ矢印が見にくいな。  
+
+
 <a name="saveTheDataChapter3"></a>
 #### データを保存する。
+
 
 <a name="searchOverviewChapter4"></a>
 ### サーチ
