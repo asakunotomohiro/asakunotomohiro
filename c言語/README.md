@@ -1424,7 +1424,7 @@ int main(void)
 int addup1()
 {
 	int total = 0;
-	for( int ii = 1; ii < 10; ii++ ) {
+	for( int ii = 1; ii <= 10; ii++ ) {
 		total += ii;
 	}
 
@@ -1435,7 +1435,7 @@ int main(void)
 {
 	int ret = addup1();
 	printf("1から10までの加算結果：%d\n", ret);
-		// 1から10までの加算結果：45
+		// 1から10までの加算結果：55
 
 	return 0;
 }

@@ -3,7 +3,7 @@
 int addup1()
 {
 	int total = 0;
-	for( int ii = 1; ii < 10; ii++ ) {
+	for( int ii = 1; ii <= 10; ii++ ) {
 		total += ii;
 	}
 
@@ -27,6 +27,13 @@ int addup3(int num)
 	return total;
 }
 
+int addupOthers(int start, int end)
+{
+	int total = (start + end) * end / 2;
+
+	return total;
+}
+
 int main(void)
 {
 	int ret = addup1();
@@ -37,6 +44,9 @@ int main(void)
 
 	ret = addup3(10);
 	printf("工夫した加算結果：%d\n", ret);
+
+	ret = addupOthers(1, 10);
+	printf("その他の加算結果：%d\n", ret);
 
 	return 0;
 }
