@@ -20,6 +20,13 @@ int addup2(int num)
 	return total;
 }
 
+int addup3(int num)
+{
+	int total = (1 + num) * num / 2;
+
+	return total;
+}
+
 int main(void)
 {
 	int ret = addup1();
@@ -27,6 +34,9 @@ int main(void)
 
 	ret = addup2(10);
 	printf("1からnまでの加算結果：%d\n", ret);
+
+	ret = addup3(10);
+	printf("工夫した加算結果：%d\n", ret);
 
 	return 0;
 }

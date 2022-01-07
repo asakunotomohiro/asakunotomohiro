@@ -1472,6 +1472,30 @@ int main(void)
 ```
 何のひねりもないプログラムになった。  
 
+* ルール3もPythonと同じ。  
+  * 工夫して計算する。  
+  * (初めの数+終わりの数)*(足し合わせる個数/2)  
+
+```c
+#include <stdio.h>
+
+int addup3(int num)
+{
+	int total = (1 + num) * num / 2;
+
+	return total;
+}
+
+int main(void)
+{
+	int ret = addup3(10);
+	printf("工夫した加算結果：%d\n", ret);
+		// 工夫した加算結果：55
+
+	return 0;
+}
+```
+
 
 <a name="outputTheMultiplicationTableChapter2"></a>
 #### 九九の式を出力する。
