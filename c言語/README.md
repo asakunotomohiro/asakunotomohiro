@@ -1287,7 +1287,7 @@ int hogefunc(int hoge[], int size) {
   例えば、配列利用の関数定義・繰り返し・再帰関数・条件分岐など。  
   以下、各項目(目次)。  
   [x] [平均値を求める。](#findTheAverageValueChapter2)2021/09/28  
-  [ ] [1からnまで足し合わせる。](#addFrom1tonChapter2)  
+  [x] [1からnまで足し合わせる。](#addFrom1tonChapter2)2022/01/07  
   [ ] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
   [ ] [素数を求める。](#findAPrimeNumberChapter2)  
   [ ] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
@@ -1410,6 +1410,99 @@ int main(void)
 
 <a name="addFrom1tonChapter2"></a>
 #### 1からnまで足し合わせる。
+勉強内容はPythonと基本は同じ。  
+それをC用に移植するだけのこと。  
+
+<details><summary>展開</summary>
+
+* ルール1もPythonと同じ。  
+  * `for`を用いる。  
+  * 関数は定義しない。  
+    私のルールは、必ず関数定義をすると言うことなので、ここだけ無視する。  
+
+以下、ルール1のプログラム。
+```c
+#include <stdio.h>
+
+int addup1()
+{
+	int total = 0;
+	for( int ii = 1; ii <= 10; ii++ ) {
+		total += ii;
+	}
+
+	return total;
+}
+
+int main(void)
+{
+	int ret = addup1();
+	printf("1から10までの加算結果：%d\n", ret);
+		// 1から10までの加算結果：55
+
+	return 0;
+}
+```
+数ヶ月ぶりのC言語を触ったのだが、何も見せずに作れたよ。  
+知識があったからではなく、体が覚えていたのだろう。  
+
+* ルール2もPythonと同じ。  
+  * nまでの値を関数の引数で受け取る。  
+  * 関数内で合算した結果をreturnで返す。  
+    あぁルール1でやったことだよ・・・。  
+
+以下、ルール2のプログラム。
+```c
+#include <stdio.h>
+
+int addup2(int num)
+{
+	int total = 0;
+	for( int ii = 1; ii <= num; ii++ ) {
+		total += ii;
+	}
+
+	return total;
+}
+
+int main(void)
+{
+	int ret = addup2(10);
+	printf("1からnまでの加算結果：%d\n", ret);
+		// 1からnまでの加算結果：55
+
+	return 0;
+}
+```
+何のひねりもないプログラムになった。  
+
+* ルール3もPythonと同じ。  
+  * 工夫して計算する。  
+  * (初めの数+終わりの数)*(足し合わせる個数/2)  
+
+以下、ルール3のプログラム。
+```c
+#include <stdio.h>
+
+int addup3(int num)
+{
+	int total = (1 + num) * num / 2;
+
+	return total;
+}
+
+int main(void)
+{
+	int ret = addup3(10);
+	printf("工夫した加算結果：%d\n", ret);
+		// 工夫した加算結果：55
+
+	return 0;
+}
+```
+
+</details>
+
 
 <a name="outputTheMultiplicationTableChapter2"></a>
 #### 九九の式を出力する。
