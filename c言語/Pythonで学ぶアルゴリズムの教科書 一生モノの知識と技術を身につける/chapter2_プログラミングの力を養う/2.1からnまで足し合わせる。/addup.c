@@ -10,10 +10,23 @@ int addup1()
 	return total;
 }
 
+int addup2(int num)
+{
+	int total = 0;
+	for( int ii = 1; ii <= num; ii++ ) {
+		total += ii;
+	}
+
+	return total;
+}
+
 int main(void)
 {
 	int ret = addup1();
 	printf("1から10までの加算結果：%d\n", ret);
+
+	ret = addup2(10);
+	printf("1からnまでの加算結果：%d\n", ret);
 
 	return 0;
 }
