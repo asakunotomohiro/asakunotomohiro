@@ -5522,6 +5522,19 @@ $
 </details>
 
 
+<a name="practicaluseDirectorymanipulation"></a>
+<details><summary>応用知識-ディレクトリ操作(入出力・File-I/O)</summary>
+
+<a name="practicaluseDirectorymanipulationDirectory"></a>
+### [ディレクトリ](https://perldoc.jp/docs/perl/5.22.1/perlport.pod)
+移植性のあるプログラムを作成するにあたり、ファイルとファイルシステムについて考えておく必要がある。  
+その中のひとつに、ディレクトリ名・ディレクトリのPath・ディレクトリへの権限・ホームディレクトリなどを考慮しておく必要がある。  
+今回は、そんな大それた話ではない。  
+
+
+</details>
+
+
 <a name="practicalusePackages"></a>
 <details><summary>応用知識-パッケージ</summary>
 
