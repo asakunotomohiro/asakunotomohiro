@@ -187,6 +187,7 @@ $
     [x] ファイル書き込み。  
     [x] 特殊変数(`$.`・`$/`・`$\`・`$,`・`$"`・`$0`・`$^W`・`$ARGV`・`@ARGV`・`@F`・`DATAファイルハンドル`・本来はまだある)  
   * [ ] [ディレクトリ操作](#practicaluseDirectorymanipulation)  
+    [x] カレントディレクトリ取得。  
   * [ ] [オブジェクト指向](#practicaluseObjectorientation)  
     [x] オブジェクト指向入門2021/11/12(読み切っていない)  
         * [オブジェクト指向入門](#objectorientedPerl4894713004one)を読み直す(要は全般)。  
@@ -5530,7 +5531,26 @@ $
 移植性のあるプログラムを作成するにあたり、ファイルとファイルシステムについて考えておく必要がある。  
 その中のひとつに、ディレクトリ名・ディレクトリのPath・ディレクトリへの権限・ホームディレクトリなどを考慮しておく必要がある。  
 今回は、そんな大それた話ではない。  
+以下、普通にディレクトリに特化した話をしていく。  
 
+
+<a name="practicaluseDirectorymanipulationDirectorycurrent"></a>
+### カレントディレクトリ
+現在のディレクトリを取得する。  
+以下、プログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub inputOutput() {
+	say getcwd();
+		# /Users/asakunotomohiro/study勉強用Githubリポジトリ/Perl言語
+}
+&inputOutput();
+```
+カレントディレクトリを表示した。  
+これだけでは寂しい。  
+しかし、わざわざモジュールを呼び出す必要があるのはめんどくさい。  
 
 </details>
 
