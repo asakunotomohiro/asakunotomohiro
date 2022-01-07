@@ -1681,6 +1681,7 @@ Perlでオブジェクト指向開発ができるだけでなく、そのやり�
   [x] [リスト](#listChapter3)2021/12/04  
   [x] [木](#woodChapter3)2021/12/26  
   [x] [グラフ](#graphChapter3)2022/01/02  
+  [x] [スタックとキューを扱う。](#stacksAndQueuesChapter3)2022/01/07  
   [ ] [データを保存する。](#saveTheDataChapter3)  
 <a name="algorithmTextbookLearnedinPythonChapter4"></a>
 * [Chapter4 サーチ](#searchOverviewChapter4)  
@@ -2777,6 +2778,20 @@ sub main() {
 (2)<--(4)
 (3)<->(4)
 ```
+
+
+<a name="stacksAndQueuesChapter3"></a>
+#### スタックとキューを扱う。
+ここは、Python限定と言えるぐらいPythonモジュールを利用した箇所になる。  
+PythonモジュールがあるぐらいだからPerlモジュールにもキューの名前がついたのはある。  
+
+[Thread::Queue - スレッドセーフなキュー（待ち行列）](https://perldoc.jp/docs/modules/Thread-2.00/Thread/Queue.pod)
+や、
+[キュー: データの受け渡し](https://perldoc.jp/docs/perl/5.16.1/perlthrtut.pod#Queues:32Passing32Data32Around)
+の2カ所で説明している(2つ目のは1つ目のを詳細にしたのかな？)。  
+
+名前から判断するならば、スレッドに関係していることが予想できるため、ここでは取り扱わないことにした。  
+全く別の勉強範囲に手を出す必要があるため、アルゴリズムの勉強から遠ざかってしまう。  
 
 
 <a name="saveTheDataChapter3"></a>
