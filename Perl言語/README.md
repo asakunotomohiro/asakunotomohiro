@@ -5640,6 +5640,49 @@ Perl5.6以前のバージョンは、`/bin/csh`を呼び出していたため、
 cshを呼び出していないと言うこと？  
 呼び出しているが、処理が早くなったと言うこと？  
 
+以下、別のグロブの書き方プログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub inputOutputGlob() {
+	my @plfile = <*.pl>;
+	say "@plfile";	# helloWorld.pl version.pl
+
+	@plfile = glob <*.pl *.md>;	# この書き方は間違い。
+	say "@plfile";	# helloWorld.pl
+
+	@plfile = <*.pl *.md>;
+	say "@plfile";	# helloWorld.pl version.pl 環境構築(インストール).md README.md
+
+	@plfile = <*>;
+	say "@plfile";	# 基礎知識用の勉強 応用知識用の勉強 環境構築(インストール).md helloWorld.pl Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける README.md version.pl
+
+	my $period = './';
+	@plfile = <$period>;	# この書き方は間違い(ファイルハンドル扱いになっている)。
+	say "@plfile";	# . .. .DS_Store .README.md.swp
+
+	my $period = '.';
+	@plfile = <$period/.*>;
+	say "@plfile";	# . .. .DS_Store .README.md.swp
+
+	$currentDir = getcwd();
+	@plfile = <$currentDir/.*>;
+	#say "@plfile";	# フルPathで出力される。
+	foreach my $file (@plfile) {
+		say $file;
+			# /Users/asakunotomohiro/study勉強用Githubリポジトリ/Perl言語/.
+			# /Users/asakunotomohiro/study勉強用Githubリポジトリ/Perl言語/..
+			# /Users/asakunotomohiro/study勉強用Githubリポジトリ/Perl言語/.DS_Store
+			# /Users/asakunotomohiro/study勉強用Githubリポジトリ/Perl言語/.README.md.swp
+	}
+}
+&inputOutputGlob();
+```
+今回は、glob演算子を使わず、レガシー(遺物)表記を用いた。  
+そして、この表記のほうが一般的らしい。  
+※レガシー表記は、[ファイルハンドル](#practicaluseFileoperationfilehandle)と勘違いされるため、気をつけて使うこと。  
+
 </details>
 
 
