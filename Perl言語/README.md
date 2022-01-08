@@ -189,6 +189,7 @@ $
   * [ ] [ディレクトリ操作](#practicaluseDirectorymanipulation)  
     [x] カレントディレクトリ取得。  
     [x] ディレクトリ移動。  
+    [x] グロブ  
   * [ ] [オブジェクト指向](#practicaluseObjectorientation)  
     [x] オブジェクト指向入門2021/11/12(読み切っていない)  
         * [オブジェクト指向入門](#objectorientedPerl4894713004one)を読み直す(要は全般)。  
@@ -5571,6 +5572,29 @@ say getcwd();	# /Users/asakunotomohiro/study勉強用Githubリポジトリ/Perl�
 カレントディレクトリから移動した場合に関係なく、Perlプログラムを抜け出たときのカレントディレクトリは移動していない。  
 そして、引数を渡さない場合、極力ホームディレクトリに移動する(Windowsの場合、失敗する)。  
 
+<a name="practicaluseDirectorymanipulationDirectoryglob"></a>
+### グロブ(globbing)
+グロブとは、ファイル名パターンをマッチするファイル名に展開すること(正規表現ではない)。  
+
+※[型グロブ](#practicaluseTypeglob)は別で説明している。  
+※[正規表現](#practicaluseRegularexpression)は別で説明している(グロブでのマッチと正規表現でのマッチは意味が異なる)。  
+
+以下、シェルのグロブ。
+```terminal
+$ ll
+total 552
+-rw-r--r--   1 asakunotomohiro  staff  261903  1  8 13:41 README.md
+drwxr-xr-x  15 asakunotomohiro  staff     480  1  7 18:03 応用知識用の勉強/
+-rw-r--r--   1 asakunotomohiro  staff   10153  1  7 17:54 環境構築(インストール).md
+drwxr-xr-x   7 asakunotomohiro  staff     224  1  7 17:54 基礎知識用の勉強/
+-rwxr-xr-x   1 asakunotomohiro  staff     132  1  7 17:54 version.pl*	←☆これを表示したい。
+-rwxr-xr-x   1 asakunotomohiro  staff     160  1  7 17:54 helloWorld.pl*	←☆これを表示したい。
+drwxr-xr-x   9 asakunotomohiro  staff     288  1  7 17:54 Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける/
+$ ls *pl	←☆グロブを用いたファイル表示。
+helloWorld.pl	version.pl
+$
+```
+
 </details>
 
 
@@ -5859,6 +5883,9 @@ say $func->(5);	# 20211212+111+5
 <a name="practicaluseTypeglob"></a>
 <details><summary>応用知識-型グロブ</summary>
 
+※通常の[グロブ](#practicaluseDirectorymanipulationDirectoryglob)は、ディレクトリ操作(#practicaluseDirectorymanipulationDirectorycurrent)で説明している。  
+
+
 数時間調べたが、結局[型グロブ](https://perldoc.jp/docs/perl/5.8.8/perldata.pod)が何か分からなかった。  
 書籍の中で、`FILE`と言う文言に対して、`$FILE`・`@FILE`・`%FILE`・`&FILE`の説明をしているが、**FILE**に限定されていると言うことか？  
 もしくは、FILEが固有変数で、好きに割り当てることにより、柔軟なプログラムになると言うことか？  
@@ -5869,6 +5896,7 @@ say $func->(5);	# 20211212+111+5
 
 変数の宣言をする場合、**my**を付けてはならない。  
 付けるのは、**our**だ。  
+
 
 ```perl
 use v5.24;
