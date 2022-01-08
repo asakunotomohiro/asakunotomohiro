@@ -188,6 +188,7 @@ $
     [x] 特殊変数(`$.`・`$/`・`$\`・`$,`・`$"`・`$0`・`$^W`・`$ARGV`・`@ARGV`・`@F`・`DATAファイルハンドル`・本来はまだある)  
   * [ ] [ディレクトリ操作](#practicaluseDirectorymanipulation)  
     [x] カレントディレクトリ取得。  
+    [x] ディレクトリ移動。  
   * [ ] [オブジェクト指向](#practicaluseObjectorientation)  
     [x] オブジェクト指向入門2021/11/12(読み切っていない)  
         * [オブジェクト指向入門](#objectorientedPerl4894713004one)を読み直す(要は全般)。  
@@ -5535,22 +5536,40 @@ $
 
 
 <a name="practicaluseDirectorymanipulationDirectorycurrent"></a>
-### カレントディレクトリ
+### カレントディレクトリ及びディレクトリ移動
 現在のディレクトリを取得する。  
 以下、プログラム。
 ```perl
 use v5.24;
 use Cwd;	# カレントディレクトリ呼び出しモジュール。
+my $currentDir;
 
 sub inputOutput() {
-	say getcwd();
-		# /Users/asakunotomohiro/study勉強用Githubリポジトリ/Perl言語
+	$currentDir = getcwd();	# カレントディレクトリを保存。
+	say $currentDir;	# /Users/asakunotomohiro/study勉強用Githubリポジトリ/Perl言語
+
+	{
+	say "以下、カレントディレクトリを移動後、カレントディレクトリを表示する。";
+	chdir '../ひな形/基礎知識用の勉強' || die "ディレクトリ移動失敗($!)。";
+	my $dirchenge = getcwd();
+	say $dirchenge;
+		# /Users/asakunotomohiro/study勉強用Githubリポジトリ/ひな形/基礎知識用の勉強
+	}
 }
 &inputOutput();
+say getcwd();	# /Users/asakunotomohiro/study勉強用Githubリポジトリ/ひな形/基礎知識用の勉強
+				# ブロックを抜け出たため、カレントディレクトリが戻ると思ったが、戻らず。
+
+chdir || die "ディレクトリ移動失敗($!)。";	# 引数なしの場合、ホームディレクトリに移動する。
+say '$ENV{HOME}：' . "<$ENV{HOME}>および、" . '$ENV{LOGDIR}：' . "<$ENV{LOGDIR}>";
+				# $ENV{HOME}：</Users/asakunotomohiro>および、$ENV{LOGDIR}：<>
+say getcwd();	# /Users/asakunotomohiro
+
+chdir $currentDir || die "ディレクトリ移動失敗($!)。";	# カレントディレクトリに戻る。
+say getcwd();	# /Users/asakunotomohiro/study勉強用Githubリポジトリ/Perl言語
 ```
-カレントディレクトリを表示した。  
-これだけでは寂しい。  
-しかし、わざわざモジュールを呼び出す必要があるのはめんどくさい。  
+カレントディレクトリから移動した場合に関係なく、Perlプログラムを抜け出たときのカレントディレクトリは移動していない。  
+そして、引数を渡さない場合、極力ホームディレクトリに移動する(Windowsの場合、失敗する)。  
 
 </details>
 
