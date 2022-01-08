@@ -185,6 +185,7 @@ $
     [x] 標準出力。  
     [x] ファイル読み込み。  
     [x] ファイル書き込み。  
+    [x] ファイル削除。  
     [x] 特殊変数(`$.`・`$/`・`$\`・`$,`・`$"`・`$0`・`$^W`・`$ARGV`・`@ARGV`・`@F`・`DATAファイルハンドル`・本来はまだある)  
   * [ ] [ディレクトリ操作](#practicaluseDirectorymanipulation)  
     [x] カレントディレクトリ取得。  
@@ -5461,6 +5462,11 @@ sub inputOutput() {
   * IO::Tee  
     複数の場所に同時出力(入力も可)を行う外部モジュール。  
     ※インストールが必要。  
+
+
+<a name="practicaluseFileoperationFiledelete"></a>
+### ファイル削除
+ファイルを削除するには、**unlink演算子**を使うことで、ファイルの削除が完了する。  
 
 
 <a name="practicaluseFileoperationSpecialvariables"></a>
