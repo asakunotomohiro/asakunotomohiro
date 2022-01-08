@@ -5742,6 +5742,67 @@ sub dirInputOutput() {
 ```
 出力結果は、上記と同じ。  
 
+
+#### ディレクトリハンドルの補填
+ディレクトリハンドルを通常利用する場合、ファイル名(ディレクトリ名)のみが取り出され、フルPathでの取り出しが出来ない。  
+そのため、フルPathにするには、自前で組み立てる必要がある。  
+それ以外の欠点は、指定したディレクトリ配下を例外なく取り出すこと。  
+上記のグロブで目的のファイルのみを取り出したようにできない。  
+そのため、これも自前で取捨選択する必要がある。  
+以下、そのプログラム例）
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub inputOutput() {
+	my $currentDir = getcwd();
+	opendir my $dh, $currentDir || die "ディレクトリオープン失敗($!)。";
+	foreach my $filename (readdir $dh) {
+		next if $filename =~ /^[.]/;	# 先頭がピリオドで始まる場合、先頭処理に戻る。
+		say $filename;
+	}
+
+	closedir $dh;
+}
+&inputOutput(@ARGV);
+```
+これは、カレントディレクトリ`.`や親ディレクトリ`..`、それ以外にも隠しファイル`.[ファイル名]`を除去するプログラムになっている。  
+
+以下、出力結果。
+```terminal
+基礎知識用の勉強
+version.pl
+README.md
+応用知識用の勉強
+helloWorld.pl
+環境構築(インストール).md
+Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける
+```
+
+以下、指定したファイルのみを取り出すプログラム(拡張子で判断する)。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub inputOutput() {
+	my $currentDir = getcwd();
+	opendir my $dh, $currentDir || die "ディレクトリオープン失敗($!)。";
+	while (my $filename = readdir $dh) {
+		next unless $filename =~ /\.pl\z/;	# 拡張子がplでない場合、先頭処理に戻る。
+		say $filename;
+	}
+
+	closedir $dh;
+}
+&inputOutput(@ARGV);
+```
+以下、出力結果。
+```terminal
+version.pl
+helloWorld.pl
+```
+今回のファイル取り出し方法は、フルPathにならないため、何もPathを指定せずにファイルを操作する場合は、カレントディレクトリのファイルだという前提でファイル操作が行われるため、気をつけること。  
+
 </details>
 
 
