@@ -190,6 +190,7 @@ $
     [x] カレントディレクトリ取得。  
     [x] ディレクトリ移動。  
     [x] グロブ  
+    [x] ディレクトリハンドル。  
   * [ ] [オブジェクト指向](#practicaluseObjectorientation)  
     [x] オブジェクト指向入門2021/11/12(読み切っていない)  
         * [オブジェクト指向入門](#objectorientedPerl4894713004one)を読み直す(要は全般)。  
@@ -5682,6 +5683,64 @@ sub inputOutputGlob() {
 今回は、glob演算子を使わず、レガシー(遺物)表記を用いた。  
 そして、この表記のほうが一般的らしい。  
 ※レガシー表記は、[ファイルハンドル](#practicaluseFileoperationfilehandle)と勘違いされるため、気をつけて使うこと。  
+
+<a name="practicaluseDirectorymanipulationDirectoryhandle"></a>
+### ディレクトリハンドル
+ファイルハンドルと同じように、ディレクトリハンドルが存在する。  
+ファイルハンドルの場合はファイルの中身を取り出すが、ディレクトリハンドルはディレクトリの中身(ファイル名など)を取り出す。  
+
+以下、裸のワード版プログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub dirInputOutput() {
+	my $currentDir = getcwd();
+	opendir DIR, $currentDir || die "ディレクトリオープン失敗($!)。";
+	say DIR;	# この行がなかったことになっている。
+	foreach my $filename (readdir DIR) {
+		say $filename;
+	}
+
+	closedir DIR;
+}
+&dirInputOutput(@ARGV);
+```
+
+以下、出力結果。
+```terminal
+.
+..
+基礎知識用の勉強
+version.pl
+.DS_Store
+.README.md.swp
+README.md
+応用知識用の勉強
+helloWorld.pl
+環境構築(インストール).md
+Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける
+```
+何も考えずに取得する。  
+
+以下、スカラー変数版プログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub dirInputOutput() {
+	my $currentDir = getcwd();
+	opendir my $dh, $currentDir || die "ディレクトリオープン失敗($!)。";
+	say $dh;	# GLOB(0x7fd2578037a8)
+	foreach my $filename (readdir $dh) {
+		say $filename;
+	}
+
+	closedir $filename;
+}
+&dirInputOutput(@ARGV);
+```
+出力結果は、上記と同じ。  
 
 </details>
 
