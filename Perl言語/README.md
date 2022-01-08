@@ -5534,7 +5534,7 @@ say "以下、削除前のディレクトリ配下状況確認。";
 foreach (<./test20220108/*>) {
 	say;
 }
-say "abcファイル削除結果：" . unlink './test20220108/abc' || warn "ファイル削除失敗($!\n)";
+say "abcファイル削除結果：" . unlink './test20220108/abc' || warn "ファイル削除失敗($!)\n";
 say "以下、削除後のディレクトリ配下状況確認。";
 foreach (<./test20220108/*>) {
 	say;
@@ -5551,6 +5551,71 @@ abcファイル削除結果：1	←☆削除実施及び、成功。
 $ ll test20220108	←☆ターミナルでの確認もファイルがないことを確認した。
 $
 ```
+
+以下、ディレクトリの権限変更にて、Perlプログラムではファイル削除できないことを確認した。
+```terminal
+$ ll -d test20220108
+drwxr-xr-x  3 asakunotomohiro  staff  96  1  8 22:22 test20220108/	←☆通常のディレクトリ権限。
+$ ll test20220108/
+total 0
+-rw-r--r--  1 asakunotomohiro  staff  0  1  8 22:22 abc	←☆ファイルがあることを確認した。
+$ chmod 555 test20220108/	←☆ディレクトリの権限変更。
+$ ls test20220108/	←☆権限変更後もファイル確認は出来た。
+abc
+$ ll -d test20220108
+dr-xr-xr-x  3 asakunotomohiro  staff  96  1  8 22:22 test20220108/	←☆書き込み権限が無くなっている。
+$ perl test.pl	←☆Perlプログラム実行(ファイル削除実行)。
+以下、削除前のディレクトリ配下状況確認。
+./test20220108/abc	←☆ある。
+abcファイル削除結果：0	←☆消せないようだ。
+以下、削除後のディレクトリ配下状況確認。
+./test20220108/abc	←☆ある。
+$ ll test20220108/
+total 0
+-rw-r--r--  1 asakunotomohiro  staff  0  1  8 22:22 abc	←☆ディレクトリ配下に消したはずのファイルがある。
+$ ll -d test20220108
+dr-xr-xr-x  3 asakunotomohiro  staff  96  1  8 22:22 test20220108/	←☆権限が変わったことで、ファイルを消せなくなっている。
+$
+$ chmod 755 test20220108/	←☆ディレクトリ権限を戻す。
+$ perl test.pl	←☆再度プログラム実行。
+以下、削除前のディレクトリ配下状況確認。
+./test20220108/abc
+abcファイル削除結果：1	←☆消せたようだ。
+以下、削除後のディレクトリ配下状況確認。
+$ ll test20220108/	←☆消えている。
+$
+```
+不思議なのは、**warn**が出力されなかったこと。  
+どういうこと!?  
+
+以下、ディレクトリ権限を全て取っ払った。
+```terminal
+$ ll -d test20220108
+d---------  3 asakunotomohiro  staff  96  1  8 22:40 test20220108/	←☆何の権限も無い状態。
+$ ll test20220108/	←☆ゆえに、中を見ること出来ず。
+ls: : Permission denied
+$ perl test.pl
+以下、削除前のディレクトリ配下状況確認。
+0	←☆しかし、警告が出てこない。
+以下、削除後のディレクトリ配下状況確認。
+$
+```
+どんな権限だろうが、warnが機能していない。  
+0かどうかで判断した方が良い？  
+
+以下、警告箇所を判断文に変更した。
+```terminal
+$ ll -d test20220108
+d---------  3 asakunotomohiro  staff  96  1  8 22:40 test20220108/
+$ perl test.pl
+以下、削除前のディレクトリ配下状況確認。
+0	←☆これは出るようだ。
+ファイル削除失敗(Permission denied)	←☆警告メッセージ出力。
+以下、削除後のディレクトリ配下状況確認。
+$
+```
+私のプログラムの作りが悪かったのか？  
+判断文：`warn "ファイル削除失敗($!)\n" if say unlink './test20220108/abc';`  
 
 
 <a name="practicaluseFileoperationSpecialvariables"></a>
