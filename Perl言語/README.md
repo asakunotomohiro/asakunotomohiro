@@ -5595,6 +5595,51 @@ helloWorld.pl	version.pl
 $
 ```
 
+以下、Perl側でのグロブ利用プログラム。
+```perl
+use v5.24;
+
+sub inputOutput() {
+	my @plfiles = glob '*.pl';
+	say "@plfiles";	# helloWorld.pl version.pl
+
+	@plfiles = glob '*.pl *.md';	# 欲しいパターンが複数ある場合は、スペース区切りをする。
+	foreach my $plfile ( @plfiles ) {
+		say $plfile;
+			# helloWorld.pl
+			# version.pl
+			# 環境構築(インストール).md
+			# README.md
+	}
+
+	@plfiles = glob '*';	# ドットで始まるファイル以外を取り出す。
+	foreach my $plfile ( @plfiles ) {
+		say $plfile;
+			# 基礎知識用の勉強
+			# 応用知識用の勉強
+			# 環境構築(インストール).md
+			# helloWorld.pl
+			# Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける
+			# README.md
+			# version.pl
+	}
+
+	@plfiles = glob '.*';	# ドットで始まるファイルを取り出す。
+	foreach my $plfile ( @plfiles ) {
+		say $plfile;
+			# .
+			# ..
+			# .DS_Store
+			# .README.md.swp
+	}
+}
+&inputOutput();
+```
+シェルでグロブを利用した結果と同じになった。  
+Perl5.6以前のバージョンは、`/bin/csh`を呼び出していたため、処理が遅くなっていたが、今は改善されている。  
+cshを呼び出していないと言うこと？  
+呼び出しているが、処理が早くなったと言うこと？  
+
 </details>
 
 
