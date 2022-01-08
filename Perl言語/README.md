@@ -5467,6 +5467,41 @@ sub inputOutput() {
 <a name="practicaluseFileoperationFiledelete"></a>
 ### ファイル削除
 ファイルを削除するには、**unlink演算子**を使うことで、ファイルの削除が完了する。  
+様式：
+`unlink ファイル名;`  
+
+以下、削除プログラム例）
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub inputOutput() {
+	my $currentDir = getcwd();
+	say "以下、削除前のディレクトリ配下状況確認(及び、ファイル削除実施)。";
+	opendir my $dh, $currentDir || die "ディレクトリオープン失敗($!)。";
+	while (my $filename = readdir $dh) {
+		next unless $filename =~ /\.txt\z/;
+		say $filename;
+		say "$filenameファイルの削除結果：" . unlink $filename;	←☆実際の削除(削除件数が結果で返る)。
+			# hoge.txt	←☆削除対象のファイル名。
+			# hoge.txtファイルの削除結果：1	←☆実際の削除結果(1になっているのは、1ファイル削除したことを示す)。
+			# boo.txt	←☆削除対象のファイル名。
+			# boo.txtファイルの削除結果：1	←☆実際の削除結果。
+			# bar.txt	←☆削除対象のファイル名。
+			# bar.txtファイルの削除結果：1	←☆実際の削除結果。
+	}
+	say "以下、削除後のディレクトリ配下状況確認。";
+	opendir my $dh, $currentDir || die "ディレクトリオープン失敗($!)。";
+	while (my $filename = readdir $dh) {
+		next unless $filename =~ /\.txt\z/;
+		say $filename;
+			# 何も出てこない(故に削除成功)。
+	}
+
+	closedir $dh;
+```
+通常利用のファイル削除実施したが、特に問題ない。  
+唯一問題がある箇所は、ファイル削除失敗に対する処理が無いこと。  
 
 
 <a name="practicaluseFileoperationSpecialvariables"></a>
