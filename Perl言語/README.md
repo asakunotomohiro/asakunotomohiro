@@ -5504,6 +5504,29 @@ sub inputOutput() {
 唯一問題がある箇所は、ファイル削除失敗に対する処理が無いこと。  
 
 
+#### ファイル削除失敗
+通常のファイルは、Perlプログラムならば消すことができる。  
+削除不可のファイルは、権限のないディレクトリにある場合に限る・・・きっと。  
+
+以下、通常のターミナル作業。
+```terminal
+$ touch abc
+$ chmod 000 abc
+$ ll abc
+----------  1 asakunotomohiro  wheel  0  1  8 21:45 abc
+$ rm abc
+override ---------  asakunotomohiro/wheel for abc?	←☆Yesを選択することで消せる(恐ろしい)。
+$ echo $?
+0
+$ ll abc
+----------  1 asakunotomohiro  wheel  0  1  8 21:45 abc
+$
+```
+通常の削除は、ファイルへの権限に掛かっている。  
+しかし、Perlプログラムの場合は、ディレクトリ権限による。  
+
+
+
 <a name="practicaluseFileoperationSpecialvariables"></a>
 ### 特殊変数
 一般的に変更不要だが、どうしても変更する場合は、処理終了後に戻すこと。  
