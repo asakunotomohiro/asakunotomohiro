@@ -5774,6 +5774,99 @@ drwxr-xr-x  3 asakunotomohiro  staff    96  1  9 16:02 ファイルの移動先�
 $
 ```
 
+以下、ファイルをディレクトリに移動しつつファイル名を変更するプログラムであり、その変更後のファイル名をさらに変更しつつカレントディレクトリに戻すこともする。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub filemove() {
+	my $changefile = shift;
+	say "以下、ディレクトリ内容確認。";
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	opendir my $dh, $currentDir or die "ディレクトリオープン失敗($!)。";
+	foreach my $filename (readdir $dh) {
+		next if $filename =~ /^[.]/;	# ドットから始まる場合は、ループの先頭にスキップする。
+		if( -f $filename && $filename eq $changefile ) {
+			say "\t$filename";
+		}
+		elsif( -d $filename ) {
+			say "\t以下、$filenameディレクトリ配下の状況。";
+			opendir my $underdh, $filename or die "配下のディレクトリオープン失敗($!)。";
+			foreach my $subfilename ( readdir $underdh ) {
+				next if $subfilename =~ /^[.]/;	# 正規表現利用。
+				if( -f "$filename/$subfilename" && $subfilename eq $changefile ) {
+					say "\t\t$subfilename";
+				}
+			}
+			say "\t以上、ここまでがディレクトリ配下の状況。";
+		}
+	}
+}
+
+sub filenameFunc() {
+	my $filename = "テストファイル.txt";	# 変更前のファイル名。
+	say "ファイル作成実施。";
+	if( ! open FILE, '>>', $filename) {
+		die "書き込み失敗($!)。"
+	}
+
+	# ここからが、ファイル移動作業。
+	&filemove($filename);
+	say "以下、ファイル移動。";
+	my $dirname = "ファイルの移動先ディレクトリ";
+	my $newfilename = "bar.txt";
+	if( rename $filename => "$dirname/$newfilename" ){	# ディレクトリ移動及びファイル名変更。
+		say "カレントディレクトリにある$filenameファイルを'$dirname/$newfilename'に移動成功。";
+		$filename = $newfilename;
+	}
+	else{
+		warn "$filenameファイル移動失敗($!)。\n";
+	}
+	# ここまでが、ファイル移動作業。
+	&filemove($filename);
+	# ここからが、ファイル移動後にファイル名変更作業。
+	my $booname = "boo.md";
+	say "以下、$dirnameディレクトリからファイル($filename)をカレントディレクトリに$boonameとして移動。";
+	if( rename "$dirname/$newfilename" => "$booname" ){	# 変更実施。
+		say "'$dirname/$newfilename'からカレントディレクトリに$boonameファイルを移動成功。";
+		$filename = $booname;
+	}
+	else{
+		warn "ファイル移動失敗($!)。\n";
+	}
+	# ここまでが、ファイル移動後にファイル名変更作業。
+	&filemove($filename);
+
+	say "$filenameファイル削除。";
+	unlink "$filename" or warn "ファイル削除失敗($!)。";
+}
+&filenameFunc(@ARGV);
+```
+
+以下、上記のプログラムの実行記録。
+```terminal
+$ perl ファイル名変更.pl
+ファイル作成実施。
+以下、ディレクトリ内容確認。
+	テストファイル.txt	←☆作成されたこのファイルを移動及び名前を変える。
+	以下、ファイルの移動先ディレクトリディレクトリ配下の状況。
+	以上、ここまでがディレクトリ配下の状況。
+以下、ファイル移動。
+カレントディレクトリにあるテストファイル.txtファイルを'ファイルの移動先ディレクトリ/bar.txt'に移動成功。
+以下、ディレクトリ内容確認。
+	以下、ファイルの移動先ディレクトリディレクトリ配下の状況。
+		bar.txt	←☆ディレクトリに移動後、ファイル名が変更された。
+	以上、ここまでがディレクトリ配下の状況。
+以下、ファイルの移動先ディレクトリディレクトリからファイル(bar.txt)をカレントディレクトリにboo.mdとして移動。
+'ファイルの移動先ディレクトリ/bar.txt'からカレントディレクトリにboo.mdファイルを移動成功。
+以下、ディレクトリ内容確認。
+	以下、ファイルの移動先ディレクトリディレクトリ配下の状況。
+	以上、ここまでがディレクトリ配下の状況。
+	boo.md	←☆カレントディレクトリに移動完了。
+boo.mdファイル削除。	←☆後始末。
+$
+```
+
 
 <a name="practicaluseFileoperationSpecialvariables"></a>
 ### 特殊変数
