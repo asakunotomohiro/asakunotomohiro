@@ -185,6 +185,7 @@ $
     [x] 標準出力。  
     [x] ファイル読み込み。  
     [x] ファイル書き込み。  
+    [x] ファイル削除。  
     [x] 特殊変数(`$.`・`$/`・`$\`・`$,`・`$"`・`$0`・`$^W`・`$ARGV`・`@ARGV`・`@F`・`DATAファイルハンドル`・本来はまだある)  
   * [ ] [ディレクトリ操作](#practicaluseDirectorymanipulation)  
     [x] カレントディレクトリ取得。  
@@ -5463,6 +5464,204 @@ sub inputOutput() {
     ※インストールが必要。  
 
 
+<a name="practicaluseFileoperationFiledelete"></a>
+### ファイル削除
+ファイルを削除するには、**unlink演算子**を使うことで、ファイルの削除が完了する。  
+様式：
+`unlink ファイル名;`  
+
+以下、削除プログラム例）
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub inputOutput() {
+	my $currentDir = getcwd();
+	say "以下、削除前のディレクトリ配下状況確認(及び、ファイル削除実施)。";
+	opendir my $dh, $currentDir || die "ディレクトリオープン失敗($!)。";
+	while (my $filename = readdir $dh) {
+		next unless $filename =~ /\.txt\z/;
+		say $filename;
+		say "$filenameファイルの削除結果：" . unlink $filename;	←☆実際の削除(削除件数が結果で返る)。
+			# hoge.txt	←☆削除対象のファイル名。
+			# hoge.txtファイルの削除結果：1	←☆実際の削除結果(1になっているのは、1ファイル削除したことを示す)。
+			# boo.txt	←☆削除対象のファイル名。
+			# boo.txtファイルの削除結果：1	←☆実際の削除結果。
+			# bar.txt	←☆削除対象のファイル名。
+			# bar.txtファイルの削除結果：1	←☆実際の削除結果。
+	}
+	say "以下、削除後のディレクトリ配下状況確認。";
+	opendir my $dh, $currentDir || die "ディレクトリオープン失敗($!)。";
+	while (my $filename = readdir $dh) {
+		next unless $filename =~ /\.txt\z/;
+		say $filename;
+			# 何も出てこない(故に削除成功)。
+	}
+
+	closedir $dh;
+```
+通常利用のファイル削除実施したが、特に問題ない。  
+唯一問題がある箇所は、ファイル削除失敗に対する処理が無いこと。  
+
+
+#### ファイル削除失敗
+通常のファイルは、Perlプログラムならば消すことができる。  
+削除不可のファイルは、権限のないディレクトリにある場合に限る・・・きっと。  
+
+以下、通常のターミナル作業。
+```terminal
+$ touch abc
+$ chmod 000 abc
+$ ll abc
+----------  1 asakunotomohiro  wheel  0  1  8 21:45 abc
+$ rm abc
+override ---------  asakunotomohiro/wheel for abc?	←☆Yesを選択することで消せる(恐ろしい)。
+$ echo $?
+0
+$ ll abc
+----------  1 asakunotomohiro  wheel  0  1  8 21:45 abc
+$
+```
+通常の削除は、ファイルへの権限に掛かっている。  
+しかし、Perlプログラムの場合は、ディレクトリ権限による。  
+
+以下、Perlプログラムでの削除成功(ファイルには権限がないため、失敗を想定していた)。
+```terminal
+$ cat test.pl	←☆プログラム内容表示(バグあり？)。
+use v5.24;
+
+say "以下、削除前のディレクトリ配下状況確認。";
+foreach (<./test20220108/*>) {
+	say;
+}
+say "abcファイル削除結果：" . unlink './test20220108/abc' || warn "ファイル削除失敗($!)\n";
+say "以下、削除後のディレクトリ配下状況確認。";
+foreach (<./test20220108/*>) {
+	say;
+}
+$
+$ ll test20220108
+total 0
+----------  1 asakunotomohiro  staff  0  1  8 22:00 abc
+$ perl test.pl
+以下、削除前のディレクトリ配下状況確認。
+./test20220108/abc	←☆このファイルを削除予定。
+abcファイル削除結果：1	←☆削除実施及び、成功。
+以下、削除後のディレクトリ配下状況確認。	←☆削除されたため、何もない。
+$ ll test20220108	←☆ターミナルでの確認もファイルがないことを確認した。
+$
+```
+
+以下、ディレクトリの権限変更にて、Perlプログラムではファイル削除できないことを確認した。
+
+<details><summary>プログラムミス。</summary>
+
+以下、バグ含む。
+```terminal
+$ ll -d test20220108
+drwxr-xr-x  3 asakunotomohiro  staff  96  1  8 22:22 test20220108/	←☆通常のディレクトリ権限。
+$ ll test20220108/
+total 0
+-rw-r--r--  1 asakunotomohiro  staff  0  1  8 22:22 abc	←☆ファイルがあることを確認した。
+$ chmod 555 test20220108/	←☆ディレクトリの権限変更。
+$ ls test20220108/	←☆権限変更後もファイル確認は出来た。
+abc
+$ ll -d test20220108
+dr-xr-xr-x  3 asakunotomohiro  staff  96  1  8 22:22 test20220108/	←☆書き込み権限が無くなっている。
+$ perl test.pl	←☆Perlプログラム実行(ファイル削除実行)。
+以下、削除前のディレクトリ配下状況確認。
+./test20220108/abc	←☆ある。
+abcファイル削除結果：0	←☆消せないようだ。
+以下、削除後のディレクトリ配下状況確認。
+./test20220108/abc	←☆ある。
+$ ll test20220108/
+total 0
+-rw-r--r--  1 asakunotomohiro  staff  0  1  8 22:22 abc	←☆ディレクトリ配下に消したはずのファイルがある。
+$ ll -d test20220108
+dr-xr-xr-x  3 asakunotomohiro  staff  96  1  8 22:22 test20220108/	←☆権限が変わったことで、ファイルを消せなくなっている。
+$
+$ chmod 755 test20220108/	←☆ディレクトリ権限を戻す。
+$ perl test.pl	←☆再度プログラム実行。
+以下、削除前のディレクトリ配下状況確認。
+./test20220108/abc
+abcファイル削除結果：1	←☆消せたようだ。
+以下、削除後のディレクトリ配下状況確認。
+$ ll test20220108/	←☆消えている。
+$
+```
+不思議なのは、**warn**が出力されなかったこと。  
+~~どういうこと!?~~  
+プログラムに原因があるのだろう。  
+
+以下、ディレクトリ権限を全て取っ払った。
+```terminal
+$ ll -d test20220108
+d---------  3 asakunotomohiro  staff  96  1  8 22:40 test20220108/	←☆何の権限も無い状態。
+$ ll test20220108/	←☆ゆえに、中を見ること出来ず。
+ls: : Permission denied
+$ perl test.pl
+以下、削除前のディレクトリ配下状況確認。
+0	←☆しかし、警告が出てこない。
+以下、削除後のディレクトリ配下状況確認。
+$
+```
+どんな権限だろうが、warnが機能していない。  
+0かどうかで判断した方が良い？  
+
+</details>
+
+以下、警告箇所を判断文に変更した。
+```terminal
+$ ll test20220108/abc	←☆削除ファイルの存在確認。
+-rw-r--r--  1 asakunotomohiro  staff  0  1  8 23:18 test20220108/abc
+$ perl test.pl
+以下、削除前のディレクトリ配下状況確認。
+./test20220108/abc
+abcファイル削除結果：1	←☆通常削除。
+以下、削除後のディレクトリ配下状況確認。
+$ ll test20220108/abc	←☆削除成功。
+ls: test20220108/abc: No such file or directory
+$
+$   # 以下、削除に失敗する(意図した結果なので成功)。
+$ ll test20220108/abc
+-rw-r--r--  1 asakunotomohiro  staff  0  1  8 23:20 test20220108/abc
+$ ll -d test20220108
+dr-xr-xr-x  3 asakunotomohiro  staff  96  1  8 23:20 test20220108/	←☆ディレクトリに書き込み権限がない。
+$ perl test.pl
+以下、削除前のディレクトリ配下状況確認。
+./test20220108/abc	←☆このファイルを削除したい。
+ファイル削除失敗(Permission denied)	←☆警告メッセージ出力。
+以下、削除後のディレクトリ配下状況確認。
+./test20220108/abc	←☆削除に失敗し、ファイルが残っている。
+$ ll test20220108/abc
+-rw-r--r--  1 asakunotomohiro  staff  0  1  8 23:20 test20220108/abc	←☆消したいファイルが残っている・・・要は、成功。
+$
+```
+削除失敗時に警告を出すように[if修飾子](#practicaluseConditionalifmodifier)を使っていたが、どうやら機能の誤解をしていたようで、バグになって出力されない条件式にしていた。  
+仕方ないため、通常の条件分岐式に変更した。  
+以下、今回実行したプログラム。
+```perl
+use v5.24;
+
+say "以下、削除前のディレクトリ配下状況確認。";
+foreach (<./test20220108/*>) {
+	say;
+}
+my $ret = unlink './test20220108/abc';	←☆削除結果を変数に代入している。
+if( $ret ) {	←☆0であれば偽になることを利用した。
+	say "abcファイル削除結果：$ret"
+}
+else{
+	warn "ファイル削除失敗($!)\n"
+}
+say "以下、削除後のディレクトリ配下状況確認。";
+foreach (<./test20220108/*>) {
+	say;
+}
+```
+今回固有のプログラムになっているが、問題ありますまい。  
+
+
 <a name="practicaluseFileoperationSpecialvariables"></a>
 ### 特殊変数
 一般的に変更不要だが、どうしても変更する場合は、処理終了後に戻すこと。  
@@ -5492,7 +5691,7 @@ sub inputOutput() {
   * `@F`  
     オートスプリット配列というものだが、それが何か分からない。  
   * `DATAファイルハンドル`  
-    同じファイル内に記述した文字列を**__END__**になるまで読み込む。  
+    同じファイル内に記述した文字列を **\_\_END\_\_** になるまで読み込む。  
 
 
 #### DATAファイルハンドル
@@ -5536,6 +5735,273 @@ $
 今回は、そんな大それた話ではない。  
 以下、普通にディレクトリに特化した話をしていく。  
 
+
+<a name="practicaluseDirectorymanipulationDirectorycurrent"></a>
+### カレントディレクトリ及びディレクトリ移動
+現在のディレクトリを取得する。  
+以下、プログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+my $currentDir;
+
+sub inputOutput() {
+	$currentDir = getcwd();	# カレントディレクトリを保存。
+	say $currentDir;	# /Users/asakunotomohiro/study勉強用Githubリポジトリ/Perl言語
+
+	{
+	say "以下、カレントディレクトリを移動後、カレントディレクトリを表示する。";
+	chdir '../ひな形/基礎知識用の勉強' || die "ディレクトリ移動失敗($!)。";
+	my $dirchenge = getcwd();
+	say $dirchenge;
+		# /Users/asakunotomohiro/study勉強用Githubリポジトリ/ひな形/基礎知識用の勉強
+	}
+}
+&inputOutput();
+say getcwd();	# /Users/asakunotomohiro/study勉強用Githubリポジトリ/ひな形/基礎知識用の勉強
+				# ブロックを抜け出たため、カレントディレクトリが戻ると思ったが、戻らず。
+
+chdir || die "ディレクトリ移動失敗($!)。";	# 引数なしの場合、ホームディレクトリに移動する。
+say '$ENV{HOME}：' . "<$ENV{HOME}>および、" . '$ENV{LOGDIR}：' . "<$ENV{LOGDIR}>";
+				# $ENV{HOME}：</Users/asakunotomohiro>および、$ENV{LOGDIR}：<>
+say getcwd();	# /Users/asakunotomohiro
+
+chdir $currentDir || die "ディレクトリ移動失敗($!)。";	# カレントディレクトリに戻る。
+say getcwd();	# /Users/asakunotomohiro/study勉強用Githubリポジトリ/Perl言語
+```
+カレントディレクトリから移動した場合に関係なく、Perlプログラムを抜け出たときのカレントディレクトリは移動していない。  
+そして、引数を渡さない場合、極力ホームディレクトリに移動する(Windowsの場合、失敗する)。  
+
+
+<a name="practicaluseDirectorymanipulationDirectoryglob"></a>
+### グロブ(globbing)
+グロブとは、ファイル名パターンをマッチするファイル名に展開すること(正規表現ではない)。  
+
+※[型グロブ](#practicaluseTypeglob)は別で説明している。  
+※[正規表現](#practicaluseRegularexpression)は別で説明している(グロブでのマッチと正規表現でのマッチは意味が異なる)。  
+
+以下、シェルのグロブ。
+```terminal
+$ ll
+total 552
+-rw-r--r--   1 asakunotomohiro  staff  261903  1  8 13:41 README.md
+drwxr-xr-x  15 asakunotomohiro  staff     480  1  7 18:03 応用知識用の勉強/
+-rw-r--r--   1 asakunotomohiro  staff   10153  1  7 17:54 環境構築(インストール).md
+drwxr-xr-x   7 asakunotomohiro  staff     224  1  7 17:54 基礎知識用の勉強/
+-rwxr-xr-x   1 asakunotomohiro  staff     132  1  7 17:54 version.pl*	←☆これを表示したい。
+-rwxr-xr-x   1 asakunotomohiro  staff     160  1  7 17:54 helloWorld.pl*	←☆これを表示したい。
+drwxr-xr-x   9 asakunotomohiro  staff     288  1  7 17:54 Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける/
+$ ls *pl	←☆グロブを用いたファイル表示。
+helloWorld.pl	version.pl
+$
+```
+
+以下、Perl側でのグロブ利用プログラム。
+```perl
+use v5.24;
+
+sub inputOutput() {
+	my @plfiles = glob '*.pl';
+	say "@plfiles";	# helloWorld.pl version.pl
+
+	@plfiles = glob '*.pl *.md';	# 欲しいパターンが複数ある場合は、スペース区切りをする。
+	foreach my $plfile ( @plfiles ) {
+		say $plfile;
+			# helloWorld.pl
+			# version.pl
+			# 環境構築(インストール).md
+			# README.md
+	}
+
+	@plfiles = glob '*';	# ドットで始まるファイル以外を取り出す。
+	foreach my $plfile ( @plfiles ) {
+		say $plfile;
+			# 基礎知識用の勉強
+			# 応用知識用の勉強
+			# 環境構築(インストール).md
+			# helloWorld.pl
+			# Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける
+			# README.md
+			# version.pl
+	}
+
+	@plfiles = glob '.*';	# ドットで始まるファイルを取り出す。
+	foreach my $plfile ( @plfiles ) {
+		say $plfile;
+			# .
+			# ..
+			# .DS_Store
+			# .README.md.swp
+	}
+}
+&inputOutput();
+```
+シェルでグロブを利用した結果と同じになった。  
+Perl5.6以前のバージョンは、`/bin/csh`を呼び出していたため、処理が遅くなっていたが、今は改善されている。  
+cshを呼び出していないと言うこと？  
+呼び出しているが、処理が早くなったと言うこと？  
+
+以下、別のグロブの書き方プログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub inputOutputGlob() {
+	my @plfile = <*.pl>;
+	say "@plfile";	# helloWorld.pl version.pl
+
+	@plfile = glob <*.pl *.md>;	# この書き方は間違い。
+	say "@plfile";	# helloWorld.pl
+
+	@plfile = <*.pl *.md>;
+	say "@plfile";	# helloWorld.pl version.pl 環境構築(インストール).md README.md
+
+	@plfile = <*>;
+	say "@plfile";	# 基礎知識用の勉強 応用知識用の勉強 環境構築(インストール).md helloWorld.pl Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける README.md version.pl
+
+	my $period = './';
+	@plfile = <$period>;	# この書き方は間違い(ファイルハンドル扱いになっている)。
+	say "@plfile";	# . .. .DS_Store .README.md.swp
+
+	my $period = '.';
+	@plfile = <$period/.*>;
+	say "@plfile";	# . .. .DS_Store .README.md.swp
+
+	$currentDir = getcwd();
+	@plfile = <$currentDir/.*>;
+	#say "@plfile";	# フルPathで出力される。
+	foreach my $file (@plfile) {
+		say $file;
+			# /Users/asakunotomohiro/study勉強用Githubリポジトリ/Perl言語/.
+			# /Users/asakunotomohiro/study勉強用Githubリポジトリ/Perl言語/..
+			# /Users/asakunotomohiro/study勉強用Githubリポジトリ/Perl言語/.DS_Store
+			# /Users/asakunotomohiro/study勉強用Githubリポジトリ/Perl言語/.README.md.swp
+	}
+}
+&inputOutputGlob();
+```
+今回は、glob演算子を使わず、レガシー(遺物)表記を用いた。  
+そして、この表記のほうが一般的らしい。  
+※レガシー表記は、[ファイルハンドル](#practicaluseFileoperationfilehandle)と勘違いされるため、気をつけて使うこと。  
+
+<a name="practicaluseDirectorymanipulationDirectoryhandle"></a>
+### ディレクトリハンドル
+ファイルハンドルと同じように、ディレクトリハンドルが存在する。  
+ファイルハンドルの場合はファイルの中身を取り出すが、ディレクトリハンドルはディレクトリの中身(ファイル名など)を取り出す。  
+
+以下、裸のワード版プログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub dirInputOutput() {
+	my $currentDir = getcwd();
+	opendir DIR, $currentDir || die "ディレクトリオープン失敗($!)。";
+	say DIR;	# この行がなかったことになっている。
+	foreach my $filename (readdir DIR) {
+		say $filename;
+	}
+
+	closedir DIR;
+}
+&dirInputOutput(@ARGV);
+```
+
+以下、出力結果。
+```terminal
+.
+..
+基礎知識用の勉強
+version.pl
+.DS_Store
+.README.md.swp
+README.md
+応用知識用の勉強
+helloWorld.pl
+環境構築(インストール).md
+Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける
+```
+何も考えずに取得する。  
+
+以下、スカラー変数版プログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub dirInputOutput() {
+	my $currentDir = getcwd();
+	opendir my $dh, $currentDir || die "ディレクトリオープン失敗($!)。";
+	say $dh;	# GLOB(0x7fd2578037a8)
+	foreach my $filename (readdir $dh) {
+		say $filename;
+	}
+
+	closedir $filename;
+}
+&dirInputOutput(@ARGV);
+```
+出力結果は、上記と同じ。  
+
+
+#### ディレクトリハンドルの補填
+ディレクトリハンドルを通常利用する場合、ファイル名(ディレクトリ名)のみが取り出され、フルPathでの取り出しが出来ない。  
+そのため、フルPathにするには、自前で組み立てる必要がある。  
+それ以外の欠点は、指定したディレクトリ配下を例外なく取り出すこと。  
+上記のグロブで目的のファイルのみを取り出したようにできない。  
+そのため、これも自前で取捨選択する必要がある。  
+以下、そのプログラム例）
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub inputOutput() {
+	my $currentDir = getcwd();
+	opendir my $dh, $currentDir || die "ディレクトリオープン失敗($!)。";
+	foreach my $filename (readdir $dh) {
+		next if $filename =~ /^[.]/;	# 先頭がピリオドで始まる場合、先頭処理に戻る。
+		say $filename;
+	}
+
+	closedir $dh;
+}
+&inputOutput(@ARGV);
+```
+これは、カレントディレクトリ`.`や親ディレクトリ`..`、それ以外にも隠しファイル`.[ファイル名]`を除外するプログラムになっている。  
+
+以下、出力結果。
+```terminal
+基礎知識用の勉強
+version.pl
+README.md
+応用知識用の勉強
+helloWorld.pl
+環境構築(インストール).md
+Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける
+```
+
+以下、指定したファイルのみを取り出すプログラム(拡張子で判断する)。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub inputOutput() {
+	my $currentDir = getcwd();
+	opendir my $dh, $currentDir || die "ディレクトリオープン失敗($!)。";
+	while (my $filename = readdir $dh) {
+		next unless $filename =~ /\.pl\z/;	# 拡張子がplでない場合、先頭処理に戻る。
+		say $filename;
+	}
+
+	closedir $dh;
+}
+&inputOutput(@ARGV);
+```
+以下、出力結果。
+```terminal
+version.pl
+helloWorld.pl
+```
+今回のファイル取り出し方法は、フルPathにならないため、何もPathを指定せずにファイルを操作する場合は、カレントディレクトリのファイルだという前提でファイル操作が行われるため、気をつけること。  
 
 <a name="practicaluseDirectorymanipulationDirectorycurrent"></a>
 ### カレントディレクトリ及びディレクトリ移動
