@@ -186,6 +186,7 @@ $
     [x] ファイル読み込み。  
     [x] ファイル書き込み。  
     [x] ファイル削除。  
+    [x] ファイル名変更。  
     [x] 特殊変数(`$.`・`$/`・`$\`・`$,`・`$"`・`$0`・`$^W`・`$ARGV`・`@ARGV`・`@F`・`DATAファイルハンドル`・本来はまだある)  
   * [ ] [ディレクトリ操作](#practicaluseDirectorymanipulation)  
     [x] カレントディレクトリ取得。  
@@ -5660,6 +5661,13 @@ foreach (<./test20220108/*>) {
 }
 ```
 今回固有のプログラムになっているが、問題ありますまい。  
+
+
+<a name="practicaluseFileoperationFilenamechange"></a>
+### ファイル名変更
+ファイル名を変更するには、**rename関数**を使うことで、ファイル名の変更が完了する。  
+様式：
+`rename [変更前], [変更後];`  
 
 
 <a name="practicaluseFileoperationSpecialvariables"></a>
