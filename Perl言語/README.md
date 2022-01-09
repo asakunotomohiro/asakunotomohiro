@@ -989,6 +989,7 @@ say "@boo";	# 20210830 20210831 20210901 20210902
   * [x] [多岐分岐-"もし"2つ以上。](#subConditional1)  
     基本構造例：if〜else if〜  
   * [x] [論理演算子(ド・モルガンの法則)](#subConditional2)  
+    `opendir`・`chdir`・`next`・`unlink`などと組み合わせる場合、`||`は使えず、`or`のみが動いた。  
     * [x] 論理積(`AND`・`&&`)  
     * [x] 論理和(`OR`・`||`)  
   * [x] [比較演算子](#subConditional3)  
@@ -5478,7 +5479,7 @@ use Cwd;	# カレントディレクトリ呼び出しモジュール。
 sub inputOutput() {
 	my $currentDir = getcwd();
 	say "以下、削除前のディレクトリ配下状況確認(及び、ファイル削除実施)。";
-	opendir my $dh, $currentDir || die "ディレクトリオープン失敗($!)。";
+	opendir my $dh, $currentDir or die "ディレクトリオープン失敗($!)。";
 	while (my $filename = readdir $dh) {
 		next unless $filename =~ /\.txt\z/;
 		say $filename;
@@ -5491,7 +5492,7 @@ sub inputOutput() {
 			# bar.txtファイルの削除結果：1	←☆実際の削除結果。
 	}
 	say "以下、削除後のディレクトリ配下状況確認。";
-	opendir my $dh, $currentDir || die "ディレクトリオープン失敗($!)。";
+	opendir my $dh, $currentDir or die "ディレクトリオープン失敗($!)。";
 	while (my $filename = readdir $dh) {
 		next unless $filename =~ /\.txt\z/;
 		say $filename;
@@ -5534,7 +5535,7 @@ say "以下、削除前のディレクトリ配下状況確認。";
 foreach (<./test20220108/*>) {
 	say;
 }
-say "abcファイル削除結果：" . unlink './test20220108/abc' || warn "ファイル削除失敗($!)\n";
+say "abcファイル削除結果：" . unlink './test20220108/abc' or warn "ファイル削除失敗($!)\n";
 say "以下、削除後のディレクトリ配下状況確認。";
 foreach (<./test20220108/*>) {
 	say;
@@ -5751,7 +5752,8 @@ sub inputOutput() {
 
 	{
 	say "以下、カレントディレクトリを移動後、カレントディレクトリを表示する。";
-	chdir '../ひな形/基礎知識用の勉強' || die "ディレクトリ移動失敗($!)。";
+	chdir '../ひな形/基礎知識用の勉強' or die "ディレクトリ移動失敗($!)。";
+										# ディレクトリ移動失敗(Permission denied)。 at ディレクトリハンドル.pl line 10.
 	my $dirchenge = getcwd();
 	say $dirchenge;
 		# /Users/asakunotomohiro/study勉強用Githubリポジトリ/ひな形/基礎知識用の勉強
@@ -5761,12 +5763,12 @@ sub inputOutput() {
 say getcwd();	# /Users/asakunotomohiro/study勉強用Githubリポジトリ/ひな形/基礎知識用の勉強
 				# ブロックを抜け出たため、カレントディレクトリが戻ると思ったが、戻らず。
 
-chdir || die "ディレクトリ移動失敗($!)。";	# 引数なしの場合、ホームディレクトリに移動する。
+chdir or die "ディレクトリ移動失敗($!)。";	# 引数なしの場合、ホームディレクトリに移動する。
 say '$ENV{HOME}：' . "<$ENV{HOME}>および、" . '$ENV{LOGDIR}：' . "<$ENV{LOGDIR}>";
 				# $ENV{HOME}：</Users/asakunotomohiro>および、$ENV{LOGDIR}：<>
 say getcwd();	# /Users/asakunotomohiro
 
-chdir $currentDir || die "ディレクトリ移動失敗($!)。";	# カレントディレクトリに戻る。
+chdir $currentDir or die "ディレクトリ移動失敗($!)。";	# カレントディレクトリに戻る。
 say getcwd();	# /Users/asakunotomohiro/study勉強用Githubリポジトリ/Perl言語
 ```
 カレントディレクトリから移動した場合に関係なく、Perlプログラムを抜け出たときのカレントディレクトリは移動していない。  
@@ -5896,7 +5898,7 @@ use Cwd;	# カレントディレクトリ呼び出しモジュール。
 
 sub dirInputOutput() {
 	my $currentDir = getcwd();
-	opendir DIR, $currentDir || die "ディレクトリオープン失敗($!)。";
+	opendir DIR, $currentDir or die "ディレクトリオープン失敗($!)。";
 	say DIR;	# この行がなかったことになっている。
 	foreach my $filename (readdir DIR) {
 		say $filename;
@@ -5930,7 +5932,7 @@ use Cwd;	# カレントディレクトリ呼び出しモジュール。
 
 sub dirInputOutput() {
 	my $currentDir = getcwd();
-	opendir my $dh, $currentDir || die "ディレクトリオープン失敗($!)。";
+	opendir my $dh, $currentDir or die "ディレクトリオープン失敗($!)。";
 	say $dh;	# GLOB(0x7fd2578037a8)
 	foreach my $filename (readdir $dh) {
 		say $filename;
@@ -5956,7 +5958,7 @@ use Cwd;	# カレントディレクトリ呼び出しモジュール。
 
 sub inputOutput() {
 	my $currentDir = getcwd();
-	opendir my $dh, $currentDir || die "ディレクトリオープン失敗($!)。";
+	opendir my $dh, $currentDir or die "ディレクトリオープン失敗($!)。";
 	foreach my $filename (readdir $dh) {
 		next if $filename =~ /^[.]/;	# 先頭がピリオドで始まる場合、先頭処理に戻る。
 		say $filename;
@@ -5986,7 +5988,7 @@ use Cwd;	# カレントディレクトリ呼び出しモジュール。
 
 sub inputOutput() {
 	my $currentDir = getcwd();
-	opendir my $dh, $currentDir || die "ディレクトリオープン失敗($!)。";
+	opendir my $dh, $currentDir or die "ディレクトリオープン失敗($!)。";
 	while (my $filename = readdir $dh) {
 		next unless $filename =~ /\.pl\z/;	# 拡張子がplでない場合、先頭処理に戻る。
 		say $filename;
@@ -6018,7 +6020,7 @@ sub inputOutput() {
 
 	{
 	say "以下、カレントディレクトリを移動後、カレントディレクトリを表示する。";
-	chdir '../ひな形/基礎知識用の勉強' || die "ディレクトリ移動失敗($!)。";
+	chdir '../ひな形/基礎知識用の勉強' or die "ディレクトリ移動失敗($!)。";
 	my $dirchenge = getcwd();
 	say $dirchenge;
 		# /Users/asakunotomohiro/study勉強用Githubリポジトリ/ひな形/基礎知識用の勉強
@@ -6028,12 +6030,12 @@ sub inputOutput() {
 say getcwd();	# /Users/asakunotomohiro/study勉強用Githubリポジトリ/ひな形/基礎知識用の勉強
 				# ブロックを抜け出たため、カレントディレクトリが戻ると思ったが、戻らず。
 
-chdir || die "ディレクトリ移動失敗($!)。";	# 引数なしの場合、ホームディレクトリに移動する。
+chdir or die "ディレクトリ移動失敗($!)。";	# 引数なしの場合、ホームディレクトリに移動する。
 say '$ENV{HOME}：' . "<$ENV{HOME}>および、" . '$ENV{LOGDIR}：' . "<$ENV{LOGDIR}>";
 				# $ENV{HOME}：</Users/asakunotomohiro>および、$ENV{LOGDIR}：<>
 say getcwd();	# /Users/asakunotomohiro
 
-chdir $currentDir || die "ディレクトリ移動失敗($!)。";	# カレントディレクトリに戻る。
+chdir $currentDir or die "ディレクトリ移動失敗($!)。";	# カレントディレクトリに戻る。
 say getcwd();	# /Users/asakunotomohiro/study勉強用Githubリポジトリ/Perl言語
 ```
 カレントディレクトリから移動した場合に関係なく、Perlプログラムを抜け出たときのカレントディレクトリは移動していない。  
@@ -6162,7 +6164,7 @@ use Cwd;	# カレントディレクトリ呼び出しモジュール。
 
 sub dirInputOutput() {
 	my $currentDir = getcwd();
-	opendir DIR, $currentDir || die "ディレクトリオープン失敗($!)。";
+	opendir DIR, $currentDir or die "ディレクトリオープン失敗($!)。";
 	say DIR;	# この行がなかったことになっている。
 	foreach my $filename (readdir DIR) {
 		say $filename;
@@ -6196,7 +6198,7 @@ use Cwd;	# カレントディレクトリ呼び出しモジュール。
 
 sub dirInputOutput() {
 	my $currentDir = getcwd();
-	opendir my $dh, $currentDir || die "ディレクトリオープン失敗($!)。";
+	opendir my $dh, $currentDir or die "ディレクトリオープン失敗($!)。";
 	say $dh;	# GLOB(0x7fd2578037a8)
 	foreach my $filename (readdir $dh) {
 		say $filename;
@@ -6222,7 +6224,7 @@ use Cwd;	# カレントディレクトリ呼び出しモジュール。
 
 sub inputOutput() {
 	my $currentDir = getcwd();
-	opendir my $dh, $currentDir || die "ディレクトリオープン失敗($!)。";
+	opendir my $dh, $currentDir or die "ディレクトリオープン失敗($!)。";
 	foreach my $filename (readdir $dh) {
 		next if $filename =~ /^[.]/;	# 先頭がピリオドで始まる場合、先頭処理に戻る。
 		say $filename;
@@ -6252,7 +6254,7 @@ use Cwd;	# カレントディレクトリ呼び出しモジュール。
 
 sub inputOutput() {
 	my $currentDir = getcwd();
-	opendir my $dh, $currentDir || die "ディレクトリオープン失敗($!)。";
+	opendir my $dh, $currentDir or die "ディレクトリオープン失敗($!)。";
 	while (my $filename = readdir $dh) {
 		next unless $filename =~ /\.pl\z/;	# 拡張子がplでない場合、先頭処理に戻る。
 		say $filename;

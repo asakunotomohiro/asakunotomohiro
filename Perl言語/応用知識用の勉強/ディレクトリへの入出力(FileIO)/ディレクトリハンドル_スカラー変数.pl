@@ -10,7 +10,7 @@ say "ファイル名読み込み(スカラー変数版)。";
 
 sub asakunoInputOutput() {
 	my $currentDir = getcwd();
-	opendir my $dh, $currentDir || die "ディレクトリオープン失敗($!)。";
+	opendir my $dh, $currentDir or die "ディレクトリオープン失敗($!)。";
 	say $dh;	# GLOB(0x7fd2578037a8)
 	foreach my $filename (readdir $dh) {
 		say $filename;

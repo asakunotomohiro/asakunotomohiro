@@ -17,7 +17,7 @@ sub asakunoInputOutput() {
 
 	{
 	say "以下、カレントディレクトリを移動後、カレントディレクトリを表示する。";
-	chdir '../ひな形/基礎知識用の勉強' || die "ディレクトリ移動失敗($!)。";
+	chdir '../ひな形/基礎知識用の勉強' or die "ディレクトリ移動失敗($!)。";
 	my $dirchenge = getcwd();
 	say $dirchenge;
 		# /Users/asakunotomohiro/study勉強用Githubリポジトリ/ひな形/基礎知識用の勉強
@@ -27,12 +27,12 @@ sub asakunoInputOutput() {
 say getcwd();	# /Users/asakunotomohiro/study勉強用Githubリポジトリ/ひな形/基礎知識用の勉強
 				# ブロックを抜け出たため、カレントディレクトリが戻ると思ったが、戻らず。
 
-chdir || die "ディレクトリ移動失敗($!)。";	# 引数なしの場合、ホームディレクトリに極力移動しようとする。
+chdir or die "ディレクトリ移動失敗($!)。";	# 引数なしの場合、ホームディレクトリに極力移動しようとする。
 say '$ENV{HOME}：' . "<$ENV{HOME}>および、" . '$ENV{LOGDIR}：' . "<$ENV{LOGDIR}>";
 				# $ENV{HOME}：</Users/asakunotomohiro>および、$ENV{LOGDIR}：<>
 say getcwd();	# /Users/asakunotomohiro
 
-chdir $currentDir || die "ディレクトリ移動失敗($!)。";
+chdir $currentDir or die "ディレクトリ移動失敗($!)。";
 say getcwd();	# /Users/asakunotomohiro/study勉強用Githubリポジトリ/Perl言語
 
 say "以上。"

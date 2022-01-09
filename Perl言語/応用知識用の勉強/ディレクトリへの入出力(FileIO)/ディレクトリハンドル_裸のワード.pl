@@ -10,7 +10,7 @@ say "ファイル名読み込み(裸のワード)。";
 
 sub asakunoInputOutput() {
 	my $currentDir = getcwd();
-	opendir DIR, $currentDir || die "ディレクトリオープン失敗($!)。";
+	opendir DIR, $currentDir or die "ディレクトリオープン失敗($!)。";
 	say DIR;	# この行がなかったことになっている。
 	foreach my $filename (readdir DIR) {
 		say $filename;

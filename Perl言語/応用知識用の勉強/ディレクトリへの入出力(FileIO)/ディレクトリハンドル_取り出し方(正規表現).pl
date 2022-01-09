@@ -10,7 +10,7 @@ say "ファイル名読み込み(正規表現との組み合わせ)。";
 
 sub asakunoInputOutput() {
 	my $currentDir = getcwd();
-	opendir my $dh, $currentDir || die "ディレクトリオープン失敗($!)。";
+	opendir my $dh, $currentDir or die "ディレクトリオープン失敗($!)。";
 	foreach my $filename (readdir $dh) {
 #		next if $filename eq '.' or $filename eq '..';
 		next if $filename =~ /^[.]/;	# 先頭がピリオドで始まる場合、先頭処理に戻る。

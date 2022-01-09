@@ -25,7 +25,7 @@ sub asakunoInputOutput() {
 
 	my $currentDir = getcwd();	# カレントディレクトリ取得。
 	say "以下、ファイル作成前のディレクトリ配下の状況。";
-	opendir my $dh, $currentDir || die "ディレクトリオープン失敗($!)。";
+	opendir my $dh, $currentDir or die "ディレクトリオープン失敗($!)。";
 	foreach my $filename (readdir $dh) {
 #		next if $filename =~ /^[.]/;	# 先頭がピリオドで始まる場合、先頭処理に戻る。
 #		next unless @asakuno ~~ /$filename/;	# スマートマッチ演算子と正規表現検索の組み合わせ。
@@ -49,7 +49,7 @@ sub asakunoInputOutput() {
 		}
 	}
 	say "以下、ファイル作成後(削除前)のディレクトリ配下の状況。";
-	opendir my $dh, $currentDir || die "ディレクトリオープン失敗($!)。";
+	opendir my $dh, $currentDir or die "ディレクトリオープン失敗($!)。";
 	foreach my $filename (readdir $dh) {
 #		next if $filename =~ /^[.]/;	# 先頭がピリオドで始まる場合、先頭処理に戻る。
 #		next unless @asakuno ~~ /$filename/;	# スマートマッチ演算子と正規表現検索の組み合わせ。
@@ -70,7 +70,7 @@ sub asakunoInputOutput() {
 #				Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける
 	}
 	say "以下、ファイル削除処理実施(0が削除失敗)。";
-	opendir my $dh, $currentDir || die "ディレクトリオープン失敗($!)。";
+	opendir my $dh, $currentDir or die "ディレクトリオープン失敗($!)。";
 	foreach my $filename (readdir $dh) {
 		next if $filename =~ /^[.]/;	# 先頭がピリオドで始まる場合、先頭処理に戻る。
 		next unless @asakuno ~~ /$filename/;	# スマートマッチ演算子と正規表現検索の組み合わせ。
@@ -84,7 +84,7 @@ sub asakunoInputOutput() {
 #				朝来野の削除結果：1
 	}
 	say "以下、ディレクトリ配下の確認。";
-	opendir my $dh, $currentDir || die "ディレクトリオープン失敗($!)。";
+	opendir my $dh, $currentDir or die "ディレクトリオープン失敗($!)。";
 	foreach my $filename (readdir $dh) {
 #		next if $filename =~ /^[.]/;	# 先頭がピリオドで始まる場合、先頭処理に戻る。
 #		next unless @asakuno ~~ /$filename/;	# スマートマッチ演算子と正規表現検索の組み合わせ。
