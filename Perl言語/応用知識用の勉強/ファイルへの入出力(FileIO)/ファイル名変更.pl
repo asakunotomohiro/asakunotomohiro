@@ -24,7 +24,7 @@ sub asakunoInputOutput() {
 #			-rwxr-xr-x  1 asakunotomohiro  staff  570  1  9 11:42 ファイル名変更.pl*
 #			$
 
-	rename 'tomohiro.md', 'asakunotomohiro/tomohiro.md';	# ファイル移動。
+	#rename 'tomohiro.md', 'asakunotomohiro/tomohiro.md';	# ファイル移動。
 #			$ ll -R
 #			total 16
 #			-rwxr-xr-x  1 asakunotomohiro  staff  1065  1  9 11:46 ファイル名変更.pl*
@@ -43,6 +43,27 @@ sub asakunoInputOutput() {
 #			./asakunotomohiro:	←☆ファイルが移動され、ここに移った。
 #			total 8
 #			-rwxr-xr-x  1 asakunotomohiro  staff  570  1  9 11:42 tomohiro.md*
+#			$
+
+	rename 'tomohiro.md', 'asakunotomohiro/asakuno.md';	# ファイル移動後に名前を変える。
+#			$ ll -R
+#			total 16
+#			-rwxr-xr-x  1 asakunotomohiro  staff  2049  1  9 11:58 ファイル名変更.pl*
+#			drwxr-xr-x  3 asakunotomohiro  staff    96  1  9 11:57 asakunotomohiro/	←☆ここに移動後、名前を変える。
+#			-rwxr-xr-x  1 asakunotomohiro  staff   570  1  9 11:42 tomohiro.md*	←☆このファイルを操作する。
+#			
+#			./asakunotomohiro:	←☆移動前なので空っぽ。
+#			$ perl ファイル名変更.pl	←☆作業実施。
+#			ファイル名変更
+#			以上。
+#			$ ll -R
+#			total 8
+#			drwxr-xr-x  4 asakunotomohiro  staff   128  1  9 11:59 asakunotomohiro/
+#			-rwxr-xr-x  1 asakunotomohiro  staff  2049  1  9 11:58 ファイル名変更.pl*
+#			
+#			./asakunotomohiro:	←☆移動が確認できる。
+#			total 8
+#			-rwxr-xr-x  1 asakunotomohiro  staff  570  1  9 11:42 asakuno.md*	←☆ファイル名が変わっている。
 #			$
 }
 &asakunoInputOutput(@ARGV);
