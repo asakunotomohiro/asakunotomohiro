@@ -187,6 +187,7 @@ $
     [x] ファイル書き込み。  
     [x] ファイル削除。  
     [x] ファイル名変更(ファイル移動)。  
+    [x] リンクファイル  
     [x] 特殊変数(`$.`・`$/`・`$\`・`$,`・`$"`・`$0`・`$^W`・`$ARGV`・`@ARGV`・`@F`・`DATAファイルハンドル`・本来はまだある)  
   * [ ] [ディレクトリ操作](#practicaluseDirectorymanipulation)  
     [x] カレントディレクトリ取得。  
@@ -5862,6 +5863,19 @@ $ perl ファイル名変更.pl
 boo.mdファイル削除。	←☆後始末。
 $
 ```
+
+
+<a name="practicaluseFileoperationlinkandfile"></a>
+### リンクとファイル
+
+* リンクによる制限  
+  ハードリンク(hard link)のこと(`link '元ファイル名', 'リンクファイル名' or warn "ハードリンク作成失敗$!"`)。  
+  * ディレクトリに対してリンク作成は出来ない。  
+  * ディスクを跨いだリンク付けはできない。  
+
+* 上記の制限回避方法  
+  * シンボリックリンク(ソフトリンク・symbolic link・soft link)の活用。  
+    `symlink '元ファイル名', 'リンクファイル名' or "シンボリックリンク作成失敗$!"`
 
 
 <a name="practicaluseFileoperationSpecialvariables"></a>
