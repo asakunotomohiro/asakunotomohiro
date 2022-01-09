@@ -45,7 +45,7 @@ sub asakunoInputOutput() {
 #			-rwxr-xr-x  1 asakunotomohiro  staff  570  1  9 11:42 tomohiro.md*
 #			$
 
-	rename 'tomohiro.md', 'asakunotomohiro/asakuno.md';	# ファイル移動後に名前を変える。
+	#rename 'tomohiro.md', 'asakunotomohiro/asakuno.md';	# ファイル移動後に名前を変える。
 #			$ ll -R
 #			total 16
 #			-rwxr-xr-x  1 asakunotomohiro  staff  2049  1  9 11:58 ファイル名変更.pl*
@@ -65,6 +65,193 @@ sub asakunoInputOutput() {
 #			total 8
 #			-rwxr-xr-x  1 asakunotomohiro  staff  570  1  9 11:42 asakuno.md*	←☆ファイル名が変わっている。
 #			$
+
+	# 以下、ファイル移動用の前座。
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	say $currentDir;
+	say "以下、ファイル作成前のディレクトリ配下の状況。";
+	opendir my $dh, $currentDir || die "ディレクトリオープン失敗($!)。";
+	foreach my $filename (readdir $dh) {
+		next if $filename eq "." || $filename eq "..";
+		if( -f $filename ) {
+			say "\t" . $filename;
+		}
+		elsif( -d $filename ) {
+			say "\t以下、$filenameディレクトリ配下の状況。";
+			opendir my $underdh, $filename || die "配下のディレクトリオープン失敗($!)。";
+			foreach my $subfilename ( readdir $underdh ) {
+				#next if "$filename/$subfilename" eq "." || "$filename/$subfilename" eq "..";
+				next if "$subfilename" eq "." || "$subfilename" eq "..";
+				say "\t\t$subfilename";
+			}
+			say "\tここまでがディレクトリ配下の状況。";
+		}
+	}
+	say "ファイル作成実施。";
+#	foreach my $file ( @asakuno ) {
+		if( ! open FILE, '>>', $asakuno) {
+			die "書き込み失敗($!)。"
+		}
+#	}
+	say "以下、ファイル作成後のディレクトリ配下の状況。";
+	opendir my $dh, $currentDir || die "ディレクトリオープン失敗($!)。";
+	foreach my $filename (readdir $dh) {
+		next if $filename eq "." || $filename eq "..";
+		if( -f $filename ) {
+			say "\t" . $filename;
+		}
+		elsif( -d $filename ) {
+			say "\t以下、$filenameディレクトリ配下の状況。";
+			opendir my $underdh, $filename || die "配下のディレクトリオープン失敗($!)。";
+			foreach my $subfilename ( readdir $underdh ) {
+				next if "$subfilename" eq "." || "$subfilename" eq "..";
+				say "\t\t$subfilename";
+			}
+			say "\tここまでがディレクトリ配下の状況。";
+		}
+	}
+	# ここまでがファイル移動の準備。
+	# ここからが、ファイル名単純変更作業。
+	say "以下、単純ファイル名変更。";
+	my $fullname = 'asakunotomohiro.txt';
+	if( -e $fullname ) {
+		warn "既に同名ファイルが存在する。\n";
+	}
+	elsif( rename $asakuno => $fullname ){	# 変更実施。
+		say "変更成功。";
+	}
+	else{
+		# 本の内容がバグっているのでは？
+		# 私の勘違い。
+		# 上記の名前変更で失敗した場合0が返る。
+		# 0の場合偽になるため、ここの処理が実行される。
+		warn "ファイル名変更失敗($!)。\n";
+	}
+	say "以下、変更後のディレクトリ内容確認。";
+	opendir my $dh, $currentDir || die "ディレクトリオープン失敗($!)。";
+	foreach my $filename (readdir $dh) {
+		next if $filename =~ /^[.]/;	# ドットから始まる場合は、ループの先頭にスキップする。
+		if( -f $filename && $filename eq $fullname ) {
+			say "\t" . $filename;	# ここで変更後のファイル名が表示される。
+		}
+		elsif( -d $filename ) {
+			say "\t以下、$filenameディレクトリ配下の状況。";
+			opendir my $underdh, $filename || die "配下のディレクトリオープン失敗($!)。";
+			foreach my $subfilename ( readdir $underdh ) {
+				next if $subfilename =~ /^[.]/;	# ドットから始まる場合は、ループの先頭にスキップする。
+				if( -f "$filename/$subfilename" && $subfilename eq $fullname ) {
+					say "\t\t$subfilename";
+				}
+			}
+			say "\tここまでがディレクトリ配下の状況。";
+		}
+	}
+	# ここまでが、ファイル名単純変更作業。
+	# ここからが、ファイル移動作業。
+	say "ファイル移動前の状況確認。";
+	opendir my $dh, $currentDir || die "ディレクトリオープン失敗($!)。";
+	foreach my $filename (readdir $dh) {
+		next if $filename =~ /^[.]/;	# ドットから始まる場合は、ループの先頭にスキップする。
+		if( -f $filename && $filename eq $fullname ) {
+			say "\t" . $filename;	# ここで変更後のファイル名が表示される。
+		}
+		elsif( -d $filename ) {
+			say "\t以下、$filenameディレクトリ配下の状況。";
+			opendir my $underdh, $filename || die "配下のディレクトリオープン失敗($!)。";
+			foreach my $subfilename ( readdir $underdh ) {
+				next if $subfilename =~ /^[.]/;	# ドットから始まる場合は、ループの先頭にスキップする。
+				if( -f "$filename/$subfilename" && $subfilename eq $fullname ) {
+					say "\t\t$subfilename";
+				}
+			}
+			say "\tここまでがディレクトリ配下の状況。";
+		}
+	}
+	say "以下、ファイル移動。";
+	if( rename $fullname => "asakunotomohiro/$fullname" ){	# 変更実施。
+		say "移動成功。";
+	}
+	else{
+		warn "ファイル移動失敗($!)。\n";
+	}
+	say "以下、変更後のディレクトリ内容確認。";
+	opendir my $dh, $currentDir || die "ディレクトリオープン失敗($!)。";
+	foreach my $filename (readdir $dh) {
+		next if $filename =~ /^[.]/;	# ドットから始まる場合は、ループの先頭にスキップする。
+		if( -f $filename && $filename eq $fullname ) {
+			say "\t" . $filename;
+		}
+		elsif( -d $filename ) {
+			say "\t以下、$filenameディレクトリ配下の状況。";
+			opendir my $underdh, $filename || die "配下のディレクトリオープン失敗($!)。";
+			foreach my $subfilename ( readdir $underdh ) {
+				next if $subfilename =~ /^[.]/;	# ドットから始まる場合は、ループの先頭にスキップする。
+				#if( -f $subfilename && $subfilename eq $fullname ) {
+				#if( -f $subfilename && "$subfilename" eq "$fullname" ) {
+				#if( -f $subfilename ) {
+				if( -f "$filename/$subfilename" && $subfilename eq $fullname ) {
+					say "\t\t$subfilename";	# ここで変更後のファイル名が表示される。
+				}
+			}
+			say "\tここまでがディレクトリ配下の状況。";
+		}
+	}
+	# ここまでが、ファイル移動作業。
+#	say "asakunotomohiro/$fullnameファイル削除。";
+#	unlink "asakunotomohiro/$fullname";
+	# ここからが、ファイル移動後にファイル名変更作業。
+	say "ファイル移動前の状況確認。";
+	opendir my $dh, $currentDir || die "ディレクトリオープン失敗($!)。";
+	foreach my $filename (readdir $dh) {
+		next if $filename =~ /^[.]/;	# ドットから始まる場合は、ループの先頭にスキップする。
+		if( -f $filename && $filename eq $fullname ) {
+			say "\t" . $filename;	# ここで変更後のファイル名が表示される。
+		}
+		elsif( -d $filename ) {
+			say "\t以下、$filenameディレクトリ配下の状況。";
+			opendir my $underdh, $filename || die "配下のディレクトリオープン失敗($!)。";
+			foreach my $subfilename ( readdir $underdh ) {
+				next if $subfilename =~ /^[.]/;	# ドットから始まる場合は、ループの先頭にスキップする。
+				if( -f "$filename/$subfilename" && $subfilename eq $fullname ) {
+					say "\t\t$subfilename";
+				}
+			}
+			say "\tここまでがディレクトリ配下の状況。";
+		}
+	}
+	my $fulltomo = "tomohiro.md";
+	say "以下、asakunotomohiroディレクトリからファイル($fullname)をカレントディレクトリに$fulltomoとして移動。";
+	if( rename "asakunotomohiro/$fullname" => "$fulltomo" ){	# 変更実施。
+		say "移動成功。";
+		$fullname = $fulltomo;
+	}
+	else{
+		warn "ファイル移動失敗($!)。\n";
+	}
+	say "以下、変更後のディレクトリ内容確認。";
+	opendir my $dh, $currentDir || die "ディレクトリオープン失敗($!)。";
+	foreach my $filename (readdir $dh) {
+		next if $filename =~ /^[.]/;	# ドットから始まる場合は、ループの先頭にスキップする。
+		if( -f $filename && $filename eq $fullname ) {
+			say "\t" . $filename;	# ここで変更後のファイル名が表示される。
+		}
+		elsif( -d $filename ) {
+			say "\t以下、$filenameディレクトリ配下の状況。";
+			opendir my $underdh, $filename || die "配下のディレクトリオープン失敗($!)。";
+			foreach my $subfilename ( readdir $underdh ) {
+				next if $subfilename =~ /^[.]/;	# ドットから始まる場合は、ループの先頭にスキップする。
+				if( -f "$filename/$subfilename" && $subfilename eq $fullname ) {
+					say "\t\t$subfilename";
+				}
+			}
+			say "\tここまでがディレクトリ配下の状況。";
+		}
+	}
+	# ここまでが、ファイル移動後にファイル名変更作業。
+
+	say "$fullnameファイル削除。";
+	#unlink "$filename" || warn "ファイル削除失敗($!)。";	処理失敗(||が論理和として動いてくれない)。
+	unlink "$filename" or warn "ファイル削除失敗($!)。";
 }
 &asakunoInputOutput(@ARGV);
 

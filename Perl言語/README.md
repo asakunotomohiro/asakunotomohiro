@@ -5685,6 +5685,95 @@ Pathを変えることで、ファイルの移動も可能になるだけでな�
 上記のカンマ区切り`,`は、`=>`に置き換えることもできる。  
 `rename [変更前] => [変更後];`  
 
+以下、単純ファイル名変更プログラム。
+```perl
+use v5.24;
+no warnings 'experimental::smartmatch';	# 警告抑止(スマートマッチ演算子~~のために必要)。
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub filemove() {
+	my $changefile = shift;
+	say "以下、ディレクトリ内容確認。";
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	opendir my $dh, $currentDir || die "ディレクトリオープン失敗($!)。";
+	foreach my $filename (readdir $dh) {
+		next if $filename =~ /^[.]/;	# ドットから始まる場合は、ループの先頭にスキップする。
+		if( -f $filename && $filename eq $changefile ) {
+			say "\t$filename";
+		}
+	}
+}
+
+sub filenameFunc() {
+	my $hoge = "テストファイル.txt";	# 変更前のファイル名。
+	say "ファイル作成実施。";
+	if( ! open FILE, '>>', $hoge) {	←☆ファイル名変更失敗させるときは、コメントアウトする。
+		die "書き込み失敗($!)。"
+	}
+
+	&filemove($hoge);	←☆ディレクトリ状況確認。
+	my $filename = 'hoge.md';	# 変更後のファイル名。
+	if( -e $filename ) {
+		warn "既に同名ファイルが存在する。\n";	←☆既存ファイルを上書きしないために必要な対応。
+	}
+	elsif( rename $hoge => $filename ){
+		say "変更成功。";
+		$hoge = $filename;
+	}
+	else{
+		warn "ファイル名変更失敗($!)。\n";
+	}
+	&filemove($hoge);	←☆ディレクトリ状況確認。
+
+	unlink "$filename" or warn "ファイル削除失敗($!)。";
+}
+&filenameFunc(@ARGV);
+```
+以下、実行記録。
+```terminal
+$ perl ファイル名変更.pl
+ファイル作成実施。
+以下、ディレクトリ内容確認。
+	テストファイル.txt	←☆これを変更する。
+以下、単純ファイル名変更。
+変更成功。
+以下、ディレクトリ内容確認。
+	hoge.md	←☆変更された。
+以上、単純ファイル名変更。
+hoge.mdファイル削除。	←☆後始末として、ファイルを削除する。
+以上。
+$
+```
+
+以下、ディレクトリ権限がなく、ファイル名変更に失敗する。
+```terminal
+$ ll
+total 16
+-rw-r--r--  1 asakunotomohiro  staff     0  1  9 16:22 テストファイル.txt	←☆この名前を変えるつもり。
+drwxr-xr-x  3 asakunotomohiro  staff    96  1  9 16:02 ファイルの移動先ディレクトリ/
+-rwxr-xr-x  1 asakunotomohiro  staff  2912  1  9 15:56 ファイル名変更.pl*
+$ ll -d .
+dr-xr-xr-x  7 asakunotomohiro  staff  224  1  9 16:22 ./	←☆変更権限がない。
+$ perl ファイル名変更.pl	←☆変更実施。
+ファイル作成実施。	←☆これは、今回この処理はコメントアウトしている。
+以下、ディレクトリ内容確認。
+	テストファイル.txt
+以下、単純ファイル名変更。
+ファイル名変更失敗(Permission denied)。	←☆失敗。
+以下、ディレクトリ内容確認。
+	テストファイル.txt
+以上、単純ファイル名変更。
+hoge.mdファイル削除。
+ファイル削除失敗(No such file or directory)。 at test.pl line 79.
+以上。
+$ ll
+total 16
+-rw-r--r--  1 asakunotomohiro  staff     0  1  9 16:22 テストファイル.txt	←☆当たり前だが、変わっていない。
+drwxr-xr-x  3 asakunotomohiro  staff    96  1  9 16:02 ファイルの移動先ディレクトリ/
+-rwxr-xr-x  1 asakunotomohiro  staff  2912  1  9 15:56 ファイル名変更.pl*
+$
+```
+
 
 <a name="practicaluseFileoperationSpecialvariables"></a>
 ### 特殊変数
