@@ -6147,6 +6147,39 @@ $
 ハードリンクファイルの扱いはどうすれば良い？  
 
 
+#### 存在しないファイルからソフトリンクファイルの作成。
+ファイルが存在しない場合、ハードリンクファイル作成はできない。  
+しかし、ソフトリンクファイルの場合は、大本ファイルの存在有無にかかわらず、作成できる。  
+以下、プログラム。
+```perl
+use v5.24;
+
+sub linkfunc() {
+	my $symfile = 'シンボリックファイル.c';
+	symlink '存在しないファイル.txt', $symfile or warn "ソフトリンクファイル作成失敗($!)。";
+
+	my $linkfile = 'ハードリンクファイル.c';
+	link '存在しないファイル.txt', $linkfile or warn "ハードリンクファイル作成失敗($!)。";
+}
+&linkfunc(@ARGV);
+```
+以下、実行結果。
+```terminal
+$ ll
+total 48
+-rwxr-xr-x  1 asakunotomohiro  staff   379  1 10 17:13 リンクファイル作成.pl*
+$ perl リンクファイル作成.pl
+ハードリンクファイル作成失敗(No such file or directory)。 at リンクファイル作成.pl line 8.
+$ ll
+total 48
+lrwxr-xr-x  1 asakunotomohiro  staff    31  1 10 17:13 シンボリックファイル.c@ -> 存在しないファイル.txt
+-rwxr-xr-x  1 asakunotomohiro  staff   379  1 10 17:13 リンクファイル作成.pl*
+$ cat シンボリックファイル.c	←☆開くことは出来ない(当たり前)。
+cat: シンボリックファイル.c: No such file or directory	←☆大本ファイルがないから開けないため、このエラーは可笑しいだろう。
+$
+```
+
+
 <a name="practicaluseFileoperationSpecialvariables"></a>
 ### 特殊変数
 一般的に変更不要だが、どうしても変更する場合は、処理終了後に戻すこと。  
