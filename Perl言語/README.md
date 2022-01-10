@@ -6089,6 +6089,23 @@ $ cat シンボリックファイル.c
 $
 ```
 
+以下、リンクファイルの挙動確認作業。
+```terminal
+$ ll
+total 48
+-rw-r--r--  1 asakunotomohiro  staff   115  1 10 16:41 ソフトリンクファイル.txt
+lrwxr-xr-x  1 asakunotomohiro  staff    34  1 10 16:41 シンボリックファイル.c@ -> ソフトリンクファイル.txt
+-rwxr-xr-x  1 asakunotomohiro  staff  1560  1 10 16:41 ソフトリンクファイル作成.pl*
+$ rm ソフトリンクファイル.txt	←☆大本のファイル削除。
+$ ll
+total 40
+lrwxr-xr-x  1 asakunotomohiro  staff    34  1 10 16:41 シンボリックファイル.c@ -> ソフトリンクファイル.txt
+-rwxr-xr-x  1 asakunotomohiro  staff  1560  1 10 16:41 ソフトリンクファイル作成.pl*
+$ cat シンボリックファイル.c	←☆読み込めない。
+cat: シンボリックファイル.c: No such file or directory
+$
+```
+ハードリンクファイルとの違いが判明した。  
 
 
 <a name="practicaluseFileoperationSpecialvariables"></a>
