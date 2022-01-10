@@ -5954,6 +5954,30 @@ total 32
 $
 ```
 
+以下、上記プログラムからclose演算子をコメントアウトした場合の結果(ファイルハンドルへの書き込みもなし)。
+```terminal
+$ ll
+total 32
+-rwxr-xr-x  1 asakunotomohiro  staff  1844  1 10 16:12 ハードリンクファイル作成.pl*
+$ perl test.pl
+ファイル(リンクファイル.txt)作成実施。
+以下、リンクリンク.cファイル内容の出力。	←☆読み込みが行われない。
+以下、リンクファイル.txtファイル内容の出力。	←☆読み込みが行われない。
+$ ll
+total 48
+-rw-r--r--  2 asakunotomohiro  staff   106  1 10 16:12 リンクリンク.c
+-rw-r--r--  2 asakunotomohiro  staff   106  1 10 16:12 リンクファイル.txt
+-rwxr-xr-x  1 asakunotomohiro  staff  1844  1 10 16:12 ハードリンクファイル作成.pl*
+$ cat リンクリンク.c	←☆しかし、書き込まれている(しかし、書き込み順序が可笑しい)。
+大本のファイルに書き込み。
+リンクファイルに書き込み。
+リンクファイル.txt
+$ cat リンクファイル.txt	←☆しかし、書き込まれている(ただし、書き込み順序が可笑しい)。
+大本のファイルに書き込み。
+リンクファイルに書き込み。
+リンクファイル.txt
+$
+```
 
 <a name="practicaluseFileoperationSpecialvariables"></a>
 ### 特殊変数
