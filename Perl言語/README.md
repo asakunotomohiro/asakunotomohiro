@@ -6108,6 +6108,45 @@ $
 ハードリンクファイルとの違いが判明した。  
 
 
+#### ソフトリンクファイルから大本にたどる方法。
+以下、リンクファイル判定プログラム。
+```perl
+use v5.24;
+
+sub linkfunc() {
+	my $hoge = "ファイル.txt";	# 大本のファイル名。
+	die "書き込み失敗($!)。" unless open my $file_fh, '>>', $hoge;
+
+	my $symfile = 'シンボリックファイル.c';
+	symlink $hoge, $symfile or warn "ソフトリンクファイル作成失敗($!)。";
+
+	my $linkfile = 'ハードリンクファイル.c';
+	link $hoge, $linkfile or warn "ハードリンクファイル作成失敗($!)。";
+
+	say "$hogeファイルの大本のファイルをたどる=>" . readlink $hoge;
+	say "$symfileファイルの大本のファイルをたどる=>" . readlink $symfile;
+	say "$linkfileファイルの大本のファイルをたどる=>" . readlink $linkfile;
+}
+&linkfunc(@ARGV);
+```
+以下、その結果。
+```terminal
+$ perl リンクファイル確認.pl
+ファイル.txtファイルの大本のファイルをたどる=>
+シンボリックファイル.cファイルの大本のファイルをたどる=>ファイル.txt
+ハードリンクファイル.cファイルの大本のファイルをたどる=>
+$ ll
+total 48
+lrwxr-xr-x  1 asakunotomohiro  staff    16  1 10 17:00 シンボリックファイル.c@ -> ファイル.txt	←☆ソフトリンクファイル。
+-rw-r--r--  2 asakunotomohiro  staff     0  1 10 17:00 ファイル.txt	←☆大本ファイル。
+-rw-r--r--  2 asakunotomohiro  staff     0  1 10 17:00 ハードリンクファイル.c	←☆ハードリンクファイル。
+-rwxr-xr-x  1 asakunotomohiro  staff  1783  1 10 16:51 リンクファイル確認.pl*
+$
+```
+シンボリックリンクでない場合の結果は、undefが返る。  
+ハードリンクファイルの扱いはどうすれば良い？  
+
+
 <a name="practicaluseFileoperationSpecialvariables"></a>
 ### 特殊変数
 一般的に変更不要だが、どうしても変更する場合は、処理終了後に戻すこと。  

@@ -43,6 +43,11 @@ sub asakunoInputOutput() {
 	}
 	close $file_fh;
 
+	say "以下、シンボリックファイルの確認。";
+	say "$asakunoファイルの大本のファイルをたどる=>" . readlink $asakuno;
+	say "$tomohiroファイルの大本のファイルをたどる=>" . readlink $tomohiro;
+		# そもそもが大本ファイルの場合は、undefの結果になる。
+
 	# 削除する順番は順不同で構わないようだ。
 	unlink $tomohiro or warn "$tomohiroファイル削除失敗($!)。";
 	unlink $asakuno or warn "$asakunoファイル削除失敗($!)。";
