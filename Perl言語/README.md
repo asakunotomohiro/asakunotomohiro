@@ -187,6 +187,7 @@ $
     [x] ファイル書き込み。  
     [x] ファイル削除。  
     [x] ファイル名変更(ファイル移動)。  
+    [x] リンクファイル  
     [x] 特殊変数(`$.`・`$/`・`$\`・`$,`・`$"`・`$0`・`$^W`・`$ARGV`・`@ARGV`・`@F`・`DATAファイルハンドル`・本来はまだある)  
   * [ ] [ディレクトリ操作](#practicaluseDirectorymanipulation)  
     [x] カレントディレクトリ取得。  
@@ -5312,6 +5313,10 @@ $ cat abc	←☆書き込み完了。
 明日も晴天だ。
 $
 ```
+別のプログラムでの話だが、ファイルオープン直後に`$| = 1;`処理をさせたが、書き込みが即座に行われなかった。  
+仕方ないため、close演算子を持ち込み、即座に出力させた(効率が悪いと言うより、悪手だと思う)。  
+その原因が、ファイルハンドルを切り替えずに使ったため。  
+有効にするには、**select**でわざわざ切り替える必要があった・・・めんどくさい。  
 
 
 <a name="practicaluseFileoperationfileopenerrwrite"></a>
@@ -5860,6 +5865,317 @@ $ perl ファイル名変更.pl
 	以上、ここまでがディレクトリ配下の状況。
 	boo.md	←☆カレントディレクトリに移動完了。
 boo.mdファイル削除。	←☆後始末。
+$
+```
+
+
+<a name="practicaluseFileoperationlinkandfile"></a>
+### リンクとファイル
+
+* リンクによる制限  
+  ハードリンク(hard link)のこと(`link '元ファイル名', 'リンクファイル名' or warn "ハードリンク作成失敗$!"`)。  
+  * ディレクトリに対してリンク作成は出来ない。  
+  * ディスクを跨いだリンク付けはできない。  
+
+  ハードリンクで作成されたファイルの扱いが分からない。  
+  元のファイルと繋がっているのは分かる。そのため、書き込みなどの編集が反映されるのも分かる。  
+  しかし、元のファイルが削除されても気にせずにリンクファイルが存在し、問題なくファイルとして書き込まれた内容が健在だ。  
+  そのため、ハードリンクファイルなのか、本来のファイルなのか判断できない。  
+  これは困ると思うのだが、なぜこれがまかり通るのだろう(今は利用が非推奨扱いではあるが)。  
+
+* 上記の制限回避方法  
+  * シンボリックリンク(ソフトリンク・symbolic link・soft link)の活用。  
+    `symlink '元ファイル名', 'リンクファイル名' or "シンボリックリンク作成失敗$!"`
+
+
+#### ハードリンクファイル作成
+以下、ハードリンクファイル作成用プログラム例）
+```perl
+use v5.24;
+
+sub linkfunc() {
+	my $hoge = "リンクファイル.txt";	# 変更前のファイル名。
+	say "ファイル($hoge)作成実施。";
+	die "書き込み失敗($!)。" unless open my $file_fh, '>>', $hoge;
+	select $file_fh;	# 下記のフラッシュを有効にするには、ファイルハンドルを切り替える必要がある。
+	$| = 1;	# 即座にフラッシュする。
+	say $hoge;	# 書き込み。
+	select STDOUT;
+
+	my $cfile = 'リンクリンク.c';
+	link $hoge, $cfile or warn "ハードリンクファイル作成失敗($!)。";
+
+	die "$cfileファイルに書き込み失敗($!)。" unless open my $file_fh, '>>', $cfile;
+	$| = 1;	# ファイルハンドルの切り替えをしていないため、意味がない結果になる。
+	say $file_fh "リンクファイルに書き込み。";
+	close $file_fh;	# $|が機能しないため、わざわざ閉じる必要がある。
+	die "$hogeファイルに書き込み失敗($!)。" unless open my $file_fh, '>>', $hoge;
+	say $file_fh "大本のファイルに書き込み。";
+	close $file_fh;	# 書き込みを有効化するため、必要な処理。
+
+	say "以下、$cfileファイル内容の出力。";
+	die "$cfileファイルから読み込み失敗($!)。" unless open my $file_fh, '<', $cfile;
+	while( <$file_fh> ) {
+		chomp;
+		say "\t$_";
+	}
+	#close $file_fh;	# 読み込みは不要なようだ。
+	say "以下、$hogeファイル内容の出力。";
+	die "$hogeファイルから読み込み失敗($!)。" unless open my $file_fh, '<', $hoge;
+	while( <$file_fh> ) {
+		chomp;
+		say "\t$_";
+	}
+	close $file_fh;
+
+	# 削除する順番は順不同で構わないようだ。
+	unlink $cfile or warn "$cfileファイル削除失敗($!)。";
+	unlink $hoge or warn "$hogeファイル削除失敗($!)。";
+}
+&linkfunc(@ARGV);
+```
+
+以下、実行。
+```terminal
+$ ll
+total 32
+-rwxr-xr-x  1 asakunotomohiro  staff  1810  1 10 16:06 ハードリンクファイル作成.pl*
+$ perl test.pl
+ファイル(リンクファイル.txt)作成実施。
+以下、リンクリンク.cファイル内容の出力。
+	リンクファイル.txt
+	リンクファイルに書き込み。
+	大本のファイルに書き込み。
+以下、リンクファイル.txtファイル内容の出力。
+	リンクファイル.txt
+	リンクファイルに書き込み。
+	大本のファイルに書き込み。
+$ ll
+total 32
+-rwxr-xr-x  1 asakunotomohiro  staff  1810  1 10 16:06 ハードリンクファイル作成.pl*
+$
+```
+
+以下、上記プログラムからclose演算子をコメントアウトした場合の結果(ファイルハンドルへの書き込みもなし)。
+```terminal
+$ ll
+total 32
+-rwxr-xr-x  1 asakunotomohiro  staff  1844  1 10 16:12 ハードリンクファイル作成.pl*
+$ perl test.pl
+ファイル(リンクファイル.txt)作成実施。
+以下、リンクリンク.cファイル内容の出力。	←☆読み込みが行われない。
+以下、リンクファイル.txtファイル内容の出力。	←☆読み込みが行われない。
+$ ll
+total 48
+-rw-r--r--  2 asakunotomohiro  staff   106  1 10 16:12 リンクリンク.c
+-rw-r--r--  2 asakunotomohiro  staff   106  1 10 16:12 リンクファイル.txt
+-rwxr-xr-x  1 asakunotomohiro  staff  1844  1 10 16:12 ハードリンクファイル作成.pl*
+$ cat リンクリンク.c	←☆しかし、書き込まれている(しかし、書き込み順序が可笑しい)。
+大本のファイルに書き込み。
+リンクファイルに書き込み。
+リンクファイル.txt
+$ cat リンクファイル.txt	←☆しかし、書き込まれている(ただし、書き込み順序が可笑しい)。
+大本のファイルに書き込み。
+リンクファイルに書き込み。
+リンクファイル.txt
+$
+```
+
+以下、大本のファイルを削除後、ハードリンクファイル内容を確認した結果。
+```terminal
+$ ll
+total 32
+-rwxr-xr-x  1 asakunotomohiro  staff  1812  1 10 16:19 ハードリンクファイル作成.pl*
+$ perl test.pl
+ファイル(リンクファイル.txt)作成実施。
+以下、リンクリンク.cファイル内容の出力。
+	リンクファイル.txt
+	リンクファイルに書き込み。
+	大本のファイルに書き込み。
+以下、リンクファイル.txtファイル内容の出力。
+	リンクファイル.txt
+	リンクファイルに書き込み。
+	大本のファイルに書き込み。
+$ ll
+total 48
+-rw-r--r--  2 asakunotomohiro  staff   106  1 10 16:19 リンクリンク.c	←☆ハードリンクファイル。
+-rw-r--r--  2 asakunotomohiro  staff   106  1 10 16:19 リンクファイル.txt	←☆大本ファイル。
+-rwxr-xr-x  1 asakunotomohiro  staff  1812  1 10 16:19 ハードリンクファイル作成.pl*
+$ rm リンクファイル.txt	←☆大本ファイルの削除。
+$ ll
+total 40
+-rw-r--r--  1 asakunotomohiro  staff   106  1 10 16:19 リンクリンク.c	←☆ハードリンクファイルのみある。
+-rwxr-xr-x  1 asakunotomohiro  staff  1812  1 10 16:19 ハードリンクファイル作成.pl*
+$ cat リンクリンク.c	←☆ハードリンクファイルであるにもかかわらず、大本ファイルの存在を無視して中身が保持されている。
+リンクファイル.txt
+リンクファイルに書き込み。
+大本のファイルに書き込み。
+$
+```
+
+
+#### ソフトリンク(シンボリックリンク)ファイル作成
+以下、ソフトリンクファイル作成用プログラム例）
+```perl
+use v5.24;
+
+sub linkfunc() {
+	my $hoge = "ソフトリンクファイル.txt";	# 変更前のファイル名。
+	say "ファイル($hoge)作成実施。";
+	die "書き込み失敗($!)。" unless open my $file_fh, '>>', $hoge;
+	say $file_fh $hoge;	# 書き込み。
+	close $file_fh;	# ファイルハンドル切り替えをしていない場合、わざわざ閉じる必要がある。
+
+	my $cfile = 'シンボリックファイル.c';
+	symlink $hoge, $cfile or warn "ソフトリンクファイル作成失敗($!)。";
+
+	die "$cfileファイルに書き込み失敗($!)。" unless open my $file_fh, '>>', $cfile;
+	say $file_fh "リンクファイルに書き込み。";
+	close $file_fh;	# わざわざ閉じる必要がある。
+
+	die "$hogeファイルに書き込み失敗($!)。" unless open my $file_fh, '>>', $hoge;
+	say $file_fh "大本のファイルに書き込み。";
+	close $file_fh;	# わざわざ閉じる必要がある。
+
+	say "以下、$cfileファイル内容の出力。";
+	die "$cfileファイルから読み込み失敗($!)。" unless open my $file_fh, '<', $cfile;
+	while( <$file_fh> ) {
+		chomp;
+		say "\t$_";
+	}
+	say "以下、$hogeファイル内容の出力。";
+	die "$hogeファイルから読み込み失敗($!)。" unless open my $file_fh, '<', $hoge;
+	while( <$file_fh> ) {
+		chomp;
+		say "\t$_";
+	}
+	close $file_fh;
+
+	# 削除する順番は順不同で構わないようだ。
+	unlink $cfile or warn "$cfileファイル削除失敗($!)。";
+	unlink $hoge or warn "$hogeファイル削除失敗($!)。";
+}
+&linkfunc(@ARGV);
+```
+
+以下、(ファイル削除処理はコメントアウト後の)実行結果。
+```terminal
+$ ll
+total 40
+-rwxr-xr-x  1 asakunotomohiro  staff  1560  1 10 16:41 ソフトリンクファイル作成.pl*
+$ perl ソフトリンクファイル作成.pl
+ファイル(ソフトリンクファイル.txt)作成実施。
+以下、シンボリックファイル.cファイル内容の出力。
+	ソフトリンクファイル.txt
+	リンクファイルに書き込み。
+	大本のファイルに書き込み。
+以下、ソフトリンクファイル.txtファイル内容の出力。
+	ソフトリンクファイル.txt
+	リンクファイルに書き込み。
+	大本のファイルに書き込み。
+$ ll
+total 48
+-rw-r--r--  1 asakunotomohiro  staff   115  1 10 16:41 ソフトリンクファイル.txt	←☆大本のファイル。
+lrwxr-xr-x  1 asakunotomohiro  staff    34  1 10 16:41 シンボリックファイル.c@ -> ソフトリンクファイル.txt	←☆リンクファイルだとひと目で分かる。
+-rwxr-xr-x  1 asakunotomohiro  staff  1560  1 10 16:41 ソフトリンクファイル作成.pl*
+$ cat ソフトリンクファイル.txt
+ソフトリンクファイル.txt
+リンクファイルに書き込み。
+大本のファイルに書き込み。
+$ cat シンボリックファイル.c
+ソフトリンクファイル.txt
+リンクファイルに書き込み。
+大本のファイルに書き込み。
+$
+```
+
+以下、リンクファイルの挙動確認作業。
+```terminal
+$ ll
+total 48
+-rw-r--r--  1 asakunotomohiro  staff   115  1 10 16:41 ソフトリンクファイル.txt
+lrwxr-xr-x  1 asakunotomohiro  staff    34  1 10 16:41 シンボリックファイル.c@ -> ソフトリンクファイル.txt
+-rwxr-xr-x  1 asakunotomohiro  staff  1560  1 10 16:41 ソフトリンクファイル作成.pl*
+$ rm ソフトリンクファイル.txt	←☆大本のファイル削除。
+$ ll
+total 40
+lrwxr-xr-x  1 asakunotomohiro  staff    34  1 10 16:41 シンボリックファイル.c@ -> ソフトリンクファイル.txt
+-rwxr-xr-x  1 asakunotomohiro  staff  1560  1 10 16:41 ソフトリンクファイル作成.pl*
+$ cat シンボリックファイル.c	←☆読み込めない。
+cat: シンボリックファイル.c: No such file or directory
+$
+```
+ハードリンクファイルとの違いが判明した。  
+
+
+#### ソフトリンクファイルから大本にたどる方法。
+以下、リンクファイル判定プログラム。
+```perl
+use v5.24;
+
+sub linkfunc() {
+	my $hoge = "ファイル.txt";	# 大本のファイル名。
+	die "書き込み失敗($!)。" unless open my $file_fh, '>>', $hoge;
+
+	my $symfile = 'シンボリックファイル.c';
+	symlink $hoge, $symfile or warn "ソフトリンクファイル作成失敗($!)。";
+
+	my $linkfile = 'ハードリンクファイル.c';
+	link $hoge, $linkfile or warn "ハードリンクファイル作成失敗($!)。";
+
+	say "$hogeファイルの大本のファイルをたどる=>" . readlink $hoge;
+	say "$symfileファイルの大本のファイルをたどる=>" . readlink $symfile;
+	say "$linkfileファイルの大本のファイルをたどる=>" . readlink $linkfile;
+}
+&linkfunc(@ARGV);
+```
+以下、その結果。
+```terminal
+$ perl リンクファイル確認.pl
+ファイル.txtファイルの大本のファイルをたどる=>
+シンボリックファイル.cファイルの大本のファイルをたどる=>ファイル.txt
+ハードリンクファイル.cファイルの大本のファイルをたどる=>
+$ ll
+total 48
+lrwxr-xr-x  1 asakunotomohiro  staff    16  1 10 17:00 シンボリックファイル.c@ -> ファイル.txt	←☆ソフトリンクファイル。
+-rw-r--r--  2 asakunotomohiro  staff     0  1 10 17:00 ファイル.txt	←☆大本ファイル。
+-rw-r--r--  2 asakunotomohiro  staff     0  1 10 17:00 ハードリンクファイル.c	←☆ハードリンクファイル。
+-rwxr-xr-x  1 asakunotomohiro  staff  1783  1 10 16:51 リンクファイル確認.pl*
+$
+```
+シンボリックリンクでない場合の結果は、undefが返る。  
+ハードリンクファイルの扱いはどうすれば良い？  
+
+
+#### 存在しないファイルからソフトリンクファイルの作成。
+ファイルが存在しない場合、ハードリンクファイル作成はできない。  
+しかし、ソフトリンクファイルの場合は、大本ファイルの存在有無にかかわらず、作成できる。  
+以下、プログラム。
+```perl
+use v5.24;
+
+sub linkfunc() {
+	my $symfile = 'シンボリックファイル.c';
+	symlink '存在しないファイル.txt', $symfile or warn "ソフトリンクファイル作成失敗($!)。";
+
+	my $linkfile = 'ハードリンクファイル.c';
+	link '存在しないファイル.txt', $linkfile or warn "ハードリンクファイル作成失敗($!)。";
+}
+&linkfunc(@ARGV);
+```
+以下、実行結果。
+```terminal
+$ ll
+total 48
+-rwxr-xr-x  1 asakunotomohiro  staff   379  1 10 17:13 リンクファイル作成.pl*
+$ perl リンクファイル作成.pl
+ハードリンクファイル作成失敗(No such file or directory)。 at リンクファイル作成.pl line 8.
+$ ll
+total 48
+lrwxr-xr-x  1 asakunotomohiro  staff    31  1 10 17:13 シンボリックファイル.c@ -> 存在しないファイル.txt
+-rwxr-xr-x  1 asakunotomohiro  staff   379  1 10 17:13 リンクファイル作成.pl*
+$ cat シンボリックファイル.c	←☆開くことは出来ない(当たり前)。
+cat: シンボリックファイル.c: No such file or directory	←☆大本ファイルがないから開けないため、このエラーは可笑しいだろう。
 $
 ```
 
