@@ -5313,6 +5313,10 @@ $ cat abc	←☆書き込み完了。
 明日も晴天だ。
 $
 ```
+別のプログラムでの話だが、ファイルオープン直後に`$| = 1;`処理をさせたが、書き込みが即座に行われなかった。  
+仕方ないため、close演算子を持ち込み、即座に出力させた(効率が悪いと言うより、悪手だと思う)。  
+その原因が、ファイルハンドルを切り替えずに使ったため。  
+有効にするには、**select**でわざわざ切り替える必要があった・・・めんどくさい。  
 
 
 <a name="practicaluseFileoperationfileopenerrwrite"></a>
@@ -5873,9 +5877,82 @@ $
   * ディレクトリに対してリンク作成は出来ない。  
   * ディスクを跨いだリンク付けはできない。  
 
+  ハードリンクで作成されたファイルの扱いが分からない。  
+  元のファイルと繋がっているのは分かる。そのため、書き込みなどの編集が反映されるのも分かる。  
+  しかし、元のファイルが削除されても気にせずにリンクファイルが存在し、問題なくファイルとして書き込まれた内容が健在だ。  
+  そのため、ハードリンクファイルなのか、本来のファイルなのか判断できない。  
+  これは困ると思うのだが、なぜこれがまかり通るのだろう(今は利用が非推奨扱いではあるが)。  
+
 * 上記の制限回避方法  
   * シンボリックリンク(ソフトリンク・symbolic link・soft link)の活用。  
     `symlink '元ファイル名', 'リンクファイル名' or "シンボリックリンク作成失敗$!"`
+
+以下、ハードリンクファイル作成用プログラム例）
+```perl
+use v5.24;
+
+sub linkfunc() {
+	my $hoge = "リンクファイル.txt";	# 変更前のファイル名。
+	say "ファイル($hoge)作成実施。";
+	die "書き込み失敗($!)。" unless open my $file_fh, '>>', $hoge;
+	select $file_fh;	# 下記のフラッシュを有効にするには、ファイルハンドルを切り替える必要がある。
+	$| = 1;	# 即座にフラッシュする。
+	say $hoge;	# 書き込み。
+	select STDOUT;
+
+	my $cfile = 'リンクリンク.c';
+	link $hoge, $cfile or warn "ハードリンクファイル作成失敗($!)。";
+
+	die "$cfileファイルに書き込み失敗($!)。" unless open my $file_fh, '>>', $cfile;
+	$| = 1;	# ファイルハンドルの切り替えをしていないため、意味がない結果になる。
+	say $file_fh "リンクファイルに書き込み。";
+	close $file_fh;	# $|が機能しないため、わざわざ閉じる必要がある。
+	die "$hogeファイルに書き込み失敗($!)。" unless open my $file_fh, '>>', $hoge;
+	say $file_fh "大本のファイルに書き込み。";
+	close $file_fh;	# 書き込みを有効化するため、必要な処理。
+
+	say "以下、$cfileファイル内容の出力。";
+	die "$cfileファイルから読み込み失敗($!)。" unless open my $file_fh, '<', $cfile;
+	while( <$file_fh> ) {
+		chomp;
+		say "\t$_";
+	}
+	#close $file_fh;	# 読み込みは不要なようだ。
+	say "以下、$hogeファイル内容の出力。";
+	die "$hogeファイルから読み込み失敗($!)。" unless open my $file_fh, '<', $hoge;
+	while( <$file_fh> ) {
+		chomp;
+		say "\t$_";
+	}
+	close $file_fh;
+
+	# 削除する順番は順不同で構わないようだ。
+	unlink $cfile or warn "$cfileファイル削除失敗($!)。";
+	unlink $hoge or warn "$hogeファイル削除失敗($!)。";
+}
+&linkfunc(@ARGV);
+```
+
+以下、実行。
+```terminal
+$ ll
+total 32
+-rwxr-xr-x  1 asakunotomohiro  staff  1810  1 10 16:06 ハードリンクファイル作成.pl*
+$ perl test.pl
+ファイル(リンクファイル.txt)作成実施。
+以下、リンクリンク.cファイル内容の出力。
+	リンクファイル.txt
+	リンクファイルに書き込み。
+	大本のファイルに書き込み。
+以下、リンクファイル.txtファイル内容の出力。
+	リンクファイル.txt
+	リンクファイルに書き込み。
+	大本のファイルに書き込み。
+$ ll
+total 32
+-rwxr-xr-x  1 asakunotomohiro  staff  1810  1 10 16:06 ハードリンクファイル作成.pl*
+$
+```
 
 
 <a name="practicaluseFileoperationSpecialvariables"></a>
