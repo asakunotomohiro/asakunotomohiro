@@ -5887,6 +5887,8 @@ $
   * シンボリックリンク(ソフトリンク・symbolic link・soft link)の活用。  
     `symlink '元ファイル名', 'リンクファイル名' or "シンボリックリンク作成失敗$!"`
 
+
+#### ハードリンクファイル作成
 以下、ハードリンクファイル作成用プログラム例）
 ```perl
 use v5.24;
@@ -6010,6 +6012,83 @@ $ cat リンクリンク.c	←☆ハードリンクファイルであるにも�
 大本のファイルに書き込み。
 $
 ```
+
+
+#### ソフトリンク(シンボリックリンク)ファイル作成
+以下、ソフトリンクファイル作成用プログラム例）
+```perl
+use v5.24;
+
+sub linkfunc() {
+	my $hoge = "ソフトリンクファイル.txt";	# 変更前のファイル名。
+	say "ファイル($hoge)作成実施。";
+	die "書き込み失敗($!)。" unless open my $file_fh, '>>', $hoge;
+	say $file_fh $hoge;	# 書き込み。
+	close $file_fh;	# ファイルハンドル切り替えをしていない場合、わざわざ閉じる必要がある。
+
+	my $cfile = 'シンボリックファイル.c';
+	symlink $hoge, $cfile or warn "ソフトリンクファイル作成失敗($!)。";
+
+	die "$cfileファイルに書き込み失敗($!)。" unless open my $file_fh, '>>', $cfile;
+	say $file_fh "リンクファイルに書き込み。";
+	close $file_fh;	# わざわざ閉じる必要がある。
+
+	die "$hogeファイルに書き込み失敗($!)。" unless open my $file_fh, '>>', $hoge;
+	say $file_fh "大本のファイルに書き込み。";
+	close $file_fh;	# わざわざ閉じる必要がある。
+
+	say "以下、$cfileファイル内容の出力。";
+	die "$cfileファイルから読み込み失敗($!)。" unless open my $file_fh, '<', $cfile;
+	while( <$file_fh> ) {
+		chomp;
+		say "\t$_";
+	}
+	say "以下、$hogeファイル内容の出力。";
+	die "$hogeファイルから読み込み失敗($!)。" unless open my $file_fh, '<', $hoge;
+	while( <$file_fh> ) {
+		chomp;
+		say "\t$_";
+	}
+	close $file_fh;
+
+	# 削除する順番は順不同で構わないようだ。
+	unlink $cfile or warn "$cfileファイル削除失敗($!)。";
+	unlink $hoge or warn "$hogeファイル削除失敗($!)。";
+}
+&linkfunc(@ARGV);
+```
+
+以下、(ファイル削除処理はコメントアウト後の)実行結果。
+```terminal
+$ ll
+total 40
+-rwxr-xr-x  1 asakunotomohiro  staff  1560  1 10 16:41 ソフトリンクファイル作成.pl*
+$ perl ソフトリンクファイル作成.pl
+ファイル(ソフトリンクファイル.txt)作成実施。
+以下、シンボリックファイル.cファイル内容の出力。
+	ソフトリンクファイル.txt
+	リンクファイルに書き込み。
+	大本のファイルに書き込み。
+以下、ソフトリンクファイル.txtファイル内容の出力。
+	ソフトリンクファイル.txt
+	リンクファイルに書き込み。
+	大本のファイルに書き込み。
+$ ll
+total 48
+-rw-r--r--  1 asakunotomohiro  staff   115  1 10 16:41 ソフトリンクファイル.txt	←☆大本のファイル。
+lrwxr-xr-x  1 asakunotomohiro  staff    34  1 10 16:41 シンボリックファイル.c@ -> ソフトリンクファイル.txt	←☆リンクファイルだとひと目で分かる。
+-rwxr-xr-x  1 asakunotomohiro  staff  1560  1 10 16:41 ソフトリンクファイル作成.pl*
+$ cat ソフトリンクファイル.txt
+ソフトリンクファイル.txt
+リンクファイルに書き込み。
+大本のファイルに書き込み。
+$ cat シンボリックファイル.c
+ソフトリンクファイル.txt
+リンクファイルに書き込み。
+大本のファイルに書き込み。
+$
+```
+
 
 
 <a name="practicaluseFileoperationSpecialvariables"></a>

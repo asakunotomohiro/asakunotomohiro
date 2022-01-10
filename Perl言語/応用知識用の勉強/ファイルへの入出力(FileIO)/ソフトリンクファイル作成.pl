@@ -6,38 +6,27 @@ use Cwd;	# カレントディレクトリ呼び出しモジュール。
 my $asakuno = "朝来野智博";
 my @asakuno = qw( 朝来野 智博 朝来野智博 );
 
-say "ハードリンクファイル作成";
+say "シンボリックリンクファイル作成";
 
 sub asakunoInputOutput() {
-	my $asakuno = "リンクファイル.txt";	# 変更前のファイル名。
+	my $asakuno = "ソフトリンクファイル.txt";	# 変更前のファイル名。
 	say "ファイル($asakuno)作成実施。";
-	# die "書き込み失敗($!)。" unless open FILE, '>>', $asakuno;
-	#	書き込み失敗(Permission denied)。 at test.pl line 14.
-	# die "書き込み失敗$!" unless open FILE, '>>', $asakuno;
-	#	書き込み失敗Permission denied at test.pl line 16.
-	# die "書き込み失敗$!\n" unless open FILE, '>>', $asakuno;
-	#	書き込み失敗Permission denied
 	die "書き込み失敗($!)。" unless open my $file_fh, '>>', $asakuno;
-	my $filehandle = *STDOUT;	# 待避しておく必要あるのか？
-	select $file_fh;	# 下記のフラッシュを有効にするには、ファイルハンドルを切り替える必要がある。
-	$| = 1;	# 即座にフラッシュする。
-	say $asakuno;	# 書き込み。
-	select $filehandle;
-	#close $file_fh;	# ファイルハンドル切り替えをしていない場合、わざわざ閉じる必要があるようだ。
+	say $file_fh $asakuno;	# 書き込み。
+	close $file_fh;	# ファイルハンドル切り替えをしていない場合、わざわざ閉じる必要がある。
 
-	#link 'リンクリンク.c', $asakuno or warn "ハードリンクファイル作成失敗($!)。";
-	#	ハードリンクファイル作成失敗(No such file or directory)。 at test.pl line 29.
-	my $tomohiro = 'リンクリンク.c';
-	link $asakuno, $tomohiro or warn "ハードリンクファイル作成失敗($!)。";
+	my $tomohiro = 'シンボリックファイル.c';
+	#	既存のソフトリンクファイルがある場合、作成に失敗する。
+	symlink $asakuno, $tomohiro or warn "ソフトリンクファイル作成失敗($!)。";
+	#	ソフトリンクファイル作成失敗(File exists)。 at ソフトリンクファイル作成.pl line 20.
 
 	die "$tomohiroファイルに書き込み失敗($!)。" unless open my $file_fh, '>>', $tomohiro;
-	$| = 1;	# 意味がない結果になる。
 	say $file_fh "リンクファイルに書き込み。";
-	close $file_fh;	# わざわざ閉じる必要があるようだ。
+	close $file_fh;	# わざわざ閉じる必要がある。
+
 	die "$asakunoファイルに書き込み失敗($!)。" unless open my $file_fh, '>>', $asakuno;
-	$| = 1;	# 意味がない結果になる。
 	say $file_fh "大本のファイルに書き込み。";
-	close $file_fh;	# わざわざ閉じる必要があるようだ。
+	close $file_fh;	# わざわざ閉じる必要がある。
 
 	say "以下、$tomohiroファイル内容の出力。";
 	die "$tomohiroファイルから読み込み失敗($!)。" unless open my $file_fh, '<', $tomohiro;
