@@ -5979,6 +5979,39 @@ $ cat リンクファイル.txt	←☆しかし、書き込まれている(た�
 $
 ```
 
+以下、大本のファイルを削除後、ハードリンクファイル内容を確認した結果。
+```terminal
+$ ll
+total 32
+-rwxr-xr-x  1 asakunotomohiro  staff  1812  1 10 16:19 ハードリンクファイル作成.pl*
+$ perl test.pl
+ファイル(リンクファイル.txt)作成実施。
+以下、リンクリンク.cファイル内容の出力。
+	リンクファイル.txt
+	リンクファイルに書き込み。
+	大本のファイルに書き込み。
+以下、リンクファイル.txtファイル内容の出力。
+	リンクファイル.txt
+	リンクファイルに書き込み。
+	大本のファイルに書き込み。
+$ ll
+total 48
+-rw-r--r--  2 asakunotomohiro  staff   106  1 10 16:19 リンクリンク.c	←☆ハードリンクファイル。
+-rw-r--r--  2 asakunotomohiro  staff   106  1 10 16:19 リンクファイル.txt	←☆大本ファイル。
+-rwxr-xr-x  1 asakunotomohiro  staff  1812  1 10 16:19 ハードリンクファイル作成.pl*
+$ rm リンクファイル.txt	←☆大本ファイルの削除。
+$ ll
+total 40
+-rw-r--r--  1 asakunotomohiro  staff   106  1 10 16:19 リンクリンク.c	←☆ハードリンクファイルのみある。
+-rwxr-xr-x  1 asakunotomohiro  staff  1812  1 10 16:19 ハードリンクファイル作成.pl*
+$ cat リンクリンク.c	←☆ハードリンクファイルであるにもかかわらず、大本ファイルの存在を無視して中身が保持されている。
+リンクファイル.txt
+リンクファイルに書き込み。
+大本のファイルに書き込み。
+$
+```
+
+
 <a name="practicaluseFileoperationSpecialvariables"></a>
 ### 特殊変数
 一般的に変更不要だが、どうしても変更する場合は、処理終了後に戻すこと。  
