@@ -1,6 +1,6 @@
 class average {
 	public static void main(String[] args){
-		var score = new int[] {
+		int[] score = {
 						70,
 						98,
 						92,
@@ -8,10 +8,10 @@ class average {
 						64,
 					};
 		var total = 0;
-		for( int ii = 0; score.length > ii; ii++ ) {
-			total += score[ii];
+		for( int value:score ) {
+			total += value;
 		}
-		var average = (float)total / score.length;
+		var average = total / (float)score.length;
 		System.out.printf("合計点 %d\n", total);	// 合計点 412
 		System.out.printf("平均点 %f\n", average);	// 平均点 82.400002
 	}
