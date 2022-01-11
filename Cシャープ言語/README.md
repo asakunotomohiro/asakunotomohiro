@@ -1203,7 +1203,7 @@ namespace 関数
   基礎的なプログラミングの力を養っていく。  
   例えば、配列利用の関数定義・繰り返し・再帰関数・条件分岐など。  
   以下、各項目(目次)。  
-  [ ] [平均値を求める。](#findTheAverageValueChapter2)  
+  [x] [平均値を求める。](#findTheAverageValueChapter2)2022/01/11  
   [ ] [1からnまで足し合わせる。](#addFrom1tonChapter2)  
   [ ] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
   [ ] [素数を求める。](#findAPrimeNumberChapter2)  
@@ -1292,6 +1292,48 @@ namespace 関数
 
 <a name="findTheAverageValueChapter2"></a>
 #### 平均値を求める。
+勉強内容はPythonと基本同じ。  
+それをC#用に移植する。  
+
+* ルール。  
+  * 点数を配列で定義する。  
+    `var score = new int[]{ 70, 98, 92, 88, 64, };`  
+    Python用配列：`score = [70, 98, 92, 88, 64]`  
+    Perl用配列：`my @score = (70, 98, 92, 88, 64);`  
+    vimScript9用配列：`var score = [70, 98, 92, 88, 64]`  
+    C言語用配列：`int score[] = {70, 98, 92, 88, 64};`  
+    Go言語用配列：`var score = [...]int {70, 98, 92, 88, 64};`  
+    Java言語用配列：`int[] score = { 70, 98, 92, 88, 64, };`  
+  * `for`を用いる。  
+
+以下、プログラム。
+```csharp
+using System;
+
+namespace average
+{
+	class MainClass
+	{
+		public static void Main(string[] args)
+		{
+			var score = new int[]{ 70, 98, 92, 88, 64, };
+			var total = 0;
+			foreach (int value in score)
+			{
+				total += value;
+			}
+			var average = (float)total / score.Length;
+            // 以下、出力フォーマットを2種類使った(1つ目も文字列に変換させるべきなのか？)。
+			Console.WriteLine("合計点 {0}", total);             // 合計点 412
+			Console.WriteLine($"平均点 {average.ToString()}");  // 平均点 82.4
+		}
+	}
+}
+```
+プロジェクトディレクトリ移動時に、以下のエラーが発生した(ディレクトリから移動しただけで発生した)。  
+**average.csproj(1,1): Error: Unknown MSBuild failure. Please try building the project again (average)**  
+何より、C#用に統合開発環境を用意する羽目になっており、エディタで完結しないのは辛い。  
+
 
 <a name="addFrom1tonChapter2"></a>
 #### 1からnまで足し合わせる。
