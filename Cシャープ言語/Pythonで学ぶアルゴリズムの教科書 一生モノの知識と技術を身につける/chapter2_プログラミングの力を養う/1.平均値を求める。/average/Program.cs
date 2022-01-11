@@ -6,7 +6,7 @@ namespace average
 	{
 		public static void Main(string[] args)
 		{
-			int[] score = new int[]{
+			int[] score = {
 							70,
 							98,
 							92,
@@ -14,13 +14,13 @@ namespace average
 							64,
 						};
 			var total = 0;
-			for (int ii = 0; score.Length > ii; ii++)
+			foreach (int value in score)
 			{
-				total += score[ii];
+				total += value;
 			}
-			var average = (float)total / score.Length;
-			Console.WriteLine($"合計点 {total.ToString()}");   // 合計点 412
-			Console.WriteLine($"平均点 {average.ToString()}"); // 平均点 82.4
+			var average = total / (float)score.Length;
+			Console.WriteLine("合計点 {0}", total);   // 合計点 412
+			Console.WriteLine("平均点 {0}", average); // 平均点 82.4
 		}
 	}
 }
