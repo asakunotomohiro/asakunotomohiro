@@ -1203,7 +1203,7 @@ namespace 関数
   基礎的なプログラミングの力を養っていく。  
   例えば、配列利用の関数定義・繰り返し・再帰関数・条件分岐など。  
   以下、各項目(目次)。  
-  [ ] [平均値を求める。](#findTheAverageValueChapter2)  
+  [x] [平均値を求める。](#findTheAverageValueChapter2)2022/01/11  
   [ ] [1からnまで足し合わせる。](#addFrom1tonChapter2)  
   [ ] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
   [ ] [素数を求める。](#findAPrimeNumberChapter2)  
@@ -1292,6 +1292,40 @@ namespace 関数
 
 <a name="findTheAverageValueChapter2"></a>
 #### 平均値を求める。
+勉強内容はPythonと基本同じ。  
+それをC#用に移植する。  
+
+* ルール。  
+  * 点数を配列で定義する。  
+    `score = [70, 98, 92, 88, 64]`
+  * `for`を用いる。  
+
+```csharp
+using System;
+
+namespace average
+{
+	class MainClass
+	{
+		public static void Main(string[] args)
+		{
+			int[] score = new int[]{ 70, 98, 92, 88, 64, };
+			var total = 0;
+			for (int ii = 0; score.Length > ii; ii++)
+			{
+				total += score[ii];
+			}
+			var average = (float)total / score.Length;
+			Console.WriteLine($"合計点 {total.ToString()}");   // 合計点 412
+			Console.WriteLine($"平均点 {average.ToString()}"); // 平均点 82.4
+		}
+	}
+}
+```
+**average.csproj(1,1): Error: Unknown MSBuild failure. Please try building the project again (average)**  
+プロジェクトディレクトリごと移動した時に、エラーが発生した。  
+何でやねん。  
+
 
 <a name="addFrom1tonChapter2"></a>
 #### 1からnまで足し合わせる。
