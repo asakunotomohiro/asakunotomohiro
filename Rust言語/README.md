@@ -678,6 +678,12 @@ fn main() {
     例）`100.234`の場合、数値部分`1.00234`と指数部分`10の2乗`を別々に扱う。  
     数値部分が固定のため、有効桁数を保って計算できるのが利点になる。  
 
+浮動小数点型
+|ビット長|小数精度|符号なし小数|備考|
+|--------|----|------------|----|
+|単精度浮動小数点数|f32||
+|倍精度浮動小数点数|f64||
+
 * Bool型(論理値型)  
   * `true`  
     真  
@@ -1574,7 +1580,7 @@ fn retiffunc( hoge: i32 ) -> i32 {
   基礎的なプログラミングの力を養っていく。  
   例えば、配列利用の関数定義・繰り返し・再帰関数・条件分岐など。  
   以下、各項目(目次)。  
-  [ ] [平均値を求める。](#findTheAverageValueChapter2)  
+  [x] [平均値を求める。](#findTheAverageValueChapter2)2022/01/11  
   [ ] [1からnまで足し合わせる。](#addFrom1tonChapter2)  
   [ ] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
   [ ] [素数を求める。](#findAPrimeNumberChapter2)  
@@ -1666,6 +1672,37 @@ fn retiffunc( hoge: i32 ) -> i32 {
 
 <a name="findTheAverageValueChapter2"></a>
 #### 平均値を求める。
+勉強内容はPythonと基本同じ。  
+それをRust用に移植する。  
+
+* ルール。  
+  * 点数を配列で定義する。  
+    `let score = [ 70, 98, 92, 88, 64, ];`  
+    Python用配列：`score = [70, 98, 92, 88, 64]`  
+    Perl用配列：`my @score = (70, 98, 92, 88, 64);`  
+    vimScript9用配列：`var score = [70, 98, 92, 88, 64]`  
+    C言語用配列：`int score[] = {70, 98, 92, 88, 64};`  
+    Go言語用配列：`var score = [...]int {70, 98, 92, 88, 64};`  
+    Java言語用配列：`int[] score = { 70, 98, 92, 88, 64, };`  
+    C#言語用配列：`var score = new int[]{ 70, 98, 92, 88, 64, };`  
+  * `for`を用いる。  
+
+以下、プログラム。
+```rust
+fn main() {
+	let score = [ 70, 98, 92, 88, 64, ];	// 書き換えない配列を用意する。
+	let mut total = 0;	// 書き換える変数。
+	for value in score {
+		// 配列から1つづつ取り出し、合算。
+		total += value;
+	}
+	let average = total as f32 / score.len() as f32;	// 両方を型変換し、計算する。
+	println!("合計点 {0}", total);		// 合計点 412
+	println!("平均点 {0}", average);	// 平均点 82.4
+}
+```
+コンパイル完了まで長い時間かかる。  
+
 
 <a name="addFrom1tonChapter2"></a>
 #### 1からnまで足し合わせる。
