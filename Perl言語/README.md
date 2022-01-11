@@ -6539,6 +6539,47 @@ helloWorld.pl
 [8進数](#understandnAryNotationChapter2)になっていればいいため、渡す方法は10進数でも16進数でも問題ない。  
 しかし、普通は、8進数で渡す方が良いだろう。  
 
+ディレクトリを削除するには、**rmdir演算子**を使うことで、ディレクトリの削除が完了する。  
+様式：
+`rmdir ディレクトリ名;`  
+
+以下、作成プログラム例）
+```perl
+use v5.24;
+
+my $hogeDir = "本日は晴天なり。";
+
+sub dirMake() {
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(0755=>01363)。
+	unless( -d $hogeDir ) {
+		say "'$hogeDir'ディレクトリがない。";
+	}
+	say "以下、ディレクトリ作成実施。";
+	mkdir $hogeDir, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+	if( -d $hogeDir ) {
+		say "'$hogeDir'ディレクトリがある。";
+	}
+	say "以下、ディレクトリ削除実施。";
+	rmdir $hogeDir or warn "ディレクトリ削除失敗($!)。";
+	if( -d $hogeDir ) {
+		say "'$hogeDir'ディレクトリがある。";
+	}
+	else {
+		say "'$hogeDir'ディレクトリ削除済み。";
+	}
+}
+&dirMake(@ARGV);
+```
+
+以下、実施メッセージ内容。
+```text
+'本日は晴天なり。'ディレクトリがない。
+以下、ディレクトリ作成実施。
+'本日は晴天なり。'ディレクトリがある。
+以下、ディレクトリ削除実施。
+'本日は晴天なり。'ディレクトリ削除済み。
+```
+
 </details>
 
 
