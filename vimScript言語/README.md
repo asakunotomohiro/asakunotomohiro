@@ -1488,6 +1488,7 @@ vim9scriptでは`unlet`が使えないようだ(公式サイトでは[使える]
   [ ] [リスト](#listChapter3)中断2021/12/08  
   [x] [木](#woodChapter3)2021/12/28  
   [x] [グラフ](#graphChapter3)2022/01/02  
+  [x] [スタックとキューを扱う。](#stacksAndQueuesChapter3)2022/01/11  
   [ ] [データを保存する。](#saveTheDataChapter3)  
 <a name="algorithmTextbookLearnedinPythonChapter4"></a>
 * [Chapter4 サーチ](#searchOverviewChapter4)  
@@ -2452,8 +2453,43 @@ call Main()
 ```
 
 
+<a name="stacksAndQueuesChapter3"></a>
+#### スタックとキューを扱う。
+ここは、Python限定と言えるぐらいPythonモジュールを利用した箇所になる。  
+PythonモジュールがあるぐらいだからPerlモジュールにもキューの名前がついたのはある。  
+
+以下、`:help stack`による結果。
+```vim
+                *:<stack>* *<stack>*
+<stack>	    is replaced with the call stack, using
+            "function {function-name}[{lnum}]" for a function line
+            and "script {file-name}[{lnum}]" for a script line, and
+            ".." in between items.  E.g.:
+```
+[**settagstack**](https://vim-jp.org/vimdoc-ja/eval.html#settagstack())とはなんぞや？
+
+以下、`:help queue`による結果。
+```vim
+g:lsp_use_event_queue           *g:lsp_use_event_queue*
+    Type: |Number|
+    Default: `1` for neovim or vim with patch-8.1.0889
+
+    Enable event queue which improves performance by reducing the
+    communication between client and server.
+
+    Example: >
+        let g:lsp_use_event_queue = 1
+        let g:lsp_use_event_queue = 0
+```
+結局キューとは？  
+lspと言うぐらいだからプラグインなのかな。  
+
+結論：vimScriptに、スタックやキューと言う別枠で使いやすい関数などは用意されていないと言うことだろう。  
+
+
 <a name="saveTheDataChapter3"></a>
 #### データを保存する。
+
 
 <a name="searchOverviewChapter4"></a>
 ### サーチ
