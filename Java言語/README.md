@@ -1090,7 +1090,7 @@ class スコープ {
   基礎的なプログラミングの力を養っていく。  
   例えば、配列利用の関数定義・繰り返し・再帰関数・条件分岐など。  
   以下、各項目(目次)。  
-  [ ] [平均値を求める。](#findTheAverageValueChapter2)  
+  [x] [平均値を求める。](#findTheAverageValueChapter2)2022/01/11  
   [ ] [1からnまで足し合わせる。](#addFrom1tonChapter2)  
   [ ] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
   [ ] [素数を求める。](#findAPrimeNumberChapter2)  
@@ -1179,6 +1179,35 @@ class スコープ {
 
 <a name="findTheAverageValueChapter2"></a>
 #### 平均値を求める。
+勉強内容はPythonと基本同じ。  
+それをJava用に移植する。  
+
+* ルール。  
+  * 点数を配列で定義する。  
+    `score = [70, 98, 92, 88, 64]`  
+  * `for`を用いる。  
+
+以下、プログラム。
+```java
+class average {
+	public static void main(String[] args){
+		var score = new int[] { 70, 98, 92, 88, 64, };
+		var total = 0;
+		for( int ii = 0; score.length > ii; ii++ ) {
+			total += score[ii];
+		}
+		var average = (float)total / score.length;
+		System.out.printf("合計点 %d\n", total);	// 合計点 412
+		System.out.printf("平均点 %f\n", average);	// 平均点 82.400002
+	}
+}
+```
+Go言語と異なり、キャストは1つだけでいいようだ。  
+文字列出力するまでに構築する文字数の多さよ。  
+こんな時はスクリプト言語やC言語が便利だと思ってしまう。  
+
+そもそもJava言語って、インポートか何か必要だったと思うのに、呼び出さずに動くのは不思議だな。  
+
 
 <a name="addFrom1tonChapter2"></a>
 #### 1からnまで足し合わせる。
