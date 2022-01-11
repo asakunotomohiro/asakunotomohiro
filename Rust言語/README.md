@@ -678,6 +678,12 @@ fn main() {
     例）`100.234`の場合、数値部分`1.00234`と指数部分`10の2乗`を別々に扱う。  
     数値部分が固定のため、有効桁数を保って計算できるのが利点になる。  
 
+浮動小数点型
+|ビット長|小数精度|符号なし小数|備考|
+|--------|----|------------|----|
+|単精度浮動小数点数|f32||
+|倍精度浮動小数点数|f64||
+
 * Bool型(論理値型)  
   * `true`  
     真  
@@ -1574,7 +1580,7 @@ fn retiffunc( hoge: i32 ) -> i32 {
   基礎的なプログラミングの力を養っていく。  
   例えば、配列利用の関数定義・繰り返し・再帰関数・条件分岐など。  
   以下、各項目(目次)。  
-  [ ] [平均値を求める。](#findTheAverageValueChapter2)  
+  [x] [平均値を求める。](#findTheAverageValueChapter2)2022/01/11  
   [ ] [1からnまで足し合わせる。](#addFrom1tonChapter2)  
   [ ] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
   [ ] [素数を求める。](#findAPrimeNumberChapter2)  
@@ -1666,6 +1672,39 @@ fn retiffunc( hoge: i32 ) -> i32 {
 
 <a name="findTheAverageValueChapter2"></a>
 #### 平均値を求める。
+勉強内容はPythonと基本同じ。  
+それをRust用に移植する。  
+
+* ルール。  
+  * 点数を配列で定義する。  
+    `score = [70, 98, 92, 88, 64]`
+  * `for`を用いる。  
+
+```rust
+fn main() {
+	let score = [ 70, 98, 92, 88, 64, ];
+	let mut total = 0;
+	for ii in 0..score.len() {
+		total += score[ii];
+	}
+	let average = total as f32 / score.len() as f32;
+	println!("合格点{}", total);	// 合格点412
+	println!("平均点{}", average);	// 平均点82.4
+}
+```
+コンパイル完了まで、、、くっそ遅い。  
+早く最新のM1チップ搭載のMacbookProが欲しい。  
+就職せねばならないのに、なぜかプログラミング言語と戯れている。  
+何とかして抜け出したい。  
+他にもやりたいことあるのに・・・む〜ん。  
+
+以下、おまけ(プロジェクト作成)。
+```terminal
+$ cargo new average
+     Created binary (application) `average` package
+$
+```
+
 
 <a name="addFrom1tonChapter2"></a>
 #### 1からnまで足し合わせる。
