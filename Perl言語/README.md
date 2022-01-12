@@ -189,11 +189,13 @@ $
     [x] ファイル名変更(ファイル移動)。  
     [x] リンクファイル  
     [x] 特殊変数(`$.`・`$/`・`$\`・`$,`・`$"`・`$0`・`$^W`・`$ARGV`・`@ARGV`・`@F`・`DATAファイルハンドル`・本来はまだある)  
+    [x] [プロパティ変更(パーミッション・オーナー・タイムスタンプ)](#practicalusePropertymanipulation)  
   * [ ] [ディレクトリ操作](#practicaluseDirectorymanipulation)  
     [x] カレントディレクトリ取得。  
     [x] ディレクトリ移動。  
     [x] グロブ  
     [x] ディレクトリハンドル。  
+    [x] [プロパティ変更(パーミッション・オーナー・タイムスタンプ)](#practicalusePropertymanipulation)  
   * [ ] [オブジェクト指向](#practicaluseObjectorientation)  
     [x] オブジェクト指向入門2021/11/12(読み切っていない)  
         * [オブジェクト指向入門](#objectorientedPerl4894713004one)を読み直す(要は全般)。  
@@ -6644,6 +6646,57 @@ sub directory() {
 	'本日は晴天なり。'ディレクトリ削除済み。
 以上。
 ```
+
+
+</details>
+
+
+<a name="practicalusePropertymanipulation"></a>
+<details><summary>応用知識-プロパティ操作(ファイル・ディレクトリ)</summary>
+
+<a name="practicalusePropertymanipulationpermissionchange"></a>
+### 権限(パーミッション)変更
+ディレクトリに関するのは権限だけのようだな。  
+
+以下、ディレクトリから権限を奪い取った後に削除するプログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+my $dirmaster = "本日は晴天なり。";
+
+sub dirPermissions() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(0755=>01363)。
+
+	unless( -d $dirmaster ) {
+		say "'$dirmaster'ディレクトリがない。";
+	}
+	say "直下にディレクトリを作成する。";
+	mkdir $dirmaster, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+	if( -d $dirmaster ) {
+		say "'$dirmaster'ディレクトリから権限剥奪。";
+		chmod 0000, $dirmaster or warn "'$dirmaster'ディレクトリの権限変更失敗($!)。";
+	}
+	rmdir $dirmaster or warn "ディレクトリ削除失敗($!)。";	←☆上記で、権限が000にされているのだが、消すことができる。
+	chmod oct($permissions), $dirmaster or warn "'$dirmaster'ディレクトリの権限変更失敗($!)。";
+										# 本日は晴天なり。ディレクトリの権限変更失敗(No such file or directory)。 at 権限変更.pl line 20.
+	rmdir $dirmaster or warn "ディレクトリ削除失敗($!)。";
+					# ディレクトリ削除失敗(No such file or directory)。 at 権限変更.pl line 22.
+}
+&dirPermissions(@ARGV);
+```
+驚くことに、削除権限がないディレクトリを削除することができる。  
+もしかして、ファイルと同様にカレントディレクトリの権限だけが大事で、配下の権限は無視しているのかもしれない。  
+
+
+<a name="practicalusePropertymanipulationownerchange"></a>
+### ファイルオーナー変更
+
+
+<a name="practicalusePropertymanipulation"></a>
+### ファイルタイムスタンプ変更
+
 
 </details>
 
