@@ -29,7 +29,7 @@ sub asakunoInputOutput() {
 	rmdir $dirasakuno or warn "ディレクトリ削除失敗($!)。";
 						# ディレクトリ削除失敗(Permission denied)。 at 権限変更.pl line 29.
 	if( -d $dirasakuno ) {
-		say "$dirasakunoディレクトリがある。";
+		say "$dirasakunoディレクトリ削除失敗。";
 	}
 	else {
 		say "$dirasakunoディレクトリ削除済み。";
@@ -43,6 +43,9 @@ sub asakunoInputOutput() {
 	else {
 		say "$dirasakunoディレクトリ削除済み。";
 		rmdir $asakuno[0] or warn "ディレクトリ削除失敗($!)。";
+		unless( -d $asakuno[0] ) {
+			say "$asakuno[0]ディレクトリ削除成功。";
+		}
 	}
 }
 &asakunoInputOutput(@ARGV);
