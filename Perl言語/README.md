@@ -6580,6 +6580,71 @@ sub dirMake() {
 '本日は晴天なり。'ディレクトリ削除済み。
 ```
 
+以下、削除対象のディレクトリ配下にファイルなどがある場合削除できないプログラム例）
+```perl
+use v5.24;
+
+my $hoge = "本日は晴天なり。";
+my @hoge = qw( 本日は 晴天なり。 本日は晴天なり。 );
+
+sub directory() {
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(0755=>01363)。
+	my $dirFilename = $hoge . '/' . $hoge . '.txt';
+
+	mkdir $hoge, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+	open my $file_fh, '>>', $dirFilename or die "${hoge}.txtのファイルオープン失敗($!)";
+	foreach my $value ( @hoge ) {
+		say $file_fh $value;
+	}
+	close $file_fh;
+	open my $file_fh, '<', $dirFilename or die "${hoge}.txtのファイルオープン失敗($!)";
+	say "以下、書き込んだファイル内容表示。";
+	while ( <$file_fh> ) {
+		chomp;
+		say "\t$_";
+	}
+	close $file_fh;
+
+	say "以下、ディレクトリを削除する。";
+	rmdir $hoge or warn "ディレクトリ削除失敗($!)。";
+				# ディレクトリ削除失敗(Directory not empty)。 at ディレクトリ作成及び削除.pl line 25.
+	if( -d $hoge ) {
+		say "\t'$hoge'ディレクトリがある。";
+	}
+	else {
+		say "\t'$hoge'ディレクトリ削除済み。";
+	}
+	say "以下、配下のファイルを削除する。";
+	unlink $dirFilename or warn "'$dirFilename'ファイル削除失敗($!)。";
+	say "以下、再度ディレクトリを削除する。";
+	rmdir $hoge or warn "ディレクトリ削除失敗($!)。";
+	if( -d $hoge ) {
+		say "\t'$hoge'ディレクトリがある。";
+	}
+	else {
+		say "\t'$hoge'ディレクトリ削除済み。";
+	}
+
+	say "以上。"
+}
+&directory(@ARGV);
+```
+
+以下、出力結果。
+```terminal
+ディレクトリ削除失敗(Directory not empty)。 at ディレクトリ作成及び削除.pl line 25.
+以下、書き込んだファイル内容表示。
+	本日は
+	晴天なり。
+	本日は晴天なり。
+以下、ディレクトリを削除する。
+	'本日は晴天なり。'ディレクトリがある。
+以下、配下のファイルを削除する。
+以下、再度ディレクトリを削除する。
+	'本日は晴天なり。'ディレクトリ削除済み。
+以上。
+```
+
 </details>
 
 
