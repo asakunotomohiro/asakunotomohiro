@@ -6730,6 +6730,64 @@ sub dirPermissions() {
 そのため、権限を取り除いたディレクトリ配下のディレクトリを削除する必要がある。  
 そして、それは思惑通り、削除に失敗した。  
 
+以下、ファイルの権限変更用プログラム。
+```perl
+use v5.24;
+
+sub filePermissions() {
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される。
+	my @hoge = qw( 本日は 晴天なり。 本日は晴天なり。 );
+	my $dirunderFile = $hoge[0] . '/' . $hoge[1];
+
+	if( -d $hoge[0] ) {
+		warn "同名の$hoge[0]ディレクトリが存在する。";
+	}
+	mkdir $hoge[0], oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+	if( -d $hoge[0] ) {
+		say "$hoge[0]ディレクトリに、$hoge[1]ファイルを作成する。";
+
+		open my $file_fh, '>', $dirunderFile
+			or die "$dirunderFileのファイルオープン失敗($!)";
+		foreach( @hoge ) {
+			say $file_fh $_;
+		}
+		close $file_fh;
+
+		say "以下、直下ディレクトリの権限を書き換え不可に変更する。";
+		chmod 0555, $hoge[0] or warn "$hoge[0]ディレクトリの権限変更失敗($!)。";
+	}
+	say "以下、作成ディレクトリ配下のファイルを削除。";
+	unlink $dirunderFile or warn "ファイル削除失敗($!)。";
+						# ファイル削除失敗(Permission denied)。 at 権限変更.pl line 26.
+	if( -f $dirunderFile ) {
+		say "$dirunderFileファイル削除失敗。";
+	}
+	say "以下、直下ディレクトリの権限に755を付与する。";
+	chmod oct($permissions), $hoge[0] or warn "$hoge[0]ディレクトリの権限変更失敗($!)。";
+	unlink $dirunderFile or warn "ファイル削除失敗($!)。";
+	unless( -f $dirunderFile ) {
+		say "$dirunderFileファイル削除済み。";
+		rmdir $hoge[0] or warn "ディレクトリ削除失敗($!)。";
+		unless( -d $hoge[0] ) {
+			say "$hoge[0]ディレクトリ削除成功。";
+		}
+	}
+}
+&filePermissions(@ARGV);
+```
+
+以下、実行結果。
+```terminal
+ファイル削除失敗(Permission denied)。 at 権限変更.pl line 26.
+本日はディレクトリに、晴天なり。ファイルを作成する。
+以下、直下ディレクトリの権限を書き換え不可に変更する。
+以下、作成ディレクトリ配下のファイルを削除。
+本日は/晴天なり。ファイル削除失敗。
+以下、直下ディレクトリの権限に755を付与する。
+本日は/晴天なり。ファイル削除済み。
+本日はディレクトリ削除成功。
+```
+
 
 <a name="practicalusePropertymanipulationownerchange"></a>
 ### ファイルオーナー変更
