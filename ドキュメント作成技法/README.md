@@ -31,6 +31,12 @@ Pythonのドキュメント作成に使われる技法として有名。
   * [LeME](https://leme.style)の[Markdown](https://leme.style/making-guide/point-markdown/)  
   * [Org Mode](https://www.orgmode.org/ja/index.html)  
 
+* 作成後のメモ内容変更手段  
+  * [sed](#localfileSedJump)  
+    ストリームエディタのひとつ。  
+  * [awk](#localfileAwkJump)  
+    テキスト処理言語のひとつ(この上位版がPerl言語？)。  
+
 
 <a id="localfileMarkdownJump"></a>
 ### markdownとは。
@@ -56,6 +62,29 @@ Pythonのドキュメント作成に使われる技法として有名。
 ### [sphinx](https://www.sphinx-doc.org/ja/master/contents.html)とは。
 本来は、Pythonのソースコードに記述されたpydocコメント整形ツール(軽量マークアップ言語)だった。  
 いまや、Python以外のドキュメント作成にも使われている。  
+
+
+<a id="localfileSedJump"></a>
+### sedとは。
+ストリームエディタのひとつ。  
+ファイルに対して、単純なテキスト変換を行う場合に使う。  
+
+
+<a id="localfileAwkJump"></a>
+### awkとは。
+awkとは、編集用語で、「へたな・まずい」(awkward)と言う。  
+テキスト処理言語のひとつ。  
+何より、これが元祖だろう(これに不満を持ったことでが生まれた)。  
+データの単純な変換のみが必要な場合に使う。  
+
+Perl言語の開発者であるLarryさんは、awkで対応しようとしたが、思い通りに行かなかったため、Perl言語を作ったと言う。  
+
+
+<a id="localfilePerlJump"></a>
+### Perlとは。
+本来の[Perl記述箇所(ファイル)](Perl言語/README.md)があるため、ここでは紹介に留める。  
+上記のawkやsedの拡張版(上位版)のようなプログラミング言語だと言うこと(使いこなすには数年を要する)。  
+Perlが開発されたのは1980年代中頃のようだ。  
 
 
 ## 用語
