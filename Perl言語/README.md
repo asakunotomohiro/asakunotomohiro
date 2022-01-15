@@ -6888,6 +6888,9 @@ chown $useid, $groupid, glob '/home/hoge/*.txt'; などなど。
 
 <a name="practicalusePropertymanipulation"></a>
 ### ファイルタイムスタンプ変更
+ファイルのアクセス時刻と修正時刻を変更する。  
+作成時刻は？  
+64bitマシンでない場合に利用する制限には、1970年から2038年までの範囲に収める必要がある。  
 
 
 </details>
