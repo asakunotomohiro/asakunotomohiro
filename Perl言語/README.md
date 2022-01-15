@@ -8639,6 +8639,17 @@ sub regexSample {
 そして、[Tcl/Tk](https://www.tcl.tk)から派生した[Perl/Tk](https://metacpan.org/dist/Tk/view/Tk.pod)を使うことにする。  
 リンク先が合っているのか不明。  
 
+以下、Tkモジュール導入済みか確認する。
+```terminal
+$ perl -e 'use Tk'
+Can't locate Tk.pm in @INC (you may need to install the Tk module) (@INC contains: darwin-2level 5.34.0 ) at -e line 1.
+BEGIN failed--compilation aborted at -e line 1.
+$
+```
+エラーが発生したため、インストールされていないと言うこと・・・。  
+数年前に、試しに入れたはずなのだが・・・他の端末だったかもな。  
+インストールされていない状況が記録に残せるので由としよう。  
+
 </details>
 
 
