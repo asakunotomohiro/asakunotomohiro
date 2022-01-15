@@ -6793,7 +6793,7 @@ sub filePermissions() {
 
 <a name="practicalusePropertymanipulationownerchange"></a>
 ### ファイルオーナー変更
-オーナ変更には、ユーザIDとグループIDを指定する必要がある。  
+[オーナ変更](https://perldoc.jp/func/chown)には、ユーザIDとグループIDを指定する必要がある。  
 
 以下、ユーザ情報一覧。
 ```terminal
@@ -6809,19 +6809,19 @@ $
 アンダーバーから始まるユーザは何？  
 自動生成ユーザ？  
 
-以下、グループ一覧。
+以下、グループ一覧とそのID。
 ```terminal
-$ dscl . -list /Groups | tail -10
-nogroup
-operator
-owner
-procmod
-procview
-staff
-sys
-tty
-utmp
-wheel
+$ dscl . -list /Groups PrimaryGroupID | tail -10
+nogroup                  -1
+operator                 5
+owner                    10
+procmod                  9
+procview                 8	←☆今回のプログラムで利用するグループ。
+staff                    20	←☆ファイル作成後に自動付与されるグループ？
+sys                      3
+tty                      4
+utmp                     45
+wheel                    0
 $
 ```
 
@@ -6829,9 +6829,9 @@ $
 ```terminal
 $ dscl . -list /Users UniqueID | tail -6
 _xserverdocs             251
-asakunotomohiro          501
+asakunotomohiro          501	←☆ファイル作成後に自動付与されるユーザ(このユーザで作成したのだから当たり前)。
 daemon                   1
-Guest                    201
+Guest                    201	←☆今回のプログラムで利用するユーザ。
 nobody                   -2
 root                     0
 $
@@ -6851,6 +6851,21 @@ $
 ```
 ユーザIDと同じように見えて、異なる。  
 ユーザ自身が作成したユーザ情報は、ユーザIDとグループIDが異なるようだ。  
+
+ユーザIDからユーザ名を取得するのは結構な労力が必要なようだ。  
+困った。  
+検証するのがめんどくさい・・・ゆえに、目視確認かな・・・。  
+
+プログラム側で書き換えに失敗した。
+```terminal
+$ ll hoge
+-rw-r--r--  1 asakunotomohiro  staff  0  1 15 12:36 hoge
+$ chown Guest:procview hoge
+chown: hoge: Operation not permitted
+$ ll hoge
+-rw-r--r--  1 asakunotomohiro  staff  0  1 15 12:36 hoge
+$
+```
 
 
 <a name="practicalusePropertymanipulation"></a>
