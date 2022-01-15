@@ -22,6 +22,7 @@ sub asakunoGUI() {
 #	couldn't connect to display ":0" at MainWindow.pm line 53.
 #	MainWindow->new() at guiHelloworld.pl line 12.
 # 実行権限ないのが原因らしい、、、本当か？
+# それともXサーバを起動する必要があるのか？
 
 say "以上。"
 # vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=perl noexpandtab:
