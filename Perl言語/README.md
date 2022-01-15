@@ -189,11 +189,13 @@ $
     [x] ファイル名変更(ファイル移動)。  
     [x] リンクファイル  
     [x] 特殊変数(`$.`・`$/`・`$\`・`$,`・`$"`・`$0`・`$^W`・`$ARGV`・`@ARGV`・`@F`・`DATAファイルハンドル`・本来はまだある)  
+    [x] [プロパティ変更(パーミッション・オーナー・タイムスタンプ)](#practicalusePropertymanipulation)  
   * [ ] [ディレクトリ操作](#practicaluseDirectorymanipulation)  
     [x] カレントディレクトリ取得。  
     [x] ディレクトリ移動。  
     [x] グロブ  
     [x] ディレクトリハンドル。  
+    [x] [プロパティ変更(パーミッション・オーナー・タイムスタンプ)](#practicalusePropertymanipulation)  
   * [ ] [オブジェクト指向](#practicaluseObjectorientation)  
     [x] オブジェクト指向入門2021/11/12(読み切っていない)  
         * [オブジェクト指向入門](#objectorientedPerl4894713004one)を読み直す(要は全般)。  
@@ -6643,6 +6645,400 @@ sub directory() {
 以下、再度ディレクトリを削除する。
 	'本日は晴天なり。'ディレクトリ削除済み。
 以上。
+```
+
+
+</details>
+
+
+<a name="practicalusePropertymanipulation"></a>
+<details><summary>応用知識-プロパティ操作(ファイル・ディレクトリ)</summary>
+
+<a name="practicalusePropertymanipulationpermissionchange"></a>
+### 権限(パーミッション)変更
+ディレクトリに関するのは権限だけのようだな。  
+
+様式：
+`chmod 権限, ディレクトリ名;`  
+ディレクトリ作成同様、権限部分は8進数を指定する必要がある。  
+
+<details><summary>カレントディレクトリの権限が大事</summary>
+
+以下、ディレクトリから権限を奪い取った後に削除するプログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+my $dirmaster = "本日は晴天なり。";
+
+sub dirPermissions() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される。
+
+	unless( -d $dirmaster ) {
+		say "'$dirmaster'ディレクトリがない。";
+	}
+	say "直下にディレクトリを作成する。";
+	mkdir $dirmaster, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+	if( -d $dirmaster ) {
+		say "'$dirmaster'ディレクトリから権限剥奪。";
+		chmod 0000, $dirmaster or warn "'$dirmaster'ディレクトリの権限変更失敗($!)。";
+	}
+	rmdir $dirmaster or warn "ディレクトリ削除失敗($!)。";	←☆上記で、権限が000にされているのだが、消すことができる。
+	chmod oct($permissions), $dirmaster or warn "'$dirmaster'ディレクトリの権限変更失敗($!)。";
+										# 本日は晴天なり。ディレクトリの権限変更失敗(No such file or directory)。 at 権限変更.pl line 20.
+	rmdir $dirmaster or warn "ディレクトリ削除失敗($!)。";
+					# ディレクトリ削除失敗(No such file or directory)。 at 権限変更.pl line 22.
+}
+&dirPermissions(@ARGV);
+```
+驚くことに、削除権限がないディレクトリを削除することができる。  
+もしかして、ファイルと同様にカレントディレクトリの権限だけが大事で、配下の権限は無視しているのかもしれない。  
+⇒そうだった。  
+
+</details>
+
+以下、ディレクトリ権限が無いため、配下のディレクトリを削除できず、エラーが吐き出される。
+```perl
+use v5.24;
+
+my $dirmaster = "本日は晴天なり。";
+
+sub dirPermissions() {
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される。
+	my $dirsubdir = "$dirmaster/就職活動継続";
+
+	unless( -d $dirmaster ) {
+		say "'$dirmaster'ディレクトリがない。";
+	}
+	say "直下にディレクトリを作成する。";
+	mkdir $dirmaster, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+	if( -d $dirmaster ) {
+		say "'$dirmaster'ディレクトリから権限剥奪。";
+		mkdir $dirsubdir, oct($permissions) or warn "サブディレクトリ作成失敗($!)。";
+		chmod 0000, $dirmaster or warn "'$dirmaster'ディレクトリの権限変更失敗($!)。";
+	}
+	rmdir $dirsubdir or warn "サブディレクトリ削除失敗($!)。";
+						# サブディレクトリ削除失敗(Permission denied)。 at 権限変更.pl line 21.
+	chmod oct($permissions), $dirmaster or warn "'$dirmaster'ディレクトリの権限変更失敗($!)。";
+	say "サブディレクトリ削除実施。" and rmdir $dirsubdir or warn "サブディレクトリ削除失敗($!)。";
+	say "ディレクトリ削除実施。" and rmdir $dirmaster or warn "ディレクトリ削除失敗($!)。";
+}
+&dirPermissions(@ARGV);
+```
+ディレクトリから権限を取り除いた後にそのディレクトリを削除した場合、普通に削除が成功する。  
+そのため、権限を取り除いたディレクトリ配下のディレクトリを削除する必要がある。  
+そして、それは思惑通り、削除に失敗した。  
+
+以下、ファイルの権限変更用プログラム。
+```perl
+use v5.24;
+
+sub filePermissions() {
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される。
+	my @hoge = qw( 本日は 晴天なり。 本日は晴天なり。 );
+	my $dirunderFile = $hoge[0] . '/' . $hoge[1];
+
+	if( -d $hoge[0] ) {
+		warn "同名の$hoge[0]ディレクトリが存在する。";
+	}
+	mkdir $hoge[0], oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+	if( -d $hoge[0] ) {
+		say "$hoge[0]ディレクトリに、$hoge[1]ファイルを作成する。";
+
+		open my $file_fh, '>', $dirunderFile
+			or die "$dirunderFileのファイルオープン失敗($!)";
+		foreach( @hoge ) {
+			say $file_fh $_;
+		}
+		close $file_fh;
+
+		say "以下、直下ディレクトリの権限を書き換え不可に変更する。";
+		chmod 0555, $hoge[0] or warn "$hoge[0]ディレクトリの権限変更失敗($!)。";
+	}
+	say "以下、作成ディレクトリ配下のファイルを削除。";
+	unlink $dirunderFile or warn "ファイル削除失敗($!)。";
+						# ファイル削除失敗(Permission denied)。 at 権限変更.pl line 26.
+	if( -f $dirunderFile ) {
+		say "$dirunderFileファイル削除失敗。";
+	}
+	say "以下、直下ディレクトリの権限に755を付与する。";
+	chmod oct($permissions), $hoge[0] or warn "$hoge[0]ディレクトリの権限変更失敗($!)。";
+	unlink $dirunderFile or warn "ファイル削除失敗($!)。";
+	unless( -f $dirunderFile ) {
+		say "$dirunderFileファイル削除済み。";
+		rmdir $hoge[0] or warn "ディレクトリ削除失敗($!)。";
+		unless( -d $hoge[0] ) {
+			say "$hoge[0]ディレクトリ削除成功。";
+		}
+	}
+}
+&filePermissions(@ARGV);
+```
+
+以下、実行結果。
+```terminal
+ファイル削除失敗(Permission denied)。 at 権限変更.pl line 26.
+本日はディレクトリに、晴天なり。ファイルを作成する。
+以下、直下ディレクトリの権限を書き換え不可に変更する。
+以下、作成ディレクトリ配下のファイルを削除。
+本日は/晴天なり。ファイル削除失敗。
+以下、直下ディレクトリの権限に755を付与する。
+本日は/晴天なり。ファイル削除済み。
+本日はディレクトリ削除成功。
+```
+結局は、対象ディレクトリの親ディレクトリ権限に引きずられるのであり、対象ディレクトリや対象ファイルの権限ではない。  
+プログラムを渡したり触られたりすることが想定される分には、対象のディレクトリとファイルに直接権限を与えるのが一般的だろう。  
+
+
+<a name="practicalusePropertymanipulationownerchange"></a>
+### ファイルオーナー変更
+[オーナ変更](https://perldoc.jp/func/chown)には、ユーザIDとグループIDを指定する必要がある。  
+
+以下、ユーザ情報一覧。
+```terminal
+$ dscl . -list /Users | tail -6
+_xserverdocs
+asakunotomohiro
+daemon
+Guest
+nobody
+root
+$
+```
+アンダーバーから始まるユーザは何？  
+自動生成ユーザ？  
+
+以下、グループ一覧とそのID。
+```terminal
+$ dscl . -list /Groups PrimaryGroupID | tail -10
+nogroup                  -1
+operator                 5
+owner                    10
+procmod                  9
+procview                 8	←☆今回のプログラムで利用するグループ。
+staff                    20	←☆ファイル作成後に自動付与されるグループ？
+sys                      3
+tty                      4
+utmp                     45
+wheel                    0
+$
+```
+
+以下、ユーザ名とそのID・・・のはず。
+```terminal
+$ dscl . -list /Users UniqueID | tail -6
+_xserverdocs             251
+asakunotomohiro          501	←☆ファイル作成後に自動付与されるユーザ(このユーザで作成したのだから当たり前)。
+daemon                   1
+Guest                    201	←☆今回のプログラムで利用するユーザ。
+nobody                   -2
+root                     0
+$
+```
+ユニークIDと言うのがユーザIDと思って良いよね。  
+
+以下、ユーザ名とグループID・・・のはず。
+```terminal
+$ dscl . -list /Users PrimaryGroupID | tail -6
+_xserverdocs             251
+asakunotomohiro          20
+daemon                   1
+Guest                    201
+nobody                   -2
+root                     0
+$
+```
+ユーザIDと同じように見えて、異なる。  
+ユーザ自身が作成したユーザ情報は、ユーザIDとグループIDが異なるようだ。  
+
+ユーザIDからユーザ名を取得するのは結構な労力が必要なようだ。  
+困った。  
+検証するのがめんどくさい・・・ゆえに、目視確認かな・・・。  
+
+プログラム側で書き換えに失敗した。
+```terminal
+$ ll hoge
+-rw-r--r--  1 asakunotomohiro  staff  0  1 15 12:36 hoge
+$ chown Guest:staff hoge
+chown: hoge: Operation not permitted
+$ chown Guest:wheel hoge
+chown: hoge: Operation not permitted
+$ chown Guest:owner hoge
+chown: hoge: Operation not permitted
+$ chown Guest:operator hoge
+chown: hoge: Operation not permitted
+$ ll hoge
+-rw-r--r--  1 asakunotomohiro  staff  0  1 15 12:36 hoge
+$
+```
+微塵も出来そうにない。  
+権限の低いユーザとグループを作るしか無いのかもしれない。  
+そうではなく、スーパーユーザのみが変更できるのだろう。  
+また、Perl側では変更失敗を検知できないようで、大変悲しい。  
+
+とりあえず、以下、変更用のプログラム。
+```perl
+defined(my $useid = getpwnam 'Guest') or die 'ユーザ名からID取得失敗。';
+defined(my $groupid = getgrnam 'procview') or die 'ユーザグループ名からID取得失敗。';
+chown $useid, $groupid, 'test.txt';
+chown $useid, $groupid, glob '/home/hoge/*.txt'; などなど。
+```
+
+
+<a name="practicalusePropertymanipulation"></a>
+### ファイルタイムスタンプ変更
+**utime関数**を使うことで、ファイルのアクセス時刻と更新時刻の変更が可能になる。  
+作成時刻は？  
+64bitマシンでない場合に利用する制限には、1970年から2038年までの範囲に収める必要がある。  
+
+様式：
+`utime アクセス時刻, 修正時刻, ファイル名;`  
+これも例外処理のような実行結果は返さないようだ。  
+
+以下、プログラム。
+```perl
+use v5.24;
+
+my @array = qw( 本日は 晴天なり。 本日は晴天なり。);
+sub timestamp() {
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks);
+		# ファイルのstat(プロパティ)情報。
+
+	my $dirunderFile = 'タイムスタンプ.txt';
+	open my $file_fh, '>', $dirunderFile
+		or die "$dirunderFileのファイルオープン失敗($!)";
+	foreach( @array ) {
+		say $file_fh $_;
+	}
+	close $file_fh;
+
+	say "以下、ファイルのタイムスタンプ取得。";
+	($dev, $ino, $mode, $nlink, $uid, $gid, $rdev,
+	$size, $atime, $mtime, $ctime, $blksize, $blocks)
+		= stat($dirunderFile);	# ファイルのstat情報。
+	say "\t最終アクセス時刻：" . &timeformatChange(localtime $atime);
+	say "\t最終更新時刻：" . &timeformatChange(localtime $mtime);
+	say "\t最後のinode変更時刻：" . &timeformatChange(localtime $ctime);
+
+	say "ファイルの時刻を書き換える。";
+	say "\t1年前の時刻を現在時刻にする。";
+	say "\tまた、その前日を修正時刻にする。";
+	my $now = time - 24 * 60 * 60 * 365;	# 今から1年前の時刻を現在時刻にする。
+	my $ago = $now - 24 * 60 * 60;			# さらに1日前を修正時刻にする。
+	utime $now, $ago, $dirunderFile;
+
+	say "以下、ファイルのタイムスタンプ取得。";
+	($dev, $ino, $mode, $nlink, $uid, $gid,
+	$rdev, $size, $atime, $mtime, $ctime, $blksize, $blocks)
+		= stat($dirunderFile);	# ファイルのstat情報。
+	say "\t最終アクセス時刻：" . &timeformatChange(localtime $atime);
+	say "\t最終更新時刻：" . &timeformatChange(localtime $mtime);
+	say "\t最後のinode変更時刻：" . &timeformatChange(localtime $ctime);
+
+	unlink $dirunderFile or warn "ファイル削除失敗($!)。";
+	unless( -f $dirunderFile ) {
+		say "$dirunderFileファイル削除済み。";
+	}
+}
+&timestamp(@ARGV);
+
+sub timeformatChange {
+	my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = @_;
+	my %dayweek = (
+				0=>'日',	# Sunday
+				1=>'月',	# Monday
+				2=>'火',	# Tuesday
+				3=>'水',	# Wednesday
+				4=>'木',	# Thursday
+				5=>'金',	# Friday
+				6=>'土',	# Saturday
+				);
+
+	$mon += 1;					# 月が0始まりになるため、1加算する。
+	$year += 1900;				# 1900年を加算することで、西暦になる。
+	$wday = $dayweek{$wday};	# 日曜日が0始まりになり、それを変換する。
+	$yday += 1;					# 1月1日が0始まりのため、1加算する。
+
+	return "$year年$mon月$yday日($wday) $hour時$min分$sec秒";
+}
+```
+
+以下、出力結果。
+```terminal
+以下、ファイルのタイムスタンプ取得。
+	最終アクセス時刻：2022年1月15日(土) 15時2分3秒
+	最終更新時刻：2022年1月15日(土) 15時2分3秒
+	最後のinode変更時刻：2022年1月15日(土) 15時2分3秒
+ファイルの時刻を書き換える。
+	1年前の時刻を現在時刻にする。
+	また、その前日を修正時刻にする。
+以下、ファイルのタイムスタンプ取得。
+	最終アクセス時刻：2021年1月15日(金) 15時2分3秒
+	最終更新時刻：2021年1月14日(木) 15時2分3秒
+	最後のinode変更時刻：2022年1月15日(土) 15時2分3秒
+タイムスタンプ.txtファイル削除済み。
+```
+
+</details>
+
+<a name="practicalusePropertymanipulation"></a>
+<details><summary>応用知識-エポック経過秒数の変換</summary>
+
+<a name="practicalusePropertymanipulationpermissionchange"></a>
+### 時刻変更
+システム時間の起点となるエポック(epoch)からの経過秒数を人間が読みやすい形式に変換するには、**localtime関数**を用いる。  
+
+localtime関数での変換は制限があり、  
+月は0から始まるため、1を加算することで、1月から12月までを表せるようになる。  
+年は1900年を加算する必要がある。  
+曜日は、日曜日が0始まりになり、それ以降は月曜日が1、火曜日が2と加算されていく。  
+日付は、1月1日が0始まりになり、12月31日は364(閏年の場合は365)になるため、1加算する必要がある。  
+
+
+以下、プログラム。
+```perl
+use v5.24;
+use File::Basename;	# ファイル名のみ取得(ディレクトリ部分除去)。
+
+sub localtimestat() {
+	my $myname = basename($0, '');	# 自身のファイル名取得。
+	my %dayweek = (
+				0=>'日曜日',	# Sunday
+				1=>'月曜日',	# Monday
+				2=>'火曜日',	# Tuesday
+				3=>'水曜日',	# Wednesday
+				4=>'木曜日',	# Thursday
+				5=>'金曜日',	# Friday
+				6=>'土曜日',	# Saturday
+				);
+
+	my ($dev, $ino, $mode, $nlink, $uid, $gid, $rdev,
+	$size, $atime, $mtime, $ctime, $blksize, $blocks)
+			= stat($0);	# 自身のファイルのstat(プロパティ)情報。
+	say "以下、'$myname'ファイル情報。";
+	say "\t最終アクセス時刻：$atime";
+
+	say "上記はエポック経過秒数になるため、以下、年月日に変換する。";
+	my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = localtime $atime;
+	$mon += 1;	# 月は0始まりなので、1加算が必要。
+	$year += 1900;	# 年は1900年を加算する必要がある。
+	$wday = $dayweek{$wday};	# 日曜日から0始まりになる。
+	$yday += 1;	# 1月1日が0始まりなので、1加算が必要。
+	say "\tatime(最終アクセス時刻)：$year年$mon月$yday日($wday) $hour時$min分$sec秒";
+}
+&localtimestat(@ARGV);
+```
+
+以下、出力結果。
+```terminal
+以下、'localtime関数.pl'ファイル情報。
+	最終アクセス時刻：1642224034
+上記はエポック経過秒数になるため、以下、年月日に変換する。
+	atime(最終アクセス時刻)：2022年1月15日(土曜日) 14時20分34秒
 ```
 
 </details>
