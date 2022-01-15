@@ -185,8 +185,17 @@ $
     [x] 標準出力。  
     [x] ファイル読み込み。  
     [x] ファイル書き込み。  
+    [x] ファイル削除。  
+    [x] ファイル名変更(ファイル移動)。  
+    [x] リンクファイル  
     [x] 特殊変数(`$.`・`$/`・`$\`・`$,`・`$"`・`$0`・`$^W`・`$ARGV`・`@ARGV`・`@F`・`DATAファイルハンドル`・本来はまだある)  
+    [x] [プロパティ変更(パーミッション・オーナー・タイムスタンプ)](#practicalusePropertymanipulation)  
   * [ ] [ディレクトリ操作](#practicaluseDirectorymanipulation)  
+    [x] カレントディレクトリ取得。  
+    [x] ディレクトリ移動。  
+    [x] グロブ  
+    [x] ディレクトリハンドル。  
+    [x] [プロパティ変更(パーミッション・オーナー・タイムスタンプ)](#practicalusePropertymanipulation)  
   * [ ] [オブジェクト指向](#practicaluseObjectorientation)  
     [x] オブジェクト指向入門2021/11/12(読み切っていない)  
         * [オブジェクト指向入門](#objectorientedPerl4894713004one)を読み直す(要は全般)。  
@@ -984,6 +993,7 @@ say "@boo";	# 20210830 20210831 20210901 20210902
   * [x] [多岐分岐-"もし"2つ以上。](#subConditional1)  
     基本構造例：if〜else if〜  
   * [x] [論理演算子(ド・モルガンの法則)](#subConditional2)  
+    `opendir`・`chdir`・`next`・`unlink`などと組み合わせる場合、`||`は使えず、`or`のみが動いた。  
     * [x] 論理積(`AND`・`&&`)  
     * [x] 論理和(`OR`・`||`)  
   * [x] [比較演算子](#subConditional3)  
@@ -2252,23 +2262,27 @@ sub prime_eratosthenes() {
 <details><summary>展開</summary>
 
 ```perl
+use v5.24;
+
 sub main() {
+	my $comma = $,;	←☆特殊変数を一時保存。
+	$, = ', ';	←☆今のままではカンマ区切りが詰められてしまうため、コードが見やすいように変更した。
 	say "2進数リテラル";
-	say 0b11111111, ", ",0b0, ", ",0b10101010, ", ",-0b1, ", ",0b1, ", ",0b1001101000110010011101110;
+	say 0b11111111, 0b0, 0b10101010, -0b1, 0b1, 0b1001101000110010011101110;
 	# 出力結果：255, 0, 170, -1, 1, 20210926
 
 	say "8進数リテラル";
-	say 0377, ", ",00, ", ",0252, ", ",-01, ", ",01, ", ",0115062356;
+	say 0377, 00, 0252, -01, 01, 0115062356;
 	# 出力結果：255, 0, 170, -1, 1, 20210926
 
 	say "10進数リテラル";
-	say 255, ", ",0, ", ",170, ", ",-1, ", ",1, ", ",20210926;
+	say 255, 0, 170, -1, 1, 20210926;
 	# 出力結果：255, 0, 170, -1, 1, 20210926
 
 	say "16進数リテラル";
-	say 0xff, ", ",0x00, ", ",0xAA, ", ",-0x1, ", ",0x1, ", ",0x13464EE;
+	say 0xff, 0x00, 0xAA, -0x1, 0x1, 0x13464EE;
 	# 出力結果：255, 0, 170, -1, 1, 20210926
-
+	$, = $comma;	←☆特殊変数を戻す。
 }
 &main();
 ```
@@ -5305,6 +5319,10 @@ $ cat abc	←☆書き込み完了。
 明日も晴天だ。
 $
 ```
+別のプログラムでの話だが、ファイルオープン直後に`$| = 1;`処理をさせたが、書き込みが即座に行われなかった。  
+仕方ないため、close演算子を持ち込み、即座に出力させた(効率が悪いと言うより、悪手だと思う)。  
+その原因が、ファイルハンドルを切り替えずに使ったため。  
+有効にするには、**select**でわざわざ切り替える必要があった・・・めんどくさい。  
 
 
 <a name="practicaluseFileoperationfileopenerrwrite"></a>
@@ -5459,6 +5477,715 @@ sub inputOutput() {
     ※インストールが必要。  
 
 
+<a name="practicaluseFileoperationFiledelete"></a>
+### ファイル削除
+ファイルを削除するには、**unlink演算子**を使うことで、ファイルの削除が完了する。  
+様式：
+`unlink ファイル名;`  
+
+以下、削除プログラム例）
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub inputOutput() {
+	my $currentDir = getcwd();
+	say "以下、削除前のディレクトリ配下状況確認(及び、ファイル削除実施)。";
+	opendir my $dh, $currentDir or die "ディレクトリオープン失敗($!)。";
+	while (my $filename = readdir $dh) {
+		next unless $filename =~ /\.txt\z/;
+		say $filename;
+		say "$filenameファイルの削除結果：" . unlink $filename;	←☆実際の削除(削除件数が結果で返る)。
+			# hoge.txt	←☆削除対象のファイル名。
+			# hoge.txtファイルの削除結果：1	←☆実際の削除結果(1になっているのは、1ファイル削除したことを示す)。
+			# boo.txt	←☆削除対象のファイル名。
+			# boo.txtファイルの削除結果：1	←☆実際の削除結果。
+			# bar.txt	←☆削除対象のファイル名。
+			# bar.txtファイルの削除結果：1	←☆実際の削除結果。
+	}
+	say "以下、削除後のディレクトリ配下状況確認。";
+	opendir my $dh, $currentDir or die "ディレクトリオープン失敗($!)。";
+	while (my $filename = readdir $dh) {
+		next unless $filename =~ /\.txt\z/;
+		say $filename;
+			# 何も出てこない(故に削除成功)。
+	}
+
+	closedir $dh;
+```
+通常利用のファイル削除実施したが、特に問題ない。  
+唯一問題がある箇所は、ファイル削除失敗に対する処理が無いこと。  
+
+
+#### ファイル削除失敗
+通常のファイルは、Perlプログラムならば消すことができる。  
+削除不可のファイルは、権限のないディレクトリにある場合に限る・・・きっと。  
+
+以下、通常のターミナル作業。
+```terminal
+$ touch abc
+$ chmod 000 abc
+$ ll abc
+----------  1 asakunotomohiro  wheel  0  1  8 21:45 abc
+$ rm abc
+override ---------  asakunotomohiro/wheel for abc?	←☆Yesを選択することで消せる(恐ろしい)。
+$ echo $?
+0
+$ ll abc
+----------  1 asakunotomohiro  wheel  0  1  8 21:45 abc
+$
+```
+通常の削除は、ファイルへの権限に掛かっている。  
+しかし、Perlプログラムの場合は、ディレクトリ権限による。  
+
+以下、Perlプログラムでの削除成功(ファイルには権限がないため、失敗を想定していた)。
+```terminal
+$ cat test.pl	←☆プログラム内容表示(バグあり？)。
+use v5.24;
+
+say "以下、削除前のディレクトリ配下状況確認。";
+foreach (<./test20220108/*>) {
+	say;
+}
+say "abcファイル削除結果：" . unlink './test20220108/abc' or warn "ファイル削除失敗($!)\n";
+say "以下、削除後のディレクトリ配下状況確認。";
+foreach (<./test20220108/*>) {
+	say;
+}
+$
+$ ll test20220108
+total 0
+----------  1 asakunotomohiro  staff  0  1  8 22:00 abc
+$ perl test.pl
+以下、削除前のディレクトリ配下状況確認。
+./test20220108/abc	←☆このファイルを削除予定。
+abcファイル削除結果：1	←☆削除実施及び、成功。
+以下、削除後のディレクトリ配下状況確認。	←☆削除されたため、何もない。
+$ ll test20220108	←☆ターミナルでの確認もファイルがないことを確認した。
+$
+```
+
+以下、ディレクトリの権限変更にて、Perlプログラムではファイル削除できないことを確認した。
+
+<details><summary>プログラムミス。</summary>
+
+以下、バグ含む。
+```terminal
+$ ll -d test20220108
+drwxr-xr-x  3 asakunotomohiro  staff  96  1  8 22:22 test20220108/	←☆通常のディレクトリ権限。
+$ ll test20220108/
+total 0
+-rw-r--r--  1 asakunotomohiro  staff  0  1  8 22:22 abc	←☆ファイルがあることを確認した。
+$ chmod 555 test20220108/	←☆ディレクトリの権限変更。
+$ ls test20220108/	←☆権限変更後もファイル確認は出来た。
+abc
+$ ll -d test20220108
+dr-xr-xr-x  3 asakunotomohiro  staff  96  1  8 22:22 test20220108/	←☆書き込み権限が無くなっている。
+$ perl test.pl	←☆Perlプログラム実行(ファイル削除実行)。
+以下、削除前のディレクトリ配下状況確認。
+./test20220108/abc	←☆ある。
+abcファイル削除結果：0	←☆消せないようだ。
+以下、削除後のディレクトリ配下状況確認。
+./test20220108/abc	←☆ある。
+$ ll test20220108/
+total 0
+-rw-r--r--  1 asakunotomohiro  staff  0  1  8 22:22 abc	←☆ディレクトリ配下に消したはずのファイルがある。
+$ ll -d test20220108
+dr-xr-xr-x  3 asakunotomohiro  staff  96  1  8 22:22 test20220108/	←☆権限が変わったことで、ファイルを消せなくなっている。
+$
+$ chmod 755 test20220108/	←☆ディレクトリ権限を戻す。
+$ perl test.pl	←☆再度プログラム実行。
+以下、削除前のディレクトリ配下状況確認。
+./test20220108/abc
+abcファイル削除結果：1	←☆消せたようだ。
+以下、削除後のディレクトリ配下状況確認。
+$ ll test20220108/	←☆消えている。
+$
+```
+不思議なのは、**warn**が出力されなかったこと。  
+~~どういうこと!?~~  
+プログラムに原因があるのだろう。  
+
+以下、ディレクトリ権限を全て取っ払った。
+```terminal
+$ ll -d test20220108
+d---------  3 asakunotomohiro  staff  96  1  8 22:40 test20220108/	←☆何の権限も無い状態。
+$ ll test20220108/	←☆ゆえに、中を見ること出来ず。
+ls: : Permission denied
+$ perl test.pl
+以下、削除前のディレクトリ配下状況確認。
+0	←☆しかし、警告が出てこない。
+以下、削除後のディレクトリ配下状況確認。
+$
+```
+どんな権限だろうが、warnが機能していない。  
+0かどうかで判断した方が良い？  
+
+</details>
+
+以下、警告箇所を判断文に変更した。
+```terminal
+$ ll test20220108/abc	←☆削除ファイルの存在確認。
+-rw-r--r--  1 asakunotomohiro  staff  0  1  8 23:18 test20220108/abc
+$ perl test.pl
+以下、削除前のディレクトリ配下状況確認。
+./test20220108/abc
+abcファイル削除結果：1	←☆通常削除。
+以下、削除後のディレクトリ配下状況確認。
+$ ll test20220108/abc	←☆削除成功。
+ls: test20220108/abc: No such file or directory
+$
+$   # 以下、削除に失敗する(意図した結果なので成功)。
+$ ll test20220108/abc
+-rw-r--r--  1 asakunotomohiro  staff  0  1  8 23:20 test20220108/abc
+$ ll -d test20220108
+dr-xr-xr-x  3 asakunotomohiro  staff  96  1  8 23:20 test20220108/	←☆ディレクトリに書き込み権限がない。
+$ perl test.pl
+以下、削除前のディレクトリ配下状況確認。
+./test20220108/abc	←☆このファイルを削除したい。
+ファイル削除失敗(Permission denied)	←☆警告メッセージ出力。
+以下、削除後のディレクトリ配下状況確認。
+./test20220108/abc	←☆削除に失敗し、ファイルが残っている。
+$ ll test20220108/abc
+-rw-r--r--  1 asakunotomohiro  staff  0  1  8 23:20 test20220108/abc	←☆消したいファイルが残っている・・・要は、成功。
+$
+```
+削除失敗時に警告を出すように[if修飾子](#practicaluseConditionalifmodifier)を使っていたが、どうやら機能の誤解をしていたようで、バグになって出力されない条件式にしていた。  
+仕方ないため、通常の条件分岐式に変更した。  
+以下、今回実行したプログラム。
+```perl
+use v5.24;
+
+say "以下、削除前のディレクトリ配下状況確認。";
+foreach (<./test20220108/*>) {
+	say;
+}
+my $ret = unlink './test20220108/abc';	←☆削除結果を変数に代入している。
+if( $ret ) {	←☆0であれば偽になることを利用した。
+	say "abcファイル削除結果：$ret"
+}
+else{
+	warn "ファイル削除失敗($!)\n"
+}
+say "以下、削除後のディレクトリ配下状況確認。";
+foreach (<./test20220108/*>) {
+	say;
+}
+```
+今回固有のプログラムになっているが、問題ありますまい。  
+
+
+<a name="practicaluseFileoperationFilenamechange"></a>
+### ファイル名変更
+ファイル名を変更するには、**rename関数**を使うことで、ファイル名の変更が完了する。  
+様式：
+`rename [変更前], [変更後];`  
+
+Pathを変えることで、ファイルの移動も可能になる。  
+様式：
+`rename [Path1/ファイル名], [Path2/ファイル名];`  
+ただし、
+`rename [ファイル名], [Path2];`
+と言う感じでファイル移動は出来ない。  
+また、ファイル移動をする場合は、移動後のディレクトリ権限を持っている前提が必須になる。  
+そして、ディスクを跨いだ移動はできない。  
+
+Pathを変えることで、ファイルの移動も可能になるだけでなく、ファイル名の変更も同時にできる。  
+様式：
+`rename [Path1/変更前ファイル名], [Path2/変更後ファイル名];`  
+
+上記のカンマ区切り`,`は、`=>`に置き換えることもできる。  
+`rename [変更前] => [変更後];`  
+
+以下、単純ファイル名変更プログラム(カレントディレクトリのファイルなのでグロブ使用)。
+```perl
+use v5.24;
+
+sub filemove() {
+	my $changefile = shift;
+	say "以下、ディレクトリ内容確認。";
+	foreach my $filename (<*.txt *.md>) {	←☆グロブでの利用(便利だが、サブディレクトリには使えない)。
+		if( $filename eq $changefile ) {
+			say "\t$filename";
+		}
+	}
+	say "ここまでがディレクトリ確認処理。"
+}
+
+sub filenameFunc() {
+	my $hoge = "テストファイル.txt";	# 変更前のファイル名。
+	say "ファイル作成実施。";
+	if( ! open FILE, '>>', $hoge) {	←☆ファイル名変更失敗させるときは、コメントアウトする。
+		die "書き込み失敗($!)。"
+	}
+
+	&filemove($hoge);	←☆ディレクトリ状況確認。
+	my $filename = 'hoge.md';	# 変更後のファイル名。
+	if( -e $filename ) {
+		warn "既に同名ファイルが存在する。\n";	←☆既存ファイルを上書きしないために必要な対応。
+	}
+	elsif( rename $hoge => $filename ){
+		say "変更成功($hoge => $filename)。";
+		$hoge = $filename;
+	}
+	else{
+		warn "ファイル名変更失敗($!)。\n";
+	}
+	&filemove($hoge);	←☆ディレクトリ状況確認。
+
+	say "$filenameファイルの削除結果：" . unlink "$filename" or warn "ファイル削除失敗($!)。";
+}
+&filenameFunc(@ARGV);
+```
+以下、実行記録。
+```terminal
+$ perl ファイル名変更.pl
+ファイル作成実施。
+以下、ディレクトリ内容確認。
+	テストファイル.txt	←☆このファイルを変更する。
+ここまでがディレクトリ確認処理。
+変更成功(テストファイル.txt => hoge.md)。
+以下、ディレクトリ内容確認。
+	hoge.md	←☆変更後のファイル名。
+ここまでがディレクトリ確認処理。
+hoge.mdファイルの削除結果：1	←☆後始末。
+$
+```
+
+以下、ディレクトリ権限がなく、ファイル名変更に失敗する。
+```terminal
+$ ll
+total 16
+-rw-r--r--  1 asakunotomohiro  staff     0  1  9 16:22 テストファイル.txt	←☆この名前を変えるつもり。
+drwxr-xr-x  3 asakunotomohiro  staff    96  1  9 16:02 ファイルの移動先ディレクトリ/
+-rwxr-xr-x  1 asakunotomohiro  staff  2912  1  9 15:56 ファイル名変更.pl*
+$ ll -d .
+dr-xr-xr-x  7 asakunotomohiro  staff  224  1  9 16:22 ./	←☆変更権限がない。
+$ perl ファイル名変更.pl	←☆変更実施。
+ファイル作成実施。	←☆これは、今回この処理はコメントアウトしている。
+以下、ディレクトリ内容確認。
+	テストファイル.txt
+以下、単純ファイル名変更。
+ファイル名変更失敗(Permission denied)。	←☆失敗。
+以下、ディレクトリ内容確認。
+	テストファイル.txt
+以上、単純ファイル名変更。
+hoge.mdファイル削除。
+ファイル削除失敗(No such file or directory)。 at test.pl line 79.
+以上。
+$ ll
+total 16
+-rw-r--r--  1 asakunotomohiro  staff     0  1  9 16:22 テストファイル.txt	←☆当たり前だが、変わっていない。
+drwxr-xr-x  3 asakunotomohiro  staff    96  1  9 16:02 ファイルの移動先ディレクトリ/
+-rwxr-xr-x  1 asakunotomohiro  staff  2912  1  9 15:56 ファイル名変更.pl*
+$
+```
+
+以下、ファイルをディレクトリに移動しつつファイル名を変更するプログラムであり、その変更後のファイル名をさらに変更しつつカレントディレクトリに戻すこともする。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub filemove() {
+	my $changefile = shift;
+	say "以下、ディレクトリ内容確認。";
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	opendir my $dh, $currentDir or die "ディレクトリオープン失敗($!)。";
+	foreach my $filename (readdir $dh) {
+		next if $filename =~ /^[.]/;	# ドットから始まる場合は、ループの先頭にスキップする。
+		if( -f $filename && $filename eq $changefile ) {
+			say "\t$filename";
+		}
+		elsif( -d $filename ) {
+			say "\t以下、$filenameディレクトリ配下の状況。";
+			opendir my $underdh, $filename or die "配下のディレクトリオープン失敗($!)。";
+			foreach my $subfilename ( readdir $underdh ) {
+				next if $subfilename =~ /^[.]/;	# 正規表現利用。
+				if( -f "$filename/$subfilename" && $subfilename eq $changefile ) {
+					say "\t\t$subfilename";
+				}
+			}
+			say "\t以上、ここまでがディレクトリ配下の状況。";
+		}
+	}
+}
+
+sub filenameFunc() {
+	my $filename = "テストファイル.txt";	# 変更前のファイル名。
+	say "ファイル作成実施。";
+	if( ! open FILE, '>>', $filename) {
+		die "書き込み失敗($!)。"
+	}
+
+	# ここからが、ファイル移動作業。
+	&filemove($filename);
+	say "以下、ファイル移動。";
+	my $dirname = "ファイルの移動先ディレクトリ";
+	my $newfilename = "bar.txt";
+	if( rename $filename => "$dirname/$newfilename" ){	# ディレクトリ移動及びファイル名変更。
+		say "カレントディレクトリにある$filenameファイルを'$dirname/$newfilename'に移動成功。";
+		$filename = $newfilename;
+	}
+	else{
+		warn "$filenameファイル移動失敗($!)。\n";
+	}
+	# ここまでが、ファイル移動作業。
+	&filemove($filename);
+	# ここからが、ファイル移動後にファイル名変更作業。
+	my $booname = "boo.md";
+	say "以下、$dirnameディレクトリからファイル($filename)をカレントディレクトリに$boonameとして移動。";
+	if( rename "$dirname/$newfilename" => "$booname" ){	# 変更実施。
+		say "'$dirname/$newfilename'からカレントディレクトリに$boonameファイルを移動成功。";
+		$filename = $booname;
+	}
+	else{
+		warn "ファイル移動失敗($!)。\n";
+	}
+	# ここまでが、ファイル移動後にファイル名変更作業。
+	&filemove($filename);
+
+	say "$filenameファイル削除。";
+	unlink "$filename" or warn "ファイル削除失敗($!)。";
+}
+&filenameFunc(@ARGV);
+```
+
+以下、上記のプログラムの実行記録。
+```terminal
+$ perl ファイル名変更.pl
+ファイル作成実施。
+以下、ディレクトリ内容確認。
+	テストファイル.txt	←☆作成されたこのファイルを移動及び名前を変える。
+	以下、ファイルの移動先ディレクトリディレクトリ配下の状況。
+	以上、ここまでがディレクトリ配下の状況。
+以下、ファイル移動。
+カレントディレクトリにあるテストファイル.txtファイルを'ファイルの移動先ディレクトリ/bar.txt'に移動成功。
+以下、ディレクトリ内容確認。
+	以下、ファイルの移動先ディレクトリディレクトリ配下の状況。
+		bar.txt	←☆ディレクトリに移動後、ファイル名が変更された。
+	以上、ここまでがディレクトリ配下の状況。
+以下、ファイルの移動先ディレクトリディレクトリからファイル(bar.txt)をカレントディレクトリにboo.mdとして移動。
+'ファイルの移動先ディレクトリ/bar.txt'からカレントディレクトリにboo.mdファイルを移動成功。
+以下、ディレクトリ内容確認。
+	以下、ファイルの移動先ディレクトリディレクトリ配下の状況。
+	以上、ここまでがディレクトリ配下の状況。
+	boo.md	←☆カレントディレクトリに移動完了。
+boo.mdファイル削除。	←☆後始末。
+$
+```
+
+
+<a name="practicaluseFileoperationlinkandfile"></a>
+### リンクとファイル
+
+* リンクによる制限  
+  ハードリンク(hard link)のこと(`link '元ファイル名', 'リンクファイル名' or warn "ハードリンク作成失敗$!"`)。  
+  * ディレクトリに対してリンク作成は出来ない。  
+  * ディスクを跨いだリンク付けはできない。  
+
+  ハードリンクで作成されたファイルの扱いが分からない。  
+  元のファイルと繋がっているのは分かる。そのため、書き込みなどの編集が反映されるのも分かる。  
+  しかし、元のファイルが削除されても気にせずにリンクファイルが存在し、問題なくファイルとして書き込まれた内容が健在だ。  
+  そのため、ハードリンクファイルなのか、本来のファイルなのか判断できない。  
+  これは困ると思うのだが、なぜこれがまかり通るのだろう(今は利用が非推奨扱いではあるが)。  
+
+* 上記の制限回避方法  
+  * シンボリックリンク(ソフトリンク・symbolic link・soft link)の活用。  
+    `symlink '元ファイル名', 'リンクファイル名' or "シンボリックリンク作成失敗$!"`
+
+
+#### ハードリンクファイル作成
+以下、ハードリンクファイル作成用プログラム例）
+```perl
+use v5.24;
+
+sub linkfunc() {
+	my $hoge = "リンクファイル.txt";	# 変更前のファイル名。
+	say "ファイル($hoge)作成実施。";
+	die "書き込み失敗($!)。" unless open my $file_fh, '>>', $hoge;
+	select $file_fh;	# 下記のフラッシュを有効にするには、ファイルハンドルを切り替える必要がある。
+	$| = 1;	# 即座にフラッシュする。
+	say $hoge;	# 書き込み。
+	select STDOUT;
+
+	my $cfile = 'リンクリンク.c';
+	link $hoge, $cfile or warn "ハードリンクファイル作成失敗($!)。";
+
+	die "$cfileファイルに書き込み失敗($!)。" unless open my $file_fh, '>>', $cfile;
+	$| = 1;	# ファイルハンドルの切り替えをしていないため、意味がない結果になる。
+	say $file_fh "リンクファイルに書き込み。";
+	close $file_fh;	# $|が機能しないため、わざわざ閉じる必要がある。
+	die "$hogeファイルに書き込み失敗($!)。" unless open my $file_fh, '>>', $hoge;
+	say $file_fh "大本のファイルに書き込み。";
+	close $file_fh;	# 書き込みを有効化するため、必要な処理。
+
+	say "以下、$cfileファイル内容の出力。";
+	die "$cfileファイルから読み込み失敗($!)。" unless open my $file_fh, '<', $cfile;
+	while( <$file_fh> ) {
+		chomp;
+		say "\t$_";
+	}
+	#close $file_fh;	# 読み込みは不要なようだ。
+	say "以下、$hogeファイル内容の出力。";
+	die "$hogeファイルから読み込み失敗($!)。" unless open my $file_fh, '<', $hoge;
+	while( <$file_fh> ) {
+		chomp;
+		say "\t$_";
+	}
+	close $file_fh;
+
+	# 削除する順番は順不同で構わないようだ。
+	unlink $cfile or warn "$cfileファイル削除失敗($!)。";
+	unlink $hoge or warn "$hogeファイル削除失敗($!)。";
+}
+&linkfunc(@ARGV);
+```
+
+以下、実行。
+```terminal
+$ ll
+total 32
+-rwxr-xr-x  1 asakunotomohiro  staff  1810  1 10 16:06 ハードリンクファイル作成.pl*
+$ perl test.pl
+ファイル(リンクファイル.txt)作成実施。
+以下、リンクリンク.cファイル内容の出力。
+	リンクファイル.txt
+	リンクファイルに書き込み。
+	大本のファイルに書き込み。
+以下、リンクファイル.txtファイル内容の出力。
+	リンクファイル.txt
+	リンクファイルに書き込み。
+	大本のファイルに書き込み。
+$ ll
+total 32
+-rwxr-xr-x  1 asakunotomohiro  staff  1810  1 10 16:06 ハードリンクファイル作成.pl*
+$
+```
+
+以下、上記プログラムからclose演算子をコメントアウトした場合の結果(ファイルハンドルへの書き込みもなし)。
+```terminal
+$ ll
+total 32
+-rwxr-xr-x  1 asakunotomohiro  staff  1844  1 10 16:12 ハードリンクファイル作成.pl*
+$ perl test.pl
+ファイル(リンクファイル.txt)作成実施。
+以下、リンクリンク.cファイル内容の出力。	←☆読み込みが行われない。
+以下、リンクファイル.txtファイル内容の出力。	←☆読み込みが行われない。
+$ ll
+total 48
+-rw-r--r--  2 asakunotomohiro  staff   106  1 10 16:12 リンクリンク.c
+-rw-r--r--  2 asakunotomohiro  staff   106  1 10 16:12 リンクファイル.txt
+-rwxr-xr-x  1 asakunotomohiro  staff  1844  1 10 16:12 ハードリンクファイル作成.pl*
+$ cat リンクリンク.c	←☆しかし、書き込まれている(しかし、書き込み順序が可笑しい)。
+大本のファイルに書き込み。
+リンクファイルに書き込み。
+リンクファイル.txt
+$ cat リンクファイル.txt	←☆しかし、書き込まれている(ただし、書き込み順序が可笑しい)。
+大本のファイルに書き込み。
+リンクファイルに書き込み。
+リンクファイル.txt
+$
+```
+
+以下、大本のファイルを削除後、ハードリンクファイル内容を確認した結果。
+```terminal
+$ ll
+total 32
+-rwxr-xr-x  1 asakunotomohiro  staff  1812  1 10 16:19 ハードリンクファイル作成.pl*
+$ perl test.pl
+ファイル(リンクファイル.txt)作成実施。
+以下、リンクリンク.cファイル内容の出力。
+	リンクファイル.txt
+	リンクファイルに書き込み。
+	大本のファイルに書き込み。
+以下、リンクファイル.txtファイル内容の出力。
+	リンクファイル.txt
+	リンクファイルに書き込み。
+	大本のファイルに書き込み。
+$ ll
+total 48
+-rw-r--r--  2 asakunotomohiro  staff   106  1 10 16:19 リンクリンク.c	←☆ハードリンクファイル。
+-rw-r--r--  2 asakunotomohiro  staff   106  1 10 16:19 リンクファイル.txt	←☆大本ファイル。
+-rwxr-xr-x  1 asakunotomohiro  staff  1812  1 10 16:19 ハードリンクファイル作成.pl*
+$ rm リンクファイル.txt	←☆大本ファイルの削除。
+$ ll
+total 40
+-rw-r--r--  1 asakunotomohiro  staff   106  1 10 16:19 リンクリンク.c	←☆ハードリンクファイルのみある。
+-rwxr-xr-x  1 asakunotomohiro  staff  1812  1 10 16:19 ハードリンクファイル作成.pl*
+$ cat リンクリンク.c	←☆ハードリンクファイルであるにもかかわらず、大本ファイルの存在を無視して中身が保持されている。
+リンクファイル.txt
+リンクファイルに書き込み。
+大本のファイルに書き込み。
+$
+```
+
+
+#### ソフトリンク(シンボリックリンク)ファイル作成
+以下、ソフトリンクファイル作成用プログラム例）
+```perl
+use v5.24;
+
+sub linkfunc() {
+	my $hoge = "ソフトリンクファイル.txt";	# 変更前のファイル名。
+	say "ファイル($hoge)作成実施。";
+	die "書き込み失敗($!)。" unless open my $file_fh, '>>', $hoge;
+	say $file_fh $hoge;	# 書き込み。
+	close $file_fh;	# ファイルハンドル切り替えをしていない場合、わざわざ閉じる必要がある。
+
+	my $cfile = 'シンボリックファイル.c';
+	symlink $hoge, $cfile or warn "ソフトリンクファイル作成失敗($!)。";
+
+	die "$cfileファイルに書き込み失敗($!)。" unless open my $file_fh, '>>', $cfile;
+	say $file_fh "リンクファイルに書き込み。";
+	close $file_fh;	# わざわざ閉じる必要がある。
+
+	die "$hogeファイルに書き込み失敗($!)。" unless open my $file_fh, '>>', $hoge;
+	say $file_fh "大本のファイルに書き込み。";
+	close $file_fh;	# わざわざ閉じる必要がある。
+
+	say "以下、$cfileファイル内容の出力。";
+	die "$cfileファイルから読み込み失敗($!)。" unless open my $file_fh, '<', $cfile;
+	while( <$file_fh> ) {
+		chomp;
+		say "\t$_";
+	}
+	say "以下、$hogeファイル内容の出力。";
+	die "$hogeファイルから読み込み失敗($!)。" unless open my $file_fh, '<', $hoge;
+	while( <$file_fh> ) {
+		chomp;
+		say "\t$_";
+	}
+	close $file_fh;
+
+	# 削除する順番は順不同で構わないようだ。
+	unlink $cfile or warn "$cfileファイル削除失敗($!)。";
+	unlink $hoge or warn "$hogeファイル削除失敗($!)。";
+}
+&linkfunc(@ARGV);
+```
+
+以下、(ファイル削除処理はコメントアウト後の)実行結果。
+```terminal
+$ ll
+total 40
+-rwxr-xr-x  1 asakunotomohiro  staff  1560  1 10 16:41 ソフトリンクファイル作成.pl*
+$ perl ソフトリンクファイル作成.pl
+ファイル(ソフトリンクファイル.txt)作成実施。
+以下、シンボリックファイル.cファイル内容の出力。
+	ソフトリンクファイル.txt
+	リンクファイルに書き込み。
+	大本のファイルに書き込み。
+以下、ソフトリンクファイル.txtファイル内容の出力。
+	ソフトリンクファイル.txt
+	リンクファイルに書き込み。
+	大本のファイルに書き込み。
+$ ll
+total 48
+-rw-r--r--  1 asakunotomohiro  staff   115  1 10 16:41 ソフトリンクファイル.txt	←☆大本のファイル。
+lrwxr-xr-x  1 asakunotomohiro  staff    34  1 10 16:41 シンボリックファイル.c@ -> ソフトリンクファイル.txt	←☆リンクファイルだとひと目で分かる。
+-rwxr-xr-x  1 asakunotomohiro  staff  1560  1 10 16:41 ソフトリンクファイル作成.pl*
+$ cat ソフトリンクファイル.txt
+ソフトリンクファイル.txt
+リンクファイルに書き込み。
+大本のファイルに書き込み。
+$ cat シンボリックファイル.c
+ソフトリンクファイル.txt
+リンクファイルに書き込み。
+大本のファイルに書き込み。
+$
+```
+
+以下、リンクファイルの挙動確認作業。
+```terminal
+$ ll
+total 48
+-rw-r--r--  1 asakunotomohiro  staff   115  1 10 16:41 ソフトリンクファイル.txt
+lrwxr-xr-x  1 asakunotomohiro  staff    34  1 10 16:41 シンボリックファイル.c@ -> ソフトリンクファイル.txt
+-rwxr-xr-x  1 asakunotomohiro  staff  1560  1 10 16:41 ソフトリンクファイル作成.pl*
+$ rm ソフトリンクファイル.txt	←☆大本のファイル削除。
+$ ll
+total 40
+lrwxr-xr-x  1 asakunotomohiro  staff    34  1 10 16:41 シンボリックファイル.c@ -> ソフトリンクファイル.txt
+-rwxr-xr-x  1 asakunotomohiro  staff  1560  1 10 16:41 ソフトリンクファイル作成.pl*
+$ cat シンボリックファイル.c	←☆読み込めない。
+cat: シンボリックファイル.c: No such file or directory
+$
+```
+ハードリンクファイルとの違いが判明した。  
+
+
+#### ソフトリンクファイルから大本にたどる方法。
+以下、リンクファイル判定プログラム。
+```perl
+use v5.24;
+
+sub linkfunc() {
+	my $hoge = "ファイル.txt";	# 大本のファイル名。
+	die "書き込み失敗($!)。" unless open my $file_fh, '>>', $hoge;
+
+	my $symfile = 'シンボリックファイル.c';
+	symlink $hoge, $symfile or warn "ソフトリンクファイル作成失敗($!)。";
+
+	my $linkfile = 'ハードリンクファイル.c';
+	link $hoge, $linkfile or warn "ハードリンクファイル作成失敗($!)。";
+
+	say "$hogeファイルの大本のファイルをたどる=>" . readlink $hoge;
+	say "$symfileファイルの大本のファイルをたどる=>" . readlink $symfile;
+	say "$linkfileファイルの大本のファイルをたどる=>" . readlink $linkfile;
+}
+&linkfunc(@ARGV);
+```
+以下、その結果。
+```terminal
+$ perl リンクファイル確認.pl
+ファイル.txtファイルの大本のファイルをたどる=>
+シンボリックファイル.cファイルの大本のファイルをたどる=>ファイル.txt
+ハードリンクファイル.cファイルの大本のファイルをたどる=>
+$ ll
+total 48
+lrwxr-xr-x  1 asakunotomohiro  staff    16  1 10 17:00 シンボリックファイル.c@ -> ファイル.txt	←☆ソフトリンクファイル。
+-rw-r--r--  2 asakunotomohiro  staff     0  1 10 17:00 ファイル.txt	←☆大本ファイル。
+-rw-r--r--  2 asakunotomohiro  staff     0  1 10 17:00 ハードリンクファイル.c	←☆ハードリンクファイル。
+-rwxr-xr-x  1 asakunotomohiro  staff  1783  1 10 16:51 リンクファイル確認.pl*
+$
+```
+シンボリックリンクでない場合の結果は、undefが返る。  
+ハードリンクファイルの扱いはどうすれば良い？  
+
+
+#### 存在しないファイルからソフトリンクファイルの作成。
+ファイルが存在しない場合、ハードリンクファイル作成はできない。  
+しかし、ソフトリンクファイルの場合は、大本ファイルの存在有無にかかわらず、作成できる。  
+以下、プログラム。
+```perl
+use v5.24;
+
+sub linkfunc() {
+	my $symfile = 'シンボリックファイル.c';
+	symlink '存在しないファイル.txt', $symfile or warn "ソフトリンクファイル作成失敗($!)。";
+
+	my $linkfile = 'ハードリンクファイル.c';
+	link '存在しないファイル.txt', $linkfile or warn "ハードリンクファイル作成失敗($!)。";
+}
+&linkfunc(@ARGV);
+```
+以下、実行結果。
+```terminal
+$ ll
+total 48
+-rwxr-xr-x  1 asakunotomohiro  staff   379  1 10 17:13 リンクファイル作成.pl*
+$ perl リンクファイル作成.pl
+ハードリンクファイル作成失敗(No such file or directory)。 at リンクファイル作成.pl line 8.
+$ ll
+total 48
+lrwxr-xr-x  1 asakunotomohiro  staff    31  1 10 17:13 シンボリックファイル.c@ -> 存在しないファイル.txt
+-rwxr-xr-x  1 asakunotomohiro  staff   379  1 10 17:13 リンクファイル作成.pl*
+$ cat シンボリックファイル.c	←☆開くことは出来ない(当たり前)。
+cat: シンボリックファイル.c: No such file or directory	←☆大本ファイルがないから開けないため、このエラーは可笑しいだろう。
+$
+```
+
+
 <a name="practicaluseFileoperationSpecialvariables"></a>
 ### 特殊変数
 一般的に変更不要だが、どうしても変更する場合は、処理終了後に戻すこと。  
@@ -5488,7 +6215,7 @@ sub inputOutput() {
   * `@F`  
     オートスプリット配列というものだが、それが何か分からない。  
   * `DATAファイルハンドル`  
-    同じファイル内に記述した文字列を**__END__**になるまで読み込む。  
+    同じファイル内に記述した文字列を **\_\_END\_\_** になるまで読み込む。  
 
 
 #### DATAファイルハンドル
@@ -5518,6 +6245,801 @@ $ perl special.pl
 $
 ```
 この技法は今後活用していこうと思う。  
+
+</details>
+
+
+<a name="practicaluseDirectorymanipulation"></a>
+<details><summary>応用知識-ディレクトリ操作(入出力・File-I/O)</summary>
+
+<a name="practicaluseDirectorymanipulationDirectory"></a>
+### [ディレクトリ](https://perldoc.jp/docs/perl/5.22.1/perlport.pod)
+移植性のあるプログラムを作成するにあたり、ファイルとファイルシステムについて考えておく必要がある。  
+その中のひとつに、ディレクトリ名・ディレクトリのPath・ディレクトリへの権限・ホームディレクトリなどを考慮しておく必要がある。  
+今回は、そんな大それた話ではない。  
+以下、普通にディレクトリに特化した話をしていく。  
+
+
+<a name="practicaluseDirectorymanipulationDirectorycurrent"></a>
+### カレントディレクトリ及びディレクトリまたぎ(カレントディレクトリ移動)
+現在のディレクトリを取得する。  
+そして、カレントディレクトリの場所を移動する("ディレクトリ移動"では、ディレクトリを別の場所に移すように感じる)。  
+
+以下、プログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+my $currentDir;
+
+sub inputOutput() {
+	$currentDir = getcwd();	# カレントディレクトリを保存。
+	say $currentDir;	# /Users/asakunotomohiro/study勉強用Githubリポジトリ/Perl言語
+
+	{
+	say "以下、カレントディレクトリを移動後、カレントディレクトリを表示する。";
+	chdir '../ひな形/基礎知識用の勉強' or die "ディレクトリ移動失敗($!)。";
+										# ディレクトリ移動失敗(Permission denied)。 at ディレクトリハンドル.pl line 10.
+	my $dirchenge = getcwd();
+	say $dirchenge;
+		# /Users/asakunotomohiro/study勉強用Githubリポジトリ/ひな形/基礎知識用の勉強
+	}
+}
+&inputOutput();
+say getcwd();	# /Users/asakunotomohiro/study勉強用Githubリポジトリ/ひな形/基礎知識用の勉強
+				# ブロックを抜け出たため、カレントディレクトリが戻ると思ったが、戻らず。
+
+chdir or die "ディレクトリ移動失敗($!)。";	# 引数なしの場合、ホームディレクトリに移動する。
+say '$ENV{HOME}：' . "<$ENV{HOME}>および、" . '$ENV{LOGDIR}：' . "<$ENV{LOGDIR}>";
+				# $ENV{HOME}：</Users/asakunotomohiro>および、$ENV{LOGDIR}：<>
+say getcwd();	# /Users/asakunotomohiro
+
+chdir $currentDir or die "ディレクトリ移動失敗($!)。";	# カレントディレクトリに戻る。
+say getcwd();	# /Users/asakunotomohiro/study勉強用Githubリポジトリ/Perl言語
+```
+カレントディレクトリから移動した場合に関係なく、Perlプログラムを抜け出たときのカレントディレクトリは移動していない。  
+そして、引数を渡さない場合、極力ホームディレクトリに移動する(Windowsの場合、失敗する)。  
+
+
+<a name="practicaluseDirectorymanipulationDirectoryglob"></a>
+### グロブ(globbing)
+グロブとは、ファイル名パターンをマッチするファイル名に展開すること(正規表現ではない)。  
+
+※[型グロブ](#practicaluseTypeglob)は別で説明している。  
+※[正規表現](#practicaluseRegularexpression)は別で説明している(グロブでのマッチと正規表現でのマッチは意味が異なる)。  
+
+以下、シェルのグロブ。
+```terminal
+$ ll
+total 552
+-rw-r--r--   1 asakunotomohiro  staff  261903  1  8 13:41 README.md
+drwxr-xr-x  15 asakunotomohiro  staff     480  1  7 18:03 応用知識用の勉強/
+-rw-r--r--   1 asakunotomohiro  staff   10153  1  7 17:54 環境構築(インストール).md
+drwxr-xr-x   7 asakunotomohiro  staff     224  1  7 17:54 基礎知識用の勉強/
+-rwxr-xr-x   1 asakunotomohiro  staff     132  1  7 17:54 version.pl*	←☆これを表示したい。
+-rwxr-xr-x   1 asakunotomohiro  staff     160  1  7 17:54 helloWorld.pl*	←☆これを表示したい。
+drwxr-xr-x   9 asakunotomohiro  staff     288  1  7 17:54 Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける/
+$ ls *pl	←☆グロブを用いたファイル表示。
+helloWorld.pl	version.pl
+$
+```
+
+以下、Perl側でのグロブ利用プログラム。
+```perl
+use v5.24;
+
+sub inputOutput() {
+	my @plfiles = glob '*.pl';
+	say "@plfiles";	# helloWorld.pl version.pl
+
+	@plfiles = glob '*.pl *.md';	# 欲しいパターンが複数ある場合は、スペース区切りをする。
+	foreach my $plfile ( @plfiles ) {
+		say $plfile;
+			# helloWorld.pl
+			# version.pl
+			# 環境構築(インストール).md
+			# README.md
+	}
+
+	@plfiles = glob '*';	# ドットで始まるファイル以外を取り出す。
+	foreach my $plfile ( @plfiles ) {
+		say $plfile;
+			# 基礎知識用の勉強
+			# 応用知識用の勉強
+			# 環境構築(インストール).md
+			# helloWorld.pl
+			# Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける
+			# README.md
+			# version.pl
+	}
+
+	@plfiles = glob '.*';	# ドットで始まるファイルを取り出す。
+	foreach my $plfile ( @plfiles ) {
+		say $plfile;
+			# .
+			# ..
+			# .DS_Store
+			# .README.md.swp
+	}
+}
+&inputOutput();
+```
+シェルでグロブを利用した結果と同じになった。  
+Perl5.6以前のバージョンは、`/bin/csh`を呼び出していたため、処理が遅くなっていたが、今は改善されている。  
+cshを呼び出していないと言うこと？  
+呼び出しているが、処理が早くなったと言うこと？  
+
+以下、別のグロブの書き方プログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub inputOutputGlob() {
+	my @plfile = <*.pl>;
+	say "@plfile";	# helloWorld.pl version.pl
+
+	@plfile = glob <*.pl *.md>;	# この書き方は間違い。
+	say "@plfile";	# helloWorld.pl
+
+	@plfile = <*.pl *.md>;
+	say "@plfile";	# helloWorld.pl version.pl 環境構築(インストール).md README.md
+
+	@plfile = <*>;
+	say "@plfile";	# 基礎知識用の勉強 応用知識用の勉強 環境構築(インストール).md helloWorld.pl Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける README.md version.pl
+
+	my $period = './';
+	@plfile = <$period>;	# この書き方は間違い(ファイルハンドル扱いになっている)。
+	say "@plfile";	# . .. .DS_Store .README.md.swp
+
+	my $period = '.';
+	@plfile = <$period/.*>;
+	say "@plfile";	# . .. .DS_Store .README.md.swp
+
+	$currentDir = getcwd();
+	@plfile = <$currentDir/.*>;
+	#say "@plfile";	# フルPathで出力される。
+	foreach my $file (@plfile) {
+		say $file;
+			# /Users/asakunotomohiro/study勉強用Githubリポジトリ/Perl言語/.
+			# /Users/asakunotomohiro/study勉強用Githubリポジトリ/Perl言語/..
+			# /Users/asakunotomohiro/study勉強用Githubリポジトリ/Perl言語/.DS_Store
+			# /Users/asakunotomohiro/study勉強用Githubリポジトリ/Perl言語/.README.md.swp
+	}
+}
+&inputOutputGlob();
+```
+今回は、glob演算子を使わず、レガシー(遺物)表記を用いた。  
+そして、この表記のほうが一般的らしい。  
+※レガシー表記は、[ファイルハンドル](#practicaluseFileoperationfilehandle)と勘違いされるため、気をつけて使うこと。  
+
+
+<a name="practicaluseDirectorymanipulationDirectoryhandle"></a>
+### ディレクトリハンドル
+ファイルハンドルと同じように、ディレクトリハンドルが存在する。  
+ファイルハンドルの場合はファイルの中身を取り出すが、ディレクトリハンドルはディレクトリの中身(ファイル名など)を取り出す。  
+
+以下、裸のワード版プログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub dirInputOutput() {
+	my $currentDir = getcwd();
+	opendir DIR, $currentDir or die "ディレクトリオープン失敗($!)。";
+	say DIR;	# この行がなかったことになっている。
+	foreach my $filename (readdir DIR) {
+		say $filename;
+	}
+
+	closedir DIR;
+}
+&dirInputOutput(@ARGV);
+```
+
+以下、出力結果。
+```terminal
+.
+..
+基礎知識用の勉強
+version.pl
+.DS_Store
+.README.md.swp
+README.md
+応用知識用の勉強
+helloWorld.pl
+環境構築(インストール).md
+Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける
+```
+何も考えずに取得する。  
+
+以下、スカラー変数版プログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub dirInputOutput() {
+	my $currentDir = getcwd();
+	opendir my $dh, $currentDir or die "ディレクトリオープン失敗($!)。";
+	say $dh;	# GLOB(0x7fd2578037a8)
+	foreach my $filename (readdir $dh) {
+		say $filename;
+	}
+
+	closedir $filename;
+}
+&dirInputOutput(@ARGV);
+```
+出力結果は、上記と同じ。  
+
+
+#### ディレクトリハンドルの補填
+ディレクトリハンドルを通常利用する場合、ファイル名(ディレクトリ名)のみが取り出され、フルPathでの取り出しが出来ない。  
+そのため、フルPathにするには、自前で組み立てる必要がある。  
+それ以外の欠点は、指定したディレクトリ配下を例外なく取り出すこと。  
+上記のグロブで目的のファイルのみを取り出したようにできない。  
+そのため、これも自前で取捨選択する必要がある。  
+以下、そのプログラム例）
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub inputOutput() {
+	my $currentDir = getcwd();
+	opendir my $dh, $currentDir or die "ディレクトリオープン失敗($!)。";
+	foreach my $filename (readdir $dh) {
+		next if $filename =~ /^[.]/;	# 先頭がピリオドで始まる場合、先頭処理に戻る。
+		say $filename;
+	}
+
+	closedir $dh;
+}
+&inputOutput(@ARGV);
+```
+これは、カレントディレクトリ`.`や親ディレクトリ`..`、それ以外にも隠しファイル`.[ファイル名]`を除外するプログラムになっている。  
+
+以下、出力結果。
+```terminal
+基礎知識用の勉強
+version.pl
+README.md
+応用知識用の勉強
+helloWorld.pl
+環境構築(インストール).md
+Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける
+```
+
+以下、指定したファイルのみを取り出すプログラム(拡張子で判断する)。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub inputOutput() {
+	my $currentDir = getcwd();
+	opendir my $dh, $currentDir or die "ディレクトリオープン失敗($!)。";
+	while (my $filename = readdir $dh) {
+		next unless $filename =~ /\.pl\z/;	# 拡張子がplでない場合、先頭処理に戻る。
+		say $filename;
+	}
+
+	closedir $dh;
+}
+&inputOutput(@ARGV);
+```
+以下、出力結果。
+```terminal
+version.pl
+helloWorld.pl
+```
+今回のファイル取り出し方法は、フルPathにならないため、何もPathを指定せずにファイルを操作する場合は、カレントディレクトリのファイルだという前提でファイル操作が行われるため、気をつけること。  
+
+
+<a name="practicaluseDirectorymanipulationDirectoryMakeDel"></a>
+### ディレクトリ作成及び削除
+ディレクトリを作成するには、**mkdir関数**を使うことで、ディレクトリの作成が完了する。  
+様式：
+`mkdir ディレクトリ名, 権限;`  
+※権限部分は数字を渡す必要がある。  
+[8進数](#understandnAryNotationChapter2)になっていればいいため、渡す方法は10進数でも16進数でも問題ない。  
+しかし、普通は、8進数で渡す方が良いだろう。  
+
+ディレクトリを削除するには、**rmdir演算子**を使うことで、ディレクトリの削除が完了する。  
+様式：
+`rmdir ディレクトリ名;`  
+
+以下、作成プログラム例）
+```perl
+use v5.24;
+
+my $hogeDir = "本日は晴天なり。";
+
+sub dirMake() {
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(0755=>01363)。
+	unless( -d $hogeDir ) {
+		say "'$hogeDir'ディレクトリがない。";
+	}
+	say "以下、ディレクトリ作成実施。";
+	mkdir $hogeDir, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+	if( -d $hogeDir ) {
+		say "'$hogeDir'ディレクトリがある。";
+	}
+	say "以下、ディレクトリ削除実施。";
+	rmdir $hogeDir or warn "ディレクトリ削除失敗($!)。";
+	if( -d $hogeDir ) {
+		say "'$hogeDir'ディレクトリがある。";
+	}
+	else {
+		say "'$hogeDir'ディレクトリ削除済み。";
+	}
+}
+&dirMake(@ARGV);
+```
+
+以下、実施メッセージ内容。
+```text
+'本日は晴天なり。'ディレクトリがない。
+以下、ディレクトリ作成実施。
+'本日は晴天なり。'ディレクトリがある。
+以下、ディレクトリ削除実施。
+'本日は晴天なり。'ディレクトリ削除済み。
+```
+
+以下、削除対象のディレクトリ配下にファイルなどがある場合削除できないプログラム例）
+```perl
+use v5.24;
+
+my $hoge = "本日は晴天なり。";
+my @hoge = qw( 本日は 晴天なり。 本日は晴天なり。 );
+
+sub directory() {
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(0755=>01363)。
+	my $dirFilename = $hoge . '/' . $hoge . '.txt';
+
+	mkdir $hoge, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+	open my $file_fh, '>>', $dirFilename or die "${hoge}.txtのファイルオープン失敗($!)";
+	foreach my $value ( @hoge ) {
+		say $file_fh $value;
+	}
+	close $file_fh;
+	open my $file_fh, '<', $dirFilename or die "${hoge}.txtのファイルオープン失敗($!)";
+	say "以下、書き込んだファイル内容表示。";
+	while ( <$file_fh> ) {
+		chomp;
+		say "\t$_";
+	}
+	close $file_fh;
+
+	say "以下、ディレクトリを削除する。";
+	rmdir $hoge or warn "ディレクトリ削除失敗($!)。";
+				# ディレクトリ削除失敗(Directory not empty)。 at ディレクトリ作成及び削除.pl line 25.
+	if( -d $hoge ) {
+		say "\t'$hoge'ディレクトリがある。";
+	}
+	else {
+		say "\t'$hoge'ディレクトリ削除済み。";
+	}
+	say "以下、配下のファイルを削除する。";
+	unlink $dirFilename or warn "'$dirFilename'ファイル削除失敗($!)。";
+	say "以下、再度ディレクトリを削除する。";
+	rmdir $hoge or warn "ディレクトリ削除失敗($!)。";
+	if( -d $hoge ) {
+		say "\t'$hoge'ディレクトリがある。";
+	}
+	else {
+		say "\t'$hoge'ディレクトリ削除済み。";
+	}
+
+	say "以上。"
+}
+&directory(@ARGV);
+```
+
+以下、出力結果。
+```terminal
+ディレクトリ削除失敗(Directory not empty)。 at ディレクトリ作成及び削除.pl line 25.
+以下、書き込んだファイル内容表示。
+	本日は
+	晴天なり。
+	本日は晴天なり。
+以下、ディレクトリを削除する。
+	'本日は晴天なり。'ディレクトリがある。
+以下、配下のファイルを削除する。
+以下、再度ディレクトリを削除する。
+	'本日は晴天なり。'ディレクトリ削除済み。
+以上。
+```
+
+
+</details>
+
+
+<a name="practicalusePropertymanipulation"></a>
+<details><summary>応用知識-プロパティ操作(ファイル・ディレクトリ)</summary>
+
+<a name="practicalusePropertymanipulationpermissionchange"></a>
+### 権限(パーミッション)変更
+ディレクトリに関するのは権限だけのようだな。  
+
+様式：
+`chmod 権限, ディレクトリ名;`  
+ディレクトリ作成同様、権限部分は8進数を指定する必要がある。  
+
+<details><summary>カレントディレクトリの権限が大事</summary>
+
+以下、ディレクトリから権限を奪い取った後に削除するプログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+my $dirmaster = "本日は晴天なり。";
+
+sub dirPermissions() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される。
+
+	unless( -d $dirmaster ) {
+		say "'$dirmaster'ディレクトリがない。";
+	}
+	say "直下にディレクトリを作成する。";
+	mkdir $dirmaster, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+	if( -d $dirmaster ) {
+		say "'$dirmaster'ディレクトリから権限剥奪。";
+		chmod 0000, $dirmaster or warn "'$dirmaster'ディレクトリの権限変更失敗($!)。";
+	}
+	rmdir $dirmaster or warn "ディレクトリ削除失敗($!)。";	←☆上記で、権限が000にされているのだが、消すことができる。
+	chmod oct($permissions), $dirmaster or warn "'$dirmaster'ディレクトリの権限変更失敗($!)。";
+										# 本日は晴天なり。ディレクトリの権限変更失敗(No such file or directory)。 at 権限変更.pl line 20.
+	rmdir $dirmaster or warn "ディレクトリ削除失敗($!)。";
+					# ディレクトリ削除失敗(No such file or directory)。 at 権限変更.pl line 22.
+}
+&dirPermissions(@ARGV);
+```
+驚くことに、削除権限がないディレクトリを削除することができる。  
+もしかして、ファイルと同様にカレントディレクトリの権限だけが大事で、配下の権限は無視しているのかもしれない。  
+⇒そうだった。  
+
+</details>
+
+以下、ディレクトリ権限が無いため、配下のディレクトリを削除できず、エラーが吐き出される。
+```perl
+use v5.24;
+
+my $dirmaster = "本日は晴天なり。";
+
+sub dirPermissions() {
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される。
+	my $dirsubdir = "$dirmaster/就職活動継続";
+
+	unless( -d $dirmaster ) {
+		say "'$dirmaster'ディレクトリがない。";
+	}
+	say "直下にディレクトリを作成する。";
+	mkdir $dirmaster, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+	if( -d $dirmaster ) {
+		say "'$dirmaster'ディレクトリから権限剥奪。";
+		mkdir $dirsubdir, oct($permissions) or warn "サブディレクトリ作成失敗($!)。";
+		chmod 0000, $dirmaster or warn "'$dirmaster'ディレクトリの権限変更失敗($!)。";
+	}
+	rmdir $dirsubdir or warn "サブディレクトリ削除失敗($!)。";
+						# サブディレクトリ削除失敗(Permission denied)。 at 権限変更.pl line 21.
+	chmod oct($permissions), $dirmaster or warn "'$dirmaster'ディレクトリの権限変更失敗($!)。";
+	say "サブディレクトリ削除実施。" and rmdir $dirsubdir or warn "サブディレクトリ削除失敗($!)。";
+	say "ディレクトリ削除実施。" and rmdir $dirmaster or warn "ディレクトリ削除失敗($!)。";
+}
+&dirPermissions(@ARGV);
+```
+ディレクトリから権限を取り除いた後にそのディレクトリを削除した場合、普通に削除が成功する。  
+そのため、権限を取り除いたディレクトリ配下のディレクトリを削除する必要がある。  
+そして、それは思惑通り、削除に失敗した。  
+
+以下、ファイルの権限変更用プログラム。
+```perl
+use v5.24;
+
+sub filePermissions() {
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される。
+	my @hoge = qw( 本日は 晴天なり。 本日は晴天なり。 );
+	my $dirunderFile = $hoge[0] . '/' . $hoge[1];
+
+	if( -d $hoge[0] ) {
+		warn "同名の$hoge[0]ディレクトリが存在する。";
+	}
+	mkdir $hoge[0], oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+	if( -d $hoge[0] ) {
+		say "$hoge[0]ディレクトリに、$hoge[1]ファイルを作成する。";
+
+		open my $file_fh, '>', $dirunderFile
+			or die "$dirunderFileのファイルオープン失敗($!)";
+		foreach( @hoge ) {
+			say $file_fh $_;
+		}
+		close $file_fh;
+
+		say "以下、直下ディレクトリの権限を書き換え不可に変更する。";
+		chmod 0555, $hoge[0] or warn "$hoge[0]ディレクトリの権限変更失敗($!)。";
+	}
+	say "以下、作成ディレクトリ配下のファイルを削除。";
+	unlink $dirunderFile or warn "ファイル削除失敗($!)。";
+						# ファイル削除失敗(Permission denied)。 at 権限変更.pl line 26.
+	if( -f $dirunderFile ) {
+		say "$dirunderFileファイル削除失敗。";
+	}
+	say "以下、直下ディレクトリの権限に755を付与する。";
+	chmod oct($permissions), $hoge[0] or warn "$hoge[0]ディレクトリの権限変更失敗($!)。";
+	unlink $dirunderFile or warn "ファイル削除失敗($!)。";
+	unless( -f $dirunderFile ) {
+		say "$dirunderFileファイル削除済み。";
+		rmdir $hoge[0] or warn "ディレクトリ削除失敗($!)。";
+		unless( -d $hoge[0] ) {
+			say "$hoge[0]ディレクトリ削除成功。";
+		}
+	}
+}
+&filePermissions(@ARGV);
+```
+
+以下、実行結果。
+```terminal
+ファイル削除失敗(Permission denied)。 at 権限変更.pl line 26.
+本日はディレクトリに、晴天なり。ファイルを作成する。
+以下、直下ディレクトリの権限を書き換え不可に変更する。
+以下、作成ディレクトリ配下のファイルを削除。
+本日は/晴天なり。ファイル削除失敗。
+以下、直下ディレクトリの権限に755を付与する。
+本日は/晴天なり。ファイル削除済み。
+本日はディレクトリ削除成功。
+```
+結局は、対象ディレクトリの親ディレクトリ権限に引きずられるのであり、対象ディレクトリや対象ファイルの権限ではない。  
+プログラムを渡したり触られたりすることが想定される分には、対象のディレクトリとファイルに直接権限を与えるのが一般的だろう。  
+
+
+<a name="practicalusePropertymanipulationownerchange"></a>
+### ファイルオーナー変更
+[オーナ変更](https://perldoc.jp/func/chown)には、ユーザIDとグループIDを指定する必要がある。  
+
+以下、ユーザ情報一覧。
+```terminal
+$ dscl . -list /Users | tail -6
+_xserverdocs
+asakunotomohiro
+daemon
+Guest
+nobody
+root
+$
+```
+アンダーバーから始まるユーザは何？  
+自動生成ユーザ？  
+
+以下、グループ一覧とそのID。
+```terminal
+$ dscl . -list /Groups PrimaryGroupID | tail -10
+nogroup                  -1
+operator                 5
+owner                    10
+procmod                  9
+procview                 8	←☆今回のプログラムで利用するグループ。
+staff                    20	←☆ファイル作成後に自動付与されるグループ？
+sys                      3
+tty                      4
+utmp                     45
+wheel                    0
+$
+```
+
+以下、ユーザ名とそのID・・・のはず。
+```terminal
+$ dscl . -list /Users UniqueID | tail -6
+_xserverdocs             251
+asakunotomohiro          501	←☆ファイル作成後に自動付与されるユーザ(このユーザで作成したのだから当たり前)。
+daemon                   1
+Guest                    201	←☆今回のプログラムで利用するユーザ。
+nobody                   -2
+root                     0
+$
+```
+ユニークIDと言うのがユーザIDと思って良いよね。  
+
+以下、ユーザ名とグループID・・・のはず。
+```terminal
+$ dscl . -list /Users PrimaryGroupID | tail -6
+_xserverdocs             251
+asakunotomohiro          20
+daemon                   1
+Guest                    201
+nobody                   -2
+root                     0
+$
+```
+ユーザIDと同じように見えて、異なる。  
+ユーザ自身が作成したユーザ情報は、ユーザIDとグループIDが異なるようだ。  
+
+ユーザIDからユーザ名を取得するのは結構な労力が必要なようだ。  
+困った。  
+検証するのがめんどくさい・・・ゆえに、目視確認かな・・・。  
+
+プログラム側で書き換えに失敗した。
+```terminal
+$ ll hoge
+-rw-r--r--  1 asakunotomohiro  staff  0  1 15 12:36 hoge
+$ chown Guest:staff hoge
+chown: hoge: Operation not permitted
+$ chown Guest:wheel hoge
+chown: hoge: Operation not permitted
+$ chown Guest:owner hoge
+chown: hoge: Operation not permitted
+$ chown Guest:operator hoge
+chown: hoge: Operation not permitted
+$ ll hoge
+-rw-r--r--  1 asakunotomohiro  staff  0  1 15 12:36 hoge
+$
+```
+微塵も出来そうにない。  
+権限の低いユーザとグループを作るしか無いのかもしれない。  
+そうではなく、スーパーユーザのみが変更できるのだろう。  
+また、Perl側では変更失敗を検知できないようで、大変悲しい。  
+
+とりあえず、以下、変更用のプログラム。
+```perl
+defined(my $useid = getpwnam 'Guest') or die 'ユーザ名からID取得失敗。';
+defined(my $groupid = getgrnam 'procview') or die 'ユーザグループ名からID取得失敗。';
+chown $useid, $groupid, 'test.txt';
+chown $useid, $groupid, glob '/home/hoge/*.txt'; などなど。
+```
+
+
+<a name="practicalusePropertymanipulation"></a>
+### ファイルタイムスタンプ変更
+**utime関数**を使うことで、ファイルのアクセス時刻と更新時刻の変更が可能になる。  
+作成時刻は？  
+64bitマシンでない場合に利用する制限には、1970年から2038年までの範囲に収める必要がある。  
+
+様式：
+`utime アクセス時刻, 修正時刻, ファイル名;`  
+これも例外処理のような実行結果は返さないようだ。  
+
+以下、プログラム。
+```perl
+use v5.24;
+
+my @array = qw( 本日は 晴天なり。 本日は晴天なり。);
+sub timestamp() {
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks);
+		# ファイルのstat(プロパティ)情報。
+
+	my $dirunderFile = 'タイムスタンプ.txt';
+	open my $file_fh, '>', $dirunderFile
+		or die "$dirunderFileのファイルオープン失敗($!)";
+	foreach( @array ) {
+		say $file_fh $_;
+	}
+	close $file_fh;
+
+	say "以下、ファイルのタイムスタンプ取得。";
+	($dev, $ino, $mode, $nlink, $uid, $gid, $rdev,
+	$size, $atime, $mtime, $ctime, $blksize, $blocks)
+		= stat($dirunderFile);	# ファイルのstat情報。
+	say "\t最終アクセス時刻：" . &timeformatChange(localtime $atime);
+	say "\t最終更新時刻：" . &timeformatChange(localtime $mtime);
+	say "\t最後のinode変更時刻：" . &timeformatChange(localtime $ctime);
+
+	say "ファイルの時刻を書き換える。";
+	say "\t1年前の時刻を現在時刻にする。";
+	say "\tまた、その前日を修正時刻にする。";
+	my $now = time - 24 * 60 * 60 * 365;	# 今から1年前の時刻を現在時刻にする。
+	my $ago = $now - 24 * 60 * 60;			# さらに1日前を修正時刻にする。
+	utime $now, $ago, $dirunderFile;
+
+	say "以下、ファイルのタイムスタンプ取得。";
+	($dev, $ino, $mode, $nlink, $uid, $gid,
+	$rdev, $size, $atime, $mtime, $ctime, $blksize, $blocks)
+		= stat($dirunderFile);	# ファイルのstat情報。
+	say "\t最終アクセス時刻：" . &timeformatChange(localtime $atime);
+	say "\t最終更新時刻：" . &timeformatChange(localtime $mtime);
+	say "\t最後のinode変更時刻：" . &timeformatChange(localtime $ctime);
+
+	unlink $dirunderFile or warn "ファイル削除失敗($!)。";
+	unless( -f $dirunderFile ) {
+		say "$dirunderFileファイル削除済み。";
+	}
+}
+&timestamp(@ARGV);
+
+sub timeformatChange {
+	my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = @_;
+	my %dayweek = (
+				0=>'日',	# Sunday
+				1=>'月',	# Monday
+				2=>'火',	# Tuesday
+				3=>'水',	# Wednesday
+				4=>'木',	# Thursday
+				5=>'金',	# Friday
+				6=>'土',	# Saturday
+				);
+
+	$mon += 1;					# 月が0始まりになるため、1加算する。
+	$year += 1900;				# 1900年を加算することで、西暦になる。
+	$wday = $dayweek{$wday};	# 日曜日が0始まりになり、それを変換する。
+	$yday += 1;					# 1月1日が0始まりのため、1加算する。
+
+	return "$year年$mon月$yday日($wday) $hour時$min分$sec秒";
+}
+```
+
+以下、出力結果。
+```terminal
+以下、ファイルのタイムスタンプ取得。
+	最終アクセス時刻：2022年1月15日(土) 15時2分3秒
+	最終更新時刻：2022年1月15日(土) 15時2分3秒
+	最後のinode変更時刻：2022年1月15日(土) 15時2分3秒
+ファイルの時刻を書き換える。
+	1年前の時刻を現在時刻にする。
+	また、その前日を修正時刻にする。
+以下、ファイルのタイムスタンプ取得。
+	最終アクセス時刻：2021年1月15日(金) 15時2分3秒
+	最終更新時刻：2021年1月14日(木) 15時2分3秒
+	最後のinode変更時刻：2022年1月15日(土) 15時2分3秒
+タイムスタンプ.txtファイル削除済み。
+```
+
+</details>
+
+<a name="practicalusePropertymanipulation"></a>
+<details><summary>応用知識-エポック経過秒数の変換</summary>
+
+<a name="practicalusePropertymanipulationpermissionchange"></a>
+### 時刻変更
+システム時間の起点となるエポック(epoch)からの経過秒数を人間が読みやすい形式に変換するには、**localtime関数**を用いる。  
+
+localtime関数での変換は制限があり、  
+月は0から始まるため、1を加算することで、1月から12月までを表せるようになる。  
+年は1900年を加算する必要がある。  
+曜日は、日曜日が0始まりになり、それ以降は月曜日が1、火曜日が2と加算されていく。  
+日付は、1月1日が0始まりになり、12月31日は364(閏年の場合は365)になるため、1加算する必要がある。  
+
+
+以下、プログラム。
+```perl
+use v5.24;
+use File::Basename;	# ファイル名のみ取得(ディレクトリ部分除去)。
+
+sub localtimestat() {
+	my $myname = basename($0, '');	# 自身のファイル名取得。
+	my %dayweek = (
+				0=>'日曜日',	# Sunday
+				1=>'月曜日',	# Monday
+				2=>'火曜日',	# Tuesday
+				3=>'水曜日',	# Wednesday
+				4=>'木曜日',	# Thursday
+				5=>'金曜日',	# Friday
+				6=>'土曜日',	# Saturday
+				);
+
+	my ($dev, $ino, $mode, $nlink, $uid, $gid, $rdev,
+	$size, $atime, $mtime, $ctime, $blksize, $blocks)
+			= stat($0);	# 自身のファイルのstat(プロパティ)情報。
+	say "以下、'$myname'ファイル情報。";
+	say "\t最終アクセス時刻：$atime";
+
+	say "上記はエポック経過秒数になるため、以下、年月日に変換する。";
+	my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = localtime $atime;
+	$mon += 1;	# 月は0始まりなので、1加算が必要。
+	$year += 1900;	# 年は1900年を加算する必要がある。
+	$wday = $dayweek{$wday};	# 日曜日から0始まりになる。
+	$yday += 1;	# 1月1日が0始まりなので、1加算が必要。
+	say "\tatime(最終アクセス時刻)：$year年$mon月$yday日($wday) $hour時$min分$sec秒";
+}
+&localtimestat(@ARGV);
+```
+
+以下、出力結果。
+```terminal
+以下、'localtime関数.pl'ファイル情報。
+	最終アクセス時刻：1642224034
+上記はエポック経過秒数になるため、以下、年月日に変換する。
+	atime(最終アクセス時刻)：2022年1月15日(土曜日) 14時20分34秒
+```
 
 </details>
 
@@ -5807,6 +7329,9 @@ say $func->(5);	# 20211212+111+5
 <a name="practicaluseTypeglob"></a>
 <details><summary>応用知識-型グロブ</summary>
 
+※通常の[グロブ](#practicaluseDirectorymanipulationDirectoryglob)は、ディレクトリ操作(#practicaluseDirectorymanipulationDirectorycurrent)で説明している。  
+
+
 数時間調べたが、結局[型グロブ](https://perldoc.jp/docs/perl/5.8.8/perldata.pod)が何か分からなかった。  
 書籍の中で、`FILE`と言う文言に対して、`$FILE`・`@FILE`・`%FILE`・`&FILE`の説明をしているが、**FILE**に限定されていると言うことか？  
 もしくは、FILEが固有変数で、好きに割り当てることにより、柔軟なプログラムになると言うことか？  
@@ -5817,6 +7342,7 @@ say $func->(5);	# 20211212+111+5
 
 変数の宣言をする場合、**my**を付けてはならない。  
 付けるのは、**our**だ。  
+
 
 ```perl
 use v5.24;

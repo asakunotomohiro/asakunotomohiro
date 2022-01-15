@@ -12,7 +12,7 @@ sub asakunoInputOutput() {
 	my @file;
 	foreach my $file ( glob( $_[0] . '/*.txt')) {
 		push @file, [
-				(IO::File->new($file, 'r') || die "引数にディレクトリを指定すること($!)。"),	# このエラーはいつ発生する？
+				(IO::File->new($file, 'r') or die "引数にディレクトリを指定すること($!)。"),	# このエラーはいつ発生する？
 			];
 	}
 
