@@ -8675,6 +8675,29 @@ $
 ```
 上記のようなエラーは発生しなかった。  
 
+以下、別のインストール方法。
+```terminal
+$ cpan
+Loading internal logger. Log::Log4perl recommended for better logging
+Terminal does not support AddHistory.
+
+To fix that, maybe try>  install Term::ReadLine::Perl
+
+
+cpan shell -- CPAN exploration and modules installation (v2.28)
+Enter 'h' for help.
+
+cpan[1]> install Tk
+Reading '/Users/asakunotomohiro/.cpan/Metadata'
+  Database was generated on Sat, 15 Jan 2022 03:55:46 GMT
+Tk is up to date (804.036).
+
+cpan[2]> q
+Terminal does not support GetHistory.
+Lockfile removed.
+$
+```
+
 
 <a name="practicaluseTkHelloWorld"></a>
 ### ハローワールドプログラム
