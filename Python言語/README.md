@@ -1306,7 +1306,7 @@ Hello World(引数あり-戻り値あり).
   [x] [木](#woodChapter3)2021/12/29  
   [x] [グラフ](#graphChapter3)2022/01/02  
   [x] [スタックとキューを扱う。](#stacksAndQueuesChapter3)2022/01/07  
-  [ ] [データを保存する。](#saveTheDataChapter3)  
+  [x] [データを保存する。](#saveTheDataChapter3)2022/01/15  
 <a name="algorithmTextbookLearnedinPythonChapter4"></a>
 * [Chapter4 サーチ](#searchOverviewChapter4)  
   複数データから目的地を探し出すこと。  
@@ -2639,6 +2639,73 @@ main()
 
 <a name="saveTheDataChapter3"></a>
 #### データを保存する。
+プログラム実行時だけでなく、実行後にプログラムは終了するが、処理したデータは残したい。  
+その場合は、プログラムとは別に保存場所を用意する必要がある。  
+今回は、ファイルを用いる。  
+
+書き込みと読み込みの2種類のプログラムができる。  
+
+以下、ファイル書き込みプログラム。
+```python
+def main():
+    f = open("algorithm.txt", 'w', encoding="utf-8")
+    for ii in range( 1, 11 ):
+        data = str( 2**ii )
+        f.write(data + ",")
+    f.close()
+
+
+main()
+```
+
+以下、実行。
+```terminal
+$ ll
+total 8
+-rw-r--r--  1 asakunotomohiro  staff  220  1 15 22:10 write.py
+$ python write.py
+total 16
+-rw-r--r--  1 asakunotomohiro  staff   32  1 15 22:10 algorithm.txt
+-rw-r--r--  1 asakunotomohiro  staff  220  1 15 22:10 write.py
+$ cat algorithm.txt
+2,4,8,16,32,64,128,256,512,1024,$
+$
+```
+
+以下、ファイル読み込みプログラム。
+```python
+def main():
+    f = open("algorithm.txt", 'r', encoding="utf-8")
+    rr = f.read()
+    f.close()
+    ss = rr.split(",")
+    nn = len(ss)
+    data = [0] * nn
+    for ii in range(nn):
+        if ss[ii] != "":
+            data[ii] = str(ss[ii])	←☆strをintにした場合、エラーになる(改行が読み込めないため)。
+    print(data)
+
+
+main()
+```
+
+以下、実行。
+```terminal
+$ ll
+total 24
+-rw-r--r--  1 asakunotomohiro  staff   33  1 15 22:29 algorithm.txt
+-rw-r--r--  1 asakunotomohiro  staff  267  1 15 22:26 read.py
+$ cat algorithm.txt
+1024,512,256,128,64,32,16,8,4,2,
+$ python read.py
+['1024', '512', '256', '128', '64', '32', '16', '8', '4', '2', '\n']
+$
+```
+※書籍の説明から最後のデータが0で出力されていることが問題なのだろう(私の場合は改行だけど)。  
+ここがプログラマーの腕の見せ所。  
+これを解消することで、行末を気にせずに出力させられるはず・・・きっと。  
+検証しないけど。  
 
 
 <a name="searchOverviewChapter4"></a>
