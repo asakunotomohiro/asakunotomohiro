@@ -9,12 +9,17 @@ my @asakuno = qw( 朝来野 智博 朝来野智博 );
 say "Perl/TK開発でのハローワールド";
 
 sub asakunoGUI() {
-	my $mw = MainWindow->new;
-	$mw->title("Hello World.");
-	$mw->Button(
-				-text => "Done",
-				-command => sub { exit }
-			)->pack;
+#	my $mw = MainWindow->new;
+#	$mw->title("Hello World.");
+#	$mw->Button(
+#				-text => "Done",
+#				-command => sub { exit }
+#			)->pack;
+#	MainLoop;
+
+	# 以下のプログラムが公式ページに載っていたやり方。
+	#	https://metacpan.org/dist/Tk/view/Tk.pod
+	my $top = new MainWindow;
 	MainLoop;
 }
 &asakunoGUI(@ARGV);
