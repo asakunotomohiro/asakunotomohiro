@@ -147,6 +147,8 @@ $
     [x] [ライブラリ作成(`require`)](#practicaluseFunctionLibrequire)  
     [x] [モジュール作成(`use`)](#practicaluseFunctionLibuse)  
     **todo**あり。  
+  * [x] [モジュール利用](#practicalusecpan)  
+    インストールなど。  
 
 
 <a name="rangeOtherThanBasicKnowledge"></a>
@@ -217,6 +219,7 @@ $
     [ ] 永続オブジェクト  
   * [ ] [テスト方法](#practicaluseTester)  
   * [x] [標準関数(モジュール)](#practicaluseFunctionLibuse)  
+    [インストール](#practicalusecpan)利用などは別にある。  
   * [ ] [プロセス管理](#practicaluseSystemfunc)  
   * [x] [正規表現](#practicaluseRegularexpression)  
     別ファイルでの記載が詳細なため、ここでは簡易ながらも説明完了とする。  
@@ -7487,7 +7490,7 @@ $
 
 </details>
 
-以下、インストール。
+以下、モジュールインストール。
 ```terminal
 $ perl -MCPAN -e shell
 Terminal does not support AddHistory.
