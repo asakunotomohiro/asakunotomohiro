@@ -6902,6 +6902,49 @@ chown $useid, $groupid, glob '/home/hoge/*.txt'; などなど。
 ### 時刻変更
 システム時間の起点となるエポック(epoch)からの経過秒数を人間が読みやすい形式に変換するには、**localtime関数**を用いる。  
 
+
+以下、プログラム。
+```perl
+use v5.24;
+use File::Basename;	# ファイル名のみ取得(ディレクトリ部分除去)。
+
+sub localtimestat() {
+	my $myname = basename($0, '');	# 自身のファイル名取得。
+	my %dayweek = (
+				0=>'日曜日',	# Sunday
+				1=>'月曜日',	# Monday
+				2=>'火曜日',	# Tuesday
+				3=>'水曜日',	# Wednesday
+				4=>'木曜日',	# Thursday
+				5=>'金曜日',	# Friday
+				6=>'土曜日',	# Saturday
+				);
+
+	my ($dev, $ino, $mode, $nlink, $uid, $gid, $rdev,
+	$size, $atime, $mtime, $ctime, $blksize, $blocks)
+			= stat($0);	# 自身のファイルのstat(プロパティ)情報。
+	say "以下、'$myname'ファイル情報。";
+	say "\t最終アクセス時刻：$atime";
+
+	say "上記はエポック経過秒数になるため、以下、年月日に変換する。";
+	my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = localtime $atime;
+	$mon += 1;	# 月は0始まりなので、1加算が必要。
+	$year += 1900;	# 年は1900年を加算する必要がある。
+	$wday = $dayweek{$wday};	# 日曜日から0始まりになる。
+	$yday += 1;	# 1月1日が0始まりなので、1加算が必要。
+	say "\tatime(最終アクセス時刻)：$year年$mon月$yday日($wday) $hour時$min分$sec秒";
+}
+&localtimestat(@ARGV);
+```
+
+以下、出力結果。
+```terminal
+以下、'localtime関数.pl'ファイル情報。
+	最終アクセス時刻：1642224034
+上記はエポック経過秒数になるため、以下、年月日に変換する。
+	atime(最終アクセス時刻)：2022年1月15日(土曜日) 14時20分34秒
+```
+
 </details>
 
 
