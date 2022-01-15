@@ -7016,6 +7016,10 @@ sub timeformatChange {
 <a name="practicaluseFiletest"></a>
 <details><summary>応用知識-ファイルテスト</summary>
 
+ファイルへの書き込みのために、既に存在しているのか否か。  
+ファイルの最終変更日時からの経過日数・ファイルの大きさ・読み書き実行権限状況・バイナリファイル・シンボリックリンクファイルなどの確認できる方法がファイルテストになる。  
+
+
 <a name="practicaluseFiletestlocaltime"></a>
 ### エポック経過秒数をローカルタイム関数で変換
 システム時間の起点となるエポック(epoch)からの経過秒数を人間が読みやすい形式に変換するには、**localtime関数**を用いる。  
