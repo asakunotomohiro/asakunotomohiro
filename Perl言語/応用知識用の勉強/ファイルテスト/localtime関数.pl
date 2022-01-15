@@ -54,6 +54,13 @@ sub asakuno() {
 	$wday = $dayweek{$wday};
 	$yday += 1;
 	say "\tctime(最後のinode変更時刻)：$year年$mon月$yday日($wday) $hour時$min分$sec秒";
+
+	say 'time：' . time;	# time：1642224565
+	say "現在の時刻を世界時で表す(" . gmtime . ")。";
+			# 現在の時刻を世界時で表す(Sat Jan 15 05:27:44 2022)。
+	say gmtime;	# 163051501226140
+	say 'localtime：' . localtime;
+			# localtime：Sat Jan 15 14:29:50 2022
 }
 &asakuno(@ARGV);
 
