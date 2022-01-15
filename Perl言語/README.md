@@ -6895,6 +6895,15 @@ chown $useid, $groupid, glob '/home/hoge/*.txt'; などなど。
 
 </details>
 
+<a name="practicalusePropertymanipulation"></a>
+<details><summary>応用知識-エポック経過秒数の変換</summary>
+
+<a name="practicalusePropertymanipulationpermissionchange"></a>
+### 時刻変更
+システム時間の起点となるエポック(epoch)からの経過秒数を人間が読みやすい形式に変換するには、**localtime関数**を用いる。  
+
+</details>
+
 
 <a name="practicalusePackages"></a>
 <details><summary>応用知識-パッケージ</summary>
