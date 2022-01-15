@@ -6860,11 +6860,29 @@ $
 ```terminal
 $ ll hoge
 -rw-r--r--  1 asakunotomohiro  staff  0  1 15 12:36 hoge
-$ chown Guest:procview hoge
+$ chown Guest:staff hoge
+chown: hoge: Operation not permitted
+$ chown Guest:wheel hoge
+chown: hoge: Operation not permitted
+$ chown Guest:owner hoge
+chown: hoge: Operation not permitted
+$ chown Guest:operator hoge
 chown: hoge: Operation not permitted
 $ ll hoge
 -rw-r--r--  1 asakunotomohiro  staff  0  1 15 12:36 hoge
 $
+```
+微塵も出来そうにない。  
+権限の低いユーザとグループを作るしか無いのかもしれない。  
+そうではなく、スーパーユーザのみが変更できるのだろう。  
+また、Perl側では変更失敗を検知できないようで、大変悲しい。  
+
+とりあえず、以下、変更用のプログラム。
+```perl
+defined(my $useid = getpwnam 'Guest') or die 'ユーザ名からID取得失敗。';
+defined(my $groupid = getgrnam 'procview') or die 'ユーザグループ名からID取得失敗。';
+chown $useid, $groupid, 'test.txt';
+chown $useid, $groupid, glob '/home/hoge/*.txt'; などなど。
 ```
 
 

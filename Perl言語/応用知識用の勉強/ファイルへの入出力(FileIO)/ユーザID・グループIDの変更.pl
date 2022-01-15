@@ -7,6 +7,7 @@ my $asakuno = "朝来野智博";
 my @asakuno = qw( 朝来野 智博 朝来野智博 );
 
 say "ユーザID・グループIDの変更";
+		# スーパーユーザでの実行のみ、所有者を変更できるだろう。
 
 sub asakunoInputOutput() {
 	my $currentDir = getcwd();	# カレントディレクトリ取得。
