@@ -8654,7 +8654,7 @@ $
 インストール方法はいくつかあるようだが、せっかくなので[CPAN](#practicalusecpan)を利用したい。  
 以下、簡易[インストール記録](./環境構築(インストール).md)。
 ```terminal
-$ perl -MCPAN -e shell
+$ sudo perl -MCPAN -e shell
 cpan[1]> install Tk
 Appending installation info to darwin-2level/perllocal.pod
   SREZIC/Tk-804.036.tar.gz
