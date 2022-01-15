@@ -180,6 +180,8 @@ $
     [x] 値の削除方法。  
     [x] OSの環境変数  
     [x] OSのシグナル  
+  * [ ] [ファイルテスト](#practicaluseFiletest)  
+    [x] [ローカルタイム関数変換(エポック経過秒数)](#practicaluseFiletestlocaltime)。  
   * [ ] [ファイル操作](#practicaluseFileoperation)  
     [x] 標準入力。  
     [x] 標準出力。  
@@ -5879,22 +5881,40 @@ $
 ### リンクとファイル
 
 * リンクによる制限  
-  ハードリンク(hard link)のこと(`link '元ファイル名', 'リンクファイル名' or warn "ハードリンク作成失敗$!"`)。  
+  [ハードリンク](#practicaluseFileoperationlinkandfilehardlink)(hard link)のこと(`link '元ファイル名', 'リンクファイル名' or warn "ハードリンク作成失敗$!"`)。  
   * ディレクトリに対してリンク作成は出来ない。  
   * ディスクを跨いだリンク付けはできない。  
 
-  ハードリンクで作成されたファイルの扱いが分からない。  
-  元のファイルと繋がっているのは分かる。そのため、書き込みなどの編集が反映されるのも分かる。  
-  しかし、元のファイルが削除されても気にせずにリンクファイルが存在し、問題なくファイルとして書き込まれた内容が健在だ。  
+  元のファイルと繋がっているため、書き込みなどの編集が反映される。  
+  しかし、元のファイルが削除された場合もリンクファイルが実体として読み書きできる。  
   そのため、ハードリンクファイルなのか、本来のファイルなのか判断できない。  
-  これは困ると思うのだが、なぜこれがまかり通るのだろう(今は利用が非推奨扱いではあるが)。  
+  ~~これは困ると思うのだが、なぜこれがまかり通るのだろうか。~~  
+  困らない理由は、元ファイル削除後は、ハードリンクファイルが元ファイルに昇華するため。  
+  また、ハードリンクファイルを削除した場合、元ファイルも引きずられて消える場合がある。  
 
 * 上記の制限回避方法  
-  * シンボリックリンク(ソフトリンク・symbolic link・soft link)の活用。  
+  * [シンボリックリンク](#practicaluseFileoperationlinkandfilesymboliclink)(ソフトリンク・symbolic link・soft link)の活用。  
     `symlink '元ファイル名', 'リンクファイル名' or "シンボリックリンク作成失敗$!"`
+    * [ソフトリンクファイルから大本にたどる方法。](#practicaluseFileoperationlinkandfilesymboliclinkfollow)  
+    * [存在しないファイルからソフトリンクファイルの作成。](#practicaluseFileoperationlinkandfilesymboliclinkmakeghost)  
 
 
+<a name="practicaluseFileoperationlinkandfilehardlink"></a>
 #### ハードリンクファイル作成
+
+* 以下のプログラムでやりたいこと。  
+  1. 元ファイルの作成。  
+  1. 元ファイルへの書き込み。  
+  1. ハードリンクファイル作成。  
+  1. ハードリンクファイルへの書き込み。  
+  1. 元ファイルへの書き込み。  
+  1. ハードリンクファイルの内容確認。  
+     元ファイルへの書き込みが反映されていることを確認するのが目的。  
+  1. 元ファイルの内容確認。  
+     ハードリンクファイルへの書き込みが反映されていることを確認するのが目的。  
+  1. おまけで、ハードリンクファイル削除後、元ファイルの存在有無確認。  
+
+
 以下、ハードリンクファイル作成用プログラム例）
 ```perl
 use v5.24;
@@ -5934,11 +5954,19 @@ sub linkfunc() {
 	}
 	close $file_fh;
 
-	# 削除する順番は順不同で構わないようだ。
+	# 削除する順番は順不同で構わないようだ(ハードリンクファイル作成により実ファイルも消える可能性があるため、削除順序は大事だと思う)。
 	unlink $cfile or warn "$cfileファイル削除失敗($!)。";
+	unless( -e $cfile ) {
+		say "$cfileファイルは削除済み";
+	}
+	if( -e $hoge ) {
+		say "$hogeファイルは存在する。";
+	}
 	unlink $hoge or warn "$hogeファイル削除失敗($!)。";
+	unless( -e $hoge ) {
+		say "$hogeファイルは削除済み";
+	}
 }
-&linkfunc(@ARGV);
 ```
 
 以下、実行。
@@ -5961,6 +5989,10 @@ total 32
 -rwxr-xr-x  1 asakunotomohiro  staff  1810  1 10 16:06 ハードリンクファイル作成.pl*
 $
 ```
+今回ハードリンクファイルを先に消したが、元ファイルも一緒になって消えることなく残った。  
+Perlの挙動が把握できず(元ファイルが消えるのは条件次第だそうだが・・・)。  
+
+<details><summary>ファイル操作としてのclose演算子の挙動確認プログラム</summary>
 
 以下、上記プログラムからclose演算子をコメントアウトした場合の結果(ファイルハンドルへの書き込みもなし)。
 ```terminal
@@ -5986,6 +6018,10 @@ $ cat リンクファイル.txt	←☆しかし、書き込まれている(た�
 リンクファイル.txt
 $
 ```
+
+</details>
+
+<details><summary>ハードリンクファイルだけで(大本ファイルが無くて)も問題ないことの確認</summary>
 
 以下、大本のファイルを削除後、ハードリンクファイル内容を確認した結果。
 ```terminal
@@ -6019,8 +6055,24 @@ $ cat リンクリンク.c	←☆ハードリンクファイルであるにも�
 $
 ```
 
+</details>
 
+
+<a name="practicaluseFileoperationlinkandfilesymboliclink"></a>
 #### ソフトリンク(シンボリックリンク)ファイル作成
+
+* 以下のプログラムでやりたいこと。  
+  1. 元ファイルの作成。  
+  1. 元ファイルへの書き込み。  
+  1. ソフトリンクファイル作成。  
+  1. ソフトリンクファイルへの書き込み。  
+  1. 元ファイルへの書き込み。  
+  1. ソフトリンクファイルの内容確認。  
+     元ファイルへの書き込みが反映されていることを確認するのが目的。  
+  1. 元ファイルの内容確認。  
+     ソフトリンクファイルへの書き込みが反映されていることを確認するのが目的。  
+  1. 後始末。
+
 以下、ソフトリンクファイル作成用プログラム例）
 ```perl
 use v5.24;
@@ -6064,7 +6116,7 @@ sub linkfunc() {
 &linkfunc(@ARGV);
 ```
 
-以下、(ファイル削除処理はコメントアウト後の)実行結果。
+以下、(ファイル削除処理はコメントアウト済みの)実行結果。
 ```terminal
 $ ll
 total 40
@@ -6095,6 +6147,8 @@ $ cat シンボリックファイル.c
 $
 ```
 
+<details><summary>元ファイルが存在しない場合のソフトリンクファイルの挙動確認作業</summary>
+
 以下、リンクファイルの挙動確認作業。
 ```terminal
 $ ll
@@ -6113,7 +6167,10 @@ $
 ```
 ハードリンクファイルとの違いが判明した。  
 
+</details>
 
+
+<a name="practicaluseFileoperationlinkandfilesymboliclinkfollow"></a>
 #### ソフトリンクファイルから大本にたどる方法。
 以下、リンクファイル判定プログラム。
 ```perl
@@ -6153,6 +6210,7 @@ $
 ハードリンクファイルの扱いはどうすれば良い？  
 
 
+<a name="practicaluseFileoperationlinkandfilesymboliclinkmakeghost"></a>
 #### 存在しないファイルからソフトリンクファイルの作成。
 ファイルが存在しない場合、ハードリンクファイル作成はできない。  
 しかし、ソフトリンクファイルの場合は、大本ファイルの存在有無にかかわらず、作成できる。  
@@ -6180,10 +6238,12 @@ $ ll
 total 48
 lrwxr-xr-x  1 asakunotomohiro  staff    31  1 10 17:13 シンボリックファイル.c@ -> 存在しないファイル.txt
 -rwxr-xr-x  1 asakunotomohiro  staff   379  1 10 17:13 リンクファイル作成.pl*
-$ cat シンボリックファイル.c	←☆開くことは出来ない(当たり前)。
-cat: シンボリックファイル.c: No such file or directory	←☆大本ファイルがないから開けないため、このエラーは可笑しいだろう。
+$ cat シンボリックファイル.c	←☆存在しないファイルを開くことは出来ない。
+cat: シンボリックファイル.c: No such file or directory
 $
 ```
+ハードリンクファイルは元ファイルと容量が同じだった。  
+しかし、ソフトリンクファイルは、元ファイルと容量が異なることを考えれば、中身のないファイルだというのが分かる。  
 
 
 <a name="practicaluseFileoperationSpecialvariables"></a>
@@ -6590,40 +6650,19 @@ my $hoge = "本日は晴天なり。";
 my @hoge = qw( 本日は 晴天なり。 本日は晴天なり。 );
 
 sub directory() {
-	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(0755=>01363)。
 	my $dirFilename = $hoge . '/' . $hoge . '.txt';
-
-	mkdir $hoge, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
-	open my $file_fh, '>>', $dirFilename or die "${hoge}.txtのファイルオープン失敗($!)";
-	foreach my $value ( @hoge ) {
-		say $file_fh $value;
-	}
-	close $file_fh;
-	open my $file_fh, '<', $dirFilename or die "${hoge}.txtのファイルオープン失敗($!)";
-	say "以下、書き込んだファイル内容表示。";
-	while ( <$file_fh> ) {
-		chomp;
-		say "\t$_";
-	}
-	close $file_fh;
 
 	say "以下、ディレクトリを削除する。";
 	rmdir $hoge or warn "ディレクトリ削除失敗($!)。";
-				# ディレクトリ削除失敗(Directory not empty)。 at ディレクトリ作成及び削除.pl line 25.
+				# ディレクトリ削除失敗(Directory not empty)。 at ディレクトリ作成及び削除.pl line 10.
 	if( -d $hoge ) {
-		say "\t'$hoge'ディレクトリがある。";
+		say "\tディレクトリ削除失敗により、'$hoge'ディレクトリがある。";
 	}
-	else {
-		say "\t'$hoge'ディレクトリ削除済み。";
-	}
-	say "以下、配下のファイルを削除する。";
+	say "以下、配下のファイルを削除する(ディレクトリを消すために)。";
 	unlink $dirFilename or warn "'$dirFilename'ファイル削除失敗($!)。";
 	say "以下、再度ディレクトリを削除する。";
 	rmdir $hoge or warn "ディレクトリ削除失敗($!)。";
-	if( -d $hoge ) {
-		say "\t'$hoge'ディレクトリがある。";
-	}
-	else {
+	unless( -d $hoge ) {
 		say "\t'$hoge'ディレクトリ削除済み。";
 	}
 
@@ -6632,20 +6671,36 @@ sub directory() {
 &directory(@ARGV);
 ```
 
-以下、出力結果。
+以下、実行結果。
 ```terminal
-ディレクトリ削除失敗(Directory not empty)。 at ディレクトリ作成及び削除.pl line 25.
-以下、書き込んだファイル内容表示。
-	本日は
-	晴天なり。
-	本日は晴天なり。
+$ ll -R
+total 16
+-rwxr-xr-x  1 asakunotomohiro  staff  941  1 12 11:38 ディレクトリ作成及び削除.pl*
+drwxr-xr-x  3 asakunotomohiro  staff   96  1 12 11:36 本日は晴天なり。/
+
+./本日は晴天なり。:
+total 8
+-rw-r--r--  1 asakunotomohiro  staff  51  1 12 11:36 本日は晴天なり。.txt	←☆このファイルが邪魔になっている。
+$ cat 本日は晴天なり。/本日は晴天なり。.txt
+本日は
+晴天なり。
+本日は晴天なり。
+$ perl ディレクトリ作成及び削除.pl	←☆削除実施。
 以下、ディレクトリを削除する。
-	'本日は晴天なり。'ディレクトリがある。
-以下、配下のファイルを削除する。
+ディレクトリ削除失敗(Directory not empty)。 at ディレクトリ作成及び削除.pl line 10.
+	ディレクトリ削除失敗により、'本日は晴天なり。'ディレクトリがある。
+以下、配下のファイルを削除する(ディレクトリを消すために)。
 以下、再度ディレクトリを削除する。
 	'本日は晴天なり。'ディレクトリ削除済み。
 以上。
+$ ll -R	←☆ディレクトリが消えている。
+total 16
+-rwxr-xr-x  1 asakunotomohiro  staff  941  1 12 11:38 ディレクトリ作成及び削除.pl*
+$
 ```
+この例から分かるとおり、削除対象のディレクトリ配下に、ファイルだけでなく、ディレクトリがある場合、さらなるプログラム追加が必要になる。  
+それができるのは、[File::Path](https://perldoc.jp/docs/modules/File-Temp-0.22/Temp.pod)の**rmtree()関数**はずなのだが、Perlに付属していないのか、Helpに載っていなかったぞ!?  
+[MetaCPAN](https://metacpan.org)に[File::Path](https://metacpan.org/pod/File::Path)がある？  
 
 
 </details>
@@ -6656,47 +6711,16 @@ sub directory() {
 
 <a name="practicalusePropertymanipulationpermissionchange"></a>
 ### 権限(パーミッション)変更
-ディレクトリに関するのは権限だけのようだな。  
+ディレクトリに関するのは権限だけのようだ。  
+タイムスタンプの変更が出来ても良さそうなのにな。  
 
 様式：
 `chmod 権限, ディレクトリ名;`  
 ディレクトリ作成同様、権限部分は8進数を指定する必要がある。  
 
-<details><summary>カレントディレクトリの権限が大事</summary>
+※注意事項として、カレントディレクトリ配下直下ファイルの権限を変更したところで、カレントディレクトリに全ての権限が付与されているならば、そのファイルはすべての権限が付与されていることになる。  
+ファイルの権限を変更する場合は、そのファイルが収まっているディレクトリ権限が基準になる。  
 
-以下、ディレクトリから権限を奪い取った後に削除するプログラム。
-```perl
-use v5.24;
-use Cwd;	# カレントディレクトリ呼び出しモジュール。
-
-my $dirmaster = "本日は晴天なり。";
-
-sub dirPermissions() {
-	my $currentDir = getcwd();	# カレントディレクトリ取得。
-	my $permissions = "0755";	# このまま使う場合、10進数と解釈される。
-
-	unless( -d $dirmaster ) {
-		say "'$dirmaster'ディレクトリがない。";
-	}
-	say "直下にディレクトリを作成する。";
-	mkdir $dirmaster, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
-	if( -d $dirmaster ) {
-		say "'$dirmaster'ディレクトリから権限剥奪。";
-		chmod 0000, $dirmaster or warn "'$dirmaster'ディレクトリの権限変更失敗($!)。";
-	}
-	rmdir $dirmaster or warn "ディレクトリ削除失敗($!)。";	←☆上記で、権限が000にされているのだが、消すことができる。
-	chmod oct($permissions), $dirmaster or warn "'$dirmaster'ディレクトリの権限変更失敗($!)。";
-										# 本日は晴天なり。ディレクトリの権限変更失敗(No such file or directory)。 at 権限変更.pl line 20.
-	rmdir $dirmaster or warn "ディレクトリ削除失敗($!)。";
-					# ディレクトリ削除失敗(No such file or directory)。 at 権限変更.pl line 22.
-}
-&dirPermissions(@ARGV);
-```
-驚くことに、削除権限がないディレクトリを削除することができる。  
-もしかして、ファイルと同様にカレントディレクトリの権限だけが大事で、配下の権限は無視しているのかもしれない。  
-⇒そうだった。  
-
-</details>
 
 以下、ディレクトリ権限が無いため、配下のディレクトリを削除できず、エラーが吐き出される。
 ```perl
@@ -6705,8 +6729,8 @@ use v5.24;
 my $dirmaster = "本日は晴天なり。";
 
 sub dirPermissions() {
-	my $permissions = "0755";	# このまま使う場合、10進数と解釈される。
-	my $dirsubdir = "$dirmaster/就職活動継続";
+	my $permissions = "0755";
+	my $dirsubdir = "$dirmaster/晴れ";
 
 	unless( -d $dirmaster ) {
 		say "'$dirmaster'ディレクトリがない。";
@@ -6726,16 +6750,15 @@ sub dirPermissions() {
 }
 &dirPermissions(@ARGV);
 ```
-ディレクトリから権限を取り除いた後にそのディレクトリを削除した場合、普通に削除が成功する。  
-そのため、権限を取り除いたディレクトリ配下のディレクトリを削除する必要がある。  
-そして、それは思惑通り、削除に失敗した。  
+上記の注意事項同様、対象ディレクトリの権限を変更しただけでは効果が無く、親ディレクトリの権限を変える必要がある。  
+そして、それは思惑通り、上記の権限を全て0に付与し直し、その直後の削除処理は失敗した。  
 
 以下、ファイルの権限変更用プログラム。
 ```perl
 use v5.24;
 
 sub filePermissions() {
-	my $permissions = "0755";	# このまま使う場合、10進数と解釈される。
+	my $permissions = "0755";
 	my @hoge = qw( 本日は 晴天なり。 本日は晴天なり。 );
 	my $dirunderFile = $hoge[0] . '/' . $hoge[1];
 
@@ -6794,6 +6817,8 @@ sub filePermissions() {
 <a name="practicalusePropertymanipulationownerchange"></a>
 ### ファイルオーナー変更
 [オーナ変更](https://perldoc.jp/func/chown)には、ユーザIDとグループIDを指定する必要がある。  
+
+<details><summary>ターミナル作業</summary>
 
 以下、ユーザ情報一覧。
 ```terminal
@@ -6856,6 +6881,8 @@ $
 困った。  
 検証するのがめんどくさい・・・ゆえに、目視確認かな・・・。  
 
+</details>
+
 プログラム側で書き換えに失敗した。
 ```terminal
 $ ll hoge
@@ -6872,18 +6899,16 @@ $ ll hoge
 -rw-r--r--  1 asakunotomohiro  staff  0  1 15 12:36 hoge
 $
 ```
-微塵も出来そうにない。  
-権限の低いユーザとグループを作るしか無いのかもしれない。  
-そうではなく、スーパーユーザのみが変更できるのだろう。  
-また、Perl側では変更失敗を検知できないようで、大変悲しい。  
+スーパーユーザのみが変更できるようだ。  
+また、Perl側では変更失敗を検知できないようだ。  
 
-とりあえず、以下、変更用のプログラム。
+以下、変更プログラム。
 ```perl
 defined(my $useid = getpwnam 'Guest') or die 'ユーザ名からID取得失敗。';
 defined(my $groupid = getgrnam 'procview') or die 'ユーザグループ名からID取得失敗。';
-chown $useid, $groupid, 'test.txt';
-chown $useid, $groupid, glob '/home/hoge/*.txt'; などなど。
+chown $useid, $groupid, glob '/home/hoge/*.txt';
 ```
+スーパーユーザから実行することで、変更されるのだろう。  
 
 
 <a name="practicalusePropertymanipulation"></a>
@@ -6985,18 +7010,18 @@ sub timeformatChange {
 
 </details>
 
-<a name="practicalusePropertymanipulation"></a>
-<details><summary>応用知識-エポック経過秒数の変換</summary>
+<a name="practicaluseFiletest"></a>
+<details><summary>応用知識-ファイルテスト</summary>
 
-<a name="practicalusePropertymanipulationpermissionchange"></a>
-### 時刻変更
+<a name="practicaluseFiletestlocaltime"></a>
+### エポック経過秒数をローカルタイム関数で変換
 システム時間の起点となるエポック(epoch)からの経過秒数を人間が読みやすい形式に変換するには、**localtime関数**を用いる。  
 
-localtime関数での変換は制限があり、  
-月は0から始まるため、1を加算することで、1月から12月までを表せるようになる。  
-年は1900年を加算する必要がある。  
-曜日は、日曜日が0始まりになり、それ以降は月曜日が1、火曜日が2と加算されていく。  
-日付は、1月1日が0始まりになり、12月31日は364(閏年の場合は365)になるため、1加算する必要がある。  
+* localtime関数利用制限(制約？)。  
+  * 月は0始まりにより、1加算することで、1月から12月までを表せるようになる。  
+  * 年は1900年を加算する必要がある。  
+  * 曜日は、日曜日が0始まりになり、それ以降は月曜日が1、火曜日が2と加算されていく。  
+  * 日付は、1月1日が0始まりになり、12月31日は364(閏年の場合は365)になるため、1加算する必要がある。  
 
 
 以下、プログラム。
