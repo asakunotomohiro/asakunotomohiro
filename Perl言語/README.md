@@ -8633,6 +8633,8 @@ sub regexSample {
 当たり前だが、ちょっとした衝動に駆られただけなので、上っ面のみ調べる。  
 深掘りすることはない。  
 
+
+<a name="practicaluseTkinstall"></a>
 ### Perl/TkによるGUI開発。
 当たり前だが、Perlには、GUI開発するための道具がない。  
 そのため、外部から入手する必要がある。  
@@ -8672,6 +8674,11 @@ $ echo $?
 $
 ```
 上記のようなエラーは発生しなかった。  
+
+
+<a name="practicaluseTkHelloWorld"></a>
+### ハローワールドプログラム
+
 
 </details>
 
