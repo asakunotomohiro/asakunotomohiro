@@ -8649,6 +8649,29 @@ $
 エラーが発生したため、インストールされていないと言うこと・・・。  
 数年前に、試しに入れたはずなのだが・・・他の端末だったかもな。  
 インストールされていない状況が記録に残せるので由としよう。  
+インストール方法はいくつかあるようだが、せっかくなので[CPAN](#practicalusecpan)を利用したい。  
+以下、簡易[インストール記録](./環境構築(インストール).md)。
+```terminal
+$ perl -MCPAN -e shell
+cpan[1]> install Tk
+Appending installation info to darwin-2level/perllocal.pod
+  SREZIC/Tk-804.036.tar.gz
+  /usr/bin/make install  -- OK
+cpan[2]> q
+$
+```
+指定した**Tk**は間違えた？  
+大量にインストールされてしまった。  
+関係ないのまで入ってしまったのだろうか？  
+
+以下、Tkモジュール導入済みか確認する。
+```terminal
+$ perl -e 'use Tk'
+$ echo $?
+0
+$
+```
+上記のようなエラーは発生しなかった。  
 
 </details>
 
