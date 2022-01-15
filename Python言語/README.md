@@ -1306,7 +1306,7 @@ Hello World(引数あり-戻り値あり).
   [x] [木](#woodChapter3)2021/12/29  
   [x] [グラフ](#graphChapter3)2022/01/02  
   [x] [スタックとキューを扱う。](#stacksAndQueuesChapter3)2022/01/07  
-  [ ] [データを保存する。](#saveTheDataChapter3)  
+  [x] [データを保存する。](#saveTheDataChapter3)2022/01/15  
 <a name="algorithmTextbookLearnedinPythonChapter4"></a>
 * [Chapter4 サーチ](#searchOverviewChapter4)  
   複数データから目的地を探し出すこと。  
@@ -2669,6 +2669,43 @@ $ cat algorithm.txt
 2,4,8,16,32,64,128,256,512,1024,$
 $
 ```
+
+以下、ファイル読み込みプログラム。
+```python
+def main():
+    f = open("algorithm.txt", 'r', encoding="utf-8")
+    rr = f.read()
+    f.close()
+    ss = rr.split(",")
+    nn = len(ss)
+    data = [0] * nn
+    for ii in range(nn):
+        if ss[ii] != "":
+            data[ii] = str(ss[ii])	←☆strをintにした場合、エラーになる(改行が読み込めないため)。
+    print(data)
+
+
+main()
+```
+
+以下、実行。
+```terminal
+$ ll
+total 24
+-rw-r--r--  1 asakunotomohiro  staff   33  1 15 22:29 algorithm.txt
+-rw-r--r--  1 asakunotomohiro  staff  267  1 15 22:26 read.py
+$ cat algorithm.txt
+1024,512,256,128,64,32,16,8,4,2,
+$ python read.py
+['1024', '512', '256', '128', '64', '32', '16', '8', '4', '2', '\n']
+$
+```
+最後の改行があるのは可笑しい。  
+テキストファイルには含めていないのだが？  
+手作業で作ったファイルだから紛れ込んだ？  
+何度書き換えても駄目だった。  
+上記の書き込みプログラムでの出力ファイルを読み込むならば`\n`は紛れ込まなかった。  
+原因は何？  
 
 
 <a name="searchOverviewChapter4"></a>
