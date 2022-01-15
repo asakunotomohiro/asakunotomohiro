@@ -2639,6 +2639,36 @@ main()
 
 <a name="saveTheDataChapter3"></a>
 #### データを保存する。
+プログラム実行時だけでなく、実行後にプログラムは終了するが、処理したデータは残したい。  
+その場合は、プログラムとは別に保存場所を用意する必要がある。  
+今回は、ファイルを用いる。  
+
+以下、ファイル書き込みプログラム。
+```python
+def main():
+    f = open("algorithm.txt", 'w', encoding="utf-8")
+    for ii in range( 1, 11 ):
+        data = str( 2**ii )
+        f.write(data + ",")
+    f.close()
+
+
+main()
+```
+
+以下、実行。
+```terminal
+$ ll
+total 8
+-rw-r--r--  1 asakunotomohiro  staff  220  1 15 22:10 write.py
+$ python write.py
+total 16
+-rw-r--r--  1 asakunotomohiro  staff   32  1 15 22:10 algorithm.txt
+-rw-r--r--  1 asakunotomohiro  staff  220  1 15 22:10 write.py
+$ cat algorithm.txt
+2,4,8,16,32,64,128,256,512,1024,$
+$
+```
 
 
 <a name="searchOverviewChapter4"></a>
