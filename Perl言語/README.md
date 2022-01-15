@@ -6888,10 +6888,100 @@ chown $useid, $groupid, glob '/home/hoge/*.txt'; などなど。
 
 <a name="practicalusePropertymanipulation"></a>
 ### ファイルタイムスタンプ変更
-ファイルのアクセス時刻と修正時刻を変更する。  
+**utime関数**を使うことで、ファイルのアクセス時刻と更新時刻の変更が可能になる。  
 作成時刻は？  
 64bitマシンでない場合に利用する制限には、1970年から2038年までの範囲に収める必要がある。  
 
+様式：
+`utime アクセス時刻, 修正時刻, ファイル名;`  
+これも例外処理のような実行結果は返さないようだ。  
+
+以下、プログラム。
+```perl
+use v5.24;
+
+my @array = qw( 本日は 晴天なり。 本日は晴天なり。);
+sub timestamp() {
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks);
+		# ファイルのstat(プロパティ)情報。
+
+	my $dirunderFile = 'タイムスタンプ.txt';
+	open my $file_fh, '>', $dirunderFile
+		or die "$dirunderFileのファイルオープン失敗($!)";
+	foreach( @array ) {
+		say $file_fh $_;
+	}
+	close $file_fh;
+
+	say "以下、ファイルのタイムスタンプ取得。";
+	($dev, $ino, $mode, $nlink, $uid, $gid, $rdev,
+	$size, $atime, $mtime, $ctime, $blksize, $blocks)
+		= stat($dirunderFile);	# ファイルのstat情報。
+	say "\t最終アクセス時刻：" . &timeformatChange(localtime $atime);
+	say "\t最終更新時刻：" . &timeformatChange(localtime $mtime);
+	say "\t最後のinode変更時刻：" . &timeformatChange(localtime $ctime);
+
+	say "ファイルの時刻を書き換える。";
+	say "\t1年前の時刻を現在時刻にする。";
+	say "\tまた、その前日を修正時刻にする。";
+	my $now = time - 24 * 60 * 60 * 365;	# 今から1年前の時刻を現在時刻にする。
+	my $ago = $now - 24 * 60 * 60;			# さらに1日前を修正時刻にする。
+	utime $now, $ago, $dirunderFile;
+
+	say "以下、ファイルのタイムスタンプ取得。";
+	($dev, $ino, $mode, $nlink, $uid, $gid,
+	$rdev, $size, $atime, $mtime, $ctime, $blksize, $blocks)
+		= stat($dirunderFile);	# ファイルのstat情報。
+	say "\t最終アクセス時刻：" . &timeformatChange(localtime $atime);
+	say "\t最終更新時刻：" . &timeformatChange(localtime $mtime);
+	say "\t最後のinode変更時刻：" . &timeformatChange(localtime $ctime);
+
+	unlink $dirunderFile or warn "ファイル削除失敗($!)。";
+	unless( -f $dirunderFile ) {
+		say "$dirunderFileファイル削除済み。";
+	}
+}
+&timestamp(@ARGV);
+
+sub timeformatChange {
+	my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = @_;
+	my %dayweek = (
+				0=>'日',	# Sunday
+				1=>'月',	# Monday
+				2=>'火',	# Tuesday
+				3=>'水',	# Wednesday
+				4=>'木',	# Thursday
+				5=>'金',	# Friday
+				6=>'土',	# Saturday
+				);
+
+	$mon += 1;					# 月が0始まりになるため、1加算する。
+	$year += 1900;				# 1900年を加算することで、西暦になる。
+	$wday = $dayweek{$wday};	# 日曜日が0始まりになり、それを変換する。
+	$yday += 1;					# 1月1日が0始まりのため、1加算する。
+
+	return "$year年$mon月$yday日($wday) $hour時$min分$sec秒";
+}
+```
+
+以下、出力結果。
+```terminal
+以下、ファイルのタイムスタンプ取得。
+	最終アクセス時刻：2022年1月15日(土) 15時2分3秒
+	最終更新時刻：2022年1月15日(土) 15時2分3秒
+	最後のinode変更時刻：2022年1月15日(土) 15時2分3秒
+ファイルの時刻を書き換える。
+	1年前の時刻を現在時刻にする。
+	また、その前日を修正時刻にする。
+以下、ファイルのタイムスタンプ取得。
+	最終アクセス時刻：2021年1月15日(金) 15時2分3秒
+	最終更新時刻：2021年1月14日(木) 15時2分3秒
+	最後のinode変更時刻：2022年1月15日(土) 15時2分3秒
+タイムスタンプ.txtファイル削除済み。
+```
 
 </details>
 

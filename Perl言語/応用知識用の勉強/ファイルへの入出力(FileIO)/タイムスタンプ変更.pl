@@ -32,27 +32,33 @@ sub asakunoInputOutput() {
 		}
 		close $file_fh;
 
-		say "以下、ファイルのオーナ情報取得。";
+		say "以下、ファイルのタイムスタンプ取得。";
 		($dev, $ino, $mode, $nlink, $uid, $gid, $rdev,
 		$size, $atime, $mtime, $ctime, $blksize, $blocks)
-			= stat($dirunderFile);	# ファイルのstat(プロパティ)情報。
-		say "\tアクセス時刻：$atime";
-		say "\t修正時刻：$mtime";
-		say "\t作成時刻：$ctime";
+			= stat($dirunderFile);	# ファイルのstat情報。
+		say "\t最終アクセス時刻：$atime";
+		say "\t最終更新時刻：$mtime";
+		say "\t最後のinode変更時刻：$ctime";
+		say "以下、見やすいように書き換える。";
+		say "\t最終アクセス時刻：" . &timeformatChange(localtime $atime);
+		say "\t最終更新時刻：" . &timeformatChange(localtime $mtime);
+		say "\t最後のinode変更時刻：" . &timeformatChange(localtime $ctime);
 
 		say "以下、ファイルの時刻を書き換える。";
-		#chown $useid, $groupid, $dirunderFile;	# 変わらず・・・なぜ？
-		say "\t書き換え後のアクセス時刻予想：";
-		say "\t書き換え後の修正時刻予想：";
-		say "\t書き換え後の作成時刻予想：";
+		my $now = time - 24 * 60 * 60 * 365;	# 今から1年前の時刻を現在時刻にする。
+		my $ago = $now - 24 * 60 * 60;			# さらに1日前を修正時刻にする。
+		utime $now, $ago, $dirunderFile;
+		say "\t書き換え後の最終アクセス時刻：";
+		say "\t書き換え後の最終更新時刻：";
+		say "\t書き換え後の最後のinode変更時刻：";
 
-		say "以下、ファイルのオーナ情報取得。";
+		say "以下、ファイルのタイムスタンプ取得。";
 		($dev, $ino, $mode, $nlink, $uid, $gid,
 		$rdev, $size, $atime, $mtime, $ctime, $blksize, $blocks)
-			= stat($dirunderFile);	# ファイルのstat(プロパティ)情報。
-		say "\tアクセス時刻：$atime";
-		say "\t修正時刻：$mtime";
-		say "\t作成時刻：$ctime";
+			= stat($dirunderFile);	# ファイルのstat情報。
+		say "\t最終アクセス時刻：" . &timeformatChange(localtime $atime);
+		say "\t最終更新時刻：" . &timeformatChange(localtime $mtime);
+		say "\t最後のinode変更時刻：" . &timeformatChange(localtime $ctime);
 	}
 
 	unlink $dirunderFile or warn "ファイル削除失敗($!)。";
@@ -68,6 +74,26 @@ sub asakunoInputOutput() {
 	}
 }
 &asakunoInputOutput(@ARGV);
+
+sub timeformatChange {
+	my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = @_;
+	my %dayweek = (
+				0=>'日',	# Sunday
+				1=>'月',	# Monday
+				2=>'火',	# Tuesday
+				3=>'水',	# Wednesday
+				4=>'木',	# Thursday
+				5=>'金',	# Friday
+				6=>'土',	# Saturday
+				);
+
+	$mon += 1;					# 月が0始まりになるため、1加算する。
+	$year += 1900;				# 1900年を加算することで、西暦になる。
+	$wday = $dayweek{$wday};	# 日曜日が0始まりになり、それを変換する。
+	$yday += 1;					# 1月1日が0始まりのため、1加算する。
+
+	return "$year年$mon月$yday日($wday) $hour時$min分$sec秒";
+}
 
 say "以上。"
 # vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=perl noexpandtab:
