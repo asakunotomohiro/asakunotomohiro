@@ -224,6 +224,7 @@ $
   * [x] [正規表現](#practicaluseRegularexpression)  
     別ファイルでの記載が詳細なため、ここでは簡易ながらも説明完了とする。  
   * [x] [パッケージ](#practicalusePackages)  
+  * [ ] [GUI/Tk](#practicaluseGUIPerlTk)  
 
 </details>
 
@@ -8619,6 +8620,24 @@ sub regexSample {
 												# $0：マッチ変数.pl
 ```
 上記2つ目の検索に[パターンマッチ演算子](#practicaluseRegularexpressionPatternmatchoperator)を使うことでスラッシュ記号へのエスケープシーケンスが不要になっている。  
+
+</details>
+
+<a name="practicaluseGUIPerlTk"></a>
+<details><summary>応用知識-Perl/Tk</summary>
+
+唐突に何の脈略もなく、本当に突然GUI開発がしたくなったため、手に取った・・・のが、、、Tkという・・・。  
+どれだけ昭和時代の人間だと思うぐらい古くさい手法で構築しようとしている。  
+まっしゃ〜んめぇ。  
+
+当たり前だが、ちょっとした衝動に駆られただけなので、上っ面のみ調べる。  
+深掘りすることはない。  
+
+### Perl/TkによるGUI開発。
+当たり前だが、Perlには、GUI開発するための道具がない。  
+そのため、外部から入手する必要がある。  
+そして、[Tcl/Tk](https://www.tcl.tk)から派生した[Perl/Tk](https://metacpan.org/dist/Tk/view/Tk.pod)を使うことにする。  
+リンク先が合っているのか不明。  
 
 </details>
 
