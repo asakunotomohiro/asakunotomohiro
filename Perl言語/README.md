@@ -6787,10 +6787,70 @@ sub filePermissions() {
 本日は/晴天なり。ファイル削除済み。
 本日はディレクトリ削除成功。
 ```
+結局は、対象ディレクトリの親ディレクトリ権限に引きずられるのであり、対象ディレクトリや対象ファイルの権限ではない。  
+プログラムを渡したり触られたりすることが想定される分には、対象のディレクトリとファイルに直接権限を与えるのが一般的だろう。  
 
 
 <a name="practicalusePropertymanipulationownerchange"></a>
 ### ファイルオーナー変更
+オーナ変更には、ユーザIDとグループIDを指定する必要がある。  
+
+以下、ユーザ情報一覧。
+```terminal
+$ dscl . -list /Users | tail -6
+_xserverdocs
+asakunotomohiro
+daemon
+Guest
+nobody
+root
+$
+```
+アンダーバーから始まるユーザは何？  
+自動生成ユーザ？  
+
+以下、グループ一覧。
+```terminal
+$ dscl . -list /Groups | tail -10
+nogroup
+operator
+owner
+procmod
+procview
+staff
+sys
+tty
+utmp
+wheel
+$
+```
+
+以下、ユーザ名とそのID・・・のはず。
+```terminal
+$ dscl . -list /Users UniqueID | tail -6
+_xserverdocs             251
+asakunotomohiro          501
+daemon                   1
+Guest                    201
+nobody                   -2
+root                     0
+$
+```
+ユニークIDと言うのがユーザIDと思って良いよね。  
+
+以下、ユーザ名とグループID・・・のはず。
+```terminal
+$ dscl . -list /Users PrimaryGroupID | tail -6
+_xserverdocs             251
+asakunotomohiro          20
+daemon                   1
+Guest                    201
+nobody                   -2
+root                     0
+$
+```
+ユーザIDと同じように見えて、異なる。  
+ユーザ自身が作成したユーザ情報は、ユーザIDとグループIDが異なるようだ。  
 
 
 <a name="practicalusePropertymanipulation"></a>
