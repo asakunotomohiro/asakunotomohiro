@@ -9,17 +9,12 @@ my @asakuno = qw( 朝来野 智博 朝来野智博 );
 say "Perl/TK開発でのハローワールド";
 
 sub asakunoGUI() {
-#	my $mw = MainWindow->new;
-#	$mw->title("Hello World.");
-#	$mw->Button(
-#				-text => "Done",
-#				-command => sub { exit }
-#			)->pack;
-#	MainLoop;
-
-	# 以下のプログラムが公式ページに載っていたやり方。
-	#	https://metacpan.org/dist/Tk/view/Tk.pod
-	my $top = new MainWindow;
+	my $mw = MainWindow->new;
+	$mw->title("Hello World.");
+	$mw->Button(
+				-text => "Done",
+				-command => sub { exit }
+			)->pack;
 	MainLoop;
 }
 &asakunoGUI(@ARGV);
@@ -28,6 +23,7 @@ sub asakunoGUI() {
 #	MainWindow->new() at guiHelloworld.pl line 12.
 # 実行権限ないのが原因らしい、、、本当か？
 # それともXサーバを起動する必要があるのか？
+# 解：Xサーバを起動する必要があった。
 
 say "以上。"
 # vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=perl noexpandtab:

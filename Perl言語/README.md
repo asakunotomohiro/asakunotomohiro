@@ -8633,13 +8633,32 @@ sub regexSample {
 当たり前だが、ちょっとした衝動に駆られただけなので、上っ面のみ調べる。  
 深掘りすることはない。  
 
+* 目次  
+  * [HelloWorld](#practicaluseTkHelloWorld)  
+
+<a name="practicalTkuseprestageinstall"></a>
+### Perl/TkによるGUI開発するための前段階。
+Perlを用いたTk開発のために、Tkをインストールするのは当然だが、それ以前にXサーバとやらを導入済みであることが大前提になる。  
+もし、Xサーバを起動せずにTkプログラムを動かす場合、失敗する。  
+以下、エラーメッセージ。
+```terminal
+couldn't connect to display ":0" at MainWindow.pm line 53.
+MainWindow->new() at xxxx.pl line 12.
+```
+そのため、まず初めに、Xサーバの準備をする。  
+
+一昔前は、[Macにも導入済み](https://support.apple.com/ja-jp/HT201341)だったようだが、今は個別に入れる必要がある。  
+そのため、MacのXサーバ(X11？)である[XQuartz](https://www.xquartz.org)を入手し、インストールする。  
+また、インストール後は、端末のログアウトが必要になるため、事前に必要編集部分を保存しておいた方が良い。  
+現時点のバージョンは**2.8.1**のリリース日**2021-04-25**になっている。  
+
 
 <a name="practicaluseTkinstall"></a>
 ### Perl/TkによるGUI開発。
 当たり前だが、Perlには、GUI開発するための道具がない。  
 そのため、外部から入手する必要がある。  
 そして、[Tcl/Tk](https://www.tcl.tk)から派生した[Perl/Tk](https://metacpan.org/dist/Tk/view/Tk.pod)を使うことにする。  
-リンク先が合っているのか不明。  
+※Tkのリンク先が合っているのか不明(数が多いが、とりあえず1つ選んだ)。  
 
 以下、Tkモジュール導入済みか確認する。
 ```terminal
@@ -8651,6 +8670,11 @@ $
 エラーが発生したため、インストールされていないと言うこと・・・。  
 数年前に、試しに入れたはずなのだが・・・他の端末だったかもな。  
 インストールされていない状況が記録に残せるので由としよう。  
+
+<details><summary>CPAN経由のインストール。</summary>
+
+せっかくcpanに入れるのに、なぜかインストールが行われない。  
+
 インストール方法はいくつかあるようだが、せっかくなので[CPAN](#practicalusecpan)を利用したい。  
 以下、簡易[インストール記録](./環境構築(インストール).md)。
 ```terminal
@@ -8665,15 +8689,6 @@ $
 指定した**Tk**は間違えた？  
 大量にインストールされてしまった。  
 関係ないのまで入ってしまったのだろうか？  
-
-以下、Tkモジュール導入済みか確認する。
-```terminal
-$ perl -e 'use Tk'
-$ echo $?
-0
-$
-```
-上記のようなエラーは発生しなかった。  
 
 以下、別のインストール方法。
 ```terminal
@@ -8698,9 +8713,103 @@ Lockfile removed.
 $
 ```
 
+</details>
+
+以下、手動インストール。
+```terminal
+$ perl Makefile.PL
+perlbrew/perls/perl-5.34.0/bin/perl is installed in perlbrew/perls/perl-5.34.0/lib/5.34.0/darwin-2level okay
+PPM for perl5.034000
+Test Compiling config/perlrx.c
+　　　・
+　　　・
+　　　・
+Tests in JPEG
+Tests in Event
+Generating a Unix-style Makefile
+Writing Makefile for Tk
+Writing MYMETA.yml and MYMETA.json
+$ make
+cp Tk/Bitmap.pm blib/lib/Tk/Bitmap.pm
+cp Tk/MakeDepend.pm blib/lib/Tk/MakeDepend.pm
+cp Tk/Panedwindow.pm blib/lib/Tk/Panedwindow.pm
+cp Tk/ColorEditor.pm blib/lib/Tk/ColorEditor.pm
+cp Tk/ColorDialog.pm blib/lib/Tk/ColorDialog.pm
+cp ppport.h blib/arch/Tk/ppport.h
+　　　・
+　　　・
+　　　・
+cp ptksh blib/script/ptksh
+"perlbrew/perls/perl-5.34.0/bin/perl" -MExtUtils::MY -e 'MY->fixin(shift)' -- blib/script/ptksh
+Manifying 2 pod documents
+Manifying 5 pod documents
+Sorry no HTML building yet
+$
+$ make test
+"perlbrew/perls/perl-5.34.0/bin/perl" -MExtUtils::Command::MM -e 'cp_nonempty' -- Tk.bs blib/arch/auto/Tk/Tk.bs 644
+cd pTk && make DEFINE="" LIBPERL_A="libperl.a" LINKTYPE="dynamic" OPTIMIZE="-O3" PREFIX="perlbrew/perls/perl-5.34.0" PASTHRU_DEFINE=' ' PASTHRU_INC='-I/usr/X11R6/include -I/usr/local/include/freetype2 '
+Manifying 103 pod documents
+Manifying 1 pod document
+　　　・
+　　　・
+　　　・
+t/wm-tcl.t                 (Wstat: 0 Tests: 315 Failed: 0)
+  TODO passed:   64, 86-87, 154-159, 164-165, 171-176, 221-224
+                237-239, 264-265, 275-276, 280-283, 300
+t/zzScrolled.t             (Wstat: 0 Tests: 94 Failed: 0)
+  TODO passed:   52, 66, 80, 94
+Files=76, Tests=4367, 104 wallclock secs ( 0.97 usr  0.33 sys + 18.76 cusr  4.52 csys = 24.58 CPU)
+Result: PASS
+$ make install
+cd pTk && make DEFINE="" LIBPERL_A="libperl.a" LINKTYPE="dynamic" OPTIMIZE="-O3" PREFIX="perlbrew/perls/perl-5.34.0" PASTHRU_DEFINE=' ' PASTHRU_INC='-I/usr/X11R6/include -I/usr/local/include/freetype2 '
+Manifying 103 pod documents
+Manifying 1 pod document
+Manifying 2 pod documents
+"perlbrew/perls/perl-5.34.0/bin/perl" -MExtUtils::Command::MM -e 'cp_nonempty' -- X.bs ../../blib/arch/auto/Tk/X/X.bs 644
+　　　・
+　　　・
+　　　・
+Installing perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/Tk/demos/widget_lib/keysyms.pl
+Installing perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/Tk/demos/widget_lib/balloon.pl
+Appending installation info to perlbrew/perls/perl-5.34.0/lib/5.34.0/darwin-2level/perllocal.pod
+$
+```
+
+以下、Tkモジュール導入済みか確認する。
+```terminal
+$ perl -e 'use Tk'
+$ echo $?
+0
+$
+```
+エラーは発生せず。  
+
 
 <a name="practicaluseTkHelloWorld"></a>
 ### ハローワールドプログラム
+定番だが、今回はGUI画面だ。  
+
+以下、プログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub gui() {
+	my $mw = MainWindow->new;
+	$mw->title("Hello World.");
+	$mw->Button(
+				-text => "Done",
+				-command => sub { exit }
+			)->pack;
+	MainLoop;
+}
+&gui();
+```
+小さいウィンドウが開き、その中にボタンがある。  
+そのボタンをクリックすることでウィンドウが終了する。  
+きっと、ウィンドウの大きさはボタンに合わせているのだろう。  
+
+当たり前だが、プログラムを動かす場合、XQuartzが起動する。  
 
 
 </details>
