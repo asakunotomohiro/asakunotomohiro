@@ -7048,6 +7048,181 @@ sub timeformatChange {
 8日前のファイル at ファイルテスト演算子.pl line xx.  
 これは、[stat情報](#practicaluseFileteststatfunck)の**最終更新時刻(`$mtime`)**を見ている。  
 
+|[ファイルテスト](https://perldoc.jp/func/-X)|説明|
+|:------------:|----|
+|`-r`|ファイルorディレクトリが実効**ユーザorグループ**で読み出し可。|
+|`-w`|ファイルorディレクトリが実効**ユーザorグループ**で書き込み可。|
+|`-x`|ファイルorディレクトリが実効**ユーザorグループ**で実行可。|
+|`-o`|ファイルorディレクトリが実効**ユーザ**の所有物。|
+|||
+|`-R`|ファイルorディレクトリが**実ユーザor実グループ**で読み出し可。|
+|`-W`|ファイルorディレクトリが**実ユーザor実グループ**で書き込み可。|
+|`-X`|ファイルorディレクトリが**実ユーザor実グループ**で実行可。|
+|`-O`|ファイルorディレクトリが**実ユーザ**の所有物。|
+|||
+|`-e`|ファイルorディレクトリが存在する。|
+|`-z`|ファイルの大きさがゼロ(空)(ディレクトリの場合"**偽**")。|
+|`-s`|ファイルorディレクトリの大きさがゼロ以外(バイト単位での大きさを返す)。|
+|||
+|`-f`|エントリは通常ファイル。|
+|`-d`|エントリはディレクトリ。|
+|`-l`|エントリはシンボリックリンク(ファイルシステムが非対応なら偽)。|
+|`-p`|エントリは名前付きパイプ(FIFO)またはファイルハンドルはパイプ。|
+|`-S`|エントリはソケット。|
+|`-b`|エントリはブロック特殊ファイル(例：マウント可能なディスク)。|
+|`-c`|エントリはキャラクタ特殊ファイル(例：I/Oデバイス)。|
+|`-t`|ファイルハンドルは**tty**にオープンされている(どういう意味？)。|
+|||
+|`-u`|ファイルorディレクトリの**setuid**ビットがセットされている。|
+|`-g`|ファイルorディレクトリの**setgid**ビットがセットされている。|
+|`-k`|ファイルorディレクトリの**sticky**ビットがセットされている。|
+|||
+|`-T`|ファイルは**ASCII**または**UTF-8**テキストファイル(発見的に推測します)。|
+|`-B`|ファイルは「**バイナリ**」ファイルっぽい(**-T**の反対)。|
+|||
+|`-M`|スクリプト実行開始時刻からファイル修正時刻を引いたもの(日単位)(stat関数の`$mtime`)。|
+|`-A`|同様にアクセスがあってからの日数。|
+|`-C`|同様に(Unixでは)**inode**が変更されてからの日数(それ以外のプラットフォームでは違うかもしれません)。|
+
+不思議に思うのだが、**実効**って何？  
+実行の間違い？  
+しかし、[正誤表](https://www.oreilly.co.jp/books/9784873118246/)にないため、実効が正しいのか・・・。  
+
+
+<a name="practicaluseFiletestoperatorr"></a>
+#### ファイルテスト演算子(`-r`)
+ファイルorディレクトリが実効ユーザもしくは、実効グループで読み出し可能。  
+
+
+<a name="practicaluseFiletestoperatorw"></a>
+#### ファイルテスト演算子(`-w`)
+ファイルorディレクトリが実効**ユーザorグループ**で書き込み可。  
+
+
+<a name="practicaluseFiletestoperatorx"></a>
+#### ファイルテスト演算子(`-x`)
+ファイルorディレクトリが実効**ユーザorグループ**で実行可。  
+
+
+<a name="practicaluseFiletestoperatoro"></a>
+#### ファイルテスト演算子(`-o`)
+ファイルorディレクトリが実効**ユーザ**の所有物。  
+
+
+<a name="practicaluseFiletestoperatorR"></a>
+#### ファイルテスト演算子(`-R`)
+ファイルorディレクトリが**実ユーザor実グループ**で読み出し可。  
+
+
+<a name="practicaluseFiletestoperatorW"></a>
+#### ファイルテスト演算子(`-W`)
+ファイルorディレクトリが**実ユーザor実グループ**で書き込み可。  
+
+
+<a name="practicaluseFiletestoperatorX"></a>
+#### ファイルテスト演算子(`-X`)
+ファイルorディレクトリが**実ユーザor実グループ**で実行可。  
+
+
+<a name="practicaluseFiletestoperatorO"></a>
+#### ファイルテスト演算子(`-O`)
+ファイルorディレクトリが**実ユーザ**の所有物。  
+
+
+<a name="practicaluseFiletestoperatore"></a>
+#### ファイルテスト演算子(`-e`)
+ファイルorディレクトリが存在する。  
+
+
+<a name="practicaluseFiletestoperatorz"></a>
+#### ファイルテスト演算子(`-z`)
+ファイルの大きさがゼロ(空)(ディレクトリの場合"**偽**")。  
+
+
+<a name="practicaluseFiletestoperators"></a>
+#### ファイルテスト演算子(`-s`)
+ファイルorディレクトリの大きさがゼロ以外(バイト単位での大きさを返す)。  
+
+
+<a name="practicaluseFiletestoperatorf"></a>
+#### ファイルテスト演算子(`-f`)
+エントリは通常ファイル。  
+
+
+<a name="practicaluseFiletestoperatord"></a>
+#### ファイルテスト演算子(`-d`)
+エントリはディレクトリ。  
+
+
+<a name="practicaluseFiletestoperatorl"></a>
+#### ファイルテスト演算子(`-l`)
+エントリはシンボリックリンク(ファイルシステムが非対応なら偽)。  
+
+
+<a name="practicaluseFiletestoperatorp"></a>
+#### ファイルテスト演算子(`-p`)
+エントリは名前付きパイプ(FIFO)またはファイルハンドルはパイプ。  
+
+
+<a name="practicaluseFiletestoperatorS"></a>
+#### ファイルテスト演算子(`-S`)
+エントリはソケット。  
+
+
+<a name="practicaluseFiletestoperatorb"></a>
+#### ファイルテスト演算子(`-b`)
+エントリはブロック特殊ファイル(例：マウント可能なディスク)。  
+
+
+<a name="practicaluseFiletestoperatorc"></a>
+#### ファイルテスト演算子(`-c`)
+エントリはキャラクタ特殊ファイル(例：I/Oデバイス)。  
+
+
+<a name="practicaluseFiletestoperatort"></a>
+#### ファイルテスト演算子(`-t`)
+ファイルハンドルは**tty**にオープンされている(どういう意味？)。  
+
+
+<a name="practicaluseFiletestoperatoru"></a>
+#### ファイルテスト演算子(`-u`)
+ファイルorディレクトリの**setuid**ビットがセットされている。  
+
+
+<a name="practicaluseFiletestoperatorg"></a>
+#### ファイルテスト演算子(`-g`)
+ファイルorディレクトリの**setgid**ビットがセットされている。  
+
+
+<a name="practicaluseFiletestoperatork"></a>
+#### ファイルテスト演算子(`-k`)
+ファイルorディレクトリの**sticky**ビットがセットされている。  
+
+
+<a name="practicaluseFiletestoperatorT"></a>
+#### ファイルテスト演算子(`-T`)
+ファイルは**ASCII**または**UTF-8**テキストファイル(発見的に推測します)。  
+
+
+<a name="practicaluseFiletestoperatorB"></a>
+#### ファイルテスト演算子(`-B`)
+ファイルは「**バイナリ**」ファイルっぽい(**-T**の反対)。  
+
+
+<a name="practicaluseFiletestoperatorM"></a>
+#### ファイルテスト演算子(`-M`)
+スクリプト実行開始時刻からファイル修正時刻を引いたもの(日単位)(stat関数の`$mtime`)。  
+
+
+<a name="practicaluseFiletestoperatorA"></a>
+#### ファイルテスト演算子(`-A`)
+同様にアクセスがあってからの日数。  
+
+
+<a name="practicaluseFiletestoperatorC"></a>
+#### ファイルテスト演算子(`-C`)
+同様に(Unixでは)**inode**が変更されてからの日数(それ以外のプラットフォームでは違うかもしれません)。  
+
 
 <a name="practicaluseFileteststatfunck"></a>
 ### stat関数
