@@ -57,7 +57,7 @@
   * [x] Chapter 1 プログラミングの基礎知識  
     現時点で完了している(上記の基礎知識5種類として)。  
   * [x] [Chapter 2 プログラミングの力を養う](#algorithmTextbookLearnedinPythonChapter2)  
-  * [ ] [Chapter 3 データ構造を学ぶ](#algorithmTextbookLearnedinPythonChapter3)  
+  * [x] [Chapter 3 データ構造を学ぶ](#algorithmTextbookLearnedinPythonChapter3)2022/01/16  
   * [ ] [Chapter 4 サーチ](#algorithmTextbookLearnedinPythonChapter4)  
   * [ ] [Chapter 5 ソート](#algorithmTextbookLearnedinPythonChapter5)  
   * [ ] [Chapter 6 ハッシュ](#algorithmTextbookLearnedinPythonChapter6)  
@@ -290,7 +290,7 @@ pyenvとpip3は別物？
 
 <a name="algorithmHelloWorld"></a>
 ### ハローワールドプログラム
-ワンライナー。
+1行のみで実現できる。
 ```python
 print("Hello, World!")
 ```
@@ -402,6 +402,7 @@ print("Hello, World!")
 様式：
 `変数名 = '文字列'`  
 
+
 <a name="subVariable3"></a>
 #### 変数値の出力方法
 
@@ -410,13 +411,13 @@ name1 = 'hoge'
 
 print("hogeの文字数：", len(name1))   # hogeの文字数： 4
 
-# raw文字列
+    # 以下、raw文字列
 print(r'C:\"Windows"\hoge\boo')    # 出力結果：C:\"Windows"\hoge\boo
 
-# フォーマット文字列
+    # 以下、フォーマット文字列
 print(f'Hello {name1} yeaaaaa')    # 出力結果：Hello hoge yeaaaaa
 
-# raw文字列及びフォーマット文字列
+    # 以下、raw文字列及びフォーマット文字列
 print(fr'Hello \{name1}\ "yeaaaaa"')    # 出力結果：Hello \hoge\ "yeaaaaa"
 ```
 
@@ -430,6 +431,7 @@ JavaやC#などの静的型付けではなく、動的型付け言語のため�
 |float||浮動小数点型|
 |string||データを扱う文字列型(Pythonでは`str`)|
 |bool||論理型(True・False)|
+
 
 <details><summary>データ型の細かい話</summary>
 
@@ -477,10 +479,9 @@ boo```)
 他のプログラミング言語では存在しない概念のひとつかな。  
 
 ```python:Sample.py
-# 変数の破棄
 name1 = 'hoge'
 print(name1)    # 出力結果：hoge
-del name1
+del name1       # 変数の破棄
 print(name1)    # NameError: name 'name1' is not defined
 ```
 
@@ -500,6 +501,7 @@ print(name1)    # NameError: name 'name1' is not defined
 |`//`|除算の商||
 |`%`|剰余演算||
 
+
 <a name="subVariable6"></a>
 #### 型変換(キャスト)方法
 様式(文字列⇒数字)：
@@ -509,12 +511,12 @@ print(name1)    # NameError: name 'name1' is not defined
 `[変数名] = (str)[数字]`  
 
 ```Python
-# キャスト(文字列⇒数字)
+    # 以下、キャスト(文字列⇒数字)
 hoge = "20210826"
 boo = int(hoge)
 print(boo + boo)  # 出力結果：40421652
 
-# キャスト(数字⇒文字列)
+    # 以下、キャスト(数字⇒文字列)
 boo = 20210826
 hoge = str(boo)
 print(hoge + hoge)  # 出力結果：2021082620210826
@@ -586,6 +588,7 @@ print(100 + TAX)    # 出力結果：110
 <a name="arrangement配列"></a>
 <details><summary>実際の配列の勉強</summary>
 
+
 ### 配列
 変数を連ならせる格納方法。  
 今回のPythonではリストを配列と呼ぶ。  
@@ -646,40 +649,44 @@ hoge = list('hoge')
 
 for boo in hoge:
     print(boo)
-# 出力結果：h
-#           o
-#           g
-#           e
+```
+
+以下、出力結果。
+```terminal
+h
+o
+g
+e
 ```
 
 <details><summary>そこまで重要ではないはずなので、隠す</summary>
 
 以下、配列の要素へ追加・要素から削除
 ```python:配列(list)追加・削除.py
-# 基本的なリスト
+    # 以下、基本的なリスト
 hoge = ['hoge', ]
 print(hoge)	# ['hoge']
 
-# 以下、末尾に追加。
+    # 以下、末尾に追加。
 hoge.append('bar')
 print(hoge)	# ['hoge', 'bar']
 
-# 以下、途中に追加。
+    # 以下、途中に追加。
 hoge.insert(1, '-')
 print(hoge)	# ['hoge', '-', 'bar']
 
-# 以下、削除。
+    # 以下、削除。
 hoge.pop(1)
 print(hoge)	# ['hoge', 'bar']
 
-# 以下、削除。
+    # 以下、削除。
 hoge.pop()
 print(hoge)	# ['hoge']
 ```
 
 以下、配列の要素へ追加。
 ```python:配列(list)複数要素追加・置換・削除.py
-# 要素の挿入
+    # 以下、要素の挿入
 hoge = list('Pythonest')  # 「T」がない。PythonTest(Pythonテスト)にしたい
 hoge[6:6] = ['T']
 print(hoge)	# ['P', 'y', 't', 'h', 'o', 'n', 'T', 'e', 's', 't']
@@ -690,19 +697,19 @@ print(hoge)	# ['P', 'y', 't', 'h', 'o', 'n', 'T', 'e', 's', 't']
 hoge = ['hoge', 'bar', ]
 print(hoge)	# ['hoge', 'bar']
 
-# 以下、要素を削除。
+    # 以下、要素を削除。
 hoge.remove('hoge')
 print(hoge)	# ['bar']
 ```
 
 以下、要素内指定で削除。
 ```python:配列(list)複数要素追加・置換・削除.py
-# 要素の削除
+    # 以下、要素の削除
 hoge = list('hogebarboo')
 hoge[2:9] = []
 print(hoge)	# ['h', 'o', 'o']
 
-# 要素の削除
+    # 以下、要素の削除
 hoge = list('hogebar')
 hoge[2:3] = list('hoge')
 del hoge[2:9]
@@ -722,7 +729,7 @@ print(hoge)	# []
 ```python:配列(list)検索.py
 hoge = list('hogehoge')
 
-# 6文字目(index_5)以降で「e」の検索
+    # 以下、6文字目(index_5)以降で「e」の検索
 print(hoge.index('e', 5))	# 7
 ```
 
@@ -730,7 +737,7 @@ print(hoge.index('e', 5))	# 7
 ```python:配列(list)重複確認.py
 hoge = list('hogehoge')
 
-# 「h」の出現回数
+    # 以下、「h」の出現回数
 print(hoge.count('h'))	# 2
 ```
 
@@ -738,7 +745,7 @@ print(hoge.count('h'))	# 2
 ```python:配列(list)存在確認.py
 hoge = list('hogehoge')
 
-# 「a」の検索
+    # 以下、「a」の検索
 print('a' in hoge)	# False
 ```
 
@@ -746,7 +753,7 @@ print('a' in hoge)	# False
 ```python:配列(list)複製.py
 hoge = list('hoge')
 
-# 上記配列を複製する(シャローコピー)。
+    # 以下、上記配列を複製する(シャローコピー)。
 boo = hoge.copy()
 print(boo)	# ['h', 'o', 'g', 'e']
 ```
@@ -769,16 +776,16 @@ print(hogeboo)	# ['b', 'a', 'r', 'b', 'a', 'r', 'b', 'a', 'r']
 ```python:配列(list)並び替え.py
 hoge = list('hoge')
 
-# 逆順に並べ替える。
+    # 以下、逆順に並べ替える。
 hoge.reverse()
 print(hoge)	# ['e', 'g', 'o', 'h']
 
-# 逆順に並べ替える？
+    # 以下、逆順に並べ替える？
 hoge = list('hoge')
 hoge.sort(reverse=True)
 print(hoge)	# ['o', 'h', 'g', 'e']
 
-# ソート
+    # 以下、ソート
 hoge = list('hoge')
 hoge.sort()
 print(hoge)	# ['e', 'g', 'h', 'o']
@@ -790,19 +797,22 @@ hoge = list('hoge')
 
 for boo, hogeboo in enumerate(hoge):
     print(boo, '：', hogeboo)
-# 出力結果：0 ： h
-#           1 ： o
-#           2 ： g
-#           3 ： e
+```
+
+以下、出力結果。
+```terminal
+0 ： h
+1 ： o
+2 ： g
+3 ： e
 ```
 
 ```python:配列(list)要素のbool値判断.py
-# 以下、リスト内の全ての要素がTrueであるか。
+    # 以下、リスト内の全ての要素がTrueであるか。
 print(all([True, True, False]))	# False
 
 hoge = list('hoge')
-print(all(hoge))	# True
-#	何の役にも立たない判定方法。
+print(all(hoge))	# True(何の役にも立たない判定方法)。
 ```
 
 以下、rangeによる配列作成。
@@ -814,12 +824,12 @@ print(hoge)	# [0, 2, 4, 6]
 
 </details>
 
+
 <a name="subArrangement2"></a>
 #### 配列への追加方法
 様式：
 `配列名 = ['値1', '値2', ・・・ ]`  
 `配列名 = list('文字列')`  
-
 
 
 <a name="subArrangement3"></a>
@@ -875,6 +885,7 @@ print(hoge[1])  # ['hoge2', 'bar2', 'boo2']
 <a name="Conditional条件分岐"></a>
 <details><summary>実際の条件分岐の勉強</summary>
 
+
 ### 条件分岐
 
 * 絶対的に勉強する一覧  
@@ -892,6 +903,7 @@ print(hoge[1])  # ['hoge2', 'bar2', 'boo2']
     * [x] より小さい(`<`)  
     * [x] 以上(`>=`)  
     * [x] 以下(`<=`)  
+
 
 <a name="subConditional1"></a>
 #### 条件分岐
@@ -919,8 +931,8 @@ elif hoge > 0:
 else:
     print(hoge, "!= 0")
 
-# 出力結果：-1 != 0
 ```
+上記の出力結果：-1 != 0
 
 * 複数の条件式を1つにまとめる。
 様式：
@@ -933,6 +945,7 @@ if [条件式]:
 `or`：どちらの条件がTrueの場合にif文の処理が走る。  
 これを **[ド・モルガンの法則](https://ja.wikipedia.org/wiki/ド・モルガンの法則)** として、使うべし。  
 
+
 <a name="subConditional2"></a>
 #### 論理演算子(ド・モルガンの法則)
 
@@ -940,6 +953,7 @@ if [条件式]:
 |------|----|----|
 |`&&`・`AND`|論理積|左右の式がTrueの場合に、Trueになり、それ以外はFalse。|
 |`||`・`OR`|論理和|左右のどちらかの式がTrueの場合に、Trueになり、Trueがない場合False。|
+
 
 <a name="subConditional3"></a>
 #### 比較演算子
@@ -952,6 +966,7 @@ if [条件式]:
 |`<`|より小さい|aはbより小さいかを比較する。|
 |`>=`|以上|aはb以上かを比較する。|
 |`<=`|以下|aはb以下かを比較する。|
+
 
 <a name="subConditional999"></a>
 #### 条件分岐での説明しない項目。
@@ -983,6 +998,7 @@ if [条件式]:
 
 <a name="repetition繰り返し"></a>
 <details><summary>実際の繰り返しの勉強</summary>
+
 
 ### 繰り返し
 
@@ -1023,18 +1039,21 @@ for [繰り返し用変数] in range(繰り返す回数)
 ```Python
 for ii in range(10):
     print(ii)
+```
 
-# 出力結果。
-#       0
-#       1
-#       2
-#       3
-#       4
-#       5
-#       6
-#       7
-#       8
-#       9
+
+以下、出力結果。
+```terminal
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
 ```
 
 
@@ -1047,11 +1066,14 @@ for [繰り返し用変数] in range(初期値, 終値)
 ```Python
 for ii in range(1, 5):
     print(ii)
-# 出力結果。
-#       1
-#       2
-#       3
-#       4
+```
+
+以下、出力結果。
+```terminal
+1
+2
+3
+4
 ```
 
 様式：
@@ -1059,17 +1081,20 @@ for [繰り返し用変数] in range(初期値, 終値, 増減分)
 ```Python
 for ii in range(20, 10, -1):
     print(ii)
-# 出力結果。
-#       20
-#       19
-#       18
-#       17
-#       16
-#       15
-#       14
-#       13
-#       12
-#       11
+```
+
+以下、出力結果。
+```terminal
+20
+19
+18
+17
+16
+15
+14
+13
+12
+11
 ```
 
 
@@ -1114,6 +1139,7 @@ for ii in range(4):
 ```
 `ii`が`2`の場合、次の処理を行わず、`for`に戻る。  
 
+
 <a name="subRepetition6"></a>
 #### 真偽条件での繰り返し：while( 条件式 )
 様式：
@@ -1154,6 +1180,7 @@ while True:
 
 </details>
 
+
 <a name="function関数"></a>
 <details><summary>実際の関数の勉強</summary>
 
@@ -1169,6 +1196,7 @@ while True:
     * [スコープ](#subFunction2)  
       [x] グローバルスコープ変数  
       [x] ローカルスコープ変数  
+
 
 <a name="subFunction1"></a>
 #### 関数
@@ -1239,6 +1267,7 @@ Hello World(引数あり-戻り値あり).
 ちなみに、呼び出し側の関数の引数は、実引数という。
 実際の関数で定義している引数のことを仮引数という。  
 
+
 <a name="subFunction2"></a>
 #### スコープ
 * グローバル変数  
@@ -1246,6 +1275,7 @@ Hello World(引数あり-戻り値あり).
 * ローカル変数  
   関数内部で宣言した変数。  
   そして、グローバル変数を関数内部で利用する場合、`global`宣言を付けた変数宣言が必須になる(関数内で)。  
+
 
 <a name="subFunction999"></a>
 #### 関数での説明しない項目。
@@ -1280,9 +1310,10 @@ Hello World(引数あり-戻り値あり).
 
 </details>
 
+
 <a name="algorithmTextbookLearnedinPython"></a>
 #### ☆アルゴリズムの勉強チャプタ概要☆
-<a name="algorithmTextbookLearnedinPythonChapter2"></a>
+  <a name="algorithmTextbookLearnedinPythonChapter2"></a>
 * [Chapter2 プログラミングの力を養う](#developProgrammingSkillsOverviewChapter2)  
   基礎的なプログラミングの力を養っていく。  
   例えば、配列利用の関数定義・繰り返し・再帰関数・条件分岐など。  
@@ -1294,7 +1325,7 @@ Hello World(引数あり-戻り値あり).
   [x] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
   [x] [エラトステネスの篩](#eratosthenesSieveChapter2)  
   [x] [n進法を理解する。](#understandnAryNotationChapter2)  
-<a name="algorithmTextbookLearnedinPythonChapter3"></a>
+  <a name="algorithmTextbookLearnedinPythonChapter3"></a>
 * [Chapter3 データ構造を学ぶ](#learnDataStructuresOverviewChapter3)  
   今までに勉強した配列(リスト)を用いた発展を遂げる。  
   ※今回利用するリストはアルゴリズム(概念)用語であり、Pythonで用いているリスト(配列)という用語とは別物。  
@@ -1307,7 +1338,7 @@ Hello World(引数あり-戻り値あり).
   [x] [グラフ](#graphChapter3)2022/01/02  
   [x] [スタックとキューを扱う。](#stacksAndQueuesChapter3)2022/01/07  
   [x] [データを保存する。](#saveTheDataChapter3)2022/01/15  
-<a name="algorithmTextbookLearnedinPythonChapter4"></a>
+  <a name="algorithmTextbookLearnedinPythonChapter4"></a>
 * [Chapter4 サーチ](#searchOverviewChapter4)  
   複数データから目的地を探し出すこと。  
   ※有名な探索アルゴリズムのみに限定している。  
@@ -1319,7 +1350,7 @@ Hello World(引数あり-戻り値あり).
   [ランダウの記号](#landauSignChapter4)  
   [数当てゲーム](#numberGuessingGameChapter4)  
   [ビット演算を学ぶ](#learnBitwiseOperationsChapter4)  
-<a name="algorithmTextbookLearnedinPythonChapter5"></a>
+  <a name="algorithmTextbookLearnedinPythonChapter5"></a>
 * [Chapter5 ソート](#sortOverviewChapter5)  
   一定の規則に従い並び替えること。  
   ※有名な並べ替えアルゴリズムのみに限定している。  
@@ -1334,7 +1365,7 @@ Hello World(引数あり-戻り値あり).
   [再帰関数を用いたマージソート。](#mergeSortUsingARecursiveFunctionChapter5)  
   [プログラミング言語用のソート・ヒープ・キュー関数の使い方。](#howToUsePythonSortInstructionsAndHeapqModuleChapter5)  
   [ソートの計算量と計算時間。](#sortCalculationComplexityAndCalculationTimeChapter5)  
-<a name="algorithmTextbookLearnedinPythonChapter6"></a>
+  <a name="algorithmTextbookLearnedinPythonChapter6"></a>
 * [Chapter6 ハッシュ](#hashOverviewChapter6)  
   ハッシュとは、データから算出した小さな値のこと。  
   今回は、そのハッシュとしての値を算出する方法を勉強する。  
@@ -1344,7 +1375,7 @@ Hello World(引数あり-戻り値あり).
   [ハッシュテーブル](#hashTableChapter6)  
   [衝突を回避する。](#avoidCollisionsChapter6)  
   [暗号学的ハッシュ関数](#cryptographicHashFunctionChapter6)  
-<a name="algorithmTextbookLearnedinPythonChapter7"></a>
+  <a name="algorithmTextbookLearnedinPythonChapter7"></a>
 * [Chapter7 さまざまなアルゴリズムを学ぶ](#learnVariousAlgorithmsOverviewChapter7)  
   アルゴリズムを勉強する上で必ず関わるアルゴリズムになる。  
   むしろ、ここまで勉強できてアルゴリズムを勉強したと言えるのではないだろうか。  
@@ -1352,7 +1383,7 @@ Hello World(引数あり-戻り値あり).
   [ユークリッドの互除法](#euclideanAlgorithmChapter7)  
   [文字列探索](#stringSearchChapter7)  
   [アルゴリズムを理解するヒント(処理の過程の出力)。](#tipsForUnderstandingTheAlgorithmChapter7)  
-<a name="algorithmTextbookLearnedinPythonChapter8"></a>
+  <a name="algorithmTextbookLearnedinPythonChapter8"></a>
 * [Chapter8 アルゴリズムを見える化する](#visualizeTheAlgorithmOverviewChapter8)  
   今回のアルゴリズムを勉強することで、アルゴリズム(もしくはデータ)を可視化する方法を勉強できる。  
   以下、各項目(目次)。  
@@ -1375,6 +1406,7 @@ Hello World(引数あり-戻り値あり).
   * [エラトステネスの篩](#eratosthenesSieveChapter2)  
   * [n進法を理解する。](#understandnAryNotationChapter2)  
 
+
 <a name="findTheAverageValueChapter2"></a>
 #### 平均値を求める。
 今回は、以下のルールがある。  
@@ -1389,16 +1421,16 @@ Hello World(引数あり-戻り値あり).
 
 
 ```Python
-# 数字を配列で用意する。
+    # 以下、数字を配列で用意する。
 hoge = [70, 98, 92, 88, 64]
-# 合計値用の変数。
+    # 以下、合計値用の変数。
 egoh = 0
 
-# 配列格納の数字を1つづつ取り出すのにforを用いている。
+    # 以下、配列格納の数字を1つづつ取り出すのにforを用いている。
 for boo in hoge:
     egoh = egoh + boo
 
-# 合計値を配列数で割る。
+    # 以下、合計値を配列数で割る。
 bar = egoh / len(hoge)
 print("合計値：", egoh)	# 合計値： 412
 print("平均値：", bar)	# 平均値： 82.4
@@ -1517,7 +1549,7 @@ kuku()
     ※それらの数で割り切れなければ素数。  
 
 ```python
-# 2から100までの素数を出力する。
+    # 以下、2から100までの素数を出力する。
 def prime1(word):
     for ii in range(2, 101):
         hh = ii//2
@@ -1807,6 +1839,7 @@ n進法とは？
   * [グラフ](#graphChapter3)  
   * [データを保存する。](#saveTheDataChapter3)  
 
+
 <a name="stackChapter3"></a>
 #### スタック
 要は、後入れ先出しのこと。  
@@ -1896,8 +1929,7 @@ PerlがそうだったのだからPythonもアルゴリズムに関係なく、�
 
 以下、キュープログラム。
 ```python
-# 積み上げる最大数を5つに制限している(キューへの積み上げ最大数+1)。
-MAX = 6
+MAX = 6 # 積み上げる最大数を5つに制限している(キューへの積み上げ最大数+1)。
 
 
 def enqueue(data, que, head, tail):
@@ -1937,20 +1969,23 @@ def main():
 
 
 main()
-# 出力結果：
-#           データ 0 を追加しました
-#           データ 1 を追加しました
-#           データ 2 を追加しました
-#           データ 3 を追加しました
-#           データ 4 を追加しました
-#           これ以上、データ積み上げ不可。
-#           取り出しデータ： 0
-#           取り出しデータ： 1
-#           取り出しデータ： 2
-#           取り出しデータ： 3
-#           取り出しデータ： 4
-#           取り出しデータなし。
-#           取り出しデータ： None
+```
+
+以下、出力結果。
+```terminal
+データ 0 を追加しました
+データ 1 を追加しました
+データ 2 を追加しました
+データ 3 を追加しました
+データ 4 を追加しました
+これ以上、データ積み上げ不可。
+取り出しデータ： 0
+取り出しデータ： 1
+取り出しデータ： 2
+取り出しデータ： 3
+取り出しデータ： 4
+取り出しデータなし。
+取り出しデータ： None
 ```
 
 
@@ -2090,8 +2125,7 @@ todo: プログラムを理解すること。
 
 以下、プログラム。
 ```python
-# 紐付き数を5つに制限。
-MAX = 5
+MAX = 5 # 紐付き数を5つに制限。
 
 
 def add_list(datalist, pointer, data):
@@ -2164,15 +2198,18 @@ def main():
 
 
 main()
-# 出力結果：
-#       データ 10 追加。
-#       データ 20 追加。
-#       データ 30 追加。
-#       データ 40 追加。
-#       データ 50 追加。
-#       データ領域に空きがありません
-#       データ 10 削除。
-#       20--->30--->40--->50--->EOF
+```
+
+以下、出力結果。
+```terminal
+データ 10 追加。
+データ 20 追加。
+データ 30 追加。
+データ 40 追加。
+データ 50 追加。
+データ領域に空きがありません
+データ 10 削除。
+20--->30--->40--->50--->EOF
 ```
 未だにPythonプログラム作成に慣れない。  
 ブロック単位の決め方がインデントって・・・見にくいし、わかりにくし、判別しにくいし、区別付けにくいし、、、困る。  
@@ -2591,8 +2628,7 @@ Pythonに最初から備わっているモジュールに、[**queuemモジュ�
 import queue
 
 
-# 以下、キュー用関数
-def que():
+def que(): # キュー用関数
     print("キュー開始")
     que = queue.Queue()
     for ii in range(MAX):
@@ -2602,8 +2638,7 @@ def que():
     print("\n")
 
 
-# 以下、スタック用関数
-def sta():
+def sta(): # スタック用関数
     print("スタック開始")
     sta = queue.LifoQueue()
     for ii in range(MAX):
@@ -2613,7 +2648,6 @@ def sta():
     print("\n")
 
 
-# 以下、プログラム
 def main():
     print("以下、キュー用関数呼び出し。")
     que()
@@ -2799,11 +2833,13 @@ Python限定にしたくなかったが、他のプログラミング言語に�
   * [衝突を回避する。](#avoidCollisionsChapter6)  
   * [暗号学的ハッシュ関数](#cryptographicHashFunctionChapter6)  
 
+
 <a name="whatIsAHashChapter6"></a>
 #### ハッシュとは。
 調べればすぐに出てくる。  
 そもそもプログラマーがハッシュを知らないというのはあり得ない。  
 [Git](https://git-scm.com/book/ja/v2/使い始める-Gitの基本)でも[履歴閲覧](https://docs.github.com/ja/github/searching-for-information-on-github/searching-on-github/searching-commits)に[コミットハッシュ値](https://git-scm.com/book/ja/v2/Git-の基本-コミット履歴の閲覧)を使う。  
+
 
 <a name="hashFunctionChapter6"></a>
 #### ハッシュ関数
