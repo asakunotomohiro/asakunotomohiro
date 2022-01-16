@@ -34,35 +34,33 @@ ASIN：なし。
 <a id="oreillySedAwkBook9784900900585contents"></a>
 ## [目次](#oreillySedAwkBook9784900900585)
 1. [はじめに](#sedawkOreillyBook900000)  
-   本書の内容
-   プログラムの入手方法
-   ソースコードの入手
-   本書の表記法
-   第2版について
-   第1版の謝辞
-   ご意見、ご質問の宛て先
 1. 章 [編集用パワーツール](#sedawkOreillyBook900001)  
+   sedとawkの特徴や機能を紹介する。  
    1. [面白き課題を解けよ柿の種](#sedawkOreillyBook910001)  
    1. [ストリームエディタ](#sedawkOreillyBook910002)  
    1. [パターンマッチングプログラミング言語](#sedawkOreillyBook910003)  
    1. [sedとawkの4つのハードル](#sedawkOreillyBook910004)  
 1. 章 [基本的な使い方](#sedawkOreillyBook900002)  
+   sedとawkの基本動作を示す。  
    1. [ed発sed & grep経由awk行き](#sedawkOreillyBook920001)  
    1. [コマンドラインの構文](#sedawkOreillyBook920002)  
    1. [sedの使い方](#sedawkOreillyBook920003)  
    1. [awkの使い方](#sedawkOreillyBook920004)  
    1. [sedとawkの組み合わせ](#sedawkOreillyBook920005)  
 1. 章 [正規表現](#sedawkOreillyBook900003)  
+   正規表現との組み合わせをするためにも正規表現を詳しく説明する。  
    1. [正規表現は式だ](#sedawkOreillyBook930001)  
    1. [これが正規表現だ](#sedawkOreillyBook930002)  
    1. [私の好きな正規表現](#sedawkOreillyBook930003)  
 1. 章 [sedスクリプトの書き方](#sedawkOreillyBook900004)  
+   sedの基本事項を説明する。  
    1. [スクリプト中のコマンドの適用](#sedawkOreillyBook940001)  
    1. [アドレッシングに関するグローバルな考察](#sedawkOreillyBook940002)  
    1. [出力のテストと保存](#sedawkOreillyBook940003)  
    1. [4つのタイプのsedスクリプト](#sedawkOreillyBook940004)  
    1. [約束の地へ](#sedawkOreillyBook940005)  
 1. 章 [sedの基本コマンド](#sedawkOreillyBook900005)  
+   sedにより人手での簡単作業を代替する解説をする。  
    1. [sedコマンドの構文](#sedawkOreillyBook950001)  
    1. [コメント](#sedawkOreillyBook950002)  
    1. [置換](#sedawkOreillyBook950003)  
@@ -76,12 +74,14 @@ ASIN：なし。
    1. [ファイルの読み込みと書き出し](#sedawkOreillyBook950011)  
    1. [終了](#sedawkOreillyBook950012)  
 1. 章 [sedの高度なコマンド](#sedawkOreillyBook900006)  
+   人手を超えた作業をプログラミングによる作業代替を解説する。  
    1. [複数行のパターンスペース](#sedawkOreillyBook960001)  
    1. [ケーススタディ](#sedawkOreillyBook960002)  
    1. [行の保管](#sedawkOreillyBook960003)  
    1. [高度なフロー制御コマンド](#sedawkOreillyBook960004)  
    1. [フレーズの結合](#sedawkOreillyBook960005)  
 1. 章 [awkスクリプトの書き方](#sedawkOreillyBook900007)  
+   awkの特色を説明する。  
    1. [ゲームの遊び方](#sedawkOreillyBook970001)  
    1. [Hello World](#sedawkOreillyBook970002)  
    1. [awkのプログラミングモデル](#sedawkOreillyBook970003)  
@@ -94,6 +94,7 @@ ASIN：なし。
    1. [スクリプトへのパラメータの渡し方](#sedawkOreillyBook970010)  
    1. [情報の抽出](#sedawkOreillyBook970011)  
 1. 章 [条件、ループ、配列](#sedawkOreillyBook900008)  
+   一般的な構造化プログラミング解説をする。  
    1. [条件文](#sedawkOreillyBook980001)  
    1. [ループ](#sedawkOreillyBook980002)  
    1. [フロー制御用のその他の文](#sedawkOreillyBook980003)  
@@ -101,29 +102,34 @@ ASIN：なし。
    1. [略語プロセッサ](#sedawkOreillyBook980005)  
    1. [配列になったシステム変数](#sedawkOreillyBook980006)  
 1. 章 [関数](#sedawkOreillyBook900009)  
+   awkの組み込み関数及びユーザ作成関数の解説をする。  
    1. [算術関数](#sedawkOreillyBook990001)  
    1. [文字列関数](#sedawkOreillyBook990002)  
    1. [ユーザ定義関数の記述](#sedawkOreillyBook990003)  
 1. 章 [一番下の引き出し](#sedawkOreillyBook900010)  
-   1. [getline関数](#sedawkOreillyBook900001)  
-   1. [close()関数](#sedawkOreillyBook900002)  
-   1. [system()関数](#sedawkOreillyBook900003)  
-   1. [メニューベースのコマンドジェネレータ](#sedawkOreillyBook900004)  
-   1. [ファイルやパイプへの出力](#sedawkOreillyBook900005)  
-   1. [帳票の生成](#sedawkOreillyBook900006)  
-   1. [デバッグ](#sedawkOreillyBook900007)  
-   1. [制限事項](#sedawkOreillyBook900008)  
-   1. [#!構文によるawkの起動](#sedawkOreillyBook900009)  
+   awkによる他コマンド・ファイル・パイプとの連携やデバッグなどの方法を解説する。  
+   1. [getline関数](#sedawkOreillyBook901001)  
+   1. [close()関数](#sedawkOreillyBook901002)  
+   1. [system()関数](#sedawkOreillyBook901003)  
+   1. [メニューベースのコマンドジェネレータ](#sedawkOreillyBook901004)  
+   1. [ファイルやパイプへの出力](#sedawkOreillyBook901005)  
+   1. [帳票の生成](#sedawkOreillyBook901006)  
+   1. [デバッグ](#sedawkOreillyBook901007)  
+   1. [制限事項](#sedawkOreillyBook901008)  
+   1. [#!構文によるawkの起動](#sedawkOreillyBook901009)  
 1. 章 [いろいろなawk](#sedawkOreillyBook900011)  
+   awkの歴史を踏まえた使い方などを解説する。  
    1. [オリジナルawk](#sedawkOreillyBook911001)  
    1. [無料で入手可能なawk](#sedawkOreillyBook911002)  
    1. [製品版のawk](#sedawkOreillyBook911003)  
    1. [エピローグ](#sedawkOreillyBook911004)  
 1. 章 [実用アプリケーションの開発](#sedawkOreillyBook900012)  
+   複雑なawkプログラムを行う。  
    1. [対話的スペルチェッカ](#sedawkOreillyBook912001)  
    1. [索引の生成](#sedawkOreillyBook912002)  
    1. [masterindexで使った技](#sedawkOreillyBook912003)  
 1. 章 [スクリプト集](#sedawkOreillyBook900013)  
+   sedやawkの技巧をお披露目する。  
    1. [uutot.awk −UUCPの統計の報告](#sedawkOreillyBook913001)  
    1. [phonebill −電話の利用状況の報告](#sedawkOreillyBook913002)  
    1. [combine −分割されたuuencodeバイナリの抽出](#sedawkOreillyBook913003)  
@@ -188,6 +194,8 @@ ASIN：
 
 <a name="sedawkOreillyBook900013"></a>
 ### スクリプト集
+概要：sedやawkの技巧をお披露目する。  
+
 
 <a name="sedawkOreillyBook913001"></a>
 #### uutot.awk −UUCPの統計の報告
@@ -221,6 +229,8 @@ ASIN：
 
 <a name="sedawkOreillyBook900012"></a>
 ### 実用アプリケーションの開発
+概要：複雑なawkプログラムを行う。  
+
 
 <a name="sedawkOreillyBook912001"></a>
 #### 対話的スペルチェッカ
@@ -233,6 +243,9 @@ ASIN：
 
 <a name="sedawkOreillyBook900011"></a>
 ### いろいろなawk
+概要：歴代awkを解説する。  
+5章分解説のうちの5章目。  
+
 
 <a name="sedawkOreillyBook911001"></a>
 #### オリジナルawk
@@ -248,36 +261,42 @@ ASIN：
 
 <a name="sedawkOreillyBook900010"></a>
 ### 一番下の引き出し
+概要：awkによる他コマンド・ファイル・パイプとの連携方法やデバッグ方法などを解説する。  
+5章分解説のうちの4章目。  
 
-<a name="sedawkOreillyBook900001"></a>
+
+<a name="sedawkOreillyBook901001"></a>
 #### getline関数
 
-<a name="sedawkOreillyBook900002"></a>
+<a name="sedawkOreillyBook901002"></a>
 #### close()関数
 
-<a name="sedawkOreillyBook900003"></a>
+<a name="sedawkOreillyBook901003"></a>
 #### system()関数
 
-<a name="sedawkOreillyBook900004"></a>
+<a name="sedawkOreillyBook901004"></a>
 #### メニューベースのコマンドジェネレータ
 
-<a name="sedawkOreillyBook900005"></a>
+<a name="sedawkOreillyBook901005"></a>
 #### ファイルやパイプへの出力
 
-<a name="sedawkOreillyBook900006"></a>
+<a name="sedawkOreillyBook901006"></a>
 #### 帳票の生成
 
-<a name="sedawkOreillyBook900007"></a>
+<a name="sedawkOreillyBook901007"></a>
 #### デバッグ
 
-<a name="sedawkOreillyBook900008"></a>
+<a name="sedawkOreillyBook901008"></a>
 #### 制限事項
 
-<a name="sedawkOreillyBook900009"></a>
+<a name="sedawkOreillyBook901009"></a>
 #### #!構文によるawkの起動
 
 <a name="sedawkOreillyBook900009"></a>
 ### 関数
+概要：awkの組み込み関数及びユーザ作成関数の解説をする。  
+5章分解説のうちの3章目。  
+
 
 <a name="sedawkOreillyBook990001"></a>
 #### 算術関数
@@ -290,6 +309,9 @@ ASIN：
 
 <a name="sedawkOreillyBook900008"></a>
 ### 条件、ループ、配列
+概要：一般的なプログラミング解説をする。  
+5章分解説のうちの2章目。  
+
 
 <a name="sedawkOreillyBook980001"></a>
 #### 条件文
@@ -311,6 +333,9 @@ ASIN：
 
 <a name="sedawkOreillyBook900007"></a>
 ### awkスクリプトの書き方
+概要：awkの特色を説明する(プログラミング言語)。  
+5章分解説のうちの1章目。  
+
 
 <a name="sedawkOreillyBook970001"></a>
 #### ゲームの遊び方
@@ -347,6 +372,9 @@ ASIN：
 
 <a name="sedawkOreillyBook900006"></a>
 ### sedの高度なコマンド
+概要：人手を超えた作業によるプログラミングでの作業解説をする。  
+3章分の3つ目の解説。  
+
 
 <a name="sedawkOreillyBook960001"></a>
 #### 複数行のパターンスペース
@@ -365,6 +393,9 @@ ASIN：
 
 <a name="sedawkOreillyBook900005"></a>
 ### sedの基本コマンド
+概要：人手による簡単作業をsedで実現するための解説をする。  
+3章分の2つ目の解説。  
+
 
 <a name="sedawkOreillyBook950001"></a>
 #### sedコマンドの構文
@@ -404,6 +435,9 @@ ASIN：
 
 <a name="sedawkOreillyBook900004"></a>
 ### sedスクリプトの書き方
+概要：sedを使うための基本事項を説明する。  
+3章に渡ってsedを説明するための駆け出し部分。  
+
 
 <a name="sedawkOreillyBook940001"></a>
 #### スクリプト中のコマンドの適用
@@ -422,6 +456,8 @@ ASIN：
 
 <a name="sedawkOreillyBook900003"></a>
 ### 正規表現
+概要：Unixの正規表現の構文を解説する。  
+
 
 <a name="sedawkOreillyBook930001"></a>
 #### 正規表現は式だ
@@ -434,6 +470,9 @@ ASIN：
 
 <a name="sedawkOreillyBook900002"></a>
 ### 基本的な使い方
+概要：sedとawkの基本動作を示し、sedからawk機能面での進歩を確かめる。  
+また、ユーザからの指示を受け取れるようにもする。  
+
 
 <a name="sedawkOreillyBook920001"></a>
 #### ed発sed & grep経由awk行き
@@ -452,6 +491,7 @@ ASIN：
 
 <a name="sedawkOreillyBook900001"></a>
 ### 編集用パワーツール
+概要：sedとawkの特徴や機能を紹介する。  
 
 <a name="sedawkOreillyBook910001"></a>
 #### 面白き課題を解けよ柿の種
@@ -464,6 +504,19 @@ ASIN：
 
 <a name="sedawkOreillyBook910004"></a>
 #### sedとawkの4つのハードル
+
+
+<a name="sedawkOreillyBook900000"></a>
+### はじめに
+**sed**は、複数のファイルを変更するのに適したツール(**Stream EDitor**に由来する)。  
+**awk言語**は、開発者の頭文字をとった名前であり、このツールを使うことにより、構造的なデータの取扱いや定型レポート作成が簡単にできるようになる。  
+
+これらは、**grep**との組み合わせを行うことで、力強い味方になってくれるそうだ。  
+そのため、事あるごとにgrepの解説もするとのこと。  
+
+版権(?)問題により、最新版の名前が配布先によりまちまちになっている。  
+そのため、最新版を使う場合は、必ず確認が必要になる。  
+名前が違うのか、バージョンで分けているのか、配布会社により対応する必要がある。  
 
 
 ---
