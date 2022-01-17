@@ -11,10 +11,13 @@ say "Perl/TK開発でのハローワールド";
 sub asakunoGUI() {
 	my $mw = MainWindow->new;
 	$mw->title("Hello World.");
-	$mw->Button(
+	# 以下、ウィジェット生成。
+	my $button = $mw->Button(
 				-text => "Done",
 				-command => sub { exit }
-			)->pack;
+			);
+	# 以下、ウィジェット表示(?)。
+	$button->pack;
 	MainLoop;
 }
 &asakunoGUI(@ARGV);
