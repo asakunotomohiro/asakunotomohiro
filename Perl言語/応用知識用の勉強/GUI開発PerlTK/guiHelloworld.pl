@@ -18,7 +18,10 @@ sub asakunoGUI() {
 			);
 	# 以下、ウィジェット表示(?)。
 	$button->pack;
+	#say "hello World.";
+	#print "hello World.";
 	MainLoop;
+	say "終了。";
 }
 &asakunoGUI(@ARGV);
 #	Perl/TK開発でのハローワールド
