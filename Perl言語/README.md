@@ -7048,36 +7048,41 @@ sub timeformatChange {
 8日前のファイル at ファイルテスト演算子.pl line xx.  
 これは、[stat情報](#practicaluseFileteststatfunck)の**最終更新時刻(`$mtime`)**を見ている。  
 
+判定手段として、引数を省略した場合**$_**が使われる。  
+しかし、`my $testret = -s / 1024;`の場合、`-s $_ / 1024`とは解釈されない(この場合は正規表現としてのスラッシュ記号と判断される)。  
+省略した場合に、意図した解釈をされる方法は`(-s) / 1024`とすること(これをすることで、`$_`が使われる)。  
+当然だが、`-s $hoge / 1024`のように、変数名を明示した方が良い。  
+
 |[ファイルテスト](https://perldoc.jp/func/-X)|説明|
 |:------------:|----|
-|[`-r`](#practicaluseFiletestoperatorr)|ファイルorディレクトリが実効**ユーザorグループ**で読み出し可。|
-|[`-w`](#practicaluseFiletestoperatorw)|ファイルorディレクトリが実効**ユーザorグループ**で書き込み可。|
-|[`-x`](#practicaluseFiletestoperatorx)|ファイルorディレクトリが実効**ユーザorグループ**で実行可。|
-|[`-o`](#practicaluseFiletestoperatoro)|ファイルorディレクトリが実効**ユーザ**の所有物。|
+|[`-r`](#practicaluseFiletestoperatorsmallr)|ファイルorディレクトリが実効**ユーザorグループ**で読み出し可。|
+|[`-w`](#practicaluseFiletestoperatorsmallw)|ファイルorディレクトリが実効**ユーザorグループ**で書き込み可。|
+|[`-x`](#practicaluseFiletestoperatorsmallx)|ファイルorディレクトリが実効**ユーザorグループ**で実行可。|
+|[`-o`](#practicaluseFiletestoperatorsmallo)|ファイルorディレクトリが実効**ユーザ**の所有物。|
 |||
-|[`-R`](#practicaluseFiletestoperatorR)|ファイルorディレクトリが**実ユーザor実グループ**で読み出し可。|
-|[`-W`](#practicaluseFiletestoperatorW)|ファイルorディレクトリが**実ユーザor実グループ**で書き込み可。|
-|[`-X`](#practicaluseFiletestoperatorX)|ファイルorディレクトリが**実ユーザor実グループ**で実行可。|
-|[`-O`](#practicaluseFiletestoperatorO)|ファイルorディレクトリが**実ユーザ**の所有物。|
+|[`-R`](#practicaluseFiletestoperatorbigR)|ファイルorディレクトリが**実ユーザor実グループ**で読み出し可。|
+|[`-W`](#practicaluseFiletestoperatorbigW)|ファイルorディレクトリが**実ユーザor実グループ**で書き込み可。|
+|[`-X`](#practicaluseFiletestoperatorbigX)|ファイルorディレクトリが**実ユーザor実グループ**で実行可。|
+|[`-O`](#practicaluseFiletestoperatorbigO)|ファイルorディレクトリが**実ユーザ**の所有物。|
 |||
 |[`-e`](#practicaluseFiletestoperatore)|ファイルorディレクトリが存在する。|
 |[`-z`](#practicaluseFiletestoperatorz)|ファイルの大きさがゼロ(空)(ディレクトリの場合"**偽**")。|
-|[`-s`](#practicaluseFiletestoperators)|ファイルorディレクトリの大きさがゼロ以外(バイト単位での大きさを返す)。|
+|[`-s`](#practicaluseFiletestoperatorsamalls)|ファイルorディレクトリの大きさがゼロ以外(バイト単位での大きさを返す)。|
 |||
 |[`-f`](#practicaluseFiletestoperatorf)|エントリは通常ファイル。|
 |[`-d`](#practicaluseFiletestoperatord)|エントリはディレクトリ。|
 |[`-l`](#practicaluseFiletestoperatorl)|エントリはシンボリックリンク(ファイルシステムが非対応なら偽)。|
 |[`-p`](#practicaluseFiletestoperatorp)|エントリは名前付きパイプ(FIFO)またはファイルハンドルはパイプ。|
-|[`-S`](#practicaluseFiletestoperatorS)|エントリはソケット。|
+|[`-S`](#practicaluseFiletestoperatorbigS)|エントリはソケット。|
 |[`-b`](#practicaluseFiletestoperatorb)|エントリはブロック特殊ファイル(例：マウント可能なディスク)。|
 |[`-c`](#practicaluseFiletestoperatorc)|エントリはキャラクタ特殊ファイル(例：I/Oデバイス)。|
-|[`-t`](#practicaluseFiletestoperatort)|ファイルハンドルは**tty**にオープンされている(どういう意味？)。|
+|[`-t`](#practicaluseFiletestoperatorsmallt)|ファイルハンドルは**tty**にオープンされている(どういう意味？)。|
 |||
 |[`-u`](#practicaluseFiletestoperatoru)|ファイルorディレクトリの**setuid**ビットがセットされている。|
 |[`-g`](#practicaluseFiletestoperatorg)|ファイルorディレクトリの**setgid**ビットがセットされている。|
 |[`-k`](#practicaluseFiletestoperatork)|ファイルorディレクトリの**sticky**ビットがセットされている。|
 |||
-|[`-T`](#practicaluseFiletestoperatorT)|ファイルは**ASCII**または**UTF-8**テキストファイル(発見的に推測します)。|
+|[`-T`](#practicaluseFiletestoperatorbigT)|ファイルは**ASCII**または**UTF-8**テキストファイル(発見的に推測します)。|
 |[`-B`](#practicaluseFiletestoperatorB)|ファイルは「**バイナリ**」ファイルっぽい(**-T**の反対)。|
 |||
 |[`-M`](#practicaluseFiletestoperatorM)|スクリプト実行開始時刻からファイル修正時刻を引いたもの(日単位)(stat関数の`$mtime`)。|
@@ -7089,42 +7094,103 @@ sub timeformatChange {
 しかし、[正誤表](https://www.oreilly.co.jp/books/9784873118246/)にないため、実効が正しいのか・・・。  
 
 
-<a name="practicaluseFiletestoperatorr"></a>
+<a name="practicaluseFiletestoperatorandoperator"></a>
+#### 同じファイルに、複数のファイルテスト演算子を用いる。
+仮想ファイルハンドル`_`を使うことで、ファイルテスト演算子を重ね掛けできる。  
+```perl
+if( -r $filename and -w _ ) {
+    ;
+)
+```
+もし、この手法を使わずに、`if( -r $filename and -w $filename ) {`とした場合、左右に対してstat関数を呼び出すことになる。  
+そのため、処理速度が大幅に低下する。  
+
+また、以下のようにもできる。
+```perl
+if( -r $filename ) {
+    ;
+)
+if( -w _ ) {
+    ;
+)
+```
+しかし、if文の途中で何かしらの処理をした場合、最初のファイルと異なるファイルを**-w**でファイルテストすることになる。  
+
+
+<a name="practicaluseFiletestoperatorstacking"></a>
+#### ファイルテスト演算子の重ね掛けを押し縮める
+上記の[同じファイルに複数のファイルテスト演算子を用いる]場合と同じになるのだが、今回はテスト方法を1つにまとめる。  
+```perl
+if( -w -r $filename ) {
+    ;
+)
+```
+単純な重ね掛けの場合は、`-r 〜 and -w _`だったことにより、[読み出し可能](#practicaluseFiletestoperatorsmallr)かをテスト後に、[書き込み可能](#practicaluseFiletestoperatorsmallw)かテストしている。  
+今回の場合に限らないのだが、Perlはファイル名に最も近いファイルテストから実行する。  
+そのため、同じ意味でテストする場合は、配置場所が逆になる。  
+よほどのことが無ければ、逆になっても問題ないはず・・・きっと。。。  
+
+分野の異なるファイルテストをする場合は注意する必要がある。  
+例えば、[ディレクトリ](#practicaluseFiletestoperatord)かどうかをテスト後に、[ファイルサイズ](#practicaluseFiletestoperatorsamalls)が512バイト未満であることをテストする場合、
+以下の方法では意図しない結果になる。
+```perl
+if( -s -d $filename < 512 ) {
+    ;
+}
+```
+これを展開したのが以下のプログラムになる。
+```perl
+if( (-d $filename and -s _ ) < 512 ) {
+    ;
+}
+```
+ファイルの場合、偽になるのだが、その偽の値が512より小さいかを判定していることになる。  
+当然、偽は0として扱われるため、512より小さいと判断され、結果は真として処理が進むことになる。  
+そのため、このような場合は、以下のように判定を分ける必要が出てくる。
+```perl
+if( -d $filename and -s _ < 512 ) {
+    ;
+}
+```
+これで正しく意図した処理が行われる。  
+
+
+<a name="practicaluseFiletestoperatorsmallr"></a>
 #### ファイルテスト演算子(`-r`)
 ファイルorディレクトリが実効ユーザもしくは、実効グループで読み出し可能。  
 
 
-<a name="practicaluseFiletestoperatorw"></a>
+<a name="practicaluseFiletestoperatorsmallw"></a>
 #### ファイルテスト演算子(`-w`)
 ファイルorディレクトリが実効**ユーザorグループ**で書き込み可。  
 
 
-<a name="practicaluseFiletestoperatorx"></a>
+<a name="practicaluseFiletestoperatorsmallx"></a>
 #### ファイルテスト演算子(`-x`)
 ファイルorディレクトリが実効**ユーザorグループ**で実行可。  
 
 
-<a name="practicaluseFiletestoperatoro"></a>
+<a name="practicaluseFiletestoperatorsmallo"></a>
 #### ファイルテスト演算子(`-o`)
 ファイルorディレクトリが実効**ユーザ**の所有物。  
 
 
-<a name="practicaluseFiletestoperatorR"></a>
+<a name="practicaluseFiletestoperatorbigR"></a>
 #### ファイルテスト演算子(`-R`)
 ファイルorディレクトリが**実ユーザor実グループ**で読み出し可。  
 
 
-<a name="practicaluseFiletestoperatorW"></a>
+<a name="practicaluseFiletestoperatorbigW"></a>
 #### ファイルテスト演算子(`-W`)
 ファイルorディレクトリが**実ユーザor実グループ**で書き込み可。  
 
 
-<a name="practicaluseFiletestoperatorX"></a>
+<a name="practicaluseFiletestoperatorbigX"></a>
 #### ファイルテスト演算子(`-X`)
 ファイルorディレクトリが**実ユーザor実グループ**で実行可。  
 
 
-<a name="practicaluseFiletestoperatorO"></a>
+<a name="practicaluseFiletestoperatorbigO"></a>
 #### ファイルテスト演算子(`-O`)
 ファイルorディレクトリが**実ユーザ**の所有物。  
 
@@ -7139,7 +7205,7 @@ sub timeformatChange {
 ファイルの大きさがゼロ(空)(ディレクトリの場合"**偽**")。  
 
 
-<a name="practicaluseFiletestoperators"></a>
+<a name="practicaluseFiletestoperatorsamalls"></a>
 #### ファイルテスト演算子(`-s`)
 ファイルorディレクトリの大きさがゼロ以外(バイト単位での大きさを返す)。  
 
@@ -7164,7 +7230,7 @@ sub timeformatChange {
 エントリは名前付きパイプ(FIFO)またはファイルハンドルはパイプ。  
 
 
-<a name="practicaluseFiletestoperatorS"></a>
+<a name="practicaluseFiletestoperatorbigS"></a>
 #### ファイルテスト演算子(`-S`)
 エントリはソケット。  
 
@@ -7179,9 +7245,10 @@ sub timeformatChange {
 エントリはキャラクタ特殊ファイル(例：I/Oデバイス)。  
 
 
-<a name="practicaluseFiletestoperatort"></a>
+<a name="practicaluseFiletestoperatorsmallt"></a>
 #### ファイルテスト演算子(`-t`)
 ファイルハンドルは**tty**にオープンされている(どういう意味？)。  
+補足：(`-t STDIN`が真の場合)ユーザ入力待ちの状態とのこと(ファイルやパイプからの入力では無いと言うこと)。  
 
 
 <a name="practicaluseFiletestoperatoru"></a>
@@ -7199,29 +7266,43 @@ sub timeformatChange {
 ファイルorディレクトリの**sticky**ビットがセットされている。  
 
 
-<a name="practicaluseFiletestoperatorT"></a>
+<a name="practicaluseFiletestoperatorbigT"></a>
 #### ファイルテスト演算子(`-T`)
 ファイルは**ASCII**または**UTF-8**テキストファイル(発見的に推測します)。  
+補足：バイナリ判定ではない場合テキストファイルと判定する。  
+補足：ファイルの存在がない場合、もしくは読めない場合、偽になる。  
+補足：ファイルが空の場合、真になる。  
 
 
 <a name="practicaluseFiletestoperatorB"></a>
 #### ファイルテスト演算子(`-B`)
 ファイルは「**バイナリ**」ファイルっぽい(**-T**の反対)。  
+補足：ファイル内容の先頭数千バイト分からNullバイト・珍しいコントロール文字・上位ビットの乱立などから判断する。  
+補足：ファイルの存在がない場合、もしくは読めない場合、偽になる。  
+補足：ファイルが空の場合、真になる。  
 
 
 <a name="practicaluseFiletestoperatorM"></a>
 #### ファイルテスト演算子(`-M`)
 スクリプト実行開始時刻からファイル修正時刻を引いたもの(日単位)(stat関数の`$mtime`)。  
+補足：ファイルが最後に変更されてからの日数。  
+戻り値：浮動小数点数(2日と1秒は、**2.00001**値になる)。  
+戻り値：プラスの場合は過去日だが、マイナスの場合は未来日になる。  
 
 
 <a name="practicaluseFiletestoperatorA"></a>
 #### ファイルテスト演算子(`-A`)
-同様にアクセスがあってからの日数。  
+最後にアクセスされてからの日数。  
+戻り値：浮動小数点数(2日と1秒は、**2.00001**値になる)。  
+戻り値：プラスの場合は過去日だが、マイナスの場合は未来日になる。  
 
 
 <a name="practicaluseFiletestoperatorC"></a>
 #### ファイルテスト演算子(`-C`)
-同様に(Unixでは)**inode**が変更されてからの日数(それ以外のプラットフォームでは違うかもしれません)。  
+Unixでは**iノード**が変更されてからの日数(それ以外のOSでは違うかもしれない)。  
+補足：iノードには、ファイル内容以外のファイルに関する全ての情報が格納されている。  
+戻り値：浮動小数点数(2日と1秒は、**2.00001**値になる)。  
+戻り値：プラスの場合は過去日だが、マイナスの場合は未来日になる。  
 
 
 <a name="practicaluseFileteststatfunck"></a>
