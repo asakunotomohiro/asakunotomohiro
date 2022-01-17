@@ -8635,7 +8635,7 @@ CPANでの[Perl/Qt](https://metacpan.org/release/AWIN/PerlQt-1.05)と言うの�
 * 目次  
   * [Perl/Tkの概要](#practicaluseTksummary)  
   * [HelloWorld](#practicaluseTkHelloWorld)  
-  * ジオメトリ管理  
+  * [ジオメトリ管理](#practicaluseTkgeometrymanagement)  
     かなり重要な存在。  
   * 基本的なボタン  
   * チェックボタン  
@@ -8891,6 +8891,24 @@ sub gui() {
   しかし、改行を含めない場合の出力は、GUI画面を終了するまでバッファにためられる。  
   そのため、実行都度出したい場合は、`\n`を**print**末尾に付けておくこと。  
   ※個人的に、どこの話をしているのか分からないが・・・。  
+
+<a name="practicaluseTkgeometrymanagement"></a>
+### ジオメトリ管理
+画面にウィジェットを表示する場合、そのウィジェットをジオメトリマネージャに渡す必要がある。  
+そのジオメトリマネージャがウィンドウ上でのウィジェットの位置・大きさ・を制御する。  
+`Tk::pack`
+`Tk::place`
+`Tk::grid`
+`Tk::Adjuster`
+`Tk::form`
+`Tk::Table`
+`Tk::Tiler`
+`Tk::Wm`
+上位3種類は、ウィジェットに対するメソッドとして呼び出される(他のジオメトリマネージャは全く分からない)。  
+そして、1ウィンドウに1ジオメトリマネージャとしてウィンドウを構築するのが望ましい。  
+しかし、入れ子にすることは問題ないようだ。  
+例えば、packで構築したウィジェットにフレームを配置し、そのフレーム内にplaceを使うなど。  
+
 
 </details>
 
