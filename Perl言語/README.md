@@ -7307,6 +7307,53 @@ Unixでは**iノード**が変更されてからの日数(それ以外のOSで�
 
 <a name="practicaluseFileteststatfunck"></a>
 ### stat関数
+上記[ファイルテスト演算子](#practicaluseFiletestoperator)では取得できない(テストで得られない)情報がある。  
+そのテストで得られない情報を今回のstat関数で取得する。  
+
+```perl
+use v5.24;
+
+sub statfunc() {
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks)
+		= stat($0);	# 自身のファイルのstat情報。;
+
+	say "ファイルのデバイス番号：$dev";
+	say "iノード番号：$ino";
+	say "ファイルの権限ビットとそれ以外の数ビットを合わせたもの(ls -lで取得されるもの)：$mode";
+	say "ファイルまたはディレクトリに対するハードリンクの個数：$nlink";
+	say "ファイルの所有者を表すユーザID：$uid";
+	say "ファイルの所有者を表すグループID：$gid";
+	say "：$rdev";
+	say "ファイルの容量をバイト単位で表す(ファイルテスト-sと同じ)：$size";
+	say "最終アクセス時刻：$atime";
+	say "最終更新時刻：$mtime";
+	say "最後のinode変更時刻：$ctime";
+	say "：$blksize";
+	say "：$blocks";
+
+}
+&statfunc();
+```
+
+以下、出力結果。
+```terminal
+ファイルのデバイス番号：16777220
+iノード番号：67541375
+ファイルの権限ビットとそれ以外の数ビットを合わせたもの(ls -lで取得されるもの)：33261
+ファイルまたはディレクトリに対するハードリンクの個数：1
+ファイルの所有者を表すユーザID：501
+ファイルの所有者を表すグループID：20
+：0
+ファイルの容量をバイト単位で表す(ファイルテスト-sと同じ)：914
+最終アクセス時刻：1642473484
+最終更新時刻：1642473483
+最後のinode変更時刻：1642473483
+：4096
+：8
+```
 
 
 <a name="practicaluseFiletestlstatfunck"></a>
