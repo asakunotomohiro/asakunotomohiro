@@ -7438,6 +7438,7 @@ say %{*$hoge}{3};	# 3hoge
 <details><summary>応用知識-CPAN</summary>
 
 [CPAN](https://www.cpan.org)から欲しいモジュールを探す。  
+[meta-CPAN](https://metacpan.org)というのもある。  
 また、サンプルスクリプトなどもあるようだ。  
 
 
@@ -7512,7 +7513,8 @@ Terminal does not support GetHistory.
 Lockfile removed.
 $
 ```
-簡単に終わったが、インストールしたことをどのように検証すればいいのだろう。  
+~~簡単に終わったが、インストールしたことをどのように検証すればいいのだろう。~~  
+インストール失敗。  
 これを`use`する？  
 手作業でのインストールは大変とのこと。  
 
@@ -8914,6 +8916,36 @@ sub gui() {
 #### ジオメトリ管理-pack
 ジグソーパズルのように、決められた枠に決められた一切れを当てはめていく。  
 そのように、きれいに納める必要があるのがpackジオメトリマネージャである。  
+
+
+<details><summary>各モジュールについて。</summary>
+
+ラベルウィジェットを使うつもりだったが、エラーになる。
+```terminal
+$ perl -e 'use Tk::Label'
+Can't locate object method "Construct" via package "Tk::Widget" at perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/Tk/Frame.pm line 13.
+Compilation failed in require at perlbrew/perls/perl-5.34.0/lib/5.34.0/base.pm line 137.
+	...propagated at perlbrew/perls/perl-5.34.0/lib/5.34.0/base.pm line 159.
+BEGIN failed--compilation aborted at perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/Tk/Toplevel.pm line 10.
+Compilation failed in require at perlbrew/perls/perl-5.34.0/lib/5.34.0/base.pm line 137.
+	...propagated at perlbrew/perls/perl-5.34.0/lib/5.34.0/base.pm line 159.
+BEGIN failed--compilation aborted at perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/Tk/MainWindow.pm line 5.
+Compilation failed in require at perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/Tk.pm line 192.
+Compilation failed in require at perlbrew/perls/perl-5.34.0/lib/5.34.0/base.pm line 137.
+	...propagated at perlbrew/perls/perl-5.34.0/lib/5.34.0/base.pm line 159.
+BEGIN failed--compilation aborted at perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/Tk/Widget.pm line 12.
+Compilation failed in require at perlbrew/perls/perl-5.34.0/lib/5.34.0/base.pm line 137.
+	...propagated at perlbrew/perls/perl-5.34.0/lib/5.34.0/base.pm line 159.
+BEGIN failed--compilation aborted at perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/Tk/Label.pm line 12.
+Compilation failed in require at -e line 1.
+BEGIN failed--compilation aborted at -e line 1.
+$
+```
+[CPANサイト](https://metacpan.org/dist/Tk/view/pod/Label.pod)を確認するが、取得できるzipファイルは、大本のTkのみ。  
+そこに全て収まっていると言うことなのだろうが、私の環境では呼び出せず、エラーになる。  
+なぜ？  
+
+</details>
 
 * 注意事項  
   * ウィジェットの重ね置きはできない。  
