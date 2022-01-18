@@ -2,8 +2,9 @@ package perlStudyguiTk;
 $VERSION = "0.002";
 use v5.24;
 use Tk;
+#Assuming 'require Tk::Lable;' at guiPackジオメトリマネージャ.pl line 17.
 require Tk::Lable;
-#	Can't locate Tk/Lable.pm in @INC (you may need to install the Tk::Lable module) (@INC contains: 5.34.0 darwin-2level ) at guiPackジオメトリマネージャ.pl line 5.
+#	Can't locate Tk/Lable.pm in @INC (you may need to install the Tk::Lable module) (@INC contains: 5.34.0 darwin-2level ) at guiPackジオメトリマネージャ.pl line 6.
 
 my $asakuno = "朝来野智博";
 my @asakuno = qw( 朝来野 智博 朝来野智博 );
