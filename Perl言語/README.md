@@ -7308,8 +7308,14 @@ Unixでは**iノード**が変更されてからの日数(それ以外のOSで�
 <a name="practicaluseFileteststatfunck"></a>
 ### stat関数
 上記[ファイルテスト演算子](#practicaluseFiletestoperator)では取得できない(テストで得られない)情報がある。  
-そのテストで得られない情報を今回のstat関数で取得する。  
+そのテストで得られない情報を今回の[stat関数](https://perldoc.perl.org/functions/stat)で取得する。  
+Perlの公式ページでは、[日本語版](https://perldoc.jp)がないようだ。  
+[Linux-stat](https://linuxjm.osdn.jp/html/GNU_coreutils/man1/stat.1.html)・
+[oracle-stat](https://docs.oracle.com/cd/E19109-01/tsolaris7/805-8078/6j7jiictj/index.html)・
+[hitachi-stat](http://itdoc.hitachi.co.jp/manuals/3021/3021313330/JPAS0351.HTM)。  
 
+
+以下、プログラム。
 ```perl
 use v5.24;
 
@@ -7326,13 +7332,13 @@ sub statfunc() {
 	say "ファイルまたはディレクトリに対するハードリンクの個数：$nlink";
 	say "ファイルの所有者を表すユーザID：$uid";
 	say "ファイルの所有者を表すグループID：$gid";
-	say "：$rdev";
+	say "デバイス識別子(特殊ファイルのみ)：$rdev";
 	say "ファイルの容量をバイト単位で表す(ファイルテスト-sと同じ)：$size";
 	say "最終アクセス時刻：$atime";
 	say "最終更新時刻：$mtime";
 	say "最後のinode変更時刻：$ctime";
-	say "：$blksize";
-	say "：$blocks";
+	say "ファイルシステムI/Oでのブロックサイズ：$blksize";
+	say "割り当てられたブロック数：$blocks";
 
 }
 &statfunc();
@@ -7346,13 +7352,13 @@ iノード番号：67541375
 ファイルまたはディレクトリに対するハードリンクの個数：1
 ファイルの所有者を表すユーザID：501
 ファイルの所有者を表すグループID：20
-：0
+デバイス識別子(特殊ファイルのみ)：0
 ファイルの容量をバイト単位で表す(ファイルテスト-sと同じ)：914
 最終アクセス時刻：1642473484
 最終更新時刻：1642473483
 最後のinode変更時刻：1642473483
-：4096
-：8
+ファイルシステムI/Oでのブロックサイズ：4096
+割り当てられたブロック数：8
 ```
 
 
