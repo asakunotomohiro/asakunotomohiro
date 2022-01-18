@@ -8944,6 +8944,8 @@ $
 [CPANサイト](https://metacpan.org/dist/Tk/view/pod/Label.pod)を確認するが、取得できるzipファイルは、大本のTkのみ。  
 そこに全て収まっていると言うことなのだろうが、私の環境では呼び出せず、エラーになる。  
 なぜ？  
+頭のおかしさが露呈した。  
+ラベルのスペルミスだった。  
 
 </details>
 
@@ -8952,6 +8954,40 @@ $
   * ウィジェットのパック順は意味がある。  
     フレームウィジェットやトップレベルウィジェットは、各々のウィジェット一覧を保持しており、優先順位を付けている(それがパック順である)。  
     配置を気にしない場合は、引数なしの`pack()`を使う。  
+
+以下、サンプルプログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub gui() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	$mw->Label( -text => "Label" )->pack;
+	$mw->Checkbutton(
+				-text => "check 1",
+			)->pack;
+	$mw->Checkbutton(
+				-text => "check 2",
+			)->pack;
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack;
+	MainLoop;
+	say "終了。";
+}
+&gui();
+```
+表示結果はGUIなので、貼り付けることが出来ない。  
+そのため、以下、目視した姿を書き写す。
+```text
+Label	←☆ラベル。
+check 1	←☆チェックボタン1つ目。
+check 2	←☆チェックボタン2つ目。
+exit	←☆ボタン。
+```
 
 </details>
 

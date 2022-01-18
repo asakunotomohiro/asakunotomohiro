@@ -3,8 +3,10 @@ $VERSION = "0.002";
 use v5.24;
 use Tk;
 #Assuming 'require Tk::Lable;' at guiPackジオメトリマネージャ.pl line 17.
-require Tk::Lable;
+#require Tk::Lable;
 #	Can't locate Tk/Lable.pm in @INC (you may need to install the Tk::Lable module) (@INC contains: 5.34.0 darwin-2level ) at guiPackジオメトリマネージャ.pl line 6.
+#use Tk::Lable;
+#	BEGIN failed--compilation aborted at guiPackジオメトリマネージャ.pl line 8.
 
 my $asakuno = "朝来野智博";
 my @asakuno = qw( 朝来野 智博 朝来野智博 );
@@ -15,16 +17,17 @@ sub asakunoGUI() {
 	my $mw = MainWindow->new;
 	$mw->title("packジオメトリマネージャ");
 	# 以下、ウィジェット生成。
-	$mw->Lable( -text => "見栄えのテスト表示" )->pack;
+#	$mw->Lable( -text => "見栄えのテスト表示" )->pack;	←☆コメントアウトしたら動いたが？
+	$mw->Label( -text => "Label" )->pack;
 
 	$mw->Checkbutton(
-				-text => "チェック1",
+				-text => "check 1",
 			)->pack;
 	$mw->Checkbutton(
-				-text => "チェック2",
+				-text => "check 2",
 			)->pack;
 	$mw->Button(
-				-text => "終了",
+				-text => "exit",
 				-command => sub { exit }
 			)->pack;
 	MainLoop;
