@@ -8988,6 +8988,59 @@ check 1	←☆チェックボタン1つ目。
 check 2	←☆チェックボタン2つ目。
 exit	←☆ボタン。
 ```
+packの引数に何も指定せずに動かした結果。  
+
+以下、packの引数に配置場所を指定したプログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub guipack() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Label(
+				-text => "Label"
+			)->pack(
+					-side => 'bottom',
+					-expand => 1,
+					-fill => 'x'
+				);				# ラベル。
+	$mw->Checkbutton(
+				-text => "check 1",
+			)->pack(
+					-side => 'left',
+					-expand => 1,
+				);				# チェックボタン1つ目。
+	$mw->Checkbutton(
+				-text => "check 2",
+			)->pack(
+					-side => 'left',
+					-expand => 1,
+				);					# チェックボタン2つ目。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-side => 'top',
+					-expand => 1,
+					-fill => 'x'
+				);					# 終了ボタン。
+	MainLoop;
+	say "終了。";	# 出力されない(exit終了のため)。
+}
+&guipack(@ARGV);
+```
+
+以下、その表示姿
+```text
+check1 check2 exit
+     Label
+```
+意図していない結果になった。  
+exitボタンが一番上に来ると思ったのに・・・そもそも引数への値の意味を理解していないのが原因だが・・・。  
+
 
 </details>
 
