@@ -9128,6 +9128,14 @@ Label check1 check2 exit
 exit check2 check z Label
 ```
 
+以下、sideオプションに'bottom'を指定した表示姿。
+```text
+exit
+check2
+check1
+Label
+```
+
 
 <a name="practicaluseTkgeometrymanagementpackoptionfill"></a>
 ###### Packオプション-ウィジェットの大きさ決め。

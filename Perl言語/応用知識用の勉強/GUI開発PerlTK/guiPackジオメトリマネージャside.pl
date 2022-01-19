@@ -118,7 +118,44 @@ sub asakunoGUIargpackSideRight() {
 	MainLoop;
 	say "終了。";	# 出力されない(exit終了のためだが、×印で終了した場合出力される)。
 }
-&asakunoGUIargpackSideRight(@ARGV);
+#&asakunoGUIargpackSideRight(@ARGV);
+
+sub asakunoGUIargpackSideBottom() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Label(
+				-text => "Label"
+			)->pack(
+					-side => 'bottom',
+					-expand => 1,
+					-fill => 'x'
+				);				# ラベル。
+	$mw->Checkbutton(
+				-text => "check1",
+			)->pack(
+					-side => 'bottom',
+					-expand => 1,
+				);				# チェックボタン1つ目。
+	$mw->Checkbutton(
+				-text => "check2",
+			)->pack(
+					-side => 'bottom',
+					-expand => 1,
+				);					# チェックボタン2つ目。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-side => 'bottom',
+					-expand => 1,
+					-fill => 'x'
+				);					# 終了ボタン。
+	MainLoop;
+	say "終了。";	# 出力されない(exit終了のためだが、×印で終了した場合出力される)。
+}
+&asakunoGUIargpackSideBottom(@ARGV);
 
 say "以上。"
 # vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=perl noexpandtab:
