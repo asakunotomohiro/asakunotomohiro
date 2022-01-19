@@ -9164,6 +9164,52 @@ exit
 また、デフォルトの大きさは、割り当て領域よりも小さいことが多い。  
 今回のオプション利用により、辺に沿わせることができる(要は、広げること)。  
 
+以下、fillオプションを指定したプログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub guipackFill() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Label(
+				-text => "Label"
+			)->pack(
+					-side => 'bottom',
+					-fill => 'none',
+				);				# ラベル。
+	$mw->Checkbutton(
+				-text => "check1",
+			)->pack(
+					-side => 'left',
+					-fill => 'none',
+				);				# チェックボタン1つ目。
+	$mw->Checkbutton(
+				-text => "check2",
+			)->pack(
+					-side => 'top',
+					-fill => 'none',
+				);					# チェックボタン2つ目。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-side => 'right',
+					-fill => 'none',
+				);					# 終了ボタン。
+	MainLoop;
+}
+&guipackFill();
+```
+
+以下、その表示姿。
+```text
+      check2
+check1      exit
+      Label
+```
 
 <a name="practicaluseTkgeometrymanagementpackoptionexpand"></a>
 ###### Packオプション-ウィジェット間の余白決め。
