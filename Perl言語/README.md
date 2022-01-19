@@ -9271,6 +9271,13 @@ second   exit
      first
 ```
 
+以下、fillオプションに'x'を指定した表示姿。
+```text
+        third
+second   exit
+     first
+```
+
 
 <a name="practicaluseTkgeometrymanagementpackoptionexpand"></a>
 ###### Packオプション-ウィジェット間の余白決め。
