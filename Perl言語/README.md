@@ -9298,6 +9298,8 @@ xと異なる表示になる。
 実際に確かめた方が良い。  
 しかし、y値と変わりないように思う。  
 
+基本的に、fillオプションを用いる場所は、スクロールバーを付けるときに用いるようだ。  
+
 
 <a name="practicaluseTkgeometrymanagementpackoptionexpand"></a>
 ###### Packオプション-ウィジェット間の余白決め。
