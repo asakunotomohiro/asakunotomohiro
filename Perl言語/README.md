@@ -9083,13 +9083,13 @@ sub guipackSide() {
 					-fill => 'x'
 				);				# ラベル。
 	$mw->Checkbutton(
-				-text => "check 1",
+				-text => "check1",
 			)->pack(
 					-side => 'top',
 					-expand => 1,
 				);				# チェックボタン1つ目。
 	$mw->Checkbutton(
-				-text => "check 2",
+				-text => "check2",
 			)->pack(
 					-side => 'top',
 					-expand => 1,
@@ -9110,13 +9110,18 @@ sub guipackSide() {
 以下、その表示姿。
 ```text
 Label
-check 1
-check 2
+check1
+check2
 exit
 ```
 パック順に、上に積み上げていく。  
 日本語的に可笑しいのだが、風船を順番に飛ばしていく姿を想像して欲しい。  
 
+今後、プログラムを省略するが、'left'を指定する。  
+以下、その表示姿。
+```text
+Label check1 check2 exit
+```
 
 
 <a name="practicaluseTkgeometrymanagementpackoptionfill"></a>

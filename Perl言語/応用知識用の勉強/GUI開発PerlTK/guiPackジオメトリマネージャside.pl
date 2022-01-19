@@ -9,7 +9,7 @@ my @asakuno = qw( 朝来野 智博 朝来野智博 );
 
 say "Perl/TK開発でのPackジオメトリマネージャ";
 
-sub asakunoGUIargpack() {
+sub asakunoGUIargpackSideTop() {
 	my $mw = MainWindow->new;
 	$mw->title("packジオメトリマネージャ");
 
@@ -22,13 +22,13 @@ sub asakunoGUIargpack() {
 					-fill => 'x'
 				);				# ラベル。
 	$mw->Checkbutton(
-				-text => "check 1",
+				-text => "check1",
 			)->pack(
 					-side => 'top',
 					-expand => 1,
 				);				# チェックボタン1つ目。
 	$mw->Checkbutton(
-				-text => "check 2",
+				-text => "check2",
 			)->pack(
 					-side => 'top',
 					-expand => 1,
@@ -44,7 +44,44 @@ sub asakunoGUIargpack() {
 	MainLoop;
 	say "終了。";	# 出力されない(exit終了のためだが、×印で終了した場合出力される)。
 }
-&asakunoGUIargpack(@ARGV);
+#&asakunoGUIargpackSideTop(@ARGV);
+
+sub asakunoGUIargpackSideLeft() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Label(
+				-text => "Label"
+			)->pack(
+					-side => 'left',
+					-expand => 1,
+					-fill => 'x'
+				);				# ラベル。
+	$mw->Checkbutton(
+				-text => "check1",
+			)->pack(
+					-side => 'left',
+					-expand => 1,
+				);				# チェックボタン1つ目。
+	$mw->Checkbutton(
+				-text => "check2",
+			)->pack(
+					-side => 'left',
+					-expand => 1,
+				);					# チェックボタン2つ目。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-side => 'left',
+					-expand => 1,
+					-fill => 'x'
+				);					# 終了ボタン。
+	MainLoop;
+	say "終了。";	# 出力されない(exit終了のためだが、×印で終了した場合出力される)。
+}
+&asakunoGUIargpackSideLeft(@ARGV);
 
 say "以上。"
 # vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=perl noexpandtab:
