@@ -9164,6 +9164,8 @@ exit
 また、デフォルトの大きさは、割り当て領域よりも小さいことが多い。  
 今回のオプション利用により、辺に沿わせることができる(要は、広げること)。  
 
+<details><summary>プログラム例失敗</summary>
+
 以下、fillオプションを指定したプログラム。
 ```perl
 use v5.24;
@@ -9216,6 +9218,57 @@ check1      exit
       check2
 check1      exit
       Label
+```
+
+</details>
+
+以下、fillオプションを指定したプログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub guipackFillnone() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "first"
+			)->pack(
+					-side => 'bottom',
+					-fill => 'none',
+				);				# ラベル。
+	$mw->Button(
+				-text => "second",
+			)->pack(
+					-side => 'left',
+					-fill => 'none',
+				);				# チェックボタン1つ目。
+	$mw->Button(
+				-text => "third",
+			)->pack(
+					-side => 'top',
+					-fill => 'none',
+				);					# チェックボタン2つ目。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-side => 'right',
+					-fill => 'none',
+				);					# 終了ボタン。
+	MainLoop;
+}
+&guipackFillnone(@ARGV);
+```
+基本的に、これらの実行結果は、実際に目で見た方が良い。  
+テキストで表現できない。  
+
+以下、その表示姿。
+```text
+        third
+second   exit
+     first
 ```
 
 
