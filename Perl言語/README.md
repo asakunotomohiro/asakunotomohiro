@@ -9055,6 +9055,8 @@ exitボタンが一番上に来ると思ったのに・・・そもそも引数�
 * オプションの種類。  
   * [`-side`](#practicaluseTkgeometrymanagementpackoptionside)  
     ウィジェットの位置決め。  
+  * [`-fill`](#practicaluseTkgeometrymanagementpackoptionfill)  
+    指定方向にウィジェットを広げる。  
 
 
 <a name="practicaluseTkgeometrymanagementpackoptionside"></a>
@@ -9153,6 +9155,96 @@ exit
 <a name="practicaluseTkgeometrymanagementpackoptionfill"></a>
 ###### Packオプション-ウィジェットの大きさ決め。
 割り当て領域内の指定した方向に向かってウィジェットを広げる(大きさを決める)。  
+```perl
+-fill =>
+        'none'|	←☆デフォルト値。
+        'x'|	←☆x方向に広げる。
+        'y'|	←☆y方向に広げる。
+        'both'	←☆x方向とy方向に広げる。
+```
+通常のウィジェットは、デフォルトの大きさが割り当てられる。  
+また、デフォルトの大きさは、割り当て領域よりも小さいことが多い。  
+今回のオプション利用により、辺に沿わせることができる(要は、広げること)。  
+※実際に画面見栄を確認しなければ、どのような状態か判断できないだろう。  
+また、ちょっとした小さいプログラムでの確認でも判断できないと思う。  
+
+以下、fillオプションを指定したプログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub guipackFillnone() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "first",
+			)->pack(
+					-side => 'bottom',
+					-fill => 'none',
+				);				# ラベル。
+	$mw->Button(
+				-text => "second",
+			)->pack(
+					-side => 'left',
+					-fill => 'none',
+				);				# チェックボタン1つ目。
+	$mw->Button(
+				-text => "third",
+			)->pack(
+					-side => 'top',
+					-fill => 'none',
+				);					# チェックボタン2つ目。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-side => 'right',
+					-fill => 'none',
+				);					# 終了ボタン。
+	MainLoop;
+}
+&guipackFillnone();
+```
+基本的に、これらの実行結果は、実際に目で見た方が良い。  
+テキストで表現できない。  
+
+以下、その表示姿。
+```text
+        third
+second   exit
+     first
+```
+
+以下、fillオプションに'x'を指定した表示姿。
+```text
+        third
+second   exit
+     first
+```
+none値と変わらないように見える。  
+
+以下、fillオプションに'y'を指定した表示姿。
+```text
+        third
+second   exit
+     first
+```
+xと異なる表示になる。  
+実際に確かめた方が良い。  
+
+以下、fillオプションに'both'を指定した表示姿。
+```text
+        third
+second   exit
+     first
+```
+xと異なる表示になる。  
+実際に確かめた方が良い。  
+しかし、y値と変わりないように思う。  
+
+基本的に、fillオプションを用いる場所は、スクロールバーを付けるときに用いるようだ。  
 
 
 <a name="practicaluseTkgeometrymanagementpackoptionexpand"></a>
