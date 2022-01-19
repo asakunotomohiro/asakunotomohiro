@@ -153,7 +153,45 @@ sub asakunoButtonGUIargpackFillx() {
 	MainLoop;
 	say "終了。";	# 出力されない(exit終了のためだが、×印で終了した場合出力される)。
 }
-&asakunoButtonGUIargpackFillx(@ARGV);
+#&asakunoButtonGUIargpackFillx(@ARGV);
+
+sub asakunoButtonGUIargpackFilly() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "first",
+				-command => sub { exit }
+			)->pack(
+					-side => 'bottom',
+					-fill => 'y',
+				);				# ラベル。
+	$mw->Button(
+				-text => "second",
+				-command => sub { exit }
+			)->pack(
+					-side => 'left',
+					-fill => 'y',
+				);				# チェックボタン1つ目。
+	$mw->Button(
+				-text => "third",
+				-command => sub { exit }
+			)->pack(
+					-side => 'top',
+					-fill => 'y',
+				);					# チェックボタン2つ目。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-side => 'right',
+					-fill => 'y',
+				);					# 終了ボタン。
+	MainLoop;
+	say "終了。";	# 出力されない(exit終了のためだが、×印で終了した場合出力される)。
+}
+&asakunoButtonGUIargpackFilly(@ARGV);
 
 
 say "以上。"
