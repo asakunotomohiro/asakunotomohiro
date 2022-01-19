@@ -57,7 +57,7 @@
   * [x] Chapter 1 プログラミングの基礎知識  
     現時点で完了している(上記の基礎知識5種類として)。  
   * [x] [Chapter 2 プログラミングの力を養う](#algorithmTextbookLearnedinPythonChapter2)  
-  * [ ] [Chapter 3 データ構造を学ぶ](#algorithmTextbookLearnedinPythonChapter3)  
+  * [x] [Chapter 3 データ構造を学ぶ](#algorithmTextbookLearnedinPythonChapter3)  
   * [ ] [Chapter 4 サーチ](#algorithmTextbookLearnedinPythonChapter4)  
   * [ ] [Chapter 5 ソート](#algorithmTextbookLearnedinPythonChapter5)  
   * [ ] [Chapter 6 ハッシュ](#algorithmTextbookLearnedinPythonChapter6)  
@@ -197,7 +197,7 @@ print('Hello',
   * 単数行コメント方法：`#`  
   * 複数行コメント方法：`'''〜'''`・`"""〜"""`  
 　　※シングルクォートもしくはダブルクォートをそれぞれ3個ずつで囲むことにより、擬似的な複数行コメントが実現できる。  
-```python:sample.py
+```python
 '''
 1行目のコメント
 コメント2行目。
@@ -241,9 +241,8 @@ $ pyenv version
 3.9.7 (set by /Users/asakunotomohiro/.python-version)
 $
 ```
-本来やりたかったことは、VimエディタでPython3開発をすることだった。  
-しかし、Python2で動いてしまうため、どうしてもシンタックスエラーになる。  
-それを解消できず、Pythonの勉強が進まずに数時間経過した。  
+VimエディタでPython3開発をすることだったが、Python2で動いてしまうため、どうしてもシンタックスエラーになる。  
+解消できないままChapter3を終えた。  
 
 </details>
 
@@ -290,7 +289,7 @@ pyenvとpip3は別物？
 
 <a name="algorithmHelloWorld"></a>
 ### ハローワールドプログラム
-ワンライナー。
+1行のみで実現できる。
 ```python
 print("Hello, World!")
 ```
@@ -303,8 +302,10 @@ print("Hello, World!")
 要は、深く踏み込むか、流し読み程度に抑えるかどうかはそのときに決める。  
 
 何より、書籍記載のアルゴリズムは、サンプルとして公式ページからダウンロードできる。  
-そのため、書籍通りに進めるわけには行かず、自分なりに理解できるやり方で勉強した場合、当然ながら時間が掛かり、必要以上に時間をかけてしまうだろう。  
+そのため、書籍通りに進めるわけには行かず、自分なりに理解できるやり方で勉強することにより、当然ながら時間が掛かり、必要以上に時間をかけてしまうだろう。  
 それでも読了達成も遂げたいため、なかなか両立は難しい・・・と思い込んでいるが、実際は流し読み程度に抑え、サクサク勧めていこうと思う。
+結局どっちだよ・・・。  
+結論、1冊読み終えることを大目標とする。  
 
 
 <a name="variable変数"></a>
@@ -402,6 +403,7 @@ print("Hello, World!")
 様式：
 `変数名 = '文字列'`  
 
+
 <a name="subVariable3"></a>
 #### 変数値の出力方法
 
@@ -410,13 +412,13 @@ name1 = 'hoge'
 
 print("hogeの文字数：", len(name1))   # hogeの文字数： 4
 
-# raw文字列
+    # 以下、raw文字列
 print(r'C:\"Windows"\hoge\boo')    # 出力結果：C:\"Windows"\hoge\boo
 
-# フォーマット文字列
+    # 以下、フォーマット文字列
 print(f'Hello {name1} yeaaaaa')    # 出力結果：Hello hoge yeaaaaa
 
-# raw文字列及びフォーマット文字列
+    # 以下、raw文字列及びフォーマット文字列
 print(fr'Hello \{name1}\ "yeaaaaa"')    # 出力結果：Hello \hoge\ "yeaaaaa"
 ```
 
@@ -431,6 +433,7 @@ JavaやC#などの静的型付けではなく、動的型付け言語のため�
 |string||データを扱う文字列型(Pythonでは`str`)|
 |bool||論理型(True・False)|
 
+
 <details><summary>データ型の細かい話</summary>
 
 ##### データ型ー浮動小数点型
@@ -441,7 +444,7 @@ JavaやC#などの静的型付けではなく、動的型付け言語のため�
 シングルクォートもしくはダブルクォートで文字列を括る。  
 
 エスケープシーケンス
-```python:Sample.py
+```python
 print(```hoge
 boo```)
 ```
@@ -476,11 +479,10 @@ boo```)
 ##### 変数の破棄
 他のプログラミング言語では存在しない概念のひとつかな。  
 
-```python:Sample.py
-# 変数の破棄
+```python
 name1 = 'hoge'
 print(name1)    # 出力結果：hoge
-del name1
+del name1       # 変数の破棄
 print(name1)    # NameError: name 'name1' is not defined
 ```
 
@@ -500,6 +502,7 @@ print(name1)    # NameError: name 'name1' is not defined
 |`//`|除算の商||
 |`%`|剰余演算||
 
+
 <a name="subVariable6"></a>
 #### 型変換(キャスト)方法
 様式(文字列⇒数字)：
@@ -509,12 +512,12 @@ print(name1)    # NameError: name 'name1' is not defined
 `[変数名] = (str)[数字]`  
 
 ```Python
-# キャスト(文字列⇒数字)
+    # 以下、キャスト(文字列⇒数字)
 hoge = "20210826"
 boo = int(hoge)
 print(boo + boo)  # 出力結果：40421652
 
-# キャスト(数字⇒文字列)
+    # 以下、キャスト(数字⇒文字列)
 boo = 20210826
 hoge = str(boo)
 print(hoge + hoge)  # 出力結果：2021082620210826
@@ -529,7 +532,7 @@ print(hoge + hoge)  # 出力結果：2021082620210826
 * [x] 定数  
   存在しない。  
   暗黙の了解により、変数を全て大文字で宣言している場合、それを定数と仮定する。  
-```python:Sample.py
+```python
 TAX = 1.1
 print(100 * TAX)    # 出力結果：110.00000000000001
 TAX = 10
@@ -586,6 +589,7 @@ print(100 + TAX)    # 出力結果：110
 <a name="arrangement配列"></a>
 <details><summary>実際の配列の勉強</summary>
 
+
 ### 配列
 変数を連ならせる格納方法。  
 今回のPythonではリストを配列と呼ぶ。  
@@ -608,13 +612,13 @@ print(100 + TAX)    # 出力結果：110
 ※今回のアルゴリズムの勉強(書籍)では、後から追加しないやり方をとるため、事前に確保してから勉強が始まる。  
 
 以下、配列の生成
-```python:配列(list).py
+```python
 hoge = list('boo')
 print(hoge)	# ['b', 'o', 'o']
 ```
 
 以下、ジャグ配列(2次元配列)
-```python:配列(list).py
+```python
 hoge = [
     ['b', 'a', 'r'],
     ['h', 'o'],
@@ -623,7 +627,7 @@ print(hoge)	# [['b', 'a', 'r'], ['h', 'o']]
 print(hoge[1][1])	# o
 ```
 
-```python:配列(list)多次元配列.py
+```python
 hoge = [
     ['b', 'a', 'r',
         ['b', 'o', ]
@@ -641,68 +645,72 @@ print(len(hoge))	# 7
 ```
 
 配列から各要素を取り出す。
-```python:配列(list)for.py
+```python
 hoge = list('hoge')
 
 for boo in hoge:
     print(boo)
-# 出力結果：h
-#           o
-#           g
-#           e
+```
+
+以下、出力結果。
+```terminal
+h
+o
+g
+e
 ```
 
 <details><summary>そこまで重要ではないはずなので、隠す</summary>
 
 以下、配列の要素へ追加・要素から削除
-```python:配列(list)追加・削除.py
-# 基本的なリスト
+```python
+    # 以下、基本的なリスト
 hoge = ['hoge', ]
 print(hoge)	# ['hoge']
 
-# 以下、末尾に追加。
+    # 以下、末尾に追加。
 hoge.append('bar')
 print(hoge)	# ['hoge', 'bar']
 
-# 以下、途中に追加。
+    # 以下、途中に追加。
 hoge.insert(1, '-')
 print(hoge)	# ['hoge', '-', 'bar']
 
-# 以下、削除。
+    # 以下、削除。
 hoge.pop(1)
 print(hoge)	# ['hoge', 'bar']
 
-# 以下、削除。
+    # 以下、削除。
 hoge.pop()
 print(hoge)	# ['hoge']
 ```
 
-以下、配列の要素へ追加・要素から削除
-```python:配列(list)複数要素追加・置換・削除.py
-# 要素の挿入
+以下、配列の要素へ追加。
+```python
+    # 以下、要素の挿入
 hoge = list('Pythonest')  # 「T」がない。PythonTest(Pythonテスト)にしたい
 hoge[6:6] = ['T']
 print(hoge)	# ['P', 'y', 't', 'h', 'o', 'n', 'T', 'e', 's', 't']
 ```
 
 以下、要素内指定で削除。
-```python:配列(list)要素削除.py
+```python
 hoge = ['hoge', 'bar', ]
 print(hoge)	# ['hoge', 'bar']
 
-# 以下、要素を削除。
+    # 以下、要素を削除。
 hoge.remove('hoge')
 print(hoge)	# ['bar']
 ```
 
 以下、要素内指定で削除。
-```python:配列(list)複数要素追加・置換・削除.py
-# 要素の削除
+```python
+    # 以下、要素の削除
 hoge = list('hogebarboo')
 hoge[2:9] = []
 print(hoge)	# ['h', 'o', 'o']
 
-# 要素の削除
+    # 以下、要素の削除
 hoge = list('hogebar')
 hoge[2:3] = list('hoge')
 del hoge[2:9]
@@ -710,7 +718,7 @@ print(hoge)	# ['h', 'o', 'r']
 ```
 
 以下、要素を全て削除。
-```python:配列(list)要素削除.py
+```python
 hoge = list('hoge')
 print(hoge)	# ['h', 'o', 'g', 'e']
 
@@ -719,41 +727,41 @@ print(hoge)	# []
 ```
 
 以下、配列内から1文字を検索。
-```python:配列(list)検索.py
+```python
 hoge = list('hogehoge')
 
-# 6文字目(index_5)以降で「e」の検索
+    # 以下、6文字目(index_5)以降で「e」の検索
 print(hoge.index('e', 5))	# 7
 ```
 
 以下、配列内にある文字を数える。
-```python:配列(list)重複確認.py
+```python
 hoge = list('hogehoge')
 
-# 「h」の出現回数
+    # 以下、「h」の出現回数
 print(hoge.count('h'))	# 2
 ```
 
 以下、配列内にあるかどうかを確認する。
-```python:配列(list)存在確認.py
+```python
 hoge = list('hogehoge')
 
-# 「a」の検索
+    # 以下、「a」の検索
 print('a' in hoge)	# False
 ```
 
 以下、浅いコピーを行う(コピー先を変更した場合、コピー元にも影響する)。
-```python:配列(list)複製.py
+```python
 hoge = list('hoge')
 
-# 上記配列を複製する(シャローコピー)。
+    # 以下、上記配列を複製する(シャローコピー)。
 boo = hoge.copy()
 print(boo)	# ['h', 'o', 'g', 'e']
 ```
 深いコピー(ディープコピー)をする場合は、`import copy`でモジュールを使い、`deepcopy`メソッドでコピーをする。  
 
 以下、配列の連結及び、指定回数連結。
-```python:配列(list)連結.py
+```python
 hoge = list('hoge')
 boo = list('bar')
 
@@ -766,47 +774,50 @@ print(hogeboo)	# ['b', 'a', 'r', 'b', 'a', 'r', 'b', 'a', 'r']
 これは、配列を新しく作り直すことに注意すること。
 
 以下、配列内を並び替え。
-```python:配列(list)並び替え.py
+```python
 hoge = list('hoge')
 
-# 逆順に並べ替える。
+    # 以下、逆順に並べ替える。
 hoge.reverse()
 print(hoge)	# ['e', 'g', 'o', 'h']
 
-# 逆順に並べ替える？
+    # 以下、逆順に並べ替える？
 hoge = list('hoge')
 hoge.sort(reverse=True)
 print(hoge)	# ['o', 'h', 'g', 'e']
 
-# ソート
+    # 以下、ソート
 hoge = list('hoge')
 hoge.sort()
 print(hoge)	# ['e', 'g', 'h', 'o']
 ```
 
 以下、forループにて、配列の要素を番号付きで取り出す。
-```python:配列(list)要素を番号付きで取り出す.py
+```python
 hoge = list('hoge')
 
 for boo, hogeboo in enumerate(hoge):
     print(boo, '：', hogeboo)
-# 出力結果：0 ： h
-#           1 ： o
-#           2 ： g
-#           3 ： e
 ```
 
-```python:配列(list)要素のbool値判断.py
-# 以下、リスト内の全ての要素がTrueであるか。
+以下、出力結果。
+```terminal
+0 ： h
+1 ： o
+2 ： g
+3 ： e
+```
+
+```python
+    # 以下、リスト内の全ての要素がTrueであるか。
 print(all([True, True, False]))	# False
 
 hoge = list('hoge')
-print(all(hoge))	# True
-#	何の役にも立たない判定方法。
+print(all(hoge))	# True(何の役にも立たない判定方法)。
 ```
 
 以下、rangeによる配列作成。
-```python:配列(list)range.py
+```python
 hoge = list(range(0, 7, 2))
 print(hoge)	# [0, 2, 4, 6]
 ```
@@ -814,12 +825,12 @@ print(hoge)	# [0, 2, 4, 6]
 
 </details>
 
+
 <a name="subArrangement2"></a>
 #### 配列への追加方法
 様式：
 `配列名 = ['値1', '値2', ・・・ ]`  
 `配列名 = list('文字列')`  
-
 
 
 <a name="subArrangement3"></a>
@@ -875,6 +886,7 @@ print(hoge[1])  # ['hoge2', 'bar2', 'boo2']
 <a name="Conditional条件分岐"></a>
 <details><summary>実際の条件分岐の勉強</summary>
 
+
 ### 条件分岐
 
 * 絶対的に勉強する一覧  
@@ -892,6 +904,7 @@ print(hoge[1])  # ['hoge2', 'bar2', 'boo2']
     * [x] より小さい(`<`)  
     * [x] 以上(`>=`)  
     * [x] 以下(`<=`)  
+
 
 <a name="subConditional1"></a>
 #### 条件分岐
@@ -919,8 +932,8 @@ elif hoge > 0:
 else:
     print(hoge, "!= 0")
 
-# 出力結果：-1 != 0
 ```
+上記の出力結果：-1 != 0
 
 * 複数の条件式を1つにまとめる。
 様式：
@@ -933,6 +946,7 @@ if [条件式]:
 `or`：どちらの条件がTrueの場合にif文の処理が走る。  
 これを **[ド・モルガンの法則](https://ja.wikipedia.org/wiki/ド・モルガンの法則)** として、使うべし。  
 
+
 <a name="subConditional2"></a>
 #### 論理演算子(ド・モルガンの法則)
 
@@ -940,6 +954,7 @@ if [条件式]:
 |------|----|----|
 |`&&`・`AND`|論理積|左右の式がTrueの場合に、Trueになり、それ以外はFalse。|
 |`||`・`OR`|論理和|左右のどちらかの式がTrueの場合に、Trueになり、Trueがない場合False。|
+
 
 <a name="subConditional3"></a>
 #### 比較演算子
@@ -952,6 +967,7 @@ if [条件式]:
 |`<`|より小さい|aはbより小さいかを比較する。|
 |`>=`|以上|aはb以上かを比較する。|
 |`<=`|以下|aはb以下かを比較する。|
+
 
 <a name="subConditional999"></a>
 #### 条件分岐での説明しない項目。
@@ -983,6 +999,7 @@ if [条件式]:
 
 <a name="repetition繰り返し"></a>
 <details><summary>実際の繰り返しの勉強</summary>
+
 
 ### 繰り返し
 
@@ -1023,18 +1040,21 @@ for [繰り返し用変数] in range(繰り返す回数)
 ```Python
 for ii in range(10):
     print(ii)
+```
 
-# 出力結果。
-#       0
-#       1
-#       2
-#       3
-#       4
-#       5
-#       6
-#       7
-#       8
-#       9
+
+以下、出力結果。
+```terminal
+0
+1
+2
+3
+4
+5
+6
+7
+8
+9
 ```
 
 
@@ -1047,11 +1067,14 @@ for [繰り返し用変数] in range(初期値, 終値)
 ```Python
 for ii in range(1, 5):
     print(ii)
-# 出力結果。
-#       1
-#       2
-#       3
-#       4
+```
+
+以下、出力結果。
+```terminal
+1
+2
+3
+4
 ```
 
 様式：
@@ -1059,17 +1082,20 @@ for [繰り返し用変数] in range(初期値, 終値, 増減分)
 ```Python
 for ii in range(20, 10, -1):
     print(ii)
-# 出力結果。
-#       20
-#       19
-#       18
-#       17
-#       16
-#       15
-#       14
-#       13
-#       12
-#       11
+```
+
+以下、出力結果。
+```terminal
+20
+19
+18
+17
+16
+15
+14
+13
+12
+11
 ```
 
 
@@ -1114,6 +1140,7 @@ for ii in range(4):
 ```
 `ii`が`2`の場合、次の処理を行わず、`for`に戻る。  
 
+
 <a name="subRepetition6"></a>
 #### 真偽条件での繰り返し：while( 条件式 )
 様式：
@@ -1154,6 +1181,7 @@ while True:
 
 </details>
 
+
 <a name="function関数"></a>
 <details><summary>実際の関数の勉強</summary>
 
@@ -1169,6 +1197,7 @@ while True:
     * [スコープ](#subFunction2)  
       [x] グローバルスコープ変数  
       [x] ローカルスコープ変数  
+
 
 <a name="subFunction1"></a>
 #### 関数
@@ -1239,6 +1268,7 @@ Hello World(引数あり-戻り値あり).
 ちなみに、呼び出し側の関数の引数は、実引数という。
 実際の関数で定義している引数のことを仮引数という。  
 
+
 <a name="subFunction2"></a>
 #### スコープ
 * グローバル変数  
@@ -1246,6 +1276,7 @@ Hello World(引数あり-戻り値あり).
 * ローカル変数  
   関数内部で宣言した変数。  
   そして、グローバル変数を関数内部で利用する場合、`global`宣言を付けた変数宣言が必須になる(関数内で)。  
+
 
 <a name="subFunction999"></a>
 #### 関数での説明しない項目。
@@ -1280,9 +1311,10 @@ Hello World(引数あり-戻り値あり).
 
 </details>
 
+
 <a name="algorithmTextbookLearnedinPython"></a>
 #### ☆アルゴリズムの勉強チャプタ概要☆
-<a name="algorithmTextbookLearnedinPythonChapter2"></a>
+  <a name="algorithmTextbookLearnedinPythonChapter2"></a>
 * [Chapter2 プログラミングの力を養う](#developProgrammingSkillsOverviewChapter2)  
   基礎的なプログラミングの力を養っていく。  
   例えば、配列利用の関数定義・繰り返し・再帰関数・条件分岐など。  
@@ -1294,90 +1326,89 @@ Hello World(引数あり-戻り値あり).
   [x] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
   [x] [エラトステネスの篩](#eratosthenesSieveChapter2)  
   [x] [n進法を理解する。](#understandnAryNotationChapter2)  
-<a name="algorithmTextbookLearnedinPythonChapter3"></a>
+  <a name="algorithmTextbookLearnedinPythonChapter3"></a>
 * [Chapter3 データ構造を学ぶ](#learnDataStructuresOverviewChapter3)  
   今までに勉強した配列(リスト)を用いた発展を遂げる。  
   ※今回利用するリストはアルゴリズム(概念)用語であり、Pythonで用いているリスト(配列)という用語とは別物。  
-  ※例外処理(`try〜except〜finally`)をの説明をしている(いずれ基礎知識として勉強に組み込む必要がある？)。  
+  ※例外処理(`try〜except〜finally`)の説明をしている(いずれ基礎知識として勉強に組み込む必要がある？)。  
   以下、各項目(目次)。  
-  [ ] [スタック](#stackChapter3)  
-  [ ] [キュー](#queueChapter3)  
-  [ ] [リスト](#listChapter3)  
-  [ ] [木](#woodChapter3)  
-  [ ] [グラフ](#graphChapter3)  
-  [ ] [データを保存する。](#saveTheDataChapter3)  
-<a name="algorithmTextbookLearnedinPythonChapter4"></a>
+  [x] [スタック](#stackChapter3)  
+  [x] [キュー](#queueChapter3)  
+  todoあり。  
+  [x] [リスト](#listChapter3)  
+  [x] [木](#woodChapter3)  
+  [x] [グラフ](#graphChapter3)  
+  少しだけ例外対応プログラムを含んでいる。  
+  [x] [スタックとキューを扱う](#stacksAndQueuesChapter3)  
+  [x] [データを保存する](#saveTheDataChapter3)  
+  <a name="algorithmTextbookLearnedinPythonChapter4"></a>
 * [Chapter4 サーチ](#searchOverviewChapter4)  
   複数データから目的地を探し出すこと。  
   ※有名な探索アルゴリズムのみに限定している。  
   以下、各項目(目次)。  
-  [ ] [線形探索](#linearSearchChapter4)  
-  [ ] [二分探索](#binarySearchChapter4)  
-  [ ] [木探索](#treeExplorationChapter4)  
-  [ ] [計算量について知る](#knowAboutComputationalComplexityChapter4)  
-  [ ] [ランダウの記号](#landauSignChapter4)  
-  [ ] [数当てゲーム](#numberGuessingGameChapter4)  
-  [ ] [ビット演算を学ぶ](#learnBitwiseOperationsChapter4)  
-<a name="algorithmTextbookLearnedinPythonChapter5"></a>
+  [線形探索](#linearSearchChapter4)  
+  [二分探索](#binarySearchChapter4)  
+  [木探索](#treeExplorationChapter4)  
+  [計算量について知る](#knowAboutComputationalComplexityChapter4)  
+  [ランダウの記号](#landauSignChapter4)  
+  [数当てゲーム](#numberGuessingGameChapter4)  
+  [ビット演算を学ぶ](#learnBitwiseOperationsChapter4)  
+  <a name="algorithmTextbookLearnedinPythonChapter5"></a>
 * [Chapter5 ソート](#sortOverviewChapter5)  
   一定の規則に従い並び替えること。  
   ※有名な並べ替えアルゴリズムのみに限定している。  
   以下、各項目(目次)。  
-  [ ] [選択ソート](#selectionSortChapter5)  
-  [ ] [バブルソート](#bubbleSortChapter5)  
-  [ ] [挿入ソート](#insertionSortChapter5)  
-  [ ] [クイックソート](#quickSortChapter5)  
-  [ ] [マージソート](#mergeSortChapter5)  
-  [ ] [ヒープソート](#heapsortChapter5)  
-  [ ] [クイックソートの再起の過程を出力する。](#outputTheProcessOfQuicksortRecurrenceChapter5)  
-  [ ] [再帰関数を用いたマージソート。](#mergeSortUsingARecursiveFunctionChapter5)  
-  [ ] [プログラミング言語用のソート・ヒープ・キュー関数の使い方。](#howToUsePythonSortInstructionsAndHeapqModuleChapter5)  
-  [ ] [ソートの計算量と計算時間。](#sortCalculationComplexityAndCalculationTimeChapter5)  
-<a name="algorithmTextbookLearnedinPythonChapter6"></a>
+  [選択ソート](#selectionSortChapter5)  
+  [バブルソート](#bubbleSortChapter5)  
+  [挿入ソート](#insertionSortChapter5)  
+  [クイックソート](#quickSortChapter5)  
+  [マージソート](#mergeSortChapter5)  
+  [ヒープソート](#heapsortChapter5)  
+  [クイックソートの再起の過程を出力する。](#outputTheProcessOfQuicksortRecurrenceChapter5)  
+  [再帰関数を用いたマージソート。](#mergeSortUsingARecursiveFunctionChapter5)  
+  [プログラミング言語用のソート・ヒープ・キュー関数の使い方。](#howToUsePythonSortInstructionsAndHeapqModuleChapter5)  
+  [ソートの計算量と計算時間。](#sortCalculationComplexityAndCalculationTimeChapter5)  
+  <a name="algorithmTextbookLearnedinPythonChapter6"></a>
 * [Chapter6 ハッシュ](#hashOverviewChapter6)  
   ハッシュとは、データから算出した小さな値のこと。  
   今回は、そのハッシュとしての値を算出する方法を勉強する。  
   以下、各項目(目次)。  
-  [ ] [ハッシュとは。](#whatIsAHashChapter6)  
-  [ ] [ハッシュ関数](#hashFunctionChapter6)  
-  [ ] [ハッシュテーブル](#hashTableChapter6)  
-  [ ] [衝突を回避する。](#avoidCollisionsChapter6)  
-  [ ] [暗号学的ハッシュ関数](#cryptographicHashFunctionChapter6)  
-<a name="algorithmTextbookLearnedinPythonChapter7"></a>
+  [ハッシュとは。](#whatIsAHashChapter6)  
+  [ハッシュ関数](#hashFunctionChapter6)  
+  [ハッシュテーブル](#hashTableChapter6)  
+  [衝突を回避する。](#avoidCollisionsChapter6)  
+  [暗号学的ハッシュ関数](#cryptographicHashFunctionChapter6)  
+  <a name="algorithmTextbookLearnedinPythonChapter7"></a>
 * [Chapter7 さまざまなアルゴリズムを学ぶ](#learnVariousAlgorithmsOverviewChapter7)  
   アルゴリズムを勉強する上で必ず関わるアルゴリズムになる。  
   むしろ、ここまで勉強できてアルゴリズムを勉強したと言えるのではないだろうか。  
   以下、各項目(目次)。  
-  [ ] [ユークリッドの互除法](#euclideanAlgorithmChapter7)  
-  [ ] [文字列探索](#stringSearchChapter7)  
-  [ ] [アルゴリズムを理解するヒント(処理の過程の出力)。](#tipsForUnderstandingTheAlgorithmChapter7)  
-<a name="algorithmTextbookLearnedinPythonChapter8"></a>
+  [ユークリッドの互除法](#euclideanAlgorithmChapter7)  
+  [文字列探索](#stringSearchChapter7)  
+  [アルゴリズムを理解するヒント(処理の過程の出力)。](#tipsForUnderstandingTheAlgorithmChapter7)  
+  <a name="algorithmTextbookLearnedinPythonChapter8"></a>
 * [Chapter8 アルゴリズムを見える化する](#visualizeTheAlgorithmOverviewChapter8)  
   今回のアルゴリズムを勉強することで、アルゴリズム(もしくはデータ)を可視化する方法を勉強できる。  
   以下、各項目(目次)。  
-  [ ] [n次関数の曲線を描く。](#drawACurveOfTheNthOrderFunctionChapter8)  
-  [ ] [フラクタル図形を描く。](#drawAFractalFigureChapter8)  
-  [ ] [迷路を解く過程を描く。](#drawTheProcessOfSolvingTheMazeChapter8)  
-  [ ] [アルゴリズムを使い分ける。](#useDifferentAlgorithmsChapter8)  
-  [ ] [マンデルブロー集合を描こう。](#letsDrawTheMandelbrotSetChapter8)  
+  [n次関数の曲線を描く。](#drawACurveOfTheNthOrderFunctionChapter8)  
+  [フラクタル図形を描く。](#drawAFractalFigureChapter8)  
+  [迷路を解く過程を描く。](#drawTheProcessOfSolvingTheMazeChapter8)  
+  [アルゴリズムを使い分ける。](#useDifferentAlgorithmsChapter8)  
+  [マンデルブロー集合を描こう。](#letsDrawTheMandelbrotSetChapter8)  
 
 <a name="developProgrammingSkillsOverviewChapter2"></a>
 ### プログラミングの力を養う
 基礎的なプログラミングの力を養っていく。  
 
-* 各項目。  
-  * [平均値を求める。](#findTheAverageValueChapter2)  
-  * [1からnまで足し合わせる。](#addFrom1tonChapter2)  
-  * [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
-  * [素数を求める。](#findAPrimeNumberChapter2)  
-  * [nの階乗を求める。](#findTheFactorialOfNChapter2)  
-  * [エラトステネスの篩](#eratosthenesSieveChapter2)  
-  * [n進法を理解する。](#understandnAryNotationChapter2)  
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)
+
 
 <a name="findTheAverageValueChapter2"></a>
 #### 平均値を求める。
 今回は、以下のルールがある。  
 要は、平均値を求める方法は他にもあると言うことなのだろう。  
+
+<details><summary>展開</summary>
 
 * ルール。  
   * 点数を配列で定義する。  
@@ -1386,25 +1417,31 @@ Hello World(引数あり-戻り値あり).
 
 
 ```Python
-# 数字を配列で用意する。
+    # 以下、数字を配列で用意する。
 hoge = [70, 98, 92, 88, 64]
-# 合計値用の変数。
+    # 以下、合計値用の変数。
 egoh = 0
 
-# 配列格納の数字を1つづつ取り出すのにforを用いている。
+    # 以下、配列格納の数字を1つづつ取り出すのにforを用いている。
 for boo in hoge:
     egoh = egoh + boo
 
-# 合計値を配列数で割る。
+    # 以下、合計値を配列数で割る。
 bar = egoh / len(hoge)
 print("合計値：", egoh)	# 合計値： 412
 print("平均値：", bar)	# 平均値： 82.4
 ```
 
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)
+
 
 <a name="addFrom1tonChapter2"></a>
 #### 1からnまで足し合わせる。
 今回は、以下のルールがある。  
+
+<details><summary>展開</summary>
 
 * 作業ルール。  
   * 「カール・フリードリヒ・ガウス」に[倣え](https://ja.wikipedia.org/wiki/カール・フリードリヒ・ガウス)。  
@@ -1430,10 +1467,16 @@ print(gauss_start_end(10, 10))   # 0
 print(gauss_start_end(100, 5050))   # 12748825　あっているか不明。
 ```
 
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)
+
 
 <a name="outputTheMultiplicationTableChapter2"></a>
 #### 九九の式を出力する。
 書籍とは違い、九九表を出力する。  
+
+<details><summary>展開</summary>
 
 * 作業ルール。  
   * 二重ループを使う。  
@@ -1467,11 +1510,17 @@ kuku()
 これだよね。  
 式を出すより、表を出した方がなじみ深いと思うのだが・・・。  
 
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)
+
 
 <a name="findAPrimeNumberChapter2"></a>
 #### 素数を求める。
 素数とは、1とその数以外に約数を持たない2以上の自然数のこと。  
 例えば、**2**・**3**・**5**・**7**・**11**・**13**・**17**・・・など・・・。  
+
+<details><summary>展開</summary>
 
 素数の求めかた。  
 例えば、n値を調べる場合、**2**・**3**・・・**n-2**・**n-1**と言う数で割る。  
@@ -1502,7 +1551,7 @@ kuku()
     ※それらの数で割り切れなければ素数。  
 
 ```python
-# 2から100までの素数を出力する。
+    # 以下、2から100までの素数を出力する。
 def prime1(word):
     for ii in range(2, 101):
         hh = ii//2
@@ -1529,6 +1578,10 @@ prime1("素数を求める関数1呼び出し")
 この`==`の部分を`is`に変更し、`if ff is True:`にしたらエラーが解消された。  
 ※今後のプログラム全てに当てはまる。  
 
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)
+
 
 <a name="findTheFactorialOfNChapter2"></a>
 #### nの階乗を求める。
@@ -1542,6 +1595,8 @@ prime1("素数を求める関数1呼び出し")
 **再帰関数**
 上記の階乗では掛け算処理部分は使い回せるため、掛け算関数を1度定義してしまえば、それを再度読み込むことで似た関数を作る必要なく、手軽に階乗を作り出すことができる。  
 しかし、そもそも再帰関数を使いこなすのは難しい。  
+
+<details><summary>展開</summary>
 
 
 * ルール  
@@ -1573,15 +1628,18 @@ print("20の階乗：", fac)
 20の階乗： 2432902008176640000
 ```
 
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)
+
 
 <a name="eratosthenesSieveChapter2"></a>
 #### エラトステネスの篩
-[ウィキペディア](https://ja.wikipedia.org/wiki/エラトステネスの篩)でシグマ記号を用いた解説をしている。  
-そんなに複雑なのか・・・。  
-
+効率よく素数を求めることができるアルゴリズムのこと。  
 素数とは、1と自身の数以外に約数を持たない2以上の自然数のこと。  
 例えば、**2**・**3**・**5**・**7**・**11**・**13**・**17**・・・など・・・。  
 
+<details><summary>Pythonプログラム</summary>
 
 * アルゴリズムの概要。  
   1. 0から99の整数を並べる。  
@@ -1597,8 +1655,6 @@ print("20の階乗：", fac)
 
 注意：本の説明が間違っている。  
 3・5・7は素数なのでふるい落とし、その倍数もふるい落とすとある・・・何でだよ(図への説明)。  
-
-<details><summary>Pythonプログラム</summary>
 
 ```python
 def main():
@@ -1709,13 +1765,20 @@ main()
 
 </details>
 
+[ウィキペディア](https://ja.wikipedia.org/wiki/エラトステネスの篩)でシグマ記号を用いた解説をしている。  
+そんなに複雑なのか・・・(今回に関係ないからどうでも良いけど)。  
+
 他には、アトキンの篩と言うのもあるそうだ。  
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)
 
 
 <a name="understandnAryNotationChapter2"></a>
 #### n進法を理解する。
 n進法とは？
 > n進法の基本的な考え方は、n種類の記号を使って数を表し、値がn、n*n、n*n*n・・・に達するごとに繰り上がる  
+
+<details><summary>展開</summary>
 
 2進法
 **2\*2**・**2\*2\*2**・**2\*2\*2\*2**・・・・  
@@ -1754,50 +1817,996 @@ n進法とは？
 |E|14|
 |F|15|
 
-    print("2進数リテラル")
-    print(0b11111111, 0b0, 0b10101010, -0b1, 0b1, 0b1001101000110010011101110, )
+```python
+print("2進数リテラル")
+print(0b11111111, 0b0, 0b10101010, -0b1, 0b1, 0b1001101000110010011101110, )
     # 出力結果：(255, 0, 170, -1, 1, 20210926)
-    
-    print("8進数リテラル")
-    print(0o377, 0o0, 0o252, -0o1, 0o1, 0o115062356, )
+
+print("8進数リテラル")
+print(0o377, 0o0, 0o252, -0o1, 0o1, 0o115062356, )
     # 出力結果：(255, 0, 170, -1, 1, 20210926)
-    
-    print("10進数リテラル")
-    print(255, 0, 170, -1, 1, 20210926, )
+
+print("10進数リテラル")
+print(255, 0, 170, -1, 1, 20210926, )
     # 出力結果：(255, 0, 170, -1, 1, 20210926)
-    
-    print("16進数リテラル")
-    print(0xff, 0x00, 0xAA, -0x1, 0x1, 0x13464EE, )
+
+print("16進数リテラル")
+print(0xff, 0x00, 0xAA, -0x1, 0x1, 0x13464EE, )
     # 出力結果：(255, 0, 170, -1, 1, 20210926)
+```
+
+</details>
+
 
 <a name="learnDataStructuresOverviewChapter3"></a>
 ### データ構造を学ぶ
 
-* 各項目。  
-  * [スタック](#stackChapter3)  
-  * [キュー](#queueChapter3)  
-  * [リスト](#listChapter3)  
-  * [木](#woodChapter3)  
-  * [グラフ](#graphChapter3)  
-  * [データを保存する。](#saveTheDataChapter3)  
+基本的には、配列を用いて、データ構造を構築する。  
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter3)
+
 
 <a name="stackChapter3"></a>
 #### スタック
+要は、後入れ先出しのこと。  
+入れることを"Push"と言い、取り出すことを"Pop"と言う。  
+入れていくことを積み上げていくことになぞらえ、スタックと名付けられたそうだ。  
+
+取り出すことで、積み上げた状態からなくなる。  
+そして、積み上げた状態を維持したまま値を読み取る技法もあるが、それはスタックとは別の技術になる。  
+積み上げる状態のため、その間を取り出すことも出来ず、書き換えることも出来ないのだが、指定箇所の値を書き換える技法もスタックとは別の技術になる。  
+通常は、最初に入れた値を取り出すのは、他に入れた値を全て取り出した状態に限り可能になる。  
+
+<details><summary>展開</summary>
+
+以下、プログラム。
+```python
+MAX = 5 # 積み上げる最大数を5つに制限している。
+
+
+def push(stack, sp, data):
+    if sp < MAX:
+        stack[sp] = data
+        sp += 1
+        print("データ", data, "を追加しました。")
+    else:
+        print("これ以上データを入れられません。")
+    return sp
+
+
+def pop(stack, sp):
+    if sp > 0:
+        sp -= 1
+        return stack[sp], sp
+    else:
+        print("取り出すデータが存在しません。")
+        return None, None
+
+
+def main():
+    stack = [0] * MAX
+    sp = 0  # スタックポインタ(出し入れ位置管理変数)
+    for ii in range(6):
+        sp = push(stack, sp, ii)
+    for ii in range(6):
+        data, sp = pop(stack, sp)
+        print("取り出したデータ：", data)
+
+
+main()
+```
+
+以下、出力結果。
+```terminal
+データ 0 を追加しました。
+データ 1 を追加しました。
+データ 2 を追加しました。
+データ 3 を追加しました。
+データ 4 を追加しました。
+これ以上データを入れられません。
+取り出したデータ： 4
+取り出したデータ： 3
+取り出したデータ： 2
+取り出したデータ： 1
+取り出したデータ： 0
+取り出すデータが存在しません。
+取り出したデータ： None
+```
+
+</details>
+
+スクリプト言語ならば、アルゴリズムに関係なく、リストでプッシュとポップを実現できる。  
+しかし、それができるからと言う理由でアルゴリズムの勉強を放棄するのは無粋というものだろう。  
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter3)
+
 
 <a name="queueChapter3"></a>
 #### キュー
+**キュー**とは、最初に入れたデータを最初に取り出すこと。  
+それを先入れ先出し(First In First Out)と言い、**FIFO**と略す。  
+
+キューにデータを入れることをエンキュー(enqueue)といい、取り出すことをデキュー(dequeue)と言う。  
+
+* キュー用語  
+  * エンキュー位置  
+    **tail**  
+    要は、先頭。  
+  * デキュー位置  
+    **head**  
+    要は、後尾。  
+  * リングバッファ  
+    記憶領域を円形にする。  
+
+<details><summary>展開</summary>
+
+以下、キュープログラム。
+```python
+MAX = 6 # 積み上げる最大数を5つに制限している(キューへの積み上げ最大数+1)。
+
+
+def enqueue(data, que, head, tail):
+    nt = (tail+1) % MAX
+
+    if nt == head:
+        print("これ以上、データ積み上げ不可。")
+    else:
+        que[tail] = data
+        tail = nt
+        print("データ", data, "を追加しました")
+
+    return (que, tail)
+
+
+def dequeue(que, head, tail):
+    if head == tail:
+        print("取り出しデータなし。")
+        return (que, None, head)
+    else:
+        data = que[head]
+        head = (head+1) % MAX
+        return (que, data, head)
+
+
+def main():
+    que = [0] * MAX
+    head = 0
+    tail = 0
+
+    for ii in range(6):
+        (que, tail) = enqueue(ii, que, head, tail)
+
+    for ii in range(6):
+        (que, data, head) = dequeue(que, head, tail)
+        print("取り出しデータ：", data)
+
+
+main()
+```
+
+以下、出力結果。
+```terminal
+データ 0 を追加しました
+データ 1 を追加しました
+データ 2 を追加しました
+データ 3 を追加しました
+データ 4 を追加しました
+これ以上、データ積み上げ不可。
+取り出しデータ： 0
+取り出しデータ： 1
+取り出しデータ： 2
+取り出しデータ： 3
+取り出しデータ： 4
+取り出しデータなし。
+取り出しデータ： None
+```
+
+</details>
+
+<details><summary>ファイル名について。</summary>
+
+書籍では、**queue.py**という名前を付けた場合、既存の名前と同じになり、そちらが動くことになるため、名前を変える必要があるという説明をしていた。
+しかし、私の環境では普通に動いたぞ!?
+```terminal
+$ python queue.py
+データ 0 を追加しました
+データ 1 を追加しました
+データ 2 を追加しました
+データ 3 を追加しました
+データ 4 を追加しました
+これ以上、データ積み上げ不可。
+取り出しデータ： 0
+取り出しデータ： 1
+取り出しデータ： 2
+取り出しデータ： 3
+取り出しデータ： 4
+取り出しデータなし。
+取り出しデータ： None
+$
+```
+当初の名前を**myQueue.py**にしていたが、変更した。  
+
+</details>
+
+
+書籍の説明では、(プログラムを見れば分かるだろうが)リングバッファを簡単に実現するための仕組みとして、追加できる容量は、配列の要素数よりも1つ少ない。  
+それを無視して実用化された仕組みが[collections.deque](https://docs.python.org/ja/3/library/collections.html)クラスとして用意されている。  
+※リングバッファは、[循環リスト](#listChapter3)ではない。  
+
+<details><summary>展開</summary>
+
+以下、コレクションデキュークラスの利用プログラム。
+```python
+import collections
+
+
+def enqueue(data, que):
+    print("データ", data, "を追加しました")
+    que.append(data)
+    return que	←☆`return que.append(data)`には出来なかった。
+
+
+def dequeue(que):
+    data = que.pop()
+    return (que, data)
+
+
+def main():
+    que = collections.deque()
+
+    for ii in range(6):
+        que = enqueue(ii, que)
+
+    for ii in range(6):
+        (que, data) = dequeue(que)
+        print("取り出しデータ：", data)
+    # 出力結果：
+
+
+main()
+```
+
+以下、出力結果。
+```terminal
+$ python queue_class.py
+データ 0 を追加しました
+データ 1 を追加しました
+データ 2 を追加しました
+データ 3 を追加しました
+データ 4 を追加しました
+データ 5 を追加しました
+取り出しデータ： 5
+取り出しデータ： 4
+取り出しデータ： 3
+取り出しデータ： 2
+取り出しデータ： 1
+取り出しデータ： 0
+以上。
+$
+```
+
+</details>
+
+
+ちなみに、キューへの先頭や末尾への追加・削除は最速だが、要素位置が中央にある場合、最遅になる。  
+
+* 使い分け方法。  
+  * 先端・尾端への利用頻度が高い場合、**deque**を使う。  
+  * 要素位置の中央への書き込み・削除の頻度が高い場合、**list**を使う。  
+
+todo: プログラムを理解すること。  
+当初の目的通り、読破することも目的の一つにしているため、進めていることに問題は無いが、それではアルゴリズムの勉強をするのが無駄になる。  
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter3)
+
 
 <a name="listChapter3"></a>
 #### リスト
+リストの中でも線形リストに特化する。  
+※Pythonに組み込まれたリストとは別物(今回のリストはアルゴリズムの話)。  
+
+* 線形リストの種類  
+  * 片方向リスト  
+    次のノードを指し示すだけの情報だけ持つ。  
+    今回利用するリストになる。  
+  * 双方向リスト  
+    次のノードを指し示し、前のノードも指し示す。  
+  * 循環リスト  
+    次のノードを指し示すが、最後のノードは先頭ノードを指し示す。  
+  * 応用  
+    * 双方向の循環リスト  
+      双方向リストと循環リストを組み合わせたもの。  
+      前後のノードに移動でき、先頭は末尾に、末尾は先頭に移動できる。  
+  * 別名  
+    * 片方向リスト  
+      別名：単方向リスト  
+    * 線形リスト  
+      2つの組み合わせ(片方向リスト・双方向リスト)で呼ぶ。  
+    * 循環リスト  
+      2つの組み合わせ(双方向リスト・循環リスト)で呼ぶ。  
+    * 連結リスト  
+      3つの組み合わせ(片方向リスト・双方向リスト・循環リスト)で呼ぶ。  
+
+切り離されている変数同士を繋ぐような想像をすれば良いのだろうか。  
+繋ぎ方は、繋ぐための変数とデータが入っている変数を一緒にして、それを1つのノードとして扱い、繋ぐ変数にはポインタを入れる。  
+要は、ノードは構造体で作る必要があると？  
+そして、構造体に納める繋ぐ変数用ポインタの種類により、片方向リスト・双方向リスト・循環リストを使い分けることになると・・・。  
+繋ぐ先を変更すればデータの削除・追加が可能になると・・・(先頭ノードの削除は気をつける必要がある)。  
+それをC言語で実現したときは辛かった(ポインタを勉強した直後だったからな・・・学生時代が懐かしい)。  
+
+今回のプログラムは、片方向リストのみに限定する。  
+そして、構造体ではなく、配列という概念を用いてPythonプログラムを構築する。  
+
+* Python特有のリストアルゴリズムの注意点  
+  * **head**を管理者(?)として先頭ノードを管理する。  
+  * 末尾ノードは、繋ぐ先に**None**を格納する。  
+    ※NoneがPython特有。  
+  * 扱えるデータ数を5個に制限する。  
+    ※個数制限が本書特有。  
+
+<details><summary>展開</summary>
+
+以下、プログラム。
+```python
+MAX = 5 # 紐付き数を5つに制限。
+
+
+def add_list(datalist, pointer, data):
+    n = -1
+    for ii in range(MAX):
+        if datalist[ii] is None:
+            n = ii
+            break
+
+    if n == -1:
+        print("データ領域に空きがありません")
+        return False, datalist, pointer
+
+    for ii in range(MAX):
+        if datalist[ii] is not None and pointer[ii] is None:
+            pointer[ii] = n
+            break
+
+    datalist[n] = data
+    pointer[n] = None
+    print("データ", data, "追加。")
+    return True, datalist, pointer
+
+
+def del_list(datalist, pointer, head, data):
+    n = -1
+    for ii in range(MAX):
+        if datalist[ii] == data:
+            n = ii
+            break
+    if n == -1:
+        print("データなし。")
+        return False, datalist, pointer, head
+
+    if n != head:
+        for ii in range(MAX):
+            if pointer[ii] == n:
+                pointer[ii] = pointer[n]
+    else:
+        head = pointer[n]
+        if head is None:
+            head = 0
+
+    datalist[n] = None
+    pointer[n] = None
+    print("データ", data, "削除。")
+    return True, datalist, pointer, head
+
+
+def put_list(datalist, pointer, head):
+    pp = head
+    while True:
+        print(datalist[pp], end="--->")	←☆イコール記号の部分で"invalid syntax"が発生する。
+        if pointer[pp] is None:
+            print("EOF")
+            break
+        pp = pointer[pp]
+
+
+def main():
+    datalist = [None]*MAX
+    pointer = [None]*MAX
+    head = 0
+
+    for ii in range(10, 70, 10):
+        ret, datalist, pointer = add_list(datalist, pointer, ii)
+
+    ret, datalist, pointer, head = del_list(datalist, pointer, head, 10)
+    put_list(datalist, pointer, head)
+
+
+main()
+```
+
+以下、出力結果。
+```terminal
+データ 10 追加。
+データ 20 追加。
+データ 30 追加。
+データ 40 追加。
+データ 50 追加。
+データ領域に空きがありません
+データ 10 削除。
+20--->30--->40--->50--->EOF
+```
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter3)
+
 
 <a name="woodChapter3"></a>
 #### 木
+[リスト](#listChapter3)のように連なっており、接点とそれを繋ぐ方法を有している必要がある。  
+頂点(出発点)を根(親)と呼び、それぞれの接点を葉(子)と呼び、それらを繋ぐ方法を枝(辺とも)呼ぶ。  
+根・枝・葉を漏れなく表した全体を木構造と言い、一部の表す場合は部分木と呼ぶ。  
+根と葉の2種類をノードと言う。  
+このノードは、既出のリストのように、データ部分・繋ぐ枝情報が含まれる。  
+また、リストとの違いは、葉が二股に分かれることに違いがあり、今回の場合は、次に繋がる葉情報用の枝部分を2種類有していること。  
+※要は、リストの場合は、数珠つなぎになっているため、枝分かれしない。そこに違いがある。  
+
+<details><summary>図面</summary>
+
+以下、二分木例）
+```text
+         根
+    |-----|-----|
+    |           |
+   葉          葉
+|---|---|   |---|---|
+|       |   |       |
+葉     葉   葉     葉
+        |           |
+    |---|---|   |---|
+    |       |   |
+   葉      葉  葉
+```
+
+今回のプログラム例も他と同じように、本来のやり方を採用せず、未来のない作り方をする。  
+要は、構造体などでノードを作らず、配列でノードを構築する。  
+正確に言えば、2次元配列から **[左の葉・右の葉・データ]** を作成する。  
+以下、その例）
+```python
+node = [
+    [1, 2, 10],
+    [3, 4, 20],
+    [5, None, 30],
+]
+```
+
+</details>
+
+<details><summary>例外対応なしのプログラム。</summary>
+
+以下、プログラム。
+```python
+LEFT = 0    # 左ノード番号用定数
+RIGHT = 1   # 右ノード番号用定数
+DATA = 2    # データ値用定数
+
+
+def tree(node):
+    MAX = len(node)
+
+    print("指定番号のノード調査。")
+    print("入力なしのEnterにて終了。")
+
+    while True:
+        inString = input("number：")
+        if inString == "":
+            break
+        number = int(inString)
+        if 0 <= number and number < MAX:
+            print("node{}の値は{}".format(number, node[number][DATA]))
+            leftNumber = node[number][LEFT]
+            if leftNumber is not None:
+                print("左の葉は" + str(node[leftNumber][DATA]))
+            else:
+                print("左の葉は存在しない。")
+            rightNumber = node[number][RIGHT]
+            if rightNumber is not None:
+                print("右の葉は" + str(node[rightNumber][DATA]))
+            else:
+                print("右の葉は存在しない。")
+        else:
+            print("0から" + str(MAX-1) + "の範囲必須。")
+
+
+def main():
+    node = [
+        [1,    2,    10],
+        [3,    4,    20],
+        [5,    None, 30],
+        [None, None, 40],
+        [6,    7,    50],
+        [None, None, 60],
+        [None, None, 70],
+        [None, None, 80],
+    ]
+    tree(node)
+
+
+main()
+```
+
+以下、数字以外の入力結果。
+```terminal
+$ python tree.py
+指定番号のノード調査。
+入力なしのEnterにて終了。
+number：a
+Traceback (most recent call last):
+  File "/Users/asakunotomohiro/study勉強用Githubリポジトリ/Python言語/Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける/chapter3_データ構造を学ぶ/4.木/tree.py", line 57, in <module>
+    main()
+  File "/Users/asakunotomohiro/study勉強用Githubリポジトリ/Python言語/Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける/chapter3_データ構造を学ぶ/4.木/tree.py", line 54, in main
+    tree(node)
+  File "/Users/asakunotomohiro/study勉強用Githubリポジトリ/Python言語/Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける/chapter3_データ構造を学ぶ/4.木/tree.py", line 25, in tree
+    number = int(inString)
+ValueError: invalid literal for int() with base 10: 'a'
+$
+```
+例外が発生するため、数字以外の入力にも対応できるように変更する。  
+
+</details>
+
+例外様式：
+```text
+try:
+    例外が発生する可能性のある処理。
+except:
+    例外が発生したときに行う処理。
+finally:
+    例外が発生してもしなくても必ず行う処理。
+```
+
+<details><summary>展開(例外対応済み)</summary>
+
+以下、例外対応を含むプログラム。
+```perl
+LEFT = 0    # 左ノード番号用定数
+RIGHT = 1   # 右ノード番号用定数
+DATA = 2    # データ値用定数
+
+
+def tree(node):
+    MAX = len(node)
+
+    print("指定番号のノード調査。")
+    print("入力なしのEnterにて終了。")
+
+    while True:
+        inString = input("number：")
+        if inString == "":
+            break
+        # 以下、例外対応。
+        try:
+            number = int(inString)
+        except:	←☆"E722: do not use bare 'except'"が発生している(これは何？)。
+            print("数値入力に限る。")
+            continue
+        if 0 <= number and number < MAX:
+            print("node{}の値は{}".format(number, node[number][DATA]))
+            leftNumber = node[number][LEFT]
+            if leftNumber is not None:
+                print("左の葉は" + str(node[leftNumber][DATA]))
+            else:
+                print("左の葉は存在しない。")
+            rightNumber = node[number][RIGHT]
+            if rightNumber is not None:
+                print("右の葉は" + str(node[rightNumber][DATA]))
+            else:
+                print("右の葉は存在しない。")
+        else:
+            print("0から" + str(MAX-1) + "の範囲必須。")
+
+
+def main():
+    node = [
+        [1,    2,    10],
+        [3,    4,    20],
+        [5,    None, 30],
+        [None, None, 40],
+        [6,    7,    50],
+        [None, None, 60],
+        [None, None, 70],
+        [None, None, 80],
+    ]
+    tree(node)
+
+
+main()
+```
+
+以下、実行結果。
+```terminal
+指定番号のノード調査。
+入力なしのEnterにて終了。
+number：a	←☆数字以外の入力のため、はじかれた。
+数値入力に限る。
+number：0
+node0の値は10
+左の葉は20
+右の葉は30
+number：1
+node1の値は20
+左の葉は40
+右の葉は50
+number：2
+node2の値は30
+左の葉は60
+右の葉は存在しない。
+number：3
+node3の値は40
+左の葉は存在しない。
+右の葉は存在しない。
+number：4
+node4の値は50
+左の葉は70
+右の葉は80
+number：5
+node5の値は60
+左の葉は存在しない。
+右の葉は存在しない。
+number：6
+node6の値は70
+左の葉は存在しない。
+右の葉は存在しない。
+number：7
+node7の値は80
+左の葉は存在しない。
+右の葉は存在しない。
+number：8
+0から7の範囲必須。
+number： 	←☆半角スペースを入力したため、はじかれた。
+数値入力に限る。
+number：
+```
+
+</details>
+
+* 語弊を生む表現。  
+  P108の「木とリストの違い」の後半説明に、
+  > 閉路とは図3-4-1で、例えば⑤と⑦がつながるようなノードが枝によって閉じられた構造を意味します。  
+  
+  とある。  
+  どう考えても5と7は繋がらない。  
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter3)
+
 
 <a name="graphChapter3"></a>
 #### グラフ
+図のことではあるが、点とそれらを結ぶ線から成る図形の構造のことであり、データ構造と言う。  
+この、線で結ぶための基点になるのがノードであり、このノードが今まで出てきたノードのこと・・・かな。  
+
+* グラフの種類  
+  * [無向グラフ](#graphChapter3Undirectedgraph)  
+    双方向に繋がっているグラフのこと。  
+  * [有向グラフ](#graphChapter3Directedgraph)  
+    一方通行に繋がっているグラフのこと。  
+
+
+<a name="graphChapter3Undirectedgraph"></a>
+<details><summary>グラフの簡易プログラム例</summary>
+
+以下、無向グラフ例(2次元配列)）
+```python
+[
+    [0, 1, 1, 0, 0],
+    [1, 0, 1, 1, 0],
+    [1, 1, 0, 0, 1],
+    [0, 1, 0, 0, 1],
+    [0, 0, 1, 1, 0],
+]
+```
+ 　0--1--2--3--4  
+0 [0, 1, 1, 0, 0]  
+1 [1, 0, 1, 1, 0]  
+2 [1, 1, 0, 0, 1]  
+3 [0, 1, 0, 0, 1]  
+4 [0, 0, 1, 1, 0]  
+
+* 上記解説  
+  無向グラフのため、双方向に繋がっている。  
+  横軸と縦軸で数字が1のものが繋がっている。  
+  * 0と1が繋がっている。  
+  * 0と2が繋がっている。  
+  * 1と0が繋がっている。  
+  * 1と2が繋がっている。  
+  * 1と3が繋がっている。  
+  * 2と0が繋がっている。  
+  * 2と1が繋がっている。  
+  * 2と4が繋がっている。  
+  * 3と1が繋がっている。  
+  * 3と4が繋がっている。  
+  * 4と2が繋がっている。  
+  * 4と3が繋がっている。  
+
+</details>
+
+<a name="graphChapter3Directedgraph"></a>
+<details><summary>グラフの簡易プログラム例</summary>
+
+以下、有向グラフ例(2次元配列)）
+```python
+[
+    [0, 1, 1, 0, 0],
+    [0, 0, 1, 1, 0],
+    [0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 1],
+    [0, 0, 1, 1, 0],
+]
+```
+   0--1--2--3--4  
+0 [0, 1, 1, 0, 0]  
+1 [0, 0, 1, 1, 0]  
+2 [0, 0, 0, 0, 0]  
+3 [0, 0, 0, 0, 1]  
+4 [0, 0, 1, 1, 0]  
+
+* 上記解説  
+  有向グラフのため、一方通行の繋がり。  
+  横軸と縦軸で数字が1のものが繋がっている。  
+  * 0から1に繋がっている。  
+  * 0から2に繋がっている。  
+  * 1から2に繋がっている。  
+  * 1から3に繋がっている。  
+  * 2から繋がっているノードはない。  
+  * 3から4に繋がっている。  
+  * 4から2に繋がっている。  
+  * 4から3に繋がっている。  
+
+これらのグラフの行列を隣接行列と言うそうだ。  
+そもそも行列が何か分からないが、知ってて損はないようだ。  
+[@mattn_jp曰く"行列やってて良かったなって思いましたね"とのこと。](https://twitter.com/mattn_jp/status/1475680814180761601)  
+
+</details>
+
+以下、二分木例）
+```text
+         根0
+    |-----|-----|
+    |           |
+   葉1         葉2
+|---|---|
+|       |
+葉3    葉4
+```
+これを以下隣接行列で表現する。  
+ 　0--1--2--3--4  
+0 [0, 1, 1, 0, 0]  
+1 [1, 0, 0, 1, 1]  
+2 [1, 0, 0, 0, 0]  
+3 [0, 1, 0, 0, 0]  
+4 [0, 1, 0, 0, 0]  
+
+<details><summary>展開(無向グラフ例)</summary>
+
+以下、無向グラフプログラム例）
+```python
+def graph(data, node):
+    for yy in range(5):
+        for xx in range(yy, 5):
+            if data[yy][xx] == 1 and data[xx][yy] == 1:
+                print(node[yy]+"<--->" + node[xx])
+
+
+def main():
+    data = [    # グラフの定義。
+            [0, 1, 1, 0, 0, ],
+            [1, 0, 1, 1, 0, ],
+            [1, 1, 0, 0, 1, ],
+            [0, 1, 0, 0, 1, ],
+            [0, 0, 1, 1, 0, ],
+        ]
+    node = [
+            "(0)", "(1)", "(2)", "(3)", "(4)",
+        ]
+    graph(data, node)
+
+
+main()
+```
+
+以下、出力結果。
+```terminal
+(0)<--->(1)
+(0)<--->(2)
+(1)<--->(2)
+(1)<--->(3)
+(2)<--->(4)
+(3)<--->(4)
+```
+
+</details>
+
+<details><summary>展開(有向グラフ例)</summary>
+
+以下、有向グラフプログラム例）
+```python
+def graph(data, node, arrow):
+    for yy in range(5):
+        for xx in range(yy, 5):
+            e1 = data[yy][xx]
+            e2 = data[xx][yy]
+            aa = e1 + e2*2
+            if aa > 0:
+                print(node[yy] + arrow[aa] + node[xx])
+
+
+def main():
+    data = [    # グラフの定義。
+            [0, 1, 1, 0, 0, ],
+            [0, 0, 1, 1, 0, ],
+            [0, 0, 0, 0, 0, ],
+            [0, 0, 0, 0, 1, ],
+            [0, 0, 1, 1, 0, ],
+        ]
+    node = [
+            "(0)", "(1)", "(2)", "(3)", "(4)",
+        ]
+    arrow = ["", "-->", "<--", "<->", ]
+    graph(data, node, arrow)
+
+
+main()
+```
+以下、出力結果。
+```terminal
+(0)-->(1)
+(0)-->(2)
+(1)-->(2)
+(1)-->(3)
+(2)<--(4)
+(3)<->(4)
+```
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter3)
+
+
+<a name="stacksAndQueuesChapter3"></a>
+#### スタックとキューを扱う(Pythonモジュール)。
+Pythonに最初から備わっているモジュールに、[**queuemモジュール**](https://docs.python.org/ja/3/library/queue.html)がある。  
+
+<details><summary>展開</summary>
+
+以下、プログラム。
+```python
+import queue
+
+
+def que(): # キュー用関数
+    print("キュー開始")
+    que = queue.Queue()
+    for ii in range(MAX):
+        que.put(ii)
+    for ii in range(MAX):
+        print(que.get(), end="⇒")
+    print("\n")
+
+
+def sta(): # スタック用関数
+    print("スタック開始")
+    sta = queue.LifoQueue()
+    for ii in range(MAX):
+        sta.put(ii)
+    for ii in range(MAX):
+        print(sta.get(), end="⇒")
+    print("\n")
+
+
+def main():
+    print("以下、キュー用関数呼び出し。")
+    que()
+    print("以下、スタック用関数呼び出し。")
+    sta()
+
+
+main()
+```
+
+以下、出力結果。
+```terminal
+以下、キュー用関数呼び出し。
+キュー開始
+0⇒1⇒2⇒3⇒4⇒5⇒6⇒7⇒8⇒9⇒
+
+以下、スタック用関数呼び出し。
+スタック開始
+9⇒8⇒7⇒6⇒5⇒4⇒3⇒2⇒1⇒0⇒
+```
+ちょっとだけ矢印が見にくいな。  
+
+</details>
+
 
 <a name="saveTheDataChapter3"></a>
 #### データを保存する。
+プログラム実行時だけでなく、実行後にプログラムは終了するが、処理したデータは残したい。  
+その場合は、プログラムとは別に保存場所を用意する必要がある。  
+今回は、ファイルを用いる。  
+
+書き込みと読み込みの2種類のプログラムができる。  
+
+<details><summary>展開(書き込みプログラム例)</summary>
+
+以下、ファイル書き込みプログラム。
+```python
+def main():
+    f = open("algorithm.txt", 'w', encoding="utf-8")
+    for ii in range( 1, 11 ):
+        data = str( 2**ii )
+        f.write(data + ",")
+    f.close()
+
+
+main()
+```
+
+以下、実行。
+```terminal
+$ ll
+total 8
+-rw-r--r--  1 asakunotomohiro  staff  220  1 15 22:10 write.py
+$ python write.py
+total 16
+-rw-r--r--  1 asakunotomohiro  staff   32  1 15 22:10 algorithm.txt
+-rw-r--r--  1 asakunotomohiro  staff  220  1 15 22:10 write.py
+$ cat algorithm.txt
+2,4,8,16,32,64,128,256,512,1024,$
+$
+```
+
+</details>
+
+<details><summary>展開(読み込みプログラム例)</summary>
+
+以下、ファイル読み込みプログラム。
+```python
+def main():
+    f = open("algorithm.txt", 'r', encoding="utf-8")
+    rr = f.read()
+    f.close()
+    ss = rr.split(",")
+    nn = len(ss)
+    data = [0] * nn
+    for ii in range(nn):
+        if ss[ii] != "":
+            data[ii] = str(ss[ii])	←☆strをintにした場合、エラーになる(改行が読み込めないため)。
+    print(data)
+
+
+main()
+```
+
+以下、実行。
+```terminal
+$ ll
+total 24
+-rw-r--r--  1 asakunotomohiro  staff   33  1 15 22:29 algorithm.txt
+-rw-r--r--  1 asakunotomohiro  staff  267  1 15 22:26 read.py
+$ cat algorithm.txt
+1024,512,256,128,64,32,16,8,4,2,
+$ python read.py
+['1024', '512', '256', '128', '64', '32', '16', '8', '4', '2', '\n']
+$
+```
+※書籍の説明から最後のデータが0で出力されていることが問題なのだろう(私の場合は改行だけど)。  
+ここがプログラマーの腕の見せ所。  
+これを解消することで、行末を気にせずに出力させられるはず・・・きっと。  
+検証しないけど。  
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter3)
+
 
 <a name="searchOverviewChapter4"></a>
 ### サーチ
@@ -1890,11 +2899,13 @@ Python限定にしたくなかったが、他のプログラミング言語に�
   * [衝突を回避する。](#avoidCollisionsChapter6)  
   * [暗号学的ハッシュ関数](#cryptographicHashFunctionChapter6)  
 
+
 <a name="whatIsAHashChapter6"></a>
 #### ハッシュとは。
 調べればすぐに出てくる。  
 そもそもプログラマーがハッシュを知らないというのはあり得ない。  
 [Git](https://git-scm.com/book/ja/v2/使い始める-Gitの基本)でも[履歴閲覧](https://docs.github.com/ja/github/searching-for-information-on-github/searching-on-github/searching-commits)に[コミットハッシュ値](https://git-scm.com/book/ja/v2/Git-の基本-コミット履歴の閲覧)を使う。  
+
 
 <a name="hashFunctionChapter6"></a>
 #### ハッシュ関数
