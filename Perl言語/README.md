@@ -9055,6 +9055,68 @@ exitボタンが一番上に来ると思ったのに・・・そもそも引数�
 <a name="practicaluseTkgeometrymanagementpackoptionside"></a>
 ###### Packオプション-ウィジェットの位置決め。
 ウィンドウまたはフレーム指定した辺に向かってウィジェットを配置する。  
+```perl
+-side =>
+        'left'|
+        'right'|
+        'top'|	←☆デフォルト値。
+        'bottom'
+```
+各ウィンドウには、上下左右の4つの辺があり、この辺に対してウィジェットが配置される。  
+指定しない場合は、デフォルト値に従い、上辺に向かって突き上げていく。  
+
+以下、'top'を指定したプログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub guipackSide() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Label(
+				-text => "Label"
+			)->pack(
+					-side => 'top',
+					-expand => 1,
+					-fill => 'x'
+				);				# ラベル。
+	$mw->Checkbutton(
+				-text => "check 1",
+			)->pack(
+					-side => 'top',
+					-expand => 1,
+				);				# チェックボタン1つ目。
+	$mw->Checkbutton(
+				-text => "check 2",
+			)->pack(
+					-side => 'top',
+					-expand => 1,
+				);					# チェックボタン2つ目。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-side => 'top',
+					-expand => 1,
+					-fill => 'x'
+				);					# 終了ボタン。
+	MainLoop;
+}
+&guipackSide(@ARGV);
+```
+
+以下、その表示姿。
+```text
+Label
+check 1
+check 2
+exit
+```
+パック順に、上に積み上げていく。  
+日本語的に可笑しいのだが、風船を順番に飛ばしていく姿を想像して欲しい。  
+
 
 
 <a name="practicaluseTkgeometrymanagementpackoptionfill"></a>
