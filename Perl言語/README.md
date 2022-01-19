@@ -8917,6 +8917,13 @@ sub gui() {
 ジグソーパズルのように、決められた枠に決められた一切れを当てはめていく。  
 そのように、きれいに納める必要があるのがpackジオメトリマネージャである。  
 
+* [packオプション](#practicaluseTkgeometrymanagementpackoption)  
+  * [ウィジェットの位置決め。](#practicaluseTkgeometrymanagementpackoptionside)  
+    ウィンドウまたはフレーム枠からの相対指定が可能になる。  
+  * [ウィジェットの大きさ決め。](#practicaluseTkgeometrymanagementpackoptionfill)  
+    他ウィジェットとの相対指定や絶対指定が可能になる。  
+  * [ウィジェット間の余白決め。](#practicaluseTkgeometrymanagementpackoptionexpand)  
+  * ウィンドウまたはフレームの持つウィジェットリストにおける位置決め。  
 
 <details><summary>各モジュールについて。</summary>
 
@@ -9040,6 +9047,65 @@ check1 check2 exit
 ```
 意図していない結果になった。  
 exitボタンが一番上に来ると思ったのに・・・そもそも引数への値の意味を理解していないのが原因だが・・・。  
+
+
+<a name="practicaluseTkgeometrymanagementpackoption"></a>
+##### ジオメトリマネージャPackのオプション
+
+<a name="practicaluseTkgeometrymanagementpackoptionside"></a>
+###### Packオプション-ウィジェットの位置決め。
+ウィンドウまたはフレーム指定した辺に向かってウィジェットを配置する。  
+
+
+<a name="practicaluseTkgeometrymanagementpackoptionfill"></a>
+###### Packオプション-ウィジェットの大きさ決め。
+割り当て領域内の指定した方向に向かってウィジェットを広げる(大きさを決める)。  
+
+
+<a name="practicaluseTkgeometrymanagementpackoptionexpand"></a>
+###### Packオプション-ウィジェット間の余白決め。
+ウィンドウまたはフレームの空き領域に対して割り当て領域を広げる(要は、余白作成)。  
+
+
+<a name="practicaluseTkgeometrymanagementpackoptionanchor"></a>
+###### Packオプション-ウィンドウまたはフレームの持つウィジェットリストにおける位置決め。
+割り当て領域内でのウィジェットのアンカー位置を決める。  
+
+
+<a name="practicaluseTkgeometrymanagementpackoptionafter"></a>
+###### Packオプション-パック順序を後に配置。
+パック順序における`$widget`の位置を`$otherwidget`の後ろにする。  
+
+
+<a name="practicaluseTkgeometrymanagementpackoptionbefore"></a>
+###### Packオプション-パック順序を前に配置。
+パック順序における`$widget`の位置を`$otherwidget`の前にする。  
+
+
+<a name="practicaluseTkgeometrymanagementpackoptionin"></a>
+###### Packオプション-ウィジェットを指定ウィンドウに配置。
+`$widget`を`$otherwindow`の中にパックする。  
+デフォルトでは、`$widget`の親ウィンドウの中にパックする。  
+
+
+<a name="practicaluseTkgeometrymanagementpackoptionipadx"></a>
+###### Packオプション-ウィジェットの幅を増やす。
+ウィジェットの幅を指定分2倍にする。  
+
+
+<a name="practicaluseTkgeometrymanagementpackoptionipady"></a>
+###### Packオプション-ウィジェットの高さを増やす。
+ウィジェットの高さを指定分2倍にする。  
+
+
+<a name="practicaluseTkgeometrymanagementpackoptionpadx"></a>
+###### Packオプション-ウィジェットの左右に余白を設ける。
+ウィジェットの左右にパッド(余白)を設ける。  
+
+
+<a name="practicaluseTkgeometrymanagementpackoptionpady"></a>
+###### Packオプション-ウィジェットの上下に余白を設ける。
+ウィジェットの上下にパッド(余白)を設ける。  
 
 
 </details>
