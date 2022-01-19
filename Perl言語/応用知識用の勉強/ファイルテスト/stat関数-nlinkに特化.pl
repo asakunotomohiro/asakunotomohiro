@@ -99,8 +99,9 @@ sub tomohiro() {
 	say "\tファイルまたはディレクトリに対するハードリンクの個数：\t$nlink";	# 2
 
 	say "以下、ハードリンクを作成。";
-	link $nlinkDir, 'ハードリンクディレクトリ' or warn "ハードリンクディレクトリ作成失敗($!)。";
-		# ハードリンクディレクトリ作成失敗(Operation not permitted)。 at stat関数-nlinkに特化.pl line 102.
+	my $hardLinkDir = $currentDir . '/別ディレクトリ/';
+	link $nlinkDir, $hardLinkDir . 'test' or warn "ハードリンクディレクトリ作成失敗($!)。";
+		# ハードリンクディレクトリ作成失敗(Operation not permitted)。 at stat関数-nlinkに特化.pl line 103.
 
 	say "以下、ソフトリンクを作成(1個目)。";
 	symlink $nlinkDir, $asakuno[0] or warn "シンボリックリンクディレクトリ作成失敗($!)。";
@@ -131,15 +132,15 @@ sub tomohiro() {
 	($dev, $ino, $mode, $nlink,
 		$uid, $gid, $rdev, $size,
 		$atime, $mtime, $ctime,
-		$blksize, $blocks) = stat($asakuno[2]);	# ファイルのstat情報。;
+		$blksize, $blocks) = stat($asakuno[0]);	# ファイルのstat情報。;
 	say "\tファイルまたはディレクトリに対するハードリンクの個数：\t$nlink";	# 空文字列(undef)
 
-	say "2個目のハードリンクファイル削除。";
-	unlink $asakuno[1] or warn "$asakuno[1]ディレクトリ削除失敗($!)。";
+	say "2個目のソフトリンクファイル削除。";
+	unlink $asakuno[0] or warn "$asakuno[0]ディレクトリ削除失敗($!)。";
 	($dev, $ino, $mode, $nlink,
 		$uid, $gid, $rdev, $size,
 		$atime, $mtime, $ctime,
-		$blksize, $blocks) = stat($asakuno[2]);	# ファイルのstat情報。;
+		$blksize, $blocks) = stat($asakuno[0]);	# ファイルのstat情報。;
 	say "\tファイルまたはディレクトリに対するハードリンクの個数：\t$nlink";	# 空文字列(undef)
 }
 &tomohiro(@ARGV);

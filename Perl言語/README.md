@@ -7439,6 +7439,80 @@ sub nlinkfunc() {
 と言うエラーになり、作成方法が分からない。  
 何より、作成も何もディレクトリに対してハードリンクは[作れない](#practicaluseFileoperationlinkandfile)はずなのだが・・・。  
 
+以下、一応のプログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+my $dirLinkTest = 'testDir';
+my @dirLinkTest = qw( 本日は 晴天なり。 本日は晴天なり。 );
+sub nlinkfunc() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+	mkdir $dirLinkTest, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+	my $nlinkDir = $currentDir . '/' . $dirLinkTest;
+
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = stat($nlinkDir);	# ディレクトリのstat情報。;
+
+	say "以下、stat情報のnlinkについて。";
+	say "\tディレクトリに対するハードリンクの個数：\t$nlink";	# 2	←☆ディレクトリなので、リンクが無くても2になるのが正しい。
+
+	say "以下、ハードリンクを作成。";
+	my $hardLinkDir = $currentDir . '/別ディレクトリ/';
+	link $nlinkDir, $hardLinkDir . 'test' or warn "ハードリンクディレクトリ作成失敗($!)。";
+		# ハードリンクディレクトリ作成失敗(Operation not permitted)。 at stat関数-nlinkに特化.pl line 22.
+
+	say "以下、ソフトリンクを作成(1個目)。";
+	symlink $nlinkDir, $dirLinkTest[0] or warn "シンボリックリンクディレクトリ作成失敗($!)。";
+	($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = stat($nlinkDir);	# ファイルのstat情報。;
+	say "\tディレクトリに対するハードリンクの個数：\t$nlink";	# 2	←☆ディレクトリなので、リンクが無くても2になるのが正しい。
+
+	say "以下、ソフトリンクを作成(2個目)。";
+	symlink $nlinkDir, $dirLinkTest[1] or warn "シンボリックリンクディレクトリ作成失敗($!)。";
+	($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = stat($nlinkDir);	# ファイルのstat情報。;
+	say "\tディレクトリに対するハードリンクの個数：\t$nlink";	# 2	←☆ディレクトリなので、リンクが無くても2になるのが正しい。
+
+	say "1個目のソフトリンクファイル削除。";
+	unlink $dirLinkTest[0] or warn "$dirLinkTest[0]ディレクトリ削除失敗($!)。";
+	($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = stat($nlinkDir);	# ファイルのstat情報。;
+	say "\tディレクトリに対するハードリンクの個数：\t$nlink";	# 2	←☆ディレクトリなので、リンクが無くても2になるのが正しい。
+
+	say "大本のファイル削除。";
+	rmdir $nlinkDir or warn "$nlinkDirディレクトリ削除失敗($!)。";
+	($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = stat($dirLinkTest[1]);	# ファイルのstat情報。;
+	say "\tディレクトリに対するハードリンクの個数：\t$nlink";	# 空文字列(undef)
+
+	say "2個目のハードリンクファイル削除。";
+	unlink $dirLinkTest[1] or warn "$dirLinkTest[1]ディレクトリ削除失敗($!)。";
+	($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = stat($dirLinkTest[1]);	# ファイルのstat情報。;
+	say "\tディレクトリに対するハードリンクの個数：\t$nlink";	# 空文字列(undef)
+}
+&nlinkfunc();
+```
+OSによっては、コマンドオプションとの併用で、ディレクトリに対するハードリンク作成が出来るようだ。  
+しかし、Perlでは無理なのだろう。  
+※このプログラムにバグがある。  
+ディレクトリを作成した上で、そのディレクトリからリンクを張っているのだが、ディレクトリを作り損ねることがあるようで、その状態でリンクを張るため、ディレクトリではなくファイルっぽいリンクができあがってしまう。  
+どういうこと？  
+
 
 <a name="practicaluseFiletestlstatfunck"></a>
 ### lstat関数
