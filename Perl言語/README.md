@@ -5908,6 +5908,8 @@ $
 
 <a name="practicaluseFileoperationlinkandfilehardlink"></a>
 #### ハードリンクファイル作成
+[様式](https://perldoc.jp/func/link)：
+`link 元ファイル, リンクファイル`  
 
 * 以下のプログラムでやりたいこと。  
   1. 元ファイルの作成。  
@@ -7359,6 +7361,76 @@ iノード番号：67541375
 最後のinode変更時刻：1642473483
 ファイルシステムI/Oでのブロックサイズ：4096
 割り当てられたブロック数：8
+```
+
+
+<a name="practicaluseFileteststatfuncknlink"></a>
+#### stat関数-nlink
+ここは、上記のstat関数で取得したなかのnlinkに特化する。  
+
+以下、ファイルに対するハードリンクの個数を検知するプログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub nlinkfunc() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	my $entity = '実体ファイル.txt';
+	my $virtual = '虚像.md';
+	my $nlinkFile = $currentDir . '/' . $entity;
+	open my $file_fh, '>', $nlinkFile
+		or die "$nlinkFileのファイルオープン失敗($!)";
+	my @write = qw( 本日は 晴天なり。 本日は晴天なり。 );
+	foreach( @write ) {
+		say $file_fh $_;
+	}
+	close $file_fh;
+
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = stat($nlinkFile);	# ファイルのstat情報。;
+
+	say "以下、stat情報のnlinkについて。";
+	say "\tファイルに対するハードリンクの個数(実体からの紐付け)：\t$nlink";	# 1
+
+	say "以下、ハードリンクを作成。";
+	link $nlinkFile, $virtual or warn "ハードリンクファイル作成失敗($!)。";
+	($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = stat($nlinkFile);	# ファイルのstat情報。;
+	say "\tファイルに対するハードリンクの個数(実体からの紐付け)：\t$nlink";	# 2
+	($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = stat($virtual);	# ファイルのstat情報。;
+	say "\tファイルに対するハードリンクの個数(ハードリンクファイルからの紐付け)：\t$nlink";	# 2
+
+	say "大本のファイル削除。";
+	unlink $nlinkFile or warn "$nlinkFileファイル削除失敗($!)。";
+	($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = stat($virtual);	# ファイルのstat情報。;
+	say "\tファイルに対するハードリンクの個数(ハードリンクファイルからの紐付け)：\t$nlink";	# 1	←☆ハードリンクが実体ファイルに変わると言うことなのだろう。
+
+	say "ハードリンクファイル削除。";
+	unlink $virtual or warn "$virtualファイル削除失敗($!)。";
+}
+&nlinkfunc();
+```
+
+以下、出力結果。
+```terminal
+以下、stat情報のnlinkについて。
+	ファイルに対するハードリンクの個数(実体からの紐付け)：	1
+以下、ハードリンクを作成。
+	ファイルに対するハードリンクの個数(実体からの紐付け)：	2
+	ファイルに対するハードリンクの個数(ハードリンクファイルからの紐付け)：	2
+大本のファイル削除。
+	ファイルに対するハードリンクの個数(ハードリンクファイルからの紐付け)：	1
+ハードリンクファイル削除。
 ```
 
 
