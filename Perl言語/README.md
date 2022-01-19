@@ -9123,6 +9123,11 @@ exit
 Label check1 check2 exit
 ```
 
+以下、sideオプションに'right'を指定した表示姿。
+```text
+exit check2 check z Label
+```
+
 
 <a name="practicaluseTkgeometrymanagementpackoptionfill"></a>
 ###### Packオプション-ウィジェットの大きさ決め。
