@@ -9277,6 +9277,7 @@ second   exit
 second   exit
      first
 ```
+none値と変わらないように見える。  
 
 以下、fillオプションに'y'を指定した表示姿。
 ```text
@@ -9286,6 +9287,16 @@ second   exit
 ```
 xと異なる表示になる。  
 実際に確かめた方が良い。  
+
+以下、fillオプションに'both'を指定した表示姿。
+```text
+        third
+second   exit
+     first
+```
+xと異なる表示になる。  
+実際に確かめた方が良い。  
+しかし、y値と変わりないように思う。  
 
 
 <a name="practicaluseTkgeometrymanagementpackoptionexpand"></a>
