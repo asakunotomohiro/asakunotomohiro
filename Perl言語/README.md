@@ -9153,6 +9153,16 @@ exit
 <a name="practicaluseTkgeometrymanagementpackoptionfill"></a>
 ###### Packオプション-ウィジェットの大きさ決め。
 割り当て領域内の指定した方向に向かってウィジェットを広げる(大きさを決める)。  
+```perl
+-fill =>
+        'none'|	←☆デフォルト値。
+        'x'|	←☆x方向に広げる。
+        'y'|	←☆y方向に広げる。
+        'both'	←☆x方向とy方向に広げる。
+```
+通常のウィジェットは、デフォルトの大きさが割り当てられる。  
+また、デフォルトの大きさは、割り当て領域よりも小さいことが多い。  
+今回のオプション利用により、辺に沿わせることができる(要は、広げること)。  
 
 
 <a name="practicaluseTkgeometrymanagementpackoptionexpand"></a>
