@@ -7433,6 +7433,12 @@ sub nlinkfunc() {
 ハードリンクファイル削除。
 ```
 
+ディレクトリのハードリンクに対しての検出方法が分からない・・・。  
+そもそもディレクトリのハードリンクを作成できない。  
+**ハードリンクディレクトリ作成失敗(Operation not permitted)。 at xxxx.pl line xxxx.**  
+と言うエラーになり、作成方法が分からない。  
+何より、作成も何もディレクトリに対してハードリンクは[作れない](#practicaluseFileoperationlinkandfile)はずなのだが・・・。  
+
 
 <a name="practicaluseFiletestlstatfunck"></a>
 ### lstat関数
