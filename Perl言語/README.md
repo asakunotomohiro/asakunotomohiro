@@ -9211,6 +9211,14 @@ check1      exit
       Label
 ```
 
+以下、fillオプションに'x'を指定した表示姿。
+```text
+      check2
+check1      exit
+      Label
+```
+
+
 <a name="practicaluseTkgeometrymanagementpackoptionexpand"></a>
 ###### Packオプション-ウィジェット間の余白決め。
 ウィンドウまたはフレームの空き領域に対して割り当て領域を広げる(要は、余白作成)。  
