@@ -1636,6 +1636,8 @@ int main(void)
 
 </details>
 
+<details><summary>適度に折り返された表示形式。</summary>
+
 以下、四角形っぽい表示に置き換えたプログラム。
 ```c
 #include <stdio.h>
@@ -1672,6 +1674,46 @@ int main(void)
  8x1= 8 8x2=16 8x3=24 8x4=32 8x5=40 8x6=48 8x7=56 8x8=64 8x9=72
  9x1= 9 9x2=18 9x3=27 9x4=36 9x5=45 9x6=54 9x7=63 9x8=72 9x9=81
 ```
+
+</details>
+
+以下、我々学生時代から親しんできた九九表プログラム。
+```c
+#include <stdio.h>
+
+int kuku()
+{
+	for( int ii = 1; ii < 10; ii++ ) {
+		for( int jj = 1; jj < 10; jj++ ) {
+			printf("%3d", ii*jj);
+		}
+		printf("\n");
+	}
+
+	return 0;
+}
+
+int main(void)
+{
+	kuku();
+
+	return 0;
+}
+```
+
+以下、出力結果。
+```terminal
+  1  2  3  4  5  6  7  8  9
+  2  4  6  8 10 12 14 16 18
+  3  6  9 12 15 18 21 24 27
+  4  8 12 16 20 24 28 32 36
+  5 10 15 20 25 30 35 40 45
+  6 12 18 24 30 36 42 48 54
+  7 14 21 28 35 42 49 56 63
+  8 16 24 32 40 48 56 64 72
+  9 18 27 36 45 54 63 72 81
+```
+これぞ九九表だろう。  
 
 
 <a name="findAPrimeNumberChapter2"></a>
