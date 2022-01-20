@@ -1288,7 +1288,7 @@ int hogefunc(int hoge[], int size) {
   以下、各項目(目次)。  
   [x] [平均値を求める。](#findTheAverageValueChapter2)2021/09/28  
   [x] [1からnまで足し合わせる。](#addFrom1tonChapter2)2022/01/07  
-  [ ] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
+  [x] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)2022/01/20  
   [ ] [素数を求める。](#findAPrimeNumberChapter2)  
   [ ] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
   [ ] [エラトステネスの篩](#eratosthenesSieveChapter2)  
@@ -1506,6 +1506,215 @@ int main(void)
 
 <a name="outputTheMultiplicationTableChapter2"></a>
 #### 九九の式を出力する。
+Pythonでやったように、九九の式を出すのではなく、九九表を出すことにする。  
+ルールはPythonと同じ。  
+※[二重ループ(forの入れ子)](#subRepetition4)を使う。  
+
+* 作業ルール。  
+  * 二重ループを使う。  
+
+<details><summary>縦に並ぶ出力結果</summary>
+
+以下、プログラム。
+```c
+#include <stdio.h>
+
+int kuku()
+{
+	int total = 0;
+	for( int ii = 1; ii < 10; ii++ ) {
+		for( int jj = 1; jj < 10; jj++ ) {
+			printf("%2d x %2d = %2d", ii, jj, ii*jj);
+			printf("\n");
+		}
+		printf("\n");
+	}
+
+	return total;
+}
+
+int main(void)
+{
+	kuku();
+
+	return 0;
+}
+```
+
+以下、出力結果。
+```terminal
+ 1 x  1 =  1
+ 1 x  2 =  2
+ 1 x  3 =  3
+ 1 x  4 =  4
+ 1 x  5 =  5
+ 1 x  6 =  6
+ 1 x  7 =  7
+ 1 x  8 =  8
+ 1 x  9 =  9
+
+ 2 x  1 =  2
+ 2 x  2 =  4
+ 2 x  3 =  6
+ 2 x  4 =  8
+ 2 x  5 = 10
+ 2 x  6 = 12
+ 2 x  7 = 14
+ 2 x  8 = 16
+ 2 x  9 = 18
+
+ 3 x  1 =  3
+ 3 x  2 =  6
+ 3 x  3 =  9
+ 3 x  4 = 12
+ 3 x  5 = 15
+ 3 x  6 = 18
+ 3 x  7 = 21
+ 3 x  8 = 24
+ 3 x  9 = 27
+
+ 4 x  1 =  4
+ 4 x  2 =  8
+ 4 x  3 = 12
+ 4 x  4 = 16
+ 4 x  5 = 20
+ 4 x  6 = 24
+ 4 x  7 = 28
+ 4 x  8 = 32
+ 4 x  9 = 36
+
+ 5 x  1 =  5
+ 5 x  2 = 10
+ 5 x  3 = 15
+ 5 x  4 = 20
+ 5 x  5 = 25
+ 5 x  6 = 30
+ 5 x  7 = 35
+ 5 x  8 = 40
+ 5 x  9 = 45
+
+ 6 x  1 =  6
+ 6 x  2 = 12
+ 6 x  3 = 18
+ 6 x  4 = 24
+ 6 x  5 = 30
+ 6 x  6 = 36
+ 6 x  7 = 42
+ 6 x  8 = 48
+ 6 x  9 = 54
+
+ 7 x  1 =  7
+ 7 x  2 = 14
+ 7 x  3 = 21
+ 7 x  4 = 28
+ 7 x  5 = 35
+ 7 x  6 = 42
+ 7 x  7 = 49
+ 7 x  8 = 56
+ 7 x  9 = 63
+
+ 8 x  1 =  8
+ 8 x  2 = 16
+ 8 x  3 = 24
+ 8 x  4 = 32
+ 8 x  5 = 40
+ 8 x  6 = 48
+ 8 x  7 = 56
+ 8 x  8 = 64
+ 8 x  9 = 72
+
+ 9 x  1 =  9
+ 9 x  2 = 18
+ 9 x  3 = 27
+ 9 x  4 = 36
+ 9 x  5 = 45
+ 9 x  6 = 54
+ 9 x  7 = 63
+ 9 x  8 = 72
+ 9 x  9 = 81
+```
+
+</details>
+
+<details><summary>適度に折り返された表示形式。</summary>
+
+以下、四角形っぽい表示に置き換えたプログラム。
+```c
+#include <stdio.h>
+
+int kuku()
+{
+	for( int ii = 1; ii < 10; ii++ ) {
+		for( int jj = 1; jj < 10; jj++ ) {
+			printf("%2dx%d=%2d", ii, jj, ii*jj);	←☆ここの処理で改行部分を調整した。
+		}
+		printf("\n");
+	}
+
+	return 0;
+}
+
+int main(void)
+{
+	kuku();
+
+	return 0;
+}
+```
+
+以下、出力結果。
+```c
+ 1x1= 1 1x2= 2 1x3= 3 1x4= 4 1x5= 5 1x6= 6 1x7= 7 1x8= 8 1x9= 9
+ 2x1= 2 2x2= 4 2x3= 6 2x4= 8 2x5=10 2x6=12 2x7=14 2x8=16 2x9=18
+ 3x1= 3 3x2= 6 3x3= 9 3x4=12 3x5=15 3x6=18 3x7=21 3x8=24 3x9=27
+ 4x1= 4 4x2= 8 4x3=12 4x4=16 4x5=20 4x6=24 4x7=28 4x8=32 4x9=36
+ 5x1= 5 5x2=10 5x3=15 5x4=20 5x5=25 5x6=30 5x7=35 5x8=40 5x9=45
+ 6x1= 6 6x2=12 6x3=18 6x4=24 6x5=30 6x6=36 6x7=42 6x8=48 6x9=54
+ 7x1= 7 7x2=14 7x3=21 7x4=28 7x5=35 7x6=42 7x7=49 7x8=56 7x9=63
+ 8x1= 8 8x2=16 8x3=24 8x4=32 8x5=40 8x6=48 8x7=56 8x8=64 8x9=72
+ 9x1= 9 9x2=18 9x3=27 9x4=36 9x5=45 9x6=54 9x7=63 9x8=72 9x9=81
+```
+
+</details>
+
+以下、我々学生時代から親しんできた九九表プログラム。
+```c
+#include <stdio.h>
+
+int kuku()
+{
+	for( int ii = 1; ii < 10; ii++ ) {
+		for( int jj = 1; jj < 10; jj++ ) {
+			printf("%3d", ii*jj);
+		}
+		printf("\n");
+	}
+
+	return 0;
+}
+
+int main(void)
+{
+	kuku();
+
+	return 0;
+}
+```
+
+以下、出力結果。
+```terminal
+  1  2  3  4  5  6  7  8  9
+  2  4  6  8 10 12 14 16 18
+  3  6  9 12 15 18 21 24 27
+  4  8 12 16 20 24 28 32 36
+  5 10 15 20 25 30 35 40 45
+  6 12 18 24 30 36 42 48 54
+  7 14 21 28 35 42 49 56 63
+  8 16 24 32 40 48 56 64 72
+  9 18 27 36 45 54 63 72 81
+```
+これぞ九九表だろう。  
+
 
 <a name="findAPrimeNumberChapter2"></a>
 #### 素数を求める。
