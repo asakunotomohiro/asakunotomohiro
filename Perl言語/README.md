@@ -979,7 +979,7 @@ sub lstatfunc() {
 
 	foreach my $index ( 0..$#stat_entity ) {
 		if( $stat_entity[$index] eq $stat_virtual[$index] ){
-			say "　一致結果の$stat_memo->[$index]情報\t\t$stat_entity[$index]";
+			say "　一致結果の$stat_memo->[$index][0]情報\t\t$stat_entity[$index]";
 		}
 		else{
 			say "不一致結果の$stat_memo->[$index][0]情報\t$stat_entity[$index]=!$stat_virtual[$index]\t$stat_memo->[$index][1]";
@@ -994,21 +994,21 @@ sub lstatfunc() {
 
 以下、出力結果。
 ```terminal
-　一致結果のARRAY(0x7f9a9e003448)情報		16777220
-不一致結果のino情報	67645192=!67645197	ファイルのiノード番号
-不一致結果のmode情報	33188=!41453	ファイルの権限ビットとそれ以外の数ビットを合わせたもの
-　一致結果のARRAY(0x7f9a9e017f08)情報		1
-　一致結果のARRAY(0x7f9a9e01b630)情報		501
-　一致結果のARRAY(0x7f9a9e01b690)情報		20
-　一致結果のARRAY(0x7f9a9e01b8d0)情報		0
-不一致結果のsize情報	0=!53	ファイルの容量をバイト単位で表す
-不一致結果のatime情報	1642645640=!1642645641	最終アクセス時刻
-不一致結果のmtime情報	1642645640=!1642645641	最終更新時刻
-不一致結果のctime情報	1642645640=!1642645641	最後のinode変更時刻
-　一致結果のARRAY(0x7f9a9e804a18)情報		4096
-　一致結果のARRAY(0x7f9a9e80f560)情報		0
+　一致結果のdev情報			16777220
+不一致結果のino情報			67645192=!67645197		←☆ファイルのiノード番号
+不一致結果のmode情報		33188=!41453			←☆ファイルの権限ビットとそれ以外の数ビットを合わせたもの
+　一致結果のnlink情報		1
+　一致結果のuid情報			501
+　一致結果のgid情報			20
+　一致結果のrdev情報		0
+不一致結果のsize情報		0=!53					←☆ファイルの容量をバイト単位で表す
+不一致結果のatime情報		1642645640=!1642645641	←☆最終アクセス時刻
+不一致結果のmtime情報		1642645640=!1642645641	←☆最終更新時刻
+不一致結果のctime情報		1642645640=!1642645641	←☆最後のinode変更時刻
+　一致結果のblksize情報		4096
+　一致結果のblocks情報		0
 ```
-不一致箇所があるのが分かる。  
+不一致箇所があるのが分かる(見やすいように加工)。  
 
 
 <a name="subArrangement999"></a>
