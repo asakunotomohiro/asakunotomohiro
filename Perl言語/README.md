@@ -9379,6 +9379,8 @@ exit	←☆上下左右に広がった。
 
 [sideオプション](#practicaluseTkgeometrymanagementpackoptionside)は、指定に関係なく、ウィジェットの変化なし。  
 
+結局のところ、求めるUIを先に考え、資料にした上で、その資料を見ながらプログラミングをしなければ、想像力が追いつかずに挫折しそうに思う。  
+
 
 <a name="practicaluseTkgeometrymanagementpackoptionanchor"></a>
 ###### Packオプション-ウィンドウまたはフレームの持つウィジェットリストにおける位置決め。

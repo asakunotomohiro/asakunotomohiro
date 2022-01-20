@@ -31,7 +31,7 @@ sub asakunoGUIargpackExpandZero() {
 	MainLoop;
 	say "終了。";	# 出力されない(exit終了のためだが、×印で終了した場合出力される)。
 }
-#&asakunoGUIargpackExpandZero(@ARGV);
+&asakunoGUIargpackExpandZero(@ARGV);
 
 sub asakunoGUIargpackExpandOne() {
 	my $mw = MainWindow->new;
