@@ -7699,6 +7699,7 @@ sub localtimestat() {
 |----|------|
 |`10 & 12`|[ビットAND演算子](https://perldoc.jp/docs/perl/5.24.1/perlop.pod#Bitwise32And)(両方のオペランドが1になっているビットを1にする（この例では8になる）)。|
 |`10 | 12`|[ビットOR演算子](https://perldoc.jp/docs/perl/5.24.1/perlop.pod#Bitwise32Or32and32Exclusive32Or)(片方のオペランドが1になっているビットを1にする（この例では14になる）)。|
+|`10 ^ 12`|[ビットXOR演算子](https://perldoc.jp/docs/perl/5.24.1/perlop.pod#Bitwise32Or32and32Exclusive32Or)(片方のオペランドだけが1になっているビットを1にする（この例では6になる）)。|
 
 
 以下、ビットAND演算子プログラム。
@@ -7717,6 +7718,16 @@ use v5.24;
 
 sub bitFiletest() {
 	say 10 | 12;	# ビットOR演算子の出力結果：14
+}
+&bitFiletest();
+```
+
+以下、ビットXOR演算子プログラム。
+```perl
+use v5.24;
+
+sub bitFiletest() {
+	say 10 ^ 12;	# ビットOR演算子の出力結果：6
 }
 &bitFiletest();
 ```
