@@ -9249,7 +9249,138 @@ xと異なる表示になる。
 
 <a name="practicaluseTkgeometrymanagementpackoptionexpand"></a>
 ###### Packオプション-ウィジェット間の余白決め。
-ウィンドウまたはフレームの空き領域に対して割り当て領域を広げる(要は、余白作成)。  
+ウィンドウまたはフレームの空き領域に対して割り当て領域を広げる(要は、余白埋め作業)。  
+```perl
+-expand =>
+        1|	←☆ウィジェット広げる。
+        0	←☆デフォルト値(広げない)。
+```
+左右のどちらかに押しつける指示([`fill`](#practicaluseTkgeometrymanagementpackoptionfill)？)がある場合、水平方向に広がる(余白が許す限り)。  
+上下のどちらかに押しつける指示([`fill`](#practicaluseTkgeometrymanagementpackoptionfill)？)がある場合、垂直方向に広がる(余白が許す限り)。  
+
+<details><summary>指定無意味</summary>
+
+以下、0指定は、最小の大きさのウィジェットが配置されるだけ。
+```perl
+use v5.24;
+use Tk;
+
+sub expandzero() {
+	my $mw = MainWindow->new;
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "none",
+				-command => sub { exit }
+			)->pack(
+					-fill => 'none',
+					-expand => 0,
+				);			# 終了ボタン。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-fill => 'y',
+					-expand => 0,
+				);			# 終了ボタン。
+	MainLoop;
+	say "終了。";
+}
+&expandzero(@ARGV);
+```
+恩恵が全くない。  
+
+以下、expandオプションに'0'を指定した表示姿(fillオプションも併用)。
+```text
+none
+exit
+```
+
+
+以下、オプション値に1を指定したプログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub expandone() {
+	my $mw = MainWindow->new;
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "none",
+				-command => sub { exit }
+			)->pack(
+					-fill => 'none',
+					-expand => 1,
+				);			# 終了ボタン。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-fill => 'y',
+					-expand => 1,
+				);			# 終了ボタン。
+	MainLoop;
+	say "終了。";
+}
+&expandone(@ARGV);
+```
+0との違いは、ウィジェットの配置場所が変わったぐらいしか違いが分からない。  
+ウィジェットが広がっているから中心に来るのだろうが、それが見えない。  
+
+以下、expandオプションに'1'を指定した表示姿(fillオプションも併用)。
+```text
+none
+exit	←☆0と比べれば上下に広がった。
+```
+noneの場合は、何も変化がない(1を指定しているのに、、、)。  
+
+</details>
+
+以下、オプション値に1を指定したプログラム(かつ、fillに**both**を指定)。
+```perl
+use v5.24;
+use Tk;
+
+sub expandone() {
+	my $mw = MainWindow->new;
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "none",
+				-command => sub { exit }
+			)->pack(
+					-fill => 'none',
+					-expand => 1,
+				);			# 終了ボタン。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-fill => 'both',
+					-expand => 1,
+				);			# 終了ボタン。
+	MainLoop;
+	say "終了。";
+}
+&expandone();
+```
+
+以下、expandオプションに'1'を指定した表示姿(fillオプション**both**)。
+```text
+none
+exit	←☆上下左右に広がった。
+```
+この変化は目で見た方が良い。  
+むしろ、見なくても想像できるほどギチギチに広がる。  
+ただし、noneボタンは、一切変化がない(上部の中央に位置する)。  
+
+なぜ、**1**指定するだけで、ウィジェットが中央に来るのか。  
+その答えは、他のオプションに[**anchor**](#practicaluseTkgeometrymanagementpackoptionanchor)と言うのがあり、そのデフォルト値が中央配置になっているためである。  
+
+[sideオプション](#practicaluseTkgeometrymanagementpackoptionside)は、指定に関係なく、ウィジェットの変化なし。  
+
+結局のところ、求めるUIを先に考え、資料にした上で、その資料を見ながらプログラミングをしなければ、想像力が追いつかずに挫折しそうに思う。  
 
 
 <a name="practicaluseTkgeometrymanagementpackoptionanchor"></a>
