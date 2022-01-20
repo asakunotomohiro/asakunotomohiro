@@ -1489,7 +1489,7 @@ vim9scriptでは`unlet`が使えないようだ(公式サイトでは[使える]
   [x] [木](#woodChapter3)2021/12/28  
   [x] [グラフ](#graphChapter3)2022/01/02  
   [x] [スタックとキューを扱う。](#stacksAndQueuesChapter3)2022/01/11  
-  [ ] [データを保存する。](#saveTheDataChapter3)  
+  [x] [データを保存する。](#saveTheDataChapter3)2022/01/20  
 <a name="algorithmTextbookLearnedinPythonChapter4"></a>
 * [Chapter4 サーチ](#searchOverviewChapter4)  
   複数データから目的地を探し出すこと。  
@@ -2498,23 +2498,6 @@ vimScriptは、エディタ用スクリプト(マクロ？)だと思っていた
 [:redi[r][!] > {file}](https://vim-jp.org/vimdoc-ja/various.html#:redir)  
 > コマンドの出力 (メッセージ) を {file} にリダイレクトします。
 
-以下、実施。
-```terminal
-$ ll write.vim *txt
--rw-r--r--  1 asakunotomohiro  staff    268  1 20 17:14 write.vim
-$ vi write.vim	←☆エディタで開いてから実行する。
-$ ll write.vim *txt
--rw-r--r--  1 asakunotomohiro  staff    119  1 20 17:15 test.txt
--rw-r--r--  1 asakunotomohiro  staff    268  1 20 17:14 write.vim
-$
-$ cat test.txt
-テスト書き込み1行目
-テスト書き込み2行目
-テスト書き込み3行目
-2,4,8,16,32,64,128,256,512,1024,$	←☆行末改行されておらず。
-$
-```
-
 以下、書き込み用プログラム。
 ```vim
 def! Write()
@@ -2532,11 +2515,28 @@ enddef
 call Write()
 ```
 
+以下、書き込み実施。
+```terminal
+$ ll write.vim *txt
+-rw-r--r--  1 asakunotomohiro  staff    268  1 20 17:14 write.vim
+$ vi write.vim	←☆エディタで開いてから実行する。
+$ ll write.vim *txt
+-rw-r--r--  1 asakunotomohiro  staff    119  1 20 17:15 test.txt
+-rw-r--r--  1 asakunotomohiro  staff    268  1 20 17:14 write.vim
+$
+$ cat test.txt
+テスト書き込み1行目
+テスト書き込み2行目
+テスト書き込み3行目
+2,4,8,16,32,64,128,256,512,1024,$	←☆行末改行されておらず。
+$
+```
+
 以下、読み込み用プログラム。
 ```vim
 def! Write( filename: string )
-	# こちらは書き込みよう関数なので気にしないこと。
-	#redir! > filename
+	# こちらは書き込み用関数なので気にしないこと。
+	#redir! > filename	←☆この変数が変数展開されないため、この名前のままファイルが作られる。
 	redir! > 本日は晴天なり.txt
 		var data = 1	# べき乗演算子が無いため、自前計算用変数用意。
 		for ii in range(10)
