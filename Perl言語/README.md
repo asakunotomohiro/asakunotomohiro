@@ -7693,7 +7693,22 @@ sub localtimestat() {
 
 <a name="practicaluseFiletestbitoperator"></a>
 ### ビット演算子
+[論理演算子](#subConditional2)にまとめたかったひとつではある。  
 
+| 式 | 意味 |
+|----|------|
+|`10 & 12`|[ビットAND演算子](https://perldoc.jp/docs/perl/5.24.1/perlop.pod#Bitwise32And)(両方のオペランドが1になっているビットを1にする（この例では8になる）)。|
+
+
+以下、プログラム。
+```perl
+use v5.24;
+
+sub bitFiletest() {
+	say 10 & 12;	# ビットAND演算子の出力結果：8
+}
+&bitFiletest();
+```
 
 </details>
 
