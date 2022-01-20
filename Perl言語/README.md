@@ -9249,7 +9249,15 @@ xと異なる表示になる。
 
 <a name="practicaluseTkgeometrymanagementpackoptionexpand"></a>
 ###### Packオプション-ウィジェット間の余白決め。
-ウィンドウまたはフレームの空き領域に対して割り当て領域を広げる(要は、余白作成)。  
+ウィンドウまたはフレームの空き領域に対して割り当て領域を広げる(要は、余白埋め作業)。  
+```perl
+-expand =>
+        1|	←☆ウィジェット広げる。
+        0	←☆デフォルト値(広げない)。
+```
+左右のどちらかに押しつける指示がある場合、その左右に広がる(余白が許す限り)。  
+上下のどちらかに押しつける指示がある場合、その上下に広がる(余白が許す限り)。  
+
 
 
 <a name="practicaluseTkgeometrymanagementpackoptionanchor"></a>
