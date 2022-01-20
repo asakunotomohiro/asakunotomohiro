@@ -7520,6 +7520,47 @@ Perlからハードリンクディレクトリ作成はできそうにない。
 
 <a name="practicaluseFiletestlstatfunck"></a>
 ### lstat関数
+シンボリックリンク(ソフトリンク)を[stat関数](#practicaluseFileteststatfunck)に渡した場合、実態ファイルの情報を取得する。  
+
+以下、そのプログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub statfunc() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	my $entity = $currentDir . '/実体ファイル.txt';
+	open my $file_fh, '>', $entity
+		or die "$entityのファイルオープン失敗($!)";
+	close $file_fh;
+	my $virtual = '仮想.md';
+	symlink $entity, $virtual or warn "シンボリックリンクファイル作成失敗($!)。";
+
+	say "以下、stat情報を実体ファイルとシンボリックリンクファイルで比較した。";
+	my @stat_entity = stat($entity);	# ファイルのstat情報。;
+	my @stat_virtual = stat($virtual);	# ファイルのstat情報。;
+
+	while( my($index, $value) = each @stat_entity ) {
+		unless( $value eq $stat_virtual[$index] ){
+			say "実体($value)!=リンクファイル($stat_virtual[$index])";
+		}
+	}
+
+	unlink $virtual or warn "$virtualファイル削除失敗($!)。";
+	unlink $entity or warn "$entityファイル削除失敗($!)。";
+
+	say "以上。"
+}
+&statfunc();
+```
+
+以下、出力結果。
+```terminal
+以下、stat情報を実体ファイルとシンボリックリンクファイルで比較した。
+以上。
+```
+何も出力されていないということは、実体ファイルの情報とシンボリックリンクファイルの情報が全て一致していたと言うこと。  
+要は、シンボリックリンクファイルの情報ではなく、実体ファイルの情報だと言うこと。  
 
 
 <a name="practicaluseFiletestlocaltime"></a>
