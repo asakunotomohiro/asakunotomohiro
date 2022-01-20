@@ -7693,7 +7693,40 @@ sub localtimestat() {
 
 <a name="practicaluseFiletestbitoperator"></a>
 ### ビット演算子
+[論理演算子](#subConditional2)にまとめたかったひとつではある。  
 
+| 式 | 意味 |
+|----|------|
+|`10 & 12`|[ビットAND演算子](https://perldoc.jp/docs/perl/5.24.1/perlop.pod#Bitwise32And)(両方のオペランドが1になっているビットを1にする（この例では8になる）)。|
+|`10 | 12`|[ビットOR演算子](https://perldoc.jp/docs/perl/5.24.1/perlop.pod#Bitwise32Or32and32Exclusive32Or)(片方のオペランドが1になっているビットを1にする（この例では14になる）)。|
+|`10 ^ 12`|[ビットXOR演算子](https://perldoc.jp/docs/perl/5.24.1/perlop.pod#Bitwise32Or32and32Exclusive32Or)(片方のオペランドだけが1になっているビットを1にする（この例では6になる）)。|
+|`6 << 2`|[左シフト演算子](https://perldoc.jp/docs/perl/5.24.1/perlop.pod#Shift32Operators)(左オペランドを右オペランドで示されたビット数だけ左に移動する。右端には0が補われる。（この例では24になる）)
+|`25 >> 2`|[右シフト演算子](https://perldoc.jp/docs/perl/5.24.1/perlop.pod#Shift32Operators)(左オペランドを右オペランドで示されたビット数だけ右に移動する。右端から押し出されたビットは捨てられる。（この例では6になる）)
+|`~10`|[ビット否定演算子](https://perldoc.jp/docs/perl/5.24.1/perlop.pod#Symbolic32Unary32Operators)(全てのビットを反転した数を返す。（この例では0xFFFFFFF5になる）)。
+
+
+以下、プログラム。
+```perl
+use v5.24;
+
+sub bitFiletest() {
+	say 10 & 12;	# ビットAND演算子の出力結果：8
+	say 10 | 12;	# ビットOR演算子の出力結果：14
+	say 10 ^ 12;	# ビットOR演算子の出力結果：6
+	say 6 << 2;	# 左シフト演算子の出力結果：24
+	say 25 >> 2;	# 右シフト演算子の出力結果：6
+	printf "%x\n", ~10;	# ビット否定演算子の出力結果：fffffffffffffff5
+}
+&bitFiletest();
+```
+ビット否定演算子は、別名、単項ビット反転演算子とも言うそうだ。  
+単項演算子のひとつなのだろう。  
+
+todo:
+そもそも使うかどうかも分からないものに時間を使うのはどうかと思うため、ここで打ち切った。
+機会があれば勉強を再開しようと思う。  
+例えば、本格的にファイル権限などを操作する時に重要になることだろう。  
+そもそもビット演算子の活用は、C言語以外でお目に掛ったことがない。  
 
 </details>
 
