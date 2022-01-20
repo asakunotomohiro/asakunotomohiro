@@ -2489,6 +2489,48 @@ lspと言うぐらいだからプラグインなのかな。
 
 <a name="saveTheDataChapter3"></a>
 #### データを保存する。
+プログラムが生成したデータをプログラム実行後も保持もしくは別途使い回すために、今回はファイルを用いて書き出し・読み出しを行う。  
+
+vimScriptは、エディタ用スクリプト(マクロ？)だと思っていたため、ファイル書き込みや読み込みが無いと思っていた。  
+しかし、スワップファイルやバックアップファイルは、まさに書き込みであり、読み込みも必要な技術になるため、スクリプト利用者であれば、誰でも書き込みや読み込みができるのは当然のことだと気づかされた。
+そもそも、エディタがファイル書き込み・読み込みに対応していない場合、それはエディタではないわな。  
+
+[:redi[r][!] > {file}](https://vim-jp.org/vimdoc-ja/various.html#:redir)  
+> コマンドの出力 (メッセージ) を {file} にリダイレクトします。
+
+以下、実施。
+```terminal
+$ ll write.vim *txt
+-rw-r--r--  1 asakunotomohiro  staff    268  1 20 17:14 write.vim
+$ vi write.vim	←☆エディタで開いてから実行する。
+$ ll write.vim *txt
+-rw-r--r--  1 asakunotomohiro  staff    119  1 20 17:15 test.txt
+-rw-r--r--  1 asakunotomohiro  staff    268  1 20 17:14 write.vim
+$
+$ cat test.txt
+テスト書き込み1行目
+テスト書き込み2行目
+テスト書き込み3行目
+2,4,8,16,32,64,128,256,512,1024,$	←☆行末改行されておらず。
+$
+```
+
+以下、書き込み用プログラム。
+```vim
+def! Write()
+	redir! > test.txt
+		echon "テスト書き込み1行目"
+		silent! echo "テスト書き込み2行目"
+		echo "テスト書き込み3行目\n"
+		var data = 1
+		for ii in range(10)
+			data *= 2
+			echon data .. ','
+		endfor
+	redir END
+enddef
+call Write()
+```
 
 
 <a name="searchOverviewChapter4"></a>
