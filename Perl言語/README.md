@@ -9333,6 +9333,12 @@ sub expandone() {
 none
 exit	←☆0と比べれば上下に広がった。
 ```
+noneの場合は、何も変化がない(1を指定しているのに、、、)。  
+
+なぜ、**1**指定するだけで、ウィジェットが中央に来るのか。  
+その答えは、他のオプションに[**anchor**](#practicaluseTkgeometrymanagementpackoptionanchor)と言うのがあり、そのデフォルト値が中央配置になっているためである。  
+
+[sideオプション](#practicaluseTkgeometrymanagementpackoptionside)は、指定に関係なく、ウィジェットの変化なし。  
 
 
 <a name="practicaluseTkgeometrymanagementpackoptionanchor"></a>
