@@ -49,7 +49,8 @@ sub asakunoGUIargpackExpandOne() {
 				-text => "exit",
 				-command => sub { exit }
 			)->pack(
-					-fill => 'y',
+					#-fill => 'y',
+					-fill => 'both',
 					-expand => 1,
 				);					# 終了ボタン。
 	MainLoop;

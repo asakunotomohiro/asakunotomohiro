@@ -9335,6 +9335,45 @@ exit	←☆0と比べれば上下に広がった。
 ```
 noneの場合は、何も変化がない(1を指定しているのに、、、)。  
 
+以下、オプション値に1を指定したプログラム(かつ、fillに**both**を指定)。
+```perl
+use v5.24;
+use Tk;
+
+sub expandone() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "none",
+				-command => sub { exit }
+			)->pack(
+					-fill => 'none',
+					-expand => 1,
+				);			# 終了ボタン。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-fill => 'both',
+					-expand => 1,
+				);			# 終了ボタン。
+	MainLoop;
+	say "終了。";	# 出力されない(exit終了のためだが、×印で終了した場合出力される)。
+}
+&expandone(@ARGV);
+```
+
+以下、expandオプションに'1'を指定した表示姿(fillオプション**both**)。
+```text
+none
+exit	←☆上下左右に広がった。
+```
+この変化は目で見た方が良い。  
+むしろ、見なくても想像できるほどギチギチに広がる。  
+ただし、noneボタンは、一切変化がない(上部の中央に位置する)。  
+
 なぜ、**1**指定するだけで、ウィジェットが中央に来るのか。  
 その答えは、他のオプションに[**anchor**](#practicaluseTkgeometrymanagementpackoptionanchor)と言うのがあり、そのデフォルト値が中央配置になっているためである。  
 
