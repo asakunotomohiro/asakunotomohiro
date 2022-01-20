@@ -2532,6 +2532,49 @@ enddef
 call Write()
 ```
 
+以下、読み込み用プログラム。
+```vim
+def! Write( filename: string )
+	# こちらは書き込みよう関数なので気にしないこと。
+	#redir! > filename
+	redir! > 本日は晴天なり.txt
+		var data = 1	# べき乗演算子が無いため、自前計算用変数用意。
+		for ii in range(10)
+			data *= 2	# べき乗計算。
+			# メッセージ出力を抑止しているつもりなのだが、echonを使っている以上、出てしまうのだろうか。
+			silent! echon data .. ','
+		endfor
+	redir END
+enddef
+
+def! Read( filename: string )
+	# 今回は、ここの読み込み関数が大事になる。
+	for line in readfile(filename)
+		echo line
+	endfor
+enddef
+
+def! Main()
+	var filename = '本日は晴天なり.txt'
+
+	Write(filename)
+	echo "--------"
+	Read(filename)
+enddef
+
+call Main()
+```
+
+以下、出力結果。
+```terminal
+2,4,8,16,32,64,128,256,512,1024,	←☆ファイル書き込み用の出力結果。
+--------
+2,4,8,16,32,64,128,256,512,1024,	←☆ファイル読み込み用の出力結果。
+```
+
+不思議なことに、ファイル書き込み時の変数展開が行われない。  
+どうすればいい？  
+
 
 <a name="searchOverviewChapter4"></a>
 ### サーチ
