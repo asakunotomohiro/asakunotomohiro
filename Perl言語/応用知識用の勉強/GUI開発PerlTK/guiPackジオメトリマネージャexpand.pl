@@ -31,7 +31,31 @@ sub asakunoGUIargpackExpandZero() {
 	MainLoop;
 	say "終了。";	# 出力されない(exit終了のためだが、×印で終了した場合出力される)。
 }
-&asakunoGUIargpackExpandZero(@ARGV);
+#&asakunoGUIargpackExpandZero(@ARGV);
+
+sub asakunoGUIargpackExpandOne() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "none",
+				-command => sub { exit }
+			)->pack(
+					-fill => 'none',
+					-expand => 1,
+				);					# 終了ボタン。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-fill => 'y',
+					-expand => 1,
+				);					# 終了ボタン。
+	MainLoop;
+	say "終了。";	# 出力されない(exit終了のためだが、×印で終了した場合出力される)。
+}
+&asakunoGUIargpackExpandOne(@ARGV);
 
 
 say "以上。"

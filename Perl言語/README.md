@@ -9307,11 +9307,19 @@ sub expandone() {
 
 	# 以下、ウィジェット生成。
 	$mw->Button(
+				-text => "none",
+				-command => sub { exit }
+			)->pack(
+					-fill => 'none',
+					-expand => 1,
+				);			# 終了ボタン。
+	$mw->Button(
 				-text => "exit",
 				-command => sub { exit }
 			)->pack(
+					-fill => 'y',
 					-expand => 1,
-				);					# 終了ボタン。
+				);			# 終了ボタン。
 	MainLoop;
 	say "終了。";	# 出力されない(exit終了のためだが、×印で終了した場合出力される)。
 }
@@ -9319,6 +9327,12 @@ sub expandone() {
 ```
 0との違いは、ウィジェットの配置場所が変わったぐらいしか違いが分からない。  
 ウィジェットが広がっているから中心に来るのだろうが、それが見えない。  
+
+以下、expandオプションに'1'を指定した表示姿(fillオプションも併用)。
+```text
+none
+exit	←☆0と比べれば上下に広がった。
+```
 
 
 <a name="practicaluseTkgeometrymanagementpackoptionanchor"></a>
