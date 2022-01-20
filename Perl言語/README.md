@@ -7702,6 +7702,7 @@ sub localtimestat() {
 |`10 ^ 12`|[ビットXOR演算子](https://perldoc.jp/docs/perl/5.24.1/perlop.pod#Bitwise32Or32and32Exclusive32Or)(片方のオペランドだけが1になっているビットを1にする（この例では6になる）)。|
 |`6 << 2`|[左シフト演算子](https://perldoc.jp/docs/perl/5.24.1/perlop.pod#Shift32Operators)(左オペランドを右オペランドで示されたビット数だけ左に移動する。右端には0が補われる。（この例では24になる）)
 |`25 >> 2`|[右シフト演算子](https://perldoc.jp/docs/perl/5.24.1/perlop.pod#Shift32Operators)(左オペランドを右オペランドで示されたビット数だけ右に移動する。右端から押し出されたビットは捨てられる。（この例では6になる）)
+|`~10`|[ビット否定演算子](https://perldoc.jp/docs/perl/5.24.1/perlop.pod#Symbolic32Unary32Operators)(全てのビットを反転した数を返す。（この例では0xFFFFFFF5になる）)。
 
 
 以下、ビットAND演算子プログラム。
@@ -7750,6 +7751,16 @@ use v5.24;
 
 sub bitFiletest() {
 	say 25 >> 2;	# 右シフト演算子の出力結果：6
+}
+&bitFiletest();
+```
+
+以下、ビット否定演算子プログラム。
+```perl
+use v5.24;
+
+sub bitFiletest() {
+	printf "%x\n", ~10;	# ビット否定演算子の出力結果：fffffffffffffff5
 }
 &bitFiletest();
 ```
