@@ -9281,6 +9281,30 @@ sub expandzero() {
 ```
 恩恵が全くない。  
 
+以下、オプション値に1を指定したプログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub expandone() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-expand => 1,
+				);					# 終了ボタン。
+	MainLoop;
+	say "終了。";	# 出力されない(exit終了のためだが、×印で終了した場合出力される)。
+}
+&expandone(@ARGV);
+```
+0との違いは、ウィジェットの配置場所が変わったぐらいしか違いが分からない。  
+ウィジェットが広がっているから中心に来るのだろうが、それが見えない。  
+
 
 <a name="practicaluseTkgeometrymanagementpackoptionanchor"></a>
 ###### Packオプション-ウィンドウまたはフレームの持つウィジェットリストにおける位置決め。
