@@ -1489,7 +1489,7 @@ vim9scriptでは`unlet`が使えないようだ(公式サイトでは[使える]
   [x] [木](#woodChapter3)2021/12/28  
   [x] [グラフ](#graphChapter3)2022/01/02  
   [x] [スタックとキューを扱う。](#stacksAndQueuesChapter3)2022/01/11  
-  [ ] [データを保存する。](#saveTheDataChapter3)  
+  [x] [データを保存する。](#saveTheDataChapter3)2022/01/20  
 <a name="algorithmTextbookLearnedinPythonChapter4"></a>
 * [Chapter4 サーチ](#searchOverviewChapter4)  
   複数データから目的地を探し出すこと。  
@@ -2489,6 +2489,90 @@ lspと言うぐらいだからプラグインなのかな。
 
 <a name="saveTheDataChapter3"></a>
 #### データを保存する。
+プログラムが生成したデータをプログラム実行後も保持もしくは別途使い回すために、今回はファイルを用いて書き出し・読み出しを行う。  
+
+ファイル書き込み関数：[:redi[r][!] > {file}](https://vim-jp.org/vimdoc-ja/various.html#:redir)  
+> コマンドの出力 (メッセージ) を {file} にリダイレクトします。
+
+以下、書き込み用プログラム。
+```vim
+def! Write()
+	redir! > test.txt
+		echon "テスト書き込み1行目"
+		silent! echo "テスト書き込み2行目"
+		echo "テスト書き込み3行目\n"
+		var data = 1
+		for ii in range(10)
+			data *= 2
+			echon data .. ','
+		endfor
+	redir END
+enddef
+call Write()
+```
+
+以下、書き込み実施。
+```terminal
+$ ll write.vim *txt
+-rw-r--r--  1 asakunotomohiro  staff    268  1 20 17:14 write.vim
+$ vi write.vim	←☆エディタで開いてから実行する。
+$ ll write.vim *txt
+-rw-r--r--  1 asakunotomohiro  staff    119  1 20 17:15 test.txt
+-rw-r--r--  1 asakunotomohiro  staff    268  1 20 17:14 write.vim
+$
+$ cat test.txt
+テスト書き込み1行目
+テスト書き込み2行目
+テスト書き込み3行目
+2,4,8,16,32,64,128,256,512,1024,$	←☆行末改行されておらず。
+$
+```
+
+以下、読み込み用プログラム。
+```vim
+def! Write( filename: string )
+	# こちらは書き込み用関数なので気にしないこと。
+	#redir! > filename	←☆この変数が変数展開されないため、この名前のままファイルが作られる。
+	redir! > 本日は晴天なり.txt
+		var data = 1	# べき乗演算子が無いため、自前計算用変数用意。
+		for ii in range(10)
+			data *= 2	# べき乗計算。
+			# メッセージ出力を抑止しているつもりなのだが、echonを使っている以上、出てしまうのだろうか。
+			silent! echon data .. ','
+		endfor
+	redir END
+enddef
+
+def! Read( filename: string )
+	# 今回は、ここの読み込み関数が大事になる。
+	for line in readfile(filename)
+		echo line
+	endfor
+enddef
+
+def! Main()
+	var filename = '本日は晴天なり.txt'
+
+	Write(filename)
+	echo "--------"
+	Read(filename)
+enddef
+
+call Main()
+```
+
+以下、出力結果。
+```terminal
+2,4,8,16,32,64,128,256,512,1024,	←☆ファイル書き込み用の出力結果。
+--------
+2,4,8,16,32,64,128,256,512,1024,	←☆ファイル読み込み用の出力結果。
+```
+
+不思議なことに、ファイル書き込み時の変数展開が行われない。  
+どうすればいい？  
+
+todo:
+ファイル書き込み時に使う変数を展開させる方法を調べる。  
 
 
 <a name="searchOverviewChapter4"></a>
