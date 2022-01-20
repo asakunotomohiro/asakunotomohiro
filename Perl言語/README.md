@@ -973,9 +973,9 @@ sub lstatfunc() {
 	sleep 1;
 	symlink $entity, $virtual or warn "シンボリックリンクファイル作成失敗($!)。";
 
-	say "以下、stat情報を実体ファイルとシンボリックリンクファイルで比較した。";
-	my @stat_entity = lstat($entity);	# ファイルのstat情報。;
-	my @stat_virtual = lstat($virtual);	# ファイルのstat情報。;
+	say "以下、lstat情報を実体ファイルとシンボリックリンクファイルで比較した。";
+	my @stat_entity = lstat($entity);	# ファイルのlstat情報。;	←☆実体ファイルにもlstat関数を用いている。
+	my @stat_virtual = lstat($virtual);	# ファイルのlstat情報。;
 
 	foreach my $index ( 0..$#stat_entity ) {
 		if( $stat_entity[$index] eq $stat_virtual[$index] ){
@@ -1009,6 +1009,9 @@ sub lstatfunc() {
 　一致結果のblocks情報		0
 ```
 不一致箇所があるのが分かる(見やすいように加工)。  
+
+上記、プログラム側での実体ファイル情報取得用にもstat関数を用いている。  
+これが可能なのは、シンボリックリンク以外を引数にした場合、**stat関数**と全く同じ結果を返すことができるからに他ならない。  
 
 
 <a name="subArrangement999"></a>
