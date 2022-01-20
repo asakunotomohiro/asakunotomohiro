@@ -9258,6 +9258,28 @@ xと異なる表示になる。
 左右のどちらかに押しつける指示がある場合、その左右に広がる(余白が許す限り)。  
 上下のどちらかに押しつける指示がある場合、その上下に広がる(余白が許す限り)。  
 
+以下、指定を0にするが、ほぼ意味の無いプログラムになっている。
+```perl
+use v5.24;
+use Tk;
+
+sub expandzero() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-expand => 0,
+				);					# 終了ボタン。
+	MainLoop;
+	say "終了。";	# 出力されない(exit終了のためだが、×印で終了した場合出力される)。
+}
+&expandzero(@ARGV);
+```
+恩恵が全くない。  
 
 
 <a name="practicaluseTkgeometrymanagementpackoptionanchor"></a>
