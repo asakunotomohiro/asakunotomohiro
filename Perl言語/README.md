@@ -7698,14 +7698,25 @@ sub localtimestat() {
 | 式 | 意味 |
 |----|------|
 |`10 & 12`|[ビットAND演算子](https://perldoc.jp/docs/perl/5.24.1/perlop.pod#Bitwise32And)(両方のオペランドが1になっているビットを1にする（この例では8になる）)。|
+|`10 | 12`|[ビットOR演算子](https://perldoc.jp/docs/perl/5.24.1/perlop.pod#Bitwise32Or32and32Exclusive32Or)(片方のオペランドが1になっているビットを1にする（この例では14になる）)。|
 
 
-以下、プログラム。
+以下、ビットAND演算子プログラム。
 ```perl
 use v5.24;
 
 sub bitFiletest() {
 	say 10 & 12;	# ビットAND演算子の出力結果：8
+}
+&bitFiletest();
+```
+
+以下、ビットOR演算子プログラム。
+```perl
+use v5.24;
+
+sub bitFiletest() {
+	say 10 | 12;	# ビットOR演算子の出力結果：14
 }
 &bitFiletest();
 ```

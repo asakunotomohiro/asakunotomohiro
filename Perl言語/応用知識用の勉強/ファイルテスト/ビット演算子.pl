@@ -11,6 +11,8 @@ say "ビット演算子";
 sub asakuno() {
 	say 10 & 12;	# ビットAND演算子。
 				# 出力結果：8
+	say 10 | 12;	# ビットOR演算子。
+				# 出力結果：14
 }
 &asakuno(@ARGV);
 
