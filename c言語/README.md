@@ -1506,6 +1506,14 @@ int main(void)
 
 <a name="outputTheMultiplicationTableChapter2"></a>
 #### 九九の式を出力する。
+Pythonでやったように、九九の式を出すのではなく、九九表を出すことにする。  
+ルールはPythonと同じ。  
+※[二重ループ(forの入れ子)](#subRepetition4)を使う。  
+
+* 作業ルール。  
+  * 二重ループを使う。  
+
+
 
 <a name="findAPrimeNumberChapter2"></a>
 #### 素数を求める。
