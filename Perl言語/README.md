@@ -943,6 +943,73 @@ say "@boo";	# 20210830 20210831 20210901 20210902
 ```
 ※配列内容が展開されてから新しい配列に格納される。  
 
+以下、**lstat関数**を使い、シンボリックリンクファイルの情報を取得するプログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+my $stat_memo = [
+	["dev", "ファイルのデバイス番号", ],
+	["ino", "ファイルのiノード番号", ],
+	["mode", "ファイルの権限ビットとそれ以外の数ビットを合わせたもの", ],
+	["nlink", "ファイルまたはディレクトリに対するハードリンクの個数", ],
+	["uid", "ファイルの所有者を表すユーザID", ],
+	["gid", "ファイルの所有者を表すグループID", ],
+	["rdev", "デバイス識別子(特殊ファイルのみ)", ],
+	["size", "ファイルの容量をバイト単位で表す", ],
+	["atime", "最終アクセス時刻", ],
+	["mtime", "最終更新時刻", ],
+	["ctime", "最後のinode変更時刻", ],
+	["blksize", "ファイルシステムI/Oでのブロックサイズ", ],
+	["blocks", "割り当てられたブロック数", ],
+];
+
+sub lstatfunc() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	my $entity = $currentDir . '/実体ファイル.txt';
+	open my $file_fh, '>', $entity or die "$entityのファイルオープン失敗($!)";
+	close $file_fh;
+	my $virtual = '仮想.md';
+	sleep 1;
+	symlink $entity, $virtual or warn "シンボリックリンクファイル作成失敗($!)。";
+
+	say "以下、stat情報を実体ファイルとシンボリックリンクファイルで比較した。";
+	my @stat_entity = lstat($entity);	# ファイルのstat情報。;
+	my @stat_virtual = lstat($virtual);	# ファイルのstat情報。;
+
+	foreach my $index ( 0..$#stat_entity ) {
+		if( $stat_entity[$index] eq $stat_virtual[$index] ){
+			say "　一致結果の$stat_memo->[$index]情報\t\t$stat_entity[$index]";
+		}
+		else{
+			say "不一致結果の$stat_memo->[$index][0]情報\t$stat_entity[$index]=!$stat_virtual[$index]\t$stat_memo->[$index][1]";
+		}
+	}
+
+	unlink $virtual or warn "$virtualファイル削除失敗($!)。";
+	unlink $entity or warn "$entityファイル削除失敗($!)。";
+}
+&lstatfunc();
+```
+
+以下、出力結果。
+```terminal
+　一致結果のARRAY(0x7f9a9e003448)情報		16777220
+不一致結果のino情報	67645192=!67645197	ファイルのiノード番号
+不一致結果のmode情報	33188=!41453	ファイルの権限ビットとそれ以外の数ビットを合わせたもの
+　一致結果のARRAY(0x7f9a9e017f08)情報		1
+　一致結果のARRAY(0x7f9a9e01b630)情報		501
+　一致結果のARRAY(0x7f9a9e01b690)情報		20
+　一致結果のARRAY(0x7f9a9e01b8d0)情報		0
+不一致結果のsize情報	0=!53	ファイルの容量をバイト単位で表す
+不一致結果のatime情報	1642645640=!1642645641	最終アクセス時刻
+不一致結果のmtime情報	1642645640=!1642645641	最終更新時刻
+不一致結果のctime情報	1642645640=!1642645641	最後のinode変更時刻
+　一致結果のARRAY(0x7f9a9e804a18)情報		4096
+　一致結果のARRAY(0x7f9a9e80f560)情報		0
+```
+不一致箇所があるのが分かる。  
+
 
 <a name="subArrangement999"></a>
 #### 配列での説明しない項目。
