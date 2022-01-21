@@ -512,6 +512,33 @@ $ cat README.md	←☆どういうこと？
 $
 ```
 
+以下、edコマンド作業継続(正規表現)。
+```terminal
+$ ll
+total 8
+drwxr-xr-x  7 asakunotomohiro  staff  224  1 21 15:21 ドキュメント作成技法/
+-rw-r--r--  1 asakunotomohiro  staff   49  1 14 22:28 README.md
+$ date
+2022年 1月21日 金曜日 15時31分49秒 JST
+$ cat README.md
+# asakunotomohiro
+俺が俺にオンデマンド
+$ ed README.md
+49
+/asakuno/d	←☆正規表現として、検索後に削除している。
+p
+俺が俺にオンデマンド
+1	←☆消えているのが分かる。
+俺が俺にオンデマンド
+q
+?
+q
+$ cat README.md	←☆どういうこと？
+# asakunotomohiro
+俺が俺にオンデマンド
+$
+```
+
 
 <a name="sedawkOreillyBook920002"></a>
 #### コマンドラインの構文
