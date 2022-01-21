@@ -7246,6 +7246,94 @@ todo:
 #### ファイルテスト演算子(`-e`)
 ファイルorディレクトリが存在する。  
 
+<details><summary>ファイル向けプログラム。</summary>
+
+以下、ファイルが存在することの確認プログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub filetestfunc() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+
+	my $filename = $currentDir . '/filetest.txt';
+	unless( -e $filename ) {
+		say "ファイルが存在しない。";
+	}
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename
+		or die "$filenameのファイルオープン失敗($!)";
+	close $file_fh;
+
+	if( -e $filename ) {
+		say "ファイルが存在する。";
+	}
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	unless( -e $filename ) {
+		say "ファイルが存在しない。";
+	}
+}
+&filetestfunc();
+```
+
+以下、出力結果。
+```terminal
+ファイルが存在しない。
+ファイルを作成する。
+ファイルが存在する。
+ファイル削除。
+ファイルが存在しない。
+```
+
+</details>
+
+<details><summary>ディレクトリ向けプログラム。</summary>
+
+以下、ディレクトリが存在することの確認プログラム。
+```perl
+use v5.24;
+
+sub dirtestfunc() {
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+
+	my $dirname = 'dirtest';
+	unless( -e $dirname ) {
+		say "ディレクトリが存在しない。";
+	}
+
+	say "ディレクトリを作成する。";
+	mkdir $dirname, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+
+	if( -e $dirname ) {
+		say "ディレクトリが存在する。";
+	}
+
+	say "ディレクトリ削除。";
+	rmdir $dirname or warn "ディレクトリ削除失敗($!)。";
+	unless( -e $dirname ) {
+		say "ディレクトリが存在しない。";
+	}
+}
+&dirtestfunc();
+```
+
+以下、出力結果。
+```terminal
+ディレクトリが存在しない。
+ディレクトリを作成する。
+ディレクトリが存在する。
+ディレクトリ削除。
+ディレクトリが存在しない。
+```
+
+</details>
+
+要は、ファイルかディレクトリの区別を付けずに存在有無確認ができるファイルテストと言うことになる(分かっていたことではあるが)。  
+しかし、区別を付ける必要が無い理由が何かが分からない。  
+
 
 <a name="practicaluseFiletestoperatorz"></a>
 #### ファイルテスト演算子(`-z`)
