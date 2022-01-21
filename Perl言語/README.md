@@ -7286,6 +7286,45 @@ sub filetestfunc() {
 ファイルが存在しない。
 ```
 
+以下、ディレクトリが存在することの確認プログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub dirtestfunc() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+
+	my $dirname = $currentDir . '/dirtest';
+	unless( -e $dirname ) {
+		say "ディレクトリが存在しない。";
+	}
+
+	say "ディレクトリを作成する。";
+	mkdir $dirname, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+
+	if( -e $dirname ) {
+		say "ディレクトリが存在する。";
+	}
+
+	say "ディレクトリ削除。";
+	rmdir $dirname or warn "ディレクトリ削除失敗($!)。";
+	unless( -e $dirname ) {
+		say "ディレクトリが存在しない。";
+	}
+}
+&dirtestfunc();
+```
+
+以下、出力結果。
+```terminal
+ディレクトリが存在しない。
+ディレクトリを作成する。
+ディレクトリが存在する。
+ディレクトリ削除。
+ディレクトリが存在しない。
+```
+
 
 <a name="practicaluseFiletestoperatorz"></a>
 #### ファイルテスト演算子(`-z`)

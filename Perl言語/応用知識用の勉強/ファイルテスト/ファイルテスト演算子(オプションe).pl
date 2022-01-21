@@ -51,6 +51,42 @@ sub asakuno() {
 }
 &asakuno(@ARGV);
 
+sub tomohiro() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+
+	my $dirname = $currentDir . '/' . $asakuno;
+	if( -e $dirname ) {
+		say "ファイルorディレクトリが存在する。";
+	}
+	else{
+		say "ファイルorディレクトリが存在しない。";
+	}
+
+	say "ディレクトリを作成する。";
+	mkdir $dirname, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+
+	#say "以下、ディレクトリ作成直後の情報。";
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($dirname);	# ファイルのlstat(プロパティ)情報。
+
+	if( -e $dirname ) {
+		say "ファイルorディレクトリが存在する。";
+	}
+
+	say "ディレクトリ削除。";
+	rmdir $dirname or warn "ディレクトリ削除失敗($!)。";
+	if( -e $dirname ) {
+		say "ファイルorディレクトリが存在する。";
+	}
+	else{
+		say "ファイルorディレクトリが存在しない。";
+	}
+}
+&tomohiro(@ARGV);
+
 sub timeformatChange {
 	# この関数をどこからでも呼び出せるようにしたい。
 	my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = @_;
