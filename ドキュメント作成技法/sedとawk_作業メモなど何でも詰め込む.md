@@ -823,6 +823,7 @@ $
 ```
 冒頭で`-e`を付けて構わない発言を撤回した使い方をしているという・・・。  
 
+<a name="sedawkOreillyBook920003sedusecommandlinesemicolon"></a>
 以下、複数の命令実行例）
 ```terminal
 $ cat README.md
@@ -851,6 +852,7 @@ $
 様式：
 `sed 's/置換前の文字列/置換後の文字列/; s/置換前の文字列/置換後の文字列/' ファイル`  
 
+<a name="sedawkOreillyBook920003sedusecommandlineoptione"></a>
 以下、複数の命令実行例）
 ```terminal
 $ cat README.md
@@ -889,6 +891,7 @@ $
 ```
 どちらが良いかはそのとき次第？  
 
+<a name="sedawkOreillyBook920003sedusecommandlinefailure"></a>
 以下、ワンライナー失敗例）
 ```terminal
 $ sed 's/本日は/来年は' README.md
@@ -967,6 +970,11 @@ $
 
 <a name="sedawkOreillyBook920004"></a>
 #### awkの使い方
+入力の1行1行に対して命令を実行する。  
+
+* 2種類の使い方。  
+  * コマンドラインからの利用。  
+  * 命令をファイルに書き出しておき、後からそれを動かす。  
 
 
 <a name="sedawkOreillyBook920005"></a>
