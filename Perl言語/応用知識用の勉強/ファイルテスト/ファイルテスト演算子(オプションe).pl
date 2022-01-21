@@ -8,7 +8,7 @@ use Cwd;	# カレントディレクトリ呼び出しモジュール。
 my $asakuno = "朝来野智博";
 my @asakuno = qw( 朝来野 智博 朝来野智博 );
 
-say "ローカルタイム関数利用";
+say "ファイルテスト演算子のe";
 
 sub asakuno() {
 	my $currentDir = getcwd();	# カレントディレクトリ取得。

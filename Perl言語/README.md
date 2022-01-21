@@ -7339,6 +7339,184 @@ sub dirtestfunc() {
 #### ファイルテスト演算子(`-z`)
 ファイルの大きさがゼロ(空)(ディレクトリの場合"**偽**")。  
 
+以下、ファイルサイズが0の場合のプログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub filesizefunc() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+
+	my $filename = $currentDir . '/filesize.txt';	←☆この直後でのファイルテストzは、ファイルが存在してしまう(ファイルが無いため)。
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename or die "$filenameのファイルオープン失敗($!)";
+	close $file_fh;
+
+	if( -z $filename ) {
+		say "ファイルが空ファイル(書き込みなし)。";
+	}
+
+	say "以下、ファイル作成直後の情報。";
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($filename);	# ファイルのlstat(プロパティ)情報。
+	say "\tファイルの容量をバイト単位で表す\t\t：$size";
+	say "\tファイルシステムI/Oでのブロックサイズ\t：$blksize";
+	say "\t割り当てられたブロック数\t\t\t\t：$blocks";
+
+	if( -z $filename ) {
+		say "ファイルが空ファイル(書き込みなし)。";
+	}
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	unless( -z $filename ) {
+		say "ファイルに書き込みあり。";
+	}
+}
+&filesizefunc();
+```
+
+以下、出力結果。
+```terminal
+ファイルを作成する。
+ファイルが空ファイル(書き込みなし)。
+以下、ファイル作成直後の情報。
+	ファイルの容量をバイト単位で表す		：0	←☆容量がない。
+	ファイルシステムI/Oでのブロックサイズ	：4096
+	割り当てられたブロック数				：0
+ファイルが空ファイル(書き込みなし)。
+ファイル削除。
+ファイルに書き込みあり。
+```
+ファイルが存在しない場合、書き込みありと認識されてしまう。  
+
+<details><summary>ファイル容量あり用のプログラム。</summary>
+
+以下、ファイルへの書き込みありプログラム。
+```perl
+use v5.24;
+
+sub filesizefunc() {
+	my $filename = 'filesize.txt';
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename or die "$filenameのファイルオープン失敗($!)";
+	if( -z $filename ) {
+		say "ファイルが空ファイル(書き込みなし)。";
+	}
+
+	say "ファイル書き込み実施。";
+	foreach( qw( 本日は 晴天なり。) ) {
+		say $file_fh $_;	# ファイルへの書き込み。
+	}
+
+	close $file_fh;	# ファイルを閉じる。
+
+	if( -z $filename ) {
+		say "ファイルが空ファイル(書き込みなし)。";
+	}
+	else{
+		say "ファイル書き込みあり(容量0超え)。";
+	}
+
+	say "以下、ファイル作成直後の情報。";
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($filename);	# ファイルのlstat(プロパティ)情報。
+	say "\tファイルの容量をバイト単位で表す\t\t：$size";
+	say "\tファイルシステムI/Oでのブロックサイズ\t：$blksize";
+	say "\t割り当てられたブロック数\t\t\t\t：$blocks";
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	unless( -z $filename ) {
+		say "ファイルに書き込みあり(ファイル削除済み)。";
+	}
+}
+&filesizefunc();
+```
+
+以下、出力結果。
+```terminal
+ファイルを作成する。
+ファイルが空ファイル(書き込みなし)。
+ファイル書き込み実施。
+ファイル書き込みあり(容量0超え)。	←☆容量までは分からない。
+以下、ファイル作成直後の情報。
+	ファイルの容量をバイト単位で表す		：26
+	ファイルシステムI/Oでのブロックサイズ	：4096
+	割り当てられたブロック数				：8
+ファイル削除。
+ファイルに書き込みあり(ファイル削除済み)。
+```
+ファイル容量ありとディレクトリの両方が同じ結果になるのは困った問題だ。  
+だからこそ、他のファイルテスト演算子と組み合わせる必要があるのだろう。  
+
+</details>
+
+<details><summary>ディレクトリに対するプログラム。</summary>
+
+以下、ディレクトリに対する判断プログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub filesizefunc() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+
+	my $dirname = $currentDir . '/filesize.txt';
+	say "ディレクトリを作成する。";
+	mkdir $dirname, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+
+	if( -z $dirname ) {
+		say "ファイルが空ファイル(書き込みなし)。";
+	}
+	else{
+		say "ファイルに書き込みあり(今回ディレクトリに対しての判断)。";
+	}
+
+	say "以下、ディレクトリ作成後の情報。";
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($dirname);	# ファイルのlstat(プロパティ)情報。
+	say "\tディレクトリに対するハードリンクの個数\t：$nlink";
+	say "\tファイルの容量をバイト単位で表す\t\t：$size";
+	say "\tファイルシステムI/Oでのブロックサイズ\t：$blksize";
+	say "\t割り当てられたブロック数\t\t\t\t：$blocks";
+
+	say "ディレクトリ削除。";
+	rmdir $dirname or warn "ディレクトリ削除失敗($!)。";
+	if( -z $dirname ) {
+		say "ファイルが空ファイル(書き込みなし)。";
+	}
+	else{
+		say "ファイルに書き込みあり(今回ディレクトリに対しての判断)。";
+	}
+}
+&filesizefunc();
+```
+
+以下、出力結果。
+```text
+ディレクトリを作成する。
+ファイルに書き込みあり(今回ディレクトリに対しての判断)。
+以下、ディレクトリ作成後の情報。
+	ディレクトリに対するハードリンクの個数	：2
+	ファイルの容量をバイト単位で表す		：64
+	ファイルシステムI/Oでのブロックサイズ	：4096
+	割り当てられたブロック数				：0
+ディレクトリ削除。
+ファイルに書き込みあり(今回ディレクトリに対しての判断)。
+```
+ディレクトリに対して使うものではない。  
+
+</details>
+
 
 <a name="practicaluseFiletestoperatorsamalls"></a>
 #### ファイルテスト演算子(`-s`)
