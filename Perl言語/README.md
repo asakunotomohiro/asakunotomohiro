@@ -7172,57 +7172,58 @@ $
 ```
 実際は、Perlプログラムから普通にファイルを削除できる。  
 当然同じディレクトリにあるのではなく、別のディレクトリで実行しても同じように削除できた。  
-どういうこと？  
-きっと他の演算子([w](#practicaluseFiletestoperatorsmallw)・[x](practicaluseFiletestoperatorsmallx#)・[o](#practicaluseFiletestoperatorsmallo)・[W](#practicaluseFiletestoperatorbigW)・[X](#practicaluseFiletestoperatorbigX)・[O](#practicaluseFiletestoperatorbigO))でも同じ事が言えるだろう。  
+もしかしたらディレクトリの権限を変える必要があったのかもしれない。  
+しかし、それではファイルに対するファイルテストトは言えなくなってしまわないか？  
+きっと他の演算子([w](#practicaluseFiletestoperatorsmallw)・[W](#practicaluseFiletestoperatorbigW)・[x](practicaluseFiletestoperatorsmallx#)・[X](#practicaluseFiletestoperatorbigX)・[o](#practicaluseFiletestoperatorsmallo)・[O](#practicaluseFiletestoperatorbigO))でも同じ事が言えるだろう。  
 
 
 <a name="practicaluseFiletestoperatorsmallw"></a>
 #### ファイルテスト演算子(`-w`)
 ファイルorディレクトリが実効**ユーザorグループ**で書き込み可。  
 
-やり方[不明](#practicaluseFiletestoperatorsmallr)。  
+使い方[不明](#practicaluseFiletestoperatorsmallr)。  
 
 
 <a name="practicaluseFiletestoperatorsmallx"></a>
 #### ファイルテスト演算子(`-x`)
 ファイルorディレクトリが実効**ユーザorグループ**で実行可。  
 
-やり方[不明](#practicaluseFiletestoperatorsmallr)。  
+使い方[不明](#practicaluseFiletestoperatorsmallr)。  
 
 
 <a name="practicaluseFiletestoperatorsmallo"></a>
 #### ファイルテスト演算子(`-o`)
 ファイルorディレクトリが実効**ユーザ**の所有物。  
 
-やり方[不明](#practicaluseFiletestoperatorsmallr)。  
+使い方[不明](#practicaluseFiletestoperatorsmallr)。  
 
 
 <a name="practicaluseFiletestoperatorbigR"></a>
 #### ファイルテスト演算子(`-R`)
 ファイルorディレクトリが**実ユーザor実グループ**で読み出し可。  
 
-やり方[不明](#practicaluseFiletestoperatorsmallr)。  
+使い方[不明](#practicaluseFiletestoperatorsmallr)。  
 
 
 <a name="practicaluseFiletestoperatorbigW"></a>
 #### ファイルテスト演算子(`-W`)
 ファイルorディレクトリが**実ユーザor実グループ**で書き込み可。  
 
-やり方[不明](#practicaluseFiletestoperatorsmallr)。  
+使い方[不明](#practicaluseFiletestoperatorsmallr)。  
 
 
 <a name="practicaluseFiletestoperatorbigX"></a>
 #### ファイルテスト演算子(`-X`)
 ファイルorディレクトリが**実ユーザor実グループ**で実行可。  
 
-やり方[不明](#practicaluseFiletestoperatorsmallr)。  
+使い方[不明](#practicaluseFiletestoperatorsmallr)。  
 
 
 <a name="practicaluseFiletestoperatorbigO"></a>
 #### ファイルテスト演算子(`-O`)
 ファイルorディレクトリが**実ユーザ**の所有物。  
 
-やり方[不明](#practicaluseFiletestoperatorsmallr)。  
+使い方[不明](#practicaluseFiletestoperatorsmallr)。  
 
 
 <a name="practicaluseFiletestoperatore"></a>
