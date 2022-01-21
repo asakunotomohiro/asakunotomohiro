@@ -977,6 +977,109 @@ $
   * 命令をファイルに書き出しておき、後からそれを動かす。  
 
 
+<a name="sedawkOreillyBook920004awkusecommandline"></a>
+##### コマンドラインからのawk利用
+様式：
+`awk '命令' ファイル`  
+※ファイルは、1つでも複数でも可能。  
+もしくは、標準入力からも可能。  
+
+また、複数の命令を与える場合は、sedの時のようにするのだが、[セミコロン区切り](#sedawkOreillyBook920003sedusecommandlinesemicolon)のみ可能だ。  
+sedを含むどこにも説明をしていないのだが、マルチ入力機能を使うことでも複数命令が可能。  
+
+<a name="sedawkOreillyBook920004awkusecommandlinespace"></a>
+以下、半角スペース区切りの1つ目を出力する実行例）
+```terminal
+$ cat targetFile.md
+# 本日は晴天なり。
+俺が俺にオンデマンド
+本日は 雨天, なり。
+本日は 曇天, なり。
+本日は 晴天, なり。
+本日は
+晴天なり。
+
+以上。
+$ awk '{print $1}' targetFile.md
+#
+俺が俺にオンデマンド
+本日は
+本日は
+本日は
+本日は
+晴天なり。
+
+以上。
+$
+```
+
+<a name="sedawkOreillyBook920004awkusecommandlineregoneline"></a>
+以下、正規表現にかかった行のみを出力する実行例）
+```terminal
+$ cat targetFile.md
+# 本日は晴天なり。
+俺が俺にオンデマンド
+本日は 雨天, なり。
+本日は 曇天, なり。
+本日は 晴天, なり。
+本日は
+晴天なり。
+
+以上。
+$ awk '/なり/' targetFile.md
+# 本日は晴天なり。
+本日は 雨天, なり。
+本日は 曇天, なり。
+本日は 晴天, なり。
+晴天なり。
+$
+```
+
+<a name="sedawkOreillyBook920004awkusecommandlineregonelinespace"></a>
+以下、正規表現に掛かった行の半角スペース区切り1つ目の箇所を出力する実行例）
+```terminal
+$ cat targetFile.md
+# 本日は晴天なり。
+俺が俺にオンデマンド
+本日は 雨天, なり。
+本日は 曇天, なり。
+本日は 晴天, なり。
+本日は
+晴天なり。
+
+以上。
+$ awk '/なり/ {print $1}' targetFile.md
+#
+本日は
+本日は
+本日は
+晴天なり。
+$
+```
+
+<a name="sedawkOreillyBook920004awkusecommandlineregonelinecomma"></a>
+以下、正規表現に掛かった行のカンマ区切り1つ目の箇所を出力する実行例）
+```terminal
+$ cat targetFile.md
+# 本日は晴天なり。
+俺が俺にオンデマンド
+本日は 雨天, なり。
+本日は 曇天, なり。
+本日は 晴天, なり。
+本日は
+晴天なり。
+
+以上。
+$ awk -F, '/なり/ {print $1}' targetFile.md
+# 本日は晴天なり。
+本日は 雨天
+本日は 曇天
+本日は 晴天
+晴天なり。
+$
+```
+
+
 <a name="sedawkOreillyBook920005"></a>
 #### sedとawkの組み合わせ
 
