@@ -1147,21 +1147,18 @@ $
 オプション指定を忘れそうだな。  
 
 
-<a name="sedawkOreillyBook920004awkusescriptfileoptionnotpostscript"></a>
-スクリプトファイルにオプションを付けることは出来ないようだ。
-```terminal
-$ cat awkscriptfile	←☆スクリプトファイル内容(オプションを付けた)。
--F /なり/ {print $1}
-$ awk -f awkscriptfile targetFile.md	←☆エラー。
-awk: syntax error at source line 1 source file awkscriptfile
- context is
-	-F >>>  /? <<<
-awk: bailing out at source line 2
-$
-```
-当然の結果だろう。  
-オプションを付けたとしても付け方が違うはず。  
+<a name="sedawkOreillyBook920004awkusesfailure"></a>
+##### awk実行時のエラーメッセージ
+awkは、実装により、エラーメッセージが異なるとのこと・・・sedもだよね？  
 
+* 基本エラー原因。  
+  * 手続きが波括弧`{}`で囲まれていない。  
+  * 命令がシングルクォート`''`で囲まれていない。  
+  * 正規表現がスラッシュ`//`で囲まれていない。  
+
+手続きというのは命令のことだと思っていたが、違うようだ。  
+命令を処理するのが手続きか？  
+違うというのは分かったが、どう違うのかまでは分かっていない。  
 
 <a name="sedawkOreillyBook920004awkusescriptfilefailure"></a>
 以下、スクリプトファイル利用実行失敗例）
@@ -1188,6 +1185,22 @@ awk: syntax error at source line 1 source file awkscriptfile
 awk: bailing out at source line 1
 $
 ```
+
+
+<a name="sedawkOreillyBook920004awkusescriptfileoptionnotpostscript"></a>
+スクリプトファイルにオプションを付けることは出来ないようだ。
+```terminal
+$ cat awkscriptfile	←☆スクリプトファイル内容(オプションを付けた)。
+-F /なり/ {print $1}
+$ awk -f awkscriptfile targetFile.md	←☆エラー。
+awk: syntax error at source line 1 source file awkscriptfile
+ context is
+	-F >>>  /? <<<
+awk: bailing out at source line 2
+$
+```
+当然の結果だろう。  
+オプションを付けたとしても付け方が違うはず。  
 
 
 <a name="sedawkOreillyBook920005"></a>
