@@ -1086,8 +1086,84 @@ $
 `awk -f スクリプトファイル 対象ファイル`  
 
 
+<a name="sedawkOreillyBook920004awkusescriptfilespace"></a>
+以下、半角スペース区切りの1つ目を出力する実行例）
+```terminal
+$ cat targetFile.md	←☆対象ファイル内容。
+# 本日は晴天なり。
+俺が俺にオンデマンド
+本日は 雨天, なり。
+本日は 曇天, なり。
+本日は 晴天, なり。
+本日は
+晴天なり。
+
+以上。
+$ cat awkscriptfile	←☆スクリプトファイル内容。
+{print $1}
+$ awk -f awkscriptfile targetFile.md	←☆実行。
+#
+俺が俺にオンデマンド
+本日は
+本日は
+本日は
+本日は
+晴天なり。
+
+以上。
+$
+```
 
 
+<a name="sedawkOreillyBook920004awkusescriptfileregonelinecomma"></a>
+以下、正規表現に掛かった行のカンマ区切り1つ目の箇所を出力する実行例）
+```terminal
+$ cat awkscriptfile	←☆スクリプトファイル内容。
+/なり/ {print $1}
+$ cat targetFile.md	←☆対象ファイル内容。
+# 本日は晴天なり。
+俺が俺にオンデマンド
+本日は 雨天, なり。
+本日は 曇天, なり。
+本日は 晴天, なり。
+本日は
+晴天なり。
+
+以上。
+$ awk -f awkscriptfile targetFile.md	←☆-Fオプションを付け忘れた。
+#
+本日は
+本日は
+本日は
+晴天なり。
+$ awk -F, -f awkscriptfile targetFile.md	←☆実行。
+# 本日は晴天なり。
+本日は 雨天
+本日は 曇天
+本日は 晴天
+晴天なり。
+$
+```
+オプション指定を忘れそうだな。  
+
+
+<a name="sedawkOreillyBook920004awkusescriptfileoptionnotpostscript"></a>
+スクリプトファイルにオプションを付けることは出来ないようだ。
+```terminal
+$ cat awkscriptfile	←☆スクリプトファイル内容(オプションを付けた)。
+-F /なり/ {print $1}
+$ awk -f awkscriptfile targetFile.md	←☆エラー。
+awk: syntax error at source line 1 source file awkscriptfile
+ context is
+	-F >>>  /? <<<
+awk: bailing out at source line 2
+$
+```
+当然の結果だろう。  
+オプションを付けたとしても付け方が違うはず。  
+
+
+<a name="sedawkOreillyBook920004awkusescriptfilefailure"></a>
 以下、スクリプトファイル利用実行失敗例）
 ```terminal
 $ ll
