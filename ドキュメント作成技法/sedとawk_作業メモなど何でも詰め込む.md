@@ -480,6 +480,38 @@ ASIN：
 
 <a name="sedawkOreillyBook920001"></a>
 #### ed発sed & grep経由awk行き
+awkの系譜を遡ることで、sedとgrepにたどり着く。  
+この2つは、Unixのラインエディタedに行き着く。  
+
+以下、edコマンド作業。
+```terminal
+$ ll
+total 8
+drwxr-xr-x  7 asakunotomohiro  staff  224  1 21 15:21 ドキュメント作成技法/
+-rw-r--r--  1 asakunotomohiro  staff   49  1 14 22:28 README.md
+$ cat README.md	←☆ファイル内容表示。
+# asakunotomohiro
+俺が俺にオンデマンド
+$ ed README.md	←☆edエディタでファイルを開く。
+49	←☆文字数を表示し、最終行に移動する。
+p	←☆現在行の表示。
+俺が俺にオンデマンド
+1	←☆1行目に移動。
+# asakunotomohiro
+d	←☆現在行を削除(今回で言えば、1行目を削除した・・・つもり・・・)。
+p	←☆本来の1行目が削除されているため、これが出てくる。
+俺が俺にオンデマンド
+1	←☆1行目が変わっているのが分かる。
+俺が俺にオンデマンド
+q	←☆どういうこと？
+?
+q
+$ cat README.md	←☆どういうこと？
+# asakunotomohiro
+俺が俺にオンデマンド
+$
+```
+
 
 <a name="sedawkOreillyBook920002"></a>
 #### コマンドラインの構文
