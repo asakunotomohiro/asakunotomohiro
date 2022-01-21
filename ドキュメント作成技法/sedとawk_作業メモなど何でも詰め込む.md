@@ -973,8 +973,8 @@ $
 入力の1行1行に対して命令を実行する。  
 
 * 2種類の使い方。  
-  * コマンドラインからの利用。  
-  * 命令をファイルに書き出しておき、後からそれを動かす。  
+  * [コマンドラインからの利用。](#sedawkOreillyBook920004awkusecommandline)  
+  * [命令をファイルに書き出しておき、後からそれを動かす。](#sedawkOreillyBook920004awkusescriptfile)  
 
 
 <a name="sedawkOreillyBook920004awkusecommandline"></a>
@@ -1076,6 +1076,40 @@ $ awk -F, '/なり/ {print $1}' targetFile.md
 本日は 曇天
 本日は 晴天
 晴天なり。
+$
+```
+
+
+<a name="sedawkOreillyBook920004awkusescriptfile"></a>
+##### スクリプトファイルからのawk利用
+様式：
+`awk -f スクリプトファイル 対象ファイル`  
+
+
+
+
+以下、スクリプトファイル利用実行失敗例）
+```terminal
+$ ll
+total 16
+-rw-r--r--@ 1 asakunotomohiro  staff    8  1 22 00:55 awkscriptfile
+-rw-r--r--  1 asakunotomohiro  staff  179  1 22 00:41 targetFile.md
+$ cat awkscriptfile	←☆{}がない。
+print $1$ cat targetFile.md
+# 本日は晴天なり。
+俺が俺にオンデマンド
+本日は 雨天, なり。
+本日は 曇天, なり。
+本日は 晴天, なり。
+本日は
+晴天なり。
+
+以上。
+$ awk -f awkscriptfile targetFile.md	←☆エラー。
+awk: syntax error at source line 1 source file awkscriptfile
+ context is
+	 >>> print <<<  $1
+awk: bailing out at source line 1
 $
 ```
 
