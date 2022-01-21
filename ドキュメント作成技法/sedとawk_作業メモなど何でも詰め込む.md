@@ -976,6 +976,12 @@ $
   * [コマンドラインからの利用。](#sedawkOreillyBook920004awkusecommandline)  
   * [命令をファイルに書き出しておき、後からそれを動かす。](#sedawkOreillyBook920004awkusescriptfile)  
 
+* オプション  
+  * 種類  
+    `-f`：直後にスクリプトファイル名を続ける。  
+    `-F`：区切り文字を変える。  
+    `-v`：直後に`var=value`を続ける・・・どういう意味？  
+
 
 <a name="sedawkOreillyBook920004awkusecommandline"></a>
 ##### コマンドラインからのawk利用
