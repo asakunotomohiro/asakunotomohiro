@@ -699,6 +699,10 @@ sedとawkに共通したコマンド利用になる。
 <a name="sedawkOreillyBook920003"></a>
 #### sedの使い方
 
+* 2種類の使い方。  
+  * コマンドラインからの利用。  
+  * 命令をファイルに書き出しておき、後からそれを動かす。  
+
 
 <a name="sedawkOreillyBook920004"></a>
 #### awkの使い方
