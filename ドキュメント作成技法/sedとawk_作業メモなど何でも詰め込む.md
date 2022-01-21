@@ -700,8 +700,8 @@ sedとawkに共通したコマンド利用になる。
 #### sedの使い方
 
 * 2種類の使い方。  
-  * コマンドラインからの利用。  
-  * 命令をファイルに書き出しておき、後からそれを動かす。  
+  * [コマンドラインからの利用。](#sedawkOreillyBook920003sedusecommandline)  
+  * [命令をファイルに書き出しておき、後からそれを動かす。](#sedawkOreillyBook920003sedusescriptfile)  
 
 
 <a name="sedawkOreillyBook920003sedusecommandline"></a>
@@ -817,6 +817,34 @@ sed: 1: "s/本日は/来年は": unterminated substitute in regular expression
 $
 ```
 置換命令の最後に、スラッシュ記号を付け忘れているのが原因。  
+
+
+<a name="sedawkOreillyBook920003sedusescriptfile"></a>
+##### スクリプトファイルからのsed利用
+様式：
+`sed -f スクリプトファイル 対象ファイル`  
+
+以下、実際にスクリプトファイルを作成し、それを動かす。
+```terminal
+$ ll
+total 16
+-rw-r--r--  1 asakunotomohiro  staff   23  1 21 23:30 sedscriptfile
+-rw-r--r--@ 1 asakunotomohiro  staff  170  1 21 16:07 TargetFile.md
+$ cat sedscriptfile	←☆スクリプトファイル内容。
+s/本日は/来年は/
+$ sed -f sedscriptfile TargetFile.md
+# 来年は晴天なり。
+俺が俺にオンデマンド
+来年は雨天なり。
+来年は曇天なり。
+来年は晴天なり。
+来年は
+晴天なり。
+
+以上。
+$
+```
+ワンライナーと同じ結果になった。  
 
 
 <a name="sedawkOreillyBook920004"></a>
