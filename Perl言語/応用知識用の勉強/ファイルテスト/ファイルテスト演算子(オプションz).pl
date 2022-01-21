@@ -8,18 +8,23 @@ use Cwd;	# カレントディレクトリ呼び出しモジュール。
 my $asakuno = "朝来野智博";
 my @asakuno = qw( 朝来野 智博 朝来野智博 );
 
-say "ファイルテスト演算子のr";
+say "ファイルテスト演算子のz";
 
 sub asakuno() {
 	my $currentDir = getcwd();	# カレントディレクトリ取得。
 	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
 
 	my $filename = $currentDir . '/' . $asakuno . 'txt';
+	if( -z $filename ) {
+		say "ファイルが空ファイル(書き込みなし)。";
+	}
+	else{
+		say "ファイルに書き込みあり。";
+	}
+
+	say "ファイルを作成する。";
 	open my $file_fh, '>', $filename
 		or die "$filenameのファイルオープン失敗($!)";
-	foreach( @asakuno ) {
-		say $file_fh $_;
-	}
 	close $file_fh;
 
 	say "以下、ファイル作成直後の情報。";
@@ -27,36 +32,28 @@ sub asakuno() {
 		$uid, $gid, $rdev, $size,
 		$atime, $mtime, $ctime,
 		$blksize, $blocks) = lstat($filename);	# ファイルのlstat(プロパティ)情報。
-	say "\tファイルの権限などの複雑情報\t\t：\t$mode\t(ls -lで取得されるもの)";
-	say "\tファイルの所有者を表すユーザID\t：\t$uid";
-	say "\tファイルの所有者を表すグループID\t：\t$gid";
-	my $olduid = $uid;
-	my $oldgid = $gid;
+	say "\tファイルの容量をバイト単位で表す(ファイルテスト-sと同じ)：$size";
+	say "\tファイルシステムI/Oでのブロックサイズ：$blksize";
+	say "\t割り当てられたブロック数：$blocks";
 
-	if( -r $filename ) {
-		say "読み取り可能。";
+	if( -z $filename ) {
+		say "ファイルが空ファイル(書き込みなし)。";
+	}
+	else{
+		say "ファイルに書き込みあり。";
 	}
 
-	defined(my $useid = getpwnam 'root') or die 'ユーザ名からID取得失敗。';
-	defined(my $groupid = getgrnam 'root') or die 'ユーザグループ名からID取得失敗。';
-	chown $useid, $groupid, $filename;
-
-	say "以下、ファイルのlstat取得。";
-	($dev, $ino, $mode, $nlink, $uid, $gid, $rdev,
-	$size, $atime, $mtime, $ctime, $blksize, $blocks)
-		= lstat($filename);	# ファイルのlstat情報。
-	say "\tファイルの権限などの複雑情報\t\t：\t$mode\t(ls -lで取得されるもの)";
-	say "\tファイルの所有者を表すユーザID\t：\t$uid";
-	say "\tファイルの所有者を表すグループID\t：\t$gid";
-
-	if( -r $filename ) {
-		say "読み取り可能。";
-	}
-
-	chown $olduid, $oldgid, $filename;
+	say "ファイル削除。";
 	unlink $filename or warn "ファイル削除失敗($!)。";
+	if( -z $filename ) {
+		say "ファイルが空ファイル(書き込みなし)。";
+	}
+	else{
+		say "ファイルに書き込みあり。";
+	}
 }
 &asakuno(@ARGV);
+
 
 sub timeformatChange {
 	# この関数をどこからでも呼び出せるようにしたい。
