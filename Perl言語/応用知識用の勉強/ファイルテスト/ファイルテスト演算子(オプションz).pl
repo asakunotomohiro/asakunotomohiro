@@ -10,22 +10,24 @@ my @asakuno = qw( 朝来野 智博 朝来野智博 );
 
 say "ファイルテスト演算子のz";
 
-sub asakuno() {
+sub asakunozero() {
 	my $currentDir = getcwd();	# カレントディレクトリ取得。
 	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
 
+	# ファイル名のみ作成。
 	my $filename = $currentDir . '/' . $asakuno . 'txt';
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename
+		or die "$filenameのファイルオープン失敗($!)";
+	close $file_fh;
+
 	if( -z $filename ) {
 		say "ファイルが空ファイル(書き込みなし)。";
 	}
 	else{
 		say "ファイルに書き込みあり。";
 	}
-
-	say "ファイルを作成する。";
-	open my $file_fh, '>', $filename
-		or die "$filenameのファイルオープン失敗($!)";
-	close $file_fh;
 
 	say "以下、ファイル作成直後の情報。";
 	my ($dev, $ino, $mode, $nlink,
@@ -52,7 +54,7 @@ sub asakuno() {
 		say "ファイルに書き込みあり。";
 	}
 }
-&asakuno(@ARGV);
+&asakunozero(@ARGV);
 
 
 sub timeformatChange {

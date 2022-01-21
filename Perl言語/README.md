@@ -7347,14 +7347,15 @@ use Cwd;	# カレントディレクトリ呼び出しモジュール。
 sub filesizefunc() {
 	my $currentDir = getcwd();	# カレントディレクトリ取得。
 
-	my $filename = $currentDir . '/filesize.txt';
-	if( -z $filename ) {
-		say "ファイルが空ファイル(書き込みなし)。";
-	}
+	my $filename = $currentDir . '/filesize.txt';	←☆この直後でのファイルテストzは、ファイルが存在してしまう(ファイルが無いため)。
 
 	say "ファイルを作成する。";
 	open my $file_fh, '>', $filename or die "$filenameのファイルオープン失敗($!)";
 	close $file_fh;
+
+	if( -z $filename ) {
+		say "ファイルが空ファイル(書き込みなし)。";
+	}
 
 	say "以下、ファイル作成直後の情報。";
 	my ($dev, $ino, $mode, $nlink,
@@ -7381,6 +7382,7 @@ sub filesizefunc() {
 以下、出力結果。
 ```terminal
 ファイルを作成する。
+ファイルが空ファイル(書き込みなし)。
 以下、ファイル作成直後の情報。
 	ファイルの容量をバイト単位で表す		：0
 	ファイルシステムI/Oでのブロックサイズ	：4096
