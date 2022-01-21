@@ -703,6 +703,36 @@ sedとawkに共通したコマンド利用になる。
   * [コマンドラインからの利用。](#sedawkOreillyBook920003sedusecommandline)  
   * [命令をファイルに書き出しておき、後からそれを動かす。](#sedawkOreillyBook920003sedusescriptfile)  
 
+基本的に書き出し処理を指示しなければ、標準出力に出して終わる。  
+それは、どうすることもできない。  
+そのため、ファイルに書き出すなどの処理が必要になる。  
+
+以下、ファイル出力プログラム。
+```terminal
+$ cat targetFile.md	←☆元の内容。
+# 本日は晴天なり。
+俺が俺にオンデマンド
+本日は雨天なり。
+本日は曇天なり。
+本日は晴天なり。
+本日は
+晴天なり。
+
+以上。
+$ sed -f sedscriptfile targetFile.md > output	←☆ファイル書き出しを含むスクリプトファイル実行。
+$ cat output	←☆出力結果内容。
+# 来年は晴天だ。
+俺が俺にオンデマンド
+来年は雨天だ。
+来年は曇天だ。
+来年は晴天だ。
+来年は
+晴天だ。
+
+以上。
+$
+```
+
 
 <a name="sedawkOreillyBook920003sedusecommandline"></a>
 ##### コマンドラインからのsed利用
