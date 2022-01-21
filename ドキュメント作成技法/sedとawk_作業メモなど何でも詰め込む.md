@@ -733,6 +733,24 @@ $ cat output	←☆出力結果内容。
 $
 ```
 
+また、入力ファイルに書き出した場合、ファイル内容が無くなるため気をつけること。  
+以下、その証明。
+```terminal
+$ cat targetFile.md
+# 本日は晴天なり。
+俺が俺にオンデマンド
+本日は雨天なり。
+本日は曇天なり。
+本日は晴天なり。
+本日は
+晴天なり。
+
+以上。
+$ sed -f sedscriptfile targetFile.md > targetFile.md	←☆入力ファイルと出力ファイルを同じにして実行。
+$ cat targetFile.md	←☆ファイル内容が無くなっている。
+$
+```
+
 
 <a name="sedawkOreillyBook920003sedusecommandline"></a>
 ##### コマンドラインからのsed利用
