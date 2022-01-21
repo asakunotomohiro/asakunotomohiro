@@ -103,7 +103,51 @@ sub asakunoGreat() {
 		say "ファイルに書き込みあり。";
 	}
 }
-&asakunoGreat(@ARGV);
+#&asakunoGreat(@ARGV);
+
+sub tomohiro() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+
+	# ファイル名のみ作成。
+	my $dirname = $currentDir . '/' . $asakuno;
+
+	say "ディレクトリを作成する。";
+	mkdir $dirname, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+
+	if( -z $dirname ) {
+		say "ファイルが空ファイル(書き込みなし)。";
+	}
+	else{
+		say "ファイルに書き込みあり(今回ディレクトリに対しての判断)。";
+	}
+
+	say "以下、ファイル作成直後の情報。";
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($dirname);	# ファイルのlstat(プロパティ)情報。
+	say "\tファイルの容量をバイト単位で表す(ファイルテスト-sと同じ)：$size";
+	say "\tファイルシステムI/Oでのブロックサイズ：$blksize";
+	say "\t割り当てられたブロック数：$blocks";
+
+	if( -z $dirname ) {
+		say "ファイルが空ファイル(書き込みなし)。";
+	}
+	else{
+		say "ファイルに書き込みあり(今回ディレクトリに対しての判断)。";
+	}
+
+	say "ディレクトリ削除。";
+	rmdir $dirname or warn "ディレクトリ削除失敗($!)。";
+	if( -z $dirname ) {
+		say "ファイルが空ファイル(書き込みなし)。";
+	}
+	else{
+		say "ファイルに書き込みあり(今回ディレクトリに対しての判断)。";
+	}
+}
+&tomohiro(@ARGV);
 
 
 sub timeformatChange {
