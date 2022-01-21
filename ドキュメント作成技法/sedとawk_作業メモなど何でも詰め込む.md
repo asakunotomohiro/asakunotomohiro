@@ -744,6 +744,14 @@ $
 ```
 冒頭で`-e`を付けて構わない発言を撤回した使い方をしているという・・・。  
 
+以下、ワンライナー失敗例）
+```terminal
+$ sed 's/本日は/来年は' README.md
+sed: 1: "s/本日は/来年は": unterminated substitute in regular expression
+$
+```
+置換命令の最後に、スラッシュ記号を付け忘れているのが原因。  
+
 
 <a name="sedawkOreillyBook920004"></a>
 #### awkの使い方
