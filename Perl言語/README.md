@@ -7246,6 +7246,46 @@ todo:
 #### ファイルテスト演算子(`-e`)
 ファイルorディレクトリが存在する。  
 
+以下、ファイルが存在することの確認プログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub filetestfunc() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+
+	my $filename = $currentDir . '/filetest.txt';
+	unless( -e $filename ) {
+		say "ファイルが存在しない。";
+	}
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename
+		or die "$filenameのファイルオープン失敗($!)";
+	close $file_fh;
+
+	if( -e $filename ) {
+		say "ファイルが存在する。";
+	}
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	unless( -e $filename ) {
+		say "ファイルが存在しない。";
+	}
+}
+&filetestfunc();
+```
+
+以下、出力結果。
+```terminal
+ファイルが存在しない。
+ファイルを作成する。
+ファイルが存在する。
+ファイル削除。
+ファイルが存在しない。
+```
+
 
 <a name="practicaluseFiletestoperatorz"></a>
 #### ファイルテスト演算子(`-z`)
