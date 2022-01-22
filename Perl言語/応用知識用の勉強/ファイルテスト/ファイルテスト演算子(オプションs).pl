@@ -59,6 +59,50 @@ sub asakunoGreat() {
 }
 &asakunoGreat(@ARGV);
 
+sub tomohiro() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+
+	# ディレクトリ名定義。
+	my $dirname = $currentDir . '/' . $asakuno;
+
+	say "ディレクトリを作成する。";
+	mkdir $dirname, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+
+	if( -s $dirname ) {
+		say "ファイルに書き込みあり(今回ディレクトリに対しての判断)。" . -s $dirname;
+	}
+	else{
+		say "ファイルが空ファイル(書き込みなし)。";
+	}
+
+	say "以下、ディレクトリ作成後の情報。";
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($dirname);	# ファイルのlstat(プロパティ)情報。
+	say "\tディレクトリの容量をバイト単位で表す(ファイルテスト-sと同じ)：$size";
+	say "\tディレクトリシステムI/Oでのブロックサイズ：$blksize";
+	say "\t割り当てられたブロック数：$blocks";
+
+	if( -s $dirname ) {
+		say "ファイルに書き込みあり(今回ディレクトリに対しての判断)。";
+	}
+	else{
+		say "ディレクトリが空(削除済み)。";
+	}
+
+	say "ディレクトリ削除。";
+	rmdir $dirname or warn "ディレクトリ削除失敗($!)。";
+	if( -s $dirname ) {
+		say "ファイルに書き込みあり(今回ディレクトリに対しての判断)。";
+	}
+	else{
+		say "ディレクトリが空(削除済み)。";
+	}
+}
+&tomohiro(@ARGV);
+
 
 sub timeformatChange {
 	# この関数をどこからでも呼び出せるようにしたい。

@@ -7585,6 +7585,61 @@ sub filesizefunc() {
 ```
 
 
+以下、ディレクトリに対する判断プログラム。
+```perl
+use v5.24;
+
+sub dirsizefunc() {
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+	my $dirname = 'dirsize';	# ディレクトリ名定義。
+
+	say "ディレクトリを作成する。";
+	mkdir $dirname, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+
+	if( -s $dirname ) {
+		say "ファイルに書き込みあり(今回ディレクトリに対しての判断)。" . -s $dirname;
+	}
+
+	say "以下、ディレクトリ作成後の情報。";
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($dirname);	# ファイルのlstat(プロパティ)情報。
+	say "\tディレクトリの容量をバイト単位で表す\t\t：$size";
+	say "\tディレクトリシステムI/Oでのブロックサイズ\t：$blksize";
+	say "\t割り当てられたブロック数\t\t\t\t\t：$blocks";
+
+	if( -s $dirname ) {
+		say "ディレクトリあり。" . -s $dirname;
+	}
+
+	say "ディレクトリ削除。";
+	rmdir $dirname or warn "ディレクトリ削除失敗($!)。";
+	unless( -s $dirname ) {
+		say "ディレクトリが空(削除済み)。" . -s $dirname;
+	}
+}
+&dirsizefunc();
+```
+
+以下、出力結果。
+```terminal
+ディレクトリを作成する。
+ファイルに書き込みあり(今回ディレクトリに対しての判断)。64
+以下、ディレクトリ作成後の情報。
+	ディレクトリの容量をバイト単位で表す		：64
+	ディレクトリシステムI/Oでのブロックサイズ	：4096
+	割り当てられたブロック数					：0
+ディレクトリあり。64
+ディレクトリ削除。
+ディレクトリが空(削除済み)。
+```
+ディレクトリ配下に何も無い状態だった場合も容量があると判断された。  
+ディレクトリ配下を確認しているのではないと言うことなのだろう。  
+ディレクトリの容量は、何を見ている？  
+ディレクトリ情報？  
+
+
 <a name="practicaluseFiletestoperatorf"></a>
 #### ファイルテスト演算子(`-f`)
 エントリは通常ファイル。  
