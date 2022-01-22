@@ -9386,6 +9386,29 @@ exit	←☆上下左右に広がった。
 <a name="practicaluseTkgeometrymanagementpackoptionanchor"></a>
 ###### Packオプション-ウィンドウまたはフレームの持つウィジェットリストにおける位置決め。
 割り当て領域内でのウィジェットのアンカー位置を決める。  
+要は、碇(or錨)をどの辺に降ろすかを決める作業。  
+```perl
+-anchor =>
+        'n'|
+        's'|
+        'w'|
+        'e'|
+        'center'|	←☆デフォルト値。
+        'nw'|
+        'ne'|
+        'sw'|
+        'se'|
+```
+
+以下、辺の大まかな位置。
+```text
+nw      n       ne
+
+w     center    e
+
+sw      s       se
+```
+錨を下ろすだけでは不十分ではある。  
 
 
 <a name="practicaluseTkgeometrymanagementpackoptionafter"></a>
