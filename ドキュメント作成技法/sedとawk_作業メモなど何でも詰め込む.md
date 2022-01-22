@@ -1286,6 +1286,52 @@ $
 
 <a name="sedawkOreillyBook920005"></a>
 #### sedとawkの組み合わせ
+sedで実行した結果をawkに渡し、それを処理させるのが一般的なのだろう。
+
+以下、実行例）
+```terminal
+$ cat targetFile.md
+# 本日は晴天なり。
+俺が俺にオンデマンド
+本日は 雨天, なり。
+本日は 曇天, なり。
+本日は 晴天, なり。
+本日は
+晴天なり。
+
+以上。
+$ sed -f sedscriptfile targetFile.md	←☆sedだけの実行。
+# 来年は晴天だ。
+俺が俺にオンデマンド
+来年は 雨天, だ。
+来年は 曇天, だ。
+来年は 晴天, だ。
+来年は
+晴天だ。
+
+以上。
+$ awk -F, '{print $2}' targetFile.md	←☆awkだけの実行。
+
+
+ なり。
+ なり。
+ なり。
+
+
+
+
+$ sed -f sedscriptfile targetFile.md | awk -F, '{print $2}'	←☆sedとawkの組み合わせ実行。
+
+
+ だ。
+ だ。
+ だ。
+
+
+
+
+$
+```
 
 <a name="sedawkOreillyBook900001"></a>
 ### 編集用パワーツール
