@@ -158,6 +158,14 @@ ASIN：
 <a id="planetextmarkdown170001"></a>
 #### 表／タスクリスト／打ち消し線／拡張自動リンク／絵文字／シンタックスハイライト
 
+* 内部目次  
+  * [表(テーブル)](#planetextmarkdownTable170001)  
+  * タスクリスト  
+  * 打ち消し線  
+  * 拡張自動リンク  
+  * 絵文字  
+  * シンタックスハイライト  
+
 <a id="planetextmarkdownTable170001"></a>
 ##### 表・テーブルの作成方法
 大まかな表(テーブル)作成。  
@@ -305,4 +313,4 @@ ASIN：
 
 ---
 ーーー 最終行 ーーー
-<!-- vim:set ts=4 sts=4 sw=4 tw=0: -->
+<!-- vim: set ts=4 sts=4 sw=4 tw=0 expandtab: -->
