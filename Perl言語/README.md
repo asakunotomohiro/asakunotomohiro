@@ -9467,7 +9467,7 @@ sub guipackAnchor() {
 			)->pack(
 					-side => 'bottom',
 					-anchor => 'e',
-				);					# 終了ボタン。
+				);		# 終了ボタン。
 	MainLoop;
 }
 &guipackAnchor();
@@ -9482,6 +9482,49 @@ sub guipackAnchor() {
 --    --    se	←☆e指定だが、ここに表示される。
 ```
 アンカー指定が無駄になる結果が出てきた。  
+
+基本的に、anchorは、複数のウィジェットを1列に並べる場合に用いられる。  
+```perl
+use v5.24;
+use Tk;
+
+sub guipackAnchorTop() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "top",
+				-command => sub { exit }
+			)->pack(
+					-side => 'top',
+					-anchor => 'se',
+				);		# 終了ボタン。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-side => 'top',
+					-anchor => 'se',
+				);		# 終了ボタン。
+	MainLoop;
+}
+&guipackAnchorTop();
+```
+
+以下、表示場所。
+```text
+--    --    Top
+            exit
+
+--    --    --
+
+--    --    --
+```
+張り付き方が可笑しい。  
+**se**は、右下なのに、右上に張り付いてしまう。  
+FPSゲームは、ユーザから見えない壁があるのと同じで、見えない領域があるようだ。  
+[Visual Studio](https://visualstudio.microsoft.com/ja/)の[Visual Basic](https://docs.microsoft.com/ja-jp/visualstudio/get-started/visual-basic/visual-studio-ide)のほうが優秀だったぞ。  
 
 
 <a name="practicaluseTkgeometrymanagementpackoptionafter"></a>

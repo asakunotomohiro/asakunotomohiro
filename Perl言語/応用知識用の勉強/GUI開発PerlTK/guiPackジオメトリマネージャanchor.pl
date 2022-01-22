@@ -23,7 +23,31 @@ sub asakunoGUIargpackAnchor() {
 	MainLoop;
 	say "終了。";	# 出力されない(exit終了のためだが、×印で終了した場合出力される)。
 }
-&asakunoGUIargpackAnchor(@ARGV);
+#&asakunoGUIargpackAnchor(@ARGV);
+
+sub asakunoGUIargpackAnchorTop() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "top",
+				-command => sub { exit }
+			)->pack(
+					-side => 'top',
+					-anchor => 'se',
+				);					# 終了ボタン。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-side => 'top',
+					-anchor => 'se',
+				);					# 終了ボタン。
+	MainLoop;
+	say "終了。";	# 出力されない(exit終了のためだが、×印で終了した場合出力される)。
+}
+&asakunoGUIargpackAnchorTop(@ARGV);
 
 
 say "以上。"
