@@ -7522,6 +7522,68 @@ sub filesizefunc() {
 #### ファイルテスト演算子(`-s`)
 ファイルorディレクトリの大きさがゼロ以外(バイト単位での大きさを返す)。  
 
+以下、ファイル書き込みありプログラム。
+```perl
+use v5.24;
+
+sub filesizefunc() {
+	my $filename = 'filesize.txt';	# ファイル名定義。
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename or die "$filenameのファイルオープン失敗($!)";
+	if( -s $filename ) {
+		say "ファイルに書き込みあり。";
+	}
+	else{
+		say "ファイルが空ファイル(書き込みないのは作成直後のため)。";
+	}
+
+	say "ファイル書き込み実施。";
+	say $file_fh 'ファイルへの書き込み内容。';
+	close $file_fh;
+
+	if( -s $filename ) {
+		my $size = -s $filename;
+		say "ファイルに書き込みあり($size)。";
+	}
+
+	say "以下、ファイル作成後の情報。";
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($filename);	# ファイルのlstat(プロパティ)情報。
+	say "\tファイルの容量をバイト単位で表す\t\t：$size";
+	say "\tファイルシステムI/Oでのブロックサイズ\t：$blksize";
+	say "\t割り当てられたブロック数\t\t\t\t：$blocks";
+
+	if( -s $filename ) {
+		say "ファイルに書き込みあり。" . -s $filename;
+	}
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	unless( -s $filename ) {
+		say "ファイルが空ファイル(書き込みなし)。" . -s $filename;
+	}
+}
+&filesizefunc();
+```
+
+以下、出力結果。
+```terminal
+ファイルを作成する。
+ファイルが空ファイル(書き込みないのは作成直後のため)。
+ファイル書き込み実施。
+ファイルに書き込みあり(40)。
+以下、ファイル作成後の情報。
+	ファイルの容量をバイト単位で表す		：40
+	ファイルシステムI/Oでのブロックサイズ	：4096
+	割り当てられたブロック数				：8
+ファイルに書き込みあり。40
+ファイル削除。
+ファイルが空ファイル(書き込みなし)。
+```
+
 
 <a name="practicaluseFiletestoperatorf"></a>
 #### ファイルテスト演算子(`-f`)
