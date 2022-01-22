@@ -9386,6 +9386,152 @@ exit	←☆上下左右に広がった。
 <a name="practicaluseTkgeometrymanagementpackoptionanchor"></a>
 ###### Packオプション-ウィンドウまたはフレームの持つウィジェットリストにおける位置決め。
 割り当て領域内でのウィジェットのアンカー位置を決める。  
+要は、碇(or錨)をどの辺に降ろすかを決める作業。  
+```perl
+-anchor =>
+        'n'|
+        's'|
+        'w'|
+        'e'|
+        'center'|	←☆デフォルト値。
+        'nw'|
+        'ne'|
+        'sw'|
+        'se'|
+```
+
+以下、辺の大まかな位置。
+```text
+nw      n       ne
+
+w     center    e
+
+sw      s       se
+```
+錨を下ろすだけでは不十分ではある。  
+
+<details><summary>最小限オプション設定の動作確認。</summary>
+
+以下、他オプションをデフォルトで動かす。
+```perl
+use v5.24;
+use Tk;
+
+sub guipackAnchor() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-anchor => 'e',
+				);		# 終了ボタン。
+	MainLoop;
+}
+&guipackAnchor();
+```
+
+本来**e**を指定しているため、右真ん中に位置するはずだが、実際は**ne**に固定されて表示された。
+```text
+--    --    ne	←☆ここに表示される。
+
+--    --    e	←☆ここを指定。
+
+--    --    --
+```
+ウィンドウを広げた場合も関係なく、**ne**に固定されてしまう。  
+Tkが流行らないのはこういうところでは？  
+
+上記のオプションを全て削除した場合は、以下の結果になる。
+```text
+--    n     --	←☆ここに表示される。
+
+--    --    --
+
+--    --    --
+```
+
+</details>
+
+<details><summary>意図していない結果が出てくるプログラム。</summary>
+
+以下、[**side**](#practicaluseTkgeometrymanagementpackoptionside)オプション付きのプログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub guipackAnchor() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-side => 'bottom',
+					-anchor => 'e',
+				);		# 終了ボタン。
+	MainLoop;
+}
+&guipackAnchor();
+```
+
+以下、その表示場所。
+```text
+--    --    --
+
+--    --    --
+
+--    --    se	←☆e指定だが、ここに表示される。
+```
+アンカー指定が無駄になる結果が出てきた。  
+
+</details>
+
+基本的に、anchorは、複数のウィジェットを1列に並べる場合に用いられる。  
+```perl
+use v5.24;
+use Tk;
+
+sub guipackAnchorTop() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "top",
+				-command => sub { exit }
+			)->pack(
+					-side => 'top',
+					-anchor => 'se',
+				);		# 終了ボタン。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-side => 'top',
+					-anchor => 'se',
+				);		# 終了ボタン。
+	MainLoop;
+}
+&guipackAnchorTop();
+```
+
+以下、表示場所。
+```text
+--    --    Top	←☆右上にへばりついている。
+            exit	←☆よく分かっていないが、Topボタンの真下にひっついている感じだった。
+
+--    --    --
+
+--    --    --	←☆右下に配置される指定をした。
+```
+張り付き方が可笑しい。  
+**se**は、右下なのに、右上に張り付いてしまう。  
+FPSゲームは、ユーザから見えない壁があるのと同じで、見えない領域があるようだ。  
 
 
 <a name="practicaluseTkgeometrymanagementpackoptionafter"></a>
