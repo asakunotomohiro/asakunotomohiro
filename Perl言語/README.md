@@ -9451,6 +9451,38 @@ Tkが流行らないのはこういうところでは？
 --    --    --
 ```
 
+以下、[**side**](#practicaluseTkgeometrymanagementpackoptionside)オプション付きのプログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub guipackAnchor() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-side => 'bottom',
+					-anchor => 'e',
+				);					# 終了ボタン。
+	MainLoop;
+}
+&guipackAnchor();
+```
+
+以下、その表示場所。
+```text
+--    --    --
+
+--    --    --
+
+--    --    se	←☆e指定だが、ここに表示される。
+```
+アンカー指定が無駄になる結果が出てきた。  
+
 
 <a name="practicaluseTkgeometrymanagementpackoptionafter"></a>
 ###### Packオプション-パック順序を後に配置。
