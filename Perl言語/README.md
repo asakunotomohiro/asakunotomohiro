@@ -9442,6 +9442,15 @@ sub guipackAnchor() {
 ウィンドウを広げた場合も関係なく、**ne**に固定されてしまう。  
 Tkが流行らないのはこういうところでは？  
 
+上記のオプションを全て削除した場合は、以下の結果になる。
+```text
+--    n     --	←☆ここに表示される。
+
+--    --    --
+
+--    --    --
+```
+
 
 <a name="practicaluseTkgeometrymanagementpackoptionafter"></a>
 ###### Packオプション-パック順序を後に配置。
