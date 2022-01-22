@@ -7785,15 +7785,28 @@ sub direxistence() {
 #### ファイルテスト演算子(`-S`)
 エントリはソケット。  
 
+[`-r`](#practicaluseFiletestoperatorsmallr)演算子とは違う理由だが、今の私には出来そうに無いため、先送りする。  
+todo:
+使い方を調べること。  
+そもそも急いで気にする箇所では無いからな。  
+
 
 <a name="practicaluseFiletestoperatorb"></a>
 #### ファイルテスト演算子(`-b`)
 エントリはブロック特殊ファイル(例：マウント可能なディスク)。  
 
+[`-r`](#practicaluseFiletestoperatorsmallr)演算子とは違う理由だが、今の私には出来そうに無いため、先送りする。  
+todo:
+使い方を調べること。  
+
 
 <a name="practicaluseFiletestoperatorc"></a>
 #### ファイルテスト演算子(`-c`)
 エントリはキャラクタ特殊ファイル(例：I/Oデバイス)。  
+
+[`-r`](#practicaluseFiletestoperatorsmallr)演算子とは違う理由だが、今の私には出来そうに無いため、先送りする。  
+todo:
+使い方を調べること。  
 
 
 <a name="practicaluseFiletestoperatorsmallt"></a>
@@ -7801,20 +7814,36 @@ sub direxistence() {
 ファイルハンドルは**tty**にオープンされている(どういう意味？)。  
 補足：(`-t STDIN`が真の場合)ユーザ入力待ちの状態とのこと(ファイルやパイプからの入力では無いと言うこと)。  
 
+[`-r`](#practicaluseFiletestoperatorsmallr)演算子とは違う理由だが、今の私には出来そうに無いため、先送りする。  
+todo:
+使い方を調べること。  
+
 
 <a name="practicaluseFiletestoperatoru"></a>
 #### ファイルテスト演算子(`-u`)
 ファイルorディレクトリの**setuid**ビットがセットされている。  
+
+[`-r`](#practicaluseFiletestoperatorsmallr)演算子とは違う理由だが、今の私には出来そうに無いため、先送りする。  
+todo:
+使い方を調べること。  
 
 
 <a name="practicaluseFiletestoperatorg"></a>
 #### ファイルテスト演算子(`-g`)
 ファイルorディレクトリの**setgid**ビットがセットされている。  
 
+[`-r`](#practicaluseFiletestoperatorsmallr)演算子とは違う理由だが、今の私には出来そうに無いため、先送りする。  
+todo:
+使い方を調べること。  
+
 
 <a name="practicaluseFiletestoperatork"></a>
 #### ファイルテスト演算子(`-k`)
 ファイルorディレクトリの**sticky**ビットがセットされている。  
+
+[`-r`](#practicaluseFiletestoperatorsmallr)演算子とは違う理由だが、今の私には出来そうに無いため、先送りする。  
+todo:
+使い方を調べること。  
 
 
 <a name="practicaluseFiletestoperatorbigT"></a>
