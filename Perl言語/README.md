@@ -7585,6 +7585,8 @@ sub filesizefunc() {
 ```
 
 
+<details><summary>ディレクトリに対するプログラム。</summary>
+
 以下、ディレクトリに対する判断プログラム。
 ```perl
 use v5.24;
@@ -7638,6 +7640,8 @@ sub dirsizefunc() {
 ディレクトリ配下を確認しているのではないと言うことなのだろう。  
 ディレクトリの容量は、何を見ている？  
 ディレクトリ情報？  
+
+</details>
 
 
 <a name="practicaluseFiletestoperatorf"></a>
