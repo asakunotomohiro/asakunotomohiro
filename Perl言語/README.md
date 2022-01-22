@@ -7649,6 +7649,59 @@ sub dirsizefunc() {
 #### ファイルテスト演算子(`-f`)
 エントリは通常ファイル。  
 
+```perl
+use v5.24;
+
+sub fileexistence() {
+	# ファイル名のみ作成。
+	my $filename = 'filesize.txt';	# ファイル名定義。
+
+	unless( -f $filename ) {
+		say "ファイル作成前。";
+	}
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename or die "$filenameのファイルオープン失敗($!)";
+	close $file_fh;
+
+	if( -f $filename ) {
+		say "ファイルあり。";
+	}
+
+	say "以下、ファイル作成後の情報。";
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($filename);	# ファイルのlstat(プロパティ)情報。
+	say "\tファイルに対するハードリンクの個数\t\t：$nlink";
+	say "\tファイルの容量をバイト単位で表す\t\t：$size";
+	say "\tファイルシステムI/Oでのブロックサイズ\t：$blksize";
+	say "\t割り当てられたブロック数\t\t\t\t：$blocks";
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	unless( -s $filename ) {
+		say "ファイルなし。";
+	}
+}
+&fileexistence();
+```
+上記オプション[`-e`](#practicaluseFiletestoperatore)と違い、ファイルの存在有無を確認するテストになるため、使うとすればこっち(`-f`)だろう。  
+
+以下、出力結果。
+```terminal
+ファイル作成前。
+ファイルを作成する。
+ファイルあり。
+以下、ファイル作成後の情報。
+	ファイルに対するハードリンクの個数		：1
+	ファイルの容量をバイト単位で表す		：0
+	ファイルシステムI/Oでのブロックサイズ	：4096
+	割り当てられたブロック数				：0
+ファイル削除。
+ファイルなし。
+```
+
 
 <a name="practicaluseFiletestoperatord"></a>
 #### ファイルテスト演算子(`-d`)
