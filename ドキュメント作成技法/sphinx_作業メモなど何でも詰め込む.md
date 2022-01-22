@@ -285,11 +285,80 @@ ASIN：
 <a id="sphinxOreillyBook200001"></a>
 ### Sphinxのインストール
 
+* インストール用OS  
+  * [Windows](#sphinxOreillyBook210001)  
+  * [Mac](#sphinxOreillyBook210002)  
+  * [Linux](#sphinxOreillyBook210003)  
+
+
 <a id="sphinxOreillyBook210001"></a>
 #### Windows環境へのインストール
 
 <a id="sphinxOreillyBook210002"></a>
 #### macOS環境へのインストール
+今回[sphinx](https://www.sphinx-doc.org/ja/master/)をインストールするが、[Pillow](https://pillow.readthedocs.io/en/stable/)も併せて導入する。  
+このPillowと言うのは、画像処理ライブラリのこと。  
+現在、これが何か分かっていない。  
+
+以下、環境が無いことの確認。
+```terminal
+$ sphinx-quickstart --version
+-bash: sphinx-quickstart: command not found
+$
+```
+
+以下、インストール実施。
+```terminal
+$ sudo pip3 install sphinx Pillow
+Password:
+WARNING: The directory 'Library/Caches/pip' or its parent directory is not owned or is not writable by the current user. The cache has been disabled. Check the permissions and owner of that directory. If executing pip with sudo, you should use sudo's -H flag.
+DEPRECATION: Configuring installation scheme with distutils config files is deprecated and will no longer work in the near future. If you are using a Homebrew or Linuxbrew Python, please see discussion at https://github.com/Homebrew/homebrew-core/issues/76621
+Looking in indexes: https://pypi.python.org/simple/
+Collecting sphinx
+  Downloading Sphinx-4.4.0-py3-none-any.whl (3.1 MB)
+     |████████████████████████████████| 3.1 MB 4.1 MB/s
+　　　・
+　　　・
+　　　・
+Successfully installed Jinja2-3.0.3 MarkupSafe-2.0.1 Pillow-9.0.0 Pygments-2.11.2 alabaster-0.7.12 babel-2.9.1 docutils-0.17.1 imagesize-1.3.0 importlib-metadata-4.10.1 packaging-21.3 pyparsing-3.0.7 pytz-2021.3 snowballstemmer-2.2.0 sphinx-4.4.0 sphinxcontrib-applehelp-1.0.2 sphinxcontrib-devhelp-1.0.2 sphinxcontrib-htmlhelp-2.0.0 sphinxcontrib-jsmath-1.0.1 sphinxcontrib-qthelp-1.0.3 sphinxcontrib-serializinghtml-1.1.5 zipp-3.7.0
+WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
+WARNING: You are using pip version 21.2.4; however, version 21.3.1 is available.
+You should consider upgrading via the '/usr/local/opt/python@3.9/bin/python3.9 -m pip install --upgrade pip' command.
+$ echo $?
+0
+$
+```
+警告が出ているように思うが、問題ないだろう。  
+
+以下、再度バージョン確認。
+```terminal
+$ sphinx-quickstart --version
+sphinx-quickstart 4.4.0
+$
+```
+インストールされているのが確認できた。  
+
+注意：Python3.4以上のバージョンが必要になる。  
+それより古い場合、Sphinxの最新版が使えない。  
+
+<details><summary>sphinxに関係作業(pipのupgrade)。</summary>
+
+以下、上記の警告に従い、pipをアップグレードした。
+```terminal
+$ python3.9 -m pip install --upgrade pip
+DEPRECATION: Configuring installation scheme with distutils config files is deprecated and will no longer work in the near future. If you are using a Homebrew or Linuxbrew Python, please see discussion at https://github.com/Homebrew/homebrew-core/issues/76621
+　　　・
+　　　・
+　　　・
+DEPRECATION: Configuring installation scheme with distutils config files is deprecated and will no longer work in the near future. If you are using a Homebrew or Linuxbrew Python, please see discussion at https://github.com/Homebrew/homebrew-core/issues/76621
+Successfully installed pip-21.3.1
+$ pip --version
+pip 21.3.1 from /usr/local/lib/python3.9/site-packages/pip (python 3.9)
+$
+```
+
+</details>
+
 
 <a id="sphinxOreillyBook210003"></a>
 #### Linux環境へのインストール
@@ -539,4 +608,4 @@ ASIN：
 
 ---
 ーーー 最終行 ーーー
-<!-- vim:set ts=4 sts=4 sw=4 tw=0: -->
+<!-- vim: set ts=4 sts=4 sw=4 tw=0 expandtab: -->
