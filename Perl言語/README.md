@@ -9410,6 +9410,38 @@ sw      s       se
 ```
 錨を下ろすだけでは不十分ではある。  
 
+以下、他オプションをデフォルトで動かす。
+```perl
+use v5.24;
+use Tk;
+
+sub guipackAnchor() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-anchor => 'e',
+				);		# 終了ボタン。
+	MainLoop;
+}
+&guipackAnchor();
+```
+
+本来**e**を指定しているため、右真ん中に位置するはずだが、実際は**ne**に固定されて表示された。
+```text
+--    --    ne	←☆ここに表示される。
+
+--    --    e	←☆ここを指定。
+
+--    --    --
+```
+ウィンドウを広げた場合も関係なく、**ne**に固定されてしまう。  
+Tkが流行らないのはこういうところでは？  
+
 
 <a name="practicaluseTkgeometrymanagementpackoptionafter"></a>
 ###### Packオプション-パック順序を後に配置。
