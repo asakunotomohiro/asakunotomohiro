@@ -400,6 +400,14 @@ $
 ```
 警告が出ているように思うが、問題ないだろう。  
 
+以下、再度バージョン確認。
+```terminal
+$ sphinx-quickstart --version
+sphinx-quickstart 4.4.0
+$
+```
+インストールされているのが確認できた。  
+
 
 <a id="sphinxOreillyBook210003"></a>
 #### Linux環境へのインストール
