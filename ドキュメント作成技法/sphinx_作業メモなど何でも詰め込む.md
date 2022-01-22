@@ -414,6 +414,29 @@ $
 注意：Python3.4以上のバージョンが必要になる。  
 それより古い場合、Sphinxの最新版が使えない。  
 
+以下、上記の警告に従い、pipをアップグレードした。
+```terminal
+$ python3.9 -m pip install --upgrade pip
+DEPRECATION: Configuring installation scheme with distutils config files is deprecated and will no longer work in the near future. If you are using a Homebrew or Linuxbrew Python, please see discussion at https://github.com/Homebrew/homebrew-core/issues/76621
+Looking in indexes: https://pypi.python.org/simple/
+Requirement already satisfied: pip in /usr/local/lib/python3.9/site-packages (21.2.4)
+Collecting pip
+  Downloading pip-21.3.1-py3-none-any.whl (1.7 MB)
+     |████████████████████████████████| 1.7 MB 3.8 MB/s
+Installing collected packages: pip
+  Attempting uninstall: pip
+    Found existing installation: pip 21.2.4
+    Uninstalling pip-21.2.4:
+      Successfully uninstalled pip-21.2.4
+  DEPRECATION: Configuring installation scheme with distutils config files is deprecated and will no longer work in the near future. If you are using a Homebrew or Linuxbrew Python, please see discussion at https://github.com/Homebrew/homebrew-core/issues/76621
+DEPRECATION: Configuring installation scheme with distutils config files is deprecated and will no longer work in the near future. If you are using a Homebrew or Linuxbrew Python, please see discussion at https://github.com/Homebrew/homebrew-core/issues/76621
+Successfully installed pip-21.3.1
+$ pip --version
+pip 21.3.1 from /usr/local/lib/python3.9/site-packages/pip (python 3.9)
+$
+```
+pipって何？  
+
 
 <a id="sphinxOreillyBook210003"></a>
 #### Linux環境へのインストール
