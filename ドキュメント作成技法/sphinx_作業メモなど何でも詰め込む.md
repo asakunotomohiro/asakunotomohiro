@@ -290,6 +290,9 @@ ASIN：
 
 <a id="sphinxOreillyBook210002"></a>
 #### macOS環境へのインストール
+今回[sphinx](https://www.sphinx-doc.org/ja/master/)をインストールするが、[Pillow](https://pillow.readthedocs.io/en/stable/)も併せて導入する。  
+このPillowと言うのは、画像処理ライブラリのこと。  
+現在、これが何か分かっていない。  
 
 以下、環境が無いことの確認。
 ```terminal
