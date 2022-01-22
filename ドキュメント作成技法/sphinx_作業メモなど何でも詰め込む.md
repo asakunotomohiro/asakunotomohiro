@@ -291,6 +291,14 @@ ASIN：
 <a id="sphinxOreillyBook210002"></a>
 #### macOS環境へのインストール
 
+以下、環境が無いことの確認。
+```terminal
+$ sphinx-quickstart --version
+-bash: sphinx-quickstart: command not found
+$
+```
+
+
 <a id="sphinxOreillyBook210003"></a>
 #### Linux環境へのインストール
 
@@ -539,4 +547,4 @@ ASIN：
 
 ---
 ーーー 最終行 ーーー
-<!-- vim:set ts=4 sts=4 sw=4 tw=0: -->
+<!-- vim: set ts=4 sts=4 sw=4 tw=0 expandtab: -->
