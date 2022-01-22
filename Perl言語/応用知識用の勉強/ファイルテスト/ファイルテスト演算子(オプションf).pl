@@ -62,7 +62,52 @@ sub asakuno() {
 		say "ファイルなし。";
 	}
 }
-&asakuno(@ARGV);
+#&asakuno(@ARGV);
+
+sub tomohiro() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+
+	# ディレクトリ名定義。
+	my $dirname = $currentDir . '/' . $asakuno;
+
+	say "ディレクトリを作成する。";
+	mkdir $dirname, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+
+	if( -f $dirname ) {
+		say "ディレクトリあり。";
+	}
+	else{
+		say "ディレクトリなし。";
+	}
+
+	say "以下、ディレクトリ作成後の情報。";
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($dirname);	# ファイルのlstat(プロパティ)情報。
+	say "\tファイルまたはディレクトリに対するハードリンクの個数：$nlink";
+	say "\tディレクトリの容量をバイト単位で表す(ファイルテスト-sと同じ)：$size";
+	say "\tディレクトリシステムI/Oでのブロックサイズ：$blksize";
+	say "\t割り当てられたブロック数：$blocks";
+
+	if( -f $dirname ) {
+		say "ディレクトリあり。";
+	}
+	else{
+		say "ディレクトリなし。";
+	}
+
+	say "ディレクトリ削除。";
+	rmdir $dirname or warn "ディレクトリ削除失敗($!)。";
+	if( -f $dirname ) {
+		say "ディレクトリあり。";
+	}
+	else{
+		say "ディレクトリなし(削除済みの判断でなしとしたわけではない)。";
+	}
+}
+&tomohiro(@ARGV);
 
 
 sub timeformatChange {
