@@ -26,7 +26,7 @@ sub asakunoGUIargpackIn() {
 				);					# 終了ボタン。
 	my $exit = $mw->Button(
 				-text => "exit",
-				-command => sub { exit }
+				-command => sub { $mw->destroy; &buttoninfo; }
 			)->pack(
 					-ipadx => 60,
 					-ipady => 60,
@@ -35,11 +35,14 @@ sub asakunoGUIargpackIn() {
 	$mw->packPropagate(0);	# ウィンドウの自動リサイズ停止。
 	my $bottom = $mw->Button(
 				-text => "bottom",
-				-command => sub { exit }
+				#-command => sub {  $mw->destroy; &widgetinfo; }
+				-command => \&widgetinfo,
 			)->pack(
 				);					# 終了ボタン。
 	$none->packForget();	# アンパック(非表示)メソッド。
 	my %topButtonList = $top->packInfo();		# Topボタンに関する情報を取得する。
+	#my @slaveList = $bottom->packSlaves();
+	my @slaveList = $mw->packSlaves();
 	my $buttoninfo = 'null';
 	my $text = $mw->Label(
 				-textvariable => \$buttoninfo,
@@ -47,11 +50,21 @@ sub asakunoGUIargpackIn() {
 				);
 
 	sub buttoninfo() {
-		$buttoninfo = "Topボタン情報\n";
+		$buttoninfo = "Topボタン情報\n" . "-" x 30 . "\n";
 		for my $key (keys(%topButtonList)) {
 			my $value = $topButtonList{$key};
 			$buttoninfo .= "$key -> $value\n";
 		}
+		$buttoninfo .= "-" x 30;
+		say "$buttoninfo";
+	}
+	sub widgetinfo() {
+		$buttoninfo = "Buttonボタン情報\n" . "-" x 30 . "\n";
+		foreach my $value ( @slaveList ) {
+			$buttoninfo .= "$value\n";
+		}
+		$buttoninfo .= "-" x 30;
+		say "$buttoninfo";
 	}
 	MainLoop;
 	say "終了。";	# 出力されない(exit終了のためだが、×印で終了した場合出力される)。

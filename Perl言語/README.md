@@ -10085,6 +10085,7 @@ exit
   * [ウィジェットの非表示](#practicaluseTkgeometrymanagementpackmethodhide)  
   * [ウィジェットの情報取得](#practicaluseTkgeometrymanagementpackmethodintelligence)  
   * [ウィジェットの自動リサイズ停止設定](#practicaluseTkgeometrymanagementpackmethodresize)  
+  * [ウィジェットの一覧取得](#practicaluseTkgeometrymanagementpackmethodcatalog)  
 
 
 <a name="practicaluseTkgeometrymanagementpackmethodhide"></a>
@@ -10246,6 +10247,65 @@ sub method() {
 ```
 想像していた止め方と異なるため、私に検証が見当違いの可能性がある。  
 
+
+<a name="practicaluseTkgeometrymanagementpackmethodcatalog"></a>
+ウィジェットの一覧を取得するメソッド。  
+様式：
+`$widget->packSlaves();`  
+※ウィジェットがない場合、空文字列が返る。  
+
+以下プログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub method() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	my $exit = $mw->Button(
+				-text => "exit",
+				-command => sub { $mw->destroy }
+			)->pack(
+					-ipadx => 60,
+					-ipady => 60,
+				);
+	my $bottom = $mw->Button(
+				-text => "bottom",
+				-command => \&widgetinfo,
+			)->pack();
+	#my @slaveList = $bottom->packSlaves();	←☆これは取得できない(このウィジェットに属したウィジェットが内のだから当たり前)。
+	my @slaveList = $mw->packSlaves();
+	my $buttoninfo = 'null';
+	my $text = $mw->Label(
+				-textvariable => \$buttoninfo,
+			)->pack();
+
+	sub widgetinfo() {
+		$buttoninfo = "Buttonボタン情報\n" . "-" x 30 . "\n";
+		foreach my $value ( @slaveList ) {
+			$buttoninfo .= "$value\n";
+		}
+		$buttoninfo .= "-" x 30;
+		say "$buttoninfo";
+	}
+	MainLoop;
+}
+&method();
+```
+
+以下、表示結果。
+```text
+Tk::Button=HASH(0x7fd223268f18)
+Tk::Button=HASH(0x7fd2232693f8)
+Tk::Button=HASH(0x7fd2232696c8)
+```
+これもいまいちな取得情報になってしまった。  
+これを極める場合、このハッシュ情報を紐解き、ここから各ウィジェットの設定を変更できる。  
+
+todo:
+各ウィジェットの設定を変更できるようにすること。  
 
 </details>
 
