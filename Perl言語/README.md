@@ -9740,18 +9740,90 @@ none
 
 <a name="practicaluseTkgeometrymanagementpackoptionin"></a>
 ###### Packオプション-ウィジェットを指定ウィンドウに配置。
-`$widget`を`$otherwindow`の中にパックする。  
-デフォルトでは、`$widget`の親ウィンドウの中にパックする。  
+ウィジェット自体の大きさを変えることができる。  
+[x方向](#practicaluseTkgeometrymanagementpackoptionipadx)・[y方向](#practicaluseTkgeometrymanagementpackoptionipady)に対して指定できる。  
+
+* 方向  
+  * x方向  
+    `-ipadx => 大きさ指定値`  
+  * y方向  
+    `-ipady => 大きさ指定値`  
+
+※基本は、`$widget`を`$otherwindow`の中にパックする。  
+そして、通常では、`$widget`の親ウィンドウの中にパックする。  
 
 
 <a name="practicaluseTkgeometrymanagementpackoptionipadx"></a>
-###### Packオプション-ウィジェットの幅を増やす。
-ウィジェットの幅を指定分2倍にする。  
+* Packオプション-ウィジェットの幅を増やす。
+  ウィジェットの幅を指定分2倍にする(左右同時に増えるため、指定の2倍になる)。  
+  様式：`-iadx => 指定値`  
 
+以下、x方向に対するプログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub guiipadx() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "top",
+				-command => sub { exit }
+			)->pack();		# 終了ボタン。
+	$mw->Button(
+				-text => "sec",
+				-command => sub { exit }
+			)->pack();		# 終了ボタン。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-ipadx => 6,
+				);		# 終了ボタン。
+	MainLoop;
+}
+&guiipadx();
+```
+えぇ。  
+大きさ変わらない。  
+6から10にした場合は、それなりに変化はあるが、4から6にした場合の変化はほぼ分からない。  
 
 <a name="practicaluseTkgeometrymanagementpackoptionipady"></a>
-###### Packオプション-ウィジェットの高さを増やす。
-ウィジェットの高さを指定分2倍にする。  
+* Packオプション-ウィジェットの高さを増やす。
+  ウィジェットの高さを指定分2倍にする(上下同時に増えるため、指定の2倍になる)。  
+  様式：`-iady => 指定値`  
+
+以下、y方向に対するプログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub guiipady() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "top",
+				-command => sub { exit }
+			)->pack();		# 終了ボタン。
+	$mw->Button(
+				-text => "sec",
+				-command => sub { exit }
+			)->pack();		# 終了ボタン。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-ipady => 6,
+				);		# 終了ボタン。
+	MainLoop;
+}
+&guiipady();
+```
+ほんの少しだけ気づく変化がある。  
 
 
 <a name="practicaluseTkgeometrymanagementpackoptionpadx"></a>
