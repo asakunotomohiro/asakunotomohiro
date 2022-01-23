@@ -53,7 +53,58 @@ sub asakuno() {
 		say "ディレクトリなし。";
 	}
 }
-&asakuno(@ARGV);
+#&asakuno(@ARGV);
+
+sub tomohiro() {
+	# ファイル名のみ作成。
+	my $filename = $asakuno . 'txt';
+
+	unless( -d $filename ) {
+		say "ファイル作成前(ファイル名定義直後のため)。";
+	}
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename
+		or die "$filenameのファイルオープン失敗($!)";
+	foreach( @asakuno ) {
+		say $file_fh $_;	# ファイルへの書き込み。
+	}
+	close $file_fh;
+
+	if( -d $filename ) {
+		say "ファイルあり。";
+	}
+	else{
+		say "ファイルなし。";
+	}
+
+	say "以下、ファイル作成後の情報。";
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($filename);	# ファイルのlstat(プロパティ)情報。
+	say "\tファイルまたはディレクトリに対するハードリンクの個数：$nlink";
+	say "\tファイルの容量をバイト単位で表す(ファイルテスト-sと同じ)：$size";
+	say "\tファイルシステムI/Oでのブロックサイズ：$blksize";
+	say "\t割り当てられたブロック数：$blocks";
+
+	if( -d $filename ) {
+		say "ファイルあり。";
+	}
+	else{
+		say "ファイルなし。";
+	}
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	if( -s $filename ) {
+		say "ファイルあり。";
+	}
+	else{
+		say "ファイルなし(削除済み)。";
+	}
+}
+&tomohiro(@ARGV);
 
 
 sub timeformatChange {
