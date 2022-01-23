@@ -9537,6 +9537,19 @@ FPSゲームは、ユーザから見えない壁があるのと同じで、見�
 <a name="practicaluseTkgeometrymanagementpackoptionafter"></a>
 ###### Packオプション-パック順序を後に配置。
 パック順序における`$widget`の位置を`$otherwidget`の後ろにする。  
+```perl
+-after =>
+        ウィジェット名
+```
+
+以下、具体例
+```perl
+$widget->pack(
+            -after =>
+                    $otherwidget
+            );
+```
+
 
 
 <a name="practicaluseTkgeometrymanagementpackoptionbefore"></a>
