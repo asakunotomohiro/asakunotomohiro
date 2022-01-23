@@ -44,8 +44,18 @@ Macであれば、CotEditorも使っている。
 
 <a name="computingforMarkdown"></a>
 ### ドキュメント作成
-ここでメモを残す技術は[Git](#computingforGit)だけでなく、マークダウン技術も必要になる。  
-ブランチ名：sphinx_Markdown  
+ここでメモを残す技術は、[マークダウン技術](#computingforMarkdownmarkdown)もしくは[リストラクチャーテキスト技術](#computingforMarkdownsphinx)が必要になる。  
+現在の作業：中断。  
+
+
+<a name="computingforMarkdownmarkdown"></a>
+#### markdown
+現在の状況：表の作成のみだけを記載しており、それ以外の記述は中断している。  
+
+
+<a name="computingforMarkdownsphinx"></a>
+#### sphinx
+現在の状況：環境整備のひとつとして、Macへのインストール作業のみだけを記載しており、それ以外の記述は中断している。  
 
 
 <a name="computingforSearch"></a>
