@@ -9744,6 +9744,8 @@ none
 [x方向](#practicaluseTkgeometrymanagementpackoptionipadx)・[y方向](#practicaluseTkgeometrymanagementpackoptionipady)に対して指定できる。  
 
 * 方向  
+  **i**付きが、ウィジェットそのもの(内部(**i**nside)にあるPadだからという意味)。  
+  付いていないのが、ウィジェットの周りに枠を付ける。  
   * x方向  
     `-ipadx => 大きさ指定値`  
     `-padx  => 大きさ指定値`  
@@ -9760,7 +9762,7 @@ none
   ウィジェットの幅を指定分2倍にする(左右同時に増えるため、指定の2倍になる)。  
   様式：`-ipadx => 指定値`  
   ウィジェットの大きさを変えず、周りに枠を作り、その枠の大きさを変えることもできる。  
-  それが**-padx**になる。  
+  それが **-padx** になる。  
 
 <details><summary>ipadx用x方向プログラム</summary>
 
@@ -9849,7 +9851,7 @@ sub guiipadx() {
   ウィジェットの高さを指定分2倍にする(上下同時に増えるため、指定の2倍になる)。  
   様式：`-ipady => 指定値`  
   ウィジェットの大きさを変えず、周りに枠を作り、その枠の大きさを変えることもできる。  
-  それが**-pady**になる。  
+  それが **-pady** になる。  
 
 <details><summary>ipady用y方向プログラム</summary>
 
