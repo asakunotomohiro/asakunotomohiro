@@ -10009,11 +10009,11 @@ use v5.24;
 use Tk;
 
 sub guiInwidget() {
-	my $mainwin = MainWindow->new;
-	$mainwin->title("mainウィンドウ");
+	my $mainwin = MainWindow->new;	←☆このウィンドウに"bottom"ボタンが付くと思っていた。
+	$mainwin->title("mainウィンドウ");	←☆このウィンドウ単体で表示される。
 
 	my $mw = MainWindow->new;
-	$mw->title("packジオメトリマネージャ");
+	$mw->title("packジオメトリマネージャ");	←☆このウィンドウに、以下で生成されるウィジェットが付く。
 
 	# 以下、ウィジェット生成。
 	my $top = $mw->Button(
