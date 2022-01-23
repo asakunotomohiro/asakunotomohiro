@@ -9069,6 +9069,8 @@ exitボタンが一番上に来ると思ったのに・・・そもそも引数�
     ウィジェットの大きさを変更する(2種類：ウィジェット自体・ウィジェットの周り)。  
   * [`-in`](#practicaluseTkgeometrymanagementpackprint)  
     指定ウィジェットに乗せることができる。  
+  * [packジオメトリマネージャのメソッド](#practicaluseTkgeometrymanagementpackmethod)  
+    ウィンドウからウィジェットを非表示にする。  
 
 
 <a name="practicaluseTkgeometrymanagementpackoptionside"></a>
@@ -10077,7 +10079,49 @@ exit
 
 <a name="practicaluseTkgeometrymanagementpackmethod"></a>
 ###### Packオプション-packジオメトリマネージャのメソッド
+ウィジェットに関する情報が取得できる。  
 
+* 目次  
+  * [ウィジェットの非表示](#practicaluseTkgeometrymanagementpackmethodhide)  
+
+
+<a name="practicaluseTkgeometrymanagementpackmethodhide"></a>
+ウィジェットのアンパックというのが正式らしいが、要は非表示にするメソッド。  
+様式：
+`$widget->packForget();`  
+
+以下プログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub method() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	my $top = $mw->Button(
+				-text => "top",
+				-command => sub { exit }
+			)->pack();
+	my $none = $mw->Button(
+				-text => "none",
+				-command => sub { exit }
+			)->pack();	# このボタンが非表示になる。
+	my $exit = $mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack();
+	my $bottom = $mw->Button(
+				-text => "bottom",
+				-command => sub { exit }
+			)->pack();
+	$none->packForget();	# アンパック(非表示)メソッド。
+	MainLoop;
+	say "終了。";	# 出力されない(exit終了のためだが、×印で終了した場合出力される)。
+}
+&method();
+```
 
 </details>
 
