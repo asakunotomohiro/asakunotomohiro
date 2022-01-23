@@ -9550,6 +9550,12 @@ $widget->pack(
             );
 ```
 
+以下、表示例。
+```text
+$otherwidget
+$widget	←☆今回の追加ウィジェット。
+```
+
 <details><summary>オプション設定なし用GUIプログラム</summary>
 
 以下、何もオプションを付けない場合、普通の順番で表示される。
@@ -9633,6 +9639,24 @@ none
 <a name="practicaluseTkgeometrymanagementpackoptionbefore"></a>
 ###### Packオプション-パック順序を前に配置。
 パック順序における`$widget`の位置を`$otherwidget`の前にする。  
+```perl
+-before =>
+        ウィジェット名
+```
+
+以下、具体例
+```perl
+$widget->pack(
+            -before =>
+                    $otherwidget
+            );
+```
+
+以下、表示例。
+```text
+$widget	←☆今回の追加ウィジェット。
+$otherwidget	←☆既存ウィジェット(この前に追加指定)。
+```
 
 
 <a name="practicaluseTkgeometrymanagementpackoptionin"></a>
