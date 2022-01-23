@@ -1,6 +1,7 @@
 # asakunotomohiro
 俺が俺にオンデマンド
 
+
 <a name="howtousethebranch"></a>
 ## ブランチの利用方法
 それぞれのブランチで勉強した内容は、そのまま派生させたブランチに置いておく。  
@@ -11,6 +12,7 @@
     コンピュータを使った日常生活の紹介  
   * [プログラミング言語](#computerProgramming)  
     仕事や生活で使うプログラミングの詳解  
+
 
 <a name="computingforMylife"></a>
 ## 生活用途のコンピューティング
@@ -26,6 +28,8 @@
   * [ドキュメント作成方法](#computingforMarkdown)  
     * markdown  
     * sphinx  
+    * sed  
+    * awk  
   * [検索方法](#computingforSearch)  
     * 正規表現  
   * [Git利用方法](#computingforGit)  
@@ -56,6 +60,16 @@ Macであれば、CotEditorも使っている。
 <a name="computingforMarkdownsphinx"></a>
 #### sphinx
 現在の状況：環境整備のひとつとして、Macへのインストール作業のみだけを記載しており、それ以外の記述は中断している。  
+
+
+<a name="computingforMarkdownsed"></a>
+#### sed
+現在の状況：導入部分のみ記載しており、それ以外の記述は中断している。  
+
+
+<a name="computingforMarkdownawk"></a>
+#### awk
+現在の状況：導入部分のみ記載しており、それ以外の記述は中断している。  
 
 
 <a name="computingforSearch"></a>
@@ -197,7 +211,6 @@ Macであれば、CotEditorも使っている。
 できる限りvimscript9で勉強を進めたい。  
 正直な話、この言語でアルゴリズムの勉強をする気は無いのだが・・・。  
 とりあえず、使っているエディタなので触ってみようと思っただけのこと。  
-ブランチ名：vimScript  
 
 
 ## 〆
