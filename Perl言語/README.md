@@ -9069,6 +9069,8 @@ exitボタンが一番上に来ると思ったのに・・・そもそも引数�
     ウィジェットの大きさを変更する(2種類：ウィジェット自体・ウィジェットの周り)。  
   * [`-in`](#practicaluseTkgeometrymanagementpackprint)  
     指定ウィジェットに乗せることができる。  
+  * [packジオメトリマネージャのメソッド](#practicaluseTkgeometrymanagementpackmethod)  
+    ウィンドウからウィジェットを非表示にする。  
 
 
 <a name="practicaluseTkgeometrymanagementpackoptionside"></a>
@@ -10077,7 +10079,230 @@ exit
 
 <a name="practicaluseTkgeometrymanagementpackmethod"></a>
 ###### Packオプション-packジオメトリマネージャのメソッド
+ウィジェットに関する情報が取得・変更できる。  
 
+* 目次  
+  * [ウィジェットの非表示](#practicaluseTkgeometrymanagementpackmethodhide)  
+  * [ウィジェットの情報取得](#practicaluseTkgeometrymanagementpackmethodintelligence)  
+  * [ウィジェットの自動リサイズ停止設定](#practicaluseTkgeometrymanagementpackmethodresize)  
+  * [ウィジェットの一覧取得](#practicaluseTkgeometrymanagementpackmethodcatalog)  
+
+
+<a name="practicaluseTkgeometrymanagementpackmethodhide"></a>
+ウィジェットのアンパックというのが正式らしいが、要は非表示にするメソッド。  
+様式：
+`$widget->packForget();`  
+
+以下プログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub method() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	my $top = $mw->Button(
+				-text => "top",
+				-command => sub { exit }
+			)->pack();
+	my $none = $mw->Button(
+				-text => "none",
+				-command => sub { exit }
+			)->pack();	# このボタンが非表示になる。
+	my $exit = $mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack();
+	my $bottom = $mw->Button(
+				-text => "bottom",
+				-command => sub { exit }
+			)->pack();
+
+	$none->packForget();	# アンパック(非表示)メソッド。
+	MainLoop;
+}
+&method();
+```
+
+以下、表示姿。
+```text
+top
+exit	←☆topボタンの下かつexitボタンの上にnoneボタンがあった。
+bottom
+```
+今回非表示にしたことで、次回表示させた場合、後ろに追加されることになる。  
+要は、bottomボタンの下にnoneボタンがくる。  
+
+<a name="practicaluseTkgeometrymanagementpackmethodintelligence"></a>
+ウィジェットに関する設定情報リストを取得するメソッド。  
+様式：
+`$widget->packInfo();`  
+
+以下プログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub method() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	my $top = $mw->Button(
+				-text => "top",
+				-command => \&buttoninfo,
+			)->pack();
+	my $exit = $mw->Button(
+				-text => "exit",
+				-command => sub { $mw->destroy; &buttoninfo; },	←☆この関数の中に外で宣言した変数を持ち込めないようだ。
+			)->pack();
+	my %topButtonList = $top->packInfo();		# Topボタンに関する情報を取得する。
+	my $buttoninfo = 'null';
+	my $text = $mw->Label(
+				-textvariable => \$buttoninfo,
+			)->pack();
+
+	sub buttoninfo() {
+		$buttoninfo = "Top Button Info\n" . "-" x 30 . "\n";
+		for my $key (keys(%topButtonList)) {
+			my $value = $topButtonList{$key};
+			$buttoninfo .= "$key -> $value\n";
+		}
+		$buttoninfo .= "-" x 30;
+		say $buttoninfo;
+	}
+
+	MainLoop;
+}
+&method();
+```
+
+以下、出力結果。
+```text
+Top Button Info
+------------------------------
+-fill -> none
+-expand -> 0
+-anchor -> center
+-ipady -> 0
+-side -> top
+-pady -> 0
+-in -> MainWindow=HASH(0x7f873804ff98)
+-padx -> 0
+-ipadx -> 0
+------------------------------
+```
+GUI開発は難しいことを実感した。  
+このテキスト表示をするだけなのに、無茶苦茶時間が掛かった。  
+
+
+<a name="practicaluseTkgeometrymanagementpackmethodresize"></a>
+ウィジェットの大きさを自動調整停止する設定メソッド。  
+様式：
+`$widget->packPropagate(0);`  
+or  
+`$widget->packPropagate('off');`  
+これを使わない場合、自動リサイズが有効になっているとのこと。  
+
+以下プログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub method() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	my $top = $mw->Button(
+				-text => "top",
+				-command => sub { exit },
+			)->pack();
+	my $none = $mw->Button(
+				-text => "none",
+				-command => sub { exit },
+			)->pack();
+	my $exit = $mw->Button(
+				-text => "exit",
+				-command => sub { $mw->destroy },
+			)->pack(
+					-ipadx => 60,
+					-ipady => 60,
+				);
+	#$exit->packPropagate(0);	# ウィンドウの自動リサイズ停止できず。	←☆こっちでできると思うのだが・・・。
+	$mw->packPropagate(0);		# ウィンドウの自動リサイズ停止。
+	my $bottom = $mw->Button(
+				-text => "bottom",
+				-command => sub { exit }
+			)->pack();
+	my %topButtonList = $top->packInfo();		# Topボタンに関する情報を取得する。
+	MainLoop;
+}
+&method();
+```
+想像していた止め方と異なるため、私に検証が見当違いの可能性がある。  
+
+
+<a name="practicaluseTkgeometrymanagementpackmethodcatalog"></a>
+ウィジェットの一覧を取得するメソッド。  
+様式：
+`$widget->packSlaves();`  
+※ウィジェットがない場合、空文字列が返る。  
+
+以下プログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub method() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	my $exit = $mw->Button(
+				-text => "exit",
+				-command => sub { $mw->destroy }
+			)->pack(
+					-ipadx => 60,
+					-ipady => 60,
+				);
+	my $bottom = $mw->Button(
+				-text => "bottom",
+				-command => \&widgetinfo,
+			)->pack();
+	#my @slaveList = $bottom->packSlaves();	←☆これは取得できない(このウィジェットに属したウィジェットがないのだから当たり前)。
+	my @slaveList = $mw->packSlaves();
+	my $buttoninfo = 'null';
+	my $text = $mw->Label(
+				-textvariable => \$buttoninfo,
+			)->pack();
+
+	sub widgetinfo() {
+		$buttoninfo = "Buttonボタン情報\n" . "-" x 30 . "\n";
+		foreach my $value ( @slaveList ) {
+			$buttoninfo .= "$value\n";
+		}
+		$buttoninfo .= "-" x 30;
+		say "$buttoninfo";
+	}
+	MainLoop;
+}
+&method();
+```
+
+以下、表示結果。
+```text
+Tk::Button=HASH(0x7fd223268f18)
+Tk::Button=HASH(0x7fd2232693f8)
+Tk::Button=HASH(0x7fd2232696c8)
+```
+これもいまいちな取得情報になってしまった。  
+これを極める場合、このハッシュ情報を紐解き、ここから各ウィジェットの設定を変更できる。  
+
+todo:
+各ウィジェットの設定を変更できるようにすること。  
 
 </details>
 
