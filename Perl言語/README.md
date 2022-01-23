@@ -9957,8 +9957,98 @@ sub guiipady() {
 
 </details>
 
+
 <a name="practicaluseTkgeometrymanagementpackprint"></a>
 ###### Packオプション-ウィジェットを指定ウィンドウに表示。
+親以外のウィジェット上への表示をするには、`-in`オプションを用いる。  
+※通常は、ウィジェットをパックした場合、そのウィジェットを生成した領域内に配置される。  
+決して、親ウィンドウ以外に表示するのでは無いため、気をつけること。  
+
+<details><summary>オプション設定なし用GUIプログラム</summary>
+
+以下、何もオプションを付けない場合、デフォルト表示になる。
+```perl
+use v5.24;
+use Tk;
+
+sub guiPure() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "top",
+				-command => sub { exit }
+			)->pack();
+	$mw->Button(
+				-text => "none",
+				-command => sub { exit }
+			)->pack();
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack();
+	MainLoop;
+}
+&guiPure();
+```
+
+以下、表示姿。
+```text
+top
+none
+exit
+```
+何も手を加えていない表示。  
+
+</details>
+
+以下、プログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub guiInwidget() {
+	my $mainwin = MainWindow->new;	←☆このウィンドウに"bottom"ボタンが付くと思っていた。
+	$mainwin->title("mainウィンドウ");	←☆このウィンドウ単体で表示される。
+
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");	←☆このウィンドウに、以下で生成されるウィジェットが付く。
+
+	# 以下、ウィジェット生成。
+	my $top = $mw->Button(
+				-text => "top",
+				-command => sub { exit }
+			)->pack();
+	my $none = $mw->Button(
+				-text => "none",
+				-command => sub { exit }
+			)->pack();
+	my $exit = $mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack();
+	my $bottom = $mw->Button(
+				-text => "bottom",
+				-command => sub { exit }
+			)->pack(
+					-in =>
+						#$mainwin,	←☆変化なし(このウィンドウに表示すると思っていた)。
+						$top,
+				);		# 終了ボタン。
+	MainLoop;
+}
+&guiInwidget();
+```
+
+以下、表示姿。
+```text
+bottom	←☆この下にTopボタンがある(カーソルを合わせた場合、表示しようと頑張る)。
+none
+exit
+```
+違うウィンドウに表示すると思っていたが、違うウィジェットに乗るだけだった。  
+それが大事なのだろうが・・・。  
 
 
 <a name="practicaluseTkgeometrymanagementpackmethod"></a>
