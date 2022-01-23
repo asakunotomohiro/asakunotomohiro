@@ -7770,6 +7770,122 @@ sub direxistence() {
 #### ファイルテスト演算子(`-d`)
 エントリはディレクトリ。  
 
+以下、ディレクトリ確認用プログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub direxistence() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+
+	# ディレクトリ名定義。
+	my $dirname = $currentDir . '/dirtest';
+	unless( -d $dirname ) {
+		say "ディレクトリなし(ディレクトリ名を定義したため)。";
+	}
+
+	say "ディレクトリを作成する。";
+	mkdir $dirname, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+
+	if( -d $dirname ) {
+		say "ディレクトリあり(ディレクトリ作成直後の確認)。";
+	}
+
+	say "以下、ディレクトリ作成後の情報。";
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($dirname);	# ファイルのlstat(プロパティ)情報。
+	say "\tディレクトリに対するハードリンクの個数\t\t：$nlink";
+	say "\tディレクトリの容量をバイト単位で表す\t\t：$size";
+	say "\tディレクトリシステムI/Oでのブロックサイズ\t：$blksize";
+	say "\t割り当てられたブロック数\t\t\t\t\t：$blocks";
+
+	say "ディレクトリ削除。";
+	rmdir $dirname or warn "ディレクトリ削除失敗($!)。";
+	unless( -d $dirname ) {
+		say "ディレクトリなし(削除済み)。";
+	}
+}
+&direxistence();
+```
+上記オプション[`-e`](#practicaluseFiletestoperatore)と違い、ディレクトリの存在有無を確認するテストになるため、使うとすればこっち(`-f`)だろう。  
+
+以下、出力結果。
+```terminal
+ディレクトリなし(ディレクトリ名を定義したため)。
+ディレクトリを作成する。
+ディレクトリあり(ディレクトリ作成直後の確認)。
+以下、ディレクトリ作成後の情報。
+	ディレクトリに対するハードリンクの個数		：2
+	ディレクトリの容量をバイト単位で表す		：64
+	ディレクトリシステムI/Oでのブロックサイズ	：4096
+	割り当てられたブロック数					：0
+ディレクトリ削除。
+ディレクトリなし(削除済み)。
+```
+
+<details><summary>ファイルに対するプログラム。</summary>
+
+以下、ファイルに対してディレクトリテスト演算子のファイル存在有無プログラムを実施した。
+```perl
+use v5.24;
+
+sub fileexistence() {
+	# ファイル名のみ作成。
+	my $filename = 'filetest.txt';
+
+	unless( -d $filename ) {
+		say "ファイル作成前(ファイル名定義直後のため)。";
+	}
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename or die "$filenameのファイルオープン失敗($!)";
+	close $file_fh;
+
+	if( -d $filename ) {
+		say "ファイルあり。";
+	}
+	else{
+		say "ファイルなし(ディレクトリがあるという意味ではない)。";
+	}
+
+	say "以下、ファイル作成後の情報。";
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($filename);	# ファイルのlstat(プロパティ)情報。
+	say "\tファイルに対するハードリンクの個数\t\t：$nlink";
+	say "\tファイルの容量をバイト単位で表す\t\t：$size";
+	say "\tファイルシステムI/Oでのブロックサイズ\t：$blksize";
+	say "\t割り当てられたブロック数\t\t\t\t：$blocks";
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	unless( -s $filename ) {
+		say "ファイルなし(削除済み)。";
+	}
+}
+&fileexistence();
+```
+
+以下、出力結果。
+```terminal
+ファイル作成前(ファイル名定義直後のため)。
+ファイルを作成する。
+ファイルなし(ディレクトリがあるという意味ではない)。
+以下、ファイル作成後の情報。
+	ファイルに対するハードリンクの個数		：1
+	ファイルの容量をバイト単位で表す		：0
+	ファイルシステムI/Oでのブロックサイズ	：4096
+	割り当てられたブロック数				：0
+ファイル削除。
+ファイルなし(削除済み)。
+```
+
+</details>
+
 
 <a name="practicaluseFiletestoperatorl"></a>
 #### ファイルテスト演算子(`-l`)
