@@ -10084,6 +10084,7 @@ exit
 * 目次  
   * [ウィジェットの非表示](#practicaluseTkgeometrymanagementpackmethodhide)  
   * [ウィジェットの情報取得](#practicaluseTkgeometrymanagementpackmethodintelligence)  
+  * [ウィジェットの自動リサイズ停止設定](#practicaluseTkgeometrymanagementpackmethodresize)  
 
 
 <a name="practicaluseTkgeometrymanagementpackmethodhide"></a>
@@ -10124,7 +10125,7 @@ sub method() {
 ```
 
 <a name="practicaluseTkgeometrymanagementpackmethodintelligence"></a>
-ウィジェットに関する設定情報リストを取得する。  
+ウィジェットに関する設定情報リストを取得するメソッド。  
 様式：
 `$widget->packInfo();`  
 
@@ -10193,6 +10194,57 @@ Top Button Info
 ```
 GUI開発は難しいことを実感した。  
 このテキスト表示をするだけなのに、無茶苦茶時間が掛かった。  
+
+
+<a name="practicaluseTkgeometrymanagementpackmethodresize"></a>
+ウィジェットの大きさを自動調整停止する設定メソッド。  
+様式：
+`$widget->packPropagate(0);`  
+or  
+`$widget->packPropagate('off');`  
+これを使わない場合、自動リサイズが有効になっているとのこと。  
+
+以下プログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub method() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	my $top = $mw->Button(
+				-text => "top",
+				-command => \&buttoninfo,
+			)->pack();
+	my $none = $mw->Button(
+				-text => "none",
+				-command => sub { exit }
+			)->pack();
+	my $exit = $mw->Button(
+				-text => "exit",
+				-command => sub { $mw->destroy },
+			)->pack(
+					-ipadx => 60,
+					-ipady => 60,
+				);
+	#$exit->packPropagate(0);	# ウィンドウの自動リサイズ停止できず。	←☆こっちでできると思うのだが・・・。
+	$mw->packPropagate(0);		# ウィンドウの自動リサイズ停止。
+	my $bottom = $mw->Button(
+				-text => "bottom",
+				-command => sub { exit }
+			)->pack();
+	my %topButtonList = $top->packInfo();		# Topボタンに関する情報を取得する。
+	my $buttoninfo = 'null';
+	my $text = $mw->Label(
+				-textvariable => \$buttoninfo,
+			)->pack();
+	MainLoop;
+}
+&method();
+```
+想像していた止め方と異なるため、私に検証が見当違いの可能性がある。  
 
 
 </details>

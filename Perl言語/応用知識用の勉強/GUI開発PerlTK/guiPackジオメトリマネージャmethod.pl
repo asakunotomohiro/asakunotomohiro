@@ -28,7 +28,11 @@ sub asakunoGUIargpackIn() {
 				-text => "exit",
 				-command => sub { exit }
 			)->pack(
+					-ipadx => 60,
+					-ipady => 60,
 				);					# 終了ボタン。
+	#$exit->packPropagate(0);	# ウィンドウの自動リサイズ停止できず。
+	$mw->packPropagate(0);	# ウィンドウの自動リサイズ停止。
 	my $bottom = $mw->Button(
 				-text => "bottom",
 				-command => sub { exit }
