@@ -68,7 +68,7 @@ sub asakunoGUIargpackPadx() {
 	MainLoop;
 	say "終了。";	# 出力されない(exit終了のためだが、×印で終了した場合出力される)。
 }
-&asakunoGUIargpackPadx(@ARGV);
+#&asakunoGUIargpackPadx(@ARGV);
 
 sub asakunoGUIargpackIpady() {
 	my $mw = MainWindow->new;
@@ -94,7 +94,38 @@ sub asakunoGUIargpackIpady() {
 	MainLoop;
 	say "終了。";	# 出力されない(exit終了のためだが、×印で終了した場合出力される)。
 }
-&asakunoGUIargpackIpady(@ARGV);
+#&asakunoGUIargpackIpady(@ARGV);
+
+sub asakunoGUIargpackPady() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "top",
+				-command => sub { exit }
+			)->pack(
+				);					# 終了ボタン。
+	$mw->Button(
+				-text => "sec",
+				-command => sub { exit }
+			)->pack(
+					-pady => 6,
+				);					# 終了ボタン。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+				);					# 終了ボタン。
+	$mw->Button(
+				-text => "end",
+				-command => sub { exit }
+			)->pack(
+				);					# 終了ボタン。
+	MainLoop;
+	say "終了。";	# 出力されない(exit終了のためだが、×印で終了した場合出力される)。
+}
+&asakunoGUIargpackPady(@ARGV);
 
 say "以上。"
 # vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=perl noexpandtab:

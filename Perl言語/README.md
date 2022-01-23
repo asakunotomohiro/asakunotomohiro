@@ -9746,8 +9746,10 @@ none
 * 方向  
   * x方向  
     `-ipadx => 大きさ指定値`  
+    `-padx  => 大きさ指定値`  
   * y方向  
     `-ipady => 大きさ指定値`  
+    `-pady  => 大きさ指定値`  
 
 ※基本は、`$widget`を`$otherwindow`の中にパックする。  
 そして、通常では、`$widget`の親ウィンドウの中にパックする。  
@@ -9880,6 +9882,47 @@ sub guiipady() {
 &guiipady();
 ```
 ほんの少しだけ気づく変化がある。  
+
+</details>
+
+<details><summary>pady用y方向プログラム</summary>
+
+以下、y方向に対するプログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub guiipady() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "top",
+				-command => sub { exit }
+			)->pack(
+				);		# 終了ボタン。
+	$mw->Button(
+				-text => "sec",
+				-command => sub { exit }
+			)->pack(
+					-pady => 6,	←☆見えない枠が作られるのが確認できる。
+				);		# 終了ボタン。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+				);		# 終了ボタン。
+	$mw->Button(
+				-text => "end",
+				-command => sub { exit }
+			)->pack(
+				);		# 終了ボタン。
+	MainLoop;
+}
+&guiipady();
+```
+垂直方向への配置で気づく。  
 
 </details>
 
