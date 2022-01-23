@@ -9796,6 +9796,51 @@ sub guiipadx() {
 
 </details>
 
+<details><summary>padx用x方向プログラム</summary>
+
+以下、x方向に対するプログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub guiipadx() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "top",
+				-command => sub { exit }
+			)->pack(
+					-side => 'left',
+				);		# 終了ボタン。
+	$mw->Button(
+				-text => "sec",
+				-command => sub { exit }
+			)->pack(
+					-side => 'left',
+					-padx => 10,	←☆見えない枠が作られるのが確認できる。
+				);		# 終了ボタン。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-side => 'left',
+				);		# 終了ボタン。
+	$mw->Button(
+				-text => "end",
+				-command => sub { exit }
+			)->pack(
+					-side => 'left',
+				);		# 終了ボタン。
+	MainLoop;
+}
+&guiipadx();
+```
+水平方向の並びにした場合に気づきやすい。  
+
+</details>
+
 
 <a name="practicaluseTkgeometrymanagementpackoptionipady"></a>
 * Packオプション-ウィジェットの高さを増やす。

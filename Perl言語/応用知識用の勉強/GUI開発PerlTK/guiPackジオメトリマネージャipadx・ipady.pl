@@ -35,6 +35,41 @@ sub asakunoGUIargpackIpadx() {
 }
 #&asakunoGUIargpackIpadx(@ARGV);
 
+sub asakunoGUIargpackPadx() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "top",
+				-command => sub { exit }
+			)->pack(
+					-side => 'left',
+				);					# 終了ボタン。
+	$mw->Button(
+				-text => "sec",
+				-command => sub { exit }
+			)->pack(
+					-side => 'left',
+					-padx => 10,
+				);					# 終了ボタン。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-side => 'left',
+				);					# 終了ボタン。
+	$mw->Button(
+				-text => "end",
+				-command => sub { exit }
+			)->pack(
+					-side => 'left',
+				);					# 終了ボタン。
+	MainLoop;
+	say "終了。";	# 出力されない(exit終了のためだが、×印で終了した場合出力される)。
+}
+&asakunoGUIargpackPadx(@ARGV);
+
 sub asakunoGUIargpackIpady() {
 	my $mw = MainWindow->new;
 	$mw->title("packジオメトリマネージャ");
