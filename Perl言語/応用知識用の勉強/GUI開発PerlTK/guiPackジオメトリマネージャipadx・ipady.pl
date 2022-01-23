@@ -33,7 +33,7 @@ sub asakunoGUIargpackIpadx() {
 	MainLoop;
 	say "終了。";	# 出力されない(exit終了のためだが、×印で終了した場合出力される)。
 }
-#&asakunoGUIargpackIpadx(@ARGV);
+&asakunoGUIargpackIpadx(@ARGV);
 
 sub asakunoGUIargpackPadx() {
 	my $mw = MainWindow->new;
@@ -68,7 +68,7 @@ sub asakunoGUIargpackPadx() {
 	MainLoop;
 	say "終了。";	# 出力されない(exit終了のためだが、×印で終了した場合出力される)。
 }
-#&asakunoGUIargpackPadx(@ARGV);
+&asakunoGUIargpackPadx(@ARGV);
 
 sub asakunoGUIargpackIpady() {
 	my $mw = MainWindow->new;
@@ -94,7 +94,7 @@ sub asakunoGUIargpackIpady() {
 	MainLoop;
 	say "終了。";	# 出力されない(exit終了のためだが、×印で終了した場合出力される)。
 }
-#&asakunoGUIargpackIpady(@ARGV);
+&asakunoGUIargpackIpady(@ARGV);
 
 sub asakunoGUIargpackPady() {
 	my $mw = MainWindow->new;
