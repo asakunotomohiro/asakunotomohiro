@@ -9756,7 +9756,11 @@ none
 <a name="practicaluseTkgeometrymanagementpackoptionipadx"></a>
 * Packオプション-ウィジェットの幅を増やす。
   ウィジェットの幅を指定分2倍にする(左右同時に増えるため、指定の2倍になる)。  
-  様式：`-iadx => 指定値`  
+  様式：`-ipadx => 指定値`  
+  ウィジェットの大きさを変えず、周りに枠を作り、その枠の大きさを変えることもできる。  
+  それが**-padx**になる。  
+
+<details><summary>ipadx用x方向プログラム</summary>
 
 以下、x方向に対するプログラム。
 ```perl
@@ -9790,10 +9794,17 @@ sub guiipadx() {
 大きさ変わらない。  
 6から10にした場合は、それなりに変化はあるが、4から6にした場合の変化はほぼ分からない。  
 
+</details>
+
+
 <a name="practicaluseTkgeometrymanagementpackoptionipady"></a>
 * Packオプション-ウィジェットの高さを増やす。
   ウィジェットの高さを指定分2倍にする(上下同時に増えるため、指定の2倍になる)。  
-  様式：`-iady => 指定値`  
+  様式：`-ipady => 指定値`  
+  ウィジェットの大きさを変えず、周りに枠を作り、その枠の大きさを変えることもできる。  
+  それが**-pady**になる。  
+
+<details><summary>ipady用y方向プログラム</summary>
 
 以下、y方向に対するプログラム。
 ```perl
@@ -9824,6 +9835,8 @@ sub guiipady() {
 &guiipady();
 ```
 ほんの少しだけ気づく変化がある。  
+
+</details>
 
 
 <a name="practicaluseTkgeometrymanagementpackoptionpadx"></a>
