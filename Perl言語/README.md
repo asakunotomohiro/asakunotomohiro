@@ -9740,29 +9740,222 @@ none
 
 <a name="practicaluseTkgeometrymanagementpackoptionin"></a>
 ###### Packオプション-ウィジェットを指定ウィンドウに配置。
-`$widget`を`$otherwindow`の中にパックする。  
-デフォルトでは、`$widget`の親ウィンドウの中にパックする。  
+ウィジェット自体の大きさを変えることができる。  
+x方向・y方向に対して指定できる。  
+
+* 方向指定  
+  **i**付きが、ウィジェットそのもの(内部(**i**nside)にあるPadだからという意味)。  
+  付いていないのが、ウィジェットの周りに枠を付ける。  
+  * x方向  
+    [`-ipadx => 大きさ指定値`](#practicaluseTkgeometrymanagementpackoptionipadx)  
+    [`-padx  => 大きさ指定値`](#practicaluseTkgeometrymanagementpackoptionpadx)  
+  * y方向  
+    [`-ipady => 大きさ指定値`](#practicaluseTkgeometrymanagementpackoptionipady)  
+    [`-pady  => 大きさ指定値`](#practicaluseTkgeometrymanagementpackoptionpady)  
+
+※基本は、`$widget`を`$otherwindow`の中にパックする。  
+そして、通常では、`$widget`の親ウィンドウの中にパックする。  
+
+* 単位指定  
+  画面上の距離(スクリーンユニット)用の値は、指定することができる。  
+  ※指定が無い場合、ピクセルを単位として計算される。  
+  例）`$button->pack(-ipadx => '1m'); # 1ミリ`  
+  * 無指定  
+    ピクセル(デフォルト)  
+    例）`20・30・"20"・"30"`  
+    基本は、ピクセルを使うのが望ましい(他のでは、ディスプレイによって見た目の大きさが変わる)。  
+  * `c`  
+    センチ  
+    例）`'3c'`・`'4c'`・`"3c"`  
+  * `i`  
+    インチ  
+    例）`'2i'`・`"3i"`  
+  * `m`  
+    ミリ  
+    例）`'4m'`・`"4m"`  
+  * `p`  
+    プリンタポイント(72分の1インチ)  
+    例）`'40p'`・`"72p"`  
+    ※pを付けた場合、ピクセルにならないため、気をつけること(説明通り)。  
 
 
 <a name="practicaluseTkgeometrymanagementpackoptionipadx"></a>
-###### Packオプション-ウィジェットの幅を増やす。
-ウィジェットの幅を指定分2倍にする。  
+* Packオプション-ウィジェットの幅を増やす。
+  ウィジェットの幅を指定分2倍にする(左右同時に増えるため、指定の2倍になる)。  
+  様式：`-ipadx => 指定値`  
+
+<details><summary>ipadx用x方向プログラム</summary>
+
+以下、x方向に対するプログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub guiipadx() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "top",
+				-command => sub { exit }
+			)->pack();		# 終了ボタン。
+	$mw->Button(
+				-text => "sec",
+				-command => sub { exit }
+			)->pack();		# 終了ボタン。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-ipadx => 6,
+				);		# 終了ボタン。
+	MainLoop;
+}
+&guiipadx();
+```
+大きさの変化に気づきにくい。  
+6から10にした場合は、それなりに変化はあるが、4から6にした場合の変化はほぼ分からない。  
+
+</details>
 
 
 <a name="practicaluseTkgeometrymanagementpackoptionipady"></a>
-###### Packオプション-ウィジェットの高さを増やす。
-ウィジェットの高さを指定分2倍にする。  
+* Packオプション-ウィジェットの高さを増やす。
+  ウィジェットの高さを指定分2倍にする(上下同時に増えるため、指定の2倍になる)。  
+  様式：`-ipady => 指定値`  
+
+<details><summary>ipady用y方向プログラム</summary>
+
+以下、y方向に対するプログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub guiipady() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "top",
+				-command => sub { exit }
+			)->pack();		# 終了ボタン。
+	$mw->Button(
+				-text => "sec",
+				-command => sub { exit }
+			)->pack();		# 終了ボタン。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-ipady => 6,
+				);		# 終了ボタン。
+	MainLoop;
+}
+&guiipady();
+```
+大きさの変化に気づきにくいため、値は大きめに取った方が良い？  
+
+</details>
 
 
 <a name="practicaluseTkgeometrymanagementpackoptionpadx"></a>
-###### Packオプション-ウィジェットの左右に余白を設ける。
-ウィジェットの左右にパッド(余白)を設ける。  
+* Packオプション-ウィジェットの左右に余白を設ける。
+  ウィジェットの大きさを変えず、左右にパッド(枠・余白)を作り、その枠の大きさを変えることもできる。  
+  様式：`-padx => 指定値`  
+
+<details><summary>padx用x方向プログラム</summary>
+
+以下、x方向に対するプログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub guiipadx() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "top",
+				-command => sub { exit }
+			)->pack(
+					-side => 'left',
+				);		# 終了ボタン。
+	$mw->Button(
+				-text => "sec",
+				-command => sub { exit }
+			)->pack(
+					-side => 'left',
+					-padx => 10,	←☆見えない枠が作られるのが確認できる。
+				);		# 終了ボタン。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-side => 'left',
+				);		# 終了ボタン。
+	$mw->Button(
+				-text => "end",
+				-command => sub { exit }
+			)->pack(
+					-side => 'left',
+				);		# 終了ボタン。
+	MainLoop;
+}
+&guiipadx();
+```
+水平方向の並びにした場合、変化に気づく。  
+
+</details>
 
 
 <a name="practicaluseTkgeometrymanagementpackoptionpady"></a>
-###### Packオプション-ウィジェットの上下に余白を設ける。
-ウィジェットの上下にパッド(余白)を設ける。  
+* Packオプション-ウィジェットの上下に余白を設ける。
+  ウィジェットの大きさを変えず、上下にパッド(枠・余白)を作り、その枠の大きさを変えることもできる。  
+  様式：`-pady => 指定値`  
 
+<details><summary>pady用y方向プログラム</summary>
+
+以下、y方向に対するプログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub guiipady() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "top",
+				-command => sub { exit }
+			)->pack(
+				);		# 終了ボタン。
+	$mw->Button(
+				-text => "sec",
+				-command => sub { exit }
+			)->pack(
+					-pady => 6,	←☆見えない枠が作られるのが確認できる。
+				);		# 終了ボタン。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+				);		# 終了ボタン。
+	$mw->Button(
+				-text => "end",
+				-command => sub { exit }
+			)->pack(
+				);		# 終了ボタン。
+	MainLoop;
+}
+&guiipady();
+```
+垂直方向への配置で変化に気づく。  
+
+</details>
 
 </details>
 
