@@ -10083,6 +10083,7 @@ exit
 
 * 目次  
   * [ウィジェットの非表示](#practicaluseTkgeometrymanagementpackmethodhide)  
+  * [ウィジェットの情報取得](#practicaluseTkgeometrymanagementpackmethodintelligence)  
 
 
 <a name="practicaluseTkgeometrymanagementpackmethodhide"></a>
@@ -10118,10 +10119,81 @@ sub method() {
 			)->pack();
 	$none->packForget();	# アンパック(非表示)メソッド。
 	MainLoop;
-	say "終了。";	# 出力されない(exit終了のためだが、×印で終了した場合出力される)。
 }
 &method();
 ```
+
+<a name="practicaluseTkgeometrymanagementpackmethodintelligence"></a>
+ウィジェットに関する設定情報リストを取得する。  
+様式：
+`$widget->packInfo();`  
+
+以下プログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub method() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	my $top = $mw->Button(
+				-text => "top",
+				-command => \&buttoninfo,
+			)->pack();
+	my $none = $mw->Button(
+				-text => "none",
+				-command => sub { exit }
+			)->pack();
+	my $exit = $mw->Button(
+				-text => "exit",
+				-command => sub { $mw->destroy; &buttoninfo; },	←☆この関数の中に外で宣言した変数を持ち込めないようだ。
+			)->pack();
+	my $bottom = $mw->Button(
+				-text => "bottom",
+				-command => sub { exit }
+			)->pack();
+	my %topButtonList = $top->packInfo();		# Topボタンに関する情報を取得する。
+	my $buttoninfo = 'null';
+	my $text = $mw->Label(
+				-textvariable => \$buttoninfo,
+			)->pack();
+
+	sub buttoninfo() {
+		$buttoninfo = "Top Button Info\n" . "-" x 30 . "\n";
+		for my $key (keys(%topButtonList)) {
+			my $value = $topButtonList{$key};
+			$buttoninfo .= "$key -> $value\n";
+		}
+		$buttoninfo .= "-" x 30;
+		say $buttoninfo;
+	}
+
+	$none->packForget();	# アンパック(非表示)メソッド。
+	MainLoop;
+}
+&method();
+```
+~~とりあえず、画面に表示される文字列をコピペできないため、自分で実行して確認するしかない。~~  
+以下、出力結果。
+```text
+Top Button Info
+------------------------------
+-fill -> none
+-expand -> 0
+-anchor -> center
+-ipady -> 0
+-side -> top
+-pady -> 0
+-in -> MainWindow=HASH(0x7f873804ff98)
+-padx -> 0
+-ipadx -> 0
+------------------------------
+```
+GUI開発は難しいことを実感した。  
+このテキスト表示をするだけなのに、無茶苦茶時間が掛かった。  
+
 
 </details>
 

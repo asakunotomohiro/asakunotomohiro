@@ -16,7 +16,7 @@ sub asakunoGUIargpackIn() {
 	# 以下、ウィジェット生成。
 	my $top = $mw->Button(
 				-text => "top",
-				-command => sub { exit }
+				-command => \&buttoninfo,
 			)->pack(
 				);					# 終了ボタン。
 	my $none = $mw->Button(
@@ -35,6 +35,20 @@ sub asakunoGUIargpackIn() {
 			)->pack(
 				);					# 終了ボタン。
 	$none->packForget();	# アンパック(非表示)メソッド。
+	my %topButtonList = $top->packInfo();		# Topボタンに関する情報を取得する。
+	my $buttoninfo = 'null';
+	my $text = $mw->Label(
+				-textvariable => \$buttoninfo,
+			)->pack(
+				);
+
+	sub buttoninfo() {
+		$buttoninfo = "Topボタン情報\n";
+		for my $key (keys(%topButtonList)) {
+			my $value = $topButtonList{$key};
+			$buttoninfo .= "$key -> $value\n";
+		}
+	}
 	MainLoop;
 	say "終了。";	# 出力されない(exit終了のためだが、×印で終了した場合出力される)。
 }
