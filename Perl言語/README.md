@@ -9957,6 +9957,14 @@ sub guiipady() {
 
 </details>
 
+<a name="practicaluseTkgeometrymanagementpackprint"></a>
+###### Packオプション-ウィジェットを指定ウィンドウに表示。
+
+
+<a name="practicaluseTkgeometrymanagementpackmethod"></a>
+###### Packオプション-packジオメトリマネージャのメソッド
+
+
 </details>
 
 
