@@ -10119,11 +10119,21 @@ sub method() {
 				-text => "bottom",
 				-command => sub { exit }
 			)->pack();
+
 	$none->packForget();	# アンパック(非表示)メソッド。
 	MainLoop;
 }
 &method();
 ```
+
+以下、表示姿。
+```text
+top
+exit	←☆topボタンの下かつexitボタンの上にnoneボタンがあった。
+bottom
+```
+今回非表示にしたことで、次回表示させた場合、後ろに追加されることになる。  
+要は、bottomボタンの下にnoneボタンがくる。  
 
 <a name="practicaluseTkgeometrymanagementpackmethodintelligence"></a>
 ウィジェットに関する設定情報リストを取得するメソッド。  
@@ -10144,17 +10154,9 @@ sub method() {
 				-text => "top",
 				-command => \&buttoninfo,
 			)->pack();
-	my $none = $mw->Button(
-				-text => "none",
-				-command => sub { exit }
-			)->pack();
 	my $exit = $mw->Button(
 				-text => "exit",
 				-command => sub { $mw->destroy; &buttoninfo; },	←☆この関数の中に外で宣言した変数を持ち込めないようだ。
-			)->pack();
-	my $bottom = $mw->Button(
-				-text => "bottom",
-				-command => sub { exit }
 			)->pack();
 	my %topButtonList = $top->packInfo();		# Topボタンに関する情報を取得する。
 	my $buttoninfo = 'null';
@@ -10172,12 +10174,11 @@ sub method() {
 		say $buttoninfo;
 	}
 
-	$none->packForget();	# アンパック(非表示)メソッド。
 	MainLoop;
 }
 &method();
 ```
-~~とりあえず、画面に表示される文字列をコピペできないため、自分で実行して確認するしかない。~~  
+
 以下、出力結果。
 ```text
 Top Button Info
@@ -10217,11 +10218,11 @@ sub method() {
 	# 以下、ウィジェット生成。
 	my $top = $mw->Button(
 				-text => "top",
-				-command => \&buttoninfo,
+				-command => sub { exit },
 			)->pack();
 	my $none = $mw->Button(
 				-text => "none",
-				-command => sub { exit }
+				-command => sub { exit },
 			)->pack();
 	my $exit = $mw->Button(
 				-text => "exit",
@@ -10237,10 +10238,6 @@ sub method() {
 				-command => sub { exit }
 			)->pack();
 	my %topButtonList = $top->packInfo();		# Topボタンに関する情報を取得する。
-	my $buttoninfo = 'null';
-	my $text = $mw->Label(
-				-textvariable => \$buttoninfo,
-			)->pack();
 	MainLoop;
 }
 &method();
@@ -10275,7 +10272,7 @@ sub method() {
 				-text => "bottom",
 				-command => \&widgetinfo,
 			)->pack();
-	#my @slaveList = $bottom->packSlaves();	←☆これは取得できない(このウィジェットに属したウィジェットが内のだから当たり前)。
+	#my @slaveList = $bottom->packSlaves();	←☆これは取得できない(このウィジェットに属したウィジェットがないのだから当たり前)。
 	my @slaveList = $mw->packSlaves();
 	my $buttoninfo = 'null';
 	my $text = $mw->Label(
