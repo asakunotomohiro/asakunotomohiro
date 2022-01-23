@@ -9537,11 +9537,205 @@ FPSゲームは、ユーザから見えない壁があるのと同じで、見�
 <a name="practicaluseTkgeometrymanagementpackoptionafter"></a>
 ###### Packオプション-パック順序を後に配置。
 パック順序における`$widget`の位置を`$otherwidget`の後ろにする。  
+```perl
+-after =>
+        ウィジェット名
+```
+
+以下、具体例
+```perl
+$widget->pack(
+            -after =>
+                    $otherwidget
+            );
+```
+
+以下、表示例。
+```text
+$otherwidget	←☆既存ウィジェット(この前に追加指定)。
+$widget	←☆今回の追加ウィジェット。
+```
+
+<details><summary>オプション設定なし用GUIプログラム</summary>
+
+以下、何もオプションを付けない場合、普通の順番で表示される。
+```perl
+use v5.24;
+use Tk;
+
+sub guiPure() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "top",
+				-command => sub { exit }
+			)->pack();
+	$mw->Button(
+				-text => "none",
+				-command => sub { exit }
+			)->pack();
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack();
+	MainLoop;
+}
+&guiPure();
+```
+
+以下、表示姿。
+```text
+top
+none
+exit
+```
+埋め込んだ順に詰め込まれる。  
+
+</details>
+
+以下、最初に詰め込んだウィジェット直後に配置するプログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub guiAfter() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	my $top = $mw->Button(
+				-text => "top",
+				-command => sub { exit }
+			)->pack(
+				);		# 終了ボタン。
+	$mw->Button(
+				-text => "none",
+				-command => sub { exit }
+			)->pack(
+				);		# 終了ボタン。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-after => $top,
+				);		# 終了ボタン。
+	MainLoop;
+}
+&guiAfter();
+```
+最後に追加した**exit**ボタンを**top**ボタン直後に配置している。  
+
+以下、表示姿。
+```text
+top
+exit
+none
+```
+見事順番を変えることが出来た。  
 
 
 <a name="practicaluseTkgeometrymanagementpackoptionbefore"></a>
 ###### Packオプション-パック順序を前に配置。
 パック順序における`$widget`の位置を`$otherwidget`の前にする。  
+```perl
+-before =>
+        ウィジェット名
+```
+
+以下、具体例
+```perl
+$widget->pack(
+            -before =>
+                    $otherwidget
+            );
+```
+
+以下、表示例。
+```text
+$widget	←☆今回の追加ウィジェット。
+$otherwidget	←☆既存ウィジェット(この前に追加指定)。
+```
+
+<details><summary>オプション設定なし用GUIプログラム</summary>
+
+以下、何もオプションを付けない場合、普通の順番で表示される。
+```perl
+use v5.24;
+use Tk;
+
+sub guiPure() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "top",
+				-command => sub { exit }
+			)->pack();
+	$mw->Button(
+				-text => "none",
+				-command => sub { exit }
+			)->pack();
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack();
+	MainLoop;
+}
+&guiPure();
+```
+
+以下、表示姿。
+```text
+top
+none
+exit
+```
+埋め込んだ順に詰め込まれる。  
+
+</details>
+
+以下、最初に詰め込んだウィジェット直前に配置するプログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub guiBefore() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	my $top = $mw->Button(	←☆これの前に追加予定。
+				-text => "top",
+				-command => sub { exit }
+			)->pack(
+				);		# 終了ボタン。
+	$mw->Button(
+				-text => "none",
+				-command => sub { exit }
+			)->pack(
+				);		# 終了ボタン。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-before => $top,	←☆先頭に追加予定。
+				);		# 終了ボタン。
+	MainLoop;
+}
+&guiBefore();
+```
+最後に追加した**exit**ボタンを**top**ボタン直前に配置している。  
+
+以下、表示姿。
+```text
+exit
+top
+none
+```
+見事順番を変えることが出来た。  
 
 
 <a name="practicaluseTkgeometrymanagementpackoptionin"></a>
