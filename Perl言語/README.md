@@ -7770,6 +7770,62 @@ sub direxistence() {
 #### ファイルテスト演算子(`-d`)
 エントリはディレクトリ。  
 
+以下、ディレクトリ確認用プログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub direxistence() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+
+	# ディレクトリ名定義。
+	my $dirname = $currentDir . '/dirtest';
+	unless( -d $dirname ) {
+		say "ディレクトリなし(ディレクトリ名を定義したため)。";
+	}
+
+	say "ディレクトリを作成する。";
+	mkdir $dirname, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+
+	if( -d $dirname ) {
+		say "ディレクトリあり(ディレクトリ作成直後の確認)。";
+	}
+
+	say "以下、ディレクトリ作成後の情報。";
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($dirname);	# ファイルのlstat(プロパティ)情報。
+	say "\tディレクトリに対するハードリンクの個数\t\t：$nlink";
+	say "\tディレクトリの容量をバイト単位で表す\t\t：$size";
+	say "\tディレクトリシステムI/Oでのブロックサイズ\t：$blksize";
+	say "\t割り当てられたブロック数\t\t\t\t\t：$blocks";
+
+	say "ディレクトリ削除。";
+	rmdir $dirname or warn "ディレクトリ削除失敗($!)。";
+	unless( -d $dirname ) {
+		say "ディレクトリなし(削除済み)。";
+	}
+}
+&direxistence();
+```
+上記オプション[`-e`](#practicaluseFiletestoperatore)と違い、ディレクトリの存在有無を確認するテストになるため、使うとすればこっち(`-f`)だろう。  
+
+以下、出力結果。
+```terminal
+ディレクトリなし(ディレクトリ名を定義したため)。
+ディレクトリを作成する。
+ディレクトリあり(ディレクトリ作成直後の確認)。
+以下、ディレクトリ作成後の情報。
+	ディレクトリに対するハードリンクの個数		：2
+	ディレクトリの容量をバイト単位で表す		：64
+	ディレクトリシステムI/Oでのブロックサイズ	：4096
+	割り当てられたブロック数					：0
+ディレクトリ削除。
+ディレクトリなし(削除済み)。
+```
+
 
 <a name="practicaluseFiletestoperatorl"></a>
 #### ファイルテスト演算子(`-l`)
