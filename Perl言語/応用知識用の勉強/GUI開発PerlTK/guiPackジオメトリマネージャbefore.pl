@@ -14,7 +14,7 @@ sub asakunoGUIargpackBefore() {
 	$mw->title("packジオメトリマネージャ");
 
 	# 以下、ウィジェット生成。
-	$mw->Button(
+	my $top = $mw->Button(
 				-text => "top",
 				-command => sub { exit }
 			)->pack(
@@ -28,6 +28,13 @@ sub asakunoGUIargpackBefore() {
 				-text => "exit",
 				-command => sub { exit }
 			)->pack(
+				);					# 終了ボタン。
+	$mw->Button(
+				-text => "top_before",
+				-command => sub { exit }
+			)->pack(
+					-before =>
+								$top,
 				);					# 終了ボタン。
 	MainLoop;
 	say "終了。";	# 出力されない(exit終了のためだが、×印で終了した場合出力される)。
