@@ -70,7 +70,7 @@ sub asakuno() {
 		say "ファイルなし。";
 	}
 }
-#&asakuno(@ARGV);
+&asakuno(@ARGV);
 
 sub asakunoBin() {
 	# バイナリ名定義。

@@ -8135,6 +8135,8 @@ $
 ```
 バイナリだと思うのだが・・・。  
 とにかく、ファイルでないのは分かった。  
+中を見忘れたが、テキストファイルなのかもね・・・であれば、テキストファイルと認識するだろうし・・・。  
+難しい。  
 
 
 <a name="practicaluseFiletestoperatorB"></a>
@@ -8143,6 +8145,35 @@ $
 補足：ファイル内容の先頭数千バイト分からNullバイト・珍しいコントロール文字・上位ビットの乱立などから判断する。  
 補足：ファイルの存在がない場合、もしくは読めない場合、偽になる。  
 補足：ファイルが空の場合、真になる。  
+
+以下、プログラム。
+```perl
+use v5.24;
+
+sub filetestB() {
+	# バイナリ名定義。
+	my $binname = '/Applications/Safari.app/Contents/MacOS';
+	if( -T $binname ) {
+		say "テキストファイルあり。";
+	}
+	else{
+		say "バイナリファイルあり。";
+	}
+
+	if( -B $binname ) {
+		say 'バイナリファイルあり($binname)。';
+	}
+}
+&filetestB(@ARGV);
+```
+
+以下、出力結果。
+```terminal
+バイナリファイルあり。
+バイナリファイルあり($binname)。
+```
+なるほど。  
+難しい。  
 
 
 <a name="practicaluseFiletestoperatorM"></a>
