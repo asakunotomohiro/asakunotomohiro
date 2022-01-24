@@ -8255,27 +8255,31 @@ sub testfileM() {
 	my $filename = $currentDir . '/testfile.txt';
 
 	say "ファイルを作成する。";
-	open my $file_fh, '>', $filename or die "$filenameのファイルオープン失敗($!)";
-	sleep 1;	←☆書き込み時間を遅らせることで、他の時間との差分を作っている。
+	open my $file_fh, '>', $filename
+		or die "$filenameのファイルオープン失敗($!)";
+	sleep 1;
 	print $file_fh "ファイルへの書き込み実施。";
 	sleep 1;
 	close $file_fh;
-
-	if( -M $filename ) {
-		say "ファイルあり。";
-	}
 
 	say "以下、ファイル作成後の情報。";
 	my ($dev, $ino, $mode, $nlink,
 		$uid, $gid, $rdev, $size,
 		$atime, $mtime, $ctime,
 		$blksize, $blocks) = lstat($filename);	# ファイルのlstat(プロパティ)情報。
-	my $mfiletime = -M $filename;	←☆なぜ、これで時刻が取得できない？
+	my $mfiletime = -M $filename;	←☆この値がそのまま相対日だった。
 	say "\t最終更新時刻(これ)：\t" . &timeformatChange(localtime $mtime);
-	say "\t-Mオプション取得：\t\t" . &timeformatChange(localtime $mfiletime);	←☆値が可笑しい。
+	say "\t-Mオプション取得：\t\t$mfiletime\t(マイナス表記は未来日)";
 	say "\t\t\t" . "-" x 30;
 	say "\t最終アクセス時刻：\t\t" . &timeformatChange(localtime $atime);
 	say "\t最後のinode変更時刻：\t" . &timeformatChange(localtime $ctime);
+
+	if( -M $filename ) {
+		say "ファイルあり。";
+		my $mfiletime = -M $filename;
+		say "\t" . '$mfiletime：' . "\t$mfiletime";
+		say "\t" . '$mtime：' . "\t\t$mtime";
+	}
 
 	say "ファイル削除。";
 	unlink $filename or warn "ファイル削除失敗($!)。";
@@ -8310,17 +8314,22 @@ sub timeformatChange {
 以下、出力結果。
 ```terminal
 ファイルを作成する。
-ファイルあり。
 以下、ファイル作成後の情報。
-	最終更新時刻(これ)：	2022年1月24日(月) 23時21分13秒
-	-Mオプション取得：		1970年1月1日(木) 8時59分59秒	←☆意味が分からない。
+	最終更新時刻(これ)：	2022年1月24日(月) 23時50分45秒
+	-Mオプション取得：		-2.31481481481481e-05
 			------------------------------
-	最終アクセス時刻：		2022年1月24日(月) 23時21分11秒
-	最後のinode変更時刻：	2022年1月24日(月) 23時21分13秒
+	最終アクセス時刻：		2022年1月24日(月) 23時50分43秒
+	最後のinode変更時刻：	2022年1月24日(月) 23時50分45秒
+ファイルあり。
+	$mfiletime：	-2.31481481481481e-05	←☆なぜに、2日と数時間後の未来に修正したことになっているのだろう。
+	$mtime：		1643035845
 ファイル削除。
 ファイルなし。
 ```
 if文での判定に使うものではないが、問題ないように見えてしまうと言うのは問題だな。  
+`$mtime`が正常なのだろうが、**-M**が正常に動いていないように思うのは何故だろうか。  
+これが使えない場合、**$mtime**もいずれ壊れることを考慮すべき事案になってしまうのだが、、、どうやって問題ないことを突き止めれば良いのだろうか。  
+困った。  
 
 
 <a name="practicaluseFiletestoperatorA"></a>

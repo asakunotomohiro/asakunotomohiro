@@ -27,8 +27,10 @@ sub asakuno() {
 	sleep 1;
 	close $file_fh;
 
+	my $mfiletime = '';
 	if( -M $filename ) {
-		say "ファイルあり。";
+		$mfiletime = -M $filename;
+		say "ファイルあり($mfiletime)。";
 	}
 	else{
 		say "ファイルなし。";
@@ -39,14 +41,15 @@ sub asakuno() {
 		$uid, $gid, $rdev, $size,
 		$atime, $mtime, $ctime,
 		$blksize, $blocks) = lstat($filename);	# ファイルのlstat(プロパティ)情報。
-	my $mfiletime = -M $filename;
 	say "\t最終アクセス時刻：\t\t" . &timeformatChange(localtime $atime);
 	say "\t最終更新時刻(これ)：\t" . &timeformatChange(localtime $mtime);
-	say "\t-Mオプション取得：\t\t" . &timeformatChange(localtime $mfiletime);
+	say "\t-Mオプション取得：\t\t$mfiletime(マイナス表記は未来)";
 	say "\t最後のinode変更時刻：\t" . &timeformatChange(localtime $ctime);
 
 	if( -M $filename ) {
 		say "ファイルあり。";
+		say "\t" . '$mfiletime：' . "\t$mfiletime";
+		say "\t" . '$mtime：' . "\t\t$mtime";
 	}
 	else{
 		say "ファイルなし。";
