@@ -10341,6 +10341,22 @@ todo:
 ウィジェットは、**grid()**のオプション指定により、グリッドのセルに割り当てる。  
 **grid()**メソッドは、ウィジェットのリストを引数として受け取り、1度の実行でまとめて表示する。  
 
+* [gridオプション](#practicaluseTkgeometrymanagementgridoption)  
+  * 特殊文字  
+
+
+<details><summary>プログラム例。</summary>
+
+以下、表示姿。
+```text
+Button1 | Button1-Button1 | Button1-Button2 |
+Button2 |                 | Button2-Button2 |	←☆空きがある。
+Button3 | Button3-Button1 | Button3-Button2 |
+                   exit                     |	←☆端から端までexitボタンが締めている。
+```
+gridは、packよりも奥が深く、プログラミング前の設計に頭を使う必要がある。  
+
+
 以下、プログラム例。
 ```perl
 use v5.24;
@@ -10401,14 +10417,56 @@ sub guiGrid() {
 ```
 まだ、全く分かっていない状態。  
 
-以下、表示姿。
-```text
-Button1 | Button1-Button1 | Button1-Button2 |
-Button2 |                 | Button2-Button2 |	←☆空きがある。
-Button3 | Button3-Button1 | Button3-Button2 |
-                   exit                     |	←☆端から端までexitボタンが締めている。
-```
-gridは、packよりも奥が深く、プログラミング前の設計に頭を使う必要がある。  
+</details>
+
+
+<a name="practicaluseTkgeometrymanagementgridoption"></a>
+##### ジオメトリマネージャGridのオプション
+
+
+<a name="practicaluseTkgeometrymanagementgridoption"></a>
+###### Gridオプション-特殊文字
+
+
+<a name="practicaluseTkgeometrymanagementgridoption"></a>
+###### Gridオプション-オプション
+
+
+<a name="practicaluseTkgeometrymanagementgridprocession"></a>
+##### Gridの行と列の連結。
+
+
+<a name="practicaluseTkgeometrymanagementgridWidgetfill"></a>
+##### Gridのウィジェットのフィル
+セルにおけるウィジェットのフィルについて。  
+
+
+<a name="practicaluseTkgeometrymanagementgridWidgetpad"></a>
+##### Gridのウィジェットのパッド
+
+
+<a name="practicaluseTkgeometrymanagementgridWidgetin"></a>
+##### Gridの異なる親ウィジェット指定
+
+
+<a name="practicaluseTkgeometrymanagementgridWidgetdel"></a>
+##### Gridのウィジェット非表示
+
+
+<a name="practicaluseTkgeometrymanagementgridWidgetposition"></a>
+##### Gridのウィジェットの位置
+
+
+<a name="practicaluseTkgeometrymanagementgridMasterspread"></a>
+##### Gridの伝播
+
+
+<a name="practicaluseTkgeometrymanagementgridcountrocession"></a>
+##### Gridの行と列の数。
+
+
+<a name="practicaluseTkgeometrymanagementgridservant"></a>
+##### Gridのスレーブ
 
 
 <a name="practicaluseTkgeometrymanagementplace"></a>
