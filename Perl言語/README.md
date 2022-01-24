@@ -8048,6 +8048,98 @@ todo:
 補足：ファイルの存在がない場合、もしくは読めない場合、偽になる。  
 補足：ファイルが空の場合、真になる。  
 
+以下、通常ファイルに対するプログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub filetestT() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+
+	# ファイル名のみ作成。
+	my $filename = $currentDir . '/filetestT.txt';
+
+	unless( -T $filename ) {
+		say "ファイル作成前。";
+	}
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename
+		or die "$filenameのファイルオープン失敗($!)";
+
+	if( -T $filename ) {
+		say "ファイルへの書き込み前だが、存在はしている。";	←☆中身がない場合、真になる。
+	}
+
+	foreach( qw( 本日は 晴天なり。) ) {
+		say $file_fh $_;	# ファイルへの書き込み。
+	}
+	close $file_fh;
+
+	if( -T $filename ) {
+		say "ファイルあり(書き込み済み)。";
+	}
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	unless( -s $filename ) {
+		say "ファイルなし。";
+	}
+}
+&filetestT();
+```
+
+以下、出力結果。
+```terminal
+ファイル作成前。
+ファイルを作成する。
+ファイルへの書き込み前だが、存在はしている。
+ファイルあり(書き込み済み)。
+ファイル削除。
+ファイルなし。
+```
+予想通りの結果ではある。  
+
+<details><summary>バイナリに対するプログラム。</summary>
+
+以下、バイナリファイルに対するプログラム。
+```perl
+use v5.24;
+
+sub bintest() {
+	# 以下、通常の環境変数内のPathを加工したバイナリファイル指定になる。
+	my $binname = $INC[0] =~ s:perl5.*:bin/instmodsh:r;
+	if( -T $binname ) {
+		say "テキストファイルあり。";
+	}
+	else{
+		say "バイナリファイルあり。";
+	}
+
+	if( -B $binname ) {
+		say 'バイナリファイルあり($binname)。';	←☆？
+	}
+}
+&bintest();
+```
+
+以下、出力結果。
+```terminal
+バイナリファイルあり。
+```
+どういうこと？  
+
+以下、バイナリファイルの確認。
+```terminal
+$ ll bin/instmodsh
+-r-xr-xr-x  1 asakunotomohiro  staff  4194  5 23  2019 bin/instmodsh*
+$
+```
+とにかく、ファイルでないのは分かった。  
+難しい。  
+
+</details>
+
 
 <a name="practicaluseFiletestoperatorB"></a>
 #### ファイルテスト演算子(`-B`)
@@ -8055,6 +8147,91 @@ todo:
 補足：ファイル内容の先頭数千バイト分からNullバイト・珍しいコントロール文字・上位ビットの乱立などから判断する。  
 補足：ファイルの存在がない場合、もしくは読めない場合、偽になる。  
 補足：ファイルが空の場合、真になる。  
+
+以下、プログラム。
+```perl
+use v5.24;
+
+sub filetestB() {
+	# バイナリ名定義。
+	my $binname = '/Applications/Safari.app/Contents/MacOS';
+	if( -T $binname ) {
+		say "テキストファイルあり。";
+	}
+	else{
+		say "バイナリファイルあり。";
+	}
+
+	if( -B $binname ) {
+		say 'バイナリファイルあり($binname)。';
+	}
+}
+&filetestB();
+```
+
+以下、出力結果。
+```terminal
+バイナリファイルあり。
+バイナリファイルあり($binname)。
+```
+なるほど。  
+難しい。  
+
+<details><summary>テキストに対するプログラム。</summary>
+
+以下、テキストファイルへの判定用プログラム。
+```perl
+use v5.24;
+
+sub filetestB() {
+	# ファイル名のみ作成。
+	my $filename = 'Binfile.txt';
+
+	unless( -B $filename ) {
+		say "ファイル作成前。";
+	}
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename or die "$filenameのファイルオープン失敗($!)";
+	if( -B $filename ) {
+		say "テキストファイルへの書き込み前だが、存在はしている。";	←☆中身がない場合、真になる。
+	}
+
+	print $file_fh '本日は晴天なり。';	←☆ファイルにテキストを書き込む。
+	close $file_fh;
+
+	if( -B $filename ) {
+		say "ファイルあり(書き込み済み)。";
+	}
+	else{
+		say "ファイルなし(書き込み済み)。";	←☆テキストファイルなので、仕方ない。
+	}
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	if( -B $filename ) {
+		say "ファイルあり。";
+	}
+	else{
+		say "ファイルなし。";	←☆削除されていようがいまいが、バイナリファイルではないめ、こっちのメッセージを出力する。
+	}
+}
+&filetestB();
+```
+
+以下、出力結果。
+```terminal
+ファイル作成前。
+ファイルを作成する。
+テキストファイルへの書き込み前だが、存在はしている。
+ファイルなし(書き込み済み)。
+ファイル削除。
+ファイルなし。
+```
+~~これは使いどころが難しい~~。  
+他のファイルテスト演算子と組み合わせが必要と言うことだろう。  
+
+</details>
 
 
 <a name="practicaluseFiletestoperatorM"></a>
