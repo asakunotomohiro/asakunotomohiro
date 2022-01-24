@@ -8242,6 +8242,87 @@ sub filetestB() {
 戻り値：プラスの場合は過去日だが、マイナスの場合は未来日になる。  
 
 
+以下、プログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub testfileM() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+
+	# ファイル名のみ作成。
+	my $filename = $currentDir . '/testfile.txt';
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename or die "$filenameのファイルオープン失敗($!)";
+	sleep 1;	←☆書き込み時間を遅らせることで、他の時間との差分を作っている。
+	print $file_fh "ファイルへの書き込み実施。";
+	sleep 1;
+	close $file_fh;
+
+	if( -M $filename ) {
+		say "ファイルあり。";
+	}
+
+	say "以下、ファイル作成後の情報。";
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($filename);	# ファイルのlstat(プロパティ)情報。
+	my $mfiletime = -M $filename;	←☆なぜ、これで時刻が取得できない？
+	say "\t最終更新時刻(これ)：\t" . &timeformatChange(localtime $mtime);
+	say "\t-Mオプション取得：\t\t" . &timeformatChange(localtime $mfiletime);	←☆値が可笑しい。
+	say "\t\t\t" . "-" x 30;
+	say "\t最終アクセス時刻：\t\t" . &timeformatChange(localtime $atime);
+	say "\t最後のinode変更時刻：\t" . &timeformatChange(localtime $ctime);
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	unless( -M $filename ) {
+		say "ファイルなし。";
+	}
+}
+&testfileM();
+
+sub timeformatChange {
+	# この関数をどこからでも呼び出せるようにしたい。
+	my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = @_;
+	my %dayweek = (
+				0=>'日',	# Sunday
+				1=>'月',	# Monday
+				2=>'火',	# Tuesday
+				3=>'水',	# Wednesday
+				4=>'木',	# Thursday
+				5=>'金',	# Friday
+				6=>'土',	# Saturday
+				);
+
+	$mon += 1;					# 月が0始まりになるため、1加算する。
+	$year += 1900;				# 1900年を加算することで、西暦になる。
+	$wday = $dayweek{$wday};	# 日曜日が0始まりになり、それを変換する。
+	$yday += 1;					# 1月1日が0始まりのため、1加算する。
+
+	return "$year年$mon月$yday日($wday) $hour時$min分$sec秒";
+}
+```
+
+以下、出力結果。
+```terminal
+ファイルを作成する。
+ファイルあり。
+以下、ファイル作成後の情報。
+	最終更新時刻(これ)：	2022年1月24日(月) 23時21分13秒
+	-Mオプション取得：		1970年1月1日(木) 8時59分59秒	←☆意味が分からない。
+			------------------------------
+	最終アクセス時刻：		2022年1月24日(月) 23時21分11秒
+	最後のinode変更時刻：	2022年1月24日(月) 23時21分13秒
+ファイル削除。
+ファイルなし。
+```
+if文での判定に使うものではないが、問題ないように見えてしまうと言うのは問題だな。  
+
+
 <a name="practicaluseFiletestoperatorA"></a>
 #### ファイルテスト演算子(`-A`)
 最後にアクセスされてからの日数。  
