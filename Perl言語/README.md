@@ -10475,6 +10475,49 @@ sub guiGrid() {
 今回のジオメトリマネージャは、相対的なx座標及びy座標を用いてウィジェットの位置を指定する。  
 その座標指定により配置するため、ウィジェットを重ねることができる(PackとGridには不可能)。  
 
+以下、プログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub guiGrid() {
+	my $mw = MainWindow->new;
+	$mw->title("Place Geometry Manager");
+
+	# 以下、ウィジェット生成。
+	$mw->Label(
+				-text => "Label",
+			)->place(
+				-x => 25,
+				-y => 30,
+			);	# ラベル。
+	$mw->Checkbutton(
+				-text => "check1",
+			)->place(
+				-x => 45,
+				-y => 45,
+				-height => 30,
+				-width => 30,
+			);		# チェックボタン1つ目。
+	$mw->Checkbutton(
+				-text => "check2",
+			)->place(
+				-x => 65,
+				-y => 60,
+				-height => 30,
+				-width => 30,
+			);		# チェックボタン2つ目。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->place(
+				-x => 85,
+				-y => 75,
+			);		# 終了ボタン。
+	MainLoop;
+}
+&guiGrid();
+```
 
 </details>
 
