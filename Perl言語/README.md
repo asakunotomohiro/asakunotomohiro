@@ -7894,7 +7894,86 @@ sub fileexistence() {
 
 <a name="practicaluseFiletestoperatorp"></a>
 #### ファイルテスト演算子(`-p`)
-エントリは名前付きパイプ(FIFO)またはファイルハンドルはパイプ。  
+エントリは名前付きパイプ(FIFO)またはパイプのファイルハンドル。  
+
+以下、プログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub pipehandle() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+
+	# ファイル名定義。
+	my $filename = $currentDir . '/filehandle.txt';
+
+	unless( -p $filename ) {
+		say "ファイル作成前。";
+	}
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename
+		or die "$filenameのファイルオープン失敗($!)";
+	close $file_fh;
+
+	open my $file_fh, '-|', "cat $filename"
+		or die "$filenameのファイルオープン失敗($!)";
+		# このファイルハンドルは、子プロセスからの読み込みになる？
+
+	if( -p $filename ) {
+		say "ファイルハンドルあり($filename)。" . '< $filename';
+	}
+	elsif( -p $file_fh ) {
+		say "ファイルハンドルあり($file_fh)。" . '< $file_fh';	←☆これが出力されている。
+	}
+	else{
+		say "ファイルハンドルなし。";
+	}
+	close $file_fh;
+
+	say "ファイルハンドル閉じ済み。";
+	if( -p $filename ) {
+		say "ファイルハンドルあり($filename)。" . '< $filename';
+	}
+	elsif( -p $file_fh ) {
+		say "ファイルハンドルあり($file_fh)。" . '< $file_fh';
+	}
+	else{
+		say "ファイルハンドルなし。";	←☆これが出力されている。
+	}
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	if( -p $filename ) {
+		say "ファイルあり。";
+	}
+	elsif( -p $file_fh ) {
+		say "ファイルハンドルあり。";
+	}
+	else{
+		say "ファイルなし(削除済み)。";
+	}
+}
+&pipehandle();
+```
+当然なのだろうが、ファイルハンドルは開いた状態で確認する必要がある。  
+
+todo:
+パイプというのは別途調べる必要がある。  
+
+以下、出力結果。
+```terminal
+ファイル作成前。
+ファイルを作成する。
+ファイルハンドルあり(GLOB(0x7f8498878600))。< $file_fh
+ファイルハンドル閉じ済み。
+ファイルハンドルなし。
+ファイル削除。
+ファイルなし(削除済み)。
+```
+これらは、冒頭説明の後半部分に当たるはず。  
+前半部分はどのようなプログラムにすれば良いのか分からない。  
+逆か？  
 
 
 <a name="practicaluseFiletestoperatorbigS"></a>
