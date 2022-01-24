@@ -8913,8 +8913,8 @@ sub gui() {
 画面にウィジェットを表示する場合、そのウィジェットをジオメトリマネージャに渡す必要がある。  
 そのジオメトリマネージャがウィンドウ上でのウィジェットの位置・大きさ・を制御する。  
 [`Tk::pack`](#practicaluseTkgeometrymanagementpack)・
-`Tk::place`・
-`Tk::grid`・
+[`Tk::grid`](#practicaluseTkgeometrymanagementgrid)・
+[`Tk::place`](#practicaluseTkgeometrymanagementplace)・
 `Tk::Adjuster`・
 `Tk::form`・
 `Tk::Table`・
@@ -10472,6 +10472,99 @@ sub guiGrid() {
 
 <a name="practicaluseTkgeometrymanagementplace"></a>
 #### ジオメトリ管理-place
+今回のジオメトリマネージャは、相対的なx座標及びy座標を用いてウィジェットの位置を指定する。  
+その座標指定により配置するため、ウィジェットを重ねることができる(PackとGridには不可能)。  
+
+<details><summary>プログラム例。</summary>
+
+以下、プログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub guiPlace() {
+	my $mw = MainWindow->new;
+	$mw->title("Place Geometry Manager");
+
+	# 以下、ウィジェット生成。
+	$mw->Label(
+				-text => "Label",
+			)->place(
+				-x => 25,
+				-y => 30,
+			);	# ラベル。
+	$mw->Checkbutton(
+				-text => "check1",
+			)->place(
+				-x => 45,
+				-y => 45,
+				-height => 30,
+				-width => 30,
+			);		# チェックボタン1つ目。
+	$mw->Checkbutton(
+				-text => "check2",
+			)->place(
+				-x => 65,
+				-y => 60,
+				-height => 30,
+				-width => 30,
+			);		# チェックボタン2つ目。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->place(
+				-x => 85,
+				-y => 75,
+			);		# 終了ボタン。
+	MainLoop;
+}
+&guiPlace();
+```
+これは扱いづらい。  
+重ねる必要があるときに使うのだろうが、どんな場面でそんな状況が発生するのだろうか。  
+
+</details>
+
+* [placeオプション](#practicaluseTkgeometrymanagementplaceoption)  
+  以下のオプションは、Packのオプションとちょっとズレた意味合いがあるはず。  
+  * [アンカー](#practicaluseTkgeometrymanagementplaceoptionanchor)  
+  * [幅と高さ](#practicaluseTkgeometrymanagementplaceoptionpadxy)  
+  * [枠](#practicaluseTkgeometrymanagementplaceoptionipadxy)  
+* [place絶対座標](#practicaluseTkgeometrymanagementplaceabsolutecoordinates)  
+* [place相対座標](#practicaluseTkgeometrymanagementplacerelativecoordinates)  
+* [placeメソッド](#practicaluseTkgeometrymanagementplacemethod)  
+
+
+<a name="practicaluseTkgeometrymanagementplaceoption"></a>
+##### ジオメトリマネージャPlaceのオプション
+
+
+<a name="practicaluseTkgeometrymanagementplaceoptionanchor"></a>
+###### Placeオプション-アンカー
+
+
+<a name="practicaluseTkgeometrymanagementplaceoptionpadxy"></a>
+###### Placeオプション-幅と高さ
+
+
+<a name="practicaluseTkgeometrymanagementplaceoptionipadxy"></a>
+###### Placeオプション-枠
+
+
+<a name="practicaluseTkgeometrymanagementplaceabsolutecoordinates"></a>
+##### ジオメトリマネージャPlaceの絶対座標
+
+
+<a name="practicaluseTkgeometrymanagementplaceabsolutecoordinates"></a>
+##### ジオメトリマネージャPlaceの絶対座標
+
+
+<a name="practicaluseTkgeometrymanagementplacerelativecoordinates"></a>
+##### ジオメトリマネージャPlaceの相対座標
+
+
+<a name="practicaluseTkgeometrymanagementplacemethod"></a>
+##### ジオメトリマネージャPlaceのメソッド
 
 
 </details>
