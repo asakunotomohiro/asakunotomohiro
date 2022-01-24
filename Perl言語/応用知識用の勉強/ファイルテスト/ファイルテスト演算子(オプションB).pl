@@ -24,7 +24,69 @@ sub asakuno() {
 		say 'バイナリファイルあり($binname)。';
 	}
 }
-&asakuno(@ARGV);
+#&asakuno(@ARGV);
+
+sub asakunoBin() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+
+	# ファイル名のみ作成。
+	my $filename = $currentDir . '/' . $asakuno . 'txt';
+
+	unless( -B $filename ) {
+		say "ファイル作成前。";
+	}
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename
+		or die "$filenameのファイルオープン失敗($!)";
+
+	if( -B $filename ) {
+		say "テキストファイルへの書き込み前だが、存在はしている。";
+	}
+	else{
+		say "ファイルなし。";
+	}
+
+	foreach( @asakuno ) {
+		say $file_fh $_;	# ファイルへの書き込み。
+	}
+	close $file_fh;
+
+	if( -B $filename ) {
+		say "ファイルあり(書き込み済み)。";
+	}
+	else{
+		say "ファイルなし(書き込み済み)。";
+	}
+
+	say "以下、ファイル作成後の情報。";
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($filename);	# ファイルのlstat(プロパティ)情報。
+	say "\tファイルまたはディレクトリに対するハードリンクの個数：$nlink";
+	say "\tファイルの容量をバイト単位で表す(ファイルテスト-sと同じ)：$size";
+	say "\tファイルシステムI/Oでのブロックサイズ：$blksize";
+	say "\t割り当てられたブロック数：$blocks";
+
+	if( -B $filename ) {
+		say "ファイルあり。";
+	}
+	else{
+		say "ファイルなし(削除済み)。";
+	}
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	if( -B $filename ) {
+		say "ファイルあり。";
+	}
+	else{
+		say "ファイルなし。";
+	}
+}
+&asakunoBin(@ARGV);
 
 
 sub timeformatChange {

@@ -8175,6 +8175,57 @@ sub filetestB() {
 なるほど。  
 難しい。  
 
+以下、テキストファイルへの判定用プログラム。
+```perl
+use v5.24;
+
+sub filetestB() {
+	# ファイル名のみ作成。
+	my $filename = 'Binfile.txt';
+
+	unless( -B $filename ) {
+		say "ファイル作成前。";
+	}
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename or die "$filenameのファイルオープン失敗($!)";
+	if( -B $filename ) {
+		say "テキストファイルへの書き込み前だが、存在はしている。";
+	}
+
+	print $file_fh '本日は晴天なり。';
+	close $file_fh;
+
+	if( -B $filename ) {
+		say "ファイルあり(書き込み済み)。";
+	}
+	else{
+		say "ファイルなし(書き込み済み)。";
+	}
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	if( -B $filename ) {
+		say "ファイルあり。";
+	}
+	else{
+		say "ファイルなし。";
+	}
+}
+&filetestB(@ARGV);
+```
+
+以下、出力結果。
+```terminal
+ファイル作成前。
+ファイルを作成する。
+テキストファイルへの書き込み前だが、存在はしている。
+ファイルなし(書き込み済み)。
+ファイル削除。
+ファイルなし。
+```
+これは使いどころが難しい。  
+
 
 <a name="practicaluseFiletestoperatorM"></a>
 #### ファイルテスト演算子(`-M`)
