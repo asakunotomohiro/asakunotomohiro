@@ -8237,14 +8237,199 @@ sub filetestB() {
 <a name="practicaluseFiletestoperatorM"></a>
 #### ファイルテスト演算子(`-M`)
 スクリプト実行開始時刻からファイル修正時刻を引いたもの(日単位)(stat関数の`$mtime`)。  
-補足：ファイルが最後に変更されてからの日数。  
+補足：ファイルが最後に変更されてからの日数(スクリプトの実行開始時刻が基準)。  
 戻り値：浮動小数点数(2日と1秒は、**2.00001**値になる)。  
 戻り値：プラスの場合は過去日だが、マイナスの場合は未来日になる。  
 
 
+<details><summary>ファイルに対するプログラム。</summary>
+
+以下、プログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub testfileM() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+
+	# ファイル名のみ作成。
+	my $filename = $currentDir . '/testfile.txt';
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename
+		or die "$filenameのファイルオープン失敗($!)";
+	sleep 1;
+	print $file_fh "ファイルへの書き込み実施。";
+	sleep 1;
+	close $file_fh;
+
+	say "以下、ファイル作成後の情報。";
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($filename);	# ファイルのlstat(プロパティ)情報。
+	my $mfiletime = -M $filename;	←☆この値がそのまま相対日だった。
+	say "\t最終更新時刻(これ)：\t" . &timeformatChange(localtime $mtime);
+	say "\t-Mオプション取得：\t\t$mfiletime\t(マイナス表記は未来日)";
+	say "\t\t\t" . "-" x 30;
+	say "\t最終アクセス時刻：\t\t" . &timeformatChange(localtime $atime);
+	say "\t最後のinode変更時刻：\t" . &timeformatChange(localtime $ctime);
+
+	if( -M $filename ) {
+		say "ファイルあり。";
+		my $mfiletime = -M $filename;
+		say "\t" . '$mfiletime：' . "\t$mfiletime";
+		say "\t" . '$mtime：' . "\t\t$mtime";
+	}
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	unless( -M $filename ) {
+		say "ファイルなし。";
+	}
+}
+&testfileM();
+
+sub timeformatChange {
+	# この関数をどこからでも呼び出せるようにしたい。
+	my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = @_;
+	my %dayweek = (
+				0=>'日',	# Sunday
+				1=>'月',	# Monday
+				2=>'火',	# Tuesday
+				3=>'水',	# Wednesday
+				4=>'木',	# Thursday
+				5=>'金',	# Friday
+				6=>'土',	# Saturday
+				);
+
+	$mon += 1;					# 月が0始まりになるため、1加算する。
+	$year += 1900;				# 1900年を加算することで、西暦になる。
+	$wday = $dayweek{$wday};	# 日曜日が0始まりになり、それを変換する。
+	$yday += 1;					# 1月1日が0始まりのため、1加算する。
+
+	return "$year年$mon月$yday日($wday) $hour時$min分$sec秒";
+}
+```
+
+以下、出力結果。
+```terminal
+ファイルを作成する。
+以下、ファイル作成後の情報。
+	最終更新時刻(これ)：	2022年1月24日(月) 23時50分45秒
+	-Mオプション取得：		-2.31481481481481e-05
+			------------------------------
+	最終アクセス時刻：		2022年1月24日(月) 23時50分43秒
+	最後のinode変更時刻：	2022年1月24日(月) 23時50分45秒
+ファイルあり。
+	$mfiletime：	-2.31481481481481e-05	←☆なぜに、2日と数時間後の未来に修正したことになっているのだろう。
+	$mtime：		1643035845
+ファイル削除。
+ファイルなし。
+```
+if文での判定に使うものではないが、問題ないように見えてしまうと言うのは問題だな。  
+`$mtime`が正常なのだろうが、**-M**が正常に動いていないように思うのは何故だろうか。  
+これが使えない場合、**$mtime**もいずれ壊れることを考慮すべき事案になってしまうのだが、、、どうやって問題ないことを突き止めれば良いのだろうか。  
+困った。  
+
+</details>
+
+<details><summary>ディレクトリに対するプログラム。</summary>
+
+以下、ディレクトリに対する取得プログラム。
+```perl
+use v5.24;
+
+sub testfileM() {
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+	my $dirname = 'Mdirname'; # ディレクトリ名定義。
+
+	say "ディレクトリを作成する。";
+	sleep 1;
+	mkdir $dirname, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+	sleep 3;
+
+	if( -M $dirname ) {
+		say "ディレクトリあり。";
+	}
+	else{
+		say "ディレクトリなし。";
+	}
+
+	say "以下、ディレクトリ作成後の情報。";
+	my ($dev, $ino, $mode, $nlink, $uid, $gid,
+		$rdev, $size, $atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($dirname);	# ファイルのlstat(プロパティ)情報。
+	my $mdirtime = -M $dirname;
+	say "\t最終アクセス時刻：\t\t" . &timeformatChange(localtime $atime);
+	say "\t最終更新時刻(これ)：\t" . &timeformatChange(localtime $mtime);
+	say "\t-Mオプション取得：\t\t$mdirtime(マイナス表記は未来)";
+	say "\t最後のinode変更時刻：\t" . &timeformatChange(localtime $ctime);
+
+	if( -M $dirname ) {
+		say "ディレクトリあり($mdirtime)。";
+	}
+	else{
+		say "ディレクトリなし($mdirtime)。";
+	}
+
+	say "ディレクトリ削除。";
+	rmdir $dirname or warn "ディレクトリ削除失敗($!)。";
+	if( -M $dirname ) {
+		say "ディレクトリあり。";
+	}
+	else{
+		say "ディレクトリなし(削除済みの判断でなしとしたわけではない)。";
+	}
+}
+&testfileM();
+
+sub timeformatChange {
+	# この関数をどこからでも呼び出せるようにしたい。
+	my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = @_;
+	my %dayweek = (
+				0=>'日',	# Sunday
+				1=>'月',	# Monday
+				2=>'火',	# Tuesday
+				3=>'水',	# Wednesday
+				4=>'木',	# Thursday
+				5=>'金',	# Friday
+				6=>'土',	# Saturday
+				);
+
+	$mon += 1;					# 月が0始まりになるため、1加算する。
+	$year += 1900;				# 1900年を加算することで、西暦になる。
+	$wday = $dayweek{$wday};	# 日曜日が0始まりになり、それを変換する。
+	$yday += 1;					# 1月1日が0始まりのため、1加算する。
+
+	return "$year年$mon月$yday日($wday) $hour時$min分$sec秒";
+}
+```
+
+以下、出力結果。
+```terminal
+ディレクトリを作成する。
+ディレクトリあり。
+以下、ディレクトリ作成後の情報。
+	最終アクセス時刻：		2022年1月25日(火) 0時21分31秒
+	最終更新時刻(これ)：	2022年1月25日(火) 0時21分31秒
+	-Mオプション取得：		-1.15740740740741e-05(マイナス表記は未来)
+	最後のinode変更時刻：	2022年1月25日(火) 0時21分31秒
+ディレクトリあり(-1.15740740740741e-05)。
+ディレクトリ削除。
+ディレクトリなし(削除済みの判断でなしとしたわけではない)。
+```
+今回、**sleep**で一呼吸置いてから動かすようにしたが、それがない場合は更新時刻が0で取得された。  
+ディレクトリに対して使うのは止めた方が良いかもしれない。  
+ファイルの時もそうだったが、なぜ未来日で取得されているのか全く分からない。  
+
+</details>
+
+
 <a name="practicaluseFiletestoperatorA"></a>
 #### ファイルテスト演算子(`-A`)
-最後にアクセスされてからの日数。  
+最後にアクセスされてからの日数(スクリプトの実行開始時刻が基準)。  
 戻り値：浮動小数点数(2日と1秒は、**2.00001**値になる)。  
 戻り値：プラスの場合は過去日だが、マイナスの場合は未来日になる。  
 
@@ -8252,7 +8437,7 @@ sub filetestB() {
 <a name="practicaluseFiletestoperatorC"></a>
 #### ファイルテスト演算子(`-C`)
 Unixでは**iノード**が変更されてからの日数(それ以外のOSでは違うかもしれない)。  
-補足：iノードには、ファイル内容以外のファイルに関する全ての情報が格納されている。  
+補足：iノードには、ファイル内容以外のファイルに関する全ての情報が格納されている(スクリプトの実行開始時刻が基準)。  
 戻り値：浮動小数点数(2日と1秒は、**2.00001**値になる)。  
 戻り値：プラスの場合は過去日だが、マイナスの場合は未来日になる。  
 
