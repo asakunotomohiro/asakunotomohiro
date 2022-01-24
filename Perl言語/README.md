@@ -8640,6 +8640,7 @@ CPANでの[Perl/Qt](https://metacpan.org/release/AWIN/PerlQt-1.05)と言うの�
   * [ジオメトリ管理](#practicaluseTkgeometrymanagement)  
     かなり重要な存在。  
     現在[**pack**](#practicaluseTkgeometrymanagementpack)のみ調べた。  
+    ゆくゆくは、[**grid**](#practicaluseTkgeometrymanagementgrid)と[**place**](#practicaluseTkgeometrymanagementplace)も調べる。  
   * 基本的なボタン  
   * チェックボタン  
   * ラジオボタン  
@@ -10325,6 +10326,85 @@ Tk::Button=HASH(0x7fd2232696c8)
 
 todo:
 各ウィジェットの設定を変更できるようにすること。  
+
+<a name="practicaluseTkgeometrymanagementgrid"></a>
+#### ジオメトリ管理-grid
+左上の角を**(0, 0)**とする列と行で構成されるグリッドにウィンドウを分割する。  
+
+以下、表示姿。
+```text
+0列,0行 | 1列,0行 | 2列,0行 |
+0列,1行 | 1列,1行 | 2列,1行 |
+0列,2行 | 1列,2行 | 2列,2行 |
+0列,3行 | 1列,3行 | 2列,3行 |
+```
+ウィジェットは、**grid()**のオプション指定により、グリッドのセルに割り当てる。  
+**grid()**メソッドは、ウィジェットのリストを引数として受け取り、1度の実行でまとめて表示する。  
+
+以下、プログラム例。
+```perl
+use v5.24;
+use Tk;
+
+sub guiGrid() {
+	my $mw = MainWindow->new;
+	$mw->title("Grid Geometry Manager");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "Button1",
+				-command => sub { exit },
+			)->grid(
+				$mw->Button(
+					-text => "Button1-Button1",
+					-command => sub { exit },
+				),
+				$mw->Button(
+					-text => "Button1-Button2",
+					-command => sub { exit },
+				),
+			);
+	$mw->Button(
+				-text => "Button2",
+				-command => sub { exit },
+			)->grid(
+				"x",	# グリッドのセルを空ける。
+				$mw->Button(
+					-text => "Button2-Button2",
+					-command => sub { exit },
+				),
+			);
+	$mw->Button(
+				-text => "Button3",
+				-command => sub { exit },
+			)->grid(
+				$mw->Button(
+					-text => "Button3-Button1",
+					-command => sub { exit },
+				),
+				$mw->Button(
+					-text => "Button3-Button2",
+					-command => sub { exit },
+				),
+			);
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit },
+			)->grid(
+				"-",
+				"-",
+				-sticky => "nsew",	# 余白をボタンで埋める。
+			);
+	MainLoop;
+}
+&guiGrid();
+```
+まだ、全く分かっていない状態。  
+
+
+<a name="practicaluseTkgeometrymanagementplace"></a>
+#### ジオメトリ管理-place
+
 
 </details>
 
