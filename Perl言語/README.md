@@ -7894,7 +7894,7 @@ sub fileexistence() {
 
 <a name="practicaluseFiletestoperatorp"></a>
 #### ファイルテスト演算子(`-p`)
-エントリは名前付きパイプ(FIFO)またはファイルハンドルはパイプ。  
+エントリは名前付きパイプ(FIFO)またはパイプのファイルハンドル。  
 
 
 <a name="practicaluseFiletestoperatorbigS"></a>
