@@ -10401,6 +10401,15 @@ sub guiGrid() {
 ```
 まだ、全く分かっていない状態。  
 
+以下、表示姿。
+```text
+Button1 | Button1-Button1 | Button1-Button2 |
+Button2 |                 | Button2-Button2 |	←☆空きがある。
+Button3 | Button3-Button1 | Button3-Button2 |
+                   exit                     |	←☆端から端までexitボタンが締めている。
+```
+gridは、packよりも奥が深く、プログラミング前の設計に頭を使う必要がある。  
+
 
 <a name="practicaluseTkgeometrymanagementplace"></a>
 #### ジオメトリ管理-place
