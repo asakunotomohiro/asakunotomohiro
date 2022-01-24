@@ -22,25 +22,32 @@ sub asakuno() {
 	}
 
 	say "ファイルを作成する。";
-	#open my $file_fh, '>', $filename
-	open my $file_fh, '-|', $filename
+	open my $file_fh, '>', $filename
+	#open my $file_fh, '-|', $filename
 		or die "$filenameのファイルオープン失敗($!)";
 		# 朝来野智博txtのファイルオープン失敗(Permission denied) at ファイルテスト演算子(オプションp).pl line 26.
 	foreach( @asakuno ) {
 		say $file_fh $_;	# ファイルへの書き込み。
 	}
+	close $file_fh;
+
+	#open my $file_fh, '<', "| cat $filename"
+			# 朝来野智博txtのファイルオープン失敗(No such file or directory) at ファイルテスト演算子(オプションp).pl line 34.
+	open my $file_fh, '-|', "cat $filename"
+		or die "$filenameのファイルオープン失敗($!)";
+		# このファイルハンドルは、子プロセスからの読み込みになる？
+
 	if( -p $filename ) {
-		say "ファイルハンドルあり($filename)。";
+		say "ファイルハンドルあり($filename)。" . '< $filename';
 	}
 	elsif( -p $file_fh ) {
-		say "ファイルハンドルあり($file_fh)。";
+		say "ファイルハンドルあり($file_fh)。" . '< $file_fh';
 	}
 	else{
 		say "ファイルハンドルなし。";
 	}
 	close $file_fh;
 
-return;
 	say "以下、ファイル作成後の情報。";
 	my ($dev, $ino, $mode, $nlink,
 		$uid, $gid, $rdev, $size,
@@ -52,7 +59,10 @@ return;
 	say "\t割り当てられたブロック数：$blocks";
 
 	if( -p $filename ) {
-		say "ファイルハンドルあり。";
+		say "ファイルハンドルあり($filename)。" . '< $filename';
+	}
+	elsif( -p $file_fh ) {
+		say "ファイルハンドルあり($file_fh)。" . '< $file_fh';
 	}
 	else{
 		say "ファイルハンドルなし。";
@@ -62,6 +72,9 @@ return;
 	unlink $filename or warn "ファイル削除失敗($!)。";
 	if( -p $filename ) {
 		say "ファイルあり。";
+	}
+	elsif( -p $file_fh ) {
+		say "ファイルハンドルあり。";
 	}
 	else{
 		say "ファイルなし(削除済み)。";
