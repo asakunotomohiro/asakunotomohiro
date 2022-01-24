@@ -8639,8 +8639,8 @@ CPANでの[Perl/Qt](https://metacpan.org/release/AWIN/PerlQt-1.05)と言うの�
   * [HelloWorld](#practicaluseTkHelloWorld)  
   * [ジオメトリ管理](#practicaluseTkgeometrymanagement)  
     かなり重要な存在。  
-    現在[**pack**](#practicaluseTkgeometrymanagementpack)のみ調べた。  
-    ゆくゆくは、[**grid**](#practicaluseTkgeometrymanagementgrid)と[**place**](#practicaluseTkgeometrymanagementplace)も調べる。  
+    現在packのみ調べた。  
+    ゆくゆくは、gridとplaceも調べる。  
   * 基本的なボタン  
   * チェックボタン  
   * ラジオボタン  
@@ -8912,18 +8912,27 @@ sub gui() {
 ### ジオメトリ管理
 画面にウィジェットを表示する場合、そのウィジェットをジオメトリマネージャに渡す必要がある。  
 そのジオメトリマネージャがウィンドウ上でのウィジェットの位置・大きさ・を制御する。  
-[`Tk::pack`](#practicaluseTkgeometrymanagementpack)・
-[`Tk::grid`](#practicaluseTkgeometrymanagementgrid)・
-[`Tk::place`](#practicaluseTkgeometrymanagementplace)・
-`Tk::Adjuster`・
-`Tk::form`・
-`Tk::Table`・
-`Tk::Tiler`・
-`Tk::Wm`  
+
+* ジオメトリマネージャ  
+  * [`Tk::pack`](#practicaluseTkgeometrymanagementpack)  
+    一般用途に使うのに向いている。  
+  * [`Tk::grid`](#practicaluseTkgeometrymanagementgrid)  
+    表形式の配置が必要な場合に向いている。  
+  * [`Tk::place`](#practicaluseTkgeometrymanagementplace)  
+    親ウィジェットから相対位置及び大きさを決める場合に向いている。  
+  * `Tk::Adjuster`  
+  * `Tk::form`  
+  * `Tk::Table`  
+  * `Tk::Tiler`  
+  * `Tk::Wm`  
+
 先頭3種類は、ウィジェットに対するメソッドとして呼び出される(他のジオメトリマネージャは全く分からない)。  
 そして、1ウィンドウに1ジオメトリマネージャとしてウィンドウを構築するのが望ましい。  
 しかし、入れ子にすることは問題ないようだ。  
 例えば、packで構築したウィジェットにフレームを配置し、そのフレーム内にplaceを使うなど。  
+
+ジオメトリマネージャのオプション名とウィジェットのオプション名が同じ場合がある。  
+機能も似ているのだが、全く同じではなく、微妙に違う部分があるため、気をつけること。  
 
 
 <a name="practicaluseTkgeometrymanagementpack"></a>
