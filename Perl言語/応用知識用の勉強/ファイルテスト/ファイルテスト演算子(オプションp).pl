@@ -22,8 +22,10 @@ sub asakuno() {
 	}
 
 	say "ファイルを作成する。";
-	open my $file_fh, '>', $filename
+	#open my $file_fh, '>', $filename
+	open my $file_fh, '-|', $filename
 		or die "$filenameのファイルオープン失敗($!)";
+		# 朝来野智博txtのファイルオープン失敗(Permission denied) at ファイルテスト演算子(オプションp).pl line 26.
 	foreach( @asakuno ) {
 		say $file_fh $_;	# ファイルへの書き込み。
 	}
