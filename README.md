@@ -739,6 +739,73 @@
 今回の勉強では、[VSCode](https://code.visualstudio.com)を使いたかったが、環境構築できず、VS2019を使う羽目になった。  
 
 
+<a name="Homebrewsslreinstall"></a>
+### HomebrewによるSSLの再インストール
+いろいろな経緯があり、SSLを再インストールすることになった。  
+せっかくなので、記録に留める。  
+
+<details><summary>作業実施。</summary>
+
+以下、作業。
+```terminal
+$ brew update	←☆まずは、下準備・・・か？
+Updated Homebrew from 069ab087f to 02c303c78.
+Updated 4 taps (homebrew/core, homebrew/cask, homebrew/cask-fonts and homebrew/services).
+==> New Formulae
+cpptoml                                     fbthrift                                    iodine
+==> Updated Formulae
+avrdude ✔                        chezmoi                          gopass                           moto
+python@3.9 ✔                     clair                            goreleaser                       mydumper
+sdl2_ttf ✔                       cloud-nuke                       gping                            netlify-cli
+vim ✔                            colima                           gromacs                          newrelic-infra-agent
+　　　・
+　　　・
+　　　・
+==> Homebrew was updated to version 3.3.11
+The changelog can be found at:
+  https://github.com/Homebrew/brew/releases/tag/3.3.11
+$
+$ openssl version	←☆古いよね。
+LibreSSL 2.6.5
+$
+$ brew reinstall openssl	←☆インストール実施。
+==> Downloading https://ghcr.io/v2/homebrew/core/ca-certificates/manifests/2021-10-26
+　　　・
+　　　・
+　　　・
+  python@3.9
+==> Caveats
+==> openssl@3
+A CA file has been bootstrapped using certificates from the system
+keychain. To add additional certificates, place .pem files in
+  /usr/local/etc/openssl@3/certs
+
+and run
+  /usr/local/opt/openssl@3/bin/c_rehash
+
+openssl@3 is keg-only, which means it was not symlinked into /usr/local,
+because macOS provides LibreSSL.
+
+If you need to have openssl@3 first in your PATH, run:
+  echo 'export PATH="/usr/local/opt/openssl@3/bin:$PATH"' >> .bash_profile
+
+For compilers to find openssl@3 you may need to set:
+  export LDFLAGS="-L/usr/local/opt/openssl@3/lib"
+  export CPPFLAGS="-I/usr/local/opt/openssl@3/include"
+
+For pkg-config to find openssl@3 you may need to set:
+  export PKG_CONFIG_PATH="/usr/local/opt/openssl@3/lib/pkgconfig"
+
+$
+$ openssl version
+OpenSSL 3.0.1 14 Dec 2021 (Library: OpenSSL 3.0.1 14 Dec 2021)
+$
+```
+再インストール完了。  
+
+</details>
+
+
 <a name="PythonGitMergeRules"></a>
 #### Gitのマージルール
 個々の言語ごとにブランチをそれぞれ作成する。  

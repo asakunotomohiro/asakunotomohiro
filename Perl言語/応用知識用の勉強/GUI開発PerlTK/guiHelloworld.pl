@@ -18,18 +18,15 @@ sub asakunoGUI() {
 			);
 	# 以下、ウィジェット表示(?)。
 	$button->pack;
-	#say "say 'hello World.'";
-	print "print 'hello World.'";
+	say "say 'hello World.'";	# ウィンドウ終了後に、標準の出力先に出力される。
 	MainLoop;
-	say "終了。";
+	say "終了。";	# 現時点のやり方では出力されない。
 }
 &asakunoGUI(@ARGV);
 #	Perl/TK開発でのハローワールド
 #	couldn't connect to display ":0" at MainWindow.pm line 53.
 #	MainWindow->new() at guiHelloworld.pl line 12.
-# 実行権限ないのが原因らしい、、、本当か？
-# それともXサーバを起動する必要があるのか？
-# 解：Xサーバを起動する必要があった。
+# このエラー解消には、Xサーバを起動する必要があった。
 
 say "以上。"
 # vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=perl noexpandtab:
