@@ -64,7 +64,56 @@ sub asakuno() {
 		say "ファイルなし。";
 	}
 }
-&asakuno(@ARGV);
+#&asakuno(@ARGV);
+
+sub tomohiro() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+
+	# ディレクトリ名定義。
+	my $dirname = $currentDir . '/' . $asakuno;
+
+	say "ディレクトリを作成する。";
+	mkdir $dirname, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+	sleep 5;
+
+	my $mdirtime = '';
+	if( -M $dirname ) {
+		$mdirtime = -M $dirname;
+		say "ディレクトリあり($mdirtime)。";
+	}
+	else{
+		$mdirtime = -M $dirname;
+		say "ディレクトリなし($mdirtime)。";
+	}
+
+	say "以下、ディレクトリ作成後の情報。";
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($dirname);	# ファイルのlstat(プロパティ)情報。
+	say "\t最終アクセス時刻：\t\t" . &timeformatChange(localtime $atime);
+	say "\t最終更新時刻(これ)：\t" . &timeformatChange(localtime $mtime);
+	say "\t-Mオプション取得：\t\t$mdirtime(マイナス表記は未来)";
+	say "\t最後のinode変更時刻：\t" . &timeformatChange(localtime $ctime);
+
+	if( -M $dirname ) {
+		say "ディレクトリあり。";
+	}
+	else{
+		say "ディレクトリなし。";
+	}
+
+	say "ディレクトリ削除。";
+	rmdir $dirname or warn "ディレクトリ削除失敗($!)。";
+	if( -M $dirname ) {
+		say "ディレクトリあり。";
+	}
+	else{
+		say "ディレクトリなし(削除済みの判断でなしとしたわけではない)。";
+	}
+}
+&tomohiro(@ARGV);
 
 
 sub timeformatChange {
