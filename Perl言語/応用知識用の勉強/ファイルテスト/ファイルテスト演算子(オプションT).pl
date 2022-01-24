@@ -70,7 +70,23 @@ sub asakuno() {
 		say "ファイルなし。";
 	}
 }
-&asakuno(@ARGV);
+#&asakuno(@ARGV);
+
+sub asakunoBin() {
+	# バイナリ名定義。
+	my $binname = $INC[0] =~ s:perl5.*:bin/instmodsh:r;
+	if( -T $binname ) {
+		say "テキストファイルあり。";
+	}
+	else{
+		say "バイナリファイルあり。";
+	}
+
+	if( -B $binname ) {
+		say 'バイナリファイルあり($binname)。';
+	}
+}
+&asakunoBin(@ARGV);
 
 
 sub timeformatChange {
