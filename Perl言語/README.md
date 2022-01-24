@@ -7438,6 +7438,7 @@ say %{*$hoge}{3};	# 3hoge
 <details><summary>応用知識-CPAN</summary>
 
 [CPAN](https://www.cpan.org)から欲しいモジュールを探す。  
+[meta-CPAN](https://metacpan.org)というのもある。  
 また、サンプルスクリプトなどもあるようだ。  
 
 
@@ -7512,7 +7513,8 @@ Terminal does not support GetHistory.
 Lockfile removed.
 $
 ```
-簡単に終わったが、インストールしたことをどのように検証すればいいのだろう。  
+~~簡単に終わったが、インストールしたことをどのように検証すればいいのだろう。~~  
+インストール失敗。  
 これを`use`する？  
 手作業でのインストールは大変とのこと。  
 
@@ -8629,7 +8631,7 @@ sub regexSample {
 唐突に何の脈略もなく、本当に突然GUI開発がしたくなったため、手に取った。  
 CPANでの[Perl/Qt](https://metacpan.org/release/AWIN/PerlQt-1.05)と言うのも存在する(Tkより新しい)。  
 
-当たり前だが、ちょっとした衝動に駆られただけなので、上っ面のみ調べる。  
+当たり前だが、GUI開発はちょっとした衝動に駆られただけなので、上っ面のみ調べる。  
 深掘りすることはない。  
 
 * 目次  
@@ -8637,6 +8639,7 @@ CPANでの[Perl/Qt](https://metacpan.org/release/AWIN/PerlQt-1.05)と言うの�
   * [HelloWorld](#practicaluseTkHelloWorld)  
   * [ジオメトリ管理](#practicaluseTkgeometrymanagement)  
     かなり重要な存在。  
+    現在[**pack**](#practicaluseTkgeometrymanagementpack)のみ調べた。  
   * 基本的なボタン  
   * チェックボタン  
   * ラジオボタン  
@@ -8673,7 +8676,7 @@ MainWindow->new() at xxxx.pl line 12.
 
 一昔前は、[Macにも導入済み](https://support.apple.com/ja-jp/HT201341)だったようだが、今は個別に入れる必要がある。  
 そのため、MacのXサーバ(X11？)である[XQuartz](https://www.xquartz.org)を入手し、インストールする。  
-また、インストール後は、端末のログアウトが必要になるため、事前に必要編集部分を保存しておいた方が良い。  
+また、インストール後は、端末のログアウトが必要になるため、事前にありとあらゆるソフトウェアでの編集作業を保存しておいた方が良い。  
 現時点のバージョンは**2.8.1**のリリース日**2021-04-25**になっている。  
 
 
@@ -8716,7 +8719,7 @@ $
 
 以下、別のインストール方法。
 ```terminal
-$ cpan
+$ cpan	←☆このログイン方法が異なるだけで、あとは同じ。
 Loading internal logger. Log::Log4perl recommended for better logging
 Terminal does not support AddHistory.
 
@@ -8726,7 +8729,7 @@ To fix that, maybe try>  install Term::ReadLine::Perl
 cpan shell -- CPAN exploration and modules installation (v2.28)
 Enter 'h' for help.
 
-cpan[1]> install Tk
+cpan[1]> install Tk	←☆Tkのインストール。
 Reading '/Users/asakunotomohiro/.cpan/Metadata'
   Database was generated on Sat, 15 Jan 2022 03:55:46 GMT
 Tk is up to date (804.036).
@@ -8739,9 +8742,11 @@ $
 
 </details>
 
+<details><summary>手動のインストール。</summary>
+
 以下、手動インストール。
 ```terminal
-$ perl Makefile.PL
+$ perl Makefile.PL	←☆Makefileの作成。
 perlbrew/perls/perl-5.34.0/bin/perl is installed in perlbrew/perls/perl-5.34.0/lib/5.34.0/darwin-2level okay
 PPM for perl5.034000
 Test Compiling config/perlrx.c
@@ -8753,7 +8758,7 @@ Tests in Event
 Generating a Unix-style Makefile
 Writing Makefile for Tk
 Writing MYMETA.yml and MYMETA.json
-$ make
+$ make	←☆コンパイル。
 cp Tk/Bitmap.pm blib/lib/Tk/Bitmap.pm
 cp Tk/MakeDepend.pm blib/lib/Tk/MakeDepend.pm
 cp Tk/Panedwindow.pm blib/lib/Tk/Panedwindow.pm
@@ -8769,7 +8774,7 @@ Manifying 2 pod documents
 Manifying 5 pod documents
 Sorry no HTML building yet
 $
-$ make test
+$ make test	←☆テスト実行。
 "perlbrew/perls/perl-5.34.0/bin/perl" -MExtUtils::Command::MM -e 'cp_nonempty' -- Tk.bs blib/arch/auto/Tk/Tk.bs 644
 cd pTk && make DEFINE="" LIBPERL_A="libperl.a" LINKTYPE="dynamic" OPTIMIZE="-O3" PREFIX="perlbrew/perls/perl-5.34.0" PASTHRU_DEFINE=' ' PASTHRU_INC='-I/usr/X11R6/include -I/usr/local/include/freetype2 '
 Manifying 103 pod documents
@@ -8784,7 +8789,7 @@ t/zzScrolled.t             (Wstat: 0 Tests: 94 Failed: 0)
   TODO passed:   52, 66, 80, 94
 Files=76, Tests=4367, 104 wallclock secs ( 0.97 usr  0.33 sys + 18.76 cusr  4.52 csys = 24.58 CPU)
 Result: PASS
-$ make install
+$ make install	←☆インストール実施。
 cd pTk && make DEFINE="" LIBPERL_A="libperl.a" LINKTYPE="dynamic" OPTIMIZE="-O3" PREFIX="perlbrew/perls/perl-5.34.0" PASTHRU_DEFINE=' ' PASTHRU_INC='-I/usr/X11R6/include -I/usr/local/include/freetype2 '
 Manifying 103 pod documents
 Manifying 1 pod document
@@ -8799,6 +8804,8 @@ Appending installation info to perlbrew/perls/perl-5.34.0/lib/5.34.0/darwin-2lev
 $
 ```
 
+</details>
+
 以下、Tkモジュール導入済みか確認する。
 ```terminal
 $ perl -e 'use Tk'
@@ -8806,7 +8813,7 @@ $ echo $?
 0
 $
 ```
-エラーは発生せず。  
+エラーは発生せず(インストールされており、Pathも通っていると言うことだろう)。  
 
 
 <a name="practicaluseTkHelloWorld"></a>
@@ -8820,11 +8827,11 @@ use Tk;
 
 sub gui() {
 	my $mw = MainWindow->new;
-	$mw->title("Hello World.");
+	$mw->title("Hello World.");	←☆タイトルバーへの表示文字。
 	$mw->Button(
-				-text => "Done",
+				-text => "Done",	←☆表示文字。
 				-command => sub { exit }
-			)->pack;
+			)->pack;	# ボタン
 	MainLoop;
 }
 &gui();
@@ -8839,6 +8846,7 @@ sub gui() {
 <a name="practicaluseTksummary"></a>
 ### Perl/Tkの概要
 
+<a name="practicaluseTksummaryWidgetgeneration"></a>
 * ウィジェット生成  
   親子関係として、1つの親に複数の子ウィジェットが付く。  
   しかし、複数の親に1つの子ウィジェットは付かない。  
@@ -8849,6 +8857,7 @@ sub gui() {
     `$mw->Button( -text => "Done", -command => sub { exit })->pack;`  
     **-** がオプション開始の合図であり、その次の**text**がオプションそのものになる。  
 
+<a name="practicaluseTksummaryWidgetdisplay"></a>
 * ウィジェット表示  
   2つの手順が必要。  
   1. ウィジェット生成。  
@@ -8860,24 +8869,28 @@ sub gui() {
   上記をひとつにまとめるのが一般的。  
   例）`$mw->Button()->pack;`  
 
-* イベントループ  
+<a name="practicaluseTksummaryInfiniteeventexecution"></a>
+* イベントループ`MainLoop;`  
   キーボードだけでなく、マウス操作も検知する。  
-  そのため、ユーザが終了させない限り、起動していることになる。  
-  それが`MainLoop`になる。  
-  また、これ以前の処理は、ユーザインタフェイス(UI)の初期化処理である。  
-  そして、これ以降の処理は、`$mw->destroy`により、GUIが閉じられた後に実行される。  
-  当然、この**MainLoop**を付け忘れた場合は、当然GUI画面が表示されずにプログラムが終了する(素通りする)。  
+  そのため、ユーザがウィンドウを終了させない限り、起動していることになる。  
+  また、この記述以前の処理は、ユーザインタフェイス(UI)の初期化処理である。  
+  そして、この記述以降の処理は、[`$mw->destroy`](#practicaluseTksummaryWidgetexitdestroy)により、GUIが閉じられた後に実行される。  
+  当然、この**MainLoop**を付け忘れた場合は、GUI画面が表示されずにプログラムが終了する(素通りする)。  
 
+<a name="practicaluseTksummaryWidgetexit"></a>
 * ウィジェット終了。  
   2種類の終了方法がある。  
+  <a name="practicaluseTksummaryWidgetexitexit"></a>
   * `sub { exit }`  
     Tk終了に必要な処理が走り、終了する。  
     ユーザ(開発者)はどうすることも出来ない。  
     ※`use Tk;`宣言が必須。  
+  <a name="practicaluseTksummaryWidgetexitdestroy"></a>
   * `$mw->destroy`  
     上記**MainLoop**以降の終了説明通り、GUI終了後の処理をユーザが定義する。  
     ユーザ側で制御可能ということ。  
 
+<a name="practicaluseTksummaryNamingconvention"></a>
 * 命名規則  
   各個人が事前に決めること(プログラム開発前に)。  
   そして、一度決めた場合、覆さない方が良い。  
@@ -8886,29 +8899,1432 @@ sub gui() {
   違うプログラムを作るにしても、開発者側で一貫した方が良い。  
   検索のしやすさなどを考えれば分かることだろう。  
 
+<a name="practicaluseTksummary"></a>
 * デバッグ  
   GUIによる実行時に**print**などによる出力をする場合、ターミナル側に出力される。  
   しかし、改行を含めない場合の出力は、GUI画面を終了するまでバッファにためられる。  
   そのため、実行都度出したい場合は、`\n`を**print**末尾に付けておくこと。  
   ※個人的に、どこの話をしているのか分からないが・・・。  
 
+
 <a name="practicaluseTkgeometrymanagement"></a>
 ### ジオメトリ管理
 画面にウィジェットを表示する場合、そのウィジェットをジオメトリマネージャに渡す必要がある。  
 そのジオメトリマネージャがウィンドウ上でのウィジェットの位置・大きさ・を制御する。  
-`Tk::pack`
-`Tk::place`
-`Tk::grid`
-`Tk::Adjuster`
-`Tk::form`
-`Tk::Table`
-`Tk::Tiler`
-`Tk::Wm`
-上位3種類は、ウィジェットに対するメソッドとして呼び出される(他のジオメトリマネージャは全く分からない)。  
+[`Tk::pack`](#practicaluseTkgeometrymanagementpack)・
+`Tk::place`・
+`Tk::grid`・
+`Tk::Adjuster`・
+`Tk::form`・
+`Tk::Table`・
+`Tk::Tiler`・
+`Tk::Wm`  
+先頭3種類は、ウィジェットに対するメソッドとして呼び出される(他のジオメトリマネージャは全く分からない)。  
 そして、1ウィンドウに1ジオメトリマネージャとしてウィンドウを構築するのが望ましい。  
 しかし、入れ子にすることは問題ないようだ。  
 例えば、packで構築したウィジェットにフレームを配置し、そのフレーム内にplaceを使うなど。  
 
+
+<a name="practicaluseTkgeometrymanagementpack"></a>
+#### ジオメトリ管理-pack
+ジグソーパズルのように、決められた枠に決められた構成部品を当てはめていく。  
+このように、きれいに納める必要があるのがpackジオメトリマネージャである。  
+
+* [packオプション](#practicaluseTkgeometrymanagementpackoption)  
+  * [ウィジェットの位置決め。](#practicaluseTkgeometrymanagementpackoptionside)  
+    ウィンドウまたはフレーム枠からの相対指定が可能になる。  
+  * [ウィジェットの大きさ決め。](#practicaluseTkgeometrymanagementpackoptionfill)  
+    他ウィジェットとの相対指定や絶対指定が可能になる。  
+  * [ウィジェット間の余白決め。](#practicaluseTkgeometrymanagementpackoptionexpand)  
+  * ウィンドウまたはフレームの持つウィジェットリストにおける位置決め。  
+
+<details><summary>各モジュールについて(スペルミスはしないこと)。</summary>
+
+ラベルウィジェットを使うつもりだったが、エラーになる。
+```terminal
+$ perl -e 'use Tk::Label'
+Can't locate object method "Construct" via package "Tk::Widget" at perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/Tk/Frame.pm line 13.
+Compilation failed in require at perlbrew/perls/perl-5.34.0/lib/5.34.0/base.pm line 137.
+　　　・
+　　　・
+　　　・
+Compilation failed in require at -e line 1.
+BEGIN failed--compilation aborted at -e line 1.
+$
+```
+[CPANサイト](https://metacpan.org/dist/Tk/view/pod/Label.pod)を確認するが、取得できるzipファイルは、大本のTkのみ。  
+そこに全て収まっていると言うことなのだろうが、私の環境では呼び出せず、エラーになる。  
+なぜ？  
+頭のおかしさが露呈した。  
+ラベルのスペルミスだった。  
+
+</details>
+
+* 注意事項  
+  * ウィジェットの重ね置きはできない。  
+  * ウィジェットのパック順は意味がある。  
+    フレームウィジェットやトップレベルウィジェットは、各々のウィジェット一覧を保持しており、優先順位を付けている(それがパック順である)。  
+    配置を気にしない場合は、引数なしの`pack()`を使う。  
+    配置を変更する場合は、オプションを用いて任意の場所に配置すること。  
+
+以下、サンプルプログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub gui() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	$mw->Label(
+				-text => "Label",
+			)->pack;	←☆ラベル。
+	$mw->Checkbutton(
+				-text => "check1",
+			)->pack;	←☆チェックボタン1つ目。
+	$mw->Checkbutton(
+				-text => "check2",
+			)->pack;	←☆チェックボタン2つ目。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit },
+			)->pack;	←☆ボタン。
+	MainLoop;
+}
+&gui();
+```
+表示結果はGUIなので、貼り付けることが出来ない。  
+そのため、以下、目視した姿を書き写す。
+```text
+Label	←☆ラベル。
+check1	←☆チェックボタン1つ目。
+check2	←☆チェックボタン2つ目。
+exit	←☆ボタン。
+```
+packの引数に何も指定せずに動かした結果。  
+
+以下、packの引数に配置場所を指定したプログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub guipack() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Label(
+				-text => "Label"
+			)->pack(
+					-side => 'bottom',
+					-expand => 1,
+					-fill => 'x'
+				);		# ラベル。
+	$mw->Checkbutton(
+				-text => "check 1",
+			)->pack(
+					-side => 'left',
+					-expand => 1,
+				);		# チェックボタン1つ目。
+	$mw->Checkbutton(
+				-text => "check 2",
+			)->pack(
+					-side => 'left',
+					-expand => 1,
+				);		# チェックボタン2つ目。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-side => 'top',
+					-expand => 1,
+					-fill => 'x'
+				);
+	MainLoop;
+}
+&guipack();
+```
+
+以下、その表示姿
+```text
+check1 check2 exit
+     Label
+```
+意図していない結果になった。  
+exitボタンが一番上に来ると思ったのに・・・そもそも引数への値の意味を理解していないのが原因だが・・・。  
+
+
+<a name="practicaluseTkgeometrymanagementpackoption"></a>
+##### ジオメトリマネージャPackのオプション
+
+* オプションの種類。  
+  * [`-side`](#practicaluseTkgeometrymanagementpackoptionside)  
+    ウィジェットの位置決め。  
+  * [`-fill`](#practicaluseTkgeometrymanagementpackoptionfill)  
+    指定方向にウィジェットを広げる。  
+  * [`-expand`](#practicaluseTkgeometrymanagementpackoptionexpand)  
+    ウィンドウ内の余白を埋める(ウィジェットを広げる)。  
+  * [`-anchor`](#practicaluseTkgeometrymanagementpackoptionanchor)  
+    ウィジェットのアンカー位置決め。  
+  * [`-after`](#practicaluseTkgeometrymanagementpackoptionafter)  
+    ウィジェット生成時の順序に割り込む(指定ウィジェットの後ろに配置)。  
+  * [`-before`](#practicaluseTkgeometrymanagementpackoptionbefore)  
+    ウィジェット生成時の順序に割り込む(指定ウィジェットの前に配置)。  
+  * [`-ipadx`・`-ipady`](#practicaluseTkgeometrymanagementpackoptionin)  
+    ウィジェットの大きさを変更する(ウィジェット自体)。  
+  * [`-padx`・`-pady`](#practicaluseTkgeometrymanagementpackoptionin)  
+    ウィジェットの大きさを変更する(ウィジェットの周り)。  
+  * [`-in`](#practicaluseTkgeometrymanagementpackprint)  
+    指定ウィジェットに乗せることができる。  
+  * [packジオメトリマネージャのメソッド](#practicaluseTkgeometrymanagementpackmethod)  
+    ウィンドウからウィジェットを非表示にする。  
+
+
+<a name="practicaluseTkgeometrymanagementpackoptionside"></a>
+###### Packオプション-ウィジェットの位置決め。
+ウィンドウまたはフレーム指定した辺に向かってウィジェットを配置する。  
+```perl
+-side =>
+        'left'|
+        'right'|
+        'top'|	←☆デフォルト値。
+        'bottom'
+```
+各ウィンドウには、上下左右の4つの辺があり、この辺に対してウィジェットが配置される。  
+指定しない場合は、デフォルト値に従い、上辺に向かって突き上げていく。  
+
+以下、'top'を指定したプログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub guipackSide() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Label(
+				-text => "Label"
+			)->pack(
+					-side => 'top',
+					-expand => 1,
+					-fill => 'x'
+				);		# ラベル。
+	$mw->Checkbutton(
+				-text => "check1",
+			)->pack(
+					-side => 'top',
+					-expand => 1,
+				);		# チェックボタン1つ目。
+	$mw->Checkbutton(
+				-text => "check2",
+			)->pack(
+					-side => 'top',
+					-expand => 1,
+				);		# チェックボタン2つ目。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-side => 'top',
+					-expand => 1,
+					-fill => 'x'
+				);
+	MainLoop;
+}
+&guipackSide();
+```
+
+以下、その表示姿。
+```text
+Label
+check1
+check2
+exit
+```
+パック順に、上に突き上げていく。  
+風船を順番に飛ばしていく姿を想像して欲しい(最初の風船が天井に当たり、2番目がその下につき、3番目が2番目の下につき・・・)。  
+
+今後、プログラムを省略するが、'left'を指定する。  
+以下、その表示姿。
+```text
+Label check1 check2 exit
+```
+
+以下、sideオプションに'right'を指定した表示姿。
+```text
+exit check2 check z Label
+```
+
+以下、sideオプションに'bottom'を指定した表示姿。
+```text
+exit
+check2
+check1
+Label
+```
+
+以下、sideオプションを指定しない(デフォルト値)表示姿。
+```text
+Label
+check1
+check2
+exit
+```
+
+
+<a name="practicaluseTkgeometrymanagementpackoptionfill"></a>
+###### Packオプション-ウィジェットの大きさ決め。
+割り当て領域内の指定した方向に向かってウィジェットを広げる(大きさを決める)。  
+```perl
+-fill =>
+        'none'|	←☆デフォルト値。
+        'x'|	←☆x方向に広げる。
+        'y'|	←☆y方向に広げる。
+        'both'	←☆x方向とy方向に広げる。
+```
+通常のウィジェットは、デフォルトの大きさが割り当てられる。  
+また、デフォルトの大きさは、割り当て領域よりも小さいことが多い。  
+今回のオプション利用により、辺に沿わせることができる(要は、広げること)。  
+※実際に画面見栄を確認しなければ、どのような状態か判断できないだろう。  
+また、ちょっとした小さいプログラムでの確認でも判断できないと思う。  
+
+以下、fillオプションを指定したプログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub guipackFillnone() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "first",
+			)->pack(
+					-side => 'bottom',
+					-fill => 'none',
+				);		# ラベル。
+	$mw->Button(
+				-text => "second",
+			)->pack(
+					-side => 'left',
+					-fill => 'none',
+				);		# チェックボタン1つ目。
+	$mw->Button(
+				-text => "third",
+			)->pack(
+					-side => 'top',
+					-fill => 'none',
+				);		# チェックボタン2つ目。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-side => 'right',
+					-fill => 'none',
+				);
+	MainLoop;
+}
+&guipackFillnone();
+```
+基本的に、これらの実行結果は、実際に目で見た方が良い。  
+テキストで表現できない。  
+
+以下、その表示姿。
+```text
+        third
+second   exit
+     first
+```
+
+以下、fillオプションに'x'を指定した表示姿。
+```text
+        third
+second   exit
+     first
+```
+none値と変わらないように見える。  
+
+以下、fillオプションに'y'を指定した表示姿。
+```text
+        third
+second   exit
+     first
+```
+xと異なる表示になる。  
+実際に確かめた方が良い。  
+
+以下、fillオプションに'both'を指定した表示姿。
+```text
+        third
+second   exit
+     first
+```
+xと異なる表示になる。  
+実際に確かめた方が良い。  
+しかし、y値と変わりないように思う。  
+
+基本的に、fillオプションを用いる場所は、スクロールバーを付けるときに用いるようだ。  
+
+
+<a name="practicaluseTkgeometrymanagementpackoptionexpand"></a>
+###### Packオプション-ウィジェット間の余白決め。
+ウィンドウまたはフレームの空き領域に対して割り当て領域を広げる(要は、余白埋め作業)。  
+```perl
+-expand =>
+        1|	←☆ウィジェット広げる。
+        0	←☆デフォルト値(広げない)。
+```
+左右のどちらかに押しつける指示([`fill`](#practicaluseTkgeometrymanagementpackoptionfill)？)がある場合、水平方向に広がる(余白が許す限り)。  
+上下のどちらかに押しつける指示([`fill`](#practicaluseTkgeometrymanagementpackoptionfill)？)がある場合、垂直方向に広がる(余白が許す限り)。  
+
+<details><summary>指定無意味</summary>
+
+以下、0指定は、最小の大きさのウィジェットが配置されるだけ。
+```perl
+use v5.24;
+use Tk;
+
+sub expandzero() {
+	my $mw = MainWindow->new;
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "none",
+				-command => sub { exit }
+			)->pack(
+					-fill => 'none',
+					-expand => 0,	←☆0指定あり。
+				);
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-fill => 'y',
+					-expand => 0,	←☆0指定あり。
+				);
+	MainLoop;
+}
+&expandzero();
+```
+恩恵が全くない。  
+
+以下、expandオプションに'0'を指定した表示姿(fillオプションも併用)。
+```text
+none
+exit
+```
+
+
+以下、オプション値に1を指定したプログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub expandone() {
+	my $mw = MainWindow->new;
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "none",
+				-command => sub { exit }
+			)->pack(
+					-fill => 'none',
+					-expand => 1,	←☆1指定あり。
+				);
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-fill => 'y',
+					-expand => 1,	←☆1指定あり。
+				);
+	MainLoop;
+}
+&expandone();
+```
+0との違いは、ウィジェットの配置場所が変わったぐらいしか違いが分からない。  
+ウィジェットが広がっているから中心に来るのだろうが、ウィジェットそのものの広がりはない。  
+
+以下、expandオプションに'1'を指定した表示姿(fillオプションも併用)。
+```text
+none
+exit	←☆0と比べれば上下に広がった。
+```
+noneの場合は、何も変化がない(1を指定しているのに、、、)。  
+
+</details>
+
+以下、オプション値に1を指定したプログラム(かつ、fillに**both**を指定)。
+```perl
+use v5.24;
+use Tk;
+
+sub expandone() {
+	my $mw = MainWindow->new;
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "none",
+				-command => sub { exit }
+			)->pack(
+					-fill => 'none',	←☆none指定あり。
+					-expand => 1,	←☆1指定あり。
+				);
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-fill => 'both',	←☆both指定あり。
+					-expand => 1,	←☆1指定あり(広がる条件が揃った)。
+				);
+	MainLoop;
+}
+&expandone();
+```
+
+以下、expandオプションに'1'を指定した表示姿(fillオプション**both**)。
+```text
+none
+exit	←☆上下左右に広がった。
+```
+この変化は目で見た方が良い。  
+むしろ、見なくても想像できるほどギチギチに広がる。  
+ただし、noneボタンは、一切変化がない(上部の中央に位置する)。  
+
+なぜ、**1**指定するだけで、ウィジェットが中央に来るのか。  
+その答えは、他のオプションに[**anchor**](#practicaluseTkgeometrymanagementpackoptionanchor)と言うのがあり、そのデフォルト値が中央配置になっているためである。  
+
+[sideオプション](#practicaluseTkgeometrymanagementpackoptionside)は、指定に関係なく、ウィジェットの変化なし。  
+
+結局のところ、求めるUIを先に考え、資料作成後、その資料を見ながらプログラミングをしなければ、想像力が追いつかずに挫折することだろう。  
+
+
+<a name="practicaluseTkgeometrymanagementpackoptionanchor"></a>
+###### Packオプション-ウィンドウまたはフレームの持つウィジェットリストにおける位置決め。
+割り当て領域内でのウィジェットのアンカー位置を決める。  
+要は、碇(or錨)をどの辺に降ろすかを決める作業。  
+```perl
+-anchor =>
+        'n'|
+        's'|
+        'w'|
+        'e'|
+        'center'|	←☆デフォルト値。
+        'nw'|
+        'ne'|
+        'sw'|
+        'se'|
+```
+
+以下、辺の大まかな位置。
+```text
+nw      n       ne
+
+w     center    e
+
+sw      s       se
+```
+※錨を下ろすだけでは不十分ではある(このオプションだけでは意味が無い)。  
+
+<details><summary>最小限オプション設定の動作確認。</summary>
+
+以下、他オプションをデフォルトで動かす。
+```perl
+use v5.24;
+use Tk;
+
+sub guipackAnchor() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-anchor => 'e',
+				);
+	MainLoop;
+}
+&guipackAnchor();
+```
+
+本来**e**を指定しているため、右真ん中に位置するはずだが、実際は**ne**に固定されて表示された。
+```text
+--    --    ne	←☆ここに表示される。
+
+--    --    e	←☆ここを指定。
+
+--    --    --
+```
+ウィンドウを広げた場合も関係なく、**ne**に固定されてしまう。  
+Tkが流行らないのはこういうところでは？  
+
+上記のオプションを全て削除した場合は、以下の結果になる。
+```text
+--    n     --	←☆ここに表示される。
+
+--    --    --
+
+--    --    --
+```
+
+</details>
+
+<details><summary>意図していない結果が出てくるプログラム。</summary>
+
+以下、[**side**](#practicaluseTkgeometrymanagementpackoptionside)オプション付きのプログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub guipackAnchor() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-side => 'bottom',
+					-anchor => 'e',
+				);
+	MainLoop;
+}
+&guipackAnchor();
+```
+
+以下、その表示場所。
+```text
+--    --    --
+
+--    --    --
+
+--    --    se	←☆e指定だが、ここに表示される。
+```
+アンカー指定が無駄になる結果が出てきた。  
+
+</details>
+
+基本的に、anchorは、複数のウィジェットを1列に並べる場合に用いられる。  
+```perl
+use v5.24;
+use Tk;
+
+sub guipackAnchorTop() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "top",
+				-command => sub { exit }
+			)->pack(
+					-side => 'top',
+					-anchor => 'se',
+				);
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-side => 'top',
+					-anchor => 'se',
+				);
+	MainLoop;
+}
+&guipackAnchorTop();
+```
+
+以下、表示場所。
+```text
+--    --    Top	←☆右上にへばりついている。
+            exit	←☆よく分かっていないが、Topボタンの真下にひっついている感じだった。
+
+--    --    --
+
+--    --    --	←☆右下に配置される指定をした。
+```
+張り付き方が可笑しい。  
+**se**は、右下なのに、右上に張り付いてしまう。  
+FPSゲーム内には、ユーザから見えない壁があるのと同じで、見えない領域があるようだ。  
+
+
+<a name="practicaluseTkgeometrymanagementpackoptionafter"></a>
+###### Packオプション-パック順序を後に配置。
+パック順序における`$widget`の位置を`$otherwidget`の後ろにする。  
+```perl
+-after =>
+        ウィジェット名
+```
+
+以下、具体例
+```perl
+$widget->pack(
+            -after =>
+                    $otherwidget,
+            );
+```
+
+以下、表示例。
+```text
+$otherwidget	←☆既存ウィジェット(この前に追加指定)。
+$widget	←☆今回の追加ウィジェット。
+```
+
+<details><summary>オプション設定なし用GUIプログラム</summary>
+
+以下、何もオプションを付けない場合、普通の順番で表示される。
+```perl
+use v5.24;
+use Tk;
+
+sub guiPure() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "top",
+				-command => sub { exit }
+			)->pack();
+	$mw->Button(
+				-text => "none",
+				-command => sub { exit }
+			)->pack();
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack();
+	MainLoop;
+}
+&guiPure();
+```
+
+以下、表示姿。
+```text
+top
+none
+exit
+```
+埋め込んだ順に詰め込まれる。  
+
+</details>
+
+以下、最初に詰め込んだウィジェット直後に配置するプログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub guiAfter() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	my $top = $mw->Button(
+				-text => "top",
+				-command => sub { exit }
+			)->pack(
+				);
+	$mw->Button(
+				-text => "none",
+				-command => sub { exit }
+			)->pack(
+				);
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-after => $top,
+				);
+	MainLoop;
+}
+&guiAfter();
+```
+最後に追加した**exit**ボタンを**top**ボタン直後に配置している。  
+
+以下、表示姿。
+```text
+top
+exit
+none
+```
+見事順番を変えることが出来た。  
+
+
+<a name="practicaluseTkgeometrymanagementpackoptionbefore"></a>
+###### Packオプション-パック順序を前に配置。
+パック順序における`$widget`の位置を`$otherwidget`の前にする。  
+```perl
+-before =>
+        ウィジェット名
+```
+
+以下、具体例
+```perl
+$widget->pack(
+            -before =>
+                    $otherwidget
+            );
+```
+
+以下、表示例。
+```text
+$widget	←☆今回の追加ウィジェット。
+$otherwidget	←☆既存ウィジェット(この前に追加指定)。
+```
+
+<details><summary>オプション設定なし用GUIプログラム</summary>
+
+以下、何もオプションを付けない場合、普通の順番で表示される。
+```perl
+use v5.24;
+use Tk;
+
+sub guiPure() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "top",
+				-command => sub { exit }
+			)->pack();
+	$mw->Button(
+				-text => "none",
+				-command => sub { exit }
+			)->pack();
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack();
+	MainLoop;
+}
+&guiPure();
+```
+
+以下、表示姿。
+```text
+top
+none
+exit
+```
+埋め込んだ順に詰め込まれる。  
+
+</details>
+
+以下、最初に詰め込んだウィジェット直前に配置するプログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub guiBefore() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	my $top = $mw->Button(	←☆これの前に追加予定。
+				-text => "top",
+				-command => sub { exit }
+			)->pack();
+	$mw->Button(
+				-text => "none",
+				-command => sub { exit }
+			)->pack();
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-before => $top,	←☆先頭に追加予定。
+				);
+	MainLoop;
+}
+&guiBefore();
+```
+最後に追加した**exit**ボタンを**top**ボタン直前に配置している。  
+
+以下、表示姿。
+```text
+exit
+top
+none
+```
+見事順番を変えることが出来た。  
+
+
+<a name="practicaluseTkgeometrymanagementpackoptionin"></a>
+###### Packオプション-ウィジェットの大きさを変更する。
+ウィジェット自体の大きさを変えることができる。  
+x方向・y方向に対して指定できる。  
+
+* 方向指定  
+  **i**付きが、ウィジェットそのもの(内部(**i**nside)にあるPadだからという意味)。  
+  付いていないのが、ウィジェットの周りに枠を付ける。  
+  * x方向  
+    [`-ipadx => 大きさ指定値`](#practicaluseTkgeometrymanagementpackoptionipadx)  
+    [`-padx  => 大きさ指定値`](#practicaluseTkgeometrymanagementpackoptionpadx)  
+  * y方向  
+    [`-ipady => 大きさ指定値`](#practicaluseTkgeometrymanagementpackoptionipady)  
+    [`-pady  => 大きさ指定値`](#practicaluseTkgeometrymanagementpackoptionpady)  
+
+※基本は、`$widget`を`$otherwindow`の中にパックする。  
+そして、通常では、`$widget`の親ウィンドウの中にパックする。  
+
+* 単位指定  
+  画面上の距離(スクリーンユニット)用の値は、指定することができる。  
+  ※指定が無い場合、ピクセルを単位として計算される。  
+  例）`$button->pack(-ipadx => '1m'); # 1ミリ`  
+  * 無指定  
+    ピクセル(デフォルト)  
+    例）`20・30・"20"・"30"`  
+    基本は、ピクセルを使うのが望ましい(他のでは、ディスプレイによって見た目の大きさが変わる)。  
+  * `c`  
+    センチ  
+    例）`'3c'`・`'4c'`・`"3c"`  
+  * `i`  
+    インチ  
+    例）`'2i'`・`"3i"`  
+  * `m`  
+    ミリ  
+    例）`'4m'`・`"4m"`  
+  * `p`  
+    プリンタポイント(72分の1インチ)  
+    例）`'40p'`・`"72p"`  
+    ※pを付けた場合、ピクセルにならないため、気をつけること(説明通り)。  
+
+
+<a name="practicaluseTkgeometrymanagementpackoptionipadx"></a>
+* Packオプション-ウィジェットの幅を増やす。
+  ウィジェットの幅を指定分2倍にする(左右同時に増えるため、指定の2倍になる)。  
+  様式：`-ipadx => 指定値`  
+
+<details><summary>ipadx用x方向プログラム</summary>
+
+以下、x方向に対するプログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub guiipadx() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "top",
+				-command => sub { exit }
+			)->pack();
+	$mw->Button(
+				-text => "sec",
+				-command => sub { exit }
+			)->pack();
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-ipadx => 6,	←☆これ。
+				);
+	MainLoop;
+}
+&guiipadx();
+```
+大きさの変化に気づきにくい。  
+6から10にした場合は、それなりに変化はあるが、4から6にした場合の変化はほぼ分からない。  
+
+</details>
+
+
+<a name="practicaluseTkgeometrymanagementpackoptionipady"></a>
+* Packオプション-ウィジェットの高さを増やす。
+  ウィジェットの高さを指定分2倍にする(上下同時に増えるため、指定の2倍になる)。  
+  様式：`-ipady => 指定値`  
+
+<details><summary>ipady用y方向プログラム</summary>
+
+以下、y方向に対するプログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub guiipady() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "top",
+				-command => sub { exit }
+			)->pack();
+	$mw->Button(
+				-text => "sec",
+				-command => sub { exit }
+			)->pack();
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-ipady => 6,	←☆これ。
+				);
+	MainLoop;
+}
+&guiipady();
+```
+大きさの変化に気づきにくいため、値は大きめに取った方が良い？  
+
+</details>
+
+
+<a name="practicaluseTkgeometrymanagementpackoptionpadx"></a>
+* Packオプション-ウィジェットの左右に余白を設ける。
+  ウィジェットの大きさを変えず、左右にパッド(枠・余白)を作り、その枠の大きさを変えることもできる。  
+  様式：`-padx => 指定値`  
+
+<details><summary>padx用x方向プログラム</summary>
+
+以下、x方向に対するプログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub guiipadx() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "top",
+				-command => sub { exit }
+			)->pack(
+					-side => 'left',
+				);
+	$mw->Button(
+				-text => "sec",
+				-command => sub { exit }
+			)->pack(
+					-side => 'left',
+					-padx => 10,	←☆見えない枠が作られるのが確認できる。
+				);
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+					-side => 'left',
+				);
+	$mw->Button(
+				-text => "end",
+				-command => sub { exit }
+			)->pack(
+					-side => 'left',
+				);
+	MainLoop;
+}
+&guiipadx();
+```
+水平方向の並びにした場合、変化に気づく。  
+
+</details>
+
+
+<a name="practicaluseTkgeometrymanagementpackoptionpady"></a>
+* Packオプション-ウィジェットの上下に余白を設ける。
+  ウィジェットの大きさを変えず、上下にパッド(枠・余白)を作り、その枠の大きさを変えることもできる。  
+  様式：`-pady => 指定値`  
+
+<details><summary>pady用y方向プログラム</summary>
+
+以下、y方向に対するプログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub guiipady() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "top",
+				-command => sub { exit }
+			)->pack(
+				);
+	$mw->Button(
+				-text => "sec",
+				-command => sub { exit }
+			)->pack(
+					-pady => 6,	←☆見えない枠が作られるのが確認できる。
+				);
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack(
+				);
+	$mw->Button(
+				-text => "end",
+				-command => sub { exit }
+			)->pack(
+				);
+	MainLoop;
+}
+&guiipady();
+```
+垂直方向への配置で変化に気づく。  
+
+</details>
+
+
+<a name="practicaluseTkgeometrymanagementpackprint"></a>
+###### Packオプション-ウィジェットを指定ウィンドウに表示。
+親以外のウィジェット上への表示をするには、`-in`オプションを用いる。  
+※通常は、ウィジェットをパックした場合、そのウィジェットを生成した領域内に配置される。  
+決して、親ウィンドウ以外に表示するのでは無いため、気をつけること。  
+```perl
+-in =>
+        ウィジェット名
+```
+
+以下、具体例
+```perl
+$widget->pack(
+            -in =>
+                    $otherwidget,
+            );
+```
+
+<details><summary>オプション設定なし用GUIプログラム</summary>
+
+以下、何もオプションを付けない場合、デフォルト表示になる。
+```perl
+use v5.24;
+use Tk;
+
+sub guiPure() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	$mw->Button(
+				-text => "top",
+				-command => sub { exit }
+			)->pack();
+	$mw->Button(
+				-text => "none",
+				-command => sub { exit }
+			)->pack();
+	$mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack();
+	MainLoop;
+}
+&guiPure();
+```
+
+以下、表示姿。
+```text
+top
+none
+exit
+```
+何も手を加えていない表示。  
+
+</details>
+
+以下、プログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub guiInwidget() {
+	my $mainwin = MainWindow->new;	←☆このウィンドウに"bottom"ボタンが付くと思っていた。
+	$mainwin->title("mainウィンドウ");	←☆このウィンドウ単体で表示される。
+
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");	←☆このウィンドウに、以下で生成されるウィジェットが付く。
+
+	# 以下、ウィジェット生成。
+	my $top = $mw->Button(
+				-text => "top",
+				-command => sub { exit }
+			)->pack();
+	my $none = $mw->Button(
+				-text => "none",
+				-command => sub { exit }
+			)->pack();
+	my $exit = $mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack();
+	my $bottom = $mw->Button(
+				-text => "bottom",
+				-command => sub { exit }
+			)->pack(
+					-in =>
+						#$mainwin,	←☆変化なし(このウィンドウに表示すると思っていた)。
+						$top,
+				);
+	MainLoop;
+}
+&guiInwidget();
+```
+
+以下、表示姿。
+```text
+bottom	←☆この下にTopボタンがある(カーソルを合わせた場合、表示しようと頑張る)。
+none
+exit
+```
+違うウィンドウに表示すると思っていたが、違うウィジェットに乗るだけだった。  
+それが大事なのだろうが・・・。  
+
+
+<a name="practicaluseTkgeometrymanagementpackmethod"></a>
+###### Packオプション-packジオメトリマネージャのメソッド
+ウィジェットに関する情報が取得・変更できる。  
+
+* 目次  
+  * [ウィジェットの非表示](#practicaluseTkgeometrymanagementpackmethodhide)  
+  * [ウィジェットの情報取得](#practicaluseTkgeometrymanagementpackmethodintelligence)  
+  * [ウィジェットの自動リサイズ停止設定](#practicaluseTkgeometrymanagementpackmethodresize)  
+  * [ウィジェットの一覧取得](#practicaluseTkgeometrymanagementpackmethodcatalog)  
+
+
+<a name="practicaluseTkgeometrymanagementpackmethodhide"></a>
+ウィジェットのアンパックというのが正式らしいが、要は非表示にするメソッド。  
+様式：
+`$widget->packForget();`  
+
+<details><summary>展開：プログラム構築例。</summary>
+
+以下プログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub method() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	my $top = $mw->Button(
+				-text => "top",
+				-command => sub { exit }
+			)->pack();
+	my $none = $mw->Button(
+				-text => "none",
+				-command => sub { exit }
+			)->pack();	# このボタンが非表示になる。
+	my $exit = $mw->Button(
+				-text => "exit",
+				-command => sub { exit }
+			)->pack();
+	my $bottom = $mw->Button(
+				-text => "bottom",
+				-command => sub { exit }
+			)->pack();
+
+	$none->packForget();	# アンパック(非表示)メソッド。
+	MainLoop;
+}
+&method();
+```
+
+以下、表示姿。
+```text
+top
+exit	←☆topボタンの下かつexitボタンの上にnoneボタンがあった。
+bottom
+```
+
+</details>
+
+今回非表示にしたことで、次回表示させた場合、後ろに追加されることになる。  
+要は、bottomボタンの下にnoneボタンがくる。  
+
+<a name="practicaluseTkgeometrymanagementpackmethodintelligence"></a>
+ウィジェットに関する設定情報リストを取得するメソッド。  
+様式：
+`$widget->packInfo();`  
+
+<details><summary>展開：プログラム構築例。</summary>
+
+以下プログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub method() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	my $top = $mw->Button(
+				-text => "top",
+				-command => \&buttoninfo,
+			)->pack();
+	my $exit = $mw->Button(
+				-text => "exit",
+				-command => sub { $mw->destroy; &buttoninfo; },	←☆この関数の中に外で宣言した変数を持ち込めないようだ。
+			)->pack();
+	my %topButtonList = $top->packInfo();		# Topボタンに関する情報を取得する。
+	my $buttoninfo = 'null';
+	my $text = $mw->Label(
+				-textvariable => \$buttoninfo,
+			)->pack();
+
+	sub buttoninfo() {
+		$buttoninfo = "Top Button Info\n" . "-" x 30 . "\n";
+		for my $key (keys(%topButtonList)) {
+			my $value = $topButtonList{$key};
+			$buttoninfo .= "$key -> $value\n";
+		}
+		$buttoninfo .= "-" x 30;
+		say $buttoninfo;	←☆ターミナル上に出力する用。
+	}
+
+	MainLoop;
+}
+&method();
+```
+
+以下、出力結果。
+```text
+Top Button Info
+------------------------------
+-fill -> none
+-expand -> 0
+-anchor -> center
+-ipady -> 0
+-side -> top
+-pady -> 0
+-in -> MainWindow=HASH(0x7f873804ff98)
+-padx -> 0
+-ipadx -> 0
+------------------------------
+```
+
+</details>
+
+今回取得した情報をどこかに保持しておき、それを使い回すというのは、別途考える必要がある。  
+今までのような(いわゆる)構造化プログラミングでは対応できないだろう。  
+
+
+<a name="practicaluseTkgeometrymanagementpackmethodresize"></a>
+ウィジェットの大きさを自動調整停止する設定メソッド。  
+様式：
+`$widget->packPropagate(0);`  
+or  
+`$widget->packPropagate('off');`  
+これを使わない場合、自動リサイズが有効になっているとのこと。  
+※デフォルト有効。  
+
+<details><summary>展開：プログラム構築例。</summary>
+
+以下プログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub method() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	my $top = $mw->Button(
+				-text => "top",
+				-command => sub { exit },
+			)->pack();
+	my $none = $mw->Button(
+				-text => "none",
+				-command => sub { exit },
+			)->pack();
+	my $exit = $mw->Button(
+				-text => "exit",
+				-command => sub { $mw->destroy },
+			)->pack(
+					-ipadx => 60,
+					-ipady => 60,
+				);
+	#$exit->packPropagate(0);	# ウィンドウの自動リサイズ停止できず。	←☆こっちでできると思うのだが・・・。
+	$mw->packPropagate(0);		# ウィンドウの自動リサイズ停止。
+	my $bottom = $mw->Button(
+				-text => "bottom",
+				-command => sub { exit }
+			)->pack();
+	MainLoop;
+}
+&method();
+```
+
+</details>
+
+想像していた止め方と異なるため、私の検証方法がズレている可能性がある。  
+
+
+<a name="practicaluseTkgeometrymanagementpackmethodcatalog"></a>
+ウィジェットの一覧を取得するメソッド。  
+様式：
+`$widget->packSlaves();`  
+※ウィジェットがない場合、空文字列が返る。  
+
+<details><summary>展開：プログラム構築例。</summary>
+
+以下プログラム。
+```perl
+use v5.24;
+use Tk;
+
+sub method() {
+	my $mw = MainWindow->new;
+	$mw->title("packジオメトリマネージャ");
+
+	# 以下、ウィジェット生成。
+	my $exit = $mw->Button(
+				-text => "exit",
+				-command => sub { $mw->destroy }
+			)->pack(
+					-ipadx => 60,
+					-ipady => 60,
+				);
+	my $bottom = $mw->Button(
+				-text => "bottom",
+				-command => \&widgetinfo,
+			)->pack();
+	#my @slaveList = $bottom->packSlaves();	←☆これは取得できない(このウィジェットに属したウィジェットがないのだから当たり前)。
+	my @slaveList = $mw->packSlaves();
+	my $buttoninfo = 'null';
+	my $text = $mw->Label(
+				-textvariable => \$buttoninfo,
+			)->pack();
+
+	sub widgetinfo() {
+		$buttoninfo = "Buttonボタン情報\n" . "-" x 30 . "\n";
+		foreach my $value ( @slaveList ) {
+			$buttoninfo .= "$value\n";
+		}
+		$buttoninfo .= "-" x 30;
+		say "$buttoninfo";
+	}
+	MainLoop;
+}
+&method();
+```
+
+以下、表示結果。
+```text
+Tk::Button=HASH(0x7fd223268f18)
+Tk::Button=HASH(0x7fd2232693f8)
+Tk::Button=HASH(0x7fd2232696c8)
+```
+
+</details>
+
+これもいまいちな取得情報になってしまった。  
+これを極める場合、このハッシュ情報を紐解き、ここから各ウィジェットの設定を変更できる。  
+
+todo:
+各ウィジェットの設定を変更できるようにすること。  
 
 </details>
 
