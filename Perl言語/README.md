@@ -8913,8 +8913,8 @@ sub gui() {
 画面にウィジェットを表示する場合、そのウィジェットをジオメトリマネージャに渡す必要がある。  
 そのジオメトリマネージャがウィンドウ上でのウィジェットの位置・大きさ・を制御する。  
 [`Tk::pack`](#practicaluseTkgeometrymanagementpack)・
-`Tk::place`・
-`Tk::grid`・
+[`Tk::grid`](#practicaluseTkgeometrymanagementgrid)・
+[`Tk::place`](#practicaluseTkgeometrymanagementplace)・
 `Tk::Adjuster`・
 `Tk::form`・
 `Tk::Table`・
@@ -10472,6 +10472,8 @@ sub guiGrid() {
 
 <a name="practicaluseTkgeometrymanagementplace"></a>
 #### ジオメトリ管理-place
+今回のジオメトリマネージャは、相対的なx座標及びy座標を用いてウィジェットの位置を指定する。  
+その座標指定により配置するため、ウィジェットを重ねることができる(PackとGridには不可能)。  
 
 
 </details>
