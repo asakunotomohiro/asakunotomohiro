@@ -8056,6 +8056,58 @@ todo:
 補足：ファイルの存在がない場合、もしくは読めない場合、偽になる。  
 補足：ファイルが空の場合、真になる。  
 
+以下、通常ファイルに対するプログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub filetestT() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+
+	# ファイル名のみ作成。
+	my $filename = $currentDir . '/filetestT.txt';
+
+	unless( -T $filename ) {
+		say "ファイル作成前。";
+	}
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename
+		or die "$filenameのファイルオープン失敗($!)";
+
+	if( -T $filename ) {
+		say "ファイルへの書き込み前だが、存在はしている。";
+	}
+
+	foreach( qw( 本日は 晴天なり。) ) {
+		say $file_fh $_;	# ファイルへの書き込み。
+	}
+	close $file_fh;
+
+	if( -T $filename ) {
+		say "ファイルあり(書き込み済み)。";
+	}
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	unless( -s $filename ) {
+		say "ファイルなし。";
+	}
+}
+&filetestT();
+```
+
+以下、出力結果。
+```terminal
+ファイル作成前。
+ファイルを作成する。
+ファイルへの書き込み前だが、存在はしている。
+ファイルあり(書き込み済み)。
+ファイル削除。
+ファイルなし。
+```
+予想通りの結果ではある。  
+
 
 <a name="practicaluseFiletestoperatorM"></a>
 #### ファイルテスト演算子(`-M`)
