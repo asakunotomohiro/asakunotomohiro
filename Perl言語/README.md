@@ -2846,8 +2846,60 @@ PythonモジュールがあるぐらいだからPerlモジュールにもキュ�
 プログラム実行後もプログラムが生成したデータを保存するために、今回はファイルを用いて、書き出し・読み出しを行う。  
 今まで散々してきたことだが、書籍がようやく私の行動に追いついてきたことになる。  
 
-読み書き込み先は複数あれど今までファイルに書き込んできたのだから準ずる。  
+読み書き込み先は複数あれど今までのファイル向けに準ずる。  
 
+以下、ファイル書き込みプログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub writefunc() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+
+	# ファイル名のみ定義。
+	my $filename = "$currentDir/file.txt";
+
+	unless( -f $filename ) {
+		say "ファイル作成前。";
+	}
+
+	say "ファイルを新規作成(既存上書き)する。";
+	open my $file_fh, '>', $filename or die "$filenameのファイルオープン失敗($!)";
+	foreach( qw( 本日は 晴天なり。 ) ) {
+		say $file_fh $_;	# ファイルへの書き込み。
+	}
+	close $file_fh;	# ファイルハンドル閉じる。
+
+	if( -f $filename ) {
+		say "ファイル作成成功。";
+	}
+
+#	say "ファイル削除。";
+#	unlink $filename or warn "ファイル削除失敗($!)。";
+#	unless( -f $filename ) {
+#		say "ファイルなし(削除済み)。";
+#	}
+}
+&writefunc();
+```
+
+以下、作成作業。
+```perl
+$ ll write.pl file.txt
+ls: file.txt: No such file or directory
+-rwxr-xr-x  1 asakunotomohiro  staff  1003  1 25 16:49 write.pl*
+$ perl write.pl
+ファイル作成前。
+ファイルを新規作成(既存上書き)する。
+ファイル作成成功。
+$ cat file.txt
+本日は
+晴天なり。
+$
+```
+ファイル作成成功。  
+作成と言うより、ファイルへの出力成功とも言える・・・だから作成か。  
 
 
 <a name="searchOverviewChapter4"></a>
