@@ -2885,7 +2885,7 @@ sub writefunc() {
 ```
 
 以下、作成作業。
-```perl
+```terminal
 $ ll write.pl file.txt
 ls: file.txt: No such file or directory
 -rwxr-xr-x  1 asakunotomohiro  staff  1003  1 25 16:49 write.pl*
@@ -2900,6 +2900,56 @@ $
 ```
 ファイル作成成功。  
 作成と言うより、ファイルへの出力成功とも言える・・・だから作成か。  
+
+以下、ファイル読み込みプログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub readfunc() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+
+	# ファイル名のみ定義。
+	my $filename = "$currentDir/file.txt";
+
+	if( -f $filename ) {
+		say "ファイルあり。";
+	}
+
+	say "ファイルを読み込む。";
+	open my $file_fh, '<', $filename or die "$filenameのファイルオープン失敗($!)";
+	while( defined(my $line = <$file_fh>) ) {
+		chomp $line;	# 改行削除。
+		say $. . "行目" . "内容：" . $line;	# ファイル内容を標準出力先に出力。
+	}
+	close $file_fh;
+
+#	say "ファイル削除。";
+#	unlink $filename or warn "ファイル削除失敗($!)。";
+	unless( -f $filename ) {
+		say "ファイルなし(削除済み)。";
+	}
+}
+&readfunc();
+```
+
+以下、作成作業。
+```terminal
+$ ll read.pl file.txt
+-rwxr-xr-x  1 asakunotomohiro  staff  973  1 25 17:09 read.pl*
+-rw-r--r--  1 asakunotomohiro  staff   26  1 25 16:50 file.txt
+$ cat file.txt
+本日は
+晴天なり。
+$ perl read.pl
+ファイルあり。
+ファイルを読み込む。
+1行目内容：本日は
+2行目内容：晴天なり。
+$
+```
+読み込み成功。  
 
 
 <a name="searchOverviewChapter4"></a>
