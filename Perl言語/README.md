@@ -1725,7 +1725,7 @@ Perlでオブジェクト指向開発ができるだけでなく、そのやり�
   [x] [木](#woodChapter3)2021/12/26  
   [x] [グラフ](#graphChapter3)2022/01/02  
   [x] [スタックとキューを扱う。](#stacksAndQueuesChapter3)2022/01/07  
-  [ ] [データを保存する。](#saveTheDataChapter3)  
+  [x] [データを保存する。](#saveTheDataChapter3)2022/01/25  
 <a name="algorithmTextbookLearnedinPythonChapter4"></a>
 * [Chapter4 サーチ](#searchOverviewChapter4)  
   複数データから目的地を探し出すこと。  
@@ -2843,6 +2843,12 @@ PythonモジュールがあるぐらいだからPerlモジュールにもキュ�
 
 <a name="saveTheDataChapter3"></a>
 #### データを保存する。
+プログラム実行後もプログラムが生成したデータを保存するために、今回はファイルを用いて、書き出し・読み出しを行う。  
+今まで散々してきたことだが、書籍がようやく私の行動に追いついてきたことになる。  
+
+読み書き込み先は複数あれど今までファイルに書き込んできたのだから準ずる。  
+
+
 
 <a name="searchOverviewChapter4"></a>
 ### サーチ
