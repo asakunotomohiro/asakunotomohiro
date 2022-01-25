@@ -1725,7 +1725,7 @@ Perlでオブジェクト指向開発ができるだけでなく、そのやり�
   [x] [木](#woodChapter3)2021/12/26  
   [x] [グラフ](#graphChapter3)2022/01/02  
   [x] [スタックとキューを扱う。](#stacksAndQueuesChapter3)2022/01/07  
-  [ ] [データを保存する。](#saveTheDataChapter3)  
+  [x] [データを保存する。](#saveTheDataChapter3)2022/01/25  
 <a name="algorithmTextbookLearnedinPythonChapter4"></a>
 * [Chapter4 サーチ](#searchOverviewChapter4)  
   複数データから目的地を探し出すこと。  
@@ -2843,6 +2843,118 @@ PythonモジュールがあるぐらいだからPerlモジュールにもキュ�
 
 <a name="saveTheDataChapter3"></a>
 #### データを保存する。
+プログラム実行後もプログラムが生成したデータを保存するために、今回はファイルを用いて、書き出し・読み出しを行う。  
+今まで散々してきたことだが、書籍がようやく私の行動に追いついてきたことになる。  
+
+読み書き込み先は複数あれど今までのファイル向けに準ずる。  
+
+以下、ファイル書き込みプログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub writefunc() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+
+	# ファイル名のみ定義。
+	my $filename = "$currentDir/file.txt";
+
+	unless( -f $filename ) {
+		say "ファイル作成前。";
+	}
+
+	say "ファイルを新規作成(既存上書き)する。";
+	open my $file_fh, '>', $filename or die "$filenameのファイルオープン失敗($!)";
+	foreach( qw( 本日は 晴天なり。 ) ) {
+		say $file_fh $_;	# ファイルへの書き込み。
+	}
+	close $file_fh;	# ファイルハンドル閉じる。
+
+	if( -f $filename ) {
+		say "ファイル作成成功。";
+	}
+
+#	say "ファイル削除。";
+#	unlink $filename or warn "ファイル削除失敗($!)。";
+#	unless( -f $filename ) {
+#		say "ファイルなし(削除済み)。";
+#	}
+}
+&writefunc();
+```
+
+以下、作成作業。
+```terminal
+$ ll write.pl file.txt
+ls: file.txt: No such file or directory	←☆ファイルなし。
+-rwxr-xr-x  1 asakunotomohiro  staff  1003  1 25 16:49 write.pl*
+$ perl write.pl	←☆プログラム実行。
+ファイル作成前。
+ファイルを新規作成(既存上書き)する。
+ファイル作成成功。
+$ cat file.txt	←☆作成後の内容を表示する。
+本日は
+晴天なり。
+$
+```
+ファイル作成成功。  
+作成と言うより、ファイルへの出力成功とも言える・・・だから作成か。  
+
+以下、ファイル読み込みプログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub readfunc() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+
+	# ファイル名のみ定義。
+	my $filename = "$currentDir/file.txt";
+
+	if( -f $filename ) {
+		say "ファイルあり。";
+	}
+
+	say "ファイルを読み込む。";
+	open my $file_fh, '<', $filename or die "$filenameのファイルオープン失敗($!)";
+	while( defined(my $line = <$file_fh>) ) {
+		chomp $line;	# 改行削除。
+		say $. . "行目" . "内容：" . $line;	# ファイル内容を標準出力先に出力。
+	}
+	close $file_fh;
+
+#	say "ファイル削除。";
+#	unlink $filename or warn "ファイル削除失敗($!)。";
+	unless( -f $filename ) {
+		say "ファイルなし(削除済み)。";
+	}
+}
+&readfunc();
+```
+上記、`$.`は行数を表す。  
+**defined**を噛ませることにより、最終行が0だけの場合も取りこぼしを防ぐことができる。  
+また、今回**while**を使ったのは、通常利用としてであり、基本はこうすべき。  
+**foreach**を使った場合は、ファイル内容を一度にメモリに読み込むため、処理が遅くなるだけでなく、メモリ不足の懸念が発生する(利点は並び替え・該当行かつ前後の行も対象・などのファイル全体が必要な場合に合致する)。  
+
+以下、読み込み作業。
+```terminal
+$ ll read.pl file.txt
+-rwxr-xr-x  1 asakunotomohiro  staff  973  1 25 17:09 read.pl*
+-rw-r--r--  1 asakunotomohiro  staff   26  1 25 16:50 file.txt	←☆このファイルを読み込む。
+$ cat file.txt	←☆ファイル内容確認。
+本日は
+晴天なり。
+$ perl read.pl	←☆プログラム実行。
+ファイルあり。
+ファイルを読み込む。
+1行目内容：本日は
+2行目内容：晴天なり。
+$
+```
+読み込み成功。  
+
 
 <a name="searchOverviewChapter4"></a>
 ### サーチ
