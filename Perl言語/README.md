@@ -8661,6 +8661,114 @@ Unixでは**iノード**が変更されてからの日数(それ以外のOSで�
 戻り値：浮動小数点数(2日と1秒は、**2.00001**値になる)。  
 戻り値：プラスの場合は過去日だが、マイナスの場合は未来日になる。  
 
+以下、ファイルに対する取得プログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub filetestC() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+
+	my $filename = $currentDir . '/filetestC.txt';	# ファイル名のみ作成。
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename or die "$filenameのファイルオープン失敗($!)";
+	sleep 1;	# この処理がない場合、取得結果が0になる。
+	say $file_fh '本日は晴天なり。';
+	close $file_fh;
+
+	my $cfiletime = -C $filename;
+	if( defined( $cfiletime )) {
+		say "ファイルあり($cfiletime)。";
+	}
+
+	say "以下、ファイル作成後の情報。";
+	my ($dev, $ino, $mode, $nlink, $uid, $gid,
+		$rdev, $size, $atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($filename);	# ファイルのlstat(プロパティ)情報。
+	say "\t最終アクセス時刻：\t\t\t" . &timeformatChange(localtime $atime);
+	say "\t最終更新時刻：\t\t\t\t" . &timeformatChange(localtime $mtime);
+	say "\t最後のinode変更時刻(これ)：\t" . &timeformatChange(localtime $ctime);
+	say "\t-Cオプション取得：\t\t\t$cfiletime(マイナス表記は未来)";
+	my $mfiletime = -M $filename;
+	say "\t-Mオプション取得：\t\t\t$mfiletime(マイナス表記は未来)";
+
+	if( -C $filename ) {
+		say "ファイルあり。";
+		say "\t" . '$cfiletime：' . "\t$cfiletime";
+		say "\t" . '$ctime：' . "\t\t$ctime";
+	}
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	unless( -C $filename ) {
+		say "ファイルなし(削除済みの判断でなしとしたわけではない)。";
+	}
+}
+&filetestC();
+
+
+sub timeformatChange {
+	# この関数をどこからでも呼び出せるようにしたい。
+	my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = @_;
+	my %dayweek = (
+				0=>'日',	# Sunday
+				1=>'月',	# Monday
+				2=>'火',	# Tuesday
+				3=>'水',	# Wednesday
+				4=>'木',	# Thursday
+				5=>'金',	# Friday
+				6=>'土',	# Saturday
+				);
+
+	$mon += 1;					# 月が0始まりになるため、1加算する。
+	$year += 1900;				# 1900年を加算することで、西暦になる。
+	$wday = $dayweek{$wday};	# 日曜日が0始まりになり、それを変換する。
+	$yday += 1;					# 1月1日が0始まりのため、1加算する。
+
+	return "$year年$mon月$yday日($wday) $hour時$min分$sec秒";
+}
+```
+
+以下、プログラム実行。
+```terminal
+$ perl ファイルテスト演算子\(オプションC\).pl
+ファイルを作成する。
+ファイル読み込み(この処理がない場合、取得結果が0になる)。
+ファイルあり(-1.15740740740741e-05)。
+以下、ファイル作成後の情報。
+	最終アクセス時刻：			2022年1月26日(水) 17時33分42秒
+	最終更新時刻：				2022年1月26日(水) 17時33分43秒
+	最後のinode変更時刻(これ)：	2022年1月26日(水) 17時33分43秒
+	-Cオプション取得：			-1.15740740740741e-05(マイナス表記は未来)
+	-Mオプション取得：			-1.15740740740741e-05(マイナス表記は未来)
+ファイルあり。
+	$cfiletime：	-1.15740740740741e-05
+	$ctime：		1643186023
+ファイル削除。
+ファイルなし(削除済みの判断でなしとしたわけではない)。
+$
+```
+**最終更新時刻**と**最後のinode変更時刻**が同じ結果になっているため、本当に検証が正しい方法で行われているのか判断できない。  
+困った。  
+
+以下、読み込み処理部分をコメントアウトした結果の実行。
+```terminal
+$ perl ファイルテスト演算子\(オプションC\).pl
+ファイルを作成する。
+ファイル読み込み(この処理がない場合、取得結果が0になる)。
+ファイルあり(0)。
+以下、ファイル作成後の情報。
+	最終アクセス時刻：			2022年1月26日(水) 17時35分6秒
+	最終更新時刻：				2022年1月26日(水) 17時35分6秒
+	最後のinode変更時刻(これ)：	2022年1月26日(水) 17時35分6秒
+	-Cオプション取得：			0(マイナス表記は未来)
+	-Mオプション取得：			0(マイナス表記は未来)
+ファイル削除。
+ファイルなし(削除済みの判断でなしとしたわけではない)。
+$
+```
+
 
 <a name="practicaluseFileteststatfunck"></a>
 ### stat関数
