@@ -7132,6 +7132,57 @@ if( -w -r $filename ) {
 そのため、同じ意味でテストする場合は、配置場所が逆になる。  
 よほどのことが無ければ、逆になっても問題ないはず・・・きっと。。。  
 
+<details><summary>重ね掛けのプログラム(-f・-s)。</summary>
+
+以下、プログラム追記。
+```perl
+use v5.24;
+
+sub filetestStacking() {
+	# ファイル名のみ作成。
+	my $filename = 'filetest.txt';
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename or die "$filenameのファイルオープン失敗($!)";
+	say $file_fh '本日は晴天なり。';	# ファイルへの書き込み。
+	close $file_fh;
+	say ((-s $filename) . "バイト");
+
+	if( -s -f $filename ) {
+		say "ファイルに書き込みあり(-f⇒-sの順で判定)。";
+	}
+
+	if( -f -s $filename ) {
+		say "ファイルに書き込みあり(-s⇒-fの順で判定)。";
+	}
+
+	if( -f $filename and -s _) {
+		say "ファイルに書き込みあり(-f⇒-sの順で判定)。";
+	}
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	unless( -f $filename ) {
+		say "ファイルが空ファイル(削除済み)。";
+	}
+}
+&filetestStacking();
+```
+
+以下、出力結果。
+```terminal
+ファイルを作成する。
+25バイト
+ファイルに書き込みあり(-f⇒-sの順で判定)。
+ファイルに書き込みあり(-s⇒-fの順で判定)。
+ファイルに書き込みあり(-f⇒-sの順で判定)。
+ファイル削除。
+ファイルが空ファイル(削除済み)。
+```
+ファイルに対して、存在有無・容量有無の2種類のため、順不同で同じ結果になるのだろう。  
+
+</details>
+
 分野の異なるファイルテストをする場合は注意する必要がある。  
 例えば、[ディレクトリ](#practicaluseFiletestoperatord)かどうかをテスト後に、[ファイルサイズ](#practicaluseFiletestoperatorsamalls)が512バイト未満であることをテストする場合、
 以下の方法では意図しない結果になる。
