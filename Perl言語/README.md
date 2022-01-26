@@ -8543,6 +8543,108 @@ $ perl ファイルテスト演算子\(オプションA\).pl
 $
 ```
 
+以下、ディレクトリに対するプログラム。
+```perl
+use v5.24;
+
+sub dirtestA() {
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+	my $dirname = 'dirfiletest';	# ディレクトリ名定義。
+
+	say "ディレクトリ作成。";
+	mkdir $dirname, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+	sleep 1;
+
+	say "以下、ディレクトリ内容読み込み(この処理がない場合、取得結果が0になる)。";
+	opendir my $dh, $dirname or die "ディレクトリオープン失敗($!)。";
+	foreach my $dirfile (readdir $dh) {
+	#	say $dirfile;
+	}
+	sleep 1;
+
+	my $adirtime = '';
+	if( -A $dirname ) {
+		$adirtime = -A $dirname;
+		say "ディレクトリあり($adirtime)。";
+	}
+
+	say "以下、ディレクトリ作成後の情報。";
+	my ($dev, $ino, $mode, $nlink, $uid, $gid,
+		$rdev, $size, $atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($dirname);	# ファイルのlstat(プロパティ)情報。
+	say "\t最終アクセス時刻(これ)：\t" . &timeformatChange(localtime $atime);
+	say "\t-Aオプション取得：\t\t\t$adirtime(マイナス表記は未来)";
+	say "\t最終更新時刻：\t\t\t\t" . &timeformatChange(localtime $mtime);
+	say "\t最後のinode変更時刻：\t\t" . &timeformatChange(localtime $ctime);
+
+	if( -A $dirname ) {
+		say "ディレクトリあり。";
+	}
+
+	say "ディレクトリ削除。";
+	rmdir $dirname or warn "ディレクトリ削除失敗($!)。";
+	unless( -A $dirname ) {
+		say "ディレクトリなし(削除済みの判断でなしとしたわけではない)。";
+	}
+}
+&dirtestA();
+
+
+sub timeformatChange {
+	# この関数をどこからでも呼び出せるようにしたい。
+	my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = @_;
+	my %dayweek = (
+				0=>'日',	# Sunday
+				1=>'月',	# Monday
+				2=>'火',	# Tuesday
+				3=>'水',	# Wednesday
+				4=>'木',	# Thursday
+				5=>'金',	# Friday
+				6=>'土',	# Saturday
+				);
+
+	$mon += 1;					# 月が0始まりになるため、1加算する。
+	$year += 1900;				# 1900年を加算することで、西暦になる。
+	$wday = $dayweek{$wday};	# 日曜日が0始まりになり、それを変換する。
+	$yday += 1;					# 1月1日が0始まりのため、1加算する。
+
+	return "$year年$mon月$yday日($wday) $hour時$min分$sec秒";
+}
+```
+
+以下、実行結果。
+```terminal
+$ perl ファイルテスト演算子\(オプションA\).pl
+ディレクトリ作成。
+以下、ディレクトリ内容読み込み(この処理がない場合、取得結果が0になる)。
+ディレクトリあり(-1.15740740740741e-05)。
+以下、ディレクトリ作成後の情報。
+	最終アクセス時刻(これ)：	2022年1月26日(水) 16時35分54秒
+	-Aオプション取得：			-1.15740740740741e-05(マイナス表記は未来)
+	最終更新時刻：				2022年1月26日(水) 16時35分53秒
+	最後のinode変更時刻：		2022年1月26日(水) 16時35分53秒
+ディレクトリあり。
+ディレクトリ削除。
+ディレクトリなし(削除済みの判断でなしとしたわけではない)。
+$
+```
+
+以下、読み込み処理部分をコメントアウトした結果の実行。
+```terminal
+$ perl ファイルテスト演算子\(オプションA\).pl
+ディレクトリ作成。	←☆ディレクトリ作成後のメッセージが出ていない。
+以下、ディレクトリ作成後の情報。
+	最終アクセス時刻(これ)：	2022年1月26日(水) 16時36分27秒
+	-Aオプション取得：			(マイナス表記は未来)
+	最終更新時刻：				2022年1月26日(水) 16時36分27秒
+	最後のinode変更時刻：		2022年1月26日(水) 16時36分27秒
+ディレクトリ削除。
+ディレクトリなし(削除済みの判断でなしとしたわけではない)。
+$
+```
+**defined**がない場合、変数に0が入っているときに、偽になる。  
+そのため、今回ディレクトリが作成されているが、作成されていないことにされてしまっている。  
+
 
 <a name="practicaluseFiletestoperatorC"></a>
 #### ファイルテスト演算子(`-C`)
