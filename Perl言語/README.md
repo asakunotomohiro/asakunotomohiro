@@ -7025,6 +7025,7 @@ sub timeformatChange {
 ファイルへの書き込みのために、既に存在しているのか否か。  
 ファイルの最終変更日時からの経過日数・ファイルの大きさ・読み書き実行権限状況・バイナリファイル・シンボリックリンクファイルなどの確認できる方法がファイルテストになる。  
 
+
 <a name="practicaluseFiletestoperator"></a>
 ### ファイルテスト演算子
 [演算子](#Conditional条件分岐)関係はひとつにまとめたかったのだが、それはそれで情報が分散してしまうと言う・・・。  
@@ -7076,8 +7077,8 @@ sub timeformatChange {
 |[`-l`](#practicaluseFiletestoperatorl)|エントリはシンボリックリンク(ファイルシステムが非対応なら偽)。|
 |[`-p`](#practicaluseFiletestoperatorp)|エントリは名前付きパイプ(FIFO)またはファイルハンドルはパイプ。|
 |[`-S`](#practicaluseFiletestoperatorbigS)|エントリはソケット。|
-|[`-b`](#practicaluseFiletestoperatorb)|エントリはブロック特殊ファイル(例：マウント可能なディスク)。|
-|[`-c`](#practicaluseFiletestoperatorc)|エントリはキャラクタ特殊ファイル(例：I/Oデバイス)。|
+|[`-b`](#practicaluseFiletestoperatorsmallb)|エントリはブロック特殊ファイル(例：マウント可能なディスク)。|
+|[`-c`](#practicaluseFiletestoperatorsmallc)|エントリはキャラクタ特殊ファイル(例：I/Oデバイス)。|
 |[`-t`](#practicaluseFiletestoperatorsmallt)|ファイルハンドルは**tty**にオープンされている(どういう意味？)。|
 |||
 |[`-u`](#practicaluseFiletestoperatoru)|ファイルorディレクトリの**setuid**ビットがセットされている。|
@@ -7085,11 +7086,11 @@ sub timeformatChange {
 |[`-k`](#practicaluseFiletestoperatork)|ファイルorディレクトリの**sticky**ビットがセットされている。|
 |||
 |[`-T`](#practicaluseFiletestoperatorbigT)|ファイルは**ASCII**または**UTF-8**テキストファイル(発見的に推測します)。|
-|[`-B`](#practicaluseFiletestoperatorB)|ファイルは「**バイナリ**」ファイルっぽい(**-T**の反対)。|
+|[`-B`](#practicaluseFiletestoperatorbigB)|ファイルは「**バイナリ**」ファイルっぽい(**-T**の反対)。|
 |||
 |[`-M`](#practicaluseFiletestoperatorM)|スクリプト実行開始時刻からファイル修正時刻を引いたもの(日単位)(stat関数の`$mtime`)。|
 |[`-A`](#practicaluseFiletestoperatorA)|同様にアクセスがあってからの日数。|
-|[`-C`](#practicaluseFiletestoperatorC)|同様に(Unixでは)**inode**が変更されてからの日数(それ以外のプラットフォームでは違うかもしれません)。|
+|[`-C`](#practicaluseFiletestoperatorbigC)|同様に(Unixでは)**inode**が変更されてからの日数(それ以外のプラットフォームでは違うかもしれません)。|
 
 不思議に思うのだが、**実効**って何？  
 実行の間違い？  
@@ -8245,7 +8246,7 @@ todo:
 そもそも急いで気にする箇所では無いからな。  
 
 
-<a name="practicaluseFiletestoperatorb"></a>
+<a name="practicaluseFiletestoperatorsmallb"></a>
 #### ファイルテスト演算子(`-b`)
 エントリはブロック特殊ファイル(例：マウント可能なディスク)。  
 
@@ -8254,7 +8255,7 @@ todo:
 使い方を調べること。  
 
 
-<a name="practicaluseFiletestoperatorc"></a>
+<a name="practicaluseFiletestoperatorsmallc"></a>
 #### ファイルテスト演算子(`-c`)
 エントリはキャラクタ特殊ファイル(例：I/Oデバイス)。  
 
@@ -8400,7 +8401,7 @@ $
 </details>
 
 
-<a name="practicaluseFiletestoperatorB"></a>
+<a name="practicaluseFiletestoperatorbigB"></a>
 #### ファイルテスト演算子(`-B`)
 ファイルは「**バイナリ**」ファイルっぽい(**-T**の反対)。  
 補足：ファイル内容の先頭数千バイト分からNullバイト・珍しいコントロール文字・上位ビットの乱立などから判断する。  
@@ -8913,7 +8914,7 @@ $
 </details>
 
 
-<a name="practicaluseFiletestoperatorC"></a>
+<a name="practicaluseFiletestoperatorbigC"></a>
 #### ファイルテスト演算子(`-C`)
 Unixでは**iノード**が変更されてからの日数(それ以外のOSでは違うかもしれない)。  
 補足：iノードには、ファイル内容以外のファイルに関する全ての情報が格納されている(スクリプトの実行開始時刻が基準)。  
@@ -9139,6 +9140,7 @@ $
 （よく分からないのであれば、検証したとは言えないぞ）。  
 
 </details>
+
 
 <a name="practicaluseFileteststatfunck"></a>
 ### stat関数

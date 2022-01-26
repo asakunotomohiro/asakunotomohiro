@@ -71,7 +71,7 @@ sub asakuno() {
 		say "シンボリックリンクファイルなし(削除済みの判断で'なし'としたわけではない)。";
 	}
 }
-#&asakuno(@ARGV);
+&asakuno(@ARGV);
 
 sub tomohiro() {
 	my $currentDir = getcwd();	# カレントディレクトリ取得。
