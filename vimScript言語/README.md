@@ -103,6 +103,12 @@ MacVimバージョン：8.2.2164
   * 文字区切り(行末記号)：改行  
   * インデント：フリーフォーマット  
   * 標準の出力関数：`echo`・`echon`・`echom`  
+    * `echo`：改行ありメッセージ出力(末尾にコメント付け不可)。  
+    * `echon`：改行なしメッセージ出力(末尾にコメント付け不可)。  
+    * `echom`：[式を本当のメッセージとして表示し、そのメッセージをメッセージ履歴に保存する。](https://vim-jp.org/vimdoc-ja/eval.html#:echom)  
+    * `echoh`：`echo`・`echon`・`echom`のメッセージに色を付ける。  
+    * `echoe`：エラーメッセージ。  
+    * `echoc`：テスト用メッセージ出力(**echom**のように動作する)。  
   * 標準のフォーマット関数：  
 　　例）`printf`など。
 　　※必須記入項目ではなく、勉強途中での記載でも可とする。  
@@ -128,6 +134,8 @@ enddef
 echo HelloWorld()
 ```
 出力結果：`hello world(By.vim script 9).`  
+
+script9のヘルプ(英語)：`help vim9script`  
 
 </details>
 
@@ -155,7 +163,7 @@ echo HelloWorld()
   * [x] [Chapter 1 プログラミングの基礎知識](#basicKnowledgeFiveTypesOfStudyRange)  
     現時点で完了している(上記の基礎知識5種類として)。  
   * [x] [Chapter 2 プログラミングの力を養う](#algorithmTextbookLearnedinPythonChapter2)  
-  * [ ] [Chapter 3 データ構造を学ぶ](#algorithmTextbookLearnedinPythonChapter3)  
+  * [x] [Chapter 3 データ構造を学ぶ](#algorithmTextbookLearnedinPythonChapter3)  
   * [ ] [Chapter 4 サーチ](#algorithmTextbookLearnedinPythonChapter4)  
   * [ ] [Chapter 5 ソート](#algorithmTextbookLearnedinPythonChapter5)  
   * [ ] [Chapter 6 ハッシュ](#algorithmTextbookLearnedinPythonChapter6)  
@@ -254,14 +262,14 @@ echo HelloWorld()
   * [x] 編集後、コミットする。  
   * [ ] 手順4. 各ディレクトリで、チャプタごとに勉強を進める。  
     ※そのとき、(できる限り)プログラムファイルに[モードライン](https://vim-jp.org/vim-users-jp/2009/06/02/Hack-20.html)を記載する。  
-    ※チェックリストは上記にある。  
-    Chapter 2 プログラミングの力を養う  
-    Chapter 3 データ構造を学ぶ  
-    Chapter 4 サーチ  
-    Chapter 5 ソート  
-    Chapter 6 ハッシュ  
-    Chapter 7 さまざまなアルゴリズムを学ぶ  
-    Chapter 8 アルゴリズムを見える化する  
+    ※チェックリストは[上記](#algorithmTextbookLearnedinPythonContents)にある。  
+    Chapter 2 [プログラミングの力を養う](#algorithmTextbookLearnedinPythonChapter2)  
+    Chapter 3 [データ構造を学ぶ](#algorithmTextbookLearnedinPythonChapter3)  
+    Chapter 4 [サーチ](#algorithmTextbookLearnedinPythonChapter4)  
+    Chapter 5 [ソート](#algorithmTextbookLearnedinPythonChapter5)  
+    Chapter 6 [ハッシュ](#algorithmTextbookLearnedinPythonChapter6)  
+    Chapter 7 [さまざまなアルゴリズムを学ぶ](#algorithmTextbookLearnedinPythonChapter7)  
+    Chapter 8 [アルゴリズムを見える化する](#algorithmTextbookLearnedinPythonChapter8)  
   * [ ] 手順5. 1つのプログラミング言語で、手順4の勉強1種類(要は、1チャプタ分の子部分)を終えた時に、次のプログラミング言語に移る。  
   * [ ] 手順6. 1チャプタ分終了にて、"study2programming"ブランチにマージする。  
 
@@ -340,7 +348,7 @@ echo HelloWorld()
 `let [変数名]`  
 
 
-#### 変数の一覧
+##### 変数の一覧
 宣言した変数を一覧化する方法があるにはある・・・。  
 コマンド：
 `:let`  
@@ -349,7 +357,7 @@ echo HelloWorld()
 どうすれば絞り込み表示が出来るのか分からない。  
 
 
-#### 変数の宣言確認
+##### 変数の宣言確認
 スクリプトファイル内で宣言した変数を個別に確認することはできる。  
 様式：
 `if exists("[接頭辞][変数名]")`  
@@ -357,7 +365,7 @@ echo HelloWorld()
 変数が宣言されていた場合、if文が実行される。  
 
 
-#### 変数の破棄
+##### 変数の破棄
 変数を宣言した場合、メモリを消費する(スクリプト実行後も変数は状態を維持する)。  
 そのため、使い終わった変数は自前で破棄した方が良いようだ。  
 様式：
@@ -372,7 +380,7 @@ unlet [接頭辞][変数名]
 ```
 
 
-#### レジスタ変更
+##### レジスタ変更
 script8では以下の通りだが、vim9scriptではどのように定義すれば良いのか分からない。  
 
 ```vim
@@ -381,7 +389,7 @@ let @a = "ahogeの文字列をレジスタaに代入"
 ```
 
 
-#### Setオプション変更
+##### Setオプション変更
 `set`で変更するVimオプションの場合は、変数名の前に`&`記号を付ける。  
 
 例）
@@ -444,7 +452,7 @@ echom hello8
     文字型から数値型へは自動キャストが行われない(vim9script)。  
   * 関数リファレンス  
     説明対象外。  
-  * [リスト](#arrangement配列sub)  
+  * [リスト](#arrangement配列)  
     `var hogeList = ['hoge1', 'hoge2', 'hoge3', ・・・]`  
   * 辞書  
     `var hogeDictionary = {'hoge': 20210909, 'boo': 20110311}`  
@@ -531,7 +539,7 @@ echom hello8
 しかし、`v:`になっている以上、どうしようもないような・・・。  
 
 
-#### 整数リテラル
+##### 整数リテラル
 
 整数値
 |  例  |種類|
@@ -541,7 +549,7 @@ echom hello8
 |0xAC|16進数|
 
 
-#### 文字リテラル
+##### 文字リテラル
 2種類ある？  
 
 * string  
@@ -601,10 +609,13 @@ echom hello8
 
 * [x] const定数  
 変数宣言の`var`の代わりに`const`を付けることで、定数になる(vim9script)。  
-※script8は未対応のようだ。  
 様式：
 `const [変数名] = [何かしらの値]`  
 定数に、スコープ(接頭辞のこと)を指定するのは不可能？  
+⇒可能だった(`const g:HOGE = 20211128`)。  
+
+* script8の場合、仮の定数として作成できる。  
+`let 変数名 = 20211005`とした場合、`lockvar 変数名`により、書き込み禁止にできる(解除が出来るため、とりあえずという使い方になるだろう)。  
 
 `v:`の内部変数
 |変数|意味|
@@ -666,7 +677,7 @@ hogeList[0] = 99
 <details><summary>実際の配列の勉強</summary>
 
 ### 配列
-変数を連ならせる格納方法。  
+変数を連ならせる格納方法(要素は、0番目から)。  
 
 * 絶対的に勉強する一覧  
   * [x] [配列の宣言方法](#subArrangement1)  
@@ -743,7 +754,7 @@ script8でスライスをする場合は、`hogeList[0:1]`のように、コロ�
 
 <details><summary>邪魔なので非表示</summary>
 
-#### 一次元配列からの削除。
+##### 一次元配列からの削除。
 コマンド：
 `unlet [配列名][要素数]`  
 `remove (配列名, 要素数)`  
@@ -776,7 +787,7 @@ remove(hogeList, 0, 1)
 ```
 
 
-#### 一次元配列での並び替え。
+##### 一次元配列での並び替え。
 コマンド：
 `sort([配列名])`  
 
@@ -786,7 +797,7 @@ sort(hogeList)
 #	並び替え後：['a', 'b', 'c', 'd']
 ```
 
-#### 一次元配列の空(empty)確認。
+##### 一次元配列の空(empty)確認。
 コマンド：
 `empty([配列名])`  
 
@@ -795,7 +806,7 @@ sort(hogeList)
 `hogeList`が空の場合、if文はtrueになり、if文に入る。  
 
 
-#### 一次元配列要素の要素番目(index)取得
+##### 一次元配列要素の要素番目(index)取得
 コマンド：
 `index([配列名], [要素])`  
 
@@ -804,7 +815,7 @@ sort(hogeList)
 `hogeIndex`に、index関数の戻り値として、`hoge1`の要素番号が格納される。  
 
 
-#### 一次元配列要素の要素数(Length)取得。
+##### 一次元配列要素の要素数(Length)取得。
 コマンド：
 `var retLen = len([配列名])`  
 
@@ -983,6 +994,8 @@ echom Function()
 `"word" =~ "\w*"`  
 ※これら3種類は、大小文字区別は設定次第となっており、`ignorecase`に依存する。  
 ただし、これはscript8に限ることであり、vim9scriptでは設定の影響を受けない。  
+
+正規表現のヘルプ(英語)：`help regex`  
 
 
 <a name="subConditional999"></a>
@@ -1315,7 +1328,7 @@ enddef
 `def! [関数名](): 戻り値型`
 戻り値必須。  
 `def! [関数名]([引数]: [デフォルト値])`
-引数必須。  
+引数必須(エラーになるが？)。  
 `def! [関数名]([引数] = [デフォルト値])`
 引数任意。  
 `def! [関数名]([引数]: [型] = [デフォルト値])`
@@ -1413,7 +1426,7 @@ vim9scriptの場合、関数内で`a:`は付けられない。
 |`a:`|関数の引数|
 ※vim9scriptの場合は、デフォルトがスクリプトローカルスコープになる。  
 そして、ブロック`{}など`を抜けた場合、その変数は破棄される。  
-vim9scriptでは`unlet`が使えないようだ。  
+vim9scriptでは`unlet`が使えないようだ(公式サイトでは[使える](https://vim-jp.org/vimdoc-ja/vim9.html)とのこと)。  
 そもそも関数から抜け出た時点で破棄されるのだから使えなくて問題ないのか。  
 
 
@@ -1464,72 +1477,74 @@ vim9scriptでは`unlet`が使えないようだ。
   [x] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
   [x] [エラトステネスの篩](#eratosthenesSieveChapter2)  
   [x] [n進法を理解する。](#understandnAryNotationChapter2)  
-<a name="algorithmTextbookLearnedinPythonChapter3"></a>
+  <a name="algorithmTextbookLearnedinPythonChapter3"></a>
 * [Chapter3 データ構造を学ぶ](#learnDataStructuresOverviewChapter3)  
   今までに勉強した配列(リスト)を用いた発展を遂げる。  
   ※今回利用するリストはアルゴリズム(概念)用語であり、Pythonで用いているリスト(配列)という用語とは別物。  
   ※例外処理(`try〜except〜finally`)をの説明をしている(いずれ基礎知識として勉強に組み込む必要がある？)。  
   以下、各項目(目次)。  
-  [ ] [スタック](#stackChapter3)  
-  [ ] [キュー](#queueChapter3)  
-  [ ] [リスト](#listChapter3)  
-  [ ] [木](#woodChapter3)  
-  [ ] [グラフ](#graphChapter3)  
-  [ ] [データを保存する。](#saveTheDataChapter3)  
-<a name="algorithmTextbookLearnedinPythonChapter4"></a>
+  [x] [スタック](#stackChapter3)  
+  [x] [キュー](#queueChapter3)  
+  [ ] [リスト](#listChapter3)中断  
+  [x] [木](#woodChapter3)  
+  [x] [グラフ](#graphChapter3)  
+  [x] [スタックとキューを扱う。](#stacksAndQueuesChapter3)  
+  [x] [データを保存する。](#saveTheDataChapter3)  
+  <a name="algorithmTextbookLearnedinPythonChapter4"></a>
 * [Chapter4 サーチ](#searchOverviewChapter4)  
   複数データから目的地を探し出すこと。  
   ※有名な探索アルゴリズムのみに限定している。  
   以下、各項目(目次)。  
-  [ ] [線形探索](#linearSearchChapter4)  
-  [ ] [二分探索](#binarySearchChapter4)  
-  [ ] [木探索](#treeExplorationChapter4)  
-  [ ] [計算量について知る](#knowAboutComputationalComplexityChapter4)  
-  [ ] [ランダウの記号](#landauSignChapter4)  
-  [ ] [数当てゲーム](#numberGuessingGameChapter4)  
-  [ ] [ビット演算を学ぶ](#learnBitwiseOperationsChapter4)  
-<a name="algorithmTextbookLearnedinPythonChapter5"></a>
+  [線形探索](#linearSearchChapter4)  
+  [二分探索](#binarySearchChapter4)  
+  [木探索](#treeExplorationChapter4)  
+  [計算量について知る](#knowAboutComputationalComplexityChapter4)  
+  [ランダウの記号](#landauSignChapter4)  
+  [数当てゲーム](#numberGuessingGameChapter4)  
+  [ビット演算を学ぶ](#learnBitwiseOperationsChapter4)  
+  <a name="algorithmTextbookLearnedinPythonChapter5"></a>
 * [Chapter5 ソート](#sortOverviewChapter5)  
   一定の規則に従い並び替えること。  
   ※有名な並べ替えアルゴリズムのみに限定している。  
   以下、各項目(目次)。  
-  [ ] [選択ソート](#selectionSortChapter5)  
-  [ ] [バブルソート](#bubbleSortChapter5)  
-  [ ] [挿入ソート](#insertionSortChapter5)  
-  [ ] [クイックソート](#quickSortChapter5)  
-  [ ] [マージソート](#mergeSortChapter5)  
-  [ ] [ヒープソート](#heapsortChapter5)  
-  [ ] [クイックソートの再起の過程を出力する。](#outputTheProcessOfQuicksortRecurrenceChapter5)  
-  [ ] [再帰関数を用いたマージソート。](#mergeSortUsingARecursiveFunctionChapter5)  
-  [ ] [プログラミング言語用のソート・ヒープ・キュー関数の使い方。](#howToUsePythonSortInstructionsAndHeapqModuleChapter5)  
-  [ ] [ソートの計算量と計算時間。](#sortCalculationComplexityAndCalculationTimeChapter5)  
-<a name="algorithmTextbookLearnedinPythonChapter6"></a>
+  [選択ソート](#selectionSortChapter5)  
+  [バブルソート](#bubbleSortChapter5)  
+  [挿入ソート](#insertionSortChapter5)  
+  [クイックソート](#quickSortChapter5)  
+  [マージソート](#mergeSortChapter5)  
+  [ヒープソート](#heapsortChapter5)  
+  [クイックソートの再起の過程を出力する。](#outputTheProcessOfQuicksortRecurrenceChapter5)  
+  [再帰関数を用いたマージソート。](#mergeSortUsingARecursiveFunctionChapter5)  
+  [プログラミング言語用のソート・ヒープ・キュー関数の使い方。](#howToUsePythonSortInstructionsAndHeapqModuleChapter5)  
+  [ソートの計算量と計算時間。](#sortCalculationComplexityAndCalculationTimeChapter5)  
+  <a name="algorithmTextbookLearnedinPythonChapter6"></a>
 * [Chapter6 ハッシュ](#hashOverviewChapter6)  
   ハッシュとは、データから算出した小さな値のこと。  
   今回は、そのハッシュとしての値を算出する方法を勉強する。  
   以下、各項目(目次)。  
-  [ ] [ハッシュとは。](#whatIsAHashChapter6)  
-  [ ] [ハッシュ関数](#hashFunctionChapter6)  
-  [ ] [ハッシュテーブル](#hashTableChapter6)  
-  [ ] [衝突を回避する。](#avoidCollisionsChapter6)  
-  [ ] [暗号学的ハッシュ関数](#cryptographicHashFunctionChapter6)  
-<a name="algorithmTextbookLearnedinPythonChapter7"></a>
+  [ハッシュとは。](#whatIsAHashChapter6)  
+  [ハッシュ関数](#hashFunctionChapter6)  
+  [ハッシュテーブル](#hashTableChapter6)  
+  [衝突を回避する。](#avoidCollisionsChapter6)  
+  [暗号学的ハッシュ関数](#cryptographicHashFunctionChapter6)  
+  <a name="algorithmTextbookLearnedinPythonChapter7"></a>
 * [Chapter7 さまざまなアルゴリズムを学ぶ](#learnVariousAlgorithmsOverviewChapter7)  
   アルゴリズムを勉強する上で必ず関わるアルゴリズムになる。  
   むしろ、ここまで勉強できてアルゴリズムを勉強したと言えるのではないだろうか。  
   以下、各項目(目次)。  
-  [ ] [ユークリッドの互除法](#euclideanAlgorithmChapter7)  
-  [ ] [文字列探索](#stringSearchChapter7)  
-  [ ] [アルゴリズムを理解するヒント(処理の過程の出力)。](#tipsForUnderstandingTheAlgorithmChapter7)  
-<a name="algorithmTextbookLearnedinPythonChapter8"></a>
+  [ユークリッドの互除法](#euclideanAlgorithmChapter7)  
+  [文字列探索](#stringSearchChapter7)  
+  [アルゴリズムを理解するヒント(処理の過程の出力)。](#tipsForUnderstandingTheAlgorithmChapter7)  
+  <a name="algorithmTextbookLearnedinPythonChapter8"></a>
 * [Chapter8 アルゴリズムを見える化する](#visualizeTheAlgorithmOverviewChapter8)  
   今回のアルゴリズムを勉強することで、アルゴリズム(もしくはデータ)を可視化する方法を勉強できる。  
   以下、各項目(目次)。  
-  [ ] [n次関数の曲線を描く。](#drawACurveOfTheNthOrderFunctionChapter8)  
-  [ ] [フラクタル図形を描く。](#drawAFractalFigureChapter8)  
-  [ ] [迷路を解く過程を描く。](#drawTheProcessOfSolvingTheMazeChapter8)  
-  [ ] [アルゴリズムを使い分ける。](#useDifferentAlgorithmsChapter8)  
-  [ ] [マンデルブロー集合を描こう。](#letsDrawTheMandelbrotSetChapter8)  
+  [n次関数の曲線を描く。](#drawACurveOfTheNthOrderFunctionChapter8)  
+  [フラクタル図形を描く。](#drawAFractalFigureChapter8)  
+  [迷路を解く過程を描く。](#drawTheProcessOfSolvingTheMazeChapter8)  
+  [アルゴリズムを使い分ける。](#useDifferentAlgorithmsChapter8)  
+  [マンデルブロー集合を描こう。](#letsDrawTheMandelbrotSetChapter8)  
+
 
 <a name="developProgrammingSkillsOverviewChapter2"></a>
 ### プログラミングの力を養う
@@ -1544,10 +1559,13 @@ vim9scriptでは`unlet`が使えないようだ。
   * [エラトステネスの篩](#eratosthenesSieveChapter2)  
   * [n進法を理解する。](#understandnAryNotationChapter2)  
 
+
 <a name="findTheAverageValueChapter2"></a>
 #### 平均値を求める。
 勉強内容はPythonと基本は同じ。  
 それをvimScript9用に移植するだけのこと。  
+
+<details><summary>展開</summary>
 
 * ルールもPythonと同じ。  
   * 点数を配列で定義する。  
@@ -1584,11 +1602,17 @@ echom "平均点：" .. aveList[1]	" 平均点：82
 ※不思議なことに、変数名の前に`l:`・`b:`・`s:`のどれを付けてもエラーになった。  
 どういうこと!?  
 
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)
+
 
 <a name="addFrom1tonChapter2"></a>
 #### 1からnまで足し合わせる。
 勉強内容はPythonと基本は同じ。  
 それをvimScript9用に移植するだけのこと。  
+
+<details><summary>展開</summary>
 
 * ルール1もPythonと同じ。  
   * `for`を用いる。  
@@ -1671,11 +1695,17 @@ echom AddupGauss(1, 10)
 "	出力結果：55
 ```
 
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)
+
 
 <a name="outputTheMultiplicationTableChapter2"></a>
 #### 九九の式を出力する。
 Pythonでやったように、九九の式を出すのではなく、九九表を出すことにする。  
 ルールはPythonと同じ。  
+
+<details><summary>展開</summary>
 
 * 作業ルール。  
   * 二重ループを使う。  
@@ -1711,10 +1741,16 @@ call KukuTable()
 ```
 いつもの九九表ができあがった。  
 
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)
+
 
 <a name="findAPrimeNumberChapter2"></a>
 #### 素数を求める。
 素数とは、1とその数以外に約数を持たない2以上の自然数のこと。  
+
+<details><summary>展開</summary>
 
 Pythonに倣い、試す数は**2〜2分のn**までの数で割ることを調べる方法をとる。  
 例えば、10を調べる場合、その半分より大きい数(**6**・**7**・**8**・**9**)では、10を割ることが出来ない。  
@@ -1754,11 +1790,18 @@ call Prime()
 2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,
 ```
 
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)
+
 
 <a name="findTheFactorialOfNChapter2"></a>
 #### nの階乗を求める。
 **階乗とは**
 1からnまでの全ての整数の積をnの階乗という。  
+
+<details><summary>展開</summary>
+
 **再帰関数**
 関数内から自身の関数を呼び出すことを再帰処理という。
 また、その呼び出す仕組みの関数を再帰関数という。  
@@ -1820,6 +1863,10 @@ echom Factorial3(20)
 2432902008176640000
 ```
 桁が大きいため、本当に合っているのかいつも不安になる。  
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)
 
 
 <a name="eratosthenesSieveChapter2"></a>
@@ -1963,11 +2010,15 @@ call Main()
 残念ながらアルゴリズムを理解せずに構築したため、本当にこれが最適解なのか分からない。  
 しかし、まずは1冊読破することを優先する。  
 
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)
+
 
 <a name="understandnAryNotationChapter2"></a>
 #### n進法を理解する。
 アルゴリズムの1つとして勉強することではない。  
 普通の一般説明。  
+
+<details><summary>展開</summary>
 
 ```vim
 def! Main()
@@ -1999,35 +2050,597 @@ enddef
 call Main()
 ```
 
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)
+
 
 <a name="learnDataStructuresOverviewChapter3"></a>
 ### データ構造を学ぶ
+基本的には、配列を用いて、データ構造を構築する。  
+(一部中断あり)。  
 
-* 各項目。  
-  * [スタック](#stackChapter3)  
-  * [キュー](#queueChapter3)  
-  * [リスト](#listChapter3)  
-  * [木](#woodChapter3)  
-  * [グラフ](#graphChapter3)  
-  * [データを保存する。](#saveTheDataChapter3)  
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter3)
+
 
 <a name="stackChapter3"></a>
 #### スタック
+後入れ先出し法。  
+後から入れたデータを先に取り出す。  
+入れることを"Push"と言い、取り出すことを"Pop"と言う。  
+
+<details><summary>展開</summary>
+
+以下、スタックアルゴリズム用プログラム。
+```vim
+let g:MAX = 5
+
+def! Push( argsp: number, data: number, stack: list<number>): list<any>
+	# 引き数値を変更できないため、別変数に代入する。
+	var sp = argsp
+
+	# 積み上げる関数
+	if sp < g:MAX
+		stack[sp] = data
+		sp += 1
+		echo "データ" .. data .. "を追加。"
+	else
+		# 好き勝手に追加できるリスト相手に最大数を設ける理由は何だろうか。
+		echo "これ以上データ追加不可。"
+	endif
+
+	return [sp, stack]
+enddef
+
+def! Pop(argsp: number, stack: list<number>): list<any>
+	var sp = argsp
+	var data = 0
+	if sp > 0
+		sp -= 1
+		data = remove(stack, -1)
+	else
+		echo "取り出すデータが存在しない。"
+	endif
+
+	return [sp, data, stack]
+enddef
+
+def! Main()
+	var stack = [0]	# 配列5つ使うが、1つのみで初期化。
+	var data = 0
+	var sp = 0	# スタックポインタ
+
+	for ii in range(6)
+		[sp, stack] = Push(sp, ii, stack)
+	endfor
+
+	for ii in range(6)
+		[sp, data, stack] = Pop(sp, stack)
+		echo "取り出しデータ：" .. data
+	endfor
+
+	return
+enddef
+call Main()
+unlet! g:MAX
+```
+戻り値を複数にすることは出来ないようだ。  
+そのため、リストにまとめた。  
+
+配列宣言は、結局リストになるため、後から追加削除など好き放題できる認識で良いのだろうか。  
+今回1つしか初期化対象にしていなかったが、最大個数の五つまで対応されてしまった・・・。  
+
+以下、出力結果。
+```terminal
+データ0を追加。
+データ1を追加。
+データ2を追加。
+データ3を追加。
+データ4を追加。
+これ以上データ追加不可。
+取り出しデータ：4
+取り出しデータ：3
+取り出しデータ：2
+取り出しデータ：1
+取り出しデータ：0
+取り出すデータが存在しない。
+取り出しデータ：0
+```
+値がない場合、0扱いされるようだ(どうにかしたいのだが、条件分岐させるしかないようで、悲しいぞ)。  
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter3)
+
 
 <a name="queueChapter3"></a>
 #### キュー
+**キュー(queue)**とは、最初に入れたデータを最初に取り出すこと。  
+それを先入れ先出し(First In First Out)と言い、**FIFO**と略す。  
+
+<details><summary>展開</summary>
+
+以下、キュープログラム。
+```vim
+const t:MAX = 6
+
+def! Enqueue( argHEAD: number, argTAIL: number, data: number, queue: list<number>): list<any>
+	# データ投入関数
+	var head = argHEAD
+	var tail = argTAIL
+	var nt   = (tail + 1) % t:MAX
+
+	if nt == head
+		echo "これ以上データ追加不可。"
+	else
+		queue[tail] = data
+		tail = nt
+		echo "データ(" .. data .. ")を追加。"
+	endif
+
+	return [tail, queue]
+enddef
+
+def! Dequeue(argHEAD: number, argTAIL: number, queue: list<number>): list<any>
+	# データ取り出し関数
+	var head = argHEAD
+	var tail = argTAIL
+	var nt   = (tail + 1) % t:MAX
+	var data = 0
+
+	if head == tail
+		echo "取り出すデータが存在しない。"
+	else
+		head += 1
+		data = remove(queue, 0)
+	endif
+
+	return [head, data, queue]
+enddef
+
+def! Main()
+	var queue = [0]
+	var data = 0
+	var head = 0	# 取り出し位置。
+	var tail = 0	# 投入位置。
+
+	for ii in range(6)	# 0〜5
+		[tail, queue] = Enqueue(head, tail, ii, queue)
+	endfor
+
+	for ii in range(6)	# 0〜5
+		[head, data, queue] = Dequeue(head, tail, queue)
+		echo "取り出しデータ：" .. data
+	endfor
+
+	return
+enddef
+call Main()
+unlet! t:MAX
+```
+Pythonに比べれば作りやすい・・・とは言いがたい。  
+やはり、癖が強いため、とっつきにくい。  
+vim9scriptを本格的に使うつもりの人は、本当にエディタ好きだと言うことだろう。  
+
+以下、出力結果。
+```terminal
+データ(0)を追加。
+データ(1)を追加。
+データ(2)を追加。
+データ(3)を追加。
+データ(4)を追加。
+これ以上データ追加不可。
+取り出しデータ：0
+取り出しデータ：1
+取り出しデータ：2
+取り出しデータ：3
+取り出しデータ：4
+取り出すデータが存在しない。
+取り出しデータ：0
+```
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter3)
+
 
 <a name="listChapter3"></a>
 #### リスト
+データ格納変数とそのデータと繋ぐ変数を1つにしたのがノードであり、そのノードがいくつも繋がっている状態のこと。  
+繋ぎ方には種類があり、今回は**片方向リスト**を採用する。  
+例）**データ1--->データ2--->データ3--->End**  
+
+配列の中にデータが混在した場合、エラーになる。  
+解決方法が見つかるまで中断する。  
+
+todo: いずれ解決する。  
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter3)
+
 
 <a name="woodChapter3"></a>
 #### 木
+[リスト](#listChapter3)のようにノードがあり、そのノードにデータとそれを繋ぐ情報を持つ。  
+繋ぎ方は木を逆さまにしような形として、頂点を根とし、下に向けて2種類の枝を伸ばし、それぞれ葉が付く。
+そして、その葉から枝が2種類下に伸び、それぞれ葉が付く。
+それを繰り返す。  
+
+<details><summary>展開</summary>
+
+以下、プログラム。
+```vim
+const s:LEFT  = 0	" 左ノード番号用定数
+const s:RIGHT = 1	" 右ノード番号用定数
+const s:DATA  = 2	" データ値用定数
+
+def! Tree( argNode: list<any>, argMAX: number )
+	echo "指定番号のノード調査開始(入力なしのEnter押下にて、プログラム終了)。"
+	var inputString = ""
+
+	# 無限ループのやり方。
+	while true
+		inputString = input("ユーザ入力：")
+		# 以下、文字列を数値に変換する。
+		if inputString == ""
+			break
+		elseif inputString =~ "\\D\\+"
+			# 正規表現での数字以外を除外する処理。
+			#	vimScriptの正規表現は地獄(専門書が欲しい)。
+			echo "数字のみ(" .. inputString .. ")入力すること。"
+			continue
+		endif
+		# 以下、キャスト(文字列を数字に変換)。
+		var inputNumber = str2nr(inputString)
+		if 0 <= inputNumber && inputNumber < argMAX
+			echom "node" .. inputString .. "の値は" .. argNode[inputNumber][s:DATA]
+			# 以下、v:nullを文字列のnullに変換した。
+			var leftNodedata = printf("%s", argNode[inputNumber][s:LEFT])
+			if leftNodedata ==? "null"
+				echom "左の葉は存在しない。"
+			else
+				# 以下、文字列を数値に変換する。
+				var leftNumber = str2nr(leftNodedata)
+				echom "左の葉は[" .. argNode[leftNumber][s:DATA] .. "]"
+			endif
+			# 以下、v:nullを文字列のnullに変換した。
+			var rightNodedata = printf("%s", argNode[inputNumber][s:RIGHT])
+			if rightNodedata ==? "null"
+				echom "右の葉は存在しない。"
+			else
+				# 以下、文字列を数値に変換する。
+				var rightNumber = str2nr(rightNodedata)
+				echom "右の葉は[" .. argNode[rightNumber][s:DATA] .. "]"
+			endif
+		else
+			echom "0から" .. (argMAX - 1) .. "の範囲入力必須。"
+		endif
+	endwhile
+
+enddef
+
+def! Main()
+	var node = [
+			[1,     2,      10],
+			[3,     4,      20],
+			[5,     null,   30],
+			[null,  null,   40],
+			[6,     7,      50],
+			[null,  null,   60],
+			[null,  null,   70],
+			[null,  null,   80],
+		]
+	var MAX = len(node)
+
+	Tree(node, MAX)
+
+	return
+enddef
+call Main()
+
+unlet! s:LEFT
+unlet! s:RIGHT
+unlet! s:DATA
+```
+
+以下、出力結果。
+```terminal
+指定番号のノード調査開始(入力なしのEnter押下にて、プログラム終了)。
+node0の値は10
+左の葉は[20]
+右の葉は[30]
+node1の値は20
+左の葉は[40]
+右の葉は[50]
+node2の値は30
+左の葉は[60]
+右の葉は存在しない。
+node3の値は40
+左の葉は存在しない。
+右の葉は存在しない。
+node4の値は50
+左の葉は[70]
+右の葉は[80]
+node5の値は60
+左の葉は存在しない。
+右の葉は存在しない。
+node6の値は70
+左の葉は存在しない。
+右の葉は存在しない。
+node7の値は80
+左の葉は存在しない。
+右の葉は存在しない。
+0から7の範囲入力必須。	←☆8の入力結果。
+数字のみ(a)入力すること。
+数字のみ(1a)入力すること。
+数字のみ(a1)入力すること。
+数字のみ(1a2)入力すること。
+```
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter3)
+
 
 <a name="graphChapter3"></a>
 #### グラフ
+図のことではあるが、点とそれらを結ぶ線から成る図形の構造のこと。  
+この、線で結ぶための基点になるのが既出のノードになる。  
+
+* グラフの種類  
+  * [無向グラフ](#graphChapter3Undirectedgraph)  
+    双方向に繋がっているグラフのこと。  
+  * [有向グラフ](#graphChapter3Directedgraph)  
+    一方通行に繋がっているグラフのこと。  
+
+<a name="graphChapter3Undirectedgraph"></a>
+<details><summary>展開：無向グラフプログラム</summary>
+
+以下、無向グラフプログラム例）
+```perl
+def! UndirectedGraph( data: list<list<number>>, node: list<string> )
+	for yy in range(4)
+		for xx in range(yy, 4)
+			if data[yy][xx] == 1 && data[xx][yy] == 1
+				echom node[yy] .. '<--->' .. node[xx]
+			endif
+		endfor
+	endfor
+enddef
+
+def! Main()
+	var node = [
+				'(0)',
+				'(1)',
+				'(2)',
+				'(3)',
+				'(4)',
+			]
+
+	var undirectedData = [	# 2次元配列。
+				[0, 1, 1, 0, 0],
+				[1, 0, 1, 1, 0],
+				[1, 1, 0, 0, 1],
+				[0, 1, 0, 0, 1],
+				[0, 0, 1, 1, 0],
+			]
+	UndirectedGraph(undirectedData, node)
+enddef
+call Main()
+```
+
+以下、出力結果。
+```terminal
+(0)<--->(1)
+(0)<--->(2)
+(1)<--->(2)
+(1)<--->(3)
+(2)<--->(4)
+(3)<--->(4)
+```
+
+</details>
+
+<a name="graphChapter3Directedgraph"></a>
+<details><summary>展開：有向グラフプログラム</summary>
+
+以下、有向グラフプログラム例）
+```perl
+def! DirectedGraph( data: list<list<number>>, node: list<string>, arrow: list<string> )
+	for yy in range(4)
+		for xx in range(yy, 4)
+			var e1 = data[yy][xx]
+			var e2 = data[xx][yy]
+			var aa = e1 + e2 * 2
+			if aa > 0
+				echom node[yy] .. arrow[aa] .. node[xx]
+			endif
+		endfor
+	endfor
+enddef
+
+def! Main()
+	var node = [
+				'(0)',
+				'(1)',
+				'(2)',
+				'(3)',
+				'(4)',
+			]
+
+	var directedData = [	# 二次元配列。
+				[0, 1, 1, 0, 0],
+				[0, 0, 1, 1, 0],
+				[0, 0, 0, 0, 0],
+				[0, 0, 0, 0, 1],
+				[0, 0, 1, 1, 0],
+			]
+	var directedArrow = [
+				'',
+				'-->',
+				'<--',
+				'<->',
+			]
+	DirectedGraph(directedData, node, directedArrow)
+enddef
+call Main()
+```
+
+以下、出力結果。
+```terminal
+(0)-->(1)
+(0)-->(2)
+(1)-->(2)
+(1)-->(3)
+(2)<--(4)
+(3)<->(4)
+```
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter3)
+
+
+<a name="stacksAndQueuesChapter3"></a>
+#### スタックとキューを扱う。
+ここは、Python限定と言えるぐらいPythonモジュールを利用した箇所になる。  
+PythonモジュールがあるぐらいだからPerlモジュールにもキューの名前がついたのはある。  
+
+<details><summary>展開</summary>
+
+以下、`:help stack`による結果。
+```vim
+                *:<stack>* *<stack>*
+<stack>	    is replaced with the call stack, using
+            "function {function-name}[{lnum}]" for a function line
+            and "script {file-name}[{lnum}]" for a script line, and
+            ".." in between items.  E.g.:
+```
+[**settagstack**](https://vim-jp.org/vimdoc-ja/eval.html#settagstack())とはなんぞや？
+
+以下、`:help queue`による結果。
+```vim
+g:lsp_use_event_queue           *g:lsp_use_event_queue*
+    Type: |Number|
+    Default: `1` for neovim or vim with patch-8.1.0889
+
+    Enable event queue which improves performance by reducing the
+    communication between client and server.
+
+    Example: >
+        let g:lsp_use_event_queue = 1
+        let g:lsp_use_event_queue = 0
+```
+結局キューとは？  
+lspと言うぐらいだからプラグインなのかな。  
+
+</details>
+
+結論：vimScriptに、スタックやキューと言う別枠で使いやすい関数などは用意されていないと言うことだろう。  
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter3)
+
 
 <a name="saveTheDataChapter3"></a>
 #### データを保存する。
+プログラムが生成したデータをプログラム実行後も保持もしくは別途使い回すために、今回はファイルを用いて書き出し・読み出しを行う。  
+
+ファイル書き込み関数：[:redi[r][!] > {file}](https://vim-jp.org/vimdoc-ja/various.html#:redir)  
+> コマンドの出力 (メッセージ) を {file} にリダイレクトします。
+
+<details><summary>展開：書き込み用プログラム。</summary>
+
+以下、書き込み用プログラム。
+```vim
+def! Write()
+	redir! > test.txt
+		echon "テスト書き込み1行目"
+		silent! echo "テスト書き込み2行目"
+		echo "テスト書き込み3行目\n"
+		var data = 1
+		for ii in range(10)
+			data *= 2
+			echon data .. ','
+		endfor
+	redir END
+enddef
+call Write()
+```
+
+以下、書き込み実施。
+```terminal
+$ ll write.vim *txt
+-rw-r--r--  1 asakunotomohiro  staff    268  1 20 17:14 write.vim
+$ vi write.vim	←☆エディタで開いてから実行する。
+$ ll write.vim *txt
+-rw-r--r--  1 asakunotomohiro  staff    119  1 20 17:15 test.txt
+-rw-r--r--  1 asakunotomohiro  staff    268  1 20 17:14 write.vim
+$
+$ cat test.txt
+テスト書き込み1行目
+テスト書き込み2行目
+テスト書き込み3行目
+2,4,8,16,32,64,128,256,512,1024,$	←☆行末改行されておらず。
+$
+```
+
+</details>
+
+<details><summary>展開：読み込み用プログラム。</summary>
+
+以下、読み込み用プログラム。
+```vim
+def! Write( filename: string )
+	# こちらは書き込み用関数なので気にしないこと。
+	#redir! > filename	←☆この変数が変数展開されないため、この名前のままファイルが作られる。
+	redir! > 本日は晴天なり.txt
+		var data = 1	# べき乗演算子が無いため、自前計算用変数用意。
+		for ii in range(10)
+			data *= 2	# べき乗計算。
+			# メッセージ出力を抑止しているつもりなのだが、echonを使っている以上、出てしまうのだろうか。
+			silent! echon data .. ','
+		endfor
+	redir END
+enddef
+
+def! Read( filename: string )
+	# 今回は、ここの読み込み関数が大事になる。
+	for line in readfile(filename)
+		echo line
+	endfor
+enddef
+
+def! Main()
+	var filename = '本日は晴天なり.txt'
+
+	Write(filename)
+	echo "--------"
+	Read(filename)
+enddef
+
+call Main()
+```
+
+以下、出力結果。
+```terminal
+2,4,8,16,32,64,128,256,512,1024,	←☆ファイル書き込み用の出力結果。
+--------
+2,4,8,16,32,64,128,256,512,1024,	←☆ファイル読み込み用の出力結果。
+```
+
+不思議なことに、ファイル書き込み時の変数展開が行われない。  
+どうすればいい？  
+
+</details>
+
+todo:
+ファイル書き込み時に使う変数を展開させる方法を調べる。  
+
+todo:
+ファイル読み書き時に標準の出力先にまで出るのを抑止する方法を調べる。  
+ファイルに書き出す場合、ターミナルに出さないようにしたい。  
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter3)
+
 
 <a name="searchOverviewChapter4"></a>
 ### サーチ
