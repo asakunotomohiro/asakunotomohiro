@@ -73,7 +73,7 @@ sub asakuno() {
 		say "ファイルなし。";
 	}
 }
-#&asakuno(@ARGV);
+&asakuno(@ARGV);
 
 sub tomohiro() {
 	my $currentDir = getcwd();	# カレントディレクトリ取得。
