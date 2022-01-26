@@ -7106,6 +7106,7 @@ if( -r $filename and -w _ ) {
 ```
 もし、この手法を使わずに、`if( -r $filename and -w $filename ) {`とした場合、左右に対してstat関数を呼び出すことになる。  
 そのため、処理速度が大幅に低下する。  
+そして、[重ね掛け](#practicaluseFiletestoperatorstacking)より、こちらのほうがいいだろう(容量比較などを考慮した場合)。  
 
 また、以下のようにもできる。
 ```perl
