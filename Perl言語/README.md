@@ -8002,6 +8002,82 @@ sub fileexistence() {
 #### ファイルテスト演算子(`-l`)
 エントリはシンボリックリンク(ファイルシステムが非対応なら偽)。  
 
+以下、プログラム。
+```perl
+use v5.24;
+
+sub filetestLink() {
+	my $filename = 'filetest.txt';	# ファイル名のみ定義。
+
+	unless( -l $filename ) {
+		say "ファイル作成前(ファイルがないと言う意味ではない)。";
+	}
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename or die "$filenameのファイルオープン失敗($!)";
+	say $file_fh '本日は晴天なり。';	# ファイルへの書き込み。
+	close $file_fh;
+
+	if( -l $filename ) {
+		say "シンボリックリンクファイルあり。";
+	}
+	else{
+		say "シンボリックリンクファイルなし。";
+	}
+
+	say "以下、ファイル作成後の情報。";
+	my ($dev, $ino, $mode, $nlink, $uid, $gid, $rdev,
+		$size, $atime, $mtime, $ctime, $blksize, $blocks)
+		= lstat($filename);	# ファイルのlstat(プロパティ)情報。
+	say "\tファイルに対するハードリンクの個数：\t$nlink";	# 今回、ハードではない。
+	say "\tファイルの容量をバイト単位で表す：\t\t$size";
+	say "\tファイルシステムI/Oでのブロックサイズ：\t$blksize";
+	say "\t割り当てられたブロック数：\t\t\t\t$blocks";
+
+	my $testfilename = 'シンボリックリンクファイル.test';
+	symlink $filename, $testfilename or warn "ソフトリンクファイル作成失敗($!)。";
+	say 'ファイルに対するソフトリンクあり($filename)' if readlink $filename;	←☆undefになるため、出力されない。
+	say 'ファイルに対するソフトリンクあり($testfilename)' if readlink $testfilename;
+
+	if( -l $filename ) {
+		say "シンボリックリンクファイルあり(" . '$filename' . ")。";	←☆通常ファイルのため、出力されない。
+	}
+	elsif( -l $testfilename ) {
+		say "シンボリックリンクファイルあり(" . '$testfilename' . ")。";	←☆こっちが出力される。
+	}
+	else{
+		say "シンボリックリンクファイルなし。";
+	}
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	unlink $testfilename or warn "シンボリックリンクファイル削除失敗($!)。";
+	if( -l $testfilename or -l $filename ) {
+		say "シンボリックリンクファイルあり。";
+	}
+	else{
+		say "シンボリックリンクファイルなし(削除済みの判断で'なし'としたわけではない)。";
+	}
+}
+&filetestLink();
+```
+
+以下、実行結果。
+```terminal
+ファイル作成前(ファイルがないと言う意味ではない)。
+ファイルを作成する。
+シンボリックリンクファイルなし。
+以下、ファイル作成後の情報。
+	ファイルに対するハードリンクの個数：	1
+	ファイルの容量をバイト単位で表す：		25
+	ファイルシステムI/Oでのブロックサイズ：	4096
+	割り当てられたブロック数：				8
+ファイルに対するソフトリンクあり($testfilename)
+シンボリックリンクファイルあり($testfilename)。
+ファイル削除。
+シンボリックリンクファイルなし(削除済みの判断で'なし'としたわけではない)。
+```
+
 
 <a name="practicaluseFiletestoperatorp"></a>
 #### ファイルテスト演算子(`-p`)
