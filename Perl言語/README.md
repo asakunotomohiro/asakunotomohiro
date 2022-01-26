@@ -7132,7 +7132,7 @@ if( -w -r $filename ) {
 そのため、同じ意味でテストする場合は、配置場所が逆になる。  
 よほどのことが無ければ、逆になっても問題ないはず・・・きっと。。。  
 
-<details><summary>重ね掛けのプログラム(-f・-s)。</summary>
+<details><summary>重ね掛けのプログラム(-fと-sだけ)。</summary>
 
 以下、プログラム追記。
 ```perl
@@ -7206,6 +7206,65 @@ if( -d $filename and -s _ < 512 ) {
 }
 ```
 これで正しく意図した処理が行われる。  
+
+<details><summary>重ね掛けのプログラム(-fと-sに容量比較あり)。</summary>
+
+以下、プログラム追記。
+```perl
+use v5.24;
+
+sub filetestStacking() {
+	my $filename = 'filetest.txt';	# ファイル名のみ作成。
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename or die "$filenameのファイルオープン失敗($!)";
+	say $file_fh '本日は晴天なり。';	# ファイルへの書き込み。
+	close $file_fh;
+	say ((-s $filename) . "バイト");	# 2種類の括弧は必須。
+
+	if( -s -d $filename < 128 ) {
+		say "ファイルに書き込みあり(-d -s ファイル名 < 128)ディレクトリで判定。";
+	}
+	else{
+		say "ファイルが空ファイル(書き込みなし)。";	# 本来ここに来る。
+	}
+
+	if( -d -s $filename < 128 ) {
+		say "ファイルに書き込みあり(-d -s ファイル名 < 128)ディレクトリで判定。";
+	}
+	else{
+		say "ファイルが空ファイル(書き込みなし)。";	# 本来ここに来る。
+	}
+
+	if( -d $filename and -s _ < 128 ) {
+		say "ファイルに書き込みあり( -d ファイル名 and -s _ < 128 )ここに来てはいけない。";
+	}
+	else{
+		say "ディレクトリ判定( -d ファイル名 and -s _ < 128 )。";
+	}
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	unless( -f $filename ) {
+		say "ファイルが空ファイル(削除済み)。";
+	}
+}
+&filetestStacking();
+```
+
+以下、出力結果。
+```terminal
+ファイルを作成する。
+25バイト
+ファイルに書き込みあり(-d -s ファイル名 < 128)ディレクトリで判定。
+ファイルに書き込みあり(-d -s ファイル名 < 128)ディレクトリで判定。
+ディレクトリ判定( -d ファイル名 and -s _ < 128 )。
+ファイル削除。
+ファイルが空ファイル(削除済み)。
+```
+これは、忘れそうな落とし穴に見える。  
+
+</details>
 
 
 <a name="practicaluseFiletestoperatorsmallr"></a>
