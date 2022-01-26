@@ -8661,6 +8661,225 @@ Unixでは**iノード**が変更されてからの日数(それ以外のOSで�
 戻り値：浮動小数点数(2日と1秒は、**2.00001**値になる)。  
 戻り値：プラスの場合は過去日だが、マイナスの場合は未来日になる。  
 
+<details><summary>ファイルに対するプログラム。</summary>
+
+以下、ファイルに対する取得プログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub filetestC() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+
+	my $filename = $currentDir . '/filetestC.txt';	# ファイル名のみ作成。
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename or die "$filenameのファイルオープン失敗($!)";
+	sleep 1;	# この処理がない場合、取得結果が0になる。
+	say $file_fh '本日は晴天なり。';
+	close $file_fh;
+
+	my $cfiletime = -C $filename;
+	if( defined( $cfiletime )) {
+		say "ファイルあり($cfiletime)。";
+	}
+
+	say "以下、ファイル作成後の情報。";
+	my ($dev, $ino, $mode, $nlink, $uid, $gid,
+		$rdev, $size, $atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($filename);	# ファイルのlstat(プロパティ)情報。
+	say "\t最終アクセス時刻：\t\t\t" . &timeformatChange(localtime $atime);
+	say "\t最終更新時刻：\t\t\t\t" . &timeformatChange(localtime $mtime);
+	say "\t最後のinode変更時刻(これ)：\t" . &timeformatChange(localtime $ctime);
+	say "\t-Cオプション取得：\t\t\t$cfiletime(マイナス表記は未来)";
+	my $mfiletime = -M $filename;
+	say "\t-Mオプション取得：\t\t\t$mfiletime(マイナス表記は未来)";
+
+	if( -C $filename ) {
+		say "ファイルあり。";
+		say "\t" . '$cfiletime：' . "\t$cfiletime";
+		say "\t" . '$ctime：' . "\t\t$ctime";
+	}
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	unless( -C $filename ) {
+		say "ファイルなし(削除済みの判断でなしとしたわけではない)。";
+	}
+}
+&filetestC();
+
+
+sub timeformatChange {
+	# この関数をどこからでも呼び出せるようにしたい。
+	my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = @_;
+	my %dayweek = (
+				0=>'日',	# Sunday
+				1=>'月',	# Monday
+				2=>'火',	# Tuesday
+				3=>'水',	# Wednesday
+				4=>'木',	# Thursday
+				5=>'金',	# Friday
+				6=>'土',	# Saturday
+				);
+
+	$mon += 1;					# 月が0始まりになるため、1加算する。
+	$year += 1900;				# 1900年を加算することで、西暦になる。
+	$wday = $dayweek{$wday};	# 日曜日が0始まりになり、それを変換する。
+	$yday += 1;					# 1月1日が0始まりのため、1加算する。
+
+	return "$year年$mon月$yday日($wday) $hour時$min分$sec秒";
+}
+```
+
+以下、プログラム実行。
+```terminal
+$ perl ファイルテスト演算子\(オプションC\).pl
+ファイルを作成する。
+ファイル読み込み(この処理がない場合、取得結果が0になる)。
+ファイルあり(-1.15740740740741e-05)。
+以下、ファイル作成後の情報。
+	最終アクセス時刻：			2022年1月26日(水) 17時33分42秒
+	最終更新時刻：				2022年1月26日(水) 17時33分43秒
+	最後のinode変更時刻(これ)：	2022年1月26日(水) 17時33分43秒
+	-Cオプション取得：			-1.15740740740741e-05(マイナス表記は未来)
+	-Mオプション取得：			-1.15740740740741e-05(マイナス表記は未来)
+ファイルあり。
+	$cfiletime：	-1.15740740740741e-05
+	$ctime：		1643186023
+ファイル削除。
+ファイルなし(削除済みの判断でなしとしたわけではない)。
+$
+```
+**最終更新時刻**と**最後のinode変更時刻**が同じ結果になっているため、本当に検証が正しい方法で行われているのか判断できない。  
+困った。  
+
+以下、読み込み処理部分をコメントアウトした結果の実行。
+```terminal
+$ perl ファイルテスト演算子\(オプションC\).pl
+ファイルを作成する。
+ファイル読み込み(この処理がない場合、取得結果が0になる)。
+ファイルあり(0)。
+以下、ファイル作成後の情報。
+	最終アクセス時刻：			2022年1月26日(水) 17時35分6秒
+	最終更新時刻：				2022年1月26日(水) 17時35分6秒
+	最後のinode変更時刻(これ)：	2022年1月26日(水) 17時35分6秒
+	-Cオプション取得：			0(マイナス表記は未来)
+	-Mオプション取得：			0(マイナス表記は未来)
+ファイル削除。
+ファイルなし(削除済みの判断でなしとしたわけではない)。
+$
+```
+
+</details>
+
+<details><summary>ディレクトリに対するプログラム。</summary>
+
+以下、ディレクトリに対する取得プログラム。
+```perl
+use v5.24;
+
+sub dirtestC() {
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+	my $dirname = 'dirFiletestC';	# ディレクトリ名定義。
+
+	say "ディレクトリを作成する。";
+	sleep 1;	# これがない場合、取得結果が0になる。
+	mkdir $dirname, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+
+	my $cdirtime = -C $dirname;
+	if( defined( $cdirtime )) {
+		say "ディレクトリあり($cdirtime)。";
+	}
+	sleep 1;
+
+	say "以下、ディレクトリ作成後の情報。";
+	my ($dev, $ino, $mode, $nlink, $uid, $gid,
+		$rdev, $size, $atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($dirname);	# ファイルのlstat(プロパティ)情報。
+	say "\t最終アクセス時刻：\t\t\t" . &timeformatChange(localtime $atime);
+	say "\t最終更新時刻：\t\t\t\t" . &timeformatChange(localtime $mtime);
+	say "\t最後のinode変更時刻(これ)：\t" . &timeformatChange(localtime $ctime);
+	say "\t-Cオプション取得：\t\t\t$cdirtime(マイナス表記は未来)";
+	my $mdirtime = -M $dirname;
+	say "\t-Mオプション取得：\t\t\t$mdirtime(マイナス表記は未来)";
+	my $adirtime = -A $dirname;
+	say "\t-Aオプション取得：\t\t\t$adirtime(マイナス表記は未来)";
+
+	if( -C $dirname ) {
+		say "ディレクトリあり。";
+	}
+
+	say "ディレクトリ削除。";
+	rmdir $dirname or warn "ディレクトリ削除失敗($!)。";
+	unless( -C $dirname ) {
+		say "ディレクトリなし(削除済みの判断でなしとしたわけではない)。";
+	}
+}
+&dirtestC();
+
+
+sub timeformatChange {
+	# この関数をどこからでも呼び出せるようにしたい。
+	my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = @_;
+	my %dayweek = (
+				0=>'日',	# Sunday
+				1=>'月',	# Monday
+				2=>'火',	# Tuesday
+				3=>'水',	# Wednesday
+				4=>'木',	# Thursday
+				5=>'金',	# Friday
+				6=>'土',	# Saturday
+				);
+
+	$mon += 1;					# 月が0始まりになるため、1加算する。
+	$year += 1900;				# 1900年を加算することで、西暦になる。
+	$wday = $dayweek{$wday};	# 日曜日が0始まりになり、それを変換する。
+	$yday += 1;					# 1月1日が0始まりのため、1加算する。
+
+	return "$year年$mon月$yday日($wday) $hour時$min分$sec秒";
+}
+```
+
+以下、プログラム実行。
+```terminal
+$ perl ファイルテスト演算子\(オプションC\).pl
+ディレクトリを作成する。
+ディレクトリあり(-1.15740740740741e-05)。
+以下、ディレクトリ作成後の情報。
+	最終アクセス時刻：			2022年1月26日(水) 17時51分9秒
+	最終更新時刻：				2022年1月26日(水) 17時51分9秒
+	最後のinode変更時刻(これ)：	2022年1月26日(水) 17時51分9秒
+	-Cオプション取得：			-1.15740740740741e-05(マイナス表記は未来)
+	-Mオプション取得：			-1.15740740740741e-05(マイナス表記は未来)
+	-Aオプション取得：			-1.15740740740741e-05(マイナス表記は未来)
+ディレクトリあり。
+ディレクトリ削除。
+ディレクトリなし(削除済みの判断でなしとしたわけではない)。
+$
+```
+
+以下、読み込み処理部分をコメントアウトした結果の実行。
+```terminal
+$ perl ファイルテスト演算子\(オプションC\).pl
+ディレクトリを作成する。
+ディレクトリあり(0)。
+以下、ディレクトリ作成後の情報。
+	最終アクセス時刻：			2022年1月26日(水) 17時51分41秒
+	最終更新時刻：				2022年1月26日(水) 17時51分41秒
+	最後のinode変更時刻(これ)：	2022年1月26日(水) 17時51分41秒
+	-Cオプション取得：			0(マイナス表記は未来)
+	-Mオプション取得：			0(マイナス表記は未来)
+	-Aオプション取得：			0(マイナス表記は未来)
+ディレクトリ削除。
+ディレクトリなし(削除済みの判断でなしとしたわけではない)。
+$
+```
+困った。  
+よく分からないまま検証が終わった。  
+（よく分からないのであれば、検証したとは言えないぞ）。  
+
+</details>
 
 <a name="practicaluseFileteststatfunck"></a>
 ### stat関数
