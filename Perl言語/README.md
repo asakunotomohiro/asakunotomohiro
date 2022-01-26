@@ -8078,6 +8078,78 @@ sub filetestLink() {
 シンボリックリンクファイルなし(削除済みの判断で'なし'としたわけではない)。
 ```
 
+以下、ディレクトリに対するプログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub dirtestLink() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+
+	# ディレクトリ名定義。
+	my $dirname = $currentDir . '/testDir';
+
+	say "ディレクトリを作成する。";
+	mkdir $dirname, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+
+	unless( -l $dirname ) {
+		say "シンボリックリンクディレクトリではない。";
+	}
+
+	say "以下、ディレクトリ作成後の情報。";
+	my ($dev, $ino, $mode, $nlink, $uid, $gid, $rdev,
+		$size, $atime, $mtime, $ctime, $blksize, $blocks)
+		= lstat($dirname);	# ファイルのlstat(プロパティ)情報。
+	say "\tディレクトリに対するハードリンクの個数：\t$nlink";
+	say "\tディレクトリの容量をバイト単位で表す：\t\t$size";
+	say "\tディレクトリシステムI/Oでのブロックサイズ：\t$blksize";
+	say "\t割り当てられたブロック数：\t\t\t\t\t$blocks";
+
+	my $testdirname = 'シンボリックリンクディレクトリ';
+	symlink $dirname, $testdirname or warn "ソフトリンクディレクトリ作成失敗($!)。";
+	say 'ディレクトリに対するソフトリンクあり($dirname)' if readlink $dirname;	←☆実体ディレクトリのためメッセージ出力なし。
+	say 'ディレクトリに対するソフトリンクあり($testdirname)' if readlink $testdirname;
+
+	if( -l $dirname ) {
+		say "シンボリックリンクディレクトリあり(" . '$dirname' . ")。";	←☆実体のためここには来ない。
+	}
+	elsif( -l $testdirname ) {
+		say "シンボリックリンクディレクトリあり(" . '$testdirname' . ")。";	←☆これが出力される。
+	}
+	else{
+		say "シンボリックリンクディレクトリなし。";
+	}
+
+	say "ディレクトリ削除。";
+	unlink $testdirname or warn "シンボリックリンクディレクトリ削除失敗($!)。";
+	rmdir $dirname or warn "ディレクトリ削除失敗($!)。";
+	if( -l $testdirname or -l $dirname ) {
+		say "ディレクトリ削除失敗。";
+	}
+	else{
+		say "ディレクトリなし(削除済みの判断でなしとしたわけではない)。";
+	}
+}
+&dirtestLink();
+```
+
+以下、実行結果。
+```terminal
+ディレクトリを作成する。
+シンボリックリンクディレクトリではない。
+以下、ディレクトリ作成後の情報。
+	ディレクトリに対するハードリンクの個数：	2
+	ディレクトリの容量をバイト単位で表す：		64
+	ディレクトリシステムI/Oでのブロックサイズ：	4096
+	割り当てられたブロック数：					0
+ディレクトリに対するソフトリンクあり($testdirname)
+シンボリックリンクディレクトリあり($testdirname)。
+ディレクトリ削除。
+ディレクトリなし(削除済みの判断でなしとしたわけではない)。
+```
+プログラムで、この判定を使う日は来るのだろうか。  
+
 
 <a name="practicaluseFiletestoperatorp"></a>
 #### ファイルテスト演算子(`-p`)

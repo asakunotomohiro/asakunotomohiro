@@ -33,7 +33,7 @@ sub asakuno() {
 		say "シンボリックリンクファイルあり。";
 	}
 	else{
-		say "シンボリックリンクファイルなし。";
+		say "シンボリックリンクファイルではない。";
 	}
 
 	say "以下、ファイル作成後の情報。";
@@ -71,7 +71,60 @@ sub asakuno() {
 		say "シンボリックリンクファイルなし(削除済みの判断で'なし'としたわけではない)。";
 	}
 }
-&asakuno(@ARGV);
+#&asakuno(@ARGV);
+
+sub tomohiro() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+
+	# ディレクトリ名定義。
+	my $dirname = $currentDir . '/' . $asakuno;
+
+	say "ディレクトリを作成する。";
+	mkdir $dirname, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+
+	if( -l $dirname ) {
+		say "シンボリックリンクディレクトリあり。";
+	}
+	else{
+		say "シンボリックリンクディレクトリではない。";
+	}
+
+	say "以下、ディレクトリ作成後の情報。";
+	my ($dev, $ino, $mode, $nlink, $uid, $gid,
+		$rdev, $size, $atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($dirname);	# ファイルのlstat(プロパティ)情報。
+	say "\tファイルまたはディレクトリに対するハードリンクの個数：$nlink";
+	say "\tディレクトリの容量をバイト単位で表す(ファイルテスト-sと同じ)：$size";
+	say "\tディレクトリシステムI/Oでのブロックサイズ：$blksize";
+	say "\t割り当てられたブロック数：$blocks";
+
+	my $testdirname = 'シンボリックリンクディレクトリ';
+	symlink $dirname, $testdirname or warn "ソフトリンクディレクトリ作成失敗($!)。";
+	say 'ディレクトリに対するソフトリンクあり($dirname)' if readlink $dirname;
+	say 'ディレクトリに対するソフトリンクあり($testdirname)' if readlink $testdirname;
+
+	if( -l $dirname ) {
+		say "シンボリックリンクディレクトリあり(" . '$dirname' . ")。";
+	}
+	elsif( -l $testdirname ) {
+		say "シンボリックリンクディレクトリあり(" . '$testdirname' . ")。";
+	}
+	else{
+		say "シンボリックリンクディレクトリなし。";
+	}
+
+	say "ディレクトリ削除。";
+	unlink $testdirname or warn "シンボリックリンクディレクトリ削除失敗($!)。";
+	rmdir $dirname or warn "ディレクトリ削除失敗($!)。";
+	if( -l $testdirname or -l $dirname ) {
+		say "ディレクトリ削除失敗。";
+	}
+	else{
+		say "ディレクトリなし(削除済みの判断でなしとしたわけではない)。";
+	}
+}
+&tomohiro(@ARGV);
 
 
 sub timeformatChange {
