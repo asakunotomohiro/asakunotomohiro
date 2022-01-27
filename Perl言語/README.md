@@ -7154,8 +7154,8 @@ sub underscore() {
 		say "ディレクトリだと認定する。";	# 出力なし。
 	}
 	opendir my $dir_fh, $currentDir or die "ディレクトリオープン失敗($!)。";
-	stat $dir_fh;
-	if( -f _ ) {
+	stat $dir_fh;	←☆ここが原因で`_`の中身が書き換わった。
+	if( -f _ ) {	←☆_は、ディレクトリ情報が格納されている。
 		say "我はファイルである。";
 	}
 	else{
@@ -7171,6 +7171,7 @@ sub underscore() {
 }
 &underscore();
 ```
+もし、`_`記号を用いる場合は、1つの**if**文に納めるべきであり、条件式を跨ぐ使い方は避けるべき。  
 
 以下、出力結果。
 ```terminal
