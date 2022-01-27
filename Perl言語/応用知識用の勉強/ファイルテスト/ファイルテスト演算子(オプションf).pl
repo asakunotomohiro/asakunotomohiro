@@ -55,7 +55,7 @@ sub asakuno() {
 
 	say "ファイル削除。";
 	unlink $filename or warn "ファイル削除失敗($!)。";
-	if( -s $filename ) {
+	if( -f $filename ) {
 		say "ファイルあり。";
 	}
 	else{

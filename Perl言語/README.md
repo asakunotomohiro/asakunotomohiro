@@ -7035,6 +7035,39 @@ sub timeformatChange {
   * [エポック経過秒数をローカルタイム関数で変換](#practicaluseFiletestlocaltime)  
   * [ビット演算子](#practicaluseFiletestbitoperator)  
 
+<details><summary>timeformatChange関数。</summary>
+
+日付部分は、数字が羅列されているだけで、人間が見て判断できる形式ではない。  
+そのため、書き換える必要がある。  
+今回、それを関数にまとめたため、ここで定義する。  
+
+```perl
+sub timeformatChange {
+	# この関数をどこからでも呼び出せるようにしたい。
+	my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = @_;
+	my %dayweek = (
+				0=>'日',	# Sunday
+				1=>'月',	# Monday
+				2=>'火',	# Tuesday
+				3=>'水',	# Wednesday
+				4=>'木',	# Thursday
+				5=>'金',	# Friday
+				6=>'土',	# Saturday
+				);
+
+	$mon += 1;					# 月が0始まりになるため、1加算する。
+	$year += 1900;				# 1900年を加算することで、西暦になる。
+	$wday = $dayweek{$wday};	# 日曜日が0始まりになり、それを変換する。
+	$yday += 1;					# 1月1日が0始まりのため、1加算する。
+
+	return "$year年$mon月$yday日($wday) $hour時$min分$sec秒";
+}
+```
+
+個々のプログラムには付けない。  
+
+</details>
+
 
 <a name="practicaluseFiletestoperator"></a>
 ### ファイルテスト演算子
@@ -8662,27 +8695,6 @@ sub testfileM() {
 	}
 }
 &testfileM();
-
-sub timeformatChange {
-	# この関数をどこからでも呼び出せるようにしたい。
-	my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = @_;
-	my %dayweek = (
-				0=>'日',	# Sunday
-				1=>'月',	# Monday
-				2=>'火',	# Tuesday
-				3=>'水',	# Wednesday
-				4=>'木',	# Thursday
-				5=>'金',	# Friday
-				6=>'土',	# Saturday
-				);
-
-	$mon += 1;					# 月が0始まりになるため、1加算する。
-	$year += 1900;				# 1900年を加算することで、西暦になる。
-	$wday = $dayweek{$wday};	# 日曜日が0始まりになり、それを変換する。
-	$yday += 1;					# 1月1日が0始まりのため、1加算する。
-
-	return "$year年$mon月$yday日($wday) $hour時$min分$sec秒";
-}
 ```
 
 以下、出力結果。
@@ -8756,27 +8768,6 @@ sub testfileM() {
 	}
 }
 &testfileM();
-
-sub timeformatChange {
-	# この関数をどこからでも呼び出せるようにしたい。
-	my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = @_;
-	my %dayweek = (
-				0=>'日',	# Sunday
-				1=>'月',	# Monday
-				2=>'火',	# Tuesday
-				3=>'水',	# Wednesday
-				4=>'木',	# Thursday
-				5=>'金',	# Friday
-				6=>'土',	# Saturday
-				);
-
-	$mon += 1;					# 月が0始まりになるため、1加算する。
-	$year += 1900;				# 1900年を加算することで、西暦になる。
-	$wday = $dayweek{$wday};	# 日曜日が0始まりになり、それを変換する。
-	$yday += 1;					# 1月1日が0始まりのため、1加算する。
-
-	return "$year年$mon月$yday日($wday) $hour時$min分$sec秒";
-}
 ```
 
 以下、出力結果。
@@ -8858,28 +8849,6 @@ sub filetestA() {
 	}
 }
 &filetestA();
-
-
-sub timeformatChange {
-	# この関数をどこからでも呼び出せるようにしたい。
-	my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = @_;
-	my %dayweek = (
-				0=>'日',	# Sunday
-				1=>'月',	# Monday
-				2=>'火',	# Tuesday
-				3=>'水',	# Wednesday
-				4=>'木',	# Thursday
-				5=>'金',	# Friday
-				6=>'土',	# Saturday
-				);
-
-	$mon += 1;					# 月が0始まりになるため、1加算する。
-	$year += 1900;				# 1900年を加算することで、西暦になる。
-	$wday = $dayweek{$wday};	# 日曜日が0始まりになり、それを変換する。
-	$yday += 1;					# 1月1日が0始まりのため、1加算する。
-
-	return "$year年$mon月$yday日($wday) $hour時$min分$sec秒";
-}
 ```
 
 以下、プログラム実行。
@@ -8966,28 +8935,6 @@ sub dirtestA() {
 	}
 }
 &dirtestA();
-
-
-sub timeformatChange {
-	# この関数をどこからでも呼び出せるようにしたい。
-	my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = @_;
-	my %dayweek = (
-				0=>'日',	# Sunday
-				1=>'月',	# Monday
-				2=>'火',	# Tuesday
-				3=>'水',	# Wednesday
-				4=>'木',	# Thursday
-				5=>'金',	# Friday
-				6=>'土',	# Saturday
-				);
-
-	$mon += 1;					# 月が0始まりになるため、1加算する。
-	$year += 1900;				# 1900年を加算することで、西暦になる。
-	$wday = $dayweek{$wday};	# 日曜日が0始まりになり、それを変換する。
-	$yday += 1;					# 1月1日が0始まりのため、1加算する。
-
-	return "$year年$mon月$yday日($wday) $hour時$min分$sec秒";
-}
 ```
 
 以下、実行結果。
@@ -9080,28 +9027,6 @@ sub filetestC() {
 	}
 }
 &filetestC();
-
-
-sub timeformatChange {
-	# この関数をどこからでも呼び出せるようにしたい。
-	my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = @_;
-	my %dayweek = (
-				0=>'日',	# Sunday
-				1=>'月',	# Monday
-				2=>'火',	# Tuesday
-				3=>'水',	# Wednesday
-				4=>'木',	# Thursday
-				5=>'金',	# Friday
-				6=>'土',	# Saturday
-				);
-
-	$mon += 1;					# 月が0始まりになるため、1加算する。
-	$year += 1900;				# 1900年を加算することで、西暦になる。
-	$wday = $dayweek{$wday};	# 日曜日が0始まりになり、それを変換する。
-	$yday += 1;					# 1月1日が0始まりのため、1加算する。
-
-	return "$year年$mon月$yday日($wday) $hour時$min分$sec秒";
-}
 ```
 
 以下、プログラム実行。
@@ -9189,28 +9114,6 @@ sub dirtestC() {
 	}
 }
 &dirtestC();
-
-
-sub timeformatChange {
-	# この関数をどこからでも呼び出せるようにしたい。
-	my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = @_;
-	my %dayweek = (
-				0=>'日',	# Sunday
-				1=>'月',	# Monday
-				2=>'火',	# Tuesday
-				3=>'水',	# Wednesday
-				4=>'木',	# Thursday
-				5=>'金',	# Friday
-				6=>'土',	# Saturday
-				);
-
-	$mon += 1;					# 月が0始まりになるため、1加算する。
-	$year += 1900;				# 1900年を加算することで、西暦になる。
-	$wday = $dayweek{$wday};	# 日曜日が0始まりになり、それを変換する。
-	$yday += 1;					# 1月1日が0始まりのため、1加算する。
-
-	return "$year年$mon月$yday日($wday) $hour時$min分$sec秒";
-}
 ```
 
 以下、プログラム実行。
