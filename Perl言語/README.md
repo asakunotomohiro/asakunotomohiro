@@ -183,7 +183,11 @@ $
     [x] OSの環境変数  
     [x] OSのシグナル  
   * [ ] [ファイルテスト](#practicaluseFiletest)  
+    [ ] ファイルテスト演算子  
+    [ ] stat関数  
+    [ ] lstat関数  
     [x] [ローカルタイム関数変換(エポック経過秒数)](#practicaluseFiletestlocaltime)。  
+    [ ] ビット演算子  
   * [ ] [ファイル操作](#practicaluseFileoperation)  
     [x] 標準入力。  
     [x] 標準出力。  
@@ -681,7 +685,7 @@ say $hoge;	# 83
   * [ ] each演算子(配列用)  
   * [ ] ダイヤモンド演算子(標準入力？)  
   * [ ] ダブルダイヤモンド演算子(標準入力？)  
-  * [ ] ビット演算子  
+  * [x] [ビット演算子](#practicaluseFiletest)  
     ビットAND演算子。  
     ビットOR演算子。  
     ビットXOR演算子。  
@@ -1192,7 +1196,7 @@ unless ( defined $boo[2] ) {	←☆変数に値は入っていない。
     * [ ] 排他的論理和(`XOR`・`NOT OR`・`^`)  
     * [ ] 否定(`NOT`・`!`・`~`)  
       ※`=~`は正規表現になるため、気をつけること。  
-    * [ ] ビット演算子(`&`・`|`)  
+    * [x] [ビット演算子](#practicaluseFiletest)(`&`・`|`)  
     * [ ] defined-or演算子(以下説明)  
 
 |論理演算子|意味|備考|
@@ -6044,6 +6048,8 @@ $
 
 <a name="practicaluseFileoperationlinkandfilehardlink"></a>
 #### ハードリンクファイル作成
+[様式](https://perldoc.jp/func/link)：
+`link 元ファイル, リンクファイル`  
 
 * 以下のプログラムでやりたいこと。  
   1. 元ファイルの作成。  
@@ -7156,8 +7162,2485 @@ sub timeformatChange {
 <a name="practicaluseFiletest"></a>
 <details><summary>応用知識-ファイルテスト</summary>
 
+ファイルへの書き込み・読み込みのために、既に存在しているのか否か。  
+ファイルの最終変更日時からの経過日数・ファイルの大きさ・読み書き実行権限状況・バイナリファイル・シンボリックリンクファイルなどの確認方法がファイルテストになる。  
+
+* 目次  
+  * [ファイルテスト演算子](#practicaluseFiletestoperator)  
+    * [同ファイルに複数のファイルテスト演算子を用いる(第1弾)_記号](#practicaluseFiletestoperatorandoperator)  
+    * [同ファイルに複数のファイルテスト演算子を用いる(第2弾)並列置き](#practicaluseFiletestoperatorstacking)  
+  * [stat関数](#practicaluseFileteststatfunck)  
+    * [stat関数-nlink](#practicaluseFileteststatfuncknlink)  
+  * [lstat関数](#practicaluseFiletestlstatfunck)  
+  * [エポック経過秒数をローカルタイム関数で変換](#practicaluseFiletestlocaltime)  
+  * [ビット演算子](#practicaluseFiletestbitoperator)  
+
+<details><summary>timeformatChange関数。</summary>
+
+日付部分は、数字が羅列されているだけで、人間が見て判断できる形式ではない。  
+そのため、書き換える必要がある。  
+今回、それを関数にまとめたため、ここで定義する。  
+
+```perl
+sub timeformatChange {
+	# この関数をどこからでも呼び出せるようにしたい。
+	my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = @_;
+	my %dayweek = (
+				0=>'日',	# Sunday
+				1=>'月',	# Monday
+				2=>'火',	# Tuesday
+				3=>'水',	# Wednesday
+				4=>'木',	# Thursday
+				5=>'金',	# Friday
+				6=>'土',	# Saturday
+				);
+
+	$mon += 1;					# 月が0始まりになるため、1加算する。
+	$year += 1900;				# 1900年を加算することで、西暦になる。
+	$wday = $dayweek{$wday};	# 日曜日が0始まりになり、それを変換する。
+	$yday += 1;					# 1月1日が0始まりのため、1加算する。
+
+	return "$year年$mon月$yday日($wday) $hour時$min分$sec秒";
+}
+```
+
+個々のプログラムには付けない。  
+
+</details>
+
+
+<a name="practicaluseFiletestoperator"></a>
+### ファイルテスト演算子
+様式：
+`-演算子 ファイルもしくはディレクトリなど`  
+`-演算子`と言うのは、**演算子**部分が1文字のみになる(その後にファイルやディレクトリが続く)。  
+
+以下、ファイル存在有無の例）
+`say "'" . basename($0, '') . "'ファイル存在せり。" if -e $0;`  
+出力結果：
+'ファイルテスト演算子.pl'ファイル存在せり。  
+
+上記は例であり、普通は、逆で使う。  
+ファイルを作成する場合は、既に作られていたときに`die`でプログラムを終了するなど。  
+今回のように、メッセージを出すために使うことはない。  
+また、**die**を使う場合は、プログラマーが任意で強制終了させるだけなので、`$!`でのメッセージは存在しない。  
+
+以下、ファイル未更新期間検知の例）
+`warn "8日前のファイル" if -M 'hoge.txt' > 8;`  
+出力結果：
+8日前のファイル at ファイルテスト演算子.pl line xx.  
+これは、[stat情報](#practicaluseFileteststatfunck)の**最終更新時刻(`$mtime`)** を見ている。  
+※8日以上古いファイルであることが分かる。  
+
+判定手段として、引数を省略した場合 **$_** が使われる。  
+しかし、`my $testret = -s / 1024;`の場合、`-s $_ / 1024`とは解釈されない(この場合は正規表現としてのスラッシュ記号と判断される)。  
+省略した場合に、意図した解釈をされる方法は`(-s) / 1024`とすること(これをすることで、`$_`が使われる故に、`(-s $_) / 1024`となる)。  
+当然だが、`-s $hoge / 1024`のように、変数名を利用した方が良い。  
+
+|[ファイルテスト](https://perldoc.jp/func/-X)|説明|
+|:------------:|----|
+|[`-r`](#practicaluseFiletestoperatorsmallr)|ファイルorディレクトリが実効**ユーザorグループ**で読み出し可。|
+|[`-w`](#practicaluseFiletestoperatorsmallw)|ファイルorディレクトリが実効**ユーザorグループ**で書き込み可。|
+|[`-x`](#practicaluseFiletestoperatorsmallx)|ファイルorディレクトリが実効**ユーザorグループ**で実行可。|
+|[`-o`](#practicaluseFiletestoperatorsmallo)|ファイルorディレクトリが実効**ユーザ**の所有物。|
+|||
+|[`-R`](#practicaluseFiletestoperatorbigR)|ファイルorディレクトリが**実ユーザor実グループ**で読み出し可。|
+|[`-W`](#practicaluseFiletestoperatorbigW)|ファイルorディレクトリが**実ユーザor実グループ**で書き込み可。|
+|[`-X`](#practicaluseFiletestoperatorbigX)|ファイルorディレクトリが**実ユーザor実グループ**で実行可。|
+|[`-O`](#practicaluseFiletestoperatorbigO)|ファイルorディレクトリが**実ユーザ**の所有物。|
+|||
+|[`-e`](#practicaluseFiletestoperatore)|ファイルorディレクトリが存在する。|
+|[`-z`](#practicaluseFiletestoperatorz)|ファイルの大きさがゼロ(空)(ディレクトリの場合"**偽**")。|
+|[`-s`](#practicaluseFiletestoperatorsamalls)|ファイルorディレクトリの大きさがゼロ以外(バイト単位での大きさを返す)。|
+|||
+|[`-f`](#practicaluseFiletestoperatorf)|エントリは通常ファイル。|
+|[`-d`](#practicaluseFiletestoperatord)|エントリはディレクトリ。|
+|[`-l`](#practicaluseFiletestoperatorl)|エントリはシンボリックリンク(ファイルシステムが非対応なら偽)。|
+|[`-p`](#practicaluseFiletestoperatorp)|エントリは名前付きパイプ(FIFO)またはファイルハンドルはパイプ。|
+|[`-S`](#practicaluseFiletestoperatorbigS)|エントリはソケット。|
+|[`-b`](#practicaluseFiletestoperatorsmallb)|エントリはブロック特殊ファイル(例：マウント可能なディスク)。|
+|[`-c`](#practicaluseFiletestoperatorsmallc)|エントリはキャラクタ特殊ファイル(例：I/Oデバイス)。|
+|[`-t`](#practicaluseFiletestoperatorsmallt)|ファイルハンドルは**tty**にオープンされている(どういう意味？)。|
+|||
+|[`-u`](#practicaluseFiletestoperatoru)|ファイルorディレクトリの**setuid**ビットがセットされている。|
+|[`-g`](#practicaluseFiletestoperatorg)|ファイルorディレクトリの**setgid**ビットがセットされている。|
+|[`-k`](#practicaluseFiletestoperatork)|ファイルorディレクトリの**sticky**ビットがセットされている。|
+|||
+|[`-T`](#practicaluseFiletestoperatorbigT)|ファイルは**ASCII**または**UTF-8**テキストファイル(発見的に推測します)。|
+|[`-B`](#practicaluseFiletestoperatorbigB)|ファイルは「**バイナリ**」ファイルっぽい(**-T**の反対)。|
+|||
+|[`-M`](#practicaluseFiletestoperatorM)|スクリプト実行開始時刻からファイル修正時刻を引いたもの(日単位)(stat関数の`$mtime`)。|
+|[`-A`](#practicaluseFiletestoperatorA)|同様にアクセスがあってからの日数。|
+|[`-C`](#practicaluseFiletestoperatorbigC)|同様に(Unixでは)**inode**が変更されてからの日数(それ以外のプラットフォームでは違うかもしれません)。|
+
+不思議に思うのだが、**実効**って何？  
+実行の間違い？  
+しかし、[正誤表](https://www.oreilly.co.jp/books/9784873118246/)にないため、実効が正しいのか・・・。  
+
+
+<a name="practicaluseFiletestoperatorandoperator"></a>
+#### 同じファイルに、複数のファイルテスト演算子を用いる。
+以降に、[重ね掛け](#practicaluseFiletestoperatorstacking)の説明をしているが、こちらのほうがいいだろう(同じif文内で使う場合に限る)。  
+仮想ファイルハンドル`_`を使うことで、ファイルテスト演算子を重ね掛けできる。  
+```perl
+if( -r $filename and -w _ ) {
+    ;
+)
+```
+もし、この手法を使わずに、`if( -r $filename and -w $filename ) {`とした場合、左右に対してstat関数を呼び出すことになる。  
+そのため、処理速度が大幅に低下する。  
+
+
+また、以下のようにもできる。
+```perl
+if( -r $filename ) {
+    ;
+)
+if( -w _ ) {
+    ;
+)
+```
+しかし、if文の途中で何かしらの処理をした場合、最初のファイルと異なるファイルを**-w**でファイルテストすることになる。  
+
+<details><summary>プログラム例</summary>
+
+以下、実際のプログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub underscore() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+
+	my $filename = 'file.txt';	# ファイル名のみ作成。
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename or die "$filenameのファイルオープン失敗($!)";
+	say $file_fh '本日は晴天なり。';	# ファイルへの書き込み。
+	close $file_fh;
+
+	if( -s $filename and -f _ ) {
+		say "ファイルに書き込みあり。";	# こっちが動く。
+	}
+	else{
+		say "ファイルが空、もしくはファイルではない。";
+	}
+
+	if( -d $filename ) {
+		say "ここはディレクトリである。";	# 出力なし。
+	}
+	elsif( -f _ ) {
+		say "我はファイルである。";	# こっちが動く(想定通り)。
+	}
+	else{
+		say "我は誰だ？";
+	}
+
+	if( -d $filename ) {
+		say "ディレクトリだと認定する。";	# 出力なし。
+	}
+	opendir my $dir_fh, $currentDir or die "ディレクトリオープン失敗($!)。";
+	stat $dir_fh;	←☆ここが原因で`_`の中身が書き換わった。
+	if( -f _ ) {	←☆_は、ディレクトリ情報が格納されている。
+		say "我はファイルである。";
+	}
+	else{
+		say "ファイルではない判定が成された。";	# ディレクトリであるため、こっちが動く。
+	}
+	closedir $dir_fh;	# なくてもいい。
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	unless( -f $filename ) {
+		say "ファイル削除済み。";
+	}
+}
+&underscore();
+```
+もし、`_`記号を用いる場合は、1つの**if**文に納めるべきであり、条件式を跨ぐ使い方は避けるべき。  
+
+以下、出力結果。
+```terminal
+ファイルを作成する。
+ファイルに書き込みあり。
+我はファイルである。
+ファイルではない判定が成された。
+ファイル削除。
+ファイル削除済み。
+```
+
+</details>
+
+
+<a name="practicaluseFiletestoperatorstacking"></a>
+#### ファイルテスト演算子の重ね掛けを押し縮める
+上記の[同じファイルに複数のファイルテスト演算子を用いる]場合と同じになるのだが、今回はテスト方法を1つにまとめる。  
+```perl
+if( -w -r $filename ) {
+    ;
+)
+```
+単純な重ね掛けの場合は、`-r 〜 and -w _`だったことにより、[読み出し可能](#practicaluseFiletestoperatorsmallr)かをテスト後に、[書き込み可能](#practicaluseFiletestoperatorsmallw)かテストしている。  
+今回の場合に限らないのだが、Perlはファイル名に最も近いファイルテストから実行する。  
+そのため、同じ意味でテストする場合は、配置場所が逆になる。  
+よほどのことが無ければ、逆になっても問題ないはず・・・きっと。。。  
+
+<details><summary>重ね掛けのプログラム(-fと-sだけ)。</summary>
+
+以下、プログラム追記。
+```perl
+use v5.24;
+
+sub filetestStacking() {
+	# ファイル名のみ作成。
+	my $filename = 'filetest.txt';
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename or die "$filenameのファイルオープン失敗($!)";
+	say $file_fh '本日は晴天なり。';	# ファイルへの書き込み。
+	close $file_fh;
+	say ((-s $filename) . "バイト");
+
+	if( -s -f $filename ) {
+		say "ファイルに書き込みあり(-f⇒-sの順で判定)。";
+	}
+
+	if( -f -s $filename ) {
+		say "ファイルに書き込みあり(-s⇒-fの順で判定)。";
+	}
+
+	if( -f $filename and -s _) {
+		say "ファイルに書き込みあり(-f⇒-sの順で判定)。";
+	}
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	unless( -f $filename ) {
+		say "ファイルが空ファイル(削除済み)。";
+	}
+}
+&filetestStacking();
+```
+
+以下、出力結果。
+```terminal
+ファイルを作成する。
+25バイト
+ファイルに書き込みあり(-f⇒-sの順で判定)。
+ファイルに書き込みあり(-s⇒-fの順で判定)。
+ファイルに書き込みあり(-f⇒-sの順で判定)。
+ファイル削除。
+ファイルが空ファイル(削除済み)。
+```
+ファイルに対して、存在有無・容量有無の2種類のため、順不同で同じ結果になるのだろう。  
+
+</details>
+
+分野の異なるファイルテストをする場合は注意する必要がある。  
+例えば、[ディレクトリ](#practicaluseFiletestoperatord)かどうかをテスト後に、[ファイルサイズ](#practicaluseFiletestoperatorsamalls)が512バイト未満であることをテストする場合、
+以下の方法では意図しない結果になる。
+```perl
+if( -s -d $filename < 512 ) {
+    ;
+}
+```
+これを展開したのが以下のプログラムになる。
+```perl
+if( (-d $filename and -s _ ) < 512 ) {
+    ;
+}
+```
+ファイルの場合、偽になるのだが、その偽の値が512より小さいかを判定していることになる。  
+当然、偽は0として扱われるため、512より小さいと判断され、結果は真として処理が進むことになる。  
+そのため、このような場合は、以下のように判定を分ける必要が出てくる。
+```perl
+if( -d $filename and -s _ < 512 ) {
+    ;
+}
+```
+これで正しく意図した処理が行われる。  
+
+<details><summary>重ね掛けのプログラム(-fと-sに容量比較あり)。</summary>
+
+以下、プログラム追記。
+```perl
+use v5.24;
+
+sub filetestStacking() {
+	my $filename = 'filetest.txt';	# ファイル名のみ作成。
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename or die "$filenameのファイルオープン失敗($!)";
+	say $file_fh '本日は晴天なり。';	# ファイルへの書き込み。
+	close $file_fh;
+	say ((-s $filename) . "バイト");	# 2種類の括弧は必須。
+
+	if( -s -d $filename < 128 ) {
+		say "ファイルに書き込みあり(-d -s ファイル名 < 128)ディレクトリで判定。";
+	}
+	else{
+		say "ファイルが空ファイル(書き込みなし)。";	# 本来ここに来る。
+	}
+
+	if( -d -s $filename < 128 ) {
+		say "ファイルに書き込みあり(-d -s ファイル名 < 128)ディレクトリで判定。";
+	}
+	else{
+		say "ファイルが空ファイル(書き込みなし)。";	# 本来ここに来る。
+	}
+
+	if( -d $filename and -s _ < 128 ) {
+		say "ファイルに書き込みあり( -d ファイル名 and -s _ < 128 )ここに来てはいけない。";
+	}
+	else{
+		say "ディレクトリ判定( -d ファイル名 and -s _ < 128 )。";
+	}
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	unless( -f $filename ) {
+		say "ファイルが空ファイル(削除済み)。";
+	}
+}
+&filetestStacking();
+```
+
+以下、出力結果。
+```terminal
+ファイルを作成する。
+25バイト
+ファイルに書き込みあり(-d -s ファイル名 < 128)ディレクトリで判定。
+ファイルに書き込みあり(-d -s ファイル名 < 128)ディレクトリで判定。
+ディレクトリ判定( -d ファイル名 and -s _ < 128 )。
+ファイル削除。
+ファイルが空ファイル(削除済み)。
+```
+これは、忘れそうな落とし穴に見える。  
+
+</details>
+
+
+<a name="practicaluseFiletestoperatorsmallr"></a>
+#### ファイルテスト演算子(`-r`)
+ファイルorディレクトリが実効ユーザもしくは、実効グループで読み出し可能。  
+
+以下のroot権限付きのファイルに対してファイルテストを実行した場合、読み取れないと思っていた。
+```terminal
+$ sudo chown root ファイルテストr.txt
+$ ll
+total 16
+-rwxr-xr-x  1 root             staff  2607  1 21 00:18 ファイルテストr.txt*	←☆rootユーザであり、プログラムの実行ユーザではない。
+-rwxr-xr-x  1 asakunotomohiro  staff  2607  1 21 00:18 ファイルテスト演算子(オプションr).pl*	←☆動かすプログラム。
+$
+```
+実際は、Perlプログラムから普通にファイルを削除できる。  
+当然同じディレクトリにあるのではなく、別のディレクトリで実行しても同じように削除できた。  
+もしかしたらディレクトリの権限を変える必要があったのかもしれない。  
+しかし、それではファイルに対するファイルテストとは言えなくなってしまわないか？  
+**unlink**演算子でrootユーザファイルを削除できたため、私の予想は合っているだろうが・・・。  
+
+きっと他の演算子([w](#practicaluseFiletestoperatorsmallw)・[W](#practicaluseFiletestoperatorbigW)・[x](#practicaluseFiletestoperatorsmallx)・[X](#practicaluseFiletestoperatorbigX)・[o](#practicaluseFiletestoperatorsmallo)・[O](#practicaluseFiletestoperatorbigO))でも同じ事が言えるだろう。  
+
+
+<a name="practicaluseFiletestoperatorsmallw"></a>
+#### ファイルテスト演算子(`-w`)
+ファイルorディレクトリが実効**ユーザorグループ**で書き込み可。  
+
+使い方[不明](#practicaluseFiletestoperatorsmallr)。  
+todo:
+使い方を調べること。  
+
+
+<a name="practicaluseFiletestoperatorsmallx"></a>
+#### ファイルテスト演算子(`-x`)
+ファイルorディレクトリが実効**ユーザorグループ**で実行可。  
+
+使い方[不明](#practicaluseFiletestoperatorsmallr)。  
+todo:
+使い方を調べること。  
+
+
+<a name="practicaluseFiletestoperatorsmallo"></a>
+#### ファイルテスト演算子(`-o`)
+ファイルorディレクトリが実効**ユーザ**の所有物。  
+
+使い方[不明](#practicaluseFiletestoperatorsmallr)。  
+todo:
+使い方を調べること。  
+
+
+<a name="practicaluseFiletestoperatorbigR"></a>
+#### ファイルテスト演算子(`-R`)
+ファイルorディレクトリが**実ユーザor実グループ**で読み出し可。  
+
+使い方[不明](#practicaluseFiletestoperatorsmallr)。  
+todo:
+使い方を調べること。  
+
+
+<a name="practicaluseFiletestoperatorbigW"></a>
+#### ファイルテスト演算子(`-W`)
+ファイルorディレクトリが**実ユーザor実グループ**で書き込み可。  
+
+使い方[不明](#practicaluseFiletestoperatorsmallr)。  
+todo:
+使い方を調べること。  
+
+
+<a name="practicaluseFiletestoperatorbigX"></a>
+#### ファイルテスト演算子(`-X`)
+ファイルorディレクトリが**実ユーザor実グループ**で実行可。  
+
+使い方[不明](#practicaluseFiletestoperatorsmallr)。  
+todo:
+使い方を調べること。  
+
+
+<a name="practicaluseFiletestoperatorbigO"></a>
+#### ファイルテスト演算子(`-O`)
+ファイルorディレクトリが**実ユーザ**の所有物。  
+
+使い方[不明](#practicaluseFiletestoperatorsmallr)。  
+todo:
+使い方を調べること。  
+
+
+<a name="practicaluseFiletestoperatore"></a>
+#### ファイルテスト演算子(`-e`)
+ファイルorディレクトリが存在する。  
+
+<details><summary>ファイルに対するプログラム。</summary>
+
+以下、ファイルが存在することの確認プログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub filetestfunc() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+
+	my $filename = $currentDir . '/filetest.txt';
+	unless( -e $filename ) {
+		say "ファイルが存在しない。";
+	}
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename
+		or die "$filenameのファイルオープン失敗($!)";
+	close $file_fh;
+
+	if( -e $filename ) {
+		say "ファイルが存在する。";
+	}
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	unless( -e $filename ) {
+		say "ファイルが存在しない。";
+	}
+}
+&filetestfunc();
+```
+
+以下、出力結果。
+```terminal
+ファイルが存在しない。
+ファイルを作成する。
+ファイルが存在する。
+ファイル削除。
+ファイルが存在しない。
+```
+
+</details>
+
+<details><summary>ディレクトリに対するプログラム。</summary>
+
+以下、ディレクトリが存在することの確認プログラム。
+```perl
+use v5.24;
+
+sub dirtestfunc() {
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+
+	my $dirname = 'dirtest';
+	unless( -e $dirname ) {
+		say "ディレクトリが存在しない。";
+	}
+
+	say "ディレクトリを作成する。";
+	mkdir $dirname, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+
+	if( -e $dirname ) {
+		say "ディレクトリが存在する。";
+	}
+
+	say "ディレクトリ削除。";
+	rmdir $dirname or warn "ディレクトリ削除失敗($!)。";
+	unless( -e $dirname ) {
+		say "ディレクトリが存在しない。";
+	}
+}
+&dirtestfunc();
+```
+
+以下、出力結果。
+```terminal
+ディレクトリが存在しない。
+ディレクトリを作成する。
+ディレクトリが存在する。
+ディレクトリ削除。
+ディレクトリが存在しない。
+```
+
+</details>
+
+要は、ファイルかディレクトリの区別を付けずに存在有無確認ができるファイルテストと言うことになる(分かっていたことではあるが)。  
+しかし、区別を付ける必要が無い理由が分からない。  
+
+
+<a name="practicaluseFiletestoperatorz"></a>
+#### ファイルテスト演算子(`-z`)
+ファイルの大きさがゼロ(空)(ディレクトリの場合"**偽**")。  
+
+<details><summary>ファイル容量なし向けのプログラム。</summary>
+
+以下、ファイルサイズが0の場合のプログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub filesizefunc() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+
+	my $filename = $currentDir . '/filesize.txt';	←☆この直後でのファイルテストzは、ファイルが存在してしまう(ファイルが無いため)。
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename or die "$filenameのファイルオープン失敗($!)";
+	close $file_fh;
+
+	if( -z $filename ) {
+		say "ファイルが空ファイル(書き込みなし)。";
+	}
+
+	say "以下、ファイル作成直後の情報。";
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($filename);	# ファイルのlstat(プロパティ)情報。
+	say "\tファイルの容量をバイト単位で表す\t\t：$size";
+	say "\tファイルシステムI/Oでのブロックサイズ\t：$blksize";
+	say "\t割り当てられたブロック数\t\t\t\t：$blocks";
+
+	if( -z $filename ) {
+		say "ファイルが空ファイル(書き込みなし)。";
+	}
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	unless( -z $filename ) {
+		say "ファイルに書き込みあり。";
+	}
+}
+&filesizefunc();
+```
+
+以下、出力結果。
+```terminal
+ファイルを作成する。
+ファイルが空ファイル(書き込みなし)。
+以下、ファイル作成直後の情報。
+	ファイルの容量をバイト単位で表す		：0	←☆容量がない。
+	ファイルシステムI/Oでのブロックサイズ	：4096
+	割り当てられたブロック数				：0
+ファイルが空ファイル(書き込みなし)。
+ファイル削除。
+ファイルに書き込みあり。
+```
+ファイルが存在しない場合、書き込みありと認識されてしまう。  
+
+</details>
+
+<details><summary>ファイル容量あり用のプログラム。</summary>
+
+以下、ファイルへの書き込みありプログラム。
+```perl
+use v5.24;
+
+sub filesizefunc() {
+	my $filename = 'filesize.txt';
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename or die "$filenameのファイルオープン失敗($!)";
+	if( -z $filename ) {
+		say "ファイルが空ファイル(書き込みなし)。";
+	}
+
+	say "ファイル書き込み実施。";
+	foreach( qw( 本日は 晴天なり。) ) {
+		say $file_fh $_;	# ファイルへの書き込み。
+	}
+
+	close $file_fh;	# ファイルを閉じる。
+
+	if( -z $filename ) {
+		say "ファイルが空ファイル(書き込みなし)。";
+	}
+	else{
+		say "ファイル書き込みあり(容量0超え)。";
+	}
+
+	say "以下、ファイル作成直後の情報。";
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($filename);	# ファイルのlstat(プロパティ)情報。
+	say "\tファイルの容量をバイト単位で表す\t\t：$size";
+	say "\tファイルシステムI/Oでのブロックサイズ\t：$blksize";
+	say "\t割り当てられたブロック数\t\t\t\t：$blocks";
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	unless( -z $filename ) {
+		say "ファイルに書き込みあり(ファイル削除済み)。";
+	}
+}
+&filesizefunc();
+```
+
+以下、出力結果。
+```terminal
+ファイルを作成する。
+ファイルが空ファイル(書き込みなし)。
+ファイル書き込み実施。
+ファイル書き込みあり(容量0超え)。	←☆容量までは分からない。
+以下、ファイル作成直後の情報。
+	ファイルの容量をバイト単位で表す		：26
+	ファイルシステムI/Oでのブロックサイズ	：4096
+	割り当てられたブロック数				：8
+ファイル削除。
+ファイルに書き込みあり(ファイル削除済み)。
+```
+ファイル容量ありとディレクトリの両方が同じ結果になるのは困った問題だ。  
+だからこそ、他のファイルテスト演算子と組み合わせる必要があるのだろう。  
+
+</details>
+
+<details><summary>ディレクトリに対するプログラム。</summary>
+
+以下、ディレクトリに対する判断プログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub filesizefunc() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+
+	my $dirname = $currentDir . '/filesize.txt';
+	say "ディレクトリを作成する。";
+	mkdir $dirname, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+
+	if( -z $dirname ) {
+		say "ファイルが空ファイル(書き込みなし)。";
+	}
+	else{
+		say "ファイルに書き込みあり(今回ディレクトリに対しての判断)。";
+	}
+
+	say "以下、ディレクトリ作成後の情報。";
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($dirname);	# ファイルのlstat(プロパティ)情報。
+	say "\tディレクトリに対するハードリンクの個数\t：$nlink";
+	say "\tファイルの容量をバイト単位で表す\t\t：$size";
+	say "\tファイルシステムI/Oでのブロックサイズ\t：$blksize";
+	say "\t割り当てられたブロック数\t\t\t\t：$blocks";
+
+	say "ディレクトリ削除。";
+	rmdir $dirname or warn "ディレクトリ削除失敗($!)。";
+	if( -z $dirname ) {
+		say "ファイルが空ファイル(書き込みなし)。";
+	}
+	else{
+		say "ファイルに書き込みあり(今回ディレクトリに対しての判断)。";
+	}
+}
+&filesizefunc();
+```
+
+以下、出力結果。
+```text
+ディレクトリを作成する。
+ファイルに書き込みあり(今回ディレクトリに対しての判断)。
+以下、ディレクトリ作成後の情報。
+	ディレクトリに対するハードリンクの個数	：2
+	ファイルの容量をバイト単位で表す		：64
+	ファイルシステムI/Oでのブロックサイズ	：4096
+	割り当てられたブロック数				：0
+ディレクトリ削除。
+ファイルに書き込みあり(今回ディレクトリに対しての判断)。
+```
+ディレクトリに対して使うものではない。  
+
+</details>
+
+
+<a name="practicaluseFiletestoperatorsamalls"></a>
+#### ファイルテスト演算子(`-s`)
+ファイルorディレクトリの大きさがゼロ以外(バイト単位での大きさを返す)。  
+
+<details><summary>ファイル容量あり向けのプログラム。</summary>
+
+以下、ファイル書き込みありプログラム。
+```perl
+use v5.24;
+
+sub filesizefunc() {
+	my $filename = 'filesize.txt';	# ファイル名定義。
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename or die "$filenameのファイルオープン失敗($!)";
+	if( -s $filename ) {
+		say "ファイルに書き込みあり。";
+	}
+	else{
+		say "ファイルが空ファイル(書き込みないのは作成直後のため)。";
+	}
+
+	say "ファイル書き込み実施。";
+	say $file_fh 'ファイルへの書き込み内容。';
+	close $file_fh;
+
+	if( -s $filename ) {
+		my $size = -s $filename;
+		say "ファイルに書き込みあり($size)。";
+	}
+
+	say "以下、ファイル作成後の情報。";
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($filename);	# ファイルのlstat(プロパティ)情報。
+	say "\tファイルの容量をバイト単位で表す\t\t：$size";
+	say "\tファイルシステムI/Oでのブロックサイズ\t：$blksize";
+	say "\t割り当てられたブロック数\t\t\t\t：$blocks";
+
+	if( -s $filename ) {
+		say "ファイルに書き込みあり。" . -s $filename;
+	}
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	unless( -s $filename ) {
+		say "ファイルが空ファイル(書き込みなし)。" . -s $filename;
+	}
+}
+&filesizefunc();
+```
+
+以下、出力結果。
+```terminal
+ファイルを作成する。
+ファイルが空ファイル(書き込みないのは作成直後のため)。
+ファイル書き込み実施。
+ファイルに書き込みあり(40)。
+以下、ファイル作成後の情報。
+	ファイルの容量をバイト単位で表す		：40
+	ファイルシステムI/Oでのブロックサイズ	：4096
+	割り当てられたブロック数				：8
+ファイルに書き込みあり。40
+ファイル削除。
+ファイルが空ファイル(書き込みなし)。
+```
+
+</details>
+
+<details><summary>ディレクトリに対するプログラム。</summary>
+
+以下、ディレクトリに対する判断プログラム。
+```perl
+use v5.24;
+
+sub dirsizefunc() {
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+	my $dirname = 'dirsize';	# ディレクトリ名定義。
+
+	say "ディレクトリを作成する。";
+	mkdir $dirname, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+
+	if( -s $dirname ) {
+		say "ファイルに書き込みあり(今回ディレクトリに対しての判断)。" . -s $dirname;
+	}
+
+	say "以下、ディレクトリ作成後の情報。";
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($dirname);	# ファイルのlstat(プロパティ)情報。
+	say "\tディレクトリの容量をバイト単位で表す\t\t：$size";
+	say "\tディレクトリシステムI/Oでのブロックサイズ\t：$blksize";
+	say "\t割り当てられたブロック数\t\t\t\t\t：$blocks";
+
+	if( -s $dirname ) {
+		say "ディレクトリあり。" . -s $dirname;
+	}
+
+	say "ディレクトリ削除。";
+	rmdir $dirname or warn "ディレクトリ削除失敗($!)。";
+	unless( -s $dirname ) {
+		say "ディレクトリが空(削除済み)。" . -s $dirname;
+	}
+}
+&dirsizefunc();
+```
+
+以下、出力結果。
+```terminal
+ディレクトリを作成する。
+ファイルに書き込みあり(今回ディレクトリに対しての判断)。64
+以下、ディレクトリ作成後の情報。
+	ディレクトリの容量をバイト単位で表す		：64
+	ディレクトリシステムI/Oでのブロックサイズ	：4096
+	割り当てられたブロック数					：0
+ディレクトリあり。64
+ディレクトリ削除。
+ディレクトリが空(削除済み)。
+```
+ディレクトリ配下に何も無い状態だった場合も容量があると判断された。  
+ディレクトリ配下を確認しているのではないと言うことなのだろう。  
+ディレクトリの容量は、何を見ている？  
+ディレクトリ情報？  
+
+</details>
+
+
+<a name="practicaluseFiletestoperatorf"></a>
+#### ファイルテスト演算子(`-f`)
+エントリは通常ファイル。  
+
+<details><summary>ファイルに対するプログラム。</summary>
+
+以下、プログラム(ファイルの場合"**真**"になる)。
+```perl
+use v5.24;
+
+sub fileexistence() {
+	# ファイル名のみ作成。
+	my $filename = 'filesize.txt';	# ファイル名定義。
+
+	unless( -f $filename ) {
+		say "ファイル作成前。";
+	}
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename or die "$filenameのファイルオープン失敗($!)";
+	close $file_fh;
+
+	if( -f $filename ) {
+		say "ファイルあり。";
+	}
+
+	say "以下、ファイル作成後の情報。";
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($filename);	# ファイルのlstat(プロパティ)情報。
+	say "\tファイルに対するハードリンクの個数\t\t：$nlink";
+	say "\tファイルの容量をバイト単位で表す\t\t：$size";
+	say "\tファイルシステムI/Oでのブロックサイズ\t：$blksize";
+	say "\t割り当てられたブロック数\t\t\t\t：$blocks";
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	unless( -f $filename ) {
+		say "ファイルなし。";
+	}
+}
+&fileexistence();
+```
+上記オプション[`-e`](#practicaluseFiletestoperatore)と違い、ファイルの存在有無を確認するテストになるため、使うとすればこっち(`-f`)だろう。  
+
+以下、出力結果。
+```terminal
+ファイル作成前。
+ファイルを作成する。
+ファイルあり。
+以下、ファイル作成後の情報。
+	ファイルに対するハードリンクの個数		：1
+	ファイルの容量をバイト単位で表す		：0
+	ファイルシステムI/Oでのブロックサイズ	：4096
+	割り当てられたブロック数				：0
+ファイル削除。
+ファイルなし。
+```
+
+</details>
+
+<details><summary>ディレクトリに対するプログラム。</summary>
+
+以下、ディレクトリに対してファイルテスト演算子のファイル存在有無プログラムを実施した。
+```terminal
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub direxistence() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+
+	# ディレクトリ名定義。
+	my $dirname = $currentDir . '/dirsize';
+
+	say "ディレクトリを作成する。";
+	mkdir $dirname, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+
+	unless( -f $dirname ) {
+		say "ディレクトリなし。";
+	}
+
+	say "以下、ディレクトリ作成後の情報。";
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($dirname);	# ファイルのlstat(プロパティ)情報。
+	say "\tファイルまたはディレクトリに対するハードリンクの個数：$nlink";
+	say "\tディレクトリの容量をバイト単位で表す(ファイルテスト-sと同じ)：$size";
+	say "\tディレクトリシステムI/Oでのブロックサイズ：$blksize";
+	say "\t割り当てられたブロック数：$blocks";
+
+	unless( -f $dirname ) {
+		say "ディレクトリなし。";
+	}
+
+	say "ディレクトリ削除。";
+	rmdir $dirname or warn "ディレクトリ削除失敗($!)。";
+	unless( -f $dirname ) {
+		say "ディレクトリなし(削除済みの判断でなしとしたわけではない)。";
+	}
+}
+&direxistence();
+```
+ディレクトリに対しては"偽"になるのだろう。  
+
+以下、出力結果。
+```terminal
+ディレクトリを作成する。
+ディレクトリなし。
+以下、ディレクトリ作成後の情報。
+	ファイルまたはディレクトリに対するハードリンクの個数：2
+	ディレクトリの容量をバイト単位で表す(ファイルテスト-sと同じ)：64
+	ディレクトリシステムI/Oでのブロックサイズ：4096
+	割り当てられたブロック数：0
+ディレクトリなし。
+ディレクトリ削除。
+ディレクトリなし(削除済みの判断でなしとしたわけではない)。
+```
+ディレクトリに対しては関係なく動かず、ファイルに対してだけ使えるファイルテスト演算子だと言うことだろう。  
+
+</details>
+
+
+<a name="practicaluseFiletestoperatord"></a>
+#### ファイルテスト演算子(`-d`)
+エントリはディレクトリ。  
+
+<details><summary>ディレクトリ向けのプログラム。</summary>
+
+以下、ディレクトリ確認用プログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub direxistence() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+
+	# ディレクトリ名定義。
+	my $dirname = $currentDir . '/dirtest';
+	unless( -d $dirname ) {
+		say "ディレクトリなし(ディレクトリ名を定義したため)。";
+	}
+
+	say "ディレクトリを作成する。";
+	mkdir $dirname, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+
+	if( -d $dirname ) {
+		say "ディレクトリあり(ディレクトリ作成直後の確認)。";
+	}
+
+	say "以下、ディレクトリ作成後の情報。";
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($dirname);	# ファイルのlstat(プロパティ)情報。
+	say "\tディレクトリに対するハードリンクの個数\t\t：$nlink";
+	say "\tディレクトリの容量をバイト単位で表す\t\t：$size";
+	say "\tディレクトリシステムI/Oでのブロックサイズ\t：$blksize";
+	say "\t割り当てられたブロック数\t\t\t\t\t：$blocks";
+
+	say "ディレクトリ削除。";
+	rmdir $dirname or warn "ディレクトリ削除失敗($!)。";
+	unless( -d $dirname ) {
+		say "ディレクトリなし(削除済み)。";
+	}
+}
+&direxistence();
+```
+上記オプション[`-e`](#practicaluseFiletestoperatore)と違い、ディレクトリの存在有無を確認するテストになるため、使うとすればこっち(`-d`)だろう。  
+
+以下、出力結果。
+```terminal
+ディレクトリなし(ディレクトリ名を定義したため)。
+ディレクトリを作成する。
+ディレクトリあり(ディレクトリ作成直後の確認)。
+以下、ディレクトリ作成後の情報。
+	ディレクトリに対するハードリンクの個数		：2
+	ディレクトリの容量をバイト単位で表す		：64
+	ディレクトリシステムI/Oでのブロックサイズ	：4096
+	割り当てられたブロック数					：0
+ディレクトリ削除。
+ディレクトリなし(削除済み)。
+```
+
+</details>
+
+<details><summary>ファイルに対するプログラム。</summary>
+
+以下、ファイルに対してディレクトリテスト演算子のファイル存在有無プログラムを実施した。
+```perl
+use v5.24;
+
+sub fileexistence() {
+	# ファイル名のみ作成。
+	my $filename = 'filetest.txt';
+
+	unless( -d $filename ) {
+		say "ファイル作成前(ファイル名定義直後のため)。";
+	}
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename or die "$filenameのファイルオープン失敗($!)";
+	close $file_fh;
+
+	if( -d $filename ) {
+		say "ファイルあり。";
+	}
+	else{
+		say "ファイルなし(ディレクトリがあるという意味ではない)。";
+	}
+
+	say "以下、ファイル作成後の情報。";
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($filename);	# ファイルのlstat(プロパティ)情報。
+	say "\tファイルに対するハードリンクの個数\t\t：$nlink";
+	say "\tファイルの容量をバイト単位で表す\t\t：$size";
+	say "\tファイルシステムI/Oでのブロックサイズ\t：$blksize";
+	say "\t割り当てられたブロック数\t\t\t\t：$blocks";
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	unless( -s $filename ) {
+		say "ファイルなし(削除済み)。";
+	}
+}
+&fileexistence();
+```
+
+以下、出力結果。
+```terminal
+ファイル作成前(ファイル名定義直後のため)。
+ファイルを作成する。
+ファイルなし(ディレクトリがあるという意味ではない)。
+以下、ファイル作成後の情報。
+	ファイルに対するハードリンクの個数		：1
+	ファイルの容量をバイト単位で表す		：0
+	ファイルシステムI/Oでのブロックサイズ	：4096
+	割り当てられたブロック数				：0
+ファイル削除。
+ファイルなし(削除済み)。
+```
+
+</details>
+
+
+<a name="practicaluseFiletestoperatorl"></a>
+#### ファイルテスト演算子(`-l`)
+エントリはシンボリックリンク(ファイルシステムが非対応なら偽)。  
+
+<details><summary>シンボリックリンクファイルに対するプログラム。</summary>
+
+以下、プログラム。
+```perl
+use v5.24;
+
+sub filetestLink() {
+	my $filename = 'filetest.txt';	# ファイル名のみ定義。
+
+	unless( -l $filename ) {
+		say "ファイル作成前(ファイルがないと言う意味ではない)。";
+	}
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename or die "$filenameのファイルオープン失敗($!)";
+	say $file_fh '本日は晴天なり。';	# ファイルへの書き込み。
+	close $file_fh;
+
+	if( -l $filename ) {
+		say "シンボリックリンクファイルあり。";
+	}
+	else{
+		say "シンボリックリンクファイルなし。";
+	}
+
+	say "以下、ファイル作成後の情報。";
+	my ($dev, $ino, $mode, $nlink, $uid, $gid, $rdev,
+		$size, $atime, $mtime, $ctime, $blksize, $blocks)
+		= lstat($filename);	# ファイルのlstat(プロパティ)情報。
+	say "\tファイルに対するハードリンクの個数：\t$nlink";	# 今回、ハードではない。
+	say "\tファイルの容量をバイト単位で表す：\t\t$size";
+	say "\tファイルシステムI/Oでのブロックサイズ：\t$blksize";
+	say "\t割り当てられたブロック数：\t\t\t\t$blocks";
+
+	my $testfilename = 'シンボリックリンクファイル.test';
+	symlink $filename, $testfilename or warn "ソフトリンクファイル作成失敗($!)。";
+	say 'ファイルに対するソフトリンクあり($filename)' if readlink $filename;	←☆undefになるため、出力されない。
+	say 'ファイルに対するソフトリンクあり($testfilename)' if readlink $testfilename;
+
+	if( -l $filename ) {
+		say "シンボリックリンクファイルあり(" . '$filename' . ")。";	←☆通常ファイルのため、出力されない。
+	}
+	elsif( -l $testfilename ) {
+		say "シンボリックリンクファイルあり(" . '$testfilename' . ")。";	←☆こっちが出力される。
+	}
+	else{
+		say "シンボリックリンクファイルなし。";
+	}
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	unlink $testfilename or warn "シンボリックリンクファイル削除失敗($!)。";
+	if( -l $testfilename or -l $filename ) {
+		say "シンボリックリンクファイルあり。";
+	}
+	else{
+		say "シンボリックリンクファイルなし(削除済みの判断で'なし'としたわけではない)。";
+	}
+}
+&filetestLink();
+```
+
+以下、実行結果。
+```terminal
+ファイル作成前(ファイルがないと言う意味ではない)。
+ファイルを作成する。
+シンボリックリンクファイルなし。
+以下、ファイル作成後の情報。
+	ファイルに対するハードリンクの個数：	1
+	ファイルの容量をバイト単位で表す：		25
+	ファイルシステムI/Oでのブロックサイズ：	4096
+	割り当てられたブロック数：				8
+ファイルに対するソフトリンクあり($testfilename)
+シンボリックリンクファイルあり($testfilename)。
+ファイル削除。
+シンボリックリンクファイルなし(削除済みの判断で'なし'としたわけではない)。
+```
+
+</details>
+
+<details><summary>シンボリックリンクディレクトリに対するプログラム。</summary>
+
+以下、ディレクトリに対するプログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub dirtestLink() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+
+	# ディレクトリ名定義。
+	my $dirname = $currentDir . '/testDir';
+
+	say "ディレクトリを作成する。";
+	mkdir $dirname, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+
+	unless( -l $dirname ) {
+		say "シンボリックリンクディレクトリではない。";
+	}
+
+	say "以下、ディレクトリ作成後の情報。";
+	my ($dev, $ino, $mode, $nlink, $uid, $gid, $rdev,
+		$size, $atime, $mtime, $ctime, $blksize, $blocks)
+		= lstat($dirname);	# ファイルのlstat(プロパティ)情報。
+	say "\tディレクトリに対するハードリンクの個数：\t$nlink";
+	say "\tディレクトリの容量をバイト単位で表す：\t\t$size";
+	say "\tディレクトリシステムI/Oでのブロックサイズ：\t$blksize";
+	say "\t割り当てられたブロック数：\t\t\t\t\t$blocks";
+
+	my $testdirname = 'シンボリックリンクディレクトリ';
+	symlink $dirname, $testdirname or warn "ソフトリンクディレクトリ作成失敗($!)。";
+	say 'ディレクトリに対するソフトリンクあり($dirname)' if readlink $dirname;	←☆実体ディレクトリのためメッセージ出力なし。
+	say 'ディレクトリに対するソフトリンクあり($testdirname)' if readlink $testdirname;
+
+	if( -l $dirname ) {
+		say "シンボリックリンクディレクトリあり(" . '$dirname' . ")。";	←☆実体のためここには来ない。
+	}
+	elsif( -l $testdirname ) {
+		say "シンボリックリンクディレクトリあり(" . '$testdirname' . ")。";	←☆これが出力される。
+	}
+	else{
+		say "シンボリックリンクディレクトリなし。";
+	}
+
+	say "ディレクトリ削除。";
+	unlink $testdirname or warn "シンボリックリンクディレクトリ削除失敗($!)。";
+	rmdir $dirname or warn "ディレクトリ削除失敗($!)。";
+	if( -l $testdirname or -l $dirname ) {
+		say "ディレクトリ削除失敗。";
+	}
+	else{
+		say "ディレクトリなし(削除済みの判断でなしとしたわけではない)。";
+	}
+}
+&dirtestLink();
+```
+
+以下、実行結果。
+```terminal
+ディレクトリを作成する。
+シンボリックリンクディレクトリではない。
+以下、ディレクトリ作成後の情報。
+	ディレクトリに対するハードリンクの個数：	2
+	ディレクトリの容量をバイト単位で表す：		64
+	ディレクトリシステムI/Oでのブロックサイズ：	4096
+	割り当てられたブロック数：					0
+ディレクトリに対するソフトリンクあり($testdirname)
+シンボリックリンクディレクトリあり($testdirname)。
+ディレクトリ削除。
+ディレクトリなし(削除済みの判断でなしとしたわけではない)。
+```
+この判定を使う日は来るのだろうか。  
+
+</details>
+
+
+<a name="practicaluseFiletestoperatorp"></a>
+#### ファイルテスト演算子(`-p`)
+エントリは名前付きパイプ(FIFO)またはパイプのファイルハンドル。  
+
+<details><summary>パイプに対するプログラム。</summary>
+
+以下、プログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub pipehandle() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+
+	# ファイル名定義。
+	my $filename = $currentDir . '/filehandle.txt';
+
+	unless( -p $filename ) {
+		say "ファイル作成前。";
+	}
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename
+		or die "$filenameのファイルオープン失敗($!)";
+	close $file_fh;
+
+	open my $file_fh, '-|', "cat $filename"
+		or die "$filenameのファイルオープン失敗($!)";
+		# このファイルハンドルは、子プロセスからの読み込みになる？
+
+	if( -p $filename ) {
+		say "ファイルハンドルあり($filename)。" . '< $filename';
+	}
+	elsif( -p $file_fh ) {
+		say "ファイルハンドルあり($file_fh)。" . '< $file_fh';	←☆これが出力されている。
+	}
+	else{
+		say "ファイルハンドルなし。";
+	}
+	close $file_fh;
+
+	say "ファイルハンドル閉じ済み。";
+	if( -p $filename ) {
+		say "ファイルハンドルあり($filename)。" . '< $filename';
+	}
+	elsif( -p $file_fh ) {
+		say "ファイルハンドルあり($file_fh)。" . '< $file_fh';
+	}
+	else{
+		say "ファイルハンドルなし。";	←☆これが出力されている。
+	}
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	if( -p $filename ) {
+		say "ファイルあり。";
+	}
+	elsif( -p $file_fh ) {
+		say "ファイルハンドルあり。";
+	}
+	else{
+		say "ファイルなし(削除済み)。";
+	}
+}
+&pipehandle();
+```
+当然なのだろうが、ファイルハンドルは開いた状態で確認する必要がある。  
+
+todo:
+パイプというのを別途調べる必要がある。  
+
+以下、出力結果。
+```terminal
+ファイル作成前。
+ファイルを作成する。
+ファイルハンドルあり(GLOB(0x7f8498878600))。< $file_fh
+ファイルハンドル閉じ済み。
+ファイルハンドルなし。
+ファイル削除。
+ファイルなし(削除済み)。
+```
+これらは、冒頭説明の後半部分に当たるはず。  
+前半部分はどのようなプログラムにすれば良いのか分からない。  
+逆か？  
+
+</details>
+
+
+<a name="practicaluseFiletestoperatorbigS"></a>
+#### ファイルテスト演算子(`-S`)
+エントリはソケット。  
+
+[`-r`](#practicaluseFiletestoperatorsmallr)演算子とは違う理由だが、今の私には出来そうに無いため、先送りする。  
+todo:
+使い方を調べること。  
+そもそも急いで気にする箇所では無いからな。  
+
+
+<a name="practicaluseFiletestoperatorsmallb"></a>
+#### ファイルテスト演算子(`-b`)
+エントリはブロック特殊ファイル(例：マウント可能なディスク)。  
+
+[`-r`](#practicaluseFiletestoperatorsmallr)演算子とは違う理由だが、今の私には出来そうに無いため、先送りする。  
+todo:
+使い方を調べること。  
+
+
+<a name="practicaluseFiletestoperatorsmallc"></a>
+#### ファイルテスト演算子(`-c`)
+エントリはキャラクタ特殊ファイル(例：I/Oデバイス)。  
+
+[`-r`](#practicaluseFiletestoperatorsmallr)演算子とは違う理由だが、今の私には出来そうに無いため、先送りする。  
+todo:
+使い方を調べること。  
+
+
+<a name="practicaluseFiletestoperatorsmallt"></a>
+#### ファイルテスト演算子(`-t`)
+ファイルハンドルは**tty**にオープンされている(どういう意味？)。  
+補足：(`-t STDIN`が真の場合)ユーザ入力待ちの状態とのこと(ファイルやパイプからの入力では無いと言うこと)。  
+
+[`-r`](#practicaluseFiletestoperatorsmallr)演算子とは違う理由だが、今の私には出来そうに無いため、先送りする。  
+todo:
+使い方を調べること。  
+
+
+<a name="practicaluseFiletestoperatoru"></a>
+#### ファイルテスト演算子(`-u`)
+ファイルorディレクトリの**setuid**ビットがセットされている。  
+
+[`-r`](#practicaluseFiletestoperatorsmallr)演算子とは違う理由だが、今の私には出来そうに無いため、先送りする。  
+todo:
+使い方を調べること。  
+
+
+<a name="practicaluseFiletestoperatorg"></a>
+#### ファイルテスト演算子(`-g`)
+ファイルorディレクトリの**setgid**ビットがセットされている。  
+
+[`-r`](#practicaluseFiletestoperatorsmallr)演算子とは違う理由だが、今の私には出来そうに無いため、先送りする。  
+todo:
+使い方を調べること。  
+
+
+<a name="practicaluseFiletestoperatork"></a>
+#### ファイルテスト演算子(`-k`)
+ファイルorディレクトリの**sticky**ビットがセットされている。  
+
+[`-r`](#practicaluseFiletestoperatorsmallr)演算子とは違う理由だが、今の私には出来そうに無いため、先送りする。  
+todo:
+使い方を調べること。  
+
+
+<a name="practicaluseFiletestoperatorbigT"></a>
+#### ファイルテスト演算子(`-T`)
+ファイルは**ASCII**または**UTF-8**テキストファイル(発見的に推測します)。  
+補足：バイナリ判定ではない場合テキストファイルと判定する。  
+補足：ファイルの存在がない場合、もしくは読めない場合、偽になる。  
+補足：ファイルが空の場合、真になる。  
+
+<details><summary>テキストファイルに対するプログラム。</summary>
+
+以下、通常ファイルに対するプログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub filetestT() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+
+	# ファイル名のみ作成。
+	my $filename = $currentDir . '/filetestT.txt';
+
+	unless( -T $filename ) {
+		say "ファイル作成前。";
+	}
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename
+		or die "$filenameのファイルオープン失敗($!)";
+
+	if( -T $filename ) {
+		say "ファイルへの書き込み前だが、存在はしている。";	←☆中身がない場合、真になる。
+	}
+
+	foreach( qw( 本日は 晴天なり。) ) {
+		say $file_fh $_;	# ファイルへの書き込み。
+	}
+	close $file_fh;
+
+	if( -T $filename ) {
+		say "ファイルあり(書き込み済み)。";
+	}
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	unless( -s $filename ) {
+		say "ファイルなし。";
+	}
+}
+&filetestT();
+```
+
+以下、出力結果。
+```terminal
+ファイル作成前。
+ファイルを作成する。
+ファイルへの書き込み前だが、存在はしている。
+ファイルあり(書き込み済み)。
+ファイル削除。
+ファイルなし。
+```
+予想通りの結果ではある。  
+
+</details>
+
+<details><summary>バイナリに対するプログラム。</summary>
+
+以下、バイナリファイルに対するプログラム。
+```perl
+use v5.24;
+
+sub bintest() {
+	# 以下、通常の環境変数内のPathを加工したバイナリファイル指定になる。
+	my $binname = $INC[0] =~ s:perl5.*:bin/instmodsh:r;
+	if( -T $binname ) {
+		say "テキストファイルあり。";
+	}
+	else{
+		say "バイナリファイルあり。";
+	}
+
+	if( -B $binname ) {
+		say 'バイナリファイルあり($binname)。';	←☆？
+	}
+}
+&bintest();
+```
+
+以下、出力結果。
+```terminal
+バイナリファイルあり。
+```
+どういうこと？  
+
+以下、バイナリファイルの確認。
+```terminal
+$ ll bin/instmodsh
+-r-xr-xr-x  1 asakunotomohiro  staff  4194  5 23  2019 bin/instmodsh*
+$
+```
+とにかく、ファイルでないのは分かった。  
+難しい。  
+
+</details>
+
+
+<a name="practicaluseFiletestoperatorbigB"></a>
+#### ファイルテスト演算子(`-B`)
+ファイルは「**バイナリ**」ファイルっぽい(**-T**の反対)。  
+補足：ファイル内容の先頭数千バイト分からNullバイト・珍しいコントロール文字・上位ビットの乱立などから判断する。  
+補足：ファイルの存在がない場合、もしくは読めない場合、偽になる。  
+補足：ファイルが空の場合、真になる。  
+
+<details><summary>バイナリに対するプログラム。</summary>
+
+以下、プログラム。
+```perl
+use v5.24;
+
+sub filetestB() {
+	# バイナリ名定義。
+	my $binname = '/Applications/Safari.app/Contents/MacOS';
+	if( -T $binname ) {
+		say "テキストファイルあり。";
+	}
+	else{
+		say "バイナリファイルあり。";
+	}
+
+	if( -B $binname ) {
+		say 'バイナリファイルあり($binname)。';
+	}
+}
+&filetestB();
+```
+
+以下、出力結果。
+```terminal
+バイナリファイルあり。
+バイナリファイルあり($binname)。
+```
+なるほど。  
+難しい。  
+
+</details>
+
+<details><summary>テキストファイルに対するプログラム。</summary>
+
+以下、テキストファイルへの判定用プログラム。
+```perl
+use v5.24;
+
+sub filetestB() {
+	# ファイル名のみ作成。
+	my $filename = 'Binfile.txt';
+
+	unless( -B $filename ) {
+		say "ファイル作成前。";
+	}
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename or die "$filenameのファイルオープン失敗($!)";
+	if( -B $filename ) {
+		say "テキストファイルへの書き込み前だが、存在はしている。";	←☆中身がない場合、真になる。
+	}
+
+	print $file_fh '本日は晴天なり。';	←☆ファイルにテキストを書き込む。
+	close $file_fh;
+
+	if( -B $filename ) {
+		say "ファイルあり(書き込み済み)。";
+	}
+	else{
+		say "ファイルなし(書き込み済み)。";	←☆テキストファイルなので、仕方ない。
+	}
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	if( -B $filename ) {
+		say "ファイルあり。";
+	}
+	else{
+		say "ファイルなし。";	←☆削除されていようがいまいが、バイナリファイルではないめ、こっちのメッセージを出力する。
+	}
+}
+&filetestB();
+```
+
+以下、出力結果。
+```terminal
+ファイル作成前。
+ファイルを作成する。
+テキストファイルへの書き込み前だが、存在はしている。
+ファイルなし(書き込み済み)。
+ファイル削除。
+ファイルなし。
+```
+~~これは使いどころが難しい~~。  
+他のファイルテスト演算子と[組み合わせ](#practicaluseFiletestoperatorandoperator)が必要と言うことだろう。  
+
+</details>
+
+
+<a name="practicaluseFiletestoperatorM"></a>
+#### ファイルテスト演算子(`-M`)
+スクリプト実行開始時刻からファイル修正時刻を引いたもの(日単位)(stat関数の`$mtime`)。  
+補足：ファイルが最後に変更されてからの日数(スクリプトの実行開始時刻が基準)。  
+戻り値：浮動小数点数(2日と1秒は、**2.00001**値になる)。  
+戻り値：プラスの場合は過去日だが、マイナスの場合は未来日になる。  
+
+
+<details><summary>ファイルに対するプログラム。</summary>
+
+以下、プログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub testfileM() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+
+	# ファイル名のみ作成。
+	my $filename = $currentDir . '/testfile.txt';
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename
+		or die "$filenameのファイルオープン失敗($!)";
+	sleep 1;
+	print $file_fh "ファイルへの書き込み実施。";
+	sleep 1;
+	close $file_fh;
+
+	say "以下、ファイル作成後の情報。";
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($filename);	# ファイルのlstat(プロパティ)情報。
+	my $mfiletime = -M $filename;	←☆この値がそのまま相対日だった。
+	say "\t最終更新時刻(これ)：\t" . &timeformatChange(localtime $mtime);
+	say "\t-Mオプション取得：\t\t$mfiletime\t(マイナス表記は未来日)";
+	say "\t\t\t" . "-" x 30;
+	say "\t最終アクセス時刻：\t\t" . &timeformatChange(localtime $atime);
+	say "\t最後のinode変更時刻：\t" . &timeformatChange(localtime $ctime);
+
+	if( -M $filename ) {
+		say "ファイルあり。";
+		my $mfiletime = -M $filename;
+		say "\t" . '$mfiletime：' . "\t$mfiletime";
+		say "\t" . '$mtime：' . "\t\t$mtime";
+	}
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	unless( -M $filename ) {
+		say "ファイルなし。";
+	}
+}
+&testfileM();
+```
+
+以下、出力結果。
+```terminal
+ファイルを作成する。
+以下、ファイル作成後の情報。
+	最終更新時刻(これ)：	2022年1月24日(月) 23時50分45秒
+	-Mオプション取得：		-2.31481481481481e-05
+			------------------------------
+	最終アクセス時刻：		2022年1月24日(月) 23時50分43秒
+	最後のinode変更時刻：	2022年1月24日(月) 23時50分45秒
+ファイルあり。
+	$mfiletime：	-2.31481481481481e-05	←☆なぜに、2日と数時間後の未来に修正したことになっているのだろう。
+	$mtime：		1643035845
+ファイル削除。
+ファイルなし。
+```
+if文での判定に使うものではないが、問題ないように見えてしまうと言うのは問題だな。  
+`$mtime`が正常なのだろうが、**-M**が正常に動いていないように思うのは何故だろうか。  
+これが使えない場合、**$mtime**もいずれ壊れることを考慮すべき事案になってしまうのだが、、、どうやって問題ないことを突き止めれば良いのだろうか。  
+困った。  
+
+</details>
+
+<details><summary>ディレクトリに対するプログラム。</summary>
+
+以下、ディレクトリに対する取得プログラム。
+```perl
+use v5.24;
+
+sub testfileM() {
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+	my $dirname = 'Mdirname'; # ディレクトリ名定義。
+
+	say "ディレクトリを作成する。";
+	sleep 1;
+	mkdir $dirname, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+	sleep 3;
+
+	if( -M $dirname ) {
+		say "ディレクトリあり。";
+	}
+	else{
+		say "ディレクトリなし。";
+	}
+
+	say "以下、ディレクトリ作成後の情報。";
+	my ($dev, $ino, $mode, $nlink, $uid, $gid,
+		$rdev, $size, $atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($dirname);	# ファイルのlstat(プロパティ)情報。
+	my $mdirtime = -M $dirname;
+	say "\t最終アクセス時刻：\t\t" . &timeformatChange(localtime $atime);
+	say "\t最終更新時刻(これ)：\t" . &timeformatChange(localtime $mtime);
+	say "\t-Mオプション取得：\t\t$mdirtime(マイナス表記は未来)";
+	say "\t最後のinode変更時刻：\t" . &timeformatChange(localtime $ctime);
+
+	if( -M $dirname ) {
+		say "ディレクトリあり($mdirtime)。";
+	}
+	else{
+		say "ディレクトリなし($mdirtime)。";
+	}
+
+	say "ディレクトリ削除。";
+	rmdir $dirname or warn "ディレクトリ削除失敗($!)。";
+	if( -M $dirname ) {
+		say "ディレクトリあり。";
+	}
+	else{
+		say "ディレクトリなし(削除済みの判断でなしとしたわけではない)。";
+	}
+}
+&testfileM();
+```
+
+以下、出力結果。
+```terminal
+ディレクトリを作成する。
+ディレクトリあり。
+以下、ディレクトリ作成後の情報。
+	最終アクセス時刻：		2022年1月25日(火) 0時21分31秒
+	最終更新時刻(これ)：	2022年1月25日(火) 0時21分31秒
+	-Mオプション取得：		-1.15740740740741e-05(マイナス表記は未来)
+	最後のinode変更時刻：	2022年1月25日(火) 0時21分31秒
+ディレクトリあり(-1.15740740740741e-05)。
+ディレクトリ削除。
+ディレクトリなし(削除済みの判断でなしとしたわけではない)。
+```
+今回、**sleep**で一呼吸置いてから動かすようにしたが、それがない場合は更新時刻が0で取得された。  
+ディレクトリに対して使うのは止めた方が良いかもしれない。  
+ファイルの時もそうだったが、なぜ未来日で取得されているのか全く分からない。  
+
+</details>
+
+
+<a name="practicaluseFiletestoperatorA"></a>
+#### ファイルテスト演算子(`-A`)
+最後にアクセスされてからの日数(スクリプトの実行開始時刻が基準)。  
+戻り値：浮動小数点数(2日と1秒は、**2.00001**値になる)。  
+戻り値：プラスの場合は過去日だが、マイナスの場合は未来日になる。  
+
+<details><summary>ファイルに対するプログラム。</summary>
+
+以下、ファイルに対する取得プログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub filetestA() {
+	my $filename = 'filetestA.txt'; # ファイル名のみ定義。
+
+	say "ファイル作成。";
+	open my $file_fh, '>', $filename or die "$filenameのファイルオープン失敗($!)";
+	sleep 1;
+	say $file_fh '本日は晴天なり。';	# ファイルへの書き込み。
+	close $file_fh;
+
+	say "ファイル読み込み(この処理がない場合、取得結果が0になる)。";
+	sleep 1;
+	open my $file_fh, '<', $filename or die "$filenameのファイルオープン失敗($!)";
+	while( defined(my $line = <$file_fh>) ) {
+		chomp $line;	# 改行削除。
+		say "\t$.行目-内容：$line";
+	}
+	close $file_fh;
+
+	my $afiletime = '';
+	if( defined( -A $filename )) {
+		$afiletime = -A $filename;
+		say "ファイルあり($afiletime)。";
+	}
+
+	say "以下、ファイル作成後の情報。";
+	my ($dev, $ino, $mode, $nlink, $uid, $gid, $rdev,
+		$size, $atime, $mtime, $ctime, $blksize, $blocks)
+		= lstat($filename);	# ファイルのlstat(プロパティ)情報。
+	say "\t最終アクセス時刻(これ)：\t" . &timeformatChange(localtime $atime);
+	say "\t-Aオプション取得：\t\t\t$afiletime(マイナス表記は未来)";
+	say "\t最終更新時刻：\t\t\t\t" . &timeformatChange(localtime $mtime);
+	say "\t最後のinode変更時刻：\t\t" . &timeformatChange(localtime $ctime);
+
+	if( -A $filename ) {
+		say "ファイルあり。";
+		say "\t" . '$afiletime：' . "\t$afiletime";
+		say "\t" . '$atime：' . "\t\t$atime";
+	}
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	unless( -A $filename ) {
+		say "ディレクトリなし(削除済みの判断でなしとしたわけではない)。";
+	}
+}
+&filetestA();
+```
+
+以下、プログラム実行。
+```terminal
+$ perl ファイルテスト演算子\(オプションA\).pl
+ファイル作成。
+ファイル読み込み(この処理がない場合、取得結果が0になる)。
+	1行目-内容：本日は晴天なり。
+ファイルあり(-2.31481481481481e-05)。
+以下、ファイル作成後の情報。
+	最終アクセス時刻(これ)：	2022年1月26日(水) 16時22分4秒	←☆これであっているよね。
+	-Aオプション取得：			-2.31481481481481e-05(マイナス表記は未来)	←☆なぜマイナス？
+	最終更新時刻：				2022年1月26日(水) 16時22分3秒
+	最後のinode変更時刻：		2022年1月26日(水) 16時22分3秒
+ファイルあり。
+	$afiletime：	-2.31481481481481e-05
+	$atime：		1643181724
+ファイル削除。
+ディレクトリなし(削除済みの判断でなしとしたわけではない)。
+$
+```
+
+以下、読み込み処理部分をコメントアウトした結果の実行。
+```terminal
+$ perl ファイルテスト演算子\(オプションA\).pl
+ファイル作成。
+ファイルあり(0)。	←☆本来0は偽になる。
+以下、ファイル作成後の情報。
+	最終アクセス時刻(これ)：	2022年1月26日(水) 16時23分36秒
+	-Aオプション取得：			0(マイナス表記は未来)	←☆プラスもマイナスもない。
+	最終更新時刻：				2022年1月26日(水) 16時23分37秒
+	最後のinode変更時刻：		2022年1月26日(水) 16時23分37秒
+ファイル削除。
+ディレクトリなし(削除済みの判断でなしとしたわけではない)。
+$
+```
+
+</details>
+
+<details><summary>ディレクトリに対するプログラム。</summary>
+
+以下、ディレクトリに対する取得プログラム。
+```perl
+use v5.24;
+
+sub dirtestA() {
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+	my $dirname = 'dirfiletest';	# ディレクトリ名定義。
+
+	say "ディレクトリ作成。";
+	mkdir $dirname, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+	sleep 1;
+
+	say "以下、ディレクトリ内容読み込み(この処理がない場合、取得結果が0になる)。";
+	opendir my $dh, $dirname or die "ディレクトリオープン失敗($!)。";
+	foreach my $dirfile (readdir $dh) {
+	#	say $dirfile;
+	}
+	sleep 1;
+
+	my $adirtime = '';
+	if( -A $dirname ) {
+		$adirtime = -A $dirname;
+		say "ディレクトリあり($adirtime)。";
+	}
+
+	say "以下、ディレクトリ作成後の情報。";
+	my ($dev, $ino, $mode, $nlink, $uid, $gid,
+		$rdev, $size, $atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($dirname);	# ファイルのlstat(プロパティ)情報。
+	say "\t最終アクセス時刻(これ)：\t" . &timeformatChange(localtime $atime);
+	say "\t-Aオプション取得：\t\t\t$adirtime(マイナス表記は未来)";
+	say "\t最終更新時刻：\t\t\t\t" . &timeformatChange(localtime $mtime);
+	say "\t最後のinode変更時刻：\t\t" . &timeformatChange(localtime $ctime);
+
+	if( -A $dirname ) {
+		say "ディレクトリあり。";
+	}
+
+	say "ディレクトリ削除。";
+	rmdir $dirname or warn "ディレクトリ削除失敗($!)。";
+	unless( -A $dirname ) {
+		say "ディレクトリなし(削除済みの判断でなしとしたわけではない)。";
+	}
+}
+&dirtestA();
+```
+
+以下、実行結果。
+```terminal
+$ perl ファイルテスト演算子\(オプションA\).pl
+ディレクトリ作成。
+以下、ディレクトリ内容読み込み(この処理がない場合、取得結果が0になる)。
+ディレクトリあり(-1.15740740740741e-05)。
+以下、ディレクトリ作成後の情報。
+	最終アクセス時刻(これ)：	2022年1月26日(水) 16時35分54秒
+	-Aオプション取得：			-1.15740740740741e-05(マイナス表記は未来)
+	最終更新時刻：				2022年1月26日(水) 16時35分53秒
+	最後のinode変更時刻：		2022年1月26日(水) 16時35分53秒
+ディレクトリあり。
+ディレクトリ削除。
+ディレクトリなし(削除済みの判断でなしとしたわけではない)。
+$
+```
+
+以下、読み込み処理部分をコメントアウトした結果の実行。
+```terminal
+$ perl ファイルテスト演算子\(オプションA\).pl
+ディレクトリ作成。	←☆ディレクトリ作成後のメッセージが出ていない。
+以下、ディレクトリ作成後の情報。
+	最終アクセス時刻(これ)：	2022年1月26日(水) 16時36分27秒
+	-Aオプション取得：			(マイナス表記は未来)
+	最終更新時刻：				2022年1月26日(水) 16時36分27秒
+	最後のinode変更時刻：		2022年1月26日(水) 16時36分27秒
+ディレクトリ削除。
+ディレクトリなし(削除済みの判断でなしとしたわけではない)。
+$
+```
+**defined**がない場合、変数に0が入っているときに、偽になる。  
+そのため、今回ディレクトリが作成されているが、作成されていないことにされてしまっている。  
+
+</details>
+
+
+<a name="practicaluseFiletestoperatorbigC"></a>
+#### ファイルテスト演算子(`-C`)
+Unixでは**iノード**が変更されてからの日数(それ以外のOSでは違うかもしれない)。  
+補足：iノードには、ファイル内容以外のファイルに関する全ての情報が格納されている(スクリプトの実行開始時刻が基準)。  
+戻り値：浮動小数点数(2日と1秒は、**2.00001**値になる)。  
+戻り値：プラスの場合は過去日だが、マイナスの場合は未来日になる。  
+
+<details><summary>ファイルに対するプログラム。</summary>
+
+以下、ファイルに対する取得プログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub filetestC() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+
+	my $filename = $currentDir . '/filetestC.txt';	# ファイル名のみ作成。
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename or die "$filenameのファイルオープン失敗($!)";
+	sleep 1;	# この処理がない場合、取得結果が0になる。
+	say $file_fh '本日は晴天なり。';
+	close $file_fh;
+
+	my $cfiletime = -C $filename;
+	if( defined( $cfiletime )) {
+		say "ファイルあり($cfiletime)。";
+	}
+
+	say "以下、ファイル作成後の情報。";
+	my ($dev, $ino, $mode, $nlink, $uid, $gid,
+		$rdev, $size, $atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($filename);	# ファイルのlstat(プロパティ)情報。
+	say "\t最終アクセス時刻：\t\t\t" . &timeformatChange(localtime $atime);
+	say "\t最終更新時刻：\t\t\t\t" . &timeformatChange(localtime $mtime);
+	say "\t最後のinode変更時刻(これ)：\t" . &timeformatChange(localtime $ctime);
+	say "\t-Cオプション取得：\t\t\t$cfiletime(マイナス表記は未来)";
+	my $mfiletime = -M $filename;
+	say "\t-Mオプション取得：\t\t\t$mfiletime(マイナス表記は未来)";
+
+	if( -C $filename ) {
+		say "ファイルあり。";
+		say "\t" . '$cfiletime：' . "\t$cfiletime";
+		say "\t" . '$ctime：' . "\t\t$ctime";
+	}
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	unless( -C $filename ) {
+		say "ファイルなし(削除済みの判断でなしとしたわけではない)。";
+	}
+}
+&filetestC();
+```
+
+以下、プログラム実行。
+```terminal
+$ perl ファイルテスト演算子\(オプションC\).pl
+ファイルを作成する。
+ファイル読み込み(この処理がない場合、取得結果が0になる)。
+ファイルあり(-1.15740740740741e-05)。
+以下、ファイル作成後の情報。
+	最終アクセス時刻：			2022年1月26日(水) 17時33分42秒
+	最終更新時刻：				2022年1月26日(水) 17時33分43秒
+	最後のinode変更時刻(これ)：	2022年1月26日(水) 17時33分43秒
+	-Cオプション取得：			-1.15740740740741e-05(マイナス表記は未来)
+	-Mオプション取得：			-1.15740740740741e-05(マイナス表記は未来)
+ファイルあり。
+	$cfiletime：	-1.15740740740741e-05
+	$ctime：		1643186023
+ファイル削除。
+ファイルなし(削除済みの判断でなしとしたわけではない)。
+$
+```
+**最終更新時刻**と**最後のinode変更時刻**が同じ結果になっているため、本当に検証が正しい方法で行われているのか判断できない。  
+困った。  
+
+以下、読み込み処理部分をコメントアウトした結果の実行。
+```terminal
+$ perl ファイルテスト演算子\(オプションC\).pl
+ファイルを作成する。
+ファイル読み込み(この処理がない場合、取得結果が0になる)。
+ファイルあり(0)。
+以下、ファイル作成後の情報。
+	最終アクセス時刻：			2022年1月26日(水) 17時35分6秒
+	最終更新時刻：				2022年1月26日(水) 17時35分6秒
+	最後のinode変更時刻(これ)：	2022年1月26日(水) 17時35分6秒
+	-Cオプション取得：			0(マイナス表記は未来)
+	-Mオプション取得：			0(マイナス表記は未来)
+ファイル削除。
+ファイルなし(削除済みの判断でなしとしたわけではない)。
+$
+```
+
+</details>
+
+<details><summary>ディレクトリに対するプログラム。</summary>
+
+以下、ディレクトリに対する取得プログラム。
+```perl
+use v5.24;
+
+sub dirtestC() {
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+	my $dirname = 'dirFiletestC';	# ディレクトリ名定義。
+
+	say "ディレクトリを作成する。";
+	sleep 1;	# これがない場合、取得結果が0になる。
+	mkdir $dirname, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+
+	my $cdirtime = -C $dirname;
+	if( defined( $cdirtime )) {
+		say "ディレクトリあり($cdirtime)。";
+	}
+	sleep 1;
+
+	say "以下、ディレクトリ作成後の情報。";
+	my ($dev, $ino, $mode, $nlink, $uid, $gid,
+		$rdev, $size, $atime, $mtime, $ctime,
+		$blksize, $blocks) = lstat($dirname);	# ファイルのlstat(プロパティ)情報。
+	say "\t最終アクセス時刻：\t\t\t" . &timeformatChange(localtime $atime);
+	say "\t最終更新時刻：\t\t\t\t" . &timeformatChange(localtime $mtime);
+	say "\t最後のinode変更時刻(これ)：\t" . &timeformatChange(localtime $ctime);
+	say "\t-Cオプション取得：\t\t\t$cdirtime(マイナス表記は未来)";
+	my $mdirtime = -M $dirname;
+	say "\t-Mオプション取得：\t\t\t$mdirtime(マイナス表記は未来)";
+	my $adirtime = -A $dirname;
+	say "\t-Aオプション取得：\t\t\t$adirtime(マイナス表記は未来)";
+
+	if( -C $dirname ) {
+		say "ディレクトリあり。";
+	}
+
+	say "ディレクトリ削除。";
+	rmdir $dirname or warn "ディレクトリ削除失敗($!)。";
+	unless( -C $dirname ) {
+		say "ディレクトリなし(削除済みの判断でなしとしたわけではない)。";
+	}
+}
+&dirtestC();
+```
+
+以下、プログラム実行。
+```terminal
+$ perl ファイルテスト演算子\(オプションC\).pl
+ディレクトリを作成する。
+ディレクトリあり(-1.15740740740741e-05)。
+以下、ディレクトリ作成後の情報。
+	最終アクセス時刻：			2022年1月26日(水) 17時51分9秒
+	最終更新時刻：				2022年1月26日(水) 17時51分9秒
+	最後のinode変更時刻(これ)：	2022年1月26日(水) 17時51分9秒
+	-Cオプション取得：			-1.15740740740741e-05(マイナス表記は未来)
+	-Mオプション取得：			-1.15740740740741e-05(マイナス表記は未来)
+	-Aオプション取得：			-1.15740740740741e-05(マイナス表記は未来)
+ディレクトリあり。
+ディレクトリ削除。
+ディレクトリなし(削除済みの判断でなしとしたわけではない)。
+$
+```
+
+以下、読み込み処理部分をコメントアウトした結果の実行。
+```terminal
+$ perl ファイルテスト演算子\(オプションC\).pl
+ディレクトリを作成する。
+ディレクトリあり(0)。
+以下、ディレクトリ作成後の情報。
+	最終アクセス時刻：			2022年1月26日(水) 17時51分41秒
+	最終更新時刻：				2022年1月26日(水) 17時51分41秒
+	最後のinode変更時刻(これ)：	2022年1月26日(水) 17時51分41秒
+	-Cオプション取得：			0(マイナス表記は未来)
+	-Mオプション取得：			0(マイナス表記は未来)
+	-Aオプション取得：			0(マイナス表記は未来)
+ディレクトリ削除。
+ディレクトリなし(削除済みの判断でなしとしたわけではない)。
+$
+```
+困った(よく分からないままになっている)。  
+
+</details>
+
+todo:
+再調査が必要。  
+
+
+<a name="practicaluseFileteststatfunck"></a>
+#### stat関数
+上記[ファイルテスト演算子](#practicaluseFiletestoperator)では取得できない(テストで得られない)情報がある。  
+そのテストで得られない情報を今回の[stat関数](https://perldoc.perl.org/functions/stat)で取得する。  
+Perlの公式ページでは、[日本語版](https://perldoc.jp)がないようだ。  
+[Linux-stat](https://linuxjm.osdn.jp/html/GNU_coreutils/man1/stat.1.html)・
+[oracle-stat](https://docs.oracle.com/cd/E19109-01/tsolaris7/805-8078/6j7jiictj/index.html)・
+[hitachi-stat](http://itdoc.hitachi.co.jp/manuals/3021/3021313330/JPAS0351.HTM)。  
+
+<details><summary>展開：プログラム。</summary>
+
+以下、プログラム。
+```perl
+use v5.24;
+
+sub statfunc() {
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks)
+		= stat($0);	# 自身のファイルのstat情報。;
+
+	say "ファイルのデバイス番号：$dev";
+	say "iノード番号：$ino";
+	say "ファイルの権限ビットとそれ以外の数ビットを合わせたもの(ls -lで取得されるもの)：$mode";
+	say "ファイルまたはディレクトリに対するハードリンクの個数：$nlink";
+	say "ファイルの所有者を表すユーザID：$uid";
+	say "ファイルの所有者を表すグループID：$gid";
+	say "デバイス識別子(特殊ファイルのみ)：$rdev";
+	say "ファイルの容量をバイト単位で表す(ファイルテスト-sと同じ)：$size";
+	say "最終アクセス時刻：$atime";
+	say "最終更新時刻：$mtime";
+	say "最後のinode変更時刻：$ctime";
+	say "ファイルシステムI/Oでのブロックサイズ：$blksize";
+	say "割り当てられたブロック数：$blocks";
+
+}
+&statfunc();
+```
+
+以下、出力結果。
+```terminal
+ファイルのデバイス番号：16777220
+iノード番号：67541375
+ファイルの権限ビットとそれ以外の数ビットを合わせたもの(ls -lで取得されるもの)：33261
+ファイルまたはディレクトリに対するハードリンクの個数：1
+ファイルの所有者を表すユーザID：501
+ファイルの所有者を表すグループID：20
+デバイス識別子(特殊ファイルのみ)：0
+ファイルの容量をバイト単位で表す(ファイルテスト-sと同じ)：914
+最終アクセス時刻：1642473484
+最終更新時刻：1642473483
+最後のinode変更時刻：1642473483
+ファイルシステムI/Oでのブロックサイズ：4096
+割り当てられたブロック数：8
+```
+
+</details>
+
+
+<a name="practicaluseFileteststatfuncknlink"></a>
+##### stat関数-nlink
+ここは、上記のstat関数で取得したなかのnlinkに特化する。  
+
+<details><summary>展開：プログラム(ハードリンク個数確認用)。</summary>
+
+以下、ファイルに対するハードリンクの個数を検知するプログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub nlinkfunc() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	my $entity = '実体ファイル.txt';
+	my $virtual = '虚像.md';
+	my $nlinkFile = $currentDir . '/' . $entity;
+	open my $file_fh, '>', $nlinkFile
+		or die "$nlinkFileのファイルオープン失敗($!)";
+	my @write = qw( 本日は 晴天なり。 本日は晴天なり。 );
+	foreach( @write ) {
+		say $file_fh $_;
+	}
+	close $file_fh;
+
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = stat($nlinkFile);	# ファイルのstat情報。;
+
+	say "以下、stat情報のnlinkについて。";
+	say "\tファイルに対するハードリンクの個数(実体からの紐付け)：\t$nlink";	# 1
+
+	say "以下、ハードリンクを作成。";
+	link $nlinkFile, $virtual or warn "ハードリンクファイル作成失敗($!)。";
+	($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = stat($nlinkFile);	# ファイルのstat情報。;
+	say "\tファイルに対するハードリンクの個数(実体からの紐付け)：\t$nlink";	# 2
+	($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = stat($virtual);	# ファイルのstat情報。;
+	say "\tファイルに対するハードリンクの個数(ハードリンクファイルからの紐付け)：\t$nlink";	# 2
+
+	say "大本のファイル削除。";
+	unlink $nlinkFile or warn "$nlinkFileファイル削除失敗($!)。";
+	($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = stat($virtual);	# ファイルのstat情報。;
+	say "\tファイルに対するハードリンクの個数(ハードリンクファイルからの紐付け)：\t$nlink";	# 1	←☆ハードリンクが実体ファイルに変わると言うことなのだろう。
+
+	say "ハードリンクファイル削除。";
+	unlink $virtual or warn "$virtualファイル削除失敗($!)。";
+}
+&nlinkfunc();
+```
+
+以下、出力結果。
+```terminal
+以下、stat情報のnlinkについて。
+	ファイルに対するハードリンクの個数(実体からの紐付け)：	1
+以下、ハードリンクを作成。
+	ファイルに対するハードリンクの個数(実体からの紐付け)：	2
+	ファイルに対するハードリンクの個数(ハードリンクファイルからの紐付け)：	2
+大本のファイル削除。
+	ファイルに対するハードリンクの個数(ハードリンクファイルからの紐付け)：	1
+ハードリンクファイル削除。
+```
+
+</details>
+
+ディレクトリのハードリンクに対しての検出方法が分からない・・・。  
+そもそもディレクトリのハードリンクを作成できない。  
+**ハードリンクディレクトリ作成失敗(Operation not permitted)。 at xxxx.pl line xxxx.**  
+と言うエラーになり、作成方法が分からない。  
+何より、作成も何もディレクトリに対してハードリンクは[作れない](#practicaluseFileoperationlinkandfile)はずなのだが・・・。  
+
+<details><summary>ハードリンクディレクトリ作成失敗プログラム</summary>
+
+以下、一応のプログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+my $dirLinkTest = 'testDir';
+my @dirLinkTest = qw( 本日は 晴天なり。 本日は晴天なり。 );
+sub nlinkfunc() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+	mkdir $dirLinkTest, oct($permissions) or warn "ディレクトリ作成失敗($!)。";
+	my $nlinkDir = $currentDir . '/' . $dirLinkTest;
+
+	my ($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = stat($nlinkDir);	# ディレクトリのstat情報。;
+
+	say "以下、stat情報のnlinkについて。";
+	say "\tディレクトリに対するハードリンクの個数：\t$nlink";	# 2	←☆ディレクトリなので、リンクが無くても2になるのが正しい。
+
+	say "以下、ハードリンクを作成。";
+	my $hardLinkDir = $currentDir . '/別ディレクトリ/';
+	link $nlinkDir, $hardLinkDir . 'test' or warn "ハードリンクディレクトリ作成失敗($!)。";
+		# ハードリンクディレクトリ作成失敗(Operation not permitted)。 at stat関数-nlinkに特化.pl line 22.
+
+	say "以下、ソフトリンクを作成(1個目)。";
+	symlink $nlinkDir, $dirLinkTest[0] or warn "シンボリックリンクディレクトリ作成失敗($!)。";
+	($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = stat($nlinkDir);	# ファイルのstat情報。;
+	say "\tディレクトリに対するハードリンクの個数：\t$nlink";	# 2	←☆ディレクトリなので、リンクが無くても2になるのが正しい。
+
+	say "以下、ソフトリンクを作成(2個目)。";
+	symlink $nlinkDir, $dirLinkTest[1] or warn "シンボリックリンクディレクトリ作成失敗($!)。";
+	($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = stat($nlinkDir);	# ファイルのstat情報。;
+	say "\tディレクトリに対するハードリンクの個数：\t$nlink";	# 2	←☆ディレクトリなので、リンクが無くても2になるのが正しい。
+
+	say "1個目のソフトリンクファイル削除。";
+	unlink $dirLinkTest[0] or warn "$dirLinkTest[0]ディレクトリ削除失敗($!)。";
+	($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = stat($nlinkDir);	# ファイルのstat情報。;
+	say "\tディレクトリに対するハードリンクの個数：\t$nlink";	# 2	←☆ディレクトリなので、リンクが無くても2になるのが正しい。
+
+	say "大本のファイル削除。";
+	rmdir $nlinkDir or warn "$nlinkDirディレクトリ削除失敗($!)。";
+	($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = stat($dirLinkTest[1]);	# ファイルのstat情報。;
+	say "\tディレクトリに対するハードリンクの個数：\t$nlink";	# 空文字列(undef)
+
+	say "2個目のハードリンクファイル削除。";
+	unlink $dirLinkTest[1] or warn "$dirLinkTest[1]ディレクトリ削除失敗($!)。";
+	($dev, $ino, $mode, $nlink,
+		$uid, $gid, $rdev, $size,
+		$atime, $mtime, $ctime,
+		$blksize, $blocks) = stat($dirLinkTest[1]);	# ファイルのstat情報。;
+	say "\tディレクトリに対するハードリンクの個数：\t$nlink";	# 空文字列(undef)
+}
+&nlinkfunc();
+```
+※このプログラムにバグがある。  
+　ディレクトリを作成した上で、そのディレクトリからリンクを張っているのだが、ディレクトリを作り損ねることがあるようで、その状態でリンクを張るため、ディレクトリではなくファイルっぽいリンクができあがってしまう。  
+
+</details>
+
+OSによっては、コマンドオプションとの併用で、ディレクトリに対するハードリンク作成が出来るようだ。  
+Perlからハードリンクディレクトリ作成はできそうにない。  
+
+
+<a name="practicaluseFiletestlstatfunck"></a>
+#### lstat関数
+シンボリックリンク(ソフトリンク)を[stat関数](#practicaluseFileteststatfunck)に渡した場合、実体ファイルの情報を取得する。  
+
+<details><summary>シンボリックリンクファイルをstat関数で情報取得するプログラム。</summary>
+
+以下、stat関数利用プログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub statfunc() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	my $entity = $currentDir . '/実体ファイル.txt';
+	open my $file_fh, '>', $entity
+		or die "$entityのファイルオープン失敗($!)";
+	close $file_fh;
+	my $virtual = '仮想.md';
+	symlink $entity, $virtual or warn "シンボリックリンクファイル作成失敗($!)。";
+
+	say "以下、stat情報を実体ファイルとシンボリックリンクファイルで比較した。";
+	my @stat_entity = stat($entity);	# ファイルのstat情報。;
+	my @stat_virtual = stat($virtual);	# ファイルのstat情報。;
+
+	while( my($index, $value) = each @stat_entity ) {
+		unless( $value eq $stat_virtual[$index] ){
+			say "実体($value)!=リンクファイル($stat_virtual[$index])";
+		}
+	}
+
+	unlink $virtual or warn "$virtualファイル削除失敗($!)。";
+	unlink $entity or warn "$entityファイル削除失敗($!)。";
+
+	say "以上。"
+}
+&statfunc();
+```
+
+以下、出力結果。
+```terminal
+以下、stat情報を実体ファイルとシンボリックリンクファイルで比較した。
+以上。
+```
+何も出力されていないということは、実体ファイルの情報とシンボリックリンクファイルの情報が全て一致していたと言うこと。  
+要は、シンボリックリンクファイルの情報ではなく、実体ファイルの情報だと言うこと。  
+
+</details>
+
+<details><summary>展開：プログラム。</summary>
+
+以下、**lstat関数**を使い、シンボリックリンクファイルの情報を取得するプログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+my $stat_memo = [
+	["dev", "ファイルのデバイス番号", ],
+	["ino", "ファイルのiノード番号", ],
+	["mode", "ファイルの権限ビットとそれ以外の数ビットを合わせたもの", ],
+	["nlink", "ファイルまたはディレクトリに対するハードリンクの個数", ],
+	["uid", "ファイルの所有者を表すユーザID", ],
+	["gid", "ファイルの所有者を表すグループID", ],
+	["rdev", "デバイス識別子(特殊ファイルのみ)", ],
+	["size", "ファイルの容量をバイト単位で表す", ],
+	["atime", "最終アクセス時刻", ],
+	["mtime", "最終更新時刻", ],
+	["ctime", "最後のinode変更時刻", ],
+	["blksize", "ファイルシステムI/Oでのブロックサイズ", ],
+	["blocks", "割り当てられたブロック数", ],
+];
+
+sub lstatfunc() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+	my $entity = $currentDir . '/実体ファイル.txt';
+	open my $file_fh, '>', $entity or die "$entityのファイルオープン失敗($!)";
+	close $file_fh;
+	my $virtual = '仮想.md';
+	sleep 1;
+	symlink $entity, $virtual or warn "シンボリックリンクファイル作成失敗($!)。";
+
+	say "以下、lstat情報を実体ファイルとシンボリックリンクファイルで比較した。";
+	my @stat_entity = lstat($entity);	# ファイルのlstat情報。;	←☆実体ファイルにもlstat関数を用いている。
+	my @stat_virtual = lstat($virtual);	# ファイルのlstat情報。;
+
+	foreach my $index ( 0..$#stat_entity ) {
+		if( $stat_entity[$index] eq $stat_virtual[$index] ){
+			say "　一致結果の$stat_memo->[$index][0]情報\t\t$stat_entity[$index]";
+		}
+		else{
+			say "不一致結果の$stat_memo->[$index][0]情報\t$stat_entity[$index]=!$stat_virtual[$index]\t$stat_memo->[$index][1]";
+		}
+	}
+
+	unlink $virtual or warn "$virtualファイル削除失敗($!)。";
+	unlink $entity or warn "$entityファイル削除失敗($!)。";
+}
+&lstatfunc();
+```
+
+以下、出力結果。
+```terminal
+　一致結果のdev情報			16777220
+不一致結果のino情報			67645192=!67645197		←☆ファイルのiノード番号
+不一致結果のmode情報		33188=!41453			←☆ファイルの権限ビットとそれ以外の数ビットを合わせたもの
+　一致結果のnlink情報		1
+　一致結果のuid情報			501
+　一致結果のgid情報			20
+　一致結果のrdev情報		0
+不一致結果のsize情報		0=!53					←☆ファイルの容量をバイト単位で表す
+不一致結果のatime情報		1642645640=!1642645641	←☆最終アクセス時刻
+不一致結果のmtime情報		1642645640=!1642645641	←☆最終更新時刻
+不一致結果のctime情報		1642645640=!1642645641	←☆最後のinode変更時刻
+　一致結果のblksize情報		4096
+　一致結果のblocks情報		0
+```
+不一致箇所があるのが分かる(見やすいように加工済み)。  
+
+</details>
+
+上記、プログラム側での実体ファイル情報取得用にもlstat関数を用いている。  
+これが可能なのは、シンボリックリンク以外を引数にした場合、**stat関数**と全く同じ結果を返すことができるからに他ならない。  
+
+
 <a name="practicaluseFiletestlocaltime"></a>
-### エポック経過秒数をローカルタイム関数で変換
+#### エポック経過秒数をローカルタイム関数で変換
 システム時間の起点となるエポック(epoch)からの経過秒数を人間が読みやすい形式に変換するには、**localtime関数**を用いる。  
 
 * localtime関数利用制限(制約？)。  
@@ -7166,6 +9649,7 @@ sub timeformatChange {
   * 曜日は、日曜日が0始まりになり、それ以降は月曜日が1、火曜日が2と加算されていく。  
   * 日付は、1月1日が0始まりになり、12月31日は364(閏年の場合は365)になるため、1加算する必要がある。  
 
+<details><summary>展開：プログラム。</summary>
 
 以下、プログラム。
 ```perl
@@ -7208,6 +9692,50 @@ sub localtimestat() {
 上記はエポック経過秒数になるため、以下、年月日に変換する。
 	atime(最終アクセス時刻)：2022年1月15日(土曜日) 14時20分34秒
 ```
+
+</details>
+
+
+<a name="practicaluseFiletestbitoperator"></a>
+#### ビット演算子
+[論理演算子](#subConditional2)にまとめたかったひとつではある。  
+
+| 式 | 意味 |
+|----|------|
+|`10 & 12`|[ビットAND演算子](https://perldoc.jp/docs/perl/5.24.1/perlop.pod#Bitwise32And)(両方のオペランドが1になっているビットを1にする（この例では8になる）)。|
+|`10 | 12`|[ビットOR演算子](https://perldoc.jp/docs/perl/5.24.1/perlop.pod#Bitwise32Or32and32Exclusive32Or)(片方のオペランドが1になっているビットを1にする（この例では14になる）)。|
+|`10 ^ 12`|[ビットXOR演算子](https://perldoc.jp/docs/perl/5.24.1/perlop.pod#Bitwise32Or32and32Exclusive32Or)(片方のオペランドだけが1になっているビットを1にする（この例では6になる）)。|
+|`6 << 2`|[左シフト演算子](https://perldoc.jp/docs/perl/5.24.1/perlop.pod#Shift32Operators)(左オペランドを右オペランドで示されたビット数だけ左に移動する。右端には0が補われる。（この例では24になる）)
+|`25 >> 2`|[右シフト演算子](https://perldoc.jp/docs/perl/5.24.1/perlop.pod#Shift32Operators)(左オペランドを右オペランドで示されたビット数だけ右に移動する。右端から押し出されたビットは捨てられる。（この例では6になる）)
+|`~10`|[ビット否定演算子](https://perldoc.jp/docs/perl/5.24.1/perlop.pod#Symbolic32Unary32Operators)(全てのビットを反転した数を返す。（この例では0xFFFFFFF5になる）)。
+
+
+<details><summary>展開：プログラム。</summary>
+
+以下、プログラム。
+```perl
+use v5.24;
+
+sub bitFiletest() {
+	say 10 & 12;	# ビットAND演算子の出力結果：8
+	say 10 | 12;	# ビットOR演算子の出力結果：14
+	say 10 ^ 12;	# ビットOR演算子の出力結果：6
+	say 6 << 2;	# 左シフト演算子の出力結果：24
+	say 25 >> 2;	# 右シフト演算子の出力結果：6
+	printf "%x\n", ~10;	# ビット否定演算子の出力結果：fffffffffffffff5
+}
+&bitFiletest();
+```
+ビット否定演算子は、別名、単項ビット反転演算子とも言うそうだ。  
+単項演算子のひとつなのだろう。  
+
+</details>
+
+todo:
+そもそも使うかどうかも分からないものに時間を使うのはどうかと思うため、ここで打ち切った。
+機会があれば勉強を再開しようと思う。  
+例えば、本格的にファイル権限などを操作する時に重要になることだろう。  
+何より、ビット演算子の活用は、C言語以外でお目に掛ったことがない。  
 
 </details>
 
