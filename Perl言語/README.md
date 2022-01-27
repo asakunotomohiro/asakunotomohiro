@@ -7022,25 +7022,65 @@ sub timeformatChange {
 <a name="practicaluseFiletest"></a>
 <details><summary>応用知識-ファイルテスト</summary>
 
-ファイルへの書き込みのために、既に存在しているのか否か。  
-ファイルの最終変更日時からの経過日数・ファイルの大きさ・読み書き実行権限状況・バイナリファイル・シンボリックリンクファイルなどの確認できる方法がファイルテストになる。  
+ファイルへの書き込み・読み込みのために、既に存在しているのか否か。  
+ファイルの最終変更日時からの経過日数・ファイルの大きさ・読み書き実行権限状況・バイナリファイル・シンボリックリンクファイルなどの確認方法がファイルテストになる。  
+
+* 目次  
+  * [ファイルテスト演算子](#practicaluseFiletestoperator)  
+    * [同ファイルに複数のファイルテスト演算子を用いる(第1弾)_記号](#practicaluseFiletestoperatorandoperator)  
+    * [同ファイルに複数のファイルテスト演算子を用いる(第2弾)並列置き](#practicaluseFiletestoperatorstacking)  
+  * [stat関数](#practicaluseFileteststatfunck)  
+    * [stat関数-nlink](#practicaluseFileteststatfuncknlink)  
+  * [lstat関数](#practicaluseFiletestlstatfunck)  
+  * [エポック経過秒数をローカルタイム関数で変換](#practicaluseFiletestlocaltime)  
+  * [ビット演算子](#practicaluseFiletestbitoperator)  
+
+<details><summary>timeformatChange関数。</summary>
+
+日付部分は、数字が羅列されているだけで、人間が見て判断できる形式ではない。  
+そのため、書き換える必要がある。  
+今回、それを関数にまとめたため、ここで定義する。  
+
+```perl
+sub timeformatChange {
+	# この関数をどこからでも呼び出せるようにしたい。
+	my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = @_;
+	my %dayweek = (
+				0=>'日',	# Sunday
+				1=>'月',	# Monday
+				2=>'火',	# Tuesday
+				3=>'水',	# Wednesday
+				4=>'木',	# Thursday
+				5=>'金',	# Friday
+				6=>'土',	# Saturday
+				);
+
+	$mon += 1;					# 月が0始まりになるため、1加算する。
+	$year += 1900;				# 1900年を加算することで、西暦になる。
+	$wday = $dayweek{$wday};	# 日曜日が0始まりになり、それを変換する。
+	$yday += 1;					# 1月1日が0始まりのため、1加算する。
+
+	return "$year年$mon月$yday日($wday) $hour時$min分$sec秒";
+}
+```
+
+個々のプログラムには付けない。  
+
+</details>
 
 
 <a name="practicaluseFiletestoperator"></a>
 ### ファイルテスト演算子
-[演算子](#Conditional条件分岐)関係はひとつにまとめたかったのだが、それはそれで情報が分散してしまうと言う・・・。  
-すでに分散しているため、どの口が言うのかという・・・。  
-
 様式：
 `-演算子 ファイルもしくはディレクトリなど`  
-`-演算子`と言うのは、**演算子**部分が1文字のみになる。  
+`-演算子`と言うのは、**演算子**部分が1文字のみになる(その後にファイルやディレクトリが続く)。  
 
 以下、ファイル存在有無の例）
 `say "'" . basename($0, '') . "'ファイル存在せり。" if -e $0;`  
 出力結果：
 'ファイルテスト演算子.pl'ファイル存在せり。  
 
-普通は、逆で使う。  
+上記は例であり、普通は、逆で使う。  
 ファイルを作成する場合は、既に作られていたときに`die`でプログラムを終了するなど。  
 今回のように、メッセージを出すために使うことはない。  
 また、**die**を使う場合は、プログラマーが任意で強制終了させるだけなので、`$!`でのメッセージは存在しない。  
@@ -7049,12 +7089,13 @@ sub timeformatChange {
 `warn "8日前のファイル" if -M 'hoge.txt' > 8;`  
 出力結果：
 8日前のファイル at ファイルテスト演算子.pl line xx.  
-これは、[stat情報](#practicaluseFileteststatfunck)の**最終更新時刻(`$mtime`)**を見ている。  
+これは、[stat情報](#practicaluseFileteststatfunck)の**最終更新時刻(`$mtime`)** を見ている。  
+※8日以上古いファイルであることが分かる。  
 
-判定手段として、引数を省略した場合**$_**が使われる。  
+判定手段として、引数を省略した場合 **$_** が使われる。  
 しかし、`my $testret = -s / 1024;`の場合、`-s $_ / 1024`とは解釈されない(この場合は正規表現としてのスラッシュ記号と判断される)。  
-省略した場合に、意図した解釈をされる方法は`(-s) / 1024`とすること(これをすることで、`$_`が使われる)。  
-当然だが、`-s $hoge / 1024`のように、変数名を明示した方が良い。  
+省略した場合に、意図した解釈をされる方法は`(-s) / 1024`とすること(これをすることで、`$_`が使われる故に、`(-s $_) / 1024`となる)。  
+当然だが、`-s $hoge / 1024`のように、変数名を利用した方が良い。  
 
 |[ファイルテスト](https://perldoc.jp/func/-X)|説明|
 |:------------:|----|
@@ -7099,6 +7140,7 @@ sub timeformatChange {
 
 <a name="practicaluseFiletestoperatorandoperator"></a>
 #### 同じファイルに、複数のファイルテスト演算子を用いる。
+以降に、[重ね掛け](#practicaluseFiletestoperatorstacking)の説明をしているが、こちらのほうがいいだろう(同じif文内で使う場合に限る)。  
 仮想ファイルハンドル`_`を使うことで、ファイルテスト演算子を重ね掛けできる。  
 ```perl
 if( -r $filename and -w _ ) {
@@ -7107,7 +7149,7 @@ if( -r $filename and -w _ ) {
 ```
 もし、この手法を使わずに、`if( -r $filename and -w $filename ) {`とした場合、左右に対してstat関数を呼び出すことになる。  
 そのため、処理速度が大幅に低下する。  
-そして、[重ね掛け](#practicaluseFiletestoperatorstacking)より、こちらのほうがいいだろう(容量比較などを考慮した場合)。  
+
 
 また、以下のようにもできる。
 ```perl
@@ -7119,6 +7161,75 @@ if( -w _ ) {
 )
 ```
 しかし、if文の途中で何かしらの処理をした場合、最初のファイルと異なるファイルを**-w**でファイルテストすることになる。  
+
+<details><summary>プログラム例</summary>
+
+以下、実際のプログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub underscore() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+
+	my $filename = 'file.txt';	# ファイル名のみ作成。
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename or die "$filenameのファイルオープン失敗($!)";
+	say $file_fh '本日は晴天なり。';	# ファイルへの書き込み。
+	close $file_fh;
+
+	if( -s $filename and -f _ ) {
+		say "ファイルに書き込みあり。";	# こっちが動く。
+	}
+	else{
+		say "ファイルが空、もしくはファイルではない。";
+	}
+
+	if( -d $filename ) {
+		say "ここはディレクトリである。";	# 出力なし。
+	}
+	elsif( -f _ ) {
+		say "我はファイルである。";	# こっちが動く(想定通り)。
+	}
+	else{
+		say "我は誰だ？";
+	}
+
+	if( -d $filename ) {
+		say "ディレクトリだと認定する。";	# 出力なし。
+	}
+	opendir my $dir_fh, $currentDir or die "ディレクトリオープン失敗($!)。";
+	stat $dir_fh;	←☆ここが原因で`_`の中身が書き換わった。
+	if( -f _ ) {	←☆_は、ディレクトリ情報が格納されている。
+		say "我はファイルである。";
+	}
+	else{
+		say "ファイルではない判定が成された。";	# ディレクトリであるため、こっちが動く。
+	}
+	closedir $dir_fh;	# なくてもいい。
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	unless( -f $filename ) {
+		say "ファイル削除済み。";
+	}
+}
+&underscore();
+```
+もし、`_`記号を用いる場合は、1つの**if**文に納めるべきであり、条件式を跨ぐ使い方は避けるべき。  
+
+以下、出力結果。
+```terminal
+ファイルを作成する。
+ファイルに書き込みあり。
+我はファイルである。
+ファイルではない判定が成された。
+ファイル削除。
+ファイル削除済み。
+```
+
+</details>
 
 
 <a name="practicaluseFiletestoperatorstacking"></a>
@@ -7288,7 +7399,7 @@ $
 しかし、それではファイルに対するファイルテストとは言えなくなってしまわないか？  
 **unlink**演算子でrootユーザファイルを削除できたため、私の予想は合っているだろうが・・・。  
 
-きっと他の演算子([w](#practicaluseFiletestoperatorsmallw)・[W](#practicaluseFiletestoperatorbigW)・[x](practicaluseFiletestoperatorsmallx#)・[X](#practicaluseFiletestoperatorbigX)・[o](#practicaluseFiletestoperatorsmallo)・[O](#practicaluseFiletestoperatorbigO))でも同じ事が言えるだろう。  
+きっと他の演算子([w](#practicaluseFiletestoperatorsmallw)・[W](#practicaluseFiletestoperatorbigW)・[x](#practicaluseFiletestoperatorsmallx)・[X](#practicaluseFiletestoperatorbigX)・[o](#practicaluseFiletestoperatorsmallo)・[O](#practicaluseFiletestoperatorbigO))でも同じ事が言えるだろう。  
 
 
 <a name="practicaluseFiletestoperatorsmallw"></a>
@@ -7358,7 +7469,7 @@ todo:
 #### ファイルテスト演算子(`-e`)
 ファイルorディレクトリが存在する。  
 
-<details><summary>ファイル向けプログラム。</summary>
+<details><summary>ファイルに対するプログラム。</summary>
 
 以下、ファイルが存在することの確認プログラム。
 ```perl
@@ -7402,7 +7513,7 @@ sub filetestfunc() {
 
 </details>
 
-<details><summary>ディレクトリ向けプログラム。</summary>
+<details><summary>ディレクトリに対するプログラム。</summary>
 
 以下、ディレクトリが存在することの確認プログラム。
 ```perl
@@ -7444,12 +7555,14 @@ sub dirtestfunc() {
 </details>
 
 要は、ファイルかディレクトリの区別を付けずに存在有無確認ができるファイルテストと言うことになる(分かっていたことではあるが)。  
-しかし、区別を付ける必要が無い理由が何かが分からない。  
+しかし、区別を付ける必要が無い理由が分からない。  
 
 
 <a name="practicaluseFiletestoperatorz"></a>
 #### ファイルテスト演算子(`-z`)
 ファイルの大きさがゼロ(空)(ディレクトリの場合"**偽**")。  
+
+<details><summary>ファイル容量なし向けのプログラム。</summary>
 
 以下、ファイルサイズが0の場合のプログラム。
 ```perl
@@ -7504,6 +7617,8 @@ sub filesizefunc() {
 ファイルに書き込みあり。
 ```
 ファイルが存在しない場合、書き込みありと認識されてしまう。  
+
+</details>
 
 <details><summary>ファイル容量あり用のプログラム。</summary>
 
@@ -7634,6 +7749,8 @@ sub filesizefunc() {
 #### ファイルテスト演算子(`-s`)
 ファイルorディレクトリの大きさがゼロ以外(バイト単位での大きさを返す)。  
 
+<details><summary>ファイル容量あり向けのプログラム。</summary>
+
 以下、ファイル書き込みありプログラム。
 ```perl
 use v5.24;
@@ -7695,8 +7812,8 @@ sub filesizefunc() {
 ファイル削除。
 ファイルが空ファイル(書き込みなし)。
 ```
-ファイルテスト演算子のみでの容量出力が可能なようだが、前後に何かを挟んだ場合は出力されなくなるようだ。  
 
+</details>
 
 <details><summary>ディレクトリに対するプログラム。</summary>
 
@@ -7761,6 +7878,8 @@ sub dirsizefunc() {
 #### ファイルテスト演算子(`-f`)
 エントリは通常ファイル。  
 
+<details><summary>ファイルに対するプログラム。</summary>
+
 以下、プログラム(ファイルの場合"**真**"になる)。
 ```perl
 use v5.24;
@@ -7814,6 +7933,8 @@ sub fileexistence() {
 ファイル削除。
 ファイルなし。
 ```
+
+</details>
 
 <details><summary>ディレクトリに対するプログラム。</summary>
 
@@ -7882,6 +8003,8 @@ sub direxistence() {
 #### ファイルテスト演算子(`-d`)
 エントリはディレクトリ。  
 
+<details><summary>ディレクトリ向けのプログラム。</summary>
+
 以下、ディレクトリ確認用プログラム。
 ```perl
 use v5.24;
@@ -7922,7 +8045,7 @@ sub direxistence() {
 }
 &direxistence();
 ```
-上記オプション[`-e`](#practicaluseFiletestoperatore)と違い、ディレクトリの存在有無を確認するテストになるため、使うとすればこっち(`-f`)だろう。  
+上記オプション[`-e`](#practicaluseFiletestoperatore)と違い、ディレクトリの存在有無を確認するテストになるため、使うとすればこっち(`-d`)だろう。  
 
 以下、出力結果。
 ```terminal
@@ -7937,6 +8060,8 @@ sub direxistence() {
 ディレクトリ削除。
 ディレクトリなし(削除済み)。
 ```
+
+</details>
 
 <details><summary>ファイルに対するプログラム。</summary>
 
@@ -8002,6 +8127,8 @@ sub fileexistence() {
 <a name="practicaluseFiletestoperatorl"></a>
 #### ファイルテスト演算子(`-l`)
 エントリはシンボリックリンク(ファイルシステムが非対応なら偽)。  
+
+<details><summary>シンボリックリンクファイルに対するプログラム。</summary>
 
 以下、プログラム。
 ```perl
@@ -8079,6 +8206,10 @@ sub filetestLink() {
 シンボリックリンクファイルなし(削除済みの判断で'なし'としたわけではない)。
 ```
 
+</details>
+
+<details><summary>シンボリックリンクディレクトリに対するプログラム。</summary>
+
 以下、ディレクトリに対するプログラム。
 ```perl
 use v5.24;
@@ -8149,12 +8280,16 @@ sub dirtestLink() {
 ディレクトリ削除。
 ディレクトリなし(削除済みの判断でなしとしたわけではない)。
 ```
-プログラムで、この判定を使う日は来るのだろうか。  
+この判定を使う日は来るのだろうか。  
+
+</details>
 
 
 <a name="practicaluseFiletestoperatorp"></a>
 #### ファイルテスト演算子(`-p`)
 エントリは名前付きパイプ(FIFO)またはパイプのファイルハンドル。  
+
+<details><summary>パイプに対するプログラム。</summary>
 
 以下、プログラム。
 ```perl
@@ -8219,7 +8354,7 @@ sub pipehandle() {
 当然なのだろうが、ファイルハンドルは開いた状態で確認する必要がある。  
 
 todo:
-パイプというのは別途調べる必要がある。  
+パイプというのを別途調べる必要がある。  
 
 以下、出力結果。
 ```terminal
@@ -8234,6 +8369,8 @@ todo:
 これらは、冒頭説明の後半部分に当たるはず。  
 前半部分はどのようなプログラムにすれば良いのか分からない。  
 逆か？  
+
+</details>
 
 
 <a name="practicaluseFiletestoperatorbigS"></a>
@@ -8308,6 +8445,8 @@ todo:
 補足：ファイルの存在がない場合、もしくは読めない場合、偽になる。  
 補足：ファイルが空の場合、真になる。  
 
+<details><summary>テキストファイルに対するプログラム。</summary>
+
 以下、通常ファイルに対するプログラム。
 ```perl
 use v5.24;
@@ -8360,6 +8499,8 @@ sub filetestT() {
 ```
 予想通りの結果ではある。  
 
+</details>
+
 <details><summary>バイナリに対するプログラム。</summary>
 
 以下、バイナリファイルに対するプログラム。
@@ -8408,6 +8549,8 @@ $
 補足：ファイルの存在がない場合、もしくは読めない場合、偽になる。  
 補足：ファイルが空の場合、真になる。  
 
+<details><summary>バイナリに対するプログラム。</summary>
+
 以下、プログラム。
 ```perl
 use v5.24;
@@ -8437,7 +8580,9 @@ sub filetestB() {
 なるほど。  
 難しい。  
 
-<details><summary>テキストに対するプログラム。</summary>
+</details>
+
+<details><summary>テキストファイルに対するプログラム。</summary>
 
 以下、テキストファイルへの判定用プログラム。
 ```perl
@@ -8489,7 +8634,7 @@ sub filetestB() {
 ファイルなし。
 ```
 ~~これは使いどころが難しい~~。  
-他のファイルテスト演算子と組み合わせが必要と言うことだろう。  
+他のファイルテスト演算子と[組み合わせ](#practicaluseFiletestoperatorandoperator)が必要と言うことだろう。  
 
 </details>
 
@@ -8550,27 +8695,6 @@ sub testfileM() {
 	}
 }
 &testfileM();
-
-sub timeformatChange {
-	# この関数をどこからでも呼び出せるようにしたい。
-	my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = @_;
-	my %dayweek = (
-				0=>'日',	# Sunday
-				1=>'月',	# Monday
-				2=>'火',	# Tuesday
-				3=>'水',	# Wednesday
-				4=>'木',	# Thursday
-				5=>'金',	# Friday
-				6=>'土',	# Saturday
-				);
-
-	$mon += 1;					# 月が0始まりになるため、1加算する。
-	$year += 1900;				# 1900年を加算することで、西暦になる。
-	$wday = $dayweek{$wday};	# 日曜日が0始まりになり、それを変換する。
-	$yday += 1;					# 1月1日が0始まりのため、1加算する。
-
-	return "$year年$mon月$yday日($wday) $hour時$min分$sec秒";
-}
 ```
 
 以下、出力結果。
@@ -8644,27 +8768,6 @@ sub testfileM() {
 	}
 }
 &testfileM();
-
-sub timeformatChange {
-	# この関数をどこからでも呼び出せるようにしたい。
-	my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = @_;
-	my %dayweek = (
-				0=>'日',	# Sunday
-				1=>'月',	# Monday
-				2=>'火',	# Tuesday
-				3=>'水',	# Wednesday
-				4=>'木',	# Thursday
-				5=>'金',	# Friday
-				6=>'土',	# Saturday
-				);
-
-	$mon += 1;					# 月が0始まりになるため、1加算する。
-	$year += 1900;				# 1900年を加算することで、西暦になる。
-	$wday = $dayweek{$wday};	# 日曜日が0始まりになり、それを変換する。
-	$yday += 1;					# 1月1日が0始まりのため、1加算する。
-
-	return "$year年$mon月$yday日($wday) $hour時$min分$sec秒";
-}
 ```
 
 以下、出力結果。
@@ -8746,28 +8849,6 @@ sub filetestA() {
 	}
 }
 &filetestA();
-
-
-sub timeformatChange {
-	# この関数をどこからでも呼び出せるようにしたい。
-	my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = @_;
-	my %dayweek = (
-				0=>'日',	# Sunday
-				1=>'月',	# Monday
-				2=>'火',	# Tuesday
-				3=>'水',	# Wednesday
-				4=>'木',	# Thursday
-				5=>'金',	# Friday
-				6=>'土',	# Saturday
-				);
-
-	$mon += 1;					# 月が0始まりになるため、1加算する。
-	$year += 1900;				# 1900年を加算することで、西暦になる。
-	$wday = $dayweek{$wday};	# 日曜日が0始まりになり、それを変換する。
-	$yday += 1;					# 1月1日が0始まりのため、1加算する。
-
-	return "$year年$mon月$yday日($wday) $hour時$min分$sec秒";
-}
 ```
 
 以下、プログラム実行。
@@ -8854,28 +8935,6 @@ sub dirtestA() {
 	}
 }
 &dirtestA();
-
-
-sub timeformatChange {
-	# この関数をどこからでも呼び出せるようにしたい。
-	my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = @_;
-	my %dayweek = (
-				0=>'日',	# Sunday
-				1=>'月',	# Monday
-				2=>'火',	# Tuesday
-				3=>'水',	# Wednesday
-				4=>'木',	# Thursday
-				5=>'金',	# Friday
-				6=>'土',	# Saturday
-				);
-
-	$mon += 1;					# 月が0始まりになるため、1加算する。
-	$year += 1900;				# 1900年を加算することで、西暦になる。
-	$wday = $dayweek{$wday};	# 日曜日が0始まりになり、それを変換する。
-	$yday += 1;					# 1月1日が0始まりのため、1加算する。
-
-	return "$year年$mon月$yday日($wday) $hour時$min分$sec秒";
-}
 ```
 
 以下、実行結果。
@@ -8968,28 +9027,6 @@ sub filetestC() {
 	}
 }
 &filetestC();
-
-
-sub timeformatChange {
-	# この関数をどこからでも呼び出せるようにしたい。
-	my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = @_;
-	my %dayweek = (
-				0=>'日',	# Sunday
-				1=>'月',	# Monday
-				2=>'火',	# Tuesday
-				3=>'水',	# Wednesday
-				4=>'木',	# Thursday
-				5=>'金',	# Friday
-				6=>'土',	# Saturday
-				);
-
-	$mon += 1;					# 月が0始まりになるため、1加算する。
-	$year += 1900;				# 1900年を加算することで、西暦になる。
-	$wday = $dayweek{$wday};	# 日曜日が0始まりになり、それを変換する。
-	$yday += 1;					# 1月1日が0始まりのため、1加算する。
-
-	return "$year年$mon月$yday日($wday) $hour時$min分$sec秒";
-}
 ```
 
 以下、プログラム実行。
@@ -9077,28 +9114,6 @@ sub dirtestC() {
 	}
 }
 &dirtestC();
-
-
-sub timeformatChange {
-	# この関数をどこからでも呼び出せるようにしたい。
-	my ($sec, $min, $hour, $mday, $mon, $year, $wday, $yday, $isdst) = @_;
-	my %dayweek = (
-				0=>'日',	# Sunday
-				1=>'月',	# Monday
-				2=>'火',	# Tuesday
-				3=>'水',	# Wednesday
-				4=>'木',	# Thursday
-				5=>'金',	# Friday
-				6=>'土',	# Saturday
-				);
-
-	$mon += 1;					# 月が0始まりになるため、1加算する。
-	$year += 1900;				# 1900年を加算することで、西暦になる。
-	$wday = $dayweek{$wday};	# 日曜日が0始まりになり、それを変換する。
-	$yday += 1;					# 1月1日が0始まりのため、1加算する。
-
-	return "$year年$mon月$yday日($wday) $hour時$min分$sec秒";
-}
 ```
 
 以下、プログラム実行。
@@ -9135,15 +9150,16 @@ $ perl ファイルテスト演算子\(オプションC\).pl
 ディレクトリなし(削除済みの判断でなしとしたわけではない)。
 $
 ```
-困った。  
-よく分からないまま検証が終わった。  
-（よく分からないのであれば、検証したとは言えないぞ）。  
+困った(よく分からないままになっている)。  
 
 </details>
 
+todo:
+再調査が必要。  
+
 
 <a name="practicaluseFileteststatfunck"></a>
-### stat関数
+#### stat関数
 上記[ファイルテスト演算子](#practicaluseFiletestoperator)では取得できない(テストで得られない)情報がある。  
 そのテストで得られない情報を今回の[stat関数](https://perldoc.perl.org/functions/stat)で取得する。  
 Perlの公式ページでは、[日本語版](https://perldoc.jp)がないようだ。  
@@ -9151,6 +9167,7 @@ Perlの公式ページでは、[日本語版](https://perldoc.jp)がないよう
 [oracle-stat](https://docs.oracle.com/cd/E19109-01/tsolaris7/805-8078/6j7jiictj/index.html)・
 [hitachi-stat](http://itdoc.hitachi.co.jp/manuals/3021/3021313330/JPAS0351.HTM)。  
 
+<details><summary>展開：プログラム。</summary>
 
 以下、プログラム。
 ```perl
@@ -9198,10 +9215,14 @@ iノード番号：67541375
 割り当てられたブロック数：8
 ```
 
+</details>
+
 
 <a name="practicaluseFileteststatfuncknlink"></a>
-#### stat関数-nlink
+##### stat関数-nlink
 ここは、上記のstat関数で取得したなかのnlinkに特化する。  
+
+<details><summary>展開：プログラム(ハードリンク個数確認用)。</summary>
 
 以下、ファイルに対するハードリンクの個数を検知するプログラム。
 ```perl
@@ -9267,6 +9288,8 @@ sub nlinkfunc() {
 	ファイルに対するハードリンクの個数(ハードリンクファイルからの紐付け)：	1
 ハードリンクファイル削除。
 ```
+
+</details>
 
 ディレクトリのハードリンクに対しての検出方法が分からない・・・。  
 そもそもディレクトリのハードリンクを作成できない。  
@@ -9354,7 +9377,7 @@ Perlからハードリンクディレクトリ作成はできそうにない。
 
 
 <a name="practicaluseFiletestlstatfunck"></a>
-### lstat関数
+#### lstat関数
 シンボリックリンク(ソフトリンク)を[stat関数](#practicaluseFileteststatfunck)に渡した場合、実体ファイルの情報を取得する。  
 
 <details><summary>シンボリックリンクファイルをstat関数で情報取得するプログラム。</summary>
@@ -9400,6 +9423,8 @@ sub statfunc() {
 要は、シンボリックリンクファイルの情報ではなく、実体ファイルの情報だと言うこと。  
 
 </details>
+
+<details><summary>展開：プログラム。</summary>
 
 以下、**lstat関数**を使い、シンボリックリンクファイルの情報を取得するプログラム。
 ```perl
@@ -9468,12 +9493,14 @@ sub lstatfunc() {
 ```
 不一致箇所があるのが分かる(見やすいように加工済み)。  
 
+</details>
+
 上記、プログラム側での実体ファイル情報取得用にもlstat関数を用いている。  
 これが可能なのは、シンボリックリンク以外を引数にした場合、**stat関数**と全く同じ結果を返すことができるからに他ならない。  
 
 
 <a name="practicaluseFiletestlocaltime"></a>
-### エポック経過秒数をローカルタイム関数で変換
+#### エポック経過秒数をローカルタイム関数で変換
 システム時間の起点となるエポック(epoch)からの経過秒数を人間が読みやすい形式に変換するには、**localtime関数**を用いる。  
 
 * localtime関数利用制限(制約？)。  
@@ -9482,6 +9509,7 @@ sub lstatfunc() {
   * 曜日は、日曜日が0始まりになり、それ以降は月曜日が1、火曜日が2と加算されていく。  
   * 日付は、1月1日が0始まりになり、12月31日は364(閏年の場合は365)になるため、1加算する必要がある。  
 
+<details><summary>展開：プログラム。</summary>
 
 以下、プログラム。
 ```perl
@@ -9525,9 +9553,11 @@ sub localtimestat() {
 	atime(最終アクセス時刻)：2022年1月15日(土曜日) 14時20分34秒
 ```
 
+</details>
+
 
 <a name="practicaluseFiletestbitoperator"></a>
-### ビット演算子
+#### ビット演算子
 [論理演算子](#subConditional2)にまとめたかったひとつではある。  
 
 | 式 | 意味 |
@@ -9539,6 +9569,8 @@ sub localtimestat() {
 |`25 >> 2`|[右シフト演算子](https://perldoc.jp/docs/perl/5.24.1/perlop.pod#Shift32Operators)(左オペランドを右オペランドで示されたビット数だけ右に移動する。右端から押し出されたビットは捨てられる。（この例では6になる）)
 |`~10`|[ビット否定演算子](https://perldoc.jp/docs/perl/5.24.1/perlop.pod#Symbolic32Unary32Operators)(全てのビットを反転した数を返す。（この例では0xFFFFFFF5になる）)。
 
+
+<details><summary>展開：プログラム。</summary>
 
 以下、プログラム。
 ```perl
@@ -9557,11 +9589,13 @@ sub bitFiletest() {
 ビット否定演算子は、別名、単項ビット反転演算子とも言うそうだ。  
 単項演算子のひとつなのだろう。  
 
+</details>
+
 todo:
 そもそも使うかどうかも分からないものに時間を使うのはどうかと思うため、ここで打ち切った。
 機会があれば勉強を再開しようと思う。  
 例えば、本格的にファイル権限などを操作する時に重要になることだろう。  
-そもそもビット演算子の活用は、C言語以外でお目に掛ったことがない。  
+何より、ビット演算子の活用は、C言語以外でお目に掛ったことがない。  
 
 </details>
 
