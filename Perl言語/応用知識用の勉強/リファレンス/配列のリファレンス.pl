@@ -2,8 +2,28 @@ use v5.24;
 
 my $asakuno = "朝来野智博";
 my @asakuno = ("朝来野", "智博");
+my $tomohiro = \@asakuno;
+say "$tomohiro";		# ARRAY(0x7fa802005388)
+say "@$tomohiro";		# 朝来野 智博
+say "$$tomohiro[0]";	# 朝来野
+say "$$tomohiro[1]";	# 智博
 
-say "配列リファレンス";
+say "以下、無名配列リファレンス失敗";
+my $tomohiro = \("朝来野", "智博");
+say "$tomohiro";		# SCALAR(0x7fa2bb804928)
+						# 要は、(\"朝来野", \"智博")と同じ事になっているため、配列とは無縁状態。
+#say "@$tomohiro";		# 
+#say "$$tomohiro[0]";	# 
+#say "$$tomohiro[1]";	# 
+
+say "以下、無名配列リファレンス";
+my $tomohiro = ["朝来野", "智博"];
+say "$tomohiro";		# ARRAY(0x7ff649003610)
+say "@$tomohiro";		# 朝来野 智博
+say "$$tomohiro[0]";	# 朝来野
+say "$$tomohiro[1]";	# 智博
+
+say "以下、配列リファレンス";
 
 sub arrayReference() {
 	my $one = shift @_;
@@ -63,6 +83,7 @@ sub arrayReferenceLookKaiKai() {
 	# for my $value ( ${@_[1]} ) {	# Not a SCALAR reference at 配列のリファレンス.pl line 63.
 	# for my $value ( ${$_[1]} ) {	# Not a SCALAR reference at 配列のリファレンス.pl line 64.
 	# for my $value ( ${$_}[1] ) {	# エラーにはならないが、中身を取り出せなかった。
+	# for my $value ( @{$_[1]} ) {	←☆こちらでも成功したが、どう違う？
 	for my $value ( @{@_[1]} ) {
 		say "$value";
 	}
@@ -86,10 +107,13 @@ sub arrayReferenceEdit() {
 	for my $value ( @$two ) {
 		say "$valueを書き換える。";
 		$value = "書き換え：" . $value . "を書き換える";
+#			朝来野を書き換える。
+#			智博を書き換える。
 	}
 }
 &arrayReferenceEdit($asakuno, \@asakuno);
 
+say "-" x 30;
 say $asakuno[0];	# 書き換え：朝来野を書き換える
 say $asakuno[1];	# 書き換え：智博を書き換える
 
