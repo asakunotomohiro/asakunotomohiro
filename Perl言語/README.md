@@ -7025,6 +7025,16 @@ sub timeformatChange {
 ファイルへの書き込み・読み込みのために、既に存在しているのか否か。  
 ファイルの最終変更日時からの経過日数・ファイルの大きさ・読み書き実行権限状況・バイナリファイル・シンボリックリンクファイルなどの確認方法がファイルテストになる。  
 
+* 目次  
+  * [ファイルテスト演算子](#practicaluseFiletestoperator)  
+    * [同ファイルに複数のファイルテスト演算子を用いる(第1弾)_記号](#practicaluseFiletestoperatorandoperator)  
+    * [同ファイルに複数のファイルテスト演算子を用いる(第2弾)並列置き](#practicaluseFiletestoperatorstacking)  
+  * [stat関数](#practicaluseFileteststatfunck)  
+    * [stat関数-nlink](#practicaluseFileteststatfuncknlink)  
+  * [lstat関数](#practicaluseFiletestlstatfunck)  
+  * [エポック経過秒数をローカルタイム関数で変換](#practicaluseFiletestlocaltime)  
+  * [ビット演算子](#practicaluseFiletestbitoperator)  
+
 
 <a name="practicaluseFiletestoperator"></a>
 ### ファイルテスト演算子
@@ -7097,6 +7107,7 @@ sub timeformatChange {
 
 <a name="practicaluseFiletestoperatorandoperator"></a>
 #### 同じファイルに、複数のファイルテスト演算子を用いる。
+以降に、[重ね掛け](#practicaluseFiletestoperatorstacking)の説明をしているが、こちらのほうがいいだろう(同じif文内で使う場合に限る)。  
 仮想ファイルハンドル`_`を使うことで、ファイルテスト演算子を重ね掛けできる。  
 ```perl
 if( -r $filename and -w _ ) {
@@ -7105,7 +7116,7 @@ if( -r $filename and -w _ ) {
 ```
 もし、この手法を使わずに、`if( -r $filename and -w $filename ) {`とした場合、左右に対してstat関数を呼び出すことになる。  
 そのため、処理速度が大幅に低下する。  
-そして、[重ね掛け](#practicaluseFiletestoperatorstacking)より、こちらのほうがいいだろう(容量比較などを考慮した場合)。  
+
 
 また、以下のようにもできる。
 ```perl
@@ -7351,7 +7362,7 @@ $
 しかし、それではファイルに対するファイルテストとは言えなくなってしまわないか？  
 **unlink**演算子でrootユーザファイルを削除できたため、私の予想は合っているだろうが・・・。  
 
-きっと他の演算子([w](#practicaluseFiletestoperatorsmallw)・[W](#practicaluseFiletestoperatorbigW)・[x](practicaluseFiletestoperatorsmallx#)・[X](#practicaluseFiletestoperatorbigX)・[o](#practicaluseFiletestoperatorsmallo)・[O](#practicaluseFiletestoperatorbigO))でも同じ事が言えるだろう。  
+きっと他の演算子([w](#practicaluseFiletestoperatorsmallw)・[W](#practicaluseFiletestoperatorbigW)・[x](#practicaluseFiletestoperatorsmallx)・[X](#practicaluseFiletestoperatorbigX)・[o](#practicaluseFiletestoperatorsmallo)・[O](#practicaluseFiletestoperatorbigO))でも同じ事が言えるだろう。  
 
 
 <a name="practicaluseFiletestoperatorsmallw"></a>
@@ -7507,7 +7518,7 @@ sub dirtestfunc() {
 </details>
 
 要は、ファイルかディレクトリの区別を付けずに存在有無確認ができるファイルテストと言うことになる(分かっていたことではあるが)。  
-しかし、区別を付ける必要が無い理由が何かが分からない。  
+しかし、区別を付ける必要が無い理由が分からない。  
 
 
 <a name="practicaluseFiletestoperatorz"></a>
@@ -7758,7 +7769,6 @@ sub filesizefunc() {
 ファイル削除。
 ファイルが空ファイル(書き込みなし)。
 ```
-ファイルテスト演算子のみでの容量出力が可能なようだが、前後に何かを挟んだ場合は出力されなくなるようだ。  
 
 
 <details><summary>ディレクトリに対するプログラム。</summary>
@@ -7985,7 +7995,7 @@ sub direxistence() {
 }
 &direxistence();
 ```
-上記オプション[`-e`](#practicaluseFiletestoperatore)と違い、ディレクトリの存在有無を確認するテストになるため、使うとすればこっち(`-f`)だろう。  
+上記オプション[`-e`](#practicaluseFiletestoperatore)と違い、ディレクトリの存在有無を確認するテストになるため、使うとすればこっち(`-d`)だろう。  
 
 以下、出力結果。
 ```terminal
@@ -8552,7 +8562,7 @@ sub filetestB() {
 ファイルなし。
 ```
 ~~これは使いどころが難しい~~。  
-他のファイルテスト演算子と組み合わせが必要と言うことだろう。  
+他のファイルテスト演算子と[組み合わせ](#practicaluseFiletestoperatorandoperator)が必要と言うことだろう。  
 
 </details>
 
@@ -9198,15 +9208,16 @@ $ perl ファイルテスト演算子\(オプションC\).pl
 ディレクトリなし(削除済みの判断でなしとしたわけではない)。
 $
 ```
-困った。  
-よく分からないまま検証が終わった。  
-（よく分からないのであれば、検証したとは言えないぞ）。  
+困った(よく分からないままになっている)。  
 
 </details>
 
+todo:
+再調査が必要。  
+
 
 <a name="practicaluseFileteststatfunck"></a>
-### stat関数
+#### stat関数
 上記[ファイルテスト演算子](#practicaluseFiletestoperator)では取得できない(テストで得られない)情報がある。  
 そのテストで得られない情報を今回の[stat関数](https://perldoc.perl.org/functions/stat)で取得する。  
 Perlの公式ページでは、[日本語版](https://perldoc.jp)がないようだ。  
@@ -9263,7 +9274,7 @@ iノード番号：67541375
 
 
 <a name="practicaluseFileteststatfuncknlink"></a>
-#### stat関数-nlink
+##### stat関数-nlink
 ここは、上記のstat関数で取得したなかのnlinkに特化する。  
 
 以下、ファイルに対するハードリンクの個数を検知するプログラム。
@@ -9417,7 +9428,7 @@ Perlからハードリンクディレクトリ作成はできそうにない。
 
 
 <a name="practicaluseFiletestlstatfunck"></a>
-### lstat関数
+#### lstat関数
 シンボリックリンク(ソフトリンク)を[stat関数](#practicaluseFileteststatfunck)に渡した場合、実体ファイルの情報を取得する。  
 
 <details><summary>シンボリックリンクファイルをstat関数で情報取得するプログラム。</summary>
@@ -9536,7 +9547,7 @@ sub lstatfunc() {
 
 
 <a name="practicaluseFiletestlocaltime"></a>
-### エポック経過秒数をローカルタイム関数で変換
+#### エポック経過秒数をローカルタイム関数で変換
 システム時間の起点となるエポック(epoch)からの経過秒数を人間が読みやすい形式に変換するには、**localtime関数**を用いる。  
 
 * localtime関数利用制限(制約？)。  
@@ -9590,7 +9601,7 @@ sub localtimestat() {
 
 
 <a name="practicaluseFiletestbitoperator"></a>
-### ビット演算子
+#### ビット演算子
 [論理演算子](#subConditional2)にまとめたかったひとつではある。  
 
 | 式 | 意味 |
@@ -9624,7 +9635,7 @@ todo:
 そもそも使うかどうかも分からないものに時間を使うのはどうかと思うため、ここで打ち切った。
 機会があれば勉強を再開しようと思う。  
 例えば、本格的にファイル権限などを操作する時に重要になることだろう。  
-そもそもビット演算子の活用は、C言語以外でお目に掛ったことがない。  
+何より、ビット演算子の活用は、C言語以外でお目に掛ったことがない。  
 
 </details>
 
