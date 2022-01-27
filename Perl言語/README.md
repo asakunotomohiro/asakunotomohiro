@@ -7129,6 +7129,8 @@ if( -w _ ) {
 ```
 しかし、if文の途中で何かしらの処理をした場合、最初のファイルと異なるファイルを**-w**でファイルテストすることになる。  
 
+<details><summary>プログラム例</summary>
+
 以下、実際のプログラム。
 ```perl
 use v5.24;
@@ -7193,6 +7195,8 @@ sub underscore() {
 ファイル削除。
 ファイル削除済み。
 ```
+
+</details>
 
 
 <a name="practicaluseFiletestoperatorstacking"></a>
@@ -7432,7 +7436,7 @@ todo:
 #### ファイルテスト演算子(`-e`)
 ファイルorディレクトリが存在する。  
 
-<details><summary>ファイル向けプログラム。</summary>
+<details><summary>ファイルに対するプログラム。</summary>
 
 以下、ファイルが存在することの確認プログラム。
 ```perl
@@ -7476,7 +7480,7 @@ sub filetestfunc() {
 
 </details>
 
-<details><summary>ディレクトリ向けプログラム。</summary>
+<details><summary>ディレクトリに対するプログラム。</summary>
 
 以下、ディレクトリが存在することの確認プログラム。
 ```perl
@@ -7524,6 +7528,8 @@ sub dirtestfunc() {
 <a name="practicaluseFiletestoperatorz"></a>
 #### ファイルテスト演算子(`-z`)
 ファイルの大きさがゼロ(空)(ディレクトリの場合"**偽**")。  
+
+<details><summary>ファイル容量なし向けのプログラム。</summary>
 
 以下、ファイルサイズが0の場合のプログラム。
 ```perl
@@ -7578,6 +7584,8 @@ sub filesizefunc() {
 ファイルに書き込みあり。
 ```
 ファイルが存在しない場合、書き込みありと認識されてしまう。  
+
+</details>
 
 <details><summary>ファイル容量あり用のプログラム。</summary>
 
@@ -7708,6 +7716,8 @@ sub filesizefunc() {
 #### ファイルテスト演算子(`-s`)
 ファイルorディレクトリの大きさがゼロ以外(バイト単位での大きさを返す)。  
 
+<details><summary>ファイル容量あり向けのプログラム。</summary>
+
 以下、ファイル書き込みありプログラム。
 ```perl
 use v5.24;
@@ -7770,6 +7780,7 @@ sub filesizefunc() {
 ファイルが空ファイル(書き込みなし)。
 ```
 
+</details>
 
 <details><summary>ディレクトリに対するプログラム。</summary>
 
@@ -7834,6 +7845,8 @@ sub dirsizefunc() {
 #### ファイルテスト演算子(`-f`)
 エントリは通常ファイル。  
 
+<details><summary>ファイルに対するプログラム。</summary>
+
 以下、プログラム(ファイルの場合"**真**"になる)。
 ```perl
 use v5.24;
@@ -7887,6 +7900,8 @@ sub fileexistence() {
 ファイル削除。
 ファイルなし。
 ```
+
+</details>
 
 <details><summary>ディレクトリに対するプログラム。</summary>
 
@@ -7955,6 +7970,8 @@ sub direxistence() {
 #### ファイルテスト演算子(`-d`)
 エントリはディレクトリ。  
 
+<details><summary>ディレクトリ向けのプログラム。</summary>
+
 以下、ディレクトリ確認用プログラム。
 ```perl
 use v5.24;
@@ -8010,6 +8027,8 @@ sub direxistence() {
 ディレクトリ削除。
 ディレクトリなし(削除済み)。
 ```
+
+</details>
 
 <details><summary>ファイルに対するプログラム。</summary>
 
@@ -8075,6 +8094,8 @@ sub fileexistence() {
 <a name="practicaluseFiletestoperatorl"></a>
 #### ファイルテスト演算子(`-l`)
 エントリはシンボリックリンク(ファイルシステムが非対応なら偽)。  
+
+<details><summary>シンボリックリンクファイルに対するプログラム。</summary>
 
 以下、プログラム。
 ```perl
@@ -8152,6 +8173,10 @@ sub filetestLink() {
 シンボリックリンクファイルなし(削除済みの判断で'なし'としたわけではない)。
 ```
 
+</details>
+
+<details><summary>シンボリックリンクディレクトリに対するプログラム。</summary>
+
 以下、ディレクトリに対するプログラム。
 ```perl
 use v5.24;
@@ -8222,12 +8247,16 @@ sub dirtestLink() {
 ディレクトリ削除。
 ディレクトリなし(削除済みの判断でなしとしたわけではない)。
 ```
-プログラムで、この判定を使う日は来るのだろうか。  
+この判定を使う日は来るのだろうか。  
+
+</details>
 
 
 <a name="practicaluseFiletestoperatorp"></a>
 #### ファイルテスト演算子(`-p`)
 エントリは名前付きパイプ(FIFO)またはパイプのファイルハンドル。  
+
+<details><summary>パイプに対するプログラム。</summary>
 
 以下、プログラム。
 ```perl
@@ -8292,7 +8321,7 @@ sub pipehandle() {
 当然なのだろうが、ファイルハンドルは開いた状態で確認する必要がある。  
 
 todo:
-パイプというのは別途調べる必要がある。  
+パイプというのを別途調べる必要がある。  
 
 以下、出力結果。
 ```terminal
@@ -8307,6 +8336,8 @@ todo:
 これらは、冒頭説明の後半部分に当たるはず。  
 前半部分はどのようなプログラムにすれば良いのか分からない。  
 逆か？  
+
+</details>
 
 
 <a name="practicaluseFiletestoperatorbigS"></a>
@@ -8381,6 +8412,8 @@ todo:
 補足：ファイルの存在がない場合、もしくは読めない場合、偽になる。  
 補足：ファイルが空の場合、真になる。  
 
+<details><summary>テキストファイルに対するプログラム。</summary>
+
 以下、通常ファイルに対するプログラム。
 ```perl
 use v5.24;
@@ -8433,6 +8466,8 @@ sub filetestT() {
 ```
 予想通りの結果ではある。  
 
+</details>
+
 <details><summary>バイナリに対するプログラム。</summary>
 
 以下、バイナリファイルに対するプログラム。
@@ -8481,6 +8516,8 @@ $
 補足：ファイルの存在がない場合、もしくは読めない場合、偽になる。  
 補足：ファイルが空の場合、真になる。  
 
+<details><summary>バイナリに対するプログラム。</summary>
+
 以下、プログラム。
 ```perl
 use v5.24;
@@ -8510,7 +8547,9 @@ sub filetestB() {
 なるほど。  
 難しい。  
 
-<details><summary>テキストに対するプログラム。</summary>
+</details>
+
+<details><summary>テキストファイルに対するプログラム。</summary>
 
 以下、テキストファイルへの判定用プログラム。
 ```perl
@@ -9225,6 +9264,7 @@ Perlの公式ページでは、[日本語版](https://perldoc.jp)がないよう
 [oracle-stat](https://docs.oracle.com/cd/E19109-01/tsolaris7/805-8078/6j7jiictj/index.html)・
 [hitachi-stat](http://itdoc.hitachi.co.jp/manuals/3021/3021313330/JPAS0351.HTM)。  
 
+<details><summary>展開：プログラム。</summary>
 
 以下、プログラム。
 ```perl
@@ -9272,10 +9312,14 @@ iノード番号：67541375
 割り当てられたブロック数：8
 ```
 
+</details>
+
 
 <a name="practicaluseFileteststatfuncknlink"></a>
 ##### stat関数-nlink
 ここは、上記のstat関数で取得したなかのnlinkに特化する。  
+
+<details><summary>展開：プログラム(ハードリンク個数確認用)。</summary>
 
 以下、ファイルに対するハードリンクの個数を検知するプログラム。
 ```perl
@@ -9341,6 +9385,8 @@ sub nlinkfunc() {
 	ファイルに対するハードリンクの個数(ハードリンクファイルからの紐付け)：	1
 ハードリンクファイル削除。
 ```
+
+</details>
 
 ディレクトリのハードリンクに対しての検出方法が分からない・・・。  
 そもそもディレクトリのハードリンクを作成できない。  
@@ -9475,6 +9521,8 @@ sub statfunc() {
 
 </details>
 
+<details><summary>展開：プログラム。</summary>
+
 以下、**lstat関数**を使い、シンボリックリンクファイルの情報を取得するプログラム。
 ```perl
 use v5.24;
@@ -9542,6 +9590,8 @@ sub lstatfunc() {
 ```
 不一致箇所があるのが分かる(見やすいように加工済み)。  
 
+</details>
+
 上記、プログラム側での実体ファイル情報取得用にもlstat関数を用いている。  
 これが可能なのは、シンボリックリンク以外を引数にした場合、**stat関数**と全く同じ結果を返すことができるからに他ならない。  
 
@@ -9556,6 +9606,7 @@ sub lstatfunc() {
   * 曜日は、日曜日が0始まりになり、それ以降は月曜日が1、火曜日が2と加算されていく。  
   * 日付は、1月1日が0始まりになり、12月31日は364(閏年の場合は365)になるため、1加算する必要がある。  
 
+<details><summary>展開：プログラム。</summary>
 
 以下、プログラム。
 ```perl
@@ -9599,6 +9650,8 @@ sub localtimestat() {
 	atime(最終アクセス時刻)：2022年1月15日(土曜日) 14時20分34秒
 ```
 
+</details>
+
 
 <a name="practicaluseFiletestbitoperator"></a>
 #### ビット演算子
@@ -9613,6 +9666,8 @@ sub localtimestat() {
 |`25 >> 2`|[右シフト演算子](https://perldoc.jp/docs/perl/5.24.1/perlop.pod#Shift32Operators)(左オペランドを右オペランドで示されたビット数だけ右に移動する。右端から押し出されたビットは捨てられる。（この例では6になる）)
 |`~10`|[ビット否定演算子](https://perldoc.jp/docs/perl/5.24.1/perlop.pod#Symbolic32Unary32Operators)(全てのビットを反転した数を返す。（この例では0xFFFFFFF5になる）)。
 
+
+<details><summary>展開：プログラム。</summary>
 
 以下、プログラム。
 ```perl
@@ -9630,6 +9685,8 @@ sub bitFiletest() {
 ```
 ビット否定演算子は、別名、単項ビット反転演算子とも言うそうだ。  
 単項演算子のひとつなのだろう。  
+
+</details>
 
 todo:
 そもそも使うかどうかも分からないものに時間を使うのはどうかと思うため、ここで打ち切った。
