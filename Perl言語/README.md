@@ -7118,6 +7118,70 @@ if( -w _ ) {
 ```
 しかし、if文の途中で何かしらの処理をした場合、最初のファイルと異なるファイルを**-w**でファイルテストすることになる。  
 
+以下、実際のプログラム。
+```perl
+use v5.24;
+use Cwd;	# カレントディレクトリ呼び出しモジュール。
+
+sub underscore() {
+	my $currentDir = getcwd();	# カレントディレクトリ取得。
+
+	my $filename = 'file.txt';	# ファイル名のみ作成。
+
+	say "ファイルを作成する。";
+	open my $file_fh, '>', $filename or die "$filenameのファイルオープン失敗($!)";
+	say $file_fh '本日は晴天なり。';	# ファイルへの書き込み。
+	close $file_fh;
+
+	if( -s $filename and -f _ ) {
+		say "ファイルに書き込みあり。";	# こっちが動く。
+	}
+	else{
+		say "ファイルが空、もしくはファイルではない。";
+	}
+
+	if( -d $filename ) {
+		say "ここはディレクトリである。";	# 出力なし。
+	}
+	elsif( -f _ ) {
+		say "我はファイルである。";	# こっちが動く(想定通り)。
+	}
+	else{
+		say "我は誰だ？";
+	}
+
+	if( -d $filename ) {
+		say "ディレクトリだと認定する。";	# 出力なし。
+	}
+	opendir my $dir_fh, $currentDir or die "ディレクトリオープン失敗($!)。";
+	stat $dir_fh;
+	if( -f _ ) {
+		say "我はファイルである。";
+	}
+	else{
+		say "ファイルではない判定が成された。";	# ディレクトリであるため、こっちが動く。
+	}
+	closedir $dir_fh;	# なくてもいい。
+
+	say "ファイル削除。";
+	unlink $filename or warn "ファイル削除失敗($!)。";
+	unless( -f $filename ) {
+		say "ファイル削除済み。";
+	}
+}
+&underscore();
+```
+
+以下、出力結果。
+```terminal
+ファイルを作成する。
+ファイルに書き込みあり。
+我はファイルである。
+ファイルではない判定が成された。
+ファイル削除。
+ファイル削除済み。
+```
+
 
 <a name="practicaluseFiletestoperatorstacking"></a>
 #### ファイルテスト演算子の重ね掛けを押し縮める
