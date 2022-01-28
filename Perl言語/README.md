@@ -11499,6 +11499,14 @@ sub lowercase{
 ```
 
 
+<a name="practicaluseSubstitutedisplacementLargesmallconversion"></a>
+### 大小文字変換
+上記の大文字化`\U`・小文字化`\L`は、後ろに続く文字全てが対象になる。  
+そのため、それをせき止める場合は、`\E`を使うことで、変換が終わる。  
+また、1文字の大文字化は`\u`を使い、1文字の小文字化は`\l`を使う。  
+そして、`\u\L`とした場合、先頭を大文字にし、残りを小文字にする(順不同`\L\u`でも可)。  
+
+
 </details>
 
 <a name="practicaluseGUIPerlTk"></a>
