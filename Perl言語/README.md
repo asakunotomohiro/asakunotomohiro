@@ -11344,6 +11344,7 @@ sub regexSample {
 <a name="practicaluseSubstitutedisplacement"></a>
 <details><summary>応用知識-置換演算子(Substitution operator)</summary>
 
+<a name="practicaluseSubstitutedisplacementmain"></a>
 ### 置換演算子
 [正規表現(マッチ演算子)](#practicaluseRegularexpression)を用いた上で、文字列の置き換えをする演算子になる。  
 
@@ -11369,6 +11370,35 @@ sub replaceSample {
 &replaceSample("boo");	# 置換結果：bar
 &replaceSample("Boo");	# 検索に掛からず(Boo)。
 ```
+
+
+<a name="practicaluseSubstitutedisplacementdelimiter"></a>
+### デリミタ(挟む記号)
+正規表現の場合は、挟むのは2個だけだった(`m//`)。  
+置換演算子の場合は、3個使う。  
+そのため、対になる場合は、それぞれに使う必要が出てくる(`s{検索文字列}[置換文字列]`)。  
+対にならない場合は、3個だけで囲む(`s#検索文字列#置換文字列#`)。
+組み合わせる場合は、それぞれ囲む必要がある(`s{検索文字列}#置換文字列#`)。  
+
+以下、囲み記号をデフォルトから変更。  
+```perl
+use v5.24;
+
+sub delimiterSample {
+	$_ = shift;
+	say "置換前：$_";
+	if( s{boo}<bar> ) {
+		say "置換結果：$_";
+	}
+	else{
+		say "検索に掛からず($_)。";
+	}
+}
+&delimiterSample("boo");
+```
+アンダーバーでの囲みはできないようだ。  
+`s_boo_bar_;	# Bareword "s_boo_bar_" not allowed while "strict subs" in use at デリミタ.pl line 15.`
+
 
 </details>
 
