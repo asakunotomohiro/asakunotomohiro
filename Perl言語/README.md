@@ -156,8 +156,6 @@ $
 基礎知識5種類に納められない範囲の勉強に手を広げる。  
 
 * [応用知識](#appliedknowledge)  
-  * [ ] [スマートマッチ演算子`~~`](#practicaluseSmartmatch)  
-    * [x] [switch(given-when)](#practicaluseGivenwhen)  
   * [ ] [ポインタ・リファレンス](#practicalusePointer)  
     * [x] リファレンス  
       [x] 変数  
@@ -229,6 +227,10 @@ $
   * [ ] [プロセス管理](#practicaluseSystemfunc)  
   * [x] [正規表現](#practicaluseRegularexpression)  
     別ファイルでの記載が詳細なため、ここでは簡易ながらも説明完了とする。  
+  * [x] [置換演算子](#practicaluseSubstitutedisplacement)  
+    todo: あり。  
+  * [ ] [スマートマッチ演算子`~~`](#practicaluseSmartmatch)  
+    * [x] [switch(given-when)](#practicaluseGivenwhen)  
   * [x] [パッケージ](#practicalusePackages)  
   * [ ] [GUI/Tk](#practicaluseGUIPerlTk)  
 
@@ -988,9 +990,9 @@ say "@boo";	# 20210830 20210831 20210901 20210902
 
 * Perlの組み込み関数。  
   配列に関係あるのか？  
-  * [ ] Join関数。  
+  * [x] [Join関数](#practicaluseSubstitutedisplacement)。  
     連結。  
-  * [ ] split関数。  
+  * [x] [split関数](#practicaluseSubstitutedisplacement)。  
     分割。  
   * [ ] 置換。  
 
@@ -11234,6 +11236,10 @@ continueがあることにより、文字列が尽きるまで**given**に戻り
 言わずもがな。  
 Perlの正規表現は各界隈で有名になっているため、「Perl互換性正規表現(Perl-Compatible Regualr Expression・PCRE)」と呼ばれる技術でPerlの正規表現に近づけた正規表現を謳い文句にした検索能力を持つツールが多い。  
 
+様式：
+`m/検索文字列/`  
+※どのような文字列式に対しても検索できる(例：`$value =~ /serch/`)。  
+
 実際の細かい正規表現仕様は別途「[正規表現の勉強\_作業メモなど何でも詰め込む.md](../検索利用メモ/正規表現の勉強_作業メモなど何でも詰め込む.md)」ファイルに譲ることにする。  
 同ディレクトリ配下に正規表現用の勉強資材が散在しているため、参考になれば幸い。  
 
@@ -11332,6 +11338,336 @@ sub regexSample {
 												# $0：マッチ変数.pl
 ```
 上記2つ目の検索に[パターンマッチ演算子](#practicaluseRegularexpressionPatternmatchoperator)を使うことでスラッシュ記号へのエスケープシーケンスが不要になっている。  
+
+</details>
+
+
+<a name="practicaluseSubstitutedisplacement"></a>
+<details><summary>応用知識-置換演算子(Substitution operator)</summary>
+
+<a name="practicaluseSubstitutedisplacementmain"></a>
+### 置換演算子
+[正規表現(マッチ演算子)](#practicaluseRegularexpression)を用いた上で、文字列の置き換えをする演算子になる。  
+
+様式：
+`s/検索文字列/置き換え文字列/`  
+※左辺値が必須になる(上記で言えば`$_`に対して置換する)(例：`$value =~ s#serch#replace#;`)。  
+　この例での`=~`は、結合演算子のこと。  
+※検索に失敗した場合、何もしない。  
+
+以下、例）
+```perl
+use v5.24;
+
+sub replaceSample {
+	$_ = shift;
+	say "置換前：$_";
+	if( s/boo/bar/ ) {
+		say "置換結果：$_";
+	}
+	else{
+		say "検索に掛からず($_)。";
+	}
+}
+&replaceSample("boo");	# 置換結果：bar
+&replaceSample("Boo");	# 検索に掛からず(Boo)。
+```
+
+
+<a name="practicaluseSubstitutedisplacementdelimiter"></a>
+### デリミタ(挟む記号)
+正規表現の場合は、挟むのは2個だけだった(`m//`)。  
+置換演算子の場合は、3個使う。  
+そのため、対になる場合は、それぞれに使う必要が出てくる(`s{検索文字列}[置換文字列]`)。  
+対にならない場合は、3個だけで囲む(`s#検索文字列#置換文字列#`)。
+組み合わせる場合は、それぞれ囲む必要がある(`s{検索文字列}#置換文字列#`)。  
+
+以下、囲み記号をデフォルトから変更。  
+```perl
+use v5.24;
+
+sub delimiterSample {
+	$_ = shift;
+	say "置換前：$_";
+	if( s{boo}<bar> ) {	←☆括弧で囲む。
+		say "置換結果：$_";
+	}
+}
+&delimiterSample("boo");
+```
+アンダーバーでの囲みはできないようだ。  
+`s_boo_bar_;	# Bareword "s_boo_bar_" not allowed while "strict subs" in use at XXXX.pl line xxxx.`
+
+
+<a name="practicaluseSubstitutedisplacementqualifier"></a>
+### 置換修飾子
+[正規表現](#practicaluseRegularexpression)の[マッチ修飾子](#practicaluseRegularexpressionMatchmodifier)が使える。  
+他にもグローバル置換フラグ(`/g`)を使える。  
+
+* 修飾子(フラグ)  
+  * `/i`フラグ  
+    大小文字区別なし。  
+  * `/s`フラグ  
+    `.`記号に改行文字を含めて検索する。  
+  * `/x`フラグ  
+    空白文字を検索から除外する(`#`記号でコメントを付けたり改行で見やすく段落を付けられる)。  
+  * `/m`フラグ  
+    行頭と行末のアンカーを指定する(改行ごとに`^`と`$`が機能する)。  
+  * `/g`フラグ  
+    1回の置換で終わらず、見つかる限り置換する。  
+
+
+<a name="practicaluseSubstitutedisplacementJoinoperator"></a>
+### 結合演算子=~
+正規表現での使い方と同じ。  
+`$value =~ s/検索文字列/置換文字列/`  
+
+
+<a name="practicaluseSubstitutedisplacementNondestructive"></a>
+### 非破壊置換/r
+原本を保存する通常利用の置換作業は、`(my $boo = $bar) =~ s{bar}<boo>;`として、**$bar**に原本があり、**$boo**に置換後の結果が入る。  
+今回の`/r`修飾子を付けることで、先に置換が行われる。  
+その後、置換結果を新しい変数に代入する。  
+
+以下、r修飾子を付けたプログラム。
+```perl
+use v5.24;
+
+sub nondestructive {
+	my $bar = shift;
+	say "置換前：$bar";
+	my $boo = $bar =~ s{bar}<boo>r;
+	say "置換後：$boo";
+}
+&nondestructive("bar");
+```
+
+以下、出力結果。
+```terminal
+置換前：bar
+置換後：boo
+```
+
+
+<a name="practicaluseSubstitutedisplacementHugecock"></a>
+### 大文字への置換
+現在の文字を大文字に変換する場合、`\U`エスケープを使い、この後ろに続く文字を大文字化する。  
+`\E`により、大文字化を止める。  
+
+以下、プログラム。
+```perl
+use v5.24;
+
+sub bigGenitals{
+	my $bar = shift;
+	say "置換前：$bar";
+	my $boo = $bar =~ s{(a)}<\U$1>r;	←☆barのaだけを大文字にする。
+	say "置換後：$boo";
+}
+&bigGenitals("bar");
+```
+
+以下、出力結果。
+```terminal
+置換前：bar
+置換後：bAr
+```
+
+
+<a name="practicaluseSubstitutedisplacementHugecock"></a>
+### 小文字への置換
+現在の文字を大文字に変換する場合、`\U`エスケープを使い、この後ろに続く文字を大文字化する。  
+`\E`により、大文字化を止める。  
+
+以下、プログラム。
+```perl
+use v5.24;
+
+sub lowercase{
+	my $boo = shift;
+	say "置換前：$boo";
+	my $bar = $boo =~ s{(O)}<\L$1>r;	←☆小文字化する処理。
+	say "置換後：$bar";
+}
+&lowercase("BOO");
+```
+
+以下、出力結果。
+```terminal
+置換前：BOO
+置換後：BoO	←☆1つ目のoだけが小文字化するのは、グローバル修飾子をつけていないため。
+```
+
+
+<a name="practicaluseSubstitutedisplacementLargesmallconversion"></a>
+### 大小文字変換
+上記の大文字化`\U`・小文字化`\L`は、後ろに続く文字全てが対象になる。  
+そのため、それをせき止める場合は、`\E`を使うことで、変換が終わる。  
+また、1文字の大文字化は`\u`を使い、1文字の小文字化は`\l`を使う。  
+そして、`\u\L`とした場合、先頭を大文字にし、残りを小文字にする(順不同`\L\u`でも可)。  
+
+以下、プログラム。
+```perl
+use v5.24;
+
+sub luConversion{
+	my $boo = shift;
+	say "大文字変換前：$boo";	# hEllOwoRld
+	say "大文字変換後：\U$boo";	# HELLOWORLD
+
+	say "小文字変換前：$boo";	# hEllOwoRld
+	say "小文字変換後：\L$boo";	# helloworld
+
+	say "先頭大文字の残り小文字：\u\L$boo";	# Helloworld
+	say "先頭大文字の残り小文字：\L\u$boo";	# Helloworld
+
+	say "先頭大文字の残り小文字(指定方法間違い)：\U\l$boo";	# hELLOWORLD
+
+	say "以下、関数利用。";
+	say lc( $boo );			# helloworld	←☆全て小文字化。
+	say uc( $boo );			# HELLOWORLD	←☆全て大文字化。
+	say fc( $boo );			# helloworld	←☆Unicodeの大小文字の扱いに従う。
+	say ucfirst( $boo );	# HEllOwoRld	←☆先頭大文字化。
+}
+&luConversion("hEllOwoRld");
+```
+
+* 関数用の参照先URL  
+  * lc関数：<https://perldoc.jp/func/lc>  
+  * uc関数：<https://perldoc.jp/func/uc>  
+  * fc関数：<https://perldoc.jp/func/fc>  
+  * ucfirst関数：<https://perldoc.jp/func/ucfirst>  
+
+
+<a name="practicaluseSubstitutedisplacementMetaquote"></a>
+### メタクォート
+エスケープ文字を使わず、特殊記号をエスケーするには、メタクォート`\Q`を使う。  
+
+以下、プログラム。
+```perl
+use v5.24;
+
+sub metacoat{
+	$_ = shift;
+	say "置換前：$_";
+	if( s/\Qtoday(Happy(\E(Neet)/本日は$1晴天なり。/ ) {
+		say "置換後：$_";
+	}
+	else{
+		say "検索に掛からず($_)。";
+	}
+}
+&metacoat("today(Happy(Neet");
+```
+**today(Happy(Neet**を通常文字列として扱う場合、本来ならば、**(**をエスケープし、**\(**にしておく必要がある。  
+しかし、`\Q`を使うことで、**\**記号を省略できる。  
+また、大小文字変換`\U`・`\L`と同じように、`\E`を使うことで、エスケープを止める。  
+
+以下、出力結果。
+```terminal
+置換前：today(Happy(Neet
+置換後：本日はNeet晴天なり。
+```
+
+<details><summary>メタクォート用関数</summary>
+
+```perl
+use v5.24;
+
+sub metacoat{
+	$_ = shift;
+	say "置換前：$_";
+	my $string = quotemeta('today(Happy(Neet');	←☆この文字列の中に、\Eを含めたところで無駄になる。
+	if( s/$string/本日は晴天なり。/ ) {
+		say "置換後：$_";
+	}
+}
+&metacoat("today(Happy(Neet");
+```
+
+以下、出力結果。
+```terminal
+置換前：today(Happy(Neet
+置換後：本日は晴天なり。
+```
+
+</details>
+
+
+<a name="practicaluseSubstitutedisplacementsplitoperator"></a>
+### split演算子
+カンマ区切り(CSVファイル)を除くが、正規表現を用いて文字列を分割する。  
+様式：
+`my @split = split /区切り文字/, 文字列`  
+
+以下、プログラム。
+```perl
+use v5.24;
+
+sub split {
+	$_ = shift;
+	say "分割前：$_";
+	my @happy = split /。/, $_;
+	foreach my $value ( @happy ) {
+		say $value;
+	}
+}
+&split( "本日は,晴天なり。本日は,面接なり。" );
+```
+
+以下、出力結果。
+```terminal
+分割前：本日は,晴天なり。本日は,面接なり。
+本日は,晴天なり
+本日は,面接なり
+```
+
+todo:
+特別解釈のされ方があるため、それを調べる。  
+
+
+<a name="practicaluseSubstitutedisplacementjoinfunc"></a>
+### join関数
+正規表現を使わない。  
+
+様式：
+`my $value = join 結合文字, 分割済みの文字列;`  
+
+以下、プログラム。
+```perl
+use v5.24;
+
+sub jonfunc {
+	my @joinarray = qw( 本日は 晴天なり。 そろそろ 花粉症の 時期なり。);
+	my $glue = '--->';
+	my $value = join $glue, @joinarray;
+	say "$value";
+}
+&jonfunc();
+```
+
+以下、出力結果。
+```terminal
+本日は--->晴天なり。--->そろそろ--->花粉症の--->時期なり。
+```
+
+
+<a name="practicaluseSubstitutedisplacementlistcontext"></a>
+#### join関数の逆として、正規表現で必要部分を抜き出す。
+[join関数](#practicaluseSubstitutedisplacementjoinfunc)の場合は、不要部分の指定により、結合が行われる。  
+今回は、正規表現を使い、残したい部分を指定する。  
+
+以下、プログラム。
+```perl
+use v5.24;
+
+sub listcontext {
+	$_ = shift;
+	my @boo = /([a-z]+)/igs;
+	say "@boo";	# boo bar
+}
+&listcontext("boo, bar 20220128, 本日は晴天なり。");
+```
 
 </details>
 
