@@ -11462,16 +11462,40 @@ use v5.24;
 sub bigGenitals{
 	my $bar = shift;
 	say "置換前：$bar";
-	my $boo = $bar =~ s{(a)}<\U$1>r;
+	my $boo = $bar =~ s{(a)}<\U$1>r;	←☆barのaだけを大文字にする。
 	say "置換後：$boo";
 }
-&bigGenitals("bar");	←☆barのaだけを大文字にする。
+&bigGenitals("bar");
 ```
 
 以下、出力結果。
 ```terminal
 置換前：bar
 置換後：bAr
+```
+
+
+<a name="practicaluseSubstitutedisplacementHugecock"></a>
+### 小文字への置換
+現在の文字を大文字に変換する場合、`\U`エスケープを使い、この後ろに続く文字を大文字化する。  
+
+以下、プログラム。
+```perl
+use v5.24;
+
+sub lowercase{
+	my $boo = shift;
+	say "置換前：$boo";
+	my $bar = $boo =~ s{(O)}<\L$1>r;	←☆小文字化する処理。
+	say "置換後：$bar";
+}
+&lowercase("BOO");
+```
+
+以下、出力結果。
+```terminal
+置換前：BOO
+置換後：BoO	←☆1つ目のoだけが小文字化するのは、グローバル修飾子をつけていないため。
 ```
 
 
