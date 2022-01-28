@@ -11626,7 +11626,7 @@ todo:
 特別解釈のされ方があるため、それを調べる。  
 
 
-<a name="practicaluseSubstitutedisplacement"></a>
+<a name="practicaluseSubstitutedisplacementjoinfunc"></a>
 ### join関数
 正規表現を使わない。  
 
@@ -11651,6 +11651,14 @@ sub jonfunc {
 本日は--->晴天なり。--->そろそろ--->花粉症の--->時期なり。
 ```
 
+
+<a name="practicaluseSubstitutedisplacementlistcontext"></a>
+#### join関数の逆として、正規表現で必要部分を抜き出す。
+[join関数](#practicaluseSubstitutedisplacementjoinfunc)の場合は、不要部分の指定により、結合が行われる。  
+今回は、正規表現を使い、残したい部分を指定する。  
+
+作ったプログラムが文字化けした。  
+面倒くさくなってしまったぞ。  
 
 </details>
 
