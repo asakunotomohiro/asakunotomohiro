@@ -229,7 +229,7 @@ $
   * [ ] [プロセス管理](#practicaluseSystemfunc)  
   * [x] [正規表現](#practicaluseRegularexpression)  
     別ファイルでの記載が詳細なため、ここでは簡易ながらも説明完了とする。  
-  * [x] [置換演算子](#practicaluseSubstituteDisplacement)2022/01/28  
+  * [x] [置換演算子](#practicaluseSubstitutedisplacement)2022/01/28  
   * [x] [パッケージ](#practicalusePackages)  
   * [ ] [GUI/Tk](#practicaluseGUIPerlTk)  
 
@@ -11341,7 +11341,7 @@ sub regexSample {
 </details>
 
 
-<a name="practicaluseSubstituteDisplacement"></a>
+<a name="practicaluseSubstitutedisplacement"></a>
 <details><summary>応用知識-置換演算子(Substitution operator)</summary>
 
 ### 置換演算子
@@ -11351,6 +11351,24 @@ sub regexSample {
 `s/検索文字列/置き換え文字列/`  
 ※左辺値が必須になる(上記で言えば`$_`に対して置換する)(例：`$value =~ s#serch#replace#;`)。  
 ※検索に失敗した場合、何もしない。  
+
+以下、例）
+```perl
+use v5.24;
+
+sub replaceSample {
+	$_ = shift;
+	say "置換前：$_";
+	if( s/boo/bar/ ) {
+		say "置換結果：$_";
+	}
+	else{
+		say "検索に掛からず($_)。";
+	}
+}
+&replaceSample("boo");	# 置換結果：bar
+&replaceSample("Boo");	# 検索に掛からず(Boo)。
+```
 
 </details>
 
