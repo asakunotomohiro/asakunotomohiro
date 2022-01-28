@@ -11454,6 +11454,7 @@ sub nondestructive {
 <a name="practicaluseSubstitutedisplacementHugecock"></a>
 ### 大文字への置換
 現在の文字を大文字に変換する場合、`\U`エスケープを使い、この後ろに続く文字を大文字化する。  
+`\E`により、大文字化を止める。  
 
 以下、プログラム。
 ```perl
@@ -11478,6 +11479,7 @@ sub bigGenitals{
 <a name="practicaluseSubstitutedisplacementHugecock"></a>
 ### 小文字への置換
 現在の文字を大文字に変換する場合、`\U`エスケープを使い、この後ろに続く文字を大文字化する。  
+`\E`により、大文字化を止める。  
 
 以下、プログラム。
 ```perl
@@ -11535,6 +11537,37 @@ lc関数：<https://perldoc.jp/func/lc>
 uc関数：<https://perldoc.jp/func/uc>  
 fc関数：<https://perldoc.jp/func/fc>  
 ucfirst関数：<https://perldoc.jp/func/ucfirst>  
+
+
+<a name="practicaluseSubstitutedisplacementMetaquote"></a>
+### メタクォート
+エスケープ文字を使わず、特殊記号をエスケーするには、メタクォート`\Q`を使う。  
+
+以下、プログラム。
+```perl
+use v5.24;
+
+sub metacoat{
+	$_ = shift;
+	say "置換前：$_";
+	if( s/\Qtoday(Happy(\E(Neet)/$1Tomohiro/ ) {
+		say "置換後：$_";
+	}
+	else{
+		say "検索に掛からず($_)。";
+	}
+}
+&metacoat("today(Happy(Neet");
+```
+**today(Happy(Neet**を通常文字列として扱う場合、本来ならば、**(**をエスケープし、**\(**にしておく必要がある。  
+しかし、`\Q`を使うことで、**\**記号を省略できる。  
+また、大小文字変換`\U`・`\L`と同じように、`\E`を使うことで、エスケープを止める。  
+
+以下、出力結果。
+```terminal
+置換前：today(Happy(Neet
+置換後：NeetTomohiro
+```
 
 
 </details>
