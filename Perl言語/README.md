@@ -11419,6 +11419,12 @@ sub delimiterSample {
     1回の置換で終わらず、見つかる限り置換する。  
 
 
+<a name="practicaluseSubstitutedisplacementJoinoperator"></a>
+### 結合演算子=~
+正規表現での使い方と同じ。  
+`$value =~ s/検索文字列/置換文字列/`  
+
+
 </details>
 
 <a name="practicaluseGUIPerlTk"></a>
