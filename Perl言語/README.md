@@ -11550,7 +11550,7 @@ use v5.24;
 sub metacoat{
 	$_ = shift;
 	say "置換前：$_";
-	if( s/\Qtoday(Happy(\E(Neet)/$1Tomohiro/ ) {
+	if( s/\Qtoday(Happy(\E(Neet)/本日は$1晴天なり。/ ) {
 		say "置換後：$_";
 	}
 	else{
@@ -11566,8 +11566,32 @@ sub metacoat{
 以下、出力結果。
 ```terminal
 置換前：today(Happy(Neet
-置換後：NeetTomohiro
+置換後：本日はNeet晴天なり。
 ```
+
+<details><summary>メタクォート用関数</summary>
+
+```perl
+use v5.24;
+
+sub metacoat{
+	$_ = shift;
+	say "置換前：$_";
+	my $string = quotemeta('today(Happy(Neet');	←☆この文字列の中に、\Eを含めたところで無駄になる。
+	if( s/$string/本日は晴天なり。/ ) {
+		say "置換後：$_";
+	}
+}
+&metacoat("today(Happy(Neet");
+```
+
+以下、出力結果。
+```terminal
+置換前：today(Happy(Neet
+置換後：本日は晴天なり。
+```
+
+</details>
 
 
 </details>
