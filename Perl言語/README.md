@@ -229,6 +229,7 @@ $
   * [ ] [プロセス管理](#practicaluseSystemfunc)  
   * [x] [正規表現](#practicaluseRegularexpression)  
     別ファイルでの記載が詳細なため、ここでは簡易ながらも説明完了とする。  
+  * [x] [置換演算子](#practicaluseSubstituteDisplacement)2022/01/28  
   * [x] [パッケージ](#practicalusePackages)  
   * [ ] [GUI/Tk](#practicaluseGUIPerlTk)  
 
@@ -11234,6 +11235,10 @@ continueがあることにより、文字列が尽きるまで**given**に戻り
 言わずもがな。  
 Perlの正規表現は各界隈で有名になっているため、「Perl互換性正規表現(Perl-Compatible Regualr Expression・PCRE)」と呼ばれる技術でPerlの正規表現に近づけた正規表現を謳い文句にした検索能力を持つツールが多い。  
 
+様式：
+`m/検索文字列/`  
+※どのような文字列式に対しても検索できる(例：`$value =~ /serch/`)。  
+
 実際の細かい正規表現仕様は別途「[正規表現の勉強\_作業メモなど何でも詰め込む.md](../検索利用メモ/正規表現の勉強_作業メモなど何でも詰め込む.md)」ファイルに譲ることにする。  
 同ディレクトリ配下に正規表現用の勉強資材が散在しているため、参考になれば幸い。  
 
@@ -11332,6 +11337,20 @@ sub regexSample {
 												# $0：マッチ変数.pl
 ```
 上記2つ目の検索に[パターンマッチ演算子](#practicaluseRegularexpressionPatternmatchoperator)を使うことでスラッシュ記号へのエスケープシーケンスが不要になっている。  
+
+</details>
+
+
+<a name="practicaluseSubstituteDisplacement"></a>
+<details><summary>応用知識-置換演算子(Substitution operator)</summary>
+
+### 置換演算子
+[正規表現(マッチ演算子)](#practicaluseRegularexpression)を用いた上で、文字列の置き換えをする演算子になる。  
+
+様式：
+`s/検索文字列/置き換え文字列/`  
+※左辺値が必須になる(上記で言えば`$_`に対して置換する)(例：`$value =~ s#serch#replace#;`)。  
+※検索に失敗した場合、何もしない。  
 
 </details>
 
