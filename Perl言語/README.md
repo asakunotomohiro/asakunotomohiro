@@ -991,7 +991,7 @@ say "@boo";	# 20210830 20210831 20210901 20210902
   配列に関係あるのか？  
   * [ ] Join関数。  
     連結。  
-  * [ ] split関数。  
+  * [x] [split関数](#practicaluseSubstitutedisplacement)。  
     分割。  
   * [ ] 置換。  
 
@@ -11592,6 +11592,38 @@ sub metacoat{
 ```
 
 </details>
+
+
+<a name="practicaluseSubstitutedisplacementsplitoperator"></a>
+### split演算子
+カンマ区切り(CSVファイル)を除くが、正規表現を用いて文字列を分割する。  
+様式：
+`my @split = split /区切り文字/, 文字列`  
+
+以下、プログラム。
+```perl
+use v5.24;
+
+sub split {
+	$_ = shift;
+	say "分割前：$_";
+	my @happy = split /。/, $_;
+	foreach my $value ( @happy ) {
+		say $value;
+	}
+}
+&split( "本日は,晴天なり。本日は,面接なり。" );
+```
+
+以下、出力結果。
+```terminal
+分割前：本日は,晴天なり。本日は,面接なり。
+本日は,晴天なり
+本日は,面接なり
+```
+
+todo:
+特別解釈のされ方があるため、それを調べる。  
 
 
 </details>
