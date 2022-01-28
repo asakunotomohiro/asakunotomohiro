@@ -989,7 +989,7 @@ say "@boo";	# 20210830 20210831 20210901 20210902
 
 * Perlの組み込み関数。  
   配列に関係あるのか？  
-  * [ ] Join関数。  
+  * [x] [Join関数](#practicaluseSubstitutedisplacement)。  
     連結。  
   * [x] [split関数](#practicaluseSubstitutedisplacement)。  
     分割。  
@@ -11624,6 +11624,32 @@ sub split {
 
 todo:
 特別解釈のされ方があるため、それを調べる。  
+
+
+<a name="practicaluseSubstitutedisplacement"></a>
+### join関数
+正規表現を使わない。  
+
+様式：
+`my $value = join 結合文字, 分割済みの文字列;`  
+
+以下、プログラム。
+```perl
+use v5.24;
+
+sub jonfunc {
+	my @joinarray = qw( 本日は 晴天なり。 そろそろ 花粉症の 時期なり。);
+	my $glue = '--->';
+	my $value = join $glue, @joinarray;
+	say "$value";
+}
+&jonfunc();
+```
+
+以下、出力結果。
+```terminal
+本日は--->晴天なり。--->そろそろ--->花粉症の--->時期なり。
+```
 
 
 </details>
