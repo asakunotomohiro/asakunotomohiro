@@ -11351,6 +11351,7 @@ sub regexSample {
 様式：
 `s/検索文字列/置き換え文字列/`  
 ※左辺値が必須になる(上記で言えば`$_`に対して置換する)(例：`$value =~ s#serch#replace#;`)。  
+　この例での`=~`は、結合演算子のこと。  
 ※検索に失敗した場合、何もしない。  
 
 以下、例）
@@ -11398,6 +11399,24 @@ sub delimiterSample {
 ```
 アンダーバーでの囲みはできないようだ。  
 `s_boo_bar_;	# Bareword "s_boo_bar_" not allowed while "strict subs" in use at デリミタ.pl line 15.`
+
+
+<a name="practicaluseSubstitutedisplacementqualifier"></a>
+### 置換修飾子
+[正規表現](#practicaluseRegularexpression)の[マッチ修飾子](#practicaluseRegularexpressionMatchmodifier)が使える。  
+他にもグローバル置換フラグ(`/g`)を使える。  
+
+* 修飾子(フラグ)  
+  * `/i`フラグ  
+    大小文字区別なし。  
+  * `/s`フラグ  
+    `.`記号に改行文字を含めて検索する。  
+  * `/x`フラグ  
+    空白文字を検索から除外する(`#`記号でコメントを付けたり改行で見やすく段落を付けられる)。  
+  * `/m`フラグ  
+    行頭と行末のアンカーを指定する(改行ごとに`^`と`$`が機能する)。  
+  * `/g`フラグ  
+    1回の置換で終わらず、見つかる限り置換する。  
 
 
 </details>
