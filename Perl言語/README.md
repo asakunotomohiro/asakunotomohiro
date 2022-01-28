@@ -11425,6 +11425,32 @@ sub delimiterSample {
 `$value =~ s/検索文字列/置換文字列/`  
 
 
+<a name="practicaluseSubstitutedisplacementNondestructive"></a>
+### 非破壊置換/r
+原本を保存する通常利用の置換作業は、`(my $boo = $bar) =~ s{bar}<boo>;`として、**$bar**に原本があり、**$boo**に置換後の結果が入る。  
+今回の`/r`修飾子を付けることで、先に置換が行われる。  
+その後、置換結果を新しい変数に代入する。  
+
+以下、r修飾子を付けたプログラム。
+```perl
+use v5.24;
+
+sub nondestructive {
+	my $bar = shift;
+	say "置換前：$bar";
+	my $boo = $bar =~ s{bar}<boo>r;
+	say "置換後：$boo";
+}
+&nondestructive("bar");
+```
+
+以下、出力結果。
+```terminal
+置換前：bar
+置換後：boo
+```
+
+
 </details>
 
 <a name="practicaluseGUIPerlTk"></a>
