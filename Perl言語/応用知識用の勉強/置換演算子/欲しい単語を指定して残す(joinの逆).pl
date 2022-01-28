@@ -2,31 +2,28 @@ use v5.24;
 
 sub asakunoListcontext {
 	$_ = shift;
-	say "結合前：$_";
+	say "$_";
 	my ($asakuno1, $tomohiro1, $asakuno2, $tomohiro2, ) = /(\S+), (\S+) (\S+), (\S+)/;
-	say $asakuno1;	# asakuno	←☆末尾のカンマがない。
-	say $asakuno2;	# 朝来野	←☆末尾のカンマがない。
-
-	my @asakuno = /(\S+), (\S+) (\S+), (\S+)/;
-	say "@asakuno";	# asakuno tomohiro 朝来野 智博	←☆末尾のカンマがない。
-}
-&asakunoListcontext("asakuno, tomohiro 朝来野, 智博");
-#	出力結果：
+	say $asakuno1;
+	say $asakuno2;
+#			asakuno, tomohiro 朝来野, 智博,
 #			asakuno
 #			朝来野
-#			asakuno tomohiro 朝来野 智博
+
+	my @asakuno = /(\S+), (\S+) (\S+), (\S+)/;
+	say "@asakuno";
+#			asakuno tomohiro 朝来野 智博,
+}
+&asakunoListcontext("asakuno, tomohiro 朝来野, 智博,");
 
 sub listcontext {
 	$_ = shift;
-	say "結合前：$_";
-	my $asakuno = quotemeta($_);
-	#my @asakuno = $asakuno =~ /(\D+)/igs;
-	#	asakuno\,\  \.\ \[ \/ \/ \]\/\ tomohiro\ �\�\��\�\��\�\�\,\ �\���\�\�
-	my @asakuno = $asakuno =~ /([a-z]+)/igs;
-	say "@asakuno";	# asakuno happy tomohiro today
+	my @asakuno = /([a-z]+)/igs;
+
+	say "@asakuno";	# asakuno tomohiro
 }
-&listcontext("asakuno, {happy}, 20220128. [2022/01/28]/ tomohiro <today> 朝来野, 智博");
-#	出力結果：
+&listcontext("asakuno, tomohiro 朝来野, 智博,");
+
 
 
 say "以上。"

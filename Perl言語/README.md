@@ -11657,8 +11657,17 @@ sub jonfunc {
 [join関数](#practicaluseSubstitutedisplacementjoinfunc)の場合は、不要部分の指定により、結合が行われる。  
 今回は、正規表現を使い、残したい部分を指定する。  
 
-作ったプログラムが文字化けした。  
-面倒くさくなってしまったぞ。  
+以下、プログラム。
+```perl
+use v5.24;
+
+sub listcontext {
+	$_ = shift;
+	my @boo = /([a-z]+)/igs;
+	say "@boo";	# boo bar
+}
+&listcontext("boo, bar 20220128, 本日は晴天なり。");
+```
 
 </details>
 
