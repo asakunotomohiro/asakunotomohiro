@@ -11506,6 +11506,36 @@ sub lowercase{
 また、1文字の大文字化は`\u`を使い、1文字の小文字化は`\l`を使う。  
 そして、`\u\L`とした場合、先頭を大文字にし、残りを小文字にする(順不同`\L\u`でも可)。  
 
+以下、プログラム。
+```perl
+use v5.24;
+
+sub luConversion{
+	my $boo = shift;
+	say "大文字変換前：$boo";	# hEllOwoRld
+	say "大文字変換後：\U$boo";	# HELLOWORLD
+
+	say "小文字変換前：$boo";	# hEllOwoRld
+	say "小文字変換後：\L$boo";	# helloworld
+
+	say "先頭大文字の残り小文字：\u\L$boo";	# Helloworld
+	say "先頭大文字の残り小文字：\L\u$boo";	# Helloworld
+
+	say "先頭大文字の残り小文字(指定方法間違い)：\U\l$boo";	# hELLOWORLD
+
+	say "以下、関数利用。";
+	say lc( $boo );			# helloworld	←☆全て小文字化。
+	say uc( $boo );			# HELLOWORLD	←☆全て大文字化。
+	say fc( $boo );			# helloworld	←☆Unicodeの大小文字の扱いに従う。
+	say ucfirst( $boo );	# HEllOwoRld	←☆先頭大文字化。
+}
+&luConversion("hEllOwoRld");
+```
+lc関数：<https://perldoc.jp/func/lc>  
+uc関数：<https://perldoc.jp/func/uc>  
+fc関数：<https://perldoc.jp/func/fc>  
+ucfirst関数：<https://perldoc.jp/func/ucfirst>  
+
 
 </details>
 
