@@ -1264,6 +1264,25 @@ class addup2 {
 後半はそもそもできない(考慮不要)か。  
 しかし、とんでもない天文学的数字の場合どうするかとか・・・。  
 
+* ルール3もPythonと同じ。  
+  * 工夫して計算する。  
+  * (初めの数+終わりの数)*(足し合わせる個数/2)  
+
+以下、ルール3のプログラム。
+```java
+class addup3 {
+	static int addup3(int number){
+		var total = (1 + number) * number / 2;
+
+		return total;
+	}
+	public static void main(String[] args){
+		var total = addup3(10);
+		System.out.printf("合計点 %d\n", total);	// 合計点 55
+	}
+}
+```
+
 
 <a name="outputTheMultiplicationTableChapter2"></a>
 #### 九九の式を出力する。
