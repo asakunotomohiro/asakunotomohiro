@@ -27,7 +27,7 @@ console.log("配列要素7番目：" + asakuno[6]);
 //			配列要素7番目：undefined
 
 /*
- * 配列への代入。
+ * 以下、配列への代入。
  */
 asakuno[0] = "朝来野智博";
 asakuno[6] = "asakuno";
@@ -37,5 +37,20 @@ console.log("配列要素追加7番目：" + asakuno[6]);
 //			配列要素変更1番目：朝来野智博
 //			配列要素追加7番目：asakuno
 
+/*
+ * 以下、二次元配列。
+ */
+let tomohiro = [
+			['asakuno', "tomohiro", ],
+			[4401, 616432, 7, ],
+			["朝来野", "智博", ],
+		];
+console.log("2次元配列[0][0]：" + tomohiro[0][0]);
+console.log("2次元配列[1][2]：" + tomohiro[1][2]);
+console.log("2次元配列[2][1]：" + tomohiro[2][1]);
+// 以下、出力結果。
+//			2次元配列[0][0]：asakuno
+//			2次元配列[1][2]：7
+//			2次元配列[2][1]：智博
 
 /* vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=javascript noexpandtab: */

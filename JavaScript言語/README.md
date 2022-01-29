@@ -693,7 +693,7 @@ console.log(str);	// 15	←☆括弧を付けて優先順位を変えたこと�
         [x] 添え字とは。  
         0から始まる。  
   * [x] [配列への追加方法](#subArrangement2)2022/01/29  
-  * [ ] [二次元配列の宣言方法](#subArrangement3)  
+  * [x] [二次元配列の宣言方法](#subArrangement3)2022/01/29  
 
 
 <a name="subArrangement1"></a>
@@ -701,6 +701,7 @@ console.log(str);	// 15	←☆括弧を付けて優先順位を変えたこと�
 様式：
 `let 配列名 = [0, 1, 2, 3, ・・・値が続く, ];`  
 
+以下、プログラム。
 ```javascript
 let hoge = [20220129, ];
 console.log("配列要素1番目：" + hoge[0]);
@@ -721,6 +722,7 @@ console.log("配列要素2番目：" + hoge[1]);
 様式：
 `配列名[要素番号] = 代入値;`  
 
+以下、プログラム。
 ```javascript
 let hoge = [20220129, ];
 console.log("配列要素1番目：" + hoge[0]);	←☆書き換え前。
@@ -741,6 +743,28 @@ console.log("配列要素追加2番目：" + hoge[1]);	←☆新規追加され�
 <a name="subArrangement3"></a>
 #### 二次元配列の宣言方法
 様式：
+`let 2次元配列名 = [ [ 値11, 値12, ], [値21, 値22], ];`  
+
+
+以下、プログラム。
+```javascript
+let hoge = [
+			['today', "happy", ],
+			[4401, 616432, 7, ],
+			["本日は", "晴天なり。", ],
+		];
+console.log("2次元配列[0][0]：" + hoge[0][0]);
+console.log("2次元配列[1][2]：" + hoge[1][2]);
+console.log("2次元配列[2][1]：" + hoge[2][1]);
+```
+
+以下、出力結果。
+```console
+2次元配列[0][0]：today
+2次元配列[1][2]：7
+2次元配列[2][1]：晴天なり。
+```
+
 
 <a name="subArrangement999"></a>
 #### 配列での説明しない項目。
