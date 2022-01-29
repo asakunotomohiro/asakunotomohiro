@@ -26,5 +26,16 @@ console.log("配列要素7番目：" + asakuno[6]);
 //			配列要素6番目：20220134
 //			配列要素7番目：undefined
 
+/*
+ * 配列への代入。
+ */
+asakuno[0] = "朝来野智博";
+asakuno[6] = "asakuno";
+console.log("配列要素変更1番目：" + asakuno[0]);
+console.log("配列要素追加7番目：" + asakuno[6]);
+// 出力結果。
+//			配列要素変更1番目：朝来野智博
+//			配列要素追加7番目：asakuno
+
 
 /* vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=javascript noexpandtab: */
