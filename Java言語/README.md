@@ -1091,7 +1091,7 @@ class スコープ {
   例えば、配列利用の関数定義・繰り返し・再帰関数・条件分岐など。  
   以下、各項目(目次)。  
   [x] [平均値を求める。](#findTheAverageValueChapter2)2022/01/11  
-  [ ] [1からnまで足し合わせる。](#addFrom1tonChapter2)  
+  [x] [1からnまで足し合わせる。](#addFrom1tonChapter2)2022/01/29  
   [ ] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
   [ ] [素数を求める。](#findAPrimeNumberChapter2)  
   [ ] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
@@ -1216,6 +1216,73 @@ Java言語の文法も忘れているが、何とかなった(このブランチ
 
 <a name="addFrom1tonChapter2"></a>
 #### 1からnまで足し合わせる。
+勉強内容はPythonと基本は同じ。  
+それをJava用に移植するだけのこと。  
+
+* ルール1もPythonと同じ。  
+  * `for`を用いる。  
+  * 関数は定義しない。  
+    私のルールは、必ず関数定義をすることに決めているため、ここだけ無視する。  
+
+以下、プログラム。
+```java
+class addup1 {
+	static void addup1(){
+		var total = 0;
+		for( int ii = 0; 10 >= ii; ii++ ) {
+			total += ii;
+		}
+		System.out.printf("合計点 %d\n", total);	// 合計点 55
+	}
+	public static void main(String[] args){
+		addup1();
+	}
+}
+```
+
+* ルール2もPythonと同じ。  
+  * nまでの値を関数の引数で受け取る。  
+  * 関数内で合算した結果をreturnで返す。  
+
+以下、ルール2のプログラム。
+```java
+class addup2 {
+	static void addup2(int number){
+		var total = 0;
+		for( int ii = 0; number >= ii; ii++ ) {
+			total += ii;
+		}
+		System.out.printf("合計点 %d\n", total);	// 合計点 55
+	}
+	public static void main(String[] args){
+		addup2(10);
+	}
+}
+```
+ルール1ができれば、ルール2も簡単にこなせる・・・よね。  
+数字以外が来た場合どうするかとか、何も引数に渡さない場合どうするかとか、引数が記号の場合どうするかとか・・・。  
+後半はそもそもできない(考慮不要)か。  
+しかし、とんでもない天文学的数字の場合どうするかとか・・・。  
+
+* ルール3もPythonと同じ。  
+  * 工夫して計算する。  
+  * (初めの数+終わりの数)*(足し合わせる個数/2)  
+
+以下、ルール3のプログラム。
+```java
+class addup3 {
+	static int addup3(int number){
+		var total = (1 + number) * number / 2;
+
+		return total;
+	}
+	public static void main(String[] args){
+		var total = addup3(10);
+		System.out.printf("合計点 %d\n", total);	// 合計点 55
+	}
+}
+```
+
 
 <a name="outputTheMultiplicationTableChapter2"></a>
 #### 九九の式を出力する。
