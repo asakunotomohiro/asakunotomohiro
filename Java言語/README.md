@@ -1240,6 +1240,30 @@ class addup1 {
 }
 ```
 
+* ルール2もPythonと同じ。  
+  * nまでの値を関数の引数で受け取る。  
+  * 関数内で合算した結果をreturnで返す。  
+
+以下、ルール2のプログラム。
+```java
+class addup2 {
+	static void addup2(int number){
+		var total = 0;
+		for( int ii = 0; number >= ii; ii++ ) {
+			total += ii;
+		}
+		System.out.printf("合計点 %d\n", total);	// 合計点 55
+	}
+	public static void main(String[] args){
+		addup2(10);
+	}
+}
+```
+ルール1ができれば、ルール2も簡単にこなせる・・・よね。  
+数字以外が来た場合どうするかとか、何も引数に渡さない場合どうするかとか、引数が記号の場合どうするかとか・・・。  
+後半はそもそもできない(考慮不要)か。  
+しかし、とんでもない天文学的数字の場合どうするかとか・・・。  
+
 
 <a name="outputTheMultiplicationTableChapter2"></a>
 #### 九九の式を出力する。
