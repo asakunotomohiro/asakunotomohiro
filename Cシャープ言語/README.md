@@ -1395,6 +1395,32 @@ namespace addup
 }
 ```
 
+* ルール3もPythonと同じ。  
+  * 工夫して計算する。  
+  * (初めの数+終わりの数)*(足し合わせる個数/2)  
+
+以下、ルール3のプログラム。
+```csharp
+using System;
+
+namespace addup
+{
+	class MainClass
+	{
+		public static void add3(int number)
+		{
+			var total = (1 + number) * number / 2;
+
+			Console.WriteLine($"合計点 {total.ToString()}");   // 合計点 55
+		}
+		public static void Main(string[] args)
+		{
+			add3(10);
+		}
+	}
+}
+```
+
 
 <a name="outputTheMultiplicationTableChapter2"></a>
 #### 九九の式を出力する。
