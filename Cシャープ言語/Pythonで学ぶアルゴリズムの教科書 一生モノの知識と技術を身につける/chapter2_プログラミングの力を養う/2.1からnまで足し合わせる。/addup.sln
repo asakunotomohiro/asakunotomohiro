@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.810.16
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "addup", "addup\addup.csproj", "{AA01F19C-1370-43A6-9B6A-14A973F3B431}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|anycpu = Debug|anycpu
+		Release|anycpu = Release|anycpu
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AA01F19C-1370-43A6-9B6A-14A973F3B431}.Debug|anycpu.ActiveCfg = Debug|anycpu
+		{AA01F19C-1370-43A6-9B6A-14A973F3B431}.Debug|anycpu.Build.0 = Debug|anycpu
+		{AA01F19C-1370-43A6-9B6A-14A973F3B431}.Release|anycpu.ActiveCfg = Release|anycpu
+		{AA01F19C-1370-43A6-9B6A-14A973F3B431}.Release|anycpu.Build.0 = Release|anycpu
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2E27CE2A-404A-42CB-A5A5-77160F14AAAB}
+	EndGlobalSection
+EndGlobal

@@ -1204,7 +1204,7 @@ namespace 関数
   例えば、配列利用の関数定義・繰り返し・再帰関数・条件分岐など。  
   以下、各項目(目次)。  
   [x] [平均値を求める。](#findTheAverageValueChapter2)2022/01/11  
-  [ ] [1からnまで足し合わせる。](#addFrom1tonChapter2)  
+  [x] [1からnまで足し合わせる。](#addFrom1tonChapter2)2022/01/31  
   [ ] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
   [ ] [素数を求める。](#findAPrimeNumberChapter2)  
   [ ] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
@@ -1337,6 +1337,90 @@ namespace average
 
 <a name="addFrom1tonChapter2"></a>
 #### 1からnまで足し合わせる。
+勉強内容はPythonと基本は同じ。  
+それをC#用に移植するだけのこと。  
+
+* ルール1もPythonと同じ。  
+  * `for`を用いる。  
+  * 関数は定義しない。  
+    私のルールは、必ず関数定義をすることに決めているため、ここだけ無視する。  
+
+以下、プログラム。
+```csharp
+using System;
+
+namespace addup
+{
+	class MainClass
+	{
+		public static void Main(string[] args)
+		{
+			var total = 0;
+			for (int ii = 0; 10 >= ii; ii++)
+			{
+				total += ii;
+			}
+			Console.WriteLine($"合計点 {total.ToString()}");   // 合計点 55
+		}
+	}
+}
+```
+
+* ルール2もPythonと同じ。  
+  * nまでの値を関数の引数で受け取る。  
+  * 関数内で合算した結果をreturnで返す。  
+
+以下、ルール2のプログラム。
+```csharp
+using System;
+
+namespace addup
+{
+	class MainClass
+	{
+		public static void add2(int count)
+		{
+			var total = 0;
+			for (int ii = 0; count >= ii; ii++)
+			{
+				total += ii;
+			}
+			Console.WriteLine($"合計点 {total.ToString()}");   // 合計点 55
+		}
+		public static void Main(string[] args)
+		{
+			add2(10);
+		}
+	}
+}
+```
+
+* ルール3もPythonと同じ。  
+  * 工夫して計算する。  
+  * (初めの数+終わりの数)*(足し合わせる個数/2)  
+
+以下、ルール3のプログラム。
+```csharp
+using System;
+
+namespace addup
+{
+	class MainClass
+	{
+		public static void add3(int number)
+		{
+			var total = (1 + number) * number / 2;
+
+			Console.WriteLine($"合計点 {total.ToString()}");   // 合計点 55
+		}
+		public static void Main(string[] args)
+		{
+			add3(10);
+		}
+	}
+}
+```
+
 
 <a name="outputTheMultiplicationTableChapter2"></a>
 #### 九九の式を出力する。
