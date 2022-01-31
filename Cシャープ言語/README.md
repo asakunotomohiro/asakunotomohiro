@@ -1366,6 +1366,35 @@ namespace addup
 }
 ```
 
+* ルール2もPythonと同じ。  
+  * nまでの値を関数の引数で受け取る。  
+  * 関数内で合算した結果をreturnで返す。  
+
+以下、ルール2のプログラム。
+```csharp
+using System;
+
+namespace addup
+{
+	class MainClass
+	{
+		public static void add2(int count)
+		{
+			var total = 0;
+			for (int ii = 0; count >= ii; ii++)
+			{
+				total += ii;
+			}
+			Console.WriteLine($"合計点 {total.ToString()}");   // 合計点 55
+		}
+		public static void Main(string[] args)
+		{
+			add2(10);
+		}
+	}
+}
+```
+
 
 <a name="outputTheMultiplicationTableChapter2"></a>
 #### 九九の式を出力する。
