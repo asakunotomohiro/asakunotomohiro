@@ -1204,7 +1204,7 @@ namespace 関数
   例えば、配列利用の関数定義・繰り返し・再帰関数・条件分岐など。  
   以下、各項目(目次)。  
   [x] [平均値を求める。](#findTheAverageValueChapter2)2022/01/11  
-  [ ] [1からnまで足し合わせる。](#addFrom1tonChapter2)  
+  [x] [1からnまで足し合わせる。](#addFrom1tonChapter2)2022/01/31  
   [ ] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
   [ ] [素数を求める。](#findAPrimeNumberChapter2)  
   [ ] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
@@ -1337,6 +1337,35 @@ namespace average
 
 <a name="addFrom1tonChapter2"></a>
 #### 1からnまで足し合わせる。
+勉強内容はPythonと基本は同じ。  
+それをC#用に移植するだけのこと。  
+
+* ルール1もPythonと同じ。  
+  * `for`を用いる。  
+  * 関数は定義しない。  
+    私のルールは、必ず関数定義をすることに決めているため、ここだけ無視する。  
+
+以下、プログラム。
+```csharp
+using System;
+
+namespace addup
+{
+	class MainClass
+	{
+		public static void Main(string[] args)
+		{
+			var total = 0;
+			for (int ii = 0; 10 >= ii; ii++)
+			{
+				total += ii;
+			}
+			Console.WriteLine($"合計点 {total.ToString()}");   // 合計点 55
+		}
+	}
+}
+```
+
 
 <a name="outputTheMultiplicationTableChapter2"></a>
 #### 九九の式を出力する。
