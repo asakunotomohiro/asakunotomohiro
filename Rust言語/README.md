@@ -1581,7 +1581,7 @@ fn retiffunc( hoge: i32 ) -> i32 {
   例えば、配列利用の関数定義・繰り返し・再帰関数・条件分岐など。  
   以下、各項目(目次)。  
   [x] [平均値を求める。](#findTheAverageValueChapter2)2022/01/11  
-  [ ] [1からnまで足し合わせる。](#addFrom1tonChapter2)  
+  [x] [1からnまで足し合わせる。](#addFrom1tonChapter2)2022/02/10  
   [ ] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
   [ ] [素数を求める。](#findAPrimeNumberChapter2)  
   [ ] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
@@ -1706,6 +1706,64 @@ fn main() {
 
 <a name="addFrom1tonChapter2"></a>
 #### 1からnまで足し合わせる。
+勉強内容はPythonと基本は同じ。  
+それをRust用に移植するだけのこと。  
+
+* ルール1もPythonと同じ。  
+  * `for`を用いる。  
+  * 関数は定義しない。  
+    私のルールは、必ず関数定義をすることに決めているため、ここだけ無視する。  
+
+以下、ルール1のプログラム。
+```rust
+fn main() {
+	let mut count = 0;
+	for ii in 1..11 {
+		count += ii;
+	}
+	println!("合計点 {0}", count);	// 合計点 55
+}
+```
+
+* ルール2もPythonと同じ。  
+  * nまでの値を関数の引数で受け取る。  
+  * 関数内で合算した結果をreturnで返す。  
+
+以下、ルール2のプログラム。
+```rust
+fn add2( total: i32 ) -> i32 {
+	let mut count = 0;
+	let max = total + 1;
+	for ii in 1..max {
+		count += ii;
+	}
+	count
+}
+
+fn main() {
+	let total = add2(10);
+	println!("合計点 {0} << add2関数", total);	// 合計点 55 << add2関数
+}
+```
+
+* ルール3もPythonと同じ。  
+  * 工夫して計算する。  
+  * (初めの数+終わりの数)*(足し合わせる個数/2)  
+
+以下、ルール3のプログラム。
+```rust
+fn add3( total: i32 ) -> i32 {
+	let sumtotal = (1+total) * total / 2;
+
+	return sumtotal;
+}
+
+fn main() {
+	let total = add3(10);
+	println!("合計点 {0} << add3関数", total);	// 合計点 55 << add3関数
+}
+```
+
 
 <a name="outputTheMultiplicationTableChapter2"></a>
 #### 九九の式を出力する。
