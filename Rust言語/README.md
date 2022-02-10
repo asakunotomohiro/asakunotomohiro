@@ -1742,6 +1742,32 @@ fn main() {
 }
 ```
 
+* ルール2もPythonと同じ。  
+  * nまでの値を関数の引数で受け取る。  
+  * 関数内で合算した結果をreturnで返す。  
+
+以下、ルール2のプログラム。
+```rust
+fn add2( total: i32 ) -> i32 {
+	let mut count = 0;
+	let max = total + 1;
+	for ii in 1..max {
+		count += ii;
+	}
+	//println!("合計点 {0}", count);	// 合計点 55
+	count
+}
+
+fn main() {
+	//add1();
+	let total = add2(10);
+	println!("合計点 {0} << add2関数", total);	// 合計点 55 << add2関数
+}
+```
+実行まで無茶苦茶時間が掛かる。  
+そもそも、int型がなく、i32型って何だよ。  
+intでその場に応じた適切な大きさでコンパイルをして欲しいのに、、、困った。  
+
 
 <a name="outputTheMultiplicationTableChapter2"></a>
 #### 九九の式を出力する。
