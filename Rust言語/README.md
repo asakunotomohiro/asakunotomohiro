@@ -1706,6 +1706,42 @@ fn main() {
 
 <a name="addFrom1tonChapter2"></a>
 #### 1からnまで足し合わせる。
+勉強内容はPythonと基本は同じ。  
+それをC#用に移植するだけのこと。  
+
+以下、プロジェクト作成。
+```terminal
+$ cargo new add
+     Created binary (application) `add` package
+$ cd add
+$ ll -R
+total 8
+drwxr-xr-x  4 asakunotomohiro  staff  128  2 10 16:28 src/
+-rw-r--r--  1 asakunotomohiro  staff  172  2 10 16:25 Cargo.toml
+
+./src:
+total 8
+-rw-r--r--  1 asakunotomohiro  staff  199  2 10 16:28 main.rs
+$
+```
+毎回作成方法を忘れる。  
+
+* ルール1もPythonと同じ。  
+  * `for`を用いる。  
+  * 関数は定義しない。  
+    私のルールは、必ず関数定義をすることに決めているため、ここだけ無視する。  
+
+以下、プログラム。
+```rust
+fn main() {
+	let mut count = 0;
+	for ii in 1..11 {
+		count += ii;
+	}
+	println!("合計点 {0}", count);	// 合計点 55
+}
+```
+
 
 <a name="outputTheMultiplicationTableChapter2"></a>
 #### 九九の式を出力する。
