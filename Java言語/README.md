@@ -1286,6 +1286,42 @@ class addup3 {
 
 <a name="outputTheMultiplicationTableChapter2"></a>
 #### 九九の式を出力する。
+Pythonでやったように、九九の式を出すのではなく、九九表を出すことにする。  
+ルールはPythonと同じ。  
+※二重[ループ](#repetition繰り返し)[(forの入れ子)](#subRepetition4)を使う。  
+
+* 作業ルール。  
+  * 二重ループを使う。  
+
+<details><summary>2重ループのサンプルプログラム(for編)。</summary>
+
+```java
+class loop {
+	public static void main(String[] args){
+		for( int ii = 0; 3 > ii; ii++ ) {
+			for( int jj = 0; 3 > jj; jj++ ) {
+				System.out.printf("ii[%d], jj[%d]\n", ii, jj);
+			}
+		}
+	}
+}
+```
+
+以下、出力結果。
+```terminal
+ii[0], jj[0]
+ii[0], jj[1]
+ii[0], jj[2]
+ii[1], jj[0]
+ii[1], jj[1]
+ii[1], jj[2]
+ii[2], jj[0]
+ii[2], jj[1]
+ii[2], jj[2]
+```
+
+</details>
+
 
 <a name="findAPrimeNumberChapter2"></a>
 #### 素数を求める。
