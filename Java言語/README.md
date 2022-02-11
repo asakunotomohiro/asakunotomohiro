@@ -1448,6 +1448,8 @@ class kuku2 {
 ```
 残念なことに、他の言語の出力結果が間違えている。  
 
+<details><summary>適度に折り返された表示形式。</summary>
+
 以下、出力結果。
 ```terminal
  1x1= 1 2x1= 2 3x1= 3 4x1= 4 5x1= 5 6x1= 6 7x1= 7 8x1= 8 9x1= 9
@@ -1460,6 +1462,42 @@ class kuku2 {
  1x8= 8 2x8=16 3x8=24 4x8=32 5x8=40 6x8=48 7x8=56 8x8=64 9x8=72
  1x9= 9 2x9=18 3x9=27 4x9=36 5x9=45 6x9=54 7x9=63 8x9=72 9x9=81
 ```
+
+</details>
+
+以下、我々学生時代から親しんできた九九表プログラム。
+```java
+class kuku {
+	static void kuku(){
+		for( int ii = 1; 10 > ii; ii++ ) {
+			for( int jj = 1; 10 > jj; jj++ ) {
+				// System.out.printf("%2d x%2d=%2d\n", ii, jj, ii*jj);
+				// System.out.printf(" %dx%d=%2d", jj, ii, ii*jj);
+				System.out.printf("%3d", ii*jj);
+			}
+			System.out.println("");
+		}
+	}
+
+	public static void main(String[] args){
+		kuku();
+	}
+}
+```
+
+以下、出力結果。
+```terminal
+  1  2  3  4  5  6  7  8  9
+  2  4  6  8 10 12 14 16 18
+  3  6  9 12 15 18 21 24 27
+  4  8 12 16 20 24 28 32 36
+  5 10 15 20 25 30 35 40 45
+  6 12 18 24 30 36 42 48 54
+  7 14 21 28 35 42 49 56 63
+  8 16 24 32 40 48 56 64 72
+  9 18 27 36 45 54 63 72 81
+```
+これぞ九九表だろう。  
 
 
 <a name="findAPrimeNumberChapter2"></a>
