@@ -1289,7 +1289,7 @@ int hogefunc(int hoge[], int size) {
   [x] [平均値を求める。](#findTheAverageValueChapter2)2021/09/28  
   [x] [1からnまで足し合わせる。](#addFrom1tonChapter2)2022/01/07  
   [x] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)2022/01/20  
-  [ ] [素数を求める。](#findAPrimeNumberChapter2)  
+  [x] [素数を求める。](#findAPrimeNumberChapter2)2022/02/12  
   [ ] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
   [ ] [エラトステネスの篩](#eratosthenesSieveChapter2)  
   [ ] [n進法を理解する。](#understandnAryNotationChapter2)  
@@ -1718,6 +1718,57 @@ int main(void)
 
 <a name="findAPrimeNumberChapter2"></a>
 #### 素数を求める。
+素数とは、1とその数以外に約数を持たない2以上の自然数のこと。  
+
+Pythonに倣い、試す数は**2〜2分のn**までの数で割ることを調べる方法をとる。  
+例えば、10を調べる場合、その半分より大きい数(**6**・**7**・**8**・**9**)では、10を割ることが出来ない。  
+そのことを利用した方法で素数を求める。  
+後日、[エラトステネスの篩](#eratosthenesSieveChapter2)を使った効率のいいアルゴリズムを勉強する。  
+
+* 素数を求めるルール  
+  * 二重ループを使う。  
+  * 2から2分のnまでの数で割る。  
+    ※それらの数で割り切れなければ素数。  
+
+以下、プログラム。
+```c
+#include <stdio.h>
+#include <stdbool.h>	// bool型を使うための読み込み(準備)。
+
+int prime()
+{
+	// 2から100までの素数を出力する関数。
+	for( int ii = 2; ii < 101; ii++ ) {
+		int half = ii / 2;	// 商を求める。
+		bool flag = true;
+		for( int jj = 2; jj < half+1; jj++ ) {
+			if( (ii % jj) == 0 ) {
+				// 剰余算にて、割り切れるならば、
+				flag = false;	// falseを代入する(要は、出力対象外)。
+				break;
+			}
+		}
+		if( flag == true ) {
+			printf("%d,", ii );
+		}
+	}
+
+	return 0;
+}
+
+int main(void)
+{
+	prime();
+
+	return 0;
+}
+```
+
+以下、実行結果。
+```terminal
+2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,
+```
+
 
 <a name="findTheFactorialOfNChapter2"></a>
 #### nの階乗を求める。
