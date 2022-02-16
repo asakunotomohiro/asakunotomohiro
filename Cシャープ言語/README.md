@@ -1472,6 +1472,46 @@ boo[3], bar[c]
 
 </details>
 
+<details><summary>2重ループのサンプルプログラム(for編)。</summary>
+
+```csharp
+using System;
+
+namespace sample
+{
+	class MainClass
+	{
+		public static void Main(string[] args)
+		{
+			for (var ii = 0; 3 > ii; ii++)
+			{
+				for (var jj = 0; 3 > jj; jj++)
+				{
+					Console.WriteLine("boo[{0}], bar[{1}]", ii, jj);
+				}
+			}
+		}
+	}
+}
+```
+foreachを無理矢理使うよりは自然なプログラムだろう。  
+適材適所というのは可笑しいが、無理して使う必要が無いのは使わない(否定の連続文章)。  
+
+以下、出力結果。
+```terminal
+boo[0], bar[0]
+boo[0], bar[1]
+boo[0], bar[2]
+boo[1], bar[0]
+boo[1], bar[1]
+boo[1], bar[2]
+boo[2], bar[0]
+boo[2], bar[1]
+boo[2], bar[2]
+```
+
+</details>
+
 
 <a name="findAPrimeNumberChapter2"></a>
 #### 素数を求める。
