@@ -25,10 +25,22 @@ namespace sample
 				Console.WriteLine("");
 			}
 		}
+		public static void kuku()
+		{
+			for (var ii = 1; 10 > ii; ii++)
+			{
+				for (var jj = 1; 10 > jj; jj++)
+				{
+					Console.Write("{0,3:G}", ii * jj);
+				}
+				Console.WriteLine("");
+			}
+		}
 		public static void Main(string[] args)
 		{
 			//kuku1();
-			kuku2();
+			//kuku2();
+			kuku();
 		}
 	}
 }
