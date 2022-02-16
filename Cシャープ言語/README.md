@@ -1441,19 +1441,34 @@ namespace sample
 	{
 		public static void Main(string[] args)
 		{
-			var total = 0;
-			var array = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, };
-			foreach (var ii in array)
+			var boo = new int[] { 1, 2, 3, };
+			var bar = new string[] { "a", "b", "c", };
+			foreach (var ii in boo)
 			{
-				total += ii;
+				foreach (var jj in bar)
+				{
+					Console.WriteLine("boo[{0}], bar[{1}]", ii, jj);
+				}
 			}
-			Console.WriteLine("合計：{0}", total); // 合計：55
 		}
 	}
 }
 ```
 これは面倒くさい。  
 連番を生み出すのはPerl最強だよな。  
+
+以下、出力結果。
+```terminal
+boo[1], bar[a]
+boo[1], bar[b]
+boo[1], bar[c]
+boo[2], bar[a]
+boo[2], bar[b]
+boo[2], bar[c]
+boo[3], bar[a]
+boo[3], bar[b]
+boo[3], bar[c]
+```
 
 </details>
 
