@@ -1424,6 +1424,39 @@ namespace addup
 
 <a name="outputTheMultiplicationTableChapter2"></a>
 #### 九九の式を出力する。
+Pythonでやったように、九九の式を出すのではなく、九九表を出すことにする。  
+ルールはPythonと同じ。  
+
+* 作業ルール。  
+  * 二重ループを使う。  
+
+<details><summary>2重ループのサンプルプログラム(foreach編)。</summary>
+
+```csharp
+using System;
+
+namespace sample
+{
+	class MainClass
+	{
+		public static void Main(string[] args)
+		{
+			var total = 0;
+			var array = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, };
+			foreach (var ii in array)
+			{
+				total += ii;
+			}
+			Console.WriteLine("合計：{0}", total); // 合計：55
+		}
+	}
+}
+```
+これは面倒くさい。  
+連番を生み出すのはPerl最強だよな。  
+
+</details>
+
 
 <a name="findAPrimeNumberChapter2"></a>
 #### 素数を求める。
