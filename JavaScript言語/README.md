@@ -457,8 +457,7 @@ window.alert("Hello World!");
     * [x] 整数(`int`)  
     * [x] 浮動小数点型(`float`)  
     * [x] 文字型(`string`)  
-    * [ ] 真偽型(`bool`)  
-      ない。  
+    * [x] 真偽型(`bool`)  
   * [変数値を使った計算方法](#subVariable5)  
     * [x] 算術演算子  
       * [x] 足し算(`+`)  
@@ -548,7 +547,12 @@ console.log(str);
 |int||整数型|
 |float||小数型|
 |string||文字列型|
-|bool||ない？|
+|bool||ある|
+
+
+* boolean型  
+  bool-->true	←☆1  
+  bool-->false	←☆0  
 
 
 <a name="subVariable5"></a>

@@ -40,4 +40,50 @@ else{
 //			else文内容：asakuno
 
 
+console.log("------------------");
+// boolean型
+if( true ) {
+	console.log("true出力");
+}
+else if( false ) {
+	console.log("false出力");
+}
+else{
+	console.log("else");
+}
+// 出力結果。
+//			true出力
+
+if( 0 ) {
+	console.log("true出力");
+}
+else if( false ) {
+	console.log("false出力");
+}
+else{
+	console.log("else");
+}
+// 出力結果。
+//			else
+
+if( 1 ) {
+	console.log("true出力");
+}
+else if( false ) {
+	console.log("false出力");
+}
+else{
+	console.log("else");
+}
+// 出力結果。
+//			true出力
+
+
+
+
+
+
+
+
+
 /* vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=javascript noexpandtab: */
