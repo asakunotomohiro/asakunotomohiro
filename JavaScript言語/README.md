@@ -813,6 +813,17 @@ console.log("2次元配列[2][1]：" + hoge[2][1]);
 <a name="subConditional1"></a>
 #### 条件分岐
 様式：
+```javascript
+if( 条件式1 ) {
+    処理A;
+}
+else if( 条件式2 ) {
+    処理B;
+}
+else {
+    処理C;
+}
+```
 
 <a name="subConditional2"></a>
 #### 論理演算子(ド・モルガンの法則)
