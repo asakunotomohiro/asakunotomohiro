@@ -87,7 +87,7 @@
   * [JavaScript](https://developer.mozilla.org/ja/docs/Web/JavaScript)  
     * [ ] 変数  
     * [ ] 配列  
-    * [ ] 条件分岐  
+    * [x] 条件分岐2022/02/17  
     * [ ] 繰り返し  
     * [ ] 関数  
 
