@@ -869,6 +869,10 @@ else {
 
 * 多岐分岐-条件にて複数から選ぶ。  
   基本構造例：switch  
+  * switch  
+    case  
+    default  
+    break  
 
 * 関係演算子  
   * [ ] 三項演算子(`?:`)  
