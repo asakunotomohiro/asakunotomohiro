@@ -263,7 +263,7 @@ ASIN：
 図形描写は、今回のGithub特有の機能になる。  
 ダイアグラム表示用のマークダウン記法として[**mermaid**](https://twitter.com/github/status/1493271204303708164)に対応した。  
 
-以下、ダイアログ表示例。  
+以下、ダイアログ表示例）
 ```mermaid
 graph TD;
     A-->B;
@@ -274,6 +274,20 @@ graph TD;
 ん？  
 vimエディタの[previm/previm](https://github.com/previm/previm)では表示できた。  
 対応できないサービスが古いと言うことかな。  
+
+以下、シーケンス図例）
+```mermaid
+sequenceDiagram
+    participant メイン
+    participant サブ
+    participant 末端
+    メイン->>サブ: メインからサブに送る。
+    サブ->>末端: サブから末端に送る。
+    末端->>サブ: 末端からサブに返却。
+    サブ->>メイン: サブからメインに返却。
+    メイン->>サブ: メインからサブに再送。
+    サブ->>サブ: サブで立ち止まる。
+```
 
 
 <a name="planemarkdownSnsserviceBitbucket170002"></a>
