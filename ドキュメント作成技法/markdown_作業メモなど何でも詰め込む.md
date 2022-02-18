@@ -289,6 +289,22 @@ sequenceDiagram
     サブ->>サブ: サブで立ち止まる。
 ```
 
+以下、[ガントチャート](https://mermaid-js.github.io/mermaid/#/./gantt)例）
+```mermaid
+gantt
+    dateFormat  YYYY-MM-DD
+    title ガントチャート例
+    excludes weekends
+
+    section テスト期間
+    完了タスク  :done,          t1, 2022-01-18, 2d
+    実行タスク  :crit, done,    t2, 2022-02-18, 3d
+    実行タスク  :      active,  t3, after t2,   4d
+    未来1タスク :               t4, after t3,   5d
+    最終期限    :milestone      m1, 16:13, 5min %% マイルストーン用の印が出てこない。
+    未来2タスク :                               6d
+```
+
 
 <a name="planemarkdownSnsserviceBitbucket170002"></a>
 ###### Bitbucket
