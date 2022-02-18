@@ -69,11 +69,15 @@ ASIN：B07L5GDCMM
 出版社：インプレスR&D, PDF版  
 関連先URL：<https://nextpublishing.jp/book/10278.html>  
 形式：オンデマンド(ペーパーバック)  
+※あくまでも参考であって、書籍の内容を書き写しているわけではない。  
 
 
 <!-- 目次部分(リンクになるところ) -->
 <a id="nextpublishingMarkdown9784844398363contents"></a>
-## [目次](#nextpublishingMarkdown9784844398363)
+## [目次(独自記入含む)](#nextpublishingMarkdown9784844398363)
+※書籍を元に作成するが、マークダウン記法をすべて網羅していないため、勝手に追加削除などを行う。  
+そのため、目次というのは書籍を基本に私が勝手に追加する。  
+
 1. 章 [プレーンテキストとMarkdown](#planetextmarkdown100001)  
    1. [プレーンテキストの勧め](#planetextmarkdown110001)  
    1. [Markdownはプレーンテキストで文章を書くための記法](#planetextmarkdown110002)  
@@ -98,7 +102,7 @@ ASIN：B07L5GDCMM
    1. [MarkdownとHTML](#planetextmarkdown160003)  
    1. [Markdownを活用するための小技](#planetextmarkdown160004)  
 1. 章 [GitHub Flavored Markdown（GFM）](#planetextmarkdown100007)  
-   1. [表／タスクリスト／打ち消し線／拡張自動リンク／絵文字／シンタックスハイライト](#planetextmarkdown170001)  
+   1. [表／タスクリスト／打ち消し線／拡張自動リンク／絵文字／シンタックスハイライト/図形](#planetextmarkdown170001)  
    1. [注意：GitHub Flavored Markdown Specにない記法](#planetextmarkdown170002)  
 1. 章 [Markdownとは何か？](#planetextmarkdown100008)  
    1. [Markdownの定義](#planetextmarkdown180001)  
@@ -156,7 +160,7 @@ ASIN：
 ### GitHub Flavored Markdown（GFM）
 
 <a id="planetextmarkdown170001"></a>
-#### 表／タスクリスト／打ち消し線／拡張自動リンク／絵文字／シンタックスハイライト
+#### 表／タスクリスト／打ち消し線／拡張自動リンク／絵文字／シンタックスハイライト／図形
 
 * 内部目次  
   * [表(テーブル)](#planetextmarkdownTable170001)  
@@ -165,6 +169,7 @@ ASIN：
   * 拡張自動リンク  
   * 絵文字  
   * シンタックスハイライト  
+  * 図形  
 
 <a id="planetextmarkdownTable170001"></a>
 ##### 表・テーブルの作成方法
