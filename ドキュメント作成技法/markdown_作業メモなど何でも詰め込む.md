@@ -69,11 +69,15 @@ ASIN：B07L5GDCMM
 出版社：インプレスR&D, PDF版  
 関連先URL：<https://nextpublishing.jp/book/10278.html>  
 形式：オンデマンド(ペーパーバック)  
+※あくまでも参考であって、書籍の内容を書き写しているわけではない。  
 
 
 <!-- 目次部分(リンクになるところ) -->
 <a id="nextpublishingMarkdown9784844398363contents"></a>
-## [目次](#nextpublishingMarkdown9784844398363)
+## [目次(独自記入含む)](#nextpublishingMarkdown9784844398363)
+※書籍を元に作成するが、マークダウン記法をすべて網羅していないため、勝手に追加削除などを行う。  
+そのため、目次というのは書籍を基本に私が勝手に追加する。  
+
 1. 章 [プレーンテキストとMarkdown](#planetextmarkdown100001)  
    1. [プレーンテキストの勧め](#planetextmarkdown110001)  
    1. [Markdownはプレーンテキストで文章を書くための記法](#planetextmarkdown110002)  
@@ -98,7 +102,7 @@ ASIN：B07L5GDCMM
    1. [MarkdownとHTML](#planetextmarkdown160003)  
    1. [Markdownを活用するための小技](#planetextmarkdown160004)  
 1. 章 [GitHub Flavored Markdown（GFM）](#planetextmarkdown100007)  
-   1. [表／タスクリスト／打ち消し線／拡張自動リンク／絵文字／シンタックスハイライト](#planetextmarkdown170001)  
+   1. [表／タスクリスト／打ち消し線／拡張自動リンク／絵文字／シンタックスハイライト/図形](#planetextmarkdown170001)  
    1. [注意：GitHub Flavored Markdown Specにない記法](#planetextmarkdown170002)  
 1. 章 [Markdownとは何か？](#planetextmarkdown100008)  
    1. [Markdownの定義](#planetextmarkdown180001)  
@@ -156,7 +160,7 @@ ASIN：
 ### GitHub Flavored Markdown（GFM）
 
 <a id="planetextmarkdown170001"></a>
-#### 表／タスクリスト／打ち消し線／拡張自動リンク／絵文字／シンタックスハイライト
+#### 表／タスクリスト／打ち消し線／拡張自動リンク／絵文字／シンタックスハイライト／図形
 
 * 内部目次  
   * [表(テーブル)](#planetextmarkdownTable170001)  
@@ -165,6 +169,7 @@ ASIN：
   * 拡張自動リンク  
   * 絵文字  
   * シンタックスハイライト  
+  * [図形](#planetextmarkdownTable170002)  
 
 <a id="planetextmarkdownTable170001"></a>
 ##### 表・テーブルの作成方法
@@ -231,6 +236,114 @@ ASIN：
 
 <a name="planemarkdownSnsserviceTumblr170001table"></a>
 ###### Tumblr
+
+
+<a id="planetextmarkdownTable170002"></a>
+##### 図形の作成方法
+今回の図形作成は、純粋なマークダウン記法だけでは実現できない。  
+わざわざ項目を立てたのは、Githubで使えるようになったため。  
+
+以下、言語ごとの細かい方言(違い)を説明する。  
+* 一覧  
+  * [Stack Overflow](#planemarkdownSnsserviceStackoverflow170002)  
+  * [Reddit](#planemarkdownSnsserviceReddit170002)  
+  * [GitHub](#planemarkdownSnsserviceGithub170002)  
+  * [Bitbucket](#planemarkdownSnsserviceBitbucket170002)  
+  * [Qiita](#planemarkdownSnsserviceQiita170002)  
+  * [Tumblr](#planemarkdownSnsserviceTumblr170002)  
+
+<a name="planemarkdownSnsserviceStackoverflow170002"></a>
+###### Stack Overflow
+
+<a name="planemarkdownSnsserviceReddit170002"></a>
+###### Reddit
+
+<a name="planemarkdownSnsserviceGithub170002"></a>
+###### GitHub
+図形描写は、今回のGithub特有の機能になる。  
+ダイアグラム表示用のマークダウン記法として[**mermaid**](https://twitter.com/github/status/1493271204303708164)に対応した。  
+公式版からどれを取り込んでいるかまでは検証していない。  
+そして、以下、vimエディタの[previm/previm](https://github.com/previm/previm)では表示できた。  
+
+以下、ダイアログ表示例）
+```mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
+
+以下、シーケンス図例）
+```mermaid
+sequenceDiagram
+    participant メイン
+    participant サブ
+    participant 末端
+    メイン->>サブ: メインからサブに送る。
+    サブ->>末端: サブから末端に送る。
+    末端->>サブ: 末端からサブに返却。
+    サブ->>メイン: サブからメインに返却。
+    メイン->>サブ: メインからサブに再送。
+    サブ->>サブ: サブで立ち止まる。
+```
+
+以下、[ガントチャート](https://mermaid-js.github.io/mermaid/#/./gantt)例）
+```mermaid
+gantt
+    dateFormat  YYYY-MM-DD
+    title ガントチャート例
+    excludes weekends
+
+    section テスト期間
+    完了タスク  :done,          t1, 2022-01-18, 2d
+    実行タスク  :crit, done,    t2, 2022-02-18, 3d
+    実行タスク  :      active,  t3, after t2,   4d
+    未来1タスク :               t4, after t3,   5d
+    最終期限    :milestone      m1, 16:13, 5min %% マイルストーン用の印が出てこない。
+    未来2タスク :                               6d
+```
+
+以下、クラス図例）
+```mermaid
+classDiagram
+Class01 <|-- テストクラス : 仮矢印
+Class01 : size()
+Class01 : int tmp
+Class01 : int hoge
+```
+
+以下、コミットグラフ例）
+```mermaid
+gitGraph:
+options
+{
+    "nodeSpacing": 150,
+    "nodeRadius": 10
+}
+end
+commit
+branch newbranch
+checkout newbranch
+commit
+commit
+checkout master
+commit
+commit
+merge newbranch
+```
+面白い。  
+
+
+<a name="planemarkdownSnsserviceBitbucket170002"></a>
+###### Bitbucket
+
+<a name="planemarkdownSnsserviceQiita170002"></a>
+###### Qiita
+
+<a name="planemarkdownSnsserviceTumblr170002"></a>
+###### Tumblr
+
 
 <a id="planetextmarkdown170002"></a>
 #### 注意：GitHub Flavored Markdown Specにない記法
