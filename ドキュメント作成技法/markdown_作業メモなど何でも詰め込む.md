@@ -169,7 +169,7 @@ ASIN：
   * 拡張自動リンク  
   * 絵文字  
   * シンタックスハイライト  
-  * 図形  
+  * [図形](#planetextmarkdownTable170002)  
 
 <a id="planetextmarkdownTable170001"></a>
 ##### 表・テーブルの作成方法
@@ -236,6 +236,42 @@ ASIN：
 
 <a name="planemarkdownSnsserviceTumblr170001table"></a>
 ###### Tumblr
+
+
+<a id="planetextmarkdownTable170002"></a>
+##### 図形の作成方法
+今回の図形作成は、純粋なマークダウン記法だけでは実現できない。  
+わざわざ項目を立てたのは、Githubで使えるようになったため。  
+
+以下、言語ごとの細かい方言(違い)を説明する。  
+* 一覧  
+  * [Stack Overflow](#planemarkdownSnsserviceStackoverflow170002)  
+  * [Reddit](#planemarkdownSnsserviceReddit170002)  
+  * [GitHub](#planemarkdownSnsserviceGithub170002)  
+  * [Bitbucket](#planemarkdownSnsserviceBitbucket170002)  
+  * [Qiita](#planemarkdownSnsserviceQiita170002)  
+  * [Tumblr](#planemarkdownSnsserviceTumblr170002)  
+
+<a name="planemarkdownSnsserviceStackoverflow170002"></a>
+###### Stack Overflow
+
+<a name="planemarkdownSnsserviceReddit170002"></a>
+###### Reddit
+
+<a name="planemarkdownSnsserviceGithub170002"></a>
+###### GitHub
+図形描写は、今回のGithub特有の機能になる。  
+
+
+<a name="planemarkdownSnsserviceBitbucket170002"></a>
+###### Bitbucket
+
+<a name="planemarkdownSnsserviceQiita170002"></a>
+###### Qiita
+
+<a name="planemarkdownSnsserviceTumblr170002"></a>
+###### Tumblr
+
 
 <a id="planetextmarkdown170002"></a>
 #### 注意：GitHub Flavored Markdown Specにない記法
