@@ -314,6 +314,27 @@ Class01 : int tmp
 Class01 : int hoge
 ```
 
+以下、コミットグラフ例）
+```mermaid
+gitGraph:
+options
+{
+    "nodeSpacing": 150,
+    "nodeRadius": 10
+}
+end
+commit
+branch newbranch
+checkout newbranch
+commit
+commit
+checkout master
+commit
+commit
+merge newbranch
+```
+面白い。  
+
 
 <a name="planemarkdownSnsserviceBitbucket170002"></a>
 ###### Bitbucket
