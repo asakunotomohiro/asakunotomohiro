@@ -305,6 +305,15 @@ gantt
     未来2タスク :                               6d
 ```
 
+以下、クラス図例）
+```mermaid
+classDiagram
+Class01 <|-- テストクラス : 仮矢印
+Class01 : size()
+Class01 : int tmp
+Class01 : int hoge
+```
+
 
 <a name="planemarkdownSnsserviceBitbucket170002"></a>
 ###### Bitbucket
