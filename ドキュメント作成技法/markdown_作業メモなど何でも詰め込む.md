@@ -261,6 +261,19 @@ ASIN：
 <a name="planemarkdownSnsserviceGithub170002"></a>
 ###### GitHub
 図形描写は、今回のGithub特有の機能になる。  
+ダイアグラム表示用のマークダウン記法として[**mermaid**](https://twitter.com/github/status/1493271204303708164)に対応した。  
+
+以下、ダイアログ表示例。  
+```mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
+```
+ん？  
+vimエディタの[previm/previm](https://github.com/previm/previm)では表示できた。  
+対応できないサービスが古いと言うことかな。  
 
 
 <a name="planemarkdownSnsserviceBitbucket170002"></a>
