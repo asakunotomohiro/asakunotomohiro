@@ -939,10 +939,12 @@ for繰り返し2
 
 <a name="subRepetition3"></a>
 ##### 指定回数条件での繰り返し：拡張for命令
+ない？  
 
 
 <a name="subRepetition4"></a>
 #### `for`の入れ子。
+
 
 <a name="subRepetition5"></a>
 #### ジャンプ処理
