@@ -64,4 +64,18 @@ for( let ii = 0; asakuno.length > ii; ii++ ) {
 //			ii[0]
 //			ii[2]
 
+/*
+ * 以下、while文。
+ */
+let num = 0;
+while( num < 3 ) {
+	console.log("while繰り返し[" + asakuno[num] + "]" );
+	num++;
+}
+// 出力結果。
+//			while繰り返し[20220219]
+//			while繰り返し[20220220]
+//			while繰り返し[asakuno]
+
+
 /* vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=javascript noexpandtab: */

@@ -916,7 +916,7 @@ else {
 [`for ( 初期化; 条件式; 増減分; ) { 処理; }`](#subRepetition2)  
 
 様式：
-[`while ( 条件式 ) { 処理; }`](#subRepetition3)  
+[`while ( 条件式 ) { 処理; }`](#subRepetition6)  
 
 
 <a name="subRepetition2"></a>
@@ -1016,7 +1016,23 @@ ii[2]
 
 <a name="subRepetition6"></a>
 #### 真偽条件での繰り返し：while( 条件式 )
-様式：
+
+以下、`continue`処理。
+```javascript
+let num = 0;
+while( num < 3 ) {
+	console.log("while繰り返し[" + num + "]" );
+	num++;
+}
+```
+
+以下、出力結果。
+```text
+while繰り返し[0]
+while繰り返し[1]
+while繰り返し[2]
+```
+
 
 <a name="subRepetition7"></a>
 #### 無限ループ
