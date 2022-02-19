@@ -17,4 +17,24 @@ for( let ii = 0; asakuno.length > ii; ii++ ) {
 }
 // 出力結果。
 
+/*
+ * 以下、for文の入れ子。
+ */
+for( let ii = 0; asakuno.length > ii; ii++ ) {
+	for( let jj = 0; asakuno.length > jj; jj++ ) {
+		console.log("ii[" + ii + "], jj[" + jj + "]" );
+	}
+}
+// 出力結果。
+//			ii[0], jj[0]
+//			ii[0], jj[1]
+//			ii[0], jj[2]
+//			ii[1], jj[0]
+//			ii[1], jj[1]
+//			ii[1], jj[2]
+//			ii[2], jj[0]
+//			ii[2], jj[1]
+//			ii[2], jj[2]
+
+
 /* vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=javascript noexpandtab: */

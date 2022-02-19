@@ -945,6 +945,28 @@ for繰り返し2
 <a name="subRepetition4"></a>
 #### `for`の入れ子。
 
+以下プログラム例）
+```javascript
+for( let ii = 0; asakuno.length > ii; ii++ ) {
+	for( let jj = 0; asakuno.length > jj; jj++ ) {
+		console.log("ii[" + ii + "], jj[" + jj + "]" );
+	}
+}
+```
+
+以下、出力結果。
+```terminal
+ii[0], jj[0]
+ii[0], jj[1]
+ii[0], jj[2]
+ii[1], jj[0]
+ii[1], jj[1]
+ii[1], jj[2]
+ii[2], jj[0]
+ii[2], jj[1]
+ii[2], jj[2]
+```
+
 
 <a name="subRepetition5"></a>
 #### ジャンプ処理
