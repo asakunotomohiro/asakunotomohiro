@@ -913,14 +913,33 @@ else {
 <a name="subRepetition1"></a>
 #### 繰り返し
 様式：
+[`for ( 初期化; 条件式; 増減分; ) { 処理; }`](#subRepetition2)  
+
+様式：
+[`while ( 条件式 ) { 処理; }`](#subRepetition3)  
+
 
 <a name="subRepetition2"></a>
 ##### 指定回数条件での繰り返し：for( 条件式 )
-様式：
+
+以下プログラム例）
+```javascript
+for( let ii = 0; 3 > ii; ii++ ) {
+	console.log("for繰り返し" + ii);
+}
+```
+
+以下、出力結果。
+```terminal
+for繰り返し0
+for繰り返し1
+for繰り返し2
+```
+
 
 <a name="subRepetition3"></a>
 ##### 指定回数条件での繰り返し：拡張for命令
-様式：
+
 
 <a name="subRepetition4"></a>
 #### `for`の入れ子。
