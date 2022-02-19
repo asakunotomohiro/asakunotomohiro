@@ -78,4 +78,13 @@ while( num < 3 ) {
 //			while繰り返し[asakuno]
 
 
+/*
+ * 以下、無限ループ(for文)。
+ */
+//for( let ii = 0;; ii++ ) {
+//	console.log("for繰り返し[" + ii + "]" );
+//}
+// 出力結果。
+
+
 /* vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=javascript noexpandtab: */

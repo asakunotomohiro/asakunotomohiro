@@ -1036,7 +1036,19 @@ while繰り返し[2]
 
 <a name="subRepetition7"></a>
 #### 無限ループ
-様式：
+
+* 2種類。  
+  * [for文版](#subRepetition7for)  
+
+<a name="subRepetition7for"></a>
+```javascript
+for( let ii = 0;; ii++ ) {
+	console.log("for繰り返し[" + ii + "]" );
+}
+```
+これで無限ループになっているはず。  
+ブラウザが固まり、何も表示されなくなる。  
+
 
 <a name="subRepetition999"></a>
 #### 繰り返しでの説明しない項目。
