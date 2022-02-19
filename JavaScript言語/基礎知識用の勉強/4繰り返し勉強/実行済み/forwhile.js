@@ -37,4 +37,17 @@ for( let ii = 0; asakuno.length > ii; ii++ ) {
 //			ii[2], jj[2]
 
 
+/*
+ * 以下、break文。
+ */
+for( let ii = 0; asakuno.length > ii; ii++ ) {
+	if( ii === 2 ) {
+		break;
+	}
+	console.log("ii[" + ii + "]" );
+}
+// 出力結果。
+//			ii[0]
+//			ii[1]
+
 /* vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=javascript noexpandtab: */

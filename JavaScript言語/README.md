@@ -970,6 +970,31 @@ ii[2], jj[2]
 
 <a name="subRepetition5"></a>
 #### ジャンプ処理
+普通に使える(存在する)。  
+
+* 種類。  
+  * [`break`](#subRepetition5break)  
+  * `continue`  
+
+
+<a name="subRepetition5break"></a>
+以下、`break`処理。
+```javascript
+for( let ii = 0; asakuno.length > ii; ii++ ) {
+	if( ii === 2 ) {
+		break;
+	}
+	console.log("ii[" + ii + "]" );
+}
+```
+
+以下、出力結果。
+```terminal
+ii[0]
+ii[1]
+```
+2回目以降が出力されない。  
+
 
 <a name="subRepetition6"></a>
 #### 真偽条件での繰り返し：while( 条件式 )
