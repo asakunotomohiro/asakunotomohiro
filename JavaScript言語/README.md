@@ -1039,6 +1039,7 @@ while繰り返し[2]
 
 * 2種類。  
   * [for文版](#subRepetition7for)  
+  * [while文版](#subRepetition7while)  
 
 <a name="subRepetition7for"></a>
 ```javascript
@@ -1047,6 +1048,16 @@ for( let ii = 0;; ii++ ) {
 }
 ```
 これで無限ループになっているはず。  
+ブラウザが固まり、何も表示されなくなる。  
+
+<a name="subRepetition7while"></a>
+```javascript
+while( true ) {
+	console.log("while繰り返し[" + count + "]" );
+	count++;
+}
+```
+これも無限ループになっているはず。  
 ブラウザが固まり、何も表示されなくなる。  
 
 
@@ -1060,6 +1071,7 @@ for( let ii = 0;; ii++ ) {
   基本構造例：do〜while( 条件式 )  
 
 </details>
+
 
 <a name="function関数sub"></a>
 ### 関数

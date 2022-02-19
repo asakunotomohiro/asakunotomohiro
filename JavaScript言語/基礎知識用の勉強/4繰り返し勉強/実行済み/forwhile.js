@@ -81,10 +81,20 @@ while( num < 3 ) {
 /*
  * 以下、無限ループ(for文)。
  */
-//for( let ii = 0;; ii++ ) {
-//	console.log("for繰り返し[" + ii + "]" );
-//}
+//	一時退避。	for( let ii = 0;; ii++ ) {
+//	一時退避。		console.log("for繰り返し[" + ii + "]" );
+//	一時退避。	}
 // 出力結果。
 
+
+/*
+ * 以下、無限ループ(while文)。
+ */
+let count = 0;
+//	一時退避。	while( true ) {
+//	一時退避。		console.log("while繰り返し[" + count + "]" );
+//	一時退避。		count++;
+//	一時退避。	}
+// 出力結果。
 
 /* vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=javascript noexpandtab: */
