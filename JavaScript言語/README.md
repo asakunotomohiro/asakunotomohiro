@@ -898,54 +898,179 @@ else {
 ### 繰り返し
 
 * 絶対的に勉強する一覧  
-  * [ ] [指定回数条件での繰り返し](#subRepetition1)  
-    [ ] [基本構造例：for( 条件式 )](#subRepetition2)  
-    [ ] [基本構造例：拡張for命令(`in`)](#subRepetition3)  
-    [ ] [`for`の入れ子。](#subRepetition4)  
+  * [x] [指定回数条件での繰り返し](#subRepetition1)  
+    [x] [基本構造例：for( 条件式 )](#subRepetition2)  
+    [x] [基本構造例：拡張for命令(`in`)](#subRepetition3)  
+    [x] [`for`の入れ子。](#subRepetition4)  
   * [ジャンプ処理](#subRepetition5)  
-    * [ ] break  
-    * [ ] continue  
-  * [ ] [真偽条件での繰り返し](#subRepetition6)  
-    [ ] [基本構造例：while( 条件式 )](#subRepetition6)  
-    [ ] [無限ループ](#subRepetition7)  
+    * [x] break  
+    * [x] continue  
+  * [x] [真偽条件での繰り返し](#subRepetition6)  
+    [x] [基本構造例：while( 条件式 )](#subRepetition6)  
+    [x] [無限ループ](#subRepetition7)  
 
 
 <a name="subRepetition1"></a>
 #### 繰り返し
 様式：
+[`for ( 初期化; 条件式; 増減分; ) { 処理; }`](#subRepetition2)  
+
+様式：
+[`while ( 条件式 ) { 処理; }`](#subRepetition6)  
+
 
 <a name="subRepetition2"></a>
 ##### 指定回数条件での繰り返し：for( 条件式 )
-様式：
+
+以下プログラム例）
+```javascript
+for( let ii = 0; 3 > ii; ii++ ) {
+	console.log("for繰り返し" + ii);
+}
+```
+
+以下、出力結果。
+```terminal
+for繰り返し0
+for繰り返し1
+for繰り返し2
+```
+
 
 <a name="subRepetition3"></a>
 ##### 指定回数条件での繰り返し：拡張for命令
-様式：
+ない？  
+
 
 <a name="subRepetition4"></a>
 #### `for`の入れ子。
 
+以下プログラム例）
+```javascript
+for( let ii = 0; asakuno.length > ii; ii++ ) {
+	for( let jj = 0; asakuno.length > jj; jj++ ) {
+		console.log("ii[" + ii + "], jj[" + jj + "]" );
+	}
+}
+```
+
+以下、出力結果。
+```terminal
+ii[0], jj[0]
+ii[0], jj[1]
+ii[0], jj[2]
+ii[1], jj[0]
+ii[1], jj[1]
+ii[1], jj[2]
+ii[2], jj[0]
+ii[2], jj[1]
+ii[2], jj[2]
+```
+
+
 <a name="subRepetition5"></a>
 #### ジャンプ処理
+普通に使える(存在する)。  
+
+* 種類。  
+  * [`break`](#subRepetition5break)  
+  * [`continue`](#subRepetition5continue)  
+
+
+<a name="subRepetition5break"></a>
+以下、`break`処理。
+```javascript
+for( let ii = 0; asakuno.length > ii; ii++ ) {
+	if( ii === 2 ) {
+		break;
+	}
+	console.log("ii[" + ii + "]" );
+}
+```
+
+以下、出力結果。
+```terminal
+ii[0]
+ii[1]
+```
+2回目以降が出力されない。  
+
+<a name="subRepetition5continue"></a>
+以下、`continue`処理。
+```javascript
+for( let ii = 0; asakuno.length > ii; ii++ ) {
+	if( ii === 1 ) {
+		continue;
+	}
+	console.log("ii[" + ii + "]" );
+}
+```
+
+以下、出力結果。
+```text
+ii[0]
+ii[2]
+```
+2回目(要素数1)が飛ばされている。  
+
 
 <a name="subRepetition6"></a>
 #### 真偽条件での繰り返し：while( 条件式 )
-様式：
+
+以下、`continue`処理。
+```javascript
+let num = 0;
+while( num < 3 ) {
+	console.log("while繰り返し[" + num + "]" );
+	num++;
+}
+```
+
+以下、出力結果。
+```text
+while繰り返し[0]
+while繰り返し[1]
+while繰り返し[2]
+```
+
 
 <a name="subRepetition7"></a>
 #### 無限ループ
-様式：
+
+* 2種類。  
+  * [for文版](#subRepetition7for)  
+  * [while文版](#subRepetition7while)  
+
+<a name="subRepetition7for"></a>
+```javascript
+for( let ii = 0;; ii++ ) {
+	console.log("for繰り返し[" + ii + "]" );
+}
+```
+これで無限ループになっているはず。  
+ブラウザが固まり、何も表示されなくなる。  
+
+<a name="subRepetition7while"></a>
+```javascript
+while( true ) {
+	console.log("while繰り返し[" + count + "]" );
+	count++;
+}
+```
+これも無限ループになっているはず。  
+ブラウザが固まり、何も表示されなくなる。  
+
 
 <a name="subRepetition999"></a>
 #### 繰り返しでの説明しない項目。
 
-[以下、今回の言語に関係の無い項目を削除すること(対象言語に存在するが、見送るもののみ、以下残す)。]  
 <details><summary>今回は勉強を見送る一覧</summary>
 
 * [ ] 真偽条件での繰り返し  
   基本構造例：do〜while( 条件式 )  
 
 </details>
+
 
 <a name="function関数sub"></a>
 ### 関数
