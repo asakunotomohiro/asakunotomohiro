@@ -974,7 +974,7 @@ ii[2], jj[2]
 
 * 種類。  
   * [`break`](#subRepetition5break)  
-  * `continue`  
+  * [`continue`](#subRepetition5continue)  
 
 
 <a name="subRepetition5break"></a>
@@ -994,6 +994,24 @@ ii[0]
 ii[1]
 ```
 2回目以降が出力されない。  
+
+<a name="subRepetition5continue"></a>
+以下、`continue`処理。
+```javascript
+for( let ii = 0; asakuno.length > ii; ii++ ) {
+	if( ii === 1 ) {
+		continue;
+	}
+	console.log("ii[" + ii + "]" );
+}
+```
+
+以下、出力結果。
+```text
+ii[0]
+ii[2]
+```
+2回目(要素数1)が飛ばされている。  
 
 
 <a name="subRepetition6"></a>
