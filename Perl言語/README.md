@@ -11675,6 +11675,8 @@ sub listcontext {
 <a name="practicalusesqlDBI"></a>
 <details><summary>応用知識-SQL/DBI</summary>
 
+SQL(Structured Query Language：構造化問い合わせ言語)  
+
 唐突に何の脈絡もなく、本当に突然データベース接続がしたくなったため、手に取った。  
 SQL構文の勉強は別途行うことと、何より必要に迫られた勉強ではなく、本当に唐突に何の脈絡もなく始めただけなので、概略だけに留める。  
 
@@ -11687,6 +11689,7 @@ ODBCは仕事で使ったことあるが、DBI(Database Interface)はない。
 
 * 目次  
   * [問い合わせ言語用語](#practicalusesqlDBIquerylanguageparlance)  
+  * [データ型](#practicalusesqlDBIdatatype)  
 
 
 <a name="practicalusesqlDBIquerylanguageparlance"></a>
@@ -11718,6 +11721,17 @@ ODBCは仕事で使ったことあるが、DBI(Database Interface)はない。
     Delete  
 
 
+<a name="practicalusesqlDBIdatatype"></a>
+### データ型
+Perlのデータ型は寛容に出来ており、SQLは厳格に出来ている。  
+その取り持ちが必要になる。  
+
+* データ型の種類。  
+  * 数値データ型  
+  * 文字データ型  
+  * 日付データ型  
+  * バイナリオブジェクトデータ型  
+  * Null値  
 
 </details>
 
