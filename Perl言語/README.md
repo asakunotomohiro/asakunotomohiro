@@ -11685,6 +11685,39 @@ DBIとODBCを組み合わせるのかと思ったが、全く違った。
 ODBCは仕事で使ったことあるが、DBI(Database Interface)はない。  
 これからが楽しみだ。  
 
+* 目次  
+  * [問い合わせ言語用語](#practicalusesqlDBIquerylanguageparlance)  
+
+
+<a name="practicalusesqlDBIquerylanguageparlance"></a>
+### 問い合わせ言語用語
+
+* C.R.U.D.用語  
+  * フェッチ(Fetching)・選択(selecting)  
+    データベース内からデータを取り出す操作。  
+    SQLのSELECTによって実現する。  
+  * 格納(Storing)・挿入(inserting)  
+    データベース内にデータを格納する操作。  
+    SQLのINSERTによって実現する。  
+  * 更新(Updating)  
+    データベース内のデータを変更する操作。  
+    SQLのUPDATEによって実現する。  
+  * 削除(Deleting)  
+    データベース内のデータを削除する操作。  
+    SQLのDELETEによって実現する。  
+
+* C.R.U.D.  
+  下記の頭文字をとり、上記の操作を表す。  
+  * **C**  
+    Create  
+  * **R**  
+    Read  
+  * **U**  
+    Update  
+  * **D**  
+    Delete  
+
+
 
 </details>
 
