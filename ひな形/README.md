@@ -64,6 +64,7 @@
 <a name="breakingAwayFromBasicKnowledge"></a>
 <details><summary>応用知識の項目</summary>
 
+
 <a name="expandTheScopeOfBasicKnowledge"></a>
 ### 基礎知識5種類の勉強範囲を広げる
 基礎知識5種類の勉強は、アルゴリズムの勉強用に特化していたが、この部分は、通常開発ができる範囲に手を広げる。  
@@ -90,6 +91,11 @@
   * [ ] [テスト方法](#practicaluseTester)  
   * [ ] [標準関数(モジュール)](#practicaluseModule)  
   * [ ] [プロセス管理](#practicaluseSystemfunc)  
+  * [ ] [正規表現](#practicaluseRegularexpression)  
+    ※正規表現を使う手段の説明に終始すること(正規表現そのものは別ファイル)。  
+  * [ ] [SQL/接続手段名](#practicalusesqlInterface)  
+    ※データベースへの接続方法の説明に特化した説明に終始すること(SQLそのものは別ファイル)。  
+  * [ ] [GUI/フレームワーク名](#practicalusegui)  
 
 </details>
 
@@ -97,7 +103,8 @@
 <a name="algorithmSpecificBasicKnowledge"></a>
 <details><summary>基礎知識5種類の作業手順</summary>
 
-## 具体的な基礎知識
+<a name="algorithmSpecificBasicKnowledgemain"></a>
+### 具体的な基礎知識
 何はともあれ、まずは、"Hello World"を表示するプログラムを作る。  
 その後で、基礎中の基礎となる制御構造(構造化プログラミング)を簡略化しながら勉強する。  
 そのため、以下の手順で勉強を進めることにする。  
@@ -136,7 +143,8 @@
 <a name="algorithmSpecificAlgorithmPreSolvingProcedure"></a>
 <details><summary>アルゴリズム問題解決の作業手順</summary>
 
-## 具体的なアルゴリズム問題解決前手順
+<a name="algorithmSpecificAlgorithmPreSolvingProceduremain"></a>
+### 具体的なアルゴリズム問題解決前手順
 アルゴリズムの勉強に、以下の手順を行う。  
 
 * 以下、手順。  
@@ -164,7 +172,7 @@
 
 
 <a name="algorithmCheckTheStatusOfTheActualWorkingEnvironment"></a>
-## 実際に作業する環境の状況確認
+### 実際に作業する環境の状況確認
 
 * 勉強環境。  
   * 勉強環境のコンパイルバージョン：  
@@ -195,13 +203,13 @@
 
 
 <a name="algorithmHelloWorld"></a>
-### ハローワールドプログラム
+#### ハローワールドプログラム
 ※実行用プログラムと実行結果だけでなく、その過程も必要ならば載せる。  
 ※手順を忘れないためにも・・・。  
 
 
 <a name="algorithmNotes"></a>
-### ※注意事項
+#### ※注意事項
 「アルゴリズムを勉強することが目的」であるということを理解すること。  
 しかし、やる気を維持するためにも1冊分を読了させることも目的としており、深掘りせずに進めることも考慮すること。  
 要は、深く踏み込むか、流し読み程度に抑えるかどうかはそのときに決める。  
@@ -285,7 +293,7 @@
 <a name="variable変数sub"></a>
 <details><summary>実際の変数の勉強</summary>
 
-### 変数
+#### 変数
 値の格納方法について。  
 ※複雑な説明はしない。  
 
@@ -312,18 +320,18 @@
     * [ ] 明示変換  
 
 <a name="subVariable1"></a>
-#### 変数
+##### 変数
 様式：
 
 <a name="subVariable2"></a>
-#### 変数への代入方法及び変数の利用
+##### 変数への代入方法及び変数の利用
 様式：
 
 <a name="subVariable3"></a>
-#### 変数値の出力方法
+##### 変数値の出力方法
 
 <a name="subVariable4"></a>
-#### データ型
+##### データ型
 
 |データ型|サイズ|備考|
 |--------|------|----|
@@ -333,7 +341,7 @@
 |bool|||
 
 <a name="subVariable5"></a>
-#### 変数値を使った計算方法
+##### 変数値を使った計算方法
 
 |演算子|意味|備考|
 |------|----|----|
@@ -346,11 +354,11 @@
 |`%`|剰余演算||
 
 <a name="subVariable6"></a>
-#### 型変換(キャスト)方法
+##### 型変換(キャスト)方法
 様式：
 
 <a name="subVariable999"></a>
-#### 変数での説明しない項目。
+##### 変数での説明しない項目。
 
 [以下、今回の言語に関係の無い項目を削除すること(対象言語に存在するが、見送るもののみ、以下残す)。]  
 <details><summary>今回は勉強を見送る一覧</summary>
@@ -384,7 +392,7 @@
 <a name="arrangement配列sub"></a>
 <details><summary>実際の配列の勉強</summary>
 
-### 配列
+#### 配列
 変数を連ならせる格納方法。  
 今回のPythonではリストを配列と呼ぶ。  
 ※配列とリストを分けている場合はリストの勉強を後回しにし、配列がない状態でリストがある場合はリストを勉強する。  
@@ -399,19 +407,19 @@
 
 
 <a name="subArrangement1"></a>
-#### 配列
+##### 配列
 様式：
 
 <a name="subArrangement2"></a>
-#### 配列への追加方法
+##### 配列への追加方法
 様式：
 
 <a name="subArrangement3"></a>
-#### 二次元配列の宣言方法
+##### 二次元配列の宣言方法
 様式：
 
 <a name="subArrangement999"></a>
-#### 配列での説明しない項目。
+##### 配列での説明しない項目。
 
 [以下、今回の言語に関係の無い項目を削除すること(対象言語に存在するが、見送るもののみ、以下残す)。]  
 <details><summary>今回は勉強を見送る一覧</summary>
@@ -440,7 +448,7 @@
 <a name="Conditional条件分岐sub"></a>
 <details><summary>実際の条件分岐の勉強</summary>
 
-### 条件分岐
+#### 条件分岐
 
 * 絶対的に勉強する一覧  
   * [ ] [単純分岐-"もし"1つ。](#subConditional1)  
@@ -459,11 +467,11 @@
     * [ ] 以下(`<=`)  
 
 <a name="subConditional1"></a>
-#### 条件分岐
+##### 条件分岐
 様式：
 
 <a name="subConditional2"></a>
-#### 論理演算子(ド・モルガンの法則)
+##### 論理演算子(ド・モルガンの法則)
 
 |演算子|意味|備考|
 |------|----|----|
@@ -471,7 +479,7 @@
 |`||`|論理和|別表記`OR`|
 
 <a name="subConditional3"></a>
-#### 比較演算子
+##### 比較演算子
 
 |演算子|意味|備考|
 |------|----|----|
@@ -483,7 +491,7 @@
 |`<=`|以下||
 
 <a name="subConditional999"></a>
-#### 条件分岐での説明しない項目。
+##### 条件分岐での説明しない項目。
 
 [以下、今回の言語に関係の無い項目を削除すること(対象言語に存在するが、見送るもののみ、以下残す)。]  
 <details><summary>今回は勉強を見送る一覧</summary>
@@ -514,7 +522,7 @@
 <a name="repetition繰り返しsub"></a>
 <details><summary>実際の繰り返しの勉強</summary>
 
-### 繰り返し
+#### 繰り返し
 
 * 絶対的に勉強する一覧  
   * [ ] [指定回数条件での繰り返し](#subRepetition1)  
@@ -530,33 +538,33 @@
 
 
 <a name="subRepetition1"></a>
-#### 繰り返し
+##### 繰り返し
 様式：
 
 <a name="subRepetition2"></a>
-##### 指定回数条件での繰り返し：for( 条件式 )
+###### 指定回数条件での繰り返し：for( 条件式 )
 様式：
 
 <a name="subRepetition3"></a>
-##### 指定回数条件での繰り返し：拡張for命令
+###### 指定回数条件での繰り返し：拡張for命令
 様式：
 
 <a name="subRepetition4"></a>
-#### `for`の入れ子。
+##### `for`の入れ子。
 
 <a name="subRepetition5"></a>
-#### ジャンプ処理
+##### ジャンプ処理
 
 <a name="subRepetition6"></a>
-#### 真偽条件での繰り返し：while( 条件式 )
+##### 真偽条件での繰り返し：while( 条件式 )
 様式：
 
 <a name="subRepetition7"></a>
-#### 無限ループ
+##### 無限ループ
 様式：
 
 <a name="subRepetition999"></a>
-#### 繰り返しでの説明しない項目。
+##### 繰り返しでの説明しない項目。
 
 [以下、今回の言語に関係の無い項目を削除すること(対象言語に存在するが、見送るもののみ、以下残す)。]  
 <details><summary>今回は勉強を見送る一覧</summary>
@@ -571,7 +579,7 @@
 <a name="function関数sub"></a>
 <details><summary>実際の関数の勉強</summary>
 
-### 関数
+#### 関数
 
 * 絶対的に勉強する一覧  
   * [ ] 使い回せるようにまとめること。  
@@ -585,14 +593,14 @@
       [ ] ローカルスコープ変数  
 
 <a name="subFunction1"></a>
-#### 関数
+##### 関数
 様式：
 
 <a name="subFunction2"></a>
-#### スコープ
+##### スコープ
 
 <a name="subFunction999"></a>
-#### 関数での説明しない項目。
+##### 関数での説明しない項目。
 
 [以下、今回の言語に関係の無い項目を削除すること(対象言語に存在するが、見送るもののみ、以下残す)。]  
 <details><summary>今回は勉強を見送る一覧</summary>
@@ -706,7 +714,7 @@
   [ ] [マンデルブロー集合を描こう。](#letsDrawTheMandelbrotSetChapter8)  
 
 <a name="developProgrammingSkillsOverviewChapter2"></a>
-### プログラミングの力を養う
+#### プログラミングの力を養う
 基礎的なプログラミングの力を養っていく。  
 
 * 各項目。  
@@ -719,28 +727,28 @@
   * [n進法を理解する。](#understandnAryNotationChapter2)  
 
 <a name="findTheAverageValueChapter2"></a>
-#### 平均値を求める。
+##### 平均値を求める。
 
 <a name="addFrom1tonChapter2"></a>
-#### 1からnまで足し合わせる。
+##### 1からnまで足し合わせる。
 
 <a name="outputTheMultiplicationTableChapter2"></a>
-#### 九九の式を出力する。
+##### 九九の式を出力する。
 
 <a name="findAPrimeNumberChapter2"></a>
-#### 素数を求める。
+##### 素数を求める。
 
 <a name="findTheFactorialOfNChapter2"></a>
-#### nの階乗を求める。
+##### nの階乗を求める。
 
 <a name="eratosthenesSieveChapter2"></a>
-#### エラトステネスの篩
+##### エラトステネスの篩
 
 <a name="understandnAryNotationChapter2"></a>
-#### n進法を理解する。
+##### n進法を理解する。
 
 <a name="learnDataStructuresOverviewChapter3"></a>
-### データ構造を学ぶ
+#### データ構造を学ぶ
 
 * 各項目。  
   * [スタック](#stackChapter3)  
@@ -751,25 +759,25 @@
   * [データを保存する。](#saveTheDataChapter3)  
 
 <a name="stackChapter3"></a>
-#### スタック
+##### スタック
 
 <a name="queueChapter3"></a>
-#### キュー
+##### キュー
 
 <a name="listChapter3"></a>
-#### リスト
+##### リスト
 
 <a name="woodChapter3"></a>
-#### 木
+##### 木
 
 <a name="graphChapter3"></a>
-#### グラフ
+##### グラフ
 
 <a name="saveTheDataChapter3"></a>
-#### データを保存する。
+##### データを保存する。
 
 <a name="searchOverviewChapter4"></a>
-### サーチ
+#### サーチ
 
 * 各項目。  
   * [線形探索](#linearSearchChapter4)  
@@ -781,28 +789,28 @@
   * [ビット演算を学ぶ](#learnBitwiseOperationsChapter4)  
 
 <a name="linearSearchChapter4"></a>
-#### 線形探索
+##### 線形探索
 
 <a name="binarySearchChapter4"></a>
-#### 二分探索
+##### 二分探索
 
 <a name="treeExplorationChapter4"></a>
-#### 木探索
+##### 木探索
 
 <a name="knowAboutComputationalComplexityChapter4"></a>
-#### 計算量について知る
+##### 計算量について知る
 
 <a name="landauSignChapter4"></a>
-#### ランダウの記号
+##### ランダウの記号
 
 <a name="numberGuessingGameChapter4"></a>
-#### 数当てゲーム
+##### 数当てゲーム
 
 <a name="learnBitwiseOperationsChapter4"></a>
-#### ビット演算を学ぶ
+##### ビット演算を学ぶ
 
 <a name="sortOverviewChapter5"></a>
-### ソート
+#### ソート
 
 * 各項目。  
   * [選択ソート](#selectionSortChapter5)  
@@ -817,38 +825,38 @@
   * [ソートの計算量と計算時間。](#sortCalculationComplexityAndCalculationTimeChapter5)  
 
 <a name="selectionSortChapter5"></a>
-#### 選択ソート
+##### 選択ソート
 
 <a name="bubbleSortChapter5"></a>
-#### バブルソート
+##### バブルソート
 
 <a name="insertionSortChapter5"></a>
-#### 挿入ソート
+##### 挿入ソート
 
 <a name="quickSortChapter5"></a>
-#### クイックソート
+##### クイックソート
 
 <a name="mergeSortChapter5"></a>
-#### マージソート
+##### マージソート
 
 <a name="heapsortChapter5"></a>
-#### ヒープソート
+##### ヒープソート
 
 <a name="outputTheProcessOfQuicksortRecurrenceChapter5"></a>
-#### クイックソートの再起の過程を出力する。
+##### クイックソートの再起の過程を出力する。
 
 <a name="mergeSortUsingARecursiveFunctionChapter5"></a>
-#### 再帰関数を用いたマージソート。
+##### 再帰関数を用いたマージソート。
 
 <a name="howToUsePythonSortInstructionsAndHeapqModuleChapter5"></a>
-#### プログラミング言語用のソート・ヒープ・キュー関数の使い方。
+##### プログラミング言語用のソート・ヒープ・キュー関数の使い方。
 Python限定にしたくなかったが、他のプログラミング言語にはない可能性がある。  
 
 <a name="sortCalculationComplexityAndCalculationTimeChapter5"></a>
-#### ソートの計算量と計算時間。
+##### ソートの計算量と計算時間。
 
 <a name="hashOverviewChapter6"></a>
-### ハッシュ
+#### ハッシュ
 
 * 各項目。  
   * [ハッシュとは。](#whatIsAHashChapter6)  
@@ -858,22 +866,22 @@ Python限定にしたくなかったが、他のプログラミング言語に�
   * [暗号学的ハッシュ関数](#cryptographicHashFunctionChapter6)  
 
 <a name="whatIsAHashChapter6"></a>
-#### ハッシュとは。
+##### ハッシュとは。
 
 <a name="hashFunctionChapter6"></a>
-#### ハッシュ関数
+##### ハッシュ関数
 
 <a name="hashTableChapter6"></a>
-#### ハッシュテーブル
+##### ハッシュテーブル
 
 <a name="avoidCollisionsChapter6"></a>
-#### 衝突を回避する。
+##### 衝突を回避する。
 
 <a name="cryptographicHashFunctionChapter6"></a>
-#### 暗号学的ハッシュ関数
+##### 暗号学的ハッシュ関数
 
 <a name="learnVariousAlgorithmsOverviewChapter7"></a>
-### さまざまなアルゴリズムを学ぶ
+#### さまざまなアルゴリズムを学ぶ
 
 * 各項目。  
   * [ユークリッドの互除法](#euclideanAlgorithmChapter7)  
@@ -881,16 +889,16 @@ Python限定にしたくなかったが、他のプログラミング言語に�
   * [アルゴリズムを理解するヒント(処理の過程の出力)。](#tipsForUnderstandingTheAlgorithmChapter7)  
 
 <a name="euclideanAlgorithmChapter7"></a>
-#### ユークリッドの互除法
+##### ユークリッドの互除法
 
 <a name="stringSearchChapter7"></a>
-#### 文字列探索
+##### 文字列探索
 
 <a name="tipsForUnderstandingTheAlgorithmChapter7"></a>
-#### アルゴリズムを理解するヒント(処理の過程の出力)。
+##### アルゴリズムを理解するヒント(処理の過程の出力)。
 
 <a name="visualizeTheAlgorithmOverviewChapter8"></a>
-### アルゴリズムを見える化する
+#### アルゴリズムを見える化する
 
 * 各項目。  
   * [n次関数の曲線を描く。](#drawACurveOfTheNthOrderFunctionChapter8)  
@@ -900,19 +908,19 @@ Python限定にしたくなかったが、他のプログラミング言語に�
   * [マンデルブロー集合を描こう。](#letsDrawTheMandelbrotSetChapter8)  
 
 <a name="drawACurveOfTheNthOrderFunctionChapter8"></a>
-#### n次関数の曲線を描く。
+##### n次関数の曲線を描く。
 
 <a name="drawAFractalFigureChapter8"></a>
-#### フラクタル図形を描く。
+##### フラクタル図形を描く。
 
 <a name="drawTheProcessOfSolvingTheMazeChapter8"></a>
-#### 迷路を解く過程を描く。
+##### 迷路を解く過程を描く。
 
 <a name="useDifferentAlgorithmsChapter8"></a>
-#### アルゴリズムを使い分ける。
+##### アルゴリズムを使い分ける。
 
 <a name="letsDrawTheMandelbrotSetChapter8"></a>
-#### マンデルブロー集合を描こう。
+##### マンデルブロー集合を描こう。
 
 
 <a name="appliedknowledge"></a>

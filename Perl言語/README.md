@@ -232,6 +232,7 @@ $
   * [ ] [スマートマッチ演算子`~~`](#practicaluseSmartmatch)  
     * [x] [switch(given-when)](#practicaluseGivenwhen)  
   * [x] [パッケージ](#practicalusePackages)  
+  * [ ] [SQL/DBI](#practicalusesqlDBI)  
   * [ ] [GUI/Tk](#practicaluseGUIPerlTk)  
 
 </details>
@@ -11668,6 +11669,11 @@ sub listcontext {
 }
 &listcontext("boo, bar 20220128, 本日は晴天なり。");
 ```
+
+</details>
+
+<a name="practicalusesqlDBI"></a>
+<details><summary>応用知識-SQL/DBI</summary>
 
 </details>
 
