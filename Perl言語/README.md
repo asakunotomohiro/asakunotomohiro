@@ -11750,6 +11750,19 @@ Whereで使われる演算子。
 |含み比較|`IN`|`ID IN (1, 2, 3)`などの括弧内に含まれる値があるかどうかを比較する。|
 |検索比較|`LIKE`|`name LIKE '%hoge%'`などの文字列をワイルドカード込みで検索比較する(記法が複数あるため例示できない)。|
 
+
+<a name="practicalusesqlDBIlogicaloperator"></a>
+### 論理演算子
+Whereで使われる演算子。  
+
+以下の演算子を用いる。
+|演算子|意味|備考|
+|------|----|----|
+|`AND`|論理積||
+|`OR`|論理和||
+|`NOT`|否定||
+
+
 </details>
 
 <a name="practicaluseGUIPerlTk"></a>
