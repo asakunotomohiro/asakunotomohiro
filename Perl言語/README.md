@@ -11763,6 +11763,21 @@ Whereで使われる演算子。
 |`NOT`|否定||
 
 
+<a name="practicalusesqlDBImaindbiprogramming"></a>
+### DBIプログラミング
+前提：`use DBI;`  
+
+* DBIアーキテクチャ  
+  * DBIそのもの。  
+  * データベース用のドライバ(通称、DBD・(Database Driver)と呼ぶ)。  
+    例）**Oracleドライバ**・**mySQLドライバ**・**PostgreSQLドライバ**など。  
+    DBD表現例）**[DBD::Oracle](http://perldoc.jp/docs/modules/DBD-Oracle-1.14/Oracle.pod)**・**[DBD::mysql](https://perldoc.jp/docs/modules/DBD-mysql-2.1026/DBD/mysql.pod)**・**[DBD::Pg](https://perldoc.jp/docs/modules/DBD-Pg-1.22/Pg.pod)**など。  
+
+* ハンドルの種類  
+  * ドライバハンドル  
+  * DBIハンドル(データベースハンドル)  
+  * ステートメントハンドル  
+
 </details>
 
 <a name="practicaluseGUIPerlTk"></a>
