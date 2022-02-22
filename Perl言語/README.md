@@ -11807,6 +11807,8 @@ DBIからインスタンス生成したオブジェクトのこと。
 
 <a name="practicalusesqlDBImaindbiprogrammingstatementhandle"></a>
 #### ステートメントハンドル
+データベースへのSQL操作を行うハンドル。  
+※データベースハンドルの子に相当する。  
 
 
 </details>
