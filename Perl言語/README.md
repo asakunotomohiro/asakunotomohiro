@@ -11774,9 +11774,42 @@ Whereで使われる演算子。
     DBD表現例）**[DBD::Oracle](http://perldoc.jp/docs/modules/DBD-Oracle-1.14/Oracle.pod)**・**[DBD::mysql](https://perldoc.jp/docs/modules/DBD-mysql-2.1026/DBD/mysql.pod)**・**[DBD::Pg](https://perldoc.jp/docs/modules/DBD-Pg-1.22/Pg.pod)**など。  
 
 * ハンドルの種類  
-  * ドライバハンドル  
-  * DBIハンドル(データベースハンドル)  
-  * ステートメントハンドル  
+  * [ドライバハンドル](#practicalusesqlDBImaindbiprogrammingdriverhandle)  
+  * [DBIハンドル(データベースハンドル)](#practicalusesqlDBImaindbiprogrammingdbihandle)  
+  * [ステートメントハンドル](#practicalusesqlDBImaindbiprogrammingstatementhandle)  
+
+<a name="practicalusesqlDBImaindbiprogrammingdriverhandle"></a>
+#### ドライバハンドル
+ロードされたハンドルのこと(現時点では、どこのデータベースとも関わりが無い)。  
+
+* 利用可能メソッド  
+  * data\_sources  
+    接続の列挙用メソッド。  
+  * connect  
+    データベースへの接点を作るメソッド。  
+
+また、通常は、意識しないハンドルになる(connectメソッド実行時にすでに動いているため)。  
+
+※全体的に説明が理解できない。  
+
+
+<a name="practicalusesqlDBImaindbiprogrammingdbihandle"></a>
+#### DBIハンドル(データベースハンドル)
+DBIからインスタンス生成したオブジェクトのこと。  
+特定のデータベースへの接続方法を持ち、それがカプセル化されている。  
+様式：
+`my $dbh = DBI->connect( $data_source, ・・・ );`  
+※ドライバハンドルの子に相当する。  
+
+※これも具体的な想像が出来ず、理解できない部分がある。  
+複数のデータベースに、1つのオブジェクトから同時接続できる？  
+
+
+<a name="practicalusesqlDBImaindbiprogrammingstatementhandle"></a>
+#### ステートメントハンドル
+データベースへのSQL操作を行うハンドル。  
+※データベースハンドルの子に相当する。  
+
 
 </details>
 
