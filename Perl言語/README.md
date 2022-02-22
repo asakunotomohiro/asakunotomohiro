@@ -11783,7 +11783,7 @@ Whereで使われる演算子。
 ロードされたハンドルのこと(現時点では、どこのデータベースとも関わりが無い)。  
 
 * 利用可能メソッド  
-  * data_sources  
+  * data\_sources  
     接続の列挙用メソッド。  
   * connect  
     データベースへの接点を作るメソッド。  
@@ -11795,6 +11795,14 @@ Whereで使われる演算子。
 
 <a name="practicalusesqlDBImaindbiprogrammingdbihandle"></a>
 #### DBIハンドル(データベースハンドル)
+DBIからインスタンス生成したオブジェクトのこと。  
+特定のデータベースへの接続方法を持ち、それがカプセル化されている。  
+様式：
+`my $dbh = DBI->connect( $data_source, ・・・ );`  
+※ドライバハンドルの子に相当する。  
+
+※これも具体的な想像が出来ず、理解できない部分がある。  
+複数のデータベースに、1つのオブジェクトから同時接続できる？  
 
 
 <a name="practicalusesqlDBImaindbiprogrammingstatementhandle"></a>
