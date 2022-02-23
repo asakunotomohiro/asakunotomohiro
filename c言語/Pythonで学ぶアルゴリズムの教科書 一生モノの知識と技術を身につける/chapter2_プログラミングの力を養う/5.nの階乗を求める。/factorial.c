@@ -3,6 +3,7 @@
 int factorial1(const int MAX)
 {
 	// 階乗を求める関数。
+	//	この関数は、サンプル関数に引数を受け取る形にしただけのもの。
 	int count = 1;
 	for( int ii = MAX; ii > 0; ii-- ) {
 		count *= ii;
@@ -32,7 +33,7 @@ int factorial_sample()
 	for( int ii = 9; 0 < ii; ii-- ) {
 		total *= ii;
 	}
-	printf("10!：%d", total );
+	printf("10!：%d\n", total );
 
 	return 0;
 }
@@ -49,10 +50,9 @@ int recursion_sample(int count)
 
 int main(void)
 {
-	//factorial_sample();	// 10!：3628800
-	//recursion_sample(10);	// 再帰
-			// 出力結果：
-/*
+	factorial_sample();		// 10!：3628800
+	recursion_sample(10);	// 再帰
+		/* 出力結果：
 			再帰関数0回目の実行
 			再帰関数1回目の実行
 			再帰関数2回目の実行
@@ -64,14 +64,14 @@ int main(void)
 			再帰関数8回目の実行
 			再帰関数9回目の実行
 			再帰関数10回目の実行
-*/
-/*	int factorial = factorial1(10);	// ルール1に従った階乗を求める関数呼び出し。
-					// この関数は、サンプル関数に引数を受け取る形にしただけのもの。
-	printf("10!：%d", factorial );	// 出力結果：10!：3628800
-*/
+		*/
 
-	int factorial = factorial2(10);	// ルール2に従った階乗を求める関数呼び出し。
-	printf("10!：%d", factorial );	// 10!：3628800
+	int factorial = 0;
+	factorial = factorial1(10);	// ルール1に従った階乗を求める関数呼び出し。
+	printf("10!：%d\n", factorial );	// 10!：3628800
+
+	factorial = factorial2(10);	// ルール2に従った階乗を求める関数呼び出し。
+	printf("10!：%d\n", factorial );	// 10!：3628800
 
 	return 0;
 }

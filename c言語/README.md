@@ -1842,21 +1842,22 @@ int main(void)
 ```c
 #include <stdio.h>
 
-int factorial1(int count)
+int factorial1(const int MAX)
 {
 	// 階乗を求める関数。
 	//	この関数は、サンプル関数に引数を受け取る形にしただけのもの。
-	for( int ii = count; ii > 0; ii-- ) {
+	int count = 1;
+	for( int ii = MAX; ii > 0; ii-- ) {
 		count *= ii;
 	}
-	printf("10!：%d", count );
 
-	return 0;
+	return count;
 }
 
 int main(void)
 {
-	factorial1(10);
+	int factorial = factorial1(10);		// ルール1に従った階乗を求める関数呼び出し。
+	printf("10!：%d\n", factorial );	// 10!：3628800
 
 	return 0;
 }
