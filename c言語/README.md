@@ -1772,6 +1772,27 @@ int main(void)
 
 <a name="findTheFactorialOfNChapter2"></a>
 #### nの階乗を求める。
+**階乗とは**
+1からnまでの全ての整数の積をnの階乗という。  
+
+以下、サンプルプログラム。
+```c
+#include <stdio.h>
+
+int main(void)
+{
+	// 10の階乗を求める。
+	int total = 10;
+	for( int ii = 9; 0 < ii; ii-- ) {	←☆9から0になるまでデクリメントを行う。
+		total *= ii;
+	}
+	printf("10!：%d", total );
+	// 出力結果：10!：3628800	←☆10の階乗になっている。
+
+	return 0;
+}
+```
+
 
 <a name="eratosthenesSieveChapter2"></a>
 #### エラトステネスの篩
