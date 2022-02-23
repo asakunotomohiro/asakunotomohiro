@@ -1867,6 +1867,47 @@ int main(void)
 10!：36288000
 ```
 
+* ルール2  
+  再帰関数を使う。  
+  * 再帰関数の定義ルール  
+    * `n = 0`
+      **n! = 1**  
+    * `n > 0`
+      **n! = n * (n-1) * (n-2) * ・・・ * 2 * 1**
+      nから1引いた数を掛け、さらに1づつ引き続けながらnが1にまるまで続ける。  
+
+以下、ルール2のプログラム。
+```c
+#include <stdio.h>
+
+int factorial2(int count)
+{
+	// 階乗を求める関数。
+	int total = 0;
+	if( count == 0 ) {
+		total = 1;
+	}
+	else{
+		total = count * factorial2(count - 1);
+	}
+
+	return total;
+}
+
+int main(void)
+{
+	int factorial = factorial2(10);
+	printf("10!：%d", factorial );
+
+	return 0;
+}
+```
+
+以下、実行結果。
+```terminal
+10!：3628800
+```
+
 
 <a name="eratosthenesSieveChapter2"></a>
 #### エラトステネスの篩

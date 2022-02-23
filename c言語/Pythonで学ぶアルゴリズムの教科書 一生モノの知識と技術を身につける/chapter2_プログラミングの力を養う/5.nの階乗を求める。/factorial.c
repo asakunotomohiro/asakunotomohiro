@@ -1,14 +1,28 @@
 #include <stdio.h>
 
-int factorial1(int count)
+int factorial1(const int MAX)
 {
 	// 階乗を求める関数。
-	for( int ii = count; ii > 0; ii-- ) {
+	int count = 1;
+	for( int ii = MAX; ii > 0; ii-- ) {
 		count *= ii;
 	}
-	printf("10!：%d", count );
 
-	return 0;
+	return count;
+}
+
+int factorial2(int count)
+{
+	// 階乗を求める関数。
+	int total = 0;
+	if( count == 0 ) {
+		total = 1;
+	}
+	else{
+		total = count * factorial2(count - 1);
+	}
+
+	return total;
 }
 
 int factorial_sample()
@@ -51,11 +65,16 @@ int main(void)
 			再帰関数9回目の実行
 			再帰関数10回目の実行
 */
-	factorial1(10);	// ルール1に従った階乗を求める関数呼び出し。
+/*	int factorial = factorial1(10);	// ルール1に従った階乗を求める関数呼び出し。
 					// この関数は、サンプル関数に引数を受け取る形にしただけのもの。
-							// 出力結果：10!：36288000
+	printf("10!：%d", factorial );	// 出力結果：10!：3628800
+*/
+
+	int factorial = factorial2(10);	// ルール2に従った階乗を求める関数呼び出し。
+	printf("10!：%d", factorial );	// 10!：3628800
 
 	return 0;
 }
+
 
 // vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=c noexpandtab:
