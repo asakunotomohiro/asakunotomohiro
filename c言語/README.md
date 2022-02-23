@@ -1833,6 +1833,40 @@ int main(void)
 再帰関数1回目の実行
 ```
 
+* ルール1  
+  再帰関数を使わない。  
+  * 関数定義は行わない(私のプログラムでは行う)。  
+  * `for`を使う。  
+
+以下、ルール1のプログラム。
+```c
+#include <stdio.h>
+
+int factorial1(int count)
+{
+	// 階乗を求める関数。
+	//	この関数は、サンプル関数に引数を受け取る形にしただけのもの。
+	for( int ii = count; ii > 0; ii-- ) {
+		count *= ii;
+	}
+	printf("10!：%d", count );
+
+	return 0;
+}
+
+int main(void)
+{
+	factorial1(10);
+
+	return 0;
+}
+```
+
+以下、実行結果。
+```terminal
+10!：36288000
+```
+
 
 <a name="eratosthenesSieveChapter2"></a>
 #### エラトステネスの篩
