@@ -1290,7 +1290,7 @@ int hogefunc(int hoge[], int size) {
   [x] [1からnまで足し合わせる。](#addFrom1tonChapter2)2022/01/07  
   [x] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)2022/01/20  
   [x] [素数を求める。](#findAPrimeNumberChapter2)2022/02/12  
-  [ ] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
+  [x] [nの階乗を求める。](#findTheFactorialOfNChapter2)2022/02/23  
   [ ] [エラトステネスの篩](#eratosthenesSieveChapter2)  
   [ ] [n進法を理解する。](#understandnAryNotationChapter2)  
 <a name="algorithmTextbookLearnedinPythonChapter3"></a>
@@ -1772,6 +1772,153 @@ int main(void)
 
 <a name="findTheFactorialOfNChapter2"></a>
 #### nの階乗を求める。
+**階乗とは**
+1からnまでの全ての整数の積をnの階乗という。  
+
+<a name="findTheFactorialOfNChapter2recursionsample"></a>
+<details><summary>再帰用プログラム例。</summary>
+
+以下、サンプルプログラム。
+```c
+#include <stdio.h>
+
+int main(void)
+{
+	// 10の階乗を求める。
+	int total = 10;
+	for( int ii = 9; 0 < ii; ii-- ) {	←☆9から0になるまでデクリメントを行う。
+		total *= ii;
+	}
+	printf("10!：%d", total );
+	// 出力結果：10!：3628800	←☆10の階乗になっている。
+
+	return 0;
+}
+```
+
+</details>
+
+**再帰関数とは**
+関数内から自身の関数を呼び出すことを再帰処理という。
+また、その呼び出す仕組みの関数を再帰関数という。  
+
+<a name="findTheFactorialOfNChapter2factorialsample"></a>
+<details><summary>再帰用プログラム例。</summary>
+
+以下、再帰関数例）
+```c
+#include <stdio.h>
+
+int recursion_sample(int count)
+{
+	if ( count > 0 ) {
+		printf("再帰関数%d回目の実行\n", count );	←☆外に出せば、1から増えていく。
+		recursion_sample( count - 1 );
+	}
+
+	return 0;
+}
+
+int main(void)
+{
+	recursion_sample(10);	// 再帰
+
+	return 0;
+}
+```
+
+以下、実行結果。
+```terminal
+再帰関数10回目の実行
+再帰関数9回目の実行
+再帰関数8回目の実行
+再帰関数7回目の実行
+再帰関数6回目の実行
+再帰関数5回目の実行
+再帰関数4回目の実行
+再帰関数3回目の実行
+再帰関数2回目の実行
+再帰関数1回目の実行
+```
+
+</details>
+
+* ルール1  
+  再帰関数を使わない。  
+  * 関数定義は行わない(私のプログラムでは行う)。  
+  * `for`を使う。  
+
+以下、ルール1のプログラム。
+```c
+#include <stdio.h>
+
+int factorial1(const int MAX)
+{
+	// 階乗を求める関数。
+	//	この関数は、サンプル関数に引数を受け取る形にしただけのもの。
+	int count = 1;
+	for( int ii = MAX; ii > 0; ii-- ) {
+		count *= ii;
+	}
+
+	return count;
+}
+
+int main(void)
+{
+	int factorial = factorial1(10);		// ルール1に従った階乗を求める関数呼び出し。
+	printf("10!：%d\n", factorial );	// 10!：3628800
+
+	return 0;
+}
+```
+
+以下、実行結果。
+```terminal
+10!：36288000
+```
+
+* ルール2  
+  再帰関数を使う。  
+  * 再帰関数の定義ルール  
+    * `n = 0`
+      **n! = 1**  
+    * `n > 0`
+      **n! = n * (n-1) * (n-2) * ・・・ * 2 * 1**
+      nから1引いた数を掛け、さらに1づつ引き続けながらnが1にまるまで続ける。  
+
+以下、ルール2のプログラム。
+```c
+#include <stdio.h>
+
+int factorial2(int count)
+{
+	// 階乗を求める関数。
+	int total = 0;
+	if( count == 0 ) {
+		total = 1;
+	}
+	else{
+		total = count * factorial2(count - 1);
+	}
+
+	return total;
+}
+
+int main(void)
+{
+	int factorial = factorial2(10);
+	printf("10!：%d", factorial );
+
+	return 0;
+}
+```
+
+以下、実行結果。
+```terminal
+10!：3628800
+```
+
 
 <a name="eratosthenesSieveChapter2"></a>
 #### エラトステネスの篩
