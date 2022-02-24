@@ -1089,6 +1089,15 @@ while( true ) {
 <a name="subFunction1"></a>
 #### 関数
 様式：
+```javascript
+function 関数名(引数1, 引数2, ・・・) {
+	処理;
+}
+```
+
+呼び出し方：
+`関数名(引数1, 引数2, ・・・);`  
+
 
 <a name="subFunction2"></a>
 #### スコープ
