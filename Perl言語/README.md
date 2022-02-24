@@ -11823,6 +11823,19 @@ DBIからインスタンス生成したオブジェクトのこと。
 以下、端末で利用できるドライバ名の一覧取得。  
 `DBI->available_drivers();`  
 
+以下、利用例）
+```perl
+use v5.24;
+use DBI;	←☆必須。
+
+sub main() {
+	my @drivers = DBI->available_drivers();
+	say "@drivers";	# DBM ExampleP File Gofer Mem Proxy Sponge	←☆必要なのがないって事？
+}
+main();
+```
+とりあえず実行できた。  
+
 ※私の環境では、DBIがインストールされておらず、呼び出せなかった。  
 そんなことあるのか!?  
 しかも、今更・・・悲しい。  
@@ -11956,6 +11969,94 @@ cpan[2]> q
 Lockfile removed.
 $
 ```
+
+以下、成功。
+```terminal
+$ brew install cpanm
+Warning: You are using macOS 10.14.
+We (and Apple) do not provide support for this old version.
+You will encounter build failures with some formulae.
+Please create pull requests instead of asking for help on Homebrew's GitHub,
+Twitter or any other official channels. You are responsible for resolving
+any issues you experience while you are running this
+old version.
+
+==> Downloading https://ghcr.io/v2/homebrew/core/cpanminus/manifests/1.9019
+######################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/cpanminus/blobs/sha256:6a9b5bde63d8c5860788c67470c9dffcfe12036d38e331ad4c5028455ad
+==> Downloading from https://pkg-containers.githubusercontent.com/ghcr1/blobs/sha256:6a9b5bde63d8c5860788c67470c9dffcfe12036d38e331
+######################################################################## 100.0%
+==> Pouring cpanminus--1.9019.mojave.bottle.tar.gz
+🍺  /usr/local/Cellar/cpanminus/1.9019: 4 files, 561.0KB
+==> `brew cleanup` has not been run in the last 30 days, running now...
+Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.
+Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
+Removing: Library/Caches/Homebrew/automake--1.16.5... (970.6KB)
+Removing: Library/Caches/Homebrew/brotli--1.0.9... (1007.8KB)
+Removing: /usr/local/Cellar/ca-certificates/2021-10-26... (3 files, 208.5KB)
+Removing: Library/Caches/Homebrew/ca-certificates--2021-10-26... (117.6KB)
+Removing: Library/Caches/Homebrew/clang-format--13.0.0... (908.9KB)
+Removing: Library/Caches/Homebrew/fribidi--1.0.11... (92.9KB)
+Removing: /usr/local/Cellar/gdbm/1.21_1... (24 files, 736.1KB)
+Removing: Library/Caches/Homebrew/gmp--6.2.1_1... (1023.7KB)
+Removing: Library/Caches/Homebrew/gobject-introspection--1.70.0_1... (1.8MB)
+Removing: Library/Caches/Homebrew/libffi--3.4.2... (186.4KB)
+Removing: Library/Caches/Homebrew/libssh2--1.10.0... (327.9KB)
+Removing: Library/Caches/Homebrew/python@3.8--3.8.12_1... (17.0MB)
+Removing: Library/Caches/Homebrew/rbenv--1.2.0... (19.3KB)
+Removing: Library/Caches/Homebrew/readline--8.1.1... (533.9KB)
+Removing: Library/Caches/Homebrew/rtmpdump--2.4+20151223_1... (165.3KB)
+Removing: Library/Caches/Homebrew/sdl2_mixer--2.0.4_2... (133.2KB)
+Removing: Library/Caches/Homebrew/vim--git... (3,617 files, 184.6MB)
+Removing: Library/Caches/Homebrew/ruby-build_bottle_manifest--20210928... (2KB)
+Removing: Library/Caches/Homebrew/curl_bottle_manifest--7.79.1_1... (10.4KB)
+Removing: Library/Caches/Homebrew/brotli_bottle_manifest--1.0.9... (6.6KB)
+Removing: Library/Caches/Homebrew/ruby_bottle_manifest--3.0.2_1... (10.2KB)
+Removing: Library/Caches/Homebrew/pyenv_bottle_manifest--2.1.0... (20.8KB)
+Removing: Library/Caches/Homebrew/gmp_bottle_manifest--6.2.1_1... (5.6KB)
+Removing: Library/Caches/Homebrew/libssh2_bottle_manifest--1.10.0... (5.9KB)
+Removing: Library/Caches/Homebrew/sdl2_mixer_bottle_manifest--2.0.4_2... (11.2KB)
+Removing: Library/Caches/Homebrew/rtmpdump_bottle_manifest--2.4+20151223_1... (7KB)
+Removing: Library/Caches/Homebrew/mpg123_bottle_manifest--1.29.0... (5.7KB)
+Removing: Library/Caches/Homebrew/gdbm_bottle_manifest--1.21_1... (5.3KB)
+Removing: Library/Caches/Homebrew/zstd_bottle_manifest--1.5.0... (5.5KB)
+Removing: Library/Caches/Homebrew/python@3.8_bottle_manifest--3.8.12_1... (17.8KB)
+Removing: Library/Caches/Homebrew/automake_bottle_manifest--1.16.5... (7.5KB)
+Removing: Library/Caches/Homebrew/gobject-introspection_bottle_manifest--1.70.0_1... (18KB)
+Removing: Library/Caches/Homebrew/readline_bottle_manifest--8.1.1... (5.7KB)
+Removing: Library/Caches/Homebrew/fribidi_bottle_manifest--1.0.11... (5.4KB)
+Removing: Library/Caches/Homebrew/hidapi_bottle_manifest--0.11.0... (6.5KB)
+Removing: Library/Caches/Homebrew/openjdk_bottle_manifest--17... (8.4KB)
+Removing: Library/Caches/Homebrew/pcre2_bottle_manifest--10.38... (6.4KB)
+Removing: Library/Caches/Homebrew/rbenv_bottle_manifest--1.2.0... (7.6KB)
+Removing: Library/Caches/Homebrew/harfbuzz_bottle_manifest--3.0.0... (17.6KB)
+Removing: Library/Caches/Homebrew/gdbm_bottle_manifest--1.21... (5.2KB)
+Removing: Library/Caches/Homebrew/go_bottle_manifest--1.17.2... (6.3KB)
+Removing: Library/Caches/Homebrew/python@3.9_bottle_manifest--3.9.7_1... (15.9KB)
+Removing: Library/Caches/Homebrew/clang-format_bottle_manifest--13.0.0... (5.6KB)
+Removing: Library/Caches/Homebrew/ca-certificates_bottle_manifest--2021-09-30-1... (1.8KB)
+Removing: Library/Caches/Homebrew/git_bottle_manifest--2.33.1... (10.8KB)
+Removing: Library/Caches/Homebrew/openssl@1.1_bottle_manifest--1.1.1l_1... (6.6KB)
+Removing: Library/Caches/Homebrew/docker-compose_bottle_manifest--2.0.1... (5.3KB)
+Removing: Library/Caches/Homebrew/libnghttp2_bottle_manifest--1.45.1... (5.4KB)
+Removing: Library/Caches/Homebrew/pyenv_bottle_manifest--2.0.7... (20.4KB)
+Removing: Library/Caches/Homebrew/libffi_bottle_manifest--3.4.2... (5.4KB)
+Removing: Library/Caches/Homebrew/git-gui_bottle_manifest--2.33.1... (2KB)
+Removing: Library/Caches/Homebrew/glib_bottle_manifest--2.70.0_1... (12.8KB)
+Removing: Library/Caches/Homebrew/openldap_bottle_manifest--2.5.8... (15.4KB)
+Removing: Library/Logs/Homebrew/openssl@3... (7 files, 7.2MB)
+$ cpanm DBI
+--> Working on DBI
+Fetching http://www.cpan.org/authors/id/T/TI/TIMB/DBI-1.643.tar.gz ... OK
+Configuring DBI-1.643 ... OK
+Building and testing DBI-1.643 ... OK
+Successfully installed DBI-1.643
+1 distribution installed
+$
+```
+まさか・・・こんなこととは・・・。  
+[Perl/Tk](#practicaluseGUIPerlTk)でも[インストール](#practicaluseTkinstall)ができなかった。  
+それは、CPANを使っていたからなのだろう。  
 
 </details>
 
