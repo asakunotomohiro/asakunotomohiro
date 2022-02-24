@@ -1768,6 +1768,26 @@ fn main() {
 <a name="outputTheMultiplicationTableChapter2"></a>
 #### 九九の式を出力する。
 
+以下、プロジェクト作成。
+```terminal
+$ cargo new kuku
+     Created binary (application) `kuku` package
+$ ll -R kuku
+total 8
+drwxr-xr-x  3 asakunotomohiro  staff   96  2 24 22:55 src/
+-rw-r--r--  1 asakunotomohiro  staff  173  2 24 22:55 Cargo.toml
+
+kuku/src:
+total 8
+-rw-r--r--  1 asakunotomohiro  staff  45  2 24 22:55 main.rs
+$ cd kuku
+$ ll
+total 8
+drwxr-xr-x  3 asakunotomohiro  staff   96  2 24 22:55 src/
+-rw-r--r--  1 asakunotomohiro  staff  173  2 24 22:55 Cargo.toml
+$
+```
+
 <a name="findAPrimeNumberChapter2"></a>
 #### 素数を求める。
 
