@@ -41,8 +41,19 @@ function insayret(arg) {
 
 	return func;
 }
-let ret = insayret('asakuno');
-console.log("戻り値出力(" + ret + ")。");	// 戻り値出力(20220224)。
+//let ret = insayret('asakuno');
+//console.log("戻り値出力(" + ret + ")。");	// 戻り値出力(20220224)。
+
+function argtest(arg) {
+	let func = 20220224;
+	console.log("関数内から出力(引数：" + arg + ", 戻り値：" + func + ")。");	// 関数内から出力(引数：asakuno, 戻り値：20220224)。
+	console.log("受け取った引き数値：" + arguments[0]);			// asakuno
+	console.log("受け取っていない引き数値：" + arguments[1]);	// 朝来野智博
+	console.log("存在しない引き数値：" + arguments[2]);			// undefined
+
+	return func;
+}
+argtest('asakuno', '朝来野智博');
 
 
 /* vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=javascript noexpandtab: */

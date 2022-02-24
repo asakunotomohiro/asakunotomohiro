@@ -1099,6 +1099,19 @@ function 関数名(仮引数1, 仮引数2, ・・・) {
 呼び出し方：
 `関数名(実引数1, 実引数2, ・・・);`  
 
+引数を受け取らない場合も受け取れるのがJavaScriptの特徴のようだ。  
+```javascript
+function argtest(arg) {
+	let func = 20220224;
+	console.log("受け取った引き数値：" + arguments[0]);			// 本日は
+	console.log("受け取っていない引き数値：" + arguments[1]);	// 晴天なり。
+	console.log("存在しない引き数値：" + arguments[2]);			// undefined
+
+	return func;
+}
+argtest('本日は', '晴天なり。');
+```
+
 
 <a name="subFunction1noargnoreturn"></a>
 ##### 関数(引数無し-戻り値無し)
