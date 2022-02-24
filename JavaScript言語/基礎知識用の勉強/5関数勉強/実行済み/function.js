@@ -53,7 +53,17 @@ function argtest(arg) {
 
 	return func;
 }
-argtest('asakuno', '朝来野智博');
+//argtest('asakuno', '朝来野智博');
+//console.log("関数内の変数を関数が出呼び出す(" + func + ")。");	Uncaught ReferenceError: func is not defined
 
+
+{
+let testLet;	// ローカル変数。
+var testVar;	// グローバル変数。
+	testLet = 20220224;
+	testVar = 'asakuno';
+}
+//console.log("関数内の変数を関数が出呼び出すtestLet(" + testLet + ")---testVar(" + testVar + ")。");	// testLetが原因でエラーにあんる(宣言されていないとのこと)。
+console.log("関数内の変数を関数が出呼び出すtestVar(" + testVar + ")。");	// 関数内の変数を関数が出呼び出すtestVar(asakuno)。
 
 /* vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=javascript noexpandtab: */
