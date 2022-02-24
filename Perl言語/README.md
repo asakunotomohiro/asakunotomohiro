@@ -11827,6 +11827,52 @@ DBIからインスタンス生成したオブジェクトのこと。
 そんなことあるのか!?  
 しかも、今更・・・悲しい。  
 
+<details><summary>DBIモジュールのインストール失敗。</summary>
+
+CPANに繋がらない。
+```terminal
+$ perldoc DBI
+No documentation found for "DBI".
+$ perl -MCPAN -e shell
+
+cpan shell -- CPAN exploration and modules installation (v2.29)
+Enter 'h' for help.
+
+cpan[1]> install DBI
+Reading '.cpan/Metadata'
+  Database was generated on Sat, 15 Jan 2022 03:55:46 GMT
+Fetching with HTTP::Tiny:
+https://cpan.org/authors/01mailrc.txt.gz
+HTTP::Tiny failed with an internal error: IO::Socket::SSL 1.42 must be installed for https support
+Net::SSLeay 1.49 must be installed for https support
+
+Fetching with HTTP::Tiny:
+https://cpan.org/modules/02packages.details.txt.gz
+HTTP::Tiny failed with an internal error: IO::Socket::SSL 1.42 must be installed for https support
+Net::SSLeay 1.49 must be installed for https support
+
+Fetching with HTTP::Tiny:
+https://cpan.org/modules/03modlist.data.gz
+HTTP::Tiny failed with an internal error: IO::Socket::SSL 1.42 must be installed for https support
+Net::SSLeay 1.49 must be installed for https support
+
+Writing .cpan/Metadata
+Running install for module 'DBI'
+Fetching with HTTP::Tiny:
+https://cpan.org/authors/id/T/TI/TIMB/DBI-1.643.tar.gz
+HTTP::Tiny failed with an internal error: IO::Socket::SSL 1.42 must be installed for https support
+Net::SSLeay 1.49 must be installed for https support
+
+Giving up on '.cpan/sources/authors/id/T/TI/TIMB/DBI-1.643.tar.gz'
+Note: Current database in memory was generated on Sat, 15 Jan 2022 03:55:46 GMT
+
+cpan[2]> quit
+Lockfile removed.
+$
+```
+
+</details>
+
 </details>
 
 <a name="practicaluseGUIPerlTk"></a>
