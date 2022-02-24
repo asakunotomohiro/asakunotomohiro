@@ -11836,11 +11836,10 @@ main();
 ```
 とりあえず実行できた。  
 
-※私の環境では、DBIがインストールされておらず、呼び出せなかった。  
-そんなことあるのか!?  
-しかも、今更・・・悲しい。  
+<details><summary>DBIモジュールのインストール。</summary>
 
-<details><summary>DBIモジュールのインストール失敗。</summary>
+※~~私の環境では、DBIがインストールされておらず、呼び出せなかった。~~  
+ようやく長い格闘の末、インストールできた。  
 
 CPANに繋がらない。
 ```terminal
@@ -12059,6 +12058,17 @@ $
 それは、CPANを使っていたからなのだろう。  
 
 </details>
+
+データソースとドライバが紐付けられているプログラム。
+```terminal
+install_driver(Proxy) failed: Can't locate RPC/PlClient.pm in @INC (you may need to install the RPC::PlClient module) (@INC 〜) at perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBD/Proxy.pm line 29.
+BEGIN failed--compilation aborted at perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBD/Proxy.pm line 29.
+Compilation failed in require at (eval 29) line 3.
+Perhaps a module that DBD::Proxy requires hasn't been fully installed
+ at データソース名.pl line 13.
+```
+なぜか実行失敗。  
+またか・・・。  
 
 </details>
 
