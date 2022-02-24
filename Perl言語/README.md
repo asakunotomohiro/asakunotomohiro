@@ -11871,6 +11871,92 @@ Lockfile removed.
 $
 ```
 
+以下、SSL関連と思い、インストール。
+```terminal
+$ brew install ssl*
+Warning: You are using macOS 10.14.
+We (and Apple) do not provide support for this old version.
+You will encounter build failures with some formulae.
+Please create pull requests instead of asking for help on Homebrew's GitHub,
+Twitter or any other official channels. You are responsible for resolving
+any issues you experience while you are running this
+old version.
+
+==> Downloading https://www.openssl.org/source/openssl-1.1.1m.tar.gz
+Already downloaded: Library/Caches/Homebrew/downloads/1fe651091c8b3c36a2f89a1bc970c0d3167db729f9ad9d8bde7b149d5f343c41--openssl-1.1.1m.tar.gz
+==> Downloading https://ghcr.io/v2/homebrew/core/libevent/manifests/2.1.12
+######################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/libevent/blobs/sha256:c52ad284f2bbdd512cd0ddd9fe19dd1b7092f7b967f593a7784098f5a1cd
+==> Downloading from https://pkg-containers.githubusercontent.com/ghcr1/blobs/sha256:c52ad284f2bbdd512cd0ddd9fe19dd1b7092f7b967f593
+######################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/libnet/manifests/1.2
+######################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/libnet/blobs/sha256:cadba638a54f4d5646a3510439ab89317ed23df3c45b12704b78065bb127fb
+==> Downloading from https://pkg-containers.githubusercontent.com/ghcr1/blobs/sha256:cadba638a54f4d5646a3510439ab89317ed23df3c45b12
+######################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/libpcap/manifests/1.10.1
+######################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/libpcap/blobs/sha256:a31646c901c2fdd953e648e5c5715ec2cdcf49c9e661725a8e56d9f6c3889
+==> Downloading from https://pkg-containers.githubusercontent.com/ghcr1/blobs/sha256:a31646c901c2fdd953e648e5c5715ec2cdcf49c9e66172
+######################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/sslsplit/manifests/0.5.5_1
+######################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/sslsplit/blobs/sha256:10534d989706ca1d29b7f1cbffc59ef07b02d0d755cb8aec5bdf9430c527
+==> Downloading from https://pkg-containers.githubusercontent.com/ghcr1/blobs/sha256:10534d989706ca1d29b7f1cbffc59ef07b02d0d755cb8a
+######################################################################## 100.0%
+==> Installing dependencies for sslsplit: openssl@1.1, libevent, libnet and libpcap
+==> Installing sslsplit dependency: openssl@1.1
+Warning: Your Xcode (11.3) is outdated.
+Please update to Xcode 11.3.1 (or delete it).
+Xcode can be updated from the App Store.
+
+Warning: A newer Command Line Tools release is available.
+Update them from Software Update in System Preferences or run:
+  softwareupdate --all --install --force
+
+If that doesn't show you any updates, run:
+  sudo rm -rf /Library/Developer/CommandLineTools
+  sudo xcode-select --install
+
+Alternatively, manually download them from:
+  https://developer.apple.com/download/all/.
+You should download the Command Line Tools for Xcode 11.3.1.
+
+Warning: Calling `on_linux do` inside `Formula` methods is deprecated! Use `if OS.linux?` instead.
+Please report this issue to the homebrew/core tap (not Homebrew/brew or Homebrew/core), or even better, submit a PR to fix it:
+  /usr/local/Homebrew/Library/Taps/homebrew/homebrew-core/Formula/openssl@1.1.rb:64
+
+Error: An exception occurred within a child process:
+  NoMethodError: super: no superclass method `on_linux' for #<Formulary::FormulaNamespacea75a85ca396df0bd5be983e48a50d88d::OpensslAT11:0x00007fb89c2633b8>
+$ echo $?
+1
+$
+```
+そもそもがSSL導入に失敗するのだが？  
+ゆえに、以下の再挑戦も失敗する。
+```terminal
+$ perl -MCPAN -e shell
+
+cpan shell -- CPAN exploration and modules installation (v2.29)
+Enter 'h' for help.
+
+cpan[1]> install DBI
+Reading '.cpan/Metadata'
+  Database was generated on Sat, 15 Jan 2022 03:55:46 GMT
+Running install for module 'DBI'
+Fetching with HTTP::Tiny:
+https://cpan.org/authors/id/T/TI/TIMB/DBI-1.643.tar.gz
+HTTP::Tiny failed with an internal error: IO::Socket::SSL 1.42 must be installed for https support
+Net::SSLeay 1.49 must be installed for https support
+
+Giving up on '.cpan/sources/authors/id/T/TI/TIMB/DBI-1.643.tar.gz'
+Note: Current database in memory was generated on Sat, 15 Jan 2022 03:55:46 GMT
+
+cpan[2]> q
+Lockfile removed.
+$
+```
+
 </details>
 
 </details>
