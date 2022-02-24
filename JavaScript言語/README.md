@@ -1112,6 +1112,14 @@ function argtest(arg) {
 argtest('本日は', '晴天なり。');
 ```
 
+引数のデフォルト値を設定可能なようだが、ブラウザでは処理できないようだ。  
+様式：
+```javascript
+function 関数名(仮引数1 = 値A, 仮引数2 = 値B, ・・・) {
+	処理;
+}
+```
+
 
 <a name="subFunction1noargnoreturn"></a>
 ##### 関数(引数無し-戻り値無し)
