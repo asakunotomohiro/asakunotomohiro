@@ -1793,7 +1793,7 @@ $
 * 作業ルール。  
   * 二重ループを使う。  
 
-<details><summary>2重ループのサンプルプログラム(range編)。</summary>
+<details><summary>2重ループのサンプルプログラム(for編)。</summary>
 
 以下、プログラム。
 ```rust
@@ -1814,6 +1814,35 @@ ii[ 2], jj[1 ]
 ii[ 2], jj[2 ]
 ```
 右寄せ・左寄せで出力してみた。  
+
+</details>
+
+<details><summary>2重ループのサンプルプログラム(while編)。</summary>
+
+以下、プログラム。
+```rust
+fn main() {
+	let mut ii = 1;
+	while ii < 3 {
+		let mut jj = 1;
+		while jj < 3 {
+			println!("ii[{0:>02}], jj[{1:^3}]", ii, jj);
+			jj += 1;
+		}
+		ii += 1;
+	}
+}
+```
+
+
+以下、出力結果。
+```terminal
+ii[01], jj[ 1 ]
+ii[01], jj[ 2 ]
+ii[02], jj[ 1 ]
+ii[02], jj[ 2 ]
+```
+0埋め・中央配置で出力してみた。  
 
 </details>
 
