@@ -11690,6 +11690,11 @@ ODBCは仕事で使ったことあるが、DBI(Database Interface)はない。
 * 目次  
   * [問い合わせ言語用語](#practicalusesqlDBIquerylanguageparlance)  
   * [データ型](#practicalusesqlDBIdatatype)  
+  * 演算子  
+    * [比較演算子](#practicalusesqlDBIcomparisonoperator)  
+    * [論理演算子](#practicalusesqlDBIlogicaloperator)  
+  * [DBIプログラミング](#practicalusesqlDBImaindbiprogramming)  
+  * [データソース名](#practicalusesqlDBImaindatasource)  
 
 
 <a name="practicalusesqlDBIquerylanguageparlance"></a>
@@ -11711,13 +11716,13 @@ ODBCは仕事で使ったことあるが、DBI(Database Interface)はない。
 
 * C.R.U.D.  
   下記の頭文字をとり、上記の操作を表す。  
-  * **C**  
+  * **C**
     Create  
-  * **R**  
+  * **R**
     Read  
-  * **U**  
+  * **U**
     Update  
-  * **D**  
+  * **D**
     Delete  
 
 
@@ -11778,6 +11783,7 @@ Whereで使われる演算子。
   * [DBIハンドル(データベースハンドル)](#practicalusesqlDBImaindbiprogrammingdbihandle)  
   * [ステートメントハンドル](#practicalusesqlDBImaindbiprogrammingstatementhandle)  
 
+
 <a name="practicalusesqlDBImaindbiprogrammingdriverhandle"></a>
 #### ドライバハンドル
 ロードされたハンドルのこと(現時点では、どこのデータベースとも関わりが無い)。  
@@ -11810,6 +11816,16 @@ DBIからインスタンス生成したオブジェクトのこと。
 データベースへのSQL操作を行うハンドル。  
 ※データベースハンドルの子に相当する。  
 
+
+<a name="practicalusesqlDBImaindatasource"></a>
+### データソース名
+**dbi::ドライバ名**にて、データベースに接続する。  
+以下、端末で利用できるドライバ名の一覧取得。  
+`DBI->available_drivers();`  
+
+※私の環境では、DBIがインストールされておらず、呼び出せなかった。  
+そんなことあるのか!?  
+しかも、今更・・・悲しい。  
 
 </details>
 
