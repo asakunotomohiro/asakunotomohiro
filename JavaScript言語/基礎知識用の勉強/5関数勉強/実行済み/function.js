@@ -31,7 +31,18 @@ function sayret() {
 
 	return func;
 }
-let ret = sayret();
+//let ret = sayret();
+//console.log("戻り値出力(" + ret + ")。");	// 戻り値出力(20220224)。
+
+function insayret(arg) {
+	// 引数あり-戻り値あり。
+	let func = 20220224;
+	console.log("関数内から出力(引数：" + arg + ", 戻り値：" + func + ")。");	// 関数内から出力(引数：asakuno, 戻り値：20220224)。
+
+	return func;
+}
+let ret = insayret('asakuno');
 console.log("戻り値出力(" + ret + ")。");	// 戻り値出力(20220224)。
+
 
 /* vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=javascript noexpandtab: */
