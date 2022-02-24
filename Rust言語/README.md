@@ -1767,6 +1767,8 @@ fn main() {
 
 <a name="outputTheMultiplicationTableChapter2"></a>
 #### 九九の式を出力する。
+Pythonでやったように、九九の式を出すのではなく、九九表を出すことにする。  
+ルールはPythonと同じ。  
 
 以下、プロジェクト作成。
 ```terminal
@@ -1787,6 +1789,34 @@ drwxr-xr-x  3 asakunotomohiro  staff   96  2 24 22:55 src/
 -rw-r--r--  1 asakunotomohiro  staff  173  2 24 22:55 Cargo.toml
 $
 ```
+
+* 作業ルール。  
+  * 二重ループを使う。  
+
+<details><summary>2重ループのサンプルプログラム(range編)。</summary>
+
+以下、プログラム。
+```rust
+fn main() {
+	for ii in 1..3 {
+		for jj in 1..3 {
+			println!("ii[{0:>2}], jj[{1:<2}]", ii, jj);
+		}
+	}
+}
+```
+
+以下、出力結果。
+```terminal
+ii[ 1], jj[1 ]
+ii[ 1], jj[2 ]
+ii[ 2], jj[1 ]
+ii[ 2], jj[2 ]
+```
+右寄せ・左寄せで出力してみた。  
+
+</details>
+
 
 <a name="findAPrimeNumberChapter2"></a>
 #### 素数を求める。
