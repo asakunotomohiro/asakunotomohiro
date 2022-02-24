@@ -11690,6 +11690,11 @@ ODBCは仕事で使ったことあるが、DBI(Database Interface)はない。
 * 目次  
   * [問い合わせ言語用語](#practicalusesqlDBIquerylanguageparlance)  
   * [データ型](#practicalusesqlDBIdatatype)  
+  * 演算子  
+    * [比較演算子](#practicalusesqlDBIcomparisonoperator)  
+    * [論理演算子](#practicalusesqlDBIlogicaloperator)  
+  * [DBIプログラミング](#practicalusesqlDBImaindbiprogramming)  
+  * [データソース名](#practicalusesqlDBImaindatasource)  
 
 
 <a name="practicalusesqlDBIquerylanguageparlance"></a>
@@ -11711,13 +11716,13 @@ ODBCは仕事で使ったことあるが、DBI(Database Interface)はない。
 
 * C.R.U.D.  
   下記の頭文字をとり、上記の操作を表す。  
-  * **C**  
+  * **C**
     Create  
-  * **R**  
+  * **R**
     Read  
-  * **U**  
+  * **U**
     Update  
-  * **D**  
+  * **D**
     Delete  
 
 
@@ -11778,6 +11783,7 @@ Whereで使われる演算子。
   * [DBIハンドル(データベースハンドル)](#practicalusesqlDBImaindbiprogrammingdbihandle)  
   * [ステートメントハンドル](#practicalusesqlDBImaindbiprogrammingstatementhandle)  
 
+
 <a name="practicalusesqlDBImaindbiprogrammingdriverhandle"></a>
 #### ドライバハンドル
 ロードされたハンドルのこと(現時点では、どこのデータベースとも関わりが無い)。  
@@ -11810,6 +11816,225 @@ DBIからインスタンス生成したオブジェクトのこと。
 データベースへのSQL操作を行うハンドル。  
 ※データベースハンドルの子に相当する。  
 
+
+<a name="practicalusesqlDBImaindatasource"></a>
+### データソース名
+**dbi::ドライバ名**にて、データベースに接続する。  
+以下、端末で利用できるドライバ名の一覧取得。  
+`DBI->available_drivers();`  
+
+以下、利用例）
+```perl
+use v5.24;
+use DBI;	←☆必須。
+
+sub main() {
+	my @drivers = DBI->available_drivers();
+	say "@drivers";	# DBM ExampleP File Gofer Mem Proxy Sponge	←☆この情報だけでは何も分からない。
+}
+main();
+```
+とりあえず実行できた。  
+
+<details><summary>DBIモジュールのインストール。</summary>
+
+※~~私の環境では、DBIがインストールされておらず、呼び出せなかった。~~  
+ようやく長い格闘の末、インストールできた。  
+
+CPANに繋がらない。
+```terminal
+$ perldoc DBI
+No documentation found for "DBI".
+$ perl -MCPAN -e shell
+
+cpan shell -- CPAN exploration and modules installation (v2.29)
+Enter 'h' for help.
+
+cpan[1]> install DBI
+Reading '.cpan/Metadata'
+  Database was generated on Sat, 15 Jan 2022 03:55:46 GMT
+Fetching with HTTP::Tiny:
+https://cpan.org/authors/01mailrc.txt.gz
+HTTP::Tiny failed with an internal error: IO::Socket::SSL 1.42 must be installed for https support
+Net::SSLeay 1.49 must be installed for https support
+　　　・
+　　　・
+　　　・
+Giving up on '.cpan/sources/authors/id/T/TI/TIMB/DBI-1.643.tar.gz'
+Note: Current database in memory was generated on Sat, 15 Jan 2022 03:55:46 GMT
+
+cpan[2]> quit
+Lockfile removed.
+$
+```
+
+以下、SSL関連と思い、インストール。
+```terminal
+$ brew install ssl*
+Warning: You are using macOS 10.14.
+We (and Apple) do not provide support for this old version.
+You will encounter build failures with some formulae.
+Please create pull requests instead of asking for help on Homebrew's GitHub,
+Twitter or any other official channels. You are responsible for resolving
+any issues you experience while you are running this
+old version.
+
+==> Downloading https://www.openssl.org/source/openssl-1.1.1m.tar.gz
+Already downloaded: Library/Caches/Homebrew/downloads/1fe651091c8b3c36a2f89a1bc970c0d3167db729f9ad9d8bde7b149d5f343c41--openssl-1.1.1m.tar.gz
+　　　・
+　　　・
+　　　・
+Error: An exception occurred within a child process:
+  NoMethodError: super: no superclass method `on_linux' for #<Formulary::FormulaNamespacea75a85ca396df0bd5be983e48a50d88d::OpensslAT11:0x00007fb89c2633b8>
+$ echo $?
+1
+$
+```
+そもそもがSSL導入に失敗するのだが？  
+ゆえに、以下の再挑戦も失敗する。
+```terminal
+$ perl -MCPAN -e shell
+
+cpan shell -- CPAN exploration and modules installation (v2.29)
+Enter 'h' for help.
+
+cpan[1]> install DBI
+Reading '.cpan/Metadata'
+  Database was generated on Sat, 15 Jan 2022 03:55:46 GMT
+Running install for module 'DBI'
+Fetching with HTTP::Tiny:
+https://cpan.org/authors/id/T/TI/TIMB/DBI-1.643.tar.gz
+HTTP::Tiny failed with an internal error: IO::Socket::SSL 1.42 must be installed for https support
+Net::SSLeay 1.49 must be installed for https support
+
+Giving up on '.cpan/sources/authors/id/T/TI/TIMB/DBI-1.643.tar.gz'
+Note: Current database in memory was generated on Sat, 15 Jan 2022 03:55:46 GMT
+
+cpan[2]> q
+Lockfile removed.
+$
+```
+
+以下、成功。
+```terminal
+$ brew install cpanm
+Warning: You are using macOS 10.14.
+We (and Apple) do not provide support for this old version.
+You will encounter build failures with some formulae.
+Please create pull requests instead of asking for help on Homebrew's GitHub,
+Twitter or any other official channels. You are responsible for resolving
+any issues you experience while you are running this
+old version.
+
+==> Downloading https://ghcr.io/v2/homebrew/core/cpanminus/manifests/1.9019
+######################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/cpanminus/blobs/sha256:6a9b5bde63d8c5860788c67470c9dffcfe12036d38e331ad4c5028455ad
+==> Downloading from https://pkg-containers.githubusercontent.com/ghcr1/blobs/sha256:6a9b5bde63d8c5860788c67470c9dffcfe12036d38e331
+######################################################################## 100.0%
+==> Pouring cpanminus--1.9019.mojave.bottle.tar.gz
+🍺  /usr/local/Cellar/cpanminus/1.9019: 4 files, 561.0KB
+==> `brew cleanup` has not been run in the last 30 days, running now...
+Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.
+Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
+Removing: Library/Caches/Homebrew/automake--1.16.5... (970.6KB)
+　　　・
+　　　・
+　　　・
+Removing: Library/Logs/Homebrew/openssl@3... (7 files, 7.2MB)
+$ cpanm DBI
+--> Working on DBI
+Fetching http://www.cpan.org/authors/id/T/TI/TIMB/DBI-1.643.tar.gz ... OK
+Configuring DBI-1.643 ... OK
+Building and testing DBI-1.643 ... OK
+Successfully installed DBI-1.643
+1 distribution installed
+$
+```
+まさか・・・こんなこととは・・・。  
+[Perl/Tk](#practicaluseGUIPerlTk)でも[インストール](#practicaluseTkinstall)ができなかった。  
+それは、CPANを使っていたからなのだろう。  
+
+</details>
+
+データソースとドライバが紐付けられているプログラム。
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	my @drivers = DBI->available_drivers();
+
+	foreach my $value ( @drivers ) {
+		say "$value";
+		my @datasources = DBI->data_sources( $value );
+		foreach my $source ( @datasources ) {
+			say "\tデータソース：$source";
+		}
+	}
+}
+main();
+```
+
+以下、実行結果。
+```terminal
+DBM ExampleP File Gofer Mem Proxy Sponge
+DBM
+	データソース：DBI:DBM:f_dir=.
+	データソース：DBI:DBM:f_dir=基礎知識用の勉強
+	データソース：DBI:DBM:f_dir=応用知識用の勉強
+	データソース：DBI:DBM:f_dir=Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける
+ExampleP
+	データソース：dbi:ExampleP:dir=.
+File
+	データソース：DBI:File:f_dir=.
+	データソース：DBI:File:f_dir=基礎知識用の勉強
+	データソース：DBI:File:f_dir=応用知識用の勉強
+	データソース：DBI:File:f_dir=Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける
+Gofer
+Mem
+Proxy	←☆なぜ項目がない？
+Sponge
+```
+**ADO**・**CSV**・**XBase**などないのだが、どうなっている？  
+**ODBC**があってほしかった。  
+
+ゆくゆくは、ここにmySQLやPostgreSQLなどが表示されるようになるわけね。  
+どうやって？  
+
+<details><summary>Proxyモジュールのインストール。</summary>
+
+以下、上記プログラム実行結果。
+```terminal
+install_driver(Proxy) failed: Can't locate RPC/PlClient.pm in @INC (you may need to install the RPC::PlClient module) (@INC 〜) at perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBD/Proxy.pm line 29.
+BEGIN failed--compilation aborted at perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBD/Proxy.pm line 29.
+Compilation failed in require at (eval 29) line 3.
+Perhaps a module that DBD::Proxy requires hasn't been fully installed
+ at データソース名.pl line 13.
+```
+なぜか実行失敗。  
+またか・・・。  
+
+以下、導入作業。
+```terminal
+$ cpanm RPC::PlClient
+--> Working on RPC::PlClient
+Fetching http://www.cpan.org/authors/id/M/MN/MNOONING/PlRPC/PlRPC-0.2020.tar.gz ... OK
+Configuring PlRPC-0.2018 ... OK
+==> Found dependencies: Net::Daemon
+--> Working on Net::Daemon
+Fetching http://www.cpan.org/authors/id/T/TO/TODDR/Net-Daemon-0.49.tar.gz ... OK
+Configuring Net-Daemon-0.49 ... OK
+Building and testing Net-Daemon-0.49 ... OK
+Successfully installed Net-Daemon-0.49
+Building and testing PlRPC-0.2020 ... OK
+Successfully installed PlRPC-0.2020
+2 distributions installed
+$
+```
+実行時に警告が出てきた。  
+Perl実行でネットワーク接続を許可するか、みたいな・・・許可したが、よかったか？  
+
+</details>
 
 </details>
 
