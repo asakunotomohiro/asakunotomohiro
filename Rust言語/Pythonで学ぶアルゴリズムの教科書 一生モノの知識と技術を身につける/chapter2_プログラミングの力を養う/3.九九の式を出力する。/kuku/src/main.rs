@@ -31,10 +31,21 @@ fn kuku1() {
 }
 */
 
+/*
 fn kuku2() {
 	for ii in 1..10 {
 		for jj in 1..10 {
 			print!("{0:>2}x{1}={2:>2}", jj, ii, ii*jj);
+		}
+		println!("");
+	}
+}
+*/
+
+fn kuku3() {
+	for ii in 1..10 {
+		for jj in 1..10 {
+			print!("{0:>3}", ii*jj);
 		}
 		println!("");
 	}
@@ -44,7 +55,8 @@ fn main() {
 	//sampleforeach();
 	//samplewhile();
 	//kuku1();
-	kuku2();
+	//kuku2();
+	kuku3();
 }
 
 /*	vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=rust noexpandtab: */
