@@ -12060,6 +12060,49 @@ $
 </details>
 
 データソースとドライバが紐付けられているプログラム。
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	my @drivers = DBI->available_drivers();
+
+	foreach my $value ( @drivers ) {
+		say "$value";
+		my @datasources = DBI->data_sources( $value );
+		foreach my $source ( @datasources ) {
+			say "\tデータソース：$source";
+		}
+	}
+}
+main();
+```
+
+以下、実行結果。
+```terminal
+DBM ExampleP File Gofer Mem Proxy Sponge
+DBM
+	データソース：DBI:DBM:f_dir=.
+	データソース：DBI:DBM:f_dir=基礎知識用の勉強
+	データソース：DBI:DBM:f_dir=応用知識用の勉強
+	データソース：DBI:DBM:f_dir=Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける
+ExampleP
+	データソース：dbi:ExampleP:dir=.
+File
+	データソース：DBI:File:f_dir=.
+	データソース：DBI:File:f_dir=基礎知識用の勉強
+	データソース：DBI:File:f_dir=応用知識用の勉強
+	データソース：DBI:File:f_dir=Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける
+Gofer
+Mem
+Proxy
+Sponge
+```
+**ADO**・**CSV**・**XBase**などないのだが、どうなっている？  
+**ODBC**がないのは仕方ないが、社会人だったときに導入した記憶が・・・昔の端末だったかな。  
+
+<details><summary>Proxyモジュールのインストール。</summary>
+
 ```terminal
 install_driver(Proxy) failed: Can't locate RPC/PlClient.pm in @INC (you may need to install the RPC::PlClient module) (@INC 〜) at perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBD/Proxy.pm line 29.
 BEGIN failed--compilation aborted at perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBD/Proxy.pm line 29.
@@ -12069,6 +12112,28 @@ Perhaps a module that DBD::Proxy requires hasn't been fully installed
 ```
 なぜか実行失敗。  
 またか・・・。  
+
+以下、導入作業。
+```terminal
+$ cpanm RPC::PlClient
+--> Working on RPC::PlClient
+Fetching http://www.cpan.org/authors/id/M/MN/MNOONING/PlRPC/PlRPC-0.2020.tar.gz ... OK
+Configuring PlRPC-0.2018 ... OK
+==> Found dependencies: Net::Daemon
+--> Working on Net::Daemon
+Fetching http://www.cpan.org/authors/id/T/TO/TODDR/Net-Daemon-0.49.tar.gz ... OK
+Configuring Net-Daemon-0.49 ... OK
+Building and testing Net-Daemon-0.49 ... OK
+Successfully installed Net-Daemon-0.49
+Building and testing PlRPC-0.2020 ... OK
+Successfully installed PlRPC-0.2020
+2 distributions installed
+$
+```
+実行時に警告が出てきた。  
+Perl実行でネットワーク接続を許可するか、みたいな・・・許可したが、よかったか？  
+
+</details>
 
 </details>
 
