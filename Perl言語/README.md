@@ -12181,6 +12181,19 @@ $
 ```
 解決方法が全く分からない。  
 
+何をやっている？
+```terminal
+$ cpanm DBD::SQLite
+--> Working on DBD::SQLite
+Fetching http://www.cpan.org/authors/id/I/IS/ISHIGAKI/DBD-SQLite-1.70.tar.gz ... OK
+Configuring DBD-SQLite-1.70 ... OK
+Building and testing DBD-SQLite-1.70 ... OK
+Successfully installed DBD-SQLite-1.70
+1 distribution installed
+$
+```
+欲しくないドライバがインストールできたぞ。  
+
 </details>
 
 <a name="practicaluseGUIPerlTk"></a>
