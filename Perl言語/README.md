@@ -12411,6 +12411,101 @@ $
 ```
 あぁこれをしてしまっては、私の完全なる敗北だ。  
 
+さらに敗北感を味わうのは、何の意味も成さなかったこと。
+```terminal
+$ cpanm DBD::Pg
+--> Working on DBD::Pg
+Fetching http://www.cpan.org/authors/id/T/TU/TURNSTEP/DBD-Pg-3.15.1.tar.gz ... OK
+Configuring DBD-Pg-3.15.1 ... OK
+Building and testing DBD-Pg-3.15.1 ... FAIL
+! Installing DBD::Pg failed. See /Users/asakunotomohiro/.cpanm/work/1645798310.2394/build.log for details. Retry with --force to force install it.
+$ cat /Users/asakunotomohiro/.cpanm/work/1645798310.2394/build.log
+cpanm (App::cpanminus) 1.9018 on perl 5.034000 built for darwin-2level
+Work directory is /Users/asakunotomohiro/.cpanm/work/1645798310.2394
+You have make /usr/bin/make
+You have /usr/bin/curl: curl 7.54.0 (x86_64-apple-darwin18.0) libcurl/7.54.0 LibreSSL/2.6.5 zlib/1.2.11 nghttp2/1.24.1
+You have /usr/bin/tar: bsdtar 2.8.3 - libarchive 2.8.3
+You have /usr/bin/unzip
+Searching DBD::Pg () on cpanmetadb ...
+--> Working on DBD::Pg
+Fetching http://www.cpan.org/authors/id/T/TU/TURNSTEP/DBD-Pg-3.15.1.tar.gz
+-> OK
+Unpacking DBD-Pg-3.15.1.tar.gz
+Entering DBD-Pg-3.15.1
+Checking configure dependencies from META.yml
+Checking if you have version 0 ... Yes (0.9928)
+Checking if you have DBI 1.614 ... Yes (1.643)
+Configuring DBD-Pg-3.15.1
+Running Makefile.PL
+Configuring DBD::Pg 3.15.1
+PostgreSQL version: 140002 (default port: 5432)
+POSTGRES_HOME: (not set)
+POSTGRES_INCLUDE: /usr/local/include
+POSTGRES_LIB: /usr/local/lib
+OS: darwin
+Checking if your kit is complete...
+Looks good
+Using DBI 1.643 (for perl 5.034000 on darwin-2level) installed in perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/auto/DBI/
+Generating a Unix-style Makefile
+Writing Makefile for DBD::Pg
+Writing MYMETA.yml and MYMETA.json
+-> OK
+Checking dependencies from MYMETA.json ...
+Checking if you have DBI 1.614 ... Yes (1.643)
+Checking if you have version 0 ... Yes (0.9928)
+Checking if you have File::Temp 0 ... Yes (0.2311)
+Checking if you have ExtUtils::MakeMaker 6.11 ... Yes (7.64)
+Checking if you have Time::HiRes 0 ... Yes (1.9767)
+Checking if you have Test::More 0.88 ... Yes (1.302188)
+Building and testing DBD-Pg-3.15.1
+cp Pg.pm blib/lib/DBD/Pg.pm
+cp lib/Bundle/DBD/Pg.pm blib/lib/Bundle/DBD/Pg.pm
+Running Mkbootstrap for Pg ()
+chmod 644 "Pg.bs"
+"perl5/perlbrew/perls/perl-5.34.0/bin/perl" -MExtUtils::Command::MM -e 'cp_nonempty' -- Pg.bs blib/arch/auto/DBD/Pg/Pg.bs 644
+"perl5/perlbrew/perls/perl-5.34.0/bin/perl" -p -e "s/~DRIVER~/Pg/g; s/^do\(/dontdo\(/" perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/auto/DBI/Driver.xst > Pg.xsi
+"perl5/perlbrew/perls/perl-5.34.0/bin/perl" "perl5/perlbrew/perls/perl-5.34.0/lib/5.34.0/ExtUtils/xsubpp"  -typemap 'perl5/perlbrew/perls/perl-5.34.0/lib/5.34.0/ExtUtils/typemap'  Pg.xs > Pg.xsc
+mv Pg.xsc Pg.c
+cc -c  -I/usr/local/include -Iperl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/auto/DBI -fno-common -DPERL_DARWIN -mmacosx-version-min=10.14 -fno-strict-aliasing -pipe -fstack-protector-strong -I/usr/local/include -DPERL_USE_SAFE_PUTENV -DPGLIBVERSION=140002 -DPGDEFPORT=5432 -Wno-error=implicit-function-declaration -O3   -DVERSION=\"3.15.1\" -DXS_VERSION=\"3.15.1\"  "-Iperl5/perlbrew/perls/perl-5.34.0/lib/5.34.0/darwin-2level/CORE"   Pg.c
+cc -c  -I/usr/local/include -Iperl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/auto/DBI -fno-common -DPERL_DARWIN -mmacosx-version-min=10.14 -fno-strict-aliasing -pipe -fstack-protector-strong -I/usr/local/include -DPERL_USE_SAFE_PUTENV -DPGLIBVERSION=140002 -DPGDEFPORT=5432 -Wno-error=implicit-function-declaration -O3   -DVERSION=\"3.15.1\" -DXS_VERSION=\"3.15.1\"  "-Iperl5/perlbrew/perls/perl-5.34.0/lib/5.34.0/darwin-2level/CORE"   dbdimp.c
+cc -c  -I/usr/local/include -Iperl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/auto/DBI -fno-common -DPERL_DARWIN -mmacosx-version-min=10.14 -fno-strict-aliasing -pipe -fstack-protector-strong -I/usr/local/include -DPERL_USE_SAFE_PUTENV -DPGLIBVERSION=140002 -DPGDEFPORT=5432 -Wno-error=implicit-function-declaration -O3   -DVERSION=\"3.15.1\" -DXS_VERSION=\"3.15.1\"  "-Iperl5/perlbrew/perls/perl-5.34.0/lib/5.34.0/darwin-2level/CORE"   quote.c
+cc -c  -I/usr/local/include -Iperl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/auto/DBI -fno-common -DPERL_DARWIN -mmacosx-version-min=10.14 -fno-strict-aliasing -pipe -fstack-protector-strong -I/usr/local/include -DPERL_USE_SAFE_PUTENV -DPGLIBVERSION=140002 -DPGDEFPORT=5432 -Wno-error=implicit-function-declaration -O3   -DVERSION=\"3.15.1\" -DXS_VERSION=\"3.15.1\"  "-Iperl5/perlbrew/perls/perl-5.34.0/lib/5.34.0/darwin-2level/CORE"   types.c
+rm -f blib/arch/auto/DBD/Pg/Pg.bundle
+LD_RUN_PATH="/usr/local/lib" cc -Wl,-rpath,"/usr/local/lib" -mmacosx-version-min=10.14 -bundle -undefined dynamic_lookup -L/usr/local/lib -fstack-protector-strong  Pg.o dbdimp.o quote.o types.o  -o blib/arch/auto/DBD/Pg/Pg.bundle  \
+	   -L/usr/local/lib -lpq -lm   \
+	  
+chmod 755 blib/arch/auto/DBD/Pg/Pg.bundle
+Manifying 2 pod documents
+"perl5/perlbrew/perls/perl-5.34.0/bin/perl" -MExtUtils::Command::MM -e 'cp_nonempty' -- Pg.bs blib/arch/auto/DBD/Pg/Pg.bs 644
+PGINITDB="/usr/local/Cellar/postgresql/14.2/bin/initdb" PERL_DL_NONLAZY=1 "perl5/perlbrew/perls/perl-5.34.0/bin/perl" "-MExtUtils::Command::MM" "-MTest::Harness" "-e" "undef *Test::Harness::Switches; test_harness(0, 'blib/lib', 'blib/arch')" t/*.t
+t/00_signature.t ....... skipped: Set the environment variable TEST_SIGNATURE to enable this test
+t/00basic.t ............ ok
+Please wait, creating new database (version 14.2) for testing
+pg_ctl: could not start server
+Examine the log output.
+# 
+# DBI                         Version 1.643
+# DBD::Pg                     Version 3.15.1
+# Perl                        Version 5.34.0
+# OS                          darwin
+# PostgreSQL (compiled)       ?
+# PostgreSQL (target)         ?
+# PostgreSQL (reported)       ?
+# Default port                ?
+# DBI_DSN                     ?
+# DBI_USER                    <not set>
+# Test schema                 dbd_pg_testschema
+# LANG                        C
+# Adjusted:                   initdb
+# Error was: Unix-domain socket path "/Users/asakunotomohiro/.cpanm/work/1645798310.2394/DBD-Pg-3.15.1/dbdpg_test_database/data/socket/.s.PGSQL.5440" is too long (maximum 103 bytes) at t/dbdpg_test_setup.pl line 608.
+Bailout called.  Further testing stopped:  Cannot continue: connection failed
+FAILED--Further testing stopped: Cannot continue: connection failed
+make: *** [test_dynamic] Error 255
+-> FAIL Installing DBD::Pg failed. See /Users/asakunotomohiro/.cpanm/work/1645798310.2394/build.log for details. Retry with --force to force install it.
+$
+```
+まだやることあるのか・・・辛い。  
+
 </details>
 
 <a name="practicaluseGUIPerlTk"></a>
