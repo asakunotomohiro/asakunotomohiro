@@ -12126,6 +12126,9 @@ PerlからPostgreSQLに接続する方法は2種類あるようだ。
 DBIデータベースドライバ作成として、[DBI::DBD](https://perldoc.jp/docs/modules/DBI-1.612/DBI/DBD.pod)を使ったガイドも付いている。  
 DBIのためのODBCドライバ用の[DBD::ODBC](https://perldoc.jp/docs/modules/DBD-ODBC-1.05/ODBC.pod)がある。  
 
+上記で、**DBI->connect**を使った接続が古く、将来は使えなくなるそうだ・・・どういうこと？  
+現在は、非推奨の接続方法のようだ。  
+
 </details>
 
 <a name="practicaluseGUIPerlTk"></a>
