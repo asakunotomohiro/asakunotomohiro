@@ -12129,6 +12129,58 @@ DBIのためのODBCドライバ用の[DBD::ODBC](https://perldoc.jp/docs/modules
 上記で、**DBI->connect**を使った接続が古く、将来は使えなくなるそうだ・・・どういうこと？  
 現在は、非推奨の接続方法のようだ。  
 
+PostgreSQL用のDBIドライバをどのように導入すればいい？
+```terminal
+$ cpanm DBD::Pg	←☆なぜ失敗する？
+--> Working on DBD::Pg
+Fetching http://www.cpan.org/authors/id/T/TU/TURNSTEP/DBD-Pg-3.15.1.tar.gz ... OK
+Configuring DBD-Pg-3.15.1 ... N/A
+! No MYMETA file is found after configure. Your toolchain is too old?
+! Configure failed for DBD-Pg-3.15.1. See /Users/asakunotomohiro/.cpanm/work/1645789457.89632/build.log for details.
+$
+$ cat /Users/asakunotomohiro/.cpanm/work/1645789457.89632/build.log
+cpanm (App::cpanminus) 1.9018 on perl 5.034000 built for darwin-2level
+Work directory is /Users/asakunotomohiro/.cpanm/work/1645789457.89632
+You have make /usr/bin/make
+You have /usr/bin/curl: curl 7.54.0 (x86_64-apple-darwin18.0) libcurl/7.54.0 LibreSSL/2.6.5 zlib/1.2.11 nghttp2/1.24.1
+You have /usr/bin/tar: bsdtar 2.8.3 - libarchive 2.8.3
+You have /usr/bin/unzip
+Searching DBD::Pg () on cpanmetadb ...
+--> Working on DBD::Pg
+Fetching http://www.cpan.org/authors/id/T/TU/TURNSTEP/DBD-Pg-3.15.1.tar.gz
+-> OK
+Unpacking DBD-Pg-3.15.1.tar.gz
+Entering DBD-Pg-3.15.1
+Checking configure dependencies from META.yml
+Checking if you have version 0 ... Yes (0.9928)
+Checking if you have DBI 1.614 ... Yes (1.643)
+Configuring DBD-Pg-3.15.1
+Running Makefile.PL
+Path to pg_config?
+No POSTGRES_HOME defined, cannot find automatically
+Configuring DBD::Pg 3.15.1
+-> N/A
+-> FAIL No MYMETA file is found after configure. Your toolchain is too old?	←☆古い？どうやって新しくする？
+-> FAIL Configure failed for DBD-Pg-3.15.1. See /Users/asakunotomohiro/.cpanm/work/1645789457.89632/build.log for details.
+$
+$ cpanm IO::Socket
+--> Working on IO::Socket
+Fetching http://www.cpan.org/authors/id/T/TO/TODDR/IO-1.48.tar.gz ... OK
+Configuring IO-1.48 ... OK
+Building and testing IO-1.48 ... OK
+Successfully installed IO-1.48 (upgraded from 1.46)
+1 distribution installed
+$ perl -MDBI -e’print $DBI::VERSION’ ; echo
+Unrecognized character \xE2; marked by <-- HERE after <-- HERE near column 1 at -e line 1.
+
+$ perl -MDBD::Pg -e’print $DBD::Pg::VERSION’ ; echo
+Can't locate DBD/Pg.pm in @INC (you may need to install the DBD::Pg module) (@INC contains: 〜).
+BEGIN failed--compilation aborted.
+
+$
+```
+解決方法が全く分からない。  
+
 </details>
 
 <a name="practicaluseGUIPerlTk"></a>
