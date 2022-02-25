@@ -11694,7 +11694,8 @@ ODBCは仕事で使ったことあるが、DBI(Database Interface)はない。
     * [比較演算子](#practicalusesqlDBIcomparisonoperator)  
     * [論理演算子](#practicalusesqlDBIlogicaloperator)  
   * [DBIプログラミング](#practicalusesqlDBImaindbiprogramming)  
-  * [データソース名](#practicalusesqlDBImaindatasource)  
+  * [データソース名](#practicalusesqlDBIdatasource)  
+  * [接続と切断](#practicalusesqlDBIconnectanddisconnect)  
 
 
 <a name="practicalusesqlDBIquerylanguageparlance"></a>
@@ -11817,7 +11818,7 @@ DBIからインスタンス生成したオブジェクトのこと。
 ※データベースハンドルの子に相当する。  
 
 
-<a name="practicalusesqlDBImaindatasource"></a>
+<a name="practicalusesqlDBIdatasource"></a>
 ### データソース名
 **dbi::ドライバ名**にて、データベースに接続する。  
 以下、端末で利用できるドライバ名の一覧取得。  
@@ -12035,6 +12036,27 @@ $
 Perl実行でネットワーク接続を許可するか、みたいな・・・許可したが、よかったか？  
 
 </details>
+
+
+<a name="practicalusesqlDBIconnectanddisconnect"></a>
+### 接続と切断
+接続様式：
+`$dbh = DBI->connect( データソース名, ユーザ名, パスワード, オプション, );`  
+具体例）
+`$dbh = DBI->connect( $data_source, $username, $password, \%attr );`  
+
+切断様式：
+`$rc = $dbh->disconnect();`  
+
+
+* データベース利用時の必要情報。  
+  * データソース名  
+  * ユーザ名  
+  * パスワード
+
+* オプション  
+  * DBIで自動エラー処理の提供。  
+
 
 </details>
 
