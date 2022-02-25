@@ -12262,6 +12262,155 @@ $
 ```
 前回と同じになった。  
 
+ゆえに、本物をインストールした。
+```terminal
+$ brew install postgresql
+Warning: You are using macOS 10.14.
+We (and Apple) do not provide support for this old version.
+You will encounter build failures with some formulae.
+Please create pull requests instead of asking for help on Homebrew's GitHub,
+Twitter or any other official channels. You are responsible for resolving
+any issues you experience while you are running this
+old version.
+
+==> Downloading https://www.openssl.org/source/openssl-1.1.1m.tar.gz
+Already downloaded: Library/Caches/Homebrew/downloads/1fe651091c8b3c36a2f89a1bc970c0d3167db729f9ad9d8bde7b149d5f343c41--openssl-1.1.1m.tar.gz
+==> Downloading https://ghcr.io/v2/homebrew/core/krb5/manifests/1.19.2
+######################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/krb5/blobs/sha256:9dd6fca906e634be1c1b05a99fa8f28735a969e3eb4d939048e89f322c3a4278
+==> Downloading from https://pkg-containers.githubusercontent.com/ghcr1/blobs/sha256:9dd6fca906e634be1c1b05a99fa8f28735a969e3eb4d939048e89f322c3a4278?se=2022-02-25T13%3A30%3A00Z&sig
+######################################################################## 100.0%
+==> Downloading https://ftp.gnu.org/gnu/readline/readline-8.1-patches/readline81-001
+Already downloaded: Library/Caches/Homebrew/downloads/6607f4de8f3c741c80b9d2b64e03b93056bec46d0534dafc9d8f714c95debea7--readline81-001
+==> Downloading https://ftp.gnu.org/gnu/readline/readline-8.1-patches/readline81-002
+Already downloaded: Library/Caches/Homebrew/downloads/4e251fd1a91d6c18b1045dfbd2bd4322cbd89d9b288d02e1b66c83834dc9b369--readline81-002
+==> Downloading https://ftp.gnu.org/gnu/readline/readline-8.1.tar.gz
+Already downloaded: Library/Caches/Homebrew/downloads/118fcba9dbeb2dd253f11507b4f4e3167af70954a464b35e4d0d7e79d3965d1b--readline-8.1.tar.gz
+==> Downloading https://ftp.postgresql.org/pub/source/v14.2/postgresql-14.2.tar.bz2
+######################################################################## 100.0%
+Warning: Your Xcode (11.3) is outdated.
+Please update to Xcode 11.3.1 (or delete it).
+Xcode can be updated from the App Store.
+
+Warning: A newer Command Line Tools release is available.
+Update them from Software Update in System Preferences or run:
+  softwareupdate --all --install --force
+
+If that doesn't show you any updates, run:
+  sudo rm -rf /Library/Developer/CommandLineTools
+  sudo xcode-select --install
+
+Alternatively, manually download them from:
+  https://developer.apple.com/download/all/.
+You should download the Command Line Tools for Xcode 11.3.1.
+
+==> Installing dependencies for postgresql: openssl@1.1, krb5 and readline
+==> Installing postgresql dependency: openssl@1.1
+Warning: Your Xcode (11.3) is outdated.
+Please update to Xcode 11.3.1 (or delete it).
+Xcode can be updated from the App Store.
+
+Warning: A newer Command Line Tools release is available.
+Update them from Software Update in System Preferences or run:
+  softwareupdate --all --install --force
+
+If that doesn't show you any updates, run:
+  sudo rm -rf /Library/Developer/CommandLineTools
+  sudo xcode-select --install
+
+Alternatively, manually download them from:
+  https://developer.apple.com/download/all/.
+You should download the Command Line Tools for Xcode 11.3.1.
+
+==> perl ./Configure --prefix=/usr/local/Cellar/openssl@1.1/1.1.1m --openssldir=/usr/local/etc/openssl@1.1 no-ssl3 no-ssl3-method no-zlib darwin64-x86_64-cc enable-ec_nistp_64_gcc_1
+==> make
+==> make install MANDIR=/usr/local/Cellar/openssl@1.1/1.1.1m/share/man MANSUFFIX=ssl
+==> make test
+🍺  /usr/local/Cellar/openssl@1.1/1.1.1m: 8,074 files, 18.4MB, built in 8 minutes 47 seconds
+==> Installing postgresql dependency: krb5
+==> Pouring krb5--1.19.2.mojave.bottle.tar.gz
+🍺  /usr/local/Cellar/krb5/1.19.2: 162 files, 3.8MB
+==> Installing postgresql dependency: readline
+Warning: Your Xcode (11.3) is outdated.
+Please update to Xcode 11.3.1 (or delete it).
+Xcode can be updated from the App Store.
+
+Warning: A newer Command Line Tools release is available.
+Update them from Software Update in System Preferences or run:
+  softwareupdate --all --install --force
+
+If that doesn't show you any updates, run:
+  sudo rm -rf /Library/Developer/CommandLineTools
+  sudo xcode-select --install
+
+Alternatively, manually download them from:
+  https://developer.apple.com/download/all/.
+You should download the Command Line Tools for Xcode 11.3.1.
+
+==> Patching
+==> Applying readline81-001
+patching file bind.c
+patching file patchlevel
+==> Applying readline81-002
+patching file display.c
+patching file patchlevel
+==> ./configure --prefix=/usr/local/Cellar/readline/8.1.2
+==> make install
+🍺  /usr/local/Cellar/readline/8.1.2: 48 files, 1.6MB, built in 52 seconds
+==> Installing postgresql
+==> ./configure --prefix=/usr/local/Cellar/postgresql/14.2 --datadir=/usr/local/share/postgresql --libdir=/usr/local/lib --includedir=/usr/local/include --sysconfdir=/usr/local/etc 
+==> make
+==> make install-world datadir=/usr/local/Cellar/postgresql/14.2/share/postgresql libdir=/usr/local/Cellar/postgresql/14.2/lib pkglibdir=/usr/local/Cellar/postgresql/14.2/lib/postgr
+==> /usr/local/Cellar/postgresql/14.2/bin/initdb --locale=C -E UTF-8 /usr/local/var/postgres
+==> Caveats
+To migrate existing data from a previous major version of PostgreSQL run:
+  brew postgresql-upgrade-database
+
+This formula has created a default database cluster with:
+  initdb --locale=C -E UTF-8 /usr/local/var/postgres
+For more details, read:
+  https://www.postgresql.org/docs/14/app-initdb.html
+
+To restart postgresql after an upgrade:
+  brew services restart postgresql
+Or, if you don't want/need a background service you can just run:
+  /usr/local/opt/postgresql/bin/postgres -D /usr/local/var/postgres
+==> Summary
+🍺  /usr/local/Cellar/postgresql/14.2: 3,305 files, 41.3MB, built in 6 minutes 51 seconds
+==> Running `brew cleanup postgresql`...
+Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.
+Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
+Warning: The following dependents of upgraded formulae are outdated but will not
+be upgraded because they are not bottled:
+  pyenv
+  vim
+  pango
+  harfbuzz
+  glib
+  ruby-build
+  sqlite
+  gobject-introspection
+  mono
+  ruby
+  python@3.9
+==> Caveats
+==> postgresql
+To migrate existing data from a previous major version of PostgreSQL run:
+  brew postgresql-upgrade-database
+
+This formula has created a default database cluster with:
+  initdb --locale=C -E UTF-8 /usr/local/var/postgres
+For more details, read:
+  https://www.postgresql.org/docs/14/app-initdb.html
+
+To restart postgresql after an upgrade:
+  brew services restart postgresql
+Or, if you don't want/need a background service you can just run:
+  /usr/local/opt/postgresql/bin/postgres -D /usr/local/var/postgres
+$
+```
+あぁこれをしてしまっては、私の完全なる敗北だ。  
+
 </details>
 
 <a name="practicaluseGUIPerlTk"></a>
