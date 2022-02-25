@@ -12069,13 +12069,22 @@ CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 $ docker container ls --all
 CONTAINER ID   IMAGE      COMMAND                  CREATED          STATUS                      PORTS     NAMES
 a75d5d8d5efb   postgres   "docker-entrypoint.s…"   16 seconds ago   Exited (1) 14 seconds ago             postgres20220225
-$ docker ps --all	←☆作成したデータベースコンテナ確認。
+$ docker ps --all	←☆作成したデータベースコンテナ確認(起動していない)。
 CONTAINER ID   IMAGE      COMMAND                  CREATED          STATUS                      PORTS     NAMES
 a75d5d8d5efb   postgres   "docker-entrypoint.s…"   53 seconds ago   Exited (1) 51 seconds ago             postgres20220225
 $
 ```
 ちょっと失敗したようだ。  
 
+起動を試みるが、動いてくれない。
+```terminal
+$ docker start postgres20220225
+postgres20220225
+$ docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+$
+```
+ポートが開いていないぞ？  
 
 </details>
 
