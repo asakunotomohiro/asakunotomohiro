@@ -15,19 +15,19 @@
 
 <a name="algorithmHowToStudy"></a>
 ## 勉強方法
-嫌々勉強するプログラミング言語のひとつ。  
+~~嫌々~~勉強するプログラミング言語のひとつ。  
 
-以下のサイトを参考にする。  
-* [Microsoft-JScript](https://docs.microsoft.com/ja-jp/previous-versions/windows/scripting/cc427807(v=msdn.10))  
-  最終更新日が2009年？  
-  参考にしてはならないな(そもそも本来のJavaScriptと挙動が違うそうだ)。  
-* [Mozilla-JavaScript](https://developer.mozilla.org/ja/docs/Web/JavaScript)  
-* [リズムファクトリー社-JavaScript講座](https://rfs.jp/sb/javascript)  
-  有名なのか？  
-  [はじめてのプログラミング](https://rfs.jp/sb/javascript/01js/01-11.html)の最終更新日は2009年か・・・基礎部分は、書籍に頼れば済むことだろう。  
+* 参考書籍。  
+  * [これから学ぶJavaScript](https://book.impress.co.jp/books/1117101136)  
 
-以下の書籍を購入済み。  
-* [これから学ぶJavaScript](https://book.impress.co.jp/books/1117101136)  
+* 解説サイト。  
+  基礎知識の勉強では、結局どれも使わずじまい。  
+  * [Microsoft-JScript](https://docs.microsoft.com/ja-jp/previous-versions/windows/scripting/cc427807(v=msdn.10))  
+    最終更新日が2009年？  
+    参考不可？(本来のJavaScriptと挙動が違うそうだ)。  
+  * [Mozilla-JavaScript](https://developer.mozilla.org/ja/docs/Web/JavaScript)  
+  * [リズムファクトリー社-JavaScript講座](https://rfs.jp/sb/javascript)  
+    [はじめてのプログラミング](https://rfs.jp/sb/javascript/01js/01-11.html)の最終更新日は2009年か・・・基礎部分は、書籍に頼れば済むことだろう。  
 
 <details><summary>正誤表</summary>
 
@@ -127,9 +127,8 @@ Kindle本で購入したのに、訂正されていない。
 
 <a name="algorithmDevelopmentEnvironment"></a>
 ## 開発環境
-できる限り`MacVim`を使うつもり。  
-しかし、ブラウザ上で開発する？  
-そんなわけないよね。  
+コーディングには`MacVim`を使うつもり。  
+出力確認には[デスクトップ用Firefox](https://www.mozilla.org/ja/firefox/new/)ブラウザを使う。  
 
 
 <a name="algorithmTextbookLearnedinPythonBook"></a>
@@ -140,11 +139,11 @@ Kindle本で購入したのに、訂正されていない。
 <a name="basicKnowledgeFiveTypesOfStudyRange"></a>
 ※プログラミングに使う基礎知識を統一する(簡単に済ませられる量に絞り込む)。  
 * 基礎知識5種類  
-  * [ ] [変数](#variable変数)  
-  * [ ] [配列](#arrangement配列)  
-  * [ ] [条件分岐](#Conditional条件分岐)  
-  * [ ] [繰り返し](#repetition繰り返し)  
-  * [ ] [関数](#function関数)  
+  * [x] [変数](#variable変数)2021/11/28  
+  * [x] [配列](#arrangement配列)2022/01/29  
+  * [x] [条件分岐](#Conditional条件分岐)2022/02/17  
+  * [x] [繰り返し](#repetition繰り返し)2022/02/20  
+  * [x] [関数](#function関数)2022/02/24  
 
 <details><summary>アルゴリズムの勉強項目</summary>
 
@@ -229,10 +228,10 @@ Kindle本で購入したのに、訂正されていない。
       繰り返し  
       関数  
   * [x] 手順3-1. 箇条書きごとにコミット実施する。  
-  * [ ] 手順4. 1つのプログラミング言語で、手順3の勉強1種類を終えた時に、次のプログラミング言語に移る。  
+  * [x] 手順4. 1つのプログラミング言語で、手順3の勉強1種類を終えた時に、次のプログラミング言語に移る。  
          (細かく分けることでやる気が維持される・・・はず)  
-  * [ ] 手順4-1. 今回のプログラミング言語に戻ってきたことにより、次の箇条書きに移り、勉強を継続(再開)する。  
-  * [ ] 手順5. 上記、5種類の基礎知識を終わるまで繰り返す。  
+  * [x] 手順4-1. 今回のプログラミング言語に戻ってきたことにより、次の箇条書きに移り、勉強を継続(再開)する。  
+  * [x] 手順5. 上記、5種類の基礎知識を終わるまで繰り返す。  
   * [ ] 手順6. 5種類の基礎知識終了にて、"study2programming"ブランチにマージする。  
 
 </details>
@@ -376,73 +375,8 @@ window.alert("Hello World!");
 そのため、1つ1つを最小限に絞り込み、1つを10分前後の勉強時間に収まるように気をつけること。  
 ※現時点で守れていないため、何とかして短い時間に抑え、アルゴリズムの勉強を本格的に勉強できるように考慮すること。  
 
+
 <a name="variable変数"></a>
-* [変数](#variable変数sub)  
-  * 変数の宣言方法  
-    数値の代入  
-    文字列の代入  
-    代入したそれらの出力  
-  * 代入した値の変更方法  
-    変数を用いた計算  
-    * 計算用演算子の説明  
-    * データ型の説明  
-      数値-整数型  
-      数値-小数型  
-      文字列  
-      論理値  
-    * データ型の変換(キャスト)  
-  * ※スコープは"関数"で説明する。  
-
-<a name="arrangement配列"></a>
-* [配列(リスト)](#arrangement配列sub)  
-  * 宣言方法  
-    要素  
-    要素数  
-    添え字(インデックス)  
-  * 要素追加方法  
-  * 2次元配列  
-  * ※取り出しは"for"で説明する。  
-
-<a name="Conditional条件分岐"></a>
-* [条件分岐](#Conditional条件分岐sub)  
-  * if文  
-    条件式  
-    * if文からの派生  
-      if〜elif〜else  
-    * 演算子  
-      論理演算子  
-      比較演算子  
-
-<a name="repetition繰り返し"></a>
-* [繰り返し](#repetition繰り返しsub)  
-  * for文  
-    条件式  
-    多重(入れ子)利用  
-    break  
-    continue  
-    拡張for文  
-    　例）range  
-    配列からの取り出し。  
-  * while文  
-    条件式  
-    無限ループ  
-
-<a name="function関数"></a>
-* [関数](#function関数sub)  
-  書式  
-  引数  
-  戻り値  
-  * 組み合わせ  
-    引数無し-戻り値無し  
-    引数あり-戻り値無し  
-    引数無し-戻り値あり  
-    引数あり-戻り値あり  
-  * 変数の有効範囲(スコープ)  
-    グローバル変数  
-    ローカル変数  
-
-
-<a name="variable変数sub"></a>
 ### 変数
 値の格納方法について。  
 ※複雑な説明はしない。  
@@ -683,7 +617,7 @@ console.log(str);	// 15	←☆括弧を付けて優先順位を変えたこと�
 
 </details>
 
-<a name="arrangement配列sub"></a>
+<a name="arrangement配列"></a>
 ### 配列
 変数を連ならせる格納方法。  
 今回のPythonではリストを配列と呼ぶ。  
@@ -795,7 +729,7 @@ console.log("2次元配列[2][1]：" + hoge[2][1]);
 </details>
 
 
-<a name="Conditional条件分岐sub"></a>
+<a name="Conditional条件分岐"></a>
 ### 条件分岐
 
 * 絶対的に勉強する一覧  
@@ -866,7 +800,6 @@ else {
 <a name="subConditional999"></a>
 #### 条件分岐での説明しない項目。
 
-[以下、今回の言語に関係の無い項目を削除すること(対象言語に存在するが、見送るもののみ、以下残す)。]  
 <details><summary>今回は勉強を見送る一覧</summary>
 
 * 多岐分岐-条件にて複数から選ぶ。  
@@ -894,7 +827,7 @@ else {
 
 </details>
 
-<a name="repetition繰り返しsub"></a>
+<a name="repetition繰り返し"></a>
 ### 繰り返し
 
 * 絶対的に勉強する一覧  
@@ -1072,16 +1005,16 @@ while( true ) {
 </details>
 
 
-<a name="function関数sub"></a>
+<a name="function関数"></a>
 ### 関数
 
 * 絶対的に勉強する一覧  
   * [x] 使い回せるようにまとめること。  
     * [x] [引数と戻り値の組み合わせ。](#subFunction1)  
-      [x] 引数無し-戻り値無し  
-      [x] 引数あり-戻り値無し  
-      [x] 引数無し-戻り値あり  
-      [x] 引数あり-戻り値あり  
+      [x] [引数無し-戻り値無し](#subFunction1noargnoreturn)  
+      [x] [引数あり-戻り値無し](#subFunction1doargnoreturn)  
+      [x] [引数無し-戻り値あり](#subFunction1noargdoreturn)  
+      [x] [引数あり-戻り値あり](#subFunction1doargdoreturn)  
     * [スコープ](#subFunction2)  
       [x] グローバルスコープ変数  
       [x] ローカルスコープ変数  
@@ -1112,6 +1045,7 @@ function argtest(arg) {
 argtest('本日は', '晴天なり。');
 ```
 
+<a name="subFunction1defaultvalue"></a>
 引数のデフォルト値を設定可能なようだが、処理できないブラウザがあるようだ。  
 様式：
 ```javascript
@@ -1120,6 +1054,7 @@ function 関数名(仮引数1 = 値A, 仮引数2 = 値B, ・・・) {
 }
 ```
 
+<a name="subFunction1variadicargument"></a>
 引数を可変長に設定可能なようだが、処理できないブラウザがあるようだ。  
 様式：
 ```javascript
@@ -1130,6 +1065,7 @@ function 関数名(...仮引数) {
 }
 ```
 
+<a name="subFunction1argumentexpansion"></a>
 以下、引数展開での渡し方。
 ```javascript
 function 関数名() {
