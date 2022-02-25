@@ -12100,6 +12100,224 @@ DBIドライバを確認するが、Perlからは認識できていなかった�
 データベースは手動で作成する？  
 しかし、DBIドライバとは関係ないよね。  
 
+
+<a name="practicalusesqlDBIconnectanddisconnectpostgresqlconnect"></a>
+#### PostgreSQL接続テスト。
+PerlからPostgreSQLに接続する方法は2種類あるようだ。  
+
+* DBIモジュールのためのデータベースドライバ
+  * [PostgreSQL-Perlだけで構築されたDBIドライバ](https://perldoc.jp/docs/modules/DBD-PgPP-0.05/PgPP.pod)  
+    **DBD::PgPP**
+  * [PostgreSQL](https://perldoc.jp/docs/modules/DBD-Pg-1.22/Pg.pod)  
+    **DBD::Pg**  
+    `DBI->connect using 'old-style' syntax is deprecated and will be an error in future versions at XXXX.pl line XX.`
+  * [SQLite-DBIドライバでの自己完結型(Self Contained)RDBMS](https://perldoc.jp/docs/modules/DBD-SQLite-0.19/SQLite.pod)  
+    **DBD::SQLite**
+  * [MySQL-Perlだけで構築されたDBIドライバ](https://perldoc.jp/docs/modules/DBD-mysqlPP-0.03/mysqlPP.pod)  
+    **DBD::mysqlPP**
+  * [MySQL](https://perldoc.jp/docs/modules/DBD-mysql-2.1026/DBD/mysql.pod)  
+    **DBD::mysql**  
+  * [Oracle](http://perldoc.jp/docs/modules/DBD-Oracle-1.14/Oracle.pod)  
+    **DBD::Oracle**  
+  * [DB2](https://perldoc.jp/docs/modules/DBD-DB2-0.76/DB2.pod)  
+    **DBD::DB2**
+
+これらは、何の話？  
+DBIデータベースドライバ作成として、[DBI::DBD](https://perldoc.jp/docs/modules/DBI-1.612/DBI/DBD.pod)を使ったガイドも付いている。  
+DBIのためのODBCドライバ用の[DBD::ODBC](https://perldoc.jp/docs/modules/DBD-ODBC-1.05/ODBC.pod)がある。  
+
+<details><summary>PostgreSQL導入失敗。</summary>
+
+**DBI->connect**を使った接続が古く、将来は使えなくなるそうだ・・・どういうこと？  
+現在は、非推奨の接続方法のようだ。  
+
+PostgreSQL用のDBIドライバをどのように導入すればいい？
+```terminal
+$ cpanm DBD::Pg	←☆なぜ失敗する？
+--> Working on DBD::Pg
+Fetching http://www.cpan.org/authors/id/T/TU/TURNSTEP/DBD-Pg-3.15.1.tar.gz ... OK
+Configuring DBD-Pg-3.15.1 ... N/A
+! No MYMETA file is found after configure. Your toolchain is too old?
+! Configure failed for DBD-Pg-3.15.1. See .cpanm/work/1645789457.89632/build.log for details.
+$
+$ cat .cpanm/work/1645789457.89632/build.log
+cpanm (App::cpanminus) 1.9018 on perl 5.034000 built for darwin-2level
+Work directory is .cpanm/work/1645789457.89632
+You have make /usr/bin/make
+You have /usr/bin/curl: curl 7.54.0 (x86_64-apple-darwin18.0) libcurl/7.54.0 LibreSSL/2.6.5 zlib/1.2.11 nghttp2/1.24.1
+You have /usr/bin/tar: bsdtar 2.8.3 - libarchive 2.8.3
+You have /usr/bin/unzip
+Searching DBD::Pg () on cpanmetadb ...
+--> Working on DBD::Pg
+Fetching http://www.cpan.org/authors/id/T/TU/TURNSTEP/DBD-Pg-3.15.1.tar.gz
+-> OK
+Unpacking DBD-Pg-3.15.1.tar.gz
+Entering DBD-Pg-3.15.1
+Checking configure dependencies from META.yml
+Checking if you have version 0 ... Yes (0.9928)
+Checking if you have DBI 1.614 ... Yes (1.643)
+Configuring DBD-Pg-3.15.1
+Running Makefile.PL
+Path to pg_config?
+No POSTGRES_HOME defined, cannot find automatically
+Configuring DBD::Pg 3.15.1
+-> N/A
+-> FAIL No MYMETA file is found after configure. Your toolchain is too old?	←☆古い？どうやって新しくする？
+-> FAIL Configure failed for DBD-Pg-3.15.1. See .cpanm/work/1645789457.89632/build.log for details.
+$
+$ cpanm IO::Socket
+--> Working on IO::Socket
+Fetching http://www.cpan.org/authors/id/T/TO/TODDR/IO-1.48.tar.gz ... OK
+Configuring IO-1.48 ... OK
+Building and testing IO-1.48 ... OK
+Successfully installed IO-1.48 (upgraded from 1.46)
+1 distribution installed
+$ perl -MDBI -e’print $DBI::VERSION’ ; echo
+Unrecognized character \xE2; marked by <-- HERE after <-- HERE near column 1 at -e line 1.
+
+$ perl -MDBD::Pg -e’print $DBD::Pg::VERSION’ ; echo
+Can't locate DBD/Pg.pm in @INC (you may need to install the DBD::Pg module) (@INC contains: 〜).
+BEGIN failed--compilation aborted.
+
+$
+```
+解決方法が全く分からない。  
+
+何をやっている？
+```terminal
+$ cpanm DBD::SQLite
+--> Working on DBD::SQLite
+Fetching http://www.cpan.org/authors/id/I/IS/ISHIGAKI/DBD-SQLite-1.70.tar.gz ... OK
+Configuring DBD-SQLite-1.70 ... OK
+Building and testing DBD-SQLite-1.70 ... OK
+Successfully installed DBD-SQLite-1.70
+1 distribution installed
+$
+```
+欲しくないドライバがインストールできたぞ。  
+
+解決法方法が全く分からない。  
+しかたないため、Makefileからインストールをしようとしたが、ここでもこける。  
+```terminal
+$ perl Makefile.PL
+Configuring DBD::Pg 3.15.1
+Path to pg_config?
+No POSTGRES_HOME defined, cannot find automatically
+$ export POSTGRES_HOME=/usr/local/pgsql
+$ export POSTGRES_DATA='$HOME/docker作成データ/'
+$ export POSTGRES_INCLUDE=/usr/local/pgsql/include
+$ export POSTGRES_LIB=/usr/local/pgsql/lib
+$ perl Makefile.PL
+Configuring DBD::Pg 3.15.1
+Path to pg_config?
+PostgreSQL version: 0 (default port: 0)
+POSTGRES_HOME: /usr/local/pgsql
+POSTGRES_INCLUDE: /usr/local/pgsql/include
+POSTGRES_LIB: /usr/local/pgsql/lib
+OS: darwin
+Could not determine the PostgreSQL library version.
+Please ensure that a valid path is given to the 'pg_config' command,
+either manually or by setting the environment variables
+POSTGRES_DATA, POSTGRES_INCLUDE, and POSTGRES_LIB
+$ brew install pg_config
+Running `brew update --preinstall`...
+==> Auto-updated Homebrew!
+Updated 1 tap (homebrew/core).
+==> Updated Formulae
+Updated 1 formula.
+
+Warning: No available formula with the name "pg_config". Did you mean pkg-config?
+==> Searching for similarly named formulae...
+This similarly named formula was found:
+pkg-config ✔
+To install it, run:
+  brew install pkg-config ✔
+==> Searching for a previously deleted formula (in the last month)...
+Error: No previously deleted formula found.
+==> Searching taps on GitHub...
+Error: No formulae found in taps.
+$
+```
+前回と同じになった。  
+
+ゆえに、本物をインストールした。
+```terminal
+$ brew install postgresql
+Warning: You are using macOS 10.14.
+We (and Apple) do not provide support for this old version.
+You will encounter build failures with some formulae.
+　　　・
+　　　・
+　　　・
+To restart postgresql after an upgrade:
+  brew services restart postgresql
+Or, if you don't want/need a background service you can just run:
+  /usr/local/opt/postgresql/bin/postgres -D /usr/local/var/postgres
+$
+```
+あぁこれをしてしまっては、私の完全なる敗北だ。  
+
+さらに敗北感を味わうのは、何の意味も成さなかったこと。
+```terminal
+$ cpanm DBD::Pg
+--> Working on DBD::Pg
+Fetching http://www.cpan.org/authors/id/T/TU/TURNSTEP/DBD-Pg-3.15.1.tar.gz ... OK
+Configuring DBD-Pg-3.15.1 ... OK
+Building and testing DBD-Pg-3.15.1 ... FAIL
+! Installing DBD::Pg failed. See .cpanm/work/1645798310.2394/build.log for details. Retry with --force to force install it.
+$ cat .cpanm/work/1645798310.2394/build.log
+cpanm (App::cpanminus) 1.9018 on perl 5.034000 built for darwin-2level
+Work directory is .cpanm/work/1645798310.2394
+You have make /usr/bin/make
+You have /usr/bin/curl: curl 7.54.0 (x86_64-apple-darwin18.0) libcurl/7.54.0 LibreSSL/2.6.5 zlib/1.2.11 nghttp2/1.24.1
+You have /usr/bin/tar: bsdtar 2.8.3 - libarchive 2.8.3
+You have /usr/bin/unzip
+Searching DBD::Pg () on cpanmetadb ...
+--> Working on DBD::Pg
+Fetching http://www.cpan.org/authors/id/T/TU/TURNSTEP/DBD-Pg-3.15.1.tar.gz
+-> OK
+Unpacking DBD-Pg-3.15.1.tar.gz
+　　　・
+　　　・
+　　　・
+Writing Makefile for DBD::Pg
+Writing MYMETA.yml and MYMETA.json
+-> OK
+Checking dependencies from MYMETA.json ...
+Checking if you have DBI 1.614 ... Yes (1.643)
+Checking if you have version 0 ... Yes (0.9928)
+　　　・
+　　　・
+　　　・
+t/00basic.t ............ ok
+Please wait, creating new database (version 14.2) for testing
+pg_ctl: could not start server
+Examine the log output.
+# 
+# DBI                         Version 1.643
+# DBD::Pg                     Version 3.15.1
+# Perl                        Version 5.34.0
+# OS                          darwin
+# PostgreSQL (compiled)       ?
+# PostgreSQL (target)         ?
+# PostgreSQL (reported)       ?
+# Default port                ?
+# DBI_DSN                     ?
+# DBI_USER                    <not set>
+# Test schema                 dbd_pg_testschema
+# LANG                        C
+# Adjusted:                   initdb
+# Error was: Unix-domain socket path ".cpanm/work/1645798310.2394/DBD-Pg-3.15.1/dbdpg_test_database/data/socket/.s.PGSQL.5440" is too long (maximum 103 bytes) at t/dbdpg_test_setup.pl line 608.
+Bailout called.  Further testing stopped:  Cannot continue: connection failed
+FAILED--Further testing stopped: Cannot continue: connection failed
+make: *** [test_dynamic] Error 255
+-> FAIL Installing DBD::Pg failed. See .cpanm/work/1645798310.2394/build.log for details. Retry with --force to force install it.
+$
+```
+まだやることあるのか・・・辛い。  
+
+</details>
+
 </details>
 
 <a name="practicaluseGUIPerlTk"></a>
