@@ -12194,6 +12194,30 @@ $
 ```
 欲しくないドライバがインストールできたぞ。  
 
+欲しいのが全く導入できない。
+```terminal
+$ pg_config
+-bash: pg_config: command not found
+$ brew install postgresql-devel	←☆なぜ失敗する？
+Running `brew update --preinstall`...
+==> Auto-updated Homebrew!
+Updated 1 tap (homebrew/cask).
+==> Updated Casks
+Updated 2 casks.
+
+Warning: No available formula with the name "postgresql-devel". Did you mean postgresql?
+==> Searching for similarly named formulae...
+This similarly named formula was found:
+postgresql
+To install it, run:
+  brew install postgresql
+==> Searching for a previously deleted formula (in the last month)...
+Error: No previously deleted formula found.
+==> Searching taps on GitHub...
+Error: No formulae found in taps.
+$
+```
+
 </details>
 
 <a name="practicaluseGUIPerlTk"></a>
