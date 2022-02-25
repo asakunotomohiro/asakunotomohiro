@@ -26,6 +26,12 @@ ASIN：なし。
 　　サポートページ：<https://github.com/getstart-sphinx/getstart-sphinx>  
 形式：  
 
+※「Sphinxをはじめよう 第3版」が発売される。  
+発行：2022年3月24日 発売予定  
+ISBN：978-4873119830  
+ちょっとだけ高くなっている。  
+そんなことより、普通に書店取扱いになったのが驚く。  
+そんなに需要があるのか!?  
 
 <!-- 目次部分(リンクになるところ) -->
 <a id="oreillySphinxBook9784873118192contents"></a>
