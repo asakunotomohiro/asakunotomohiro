@@ -12097,6 +12097,23 @@ $
 ないから起動しない？  
 過去の作業を見返しているのだが、思い出せない。  
 
+以下、ポート設定をするが、駄目だった。
+```terminal
+$ docker volume ls
+DRIVER    VOLUME NAME
+$ docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+$ docker run -dit --name postgres20220225 -p 8080:80 -v "$HOME/study勉強用Githubリポジトリ/Perl言語/応用知識用の勉強/sqlDBI/docker作成データ/":/var/lib/postgresql/data postgres
+05b7480b067175fe555dc909e93cb014fcb541b0c7c065d3ed269fe6907a15d6
+$ docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+$ docker ps --all
+CONTAINER ID   IMAGE      COMMAND                  CREATED          STATUS                      PORTS     NAMES
+05b7480b0671   postgres   "docker-entrypoint.s…"   12 seconds ago   Exited (1) 11 seconds ago             postgres20220225
+$
+```
+ボリュームがないのが悪い？  
+
 </details>
 
 <a name="practicaluseGUIPerlTk"></a>
