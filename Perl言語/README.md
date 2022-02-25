@@ -12101,9 +12101,9 @@ DBIドライバを確認するが、Perlからは認識できていなかった�
 しかし、DBIドライバとは関係ないよね。  
 
 
-<a name="practicalusesqlDBIconnectanddisconnectpostgresqlconnect"></a>
-#### PostgreSQL接続テスト。
-PerlからPostgreSQLに接続する方法は2種類あるようだ。  
+<a name="practicalusesqlDBIconnectanddisconnectmysqlconnect"></a>
+#### MySQL接続テスト。
+PerlからMySQLに接続する方法は2種類あるようだ。  
 
 * DBIモジュールのためのデータベースドライバ
   * [PostgreSQL-Perlだけで構築されたDBIドライバ](https://perldoc.jp/docs/modules/DBD-PgPP-0.05/PgPP.pod)  
@@ -12122,12 +12122,16 @@ PerlからPostgreSQLに接続する方法は2種類あるようだ。
   * [DB2](https://perldoc.jp/docs/modules/DBD-DB2-0.76/DB2.pod)  
     **DBD::DB2**
 
-これらは、何の話？  
 DBIデータベースドライバ作成として、[DBI::DBD](https://perldoc.jp/docs/modules/DBI-1.612/DBI/DBD.pod)を使ったガイドも付いている。  
 DBIのためのODBCドライバ用の[DBD::ODBC](https://perldoc.jp/docs/modules/DBD-ODBC-1.05/ODBC.pod)がある。  
+これらは、何の話？  
 
+<a name="practicalusesqlDBIconnectanddisconnectpostgresqlconnect"></a>
 <details><summary>PostgreSQL導入失敗。</summary>
 
+ここの項目ボツ。  
+
+#### PostgreSQL接続テスト。
 **DBI->connect**を使った接続が古く、将来は使えなくなるそうだ・・・どういうこと？  
 現在は、非推奨の接続方法のようだ。  
 
