@@ -12100,6 +12100,32 @@ DBIドライバを確認するが、Perlからは認識できていなかった�
 データベースは手動で作成する？  
 しかし、DBIドライバとは関係ないよね。  
 
+
+<a name="practicalusesqlDBIconnectanddisconnectpostgresqlconnect"></a>
+#### PostgreSQL接続テスト。
+PerlからPostgreSQLに接続する方法は2種類あるようだ。  
+
+* DBIモジュールのためのデータベースドライバ
+  * [PostgreSQL-Perlだけで構築されたDBIドライバ](https://perldoc.jp/docs/modules/DBD-PgPP-0.05/PgPP.pod)  
+    **DBD::PgPP**
+  * [PostgreSQL](https://perldoc.jp/docs/modules/DBD-Pg-1.22/Pg.pod)  
+    **DBD::Pg**  
+    `DBI->connect using 'old-style' syntax is deprecated and will be an error in future versions at XXXX.pl line XX.`
+  * [SQLite-DBIドライバでの自己完結型(Self Contained)RDBMS](https://perldoc.jp/docs/modules/DBD-SQLite-0.19/SQLite.pod)  
+    **DBD::SQLite**
+  * [MySQL-Perlだけで構築されたDBIドライバ](https://perldoc.jp/docs/modules/DBD-mysqlPP-0.03/mysqlPP.pod)  
+    **DBD::mysqlPP**
+  * [MySQL](https://perldoc.jp/docs/modules/DBD-mysql-2.1026/DBD/mysql.pod)  
+    **DBD::mysql**  
+  * [Oracle](http://perldoc.jp/docs/modules/DBD-Oracle-1.14/Oracle.pod)  
+    **DBD::Oracle**  
+  * [DB2](https://perldoc.jp/docs/modules/DBD-DB2-0.76/DB2.pod)  
+    **DBD::DB2**
+
+これらは、何の話？  
+DBIデータベースドライバ作成として、[DBI::DBD](https://perldoc.jp/docs/modules/DBI-1.612/DBI/DBD.pod)を使ったガイドも付いている。  
+DBIのためのODBCドライバ用の[DBD::ODBC](https://perldoc.jp/docs/modules/DBD-ODBC-1.05/ODBC.pod)がある。  
+
 </details>
 
 <a name="practicaluseGUIPerlTk"></a>
