@@ -13151,6 +13151,17 @@ $ docker exec -it postgres20220225 psql -U postgres
 psql (14.0 (Debian 14.0-1.pgdg110+1))
 Type "help" for help.
 
+postgres=# \l	←☆バックスラッシュに小文字のL字。
+                                 List of databases	←☆既存のデータベースが確認できる。
+   Name    |  Owner   | Encoding |  Collate   |   Ctype    |   Access privileges
+-----------+----------+----------+------------+------------+-----------------------
+ postgres  | postgres | UTF8     | en_US.utf8 | en_US.utf8 | 
+ template0 | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres          +
+           |          |          |            |            | postgres=CTc/postgres
+ template1 | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres          +
+           |          |          |            |            | postgres=CTc/postgres
+(3 rows)
+
 postgres=#	←☆Ctrl+dで抜け出る。
 \q
 $
