@@ -12114,6 +12114,21 @@ $
 ```
 ボリュームがないのが悪い？  
 
+以下、過去作業通りに起動。
+```terminal
+$ docker run -dit --name web20220225 -p 8080:80 httpd:2.4	←☆保存領域なく起動する。
+259fb6514e5f5871519a5a60e602f8a26a6015d34c7a500655ef6b3a1661953f
+$ docker ps	←☆Apacheの起動確認。
+CONTAINER ID   IMAGE       COMMAND              CREATED         STATUS         PORTS                  NAMES
+259fb6514e5f   httpd:2.4   "httpd-foreground"   7 seconds ago   Up 5 seconds   0.0.0.0:8080->80/tcp   web20220225
+$
+```
+できるやん。  
+
+<http://localhost:8080/>
+により、
+ブラウザで、`It works!`が確認できた。  
+
 </details>
 
 <a name="practicaluseGUIPerlTk"></a>
