@@ -12218,6 +12218,50 @@ Error: No formulae found in taps.
 $
 ```
 
+解決法方法が全く分からない。  
+しかたないため、Makefileからインストールをしようとしたが、ここでもこける。  
+```terminal
+$ perl Makefile.PL
+Configuring DBD::Pg 3.15.1
+Path to pg_config?
+No POSTGRES_HOME defined, cannot find automatically
+$ export POSTGRES_HOME=/usr/local/pgsql
+$ export POSTGRES_DATA='$HOME/docker作成データ/'
+$ export POSTGRES_INCLUDE=/usr/local/pgsql/include
+$ export POSTGRES_LIB=/usr/local/pgsql/lib
+$ perl Makefile.PL
+Configuring DBD::Pg 3.15.1
+Path to pg_config?
+PostgreSQL version: 0 (default port: 0)
+POSTGRES_HOME: /usr/local/pgsql
+POSTGRES_INCLUDE: /usr/local/pgsql/include
+POSTGRES_LIB: /usr/local/pgsql/lib
+OS: darwin
+Could not determine the PostgreSQL library version.
+Please ensure that a valid path is given to the 'pg_config' command,
+either manually or by setting the environment variables
+POSTGRES_DATA, POSTGRES_INCLUDE, and POSTGRES_LIB
+$ brew install pg_config
+Running `brew update --preinstall`...
+==> Auto-updated Homebrew!
+Updated 1 tap (homebrew/core).
+==> Updated Formulae
+Updated 1 formula.
+
+Warning: No available formula with the name "pg_config". Did you mean pkg-config?
+==> Searching for similarly named formulae...
+This similarly named formula was found:
+pkg-config ✔
+To install it, run:
+  brew install pkg-config ✔
+==> Searching for a previously deleted formula (in the last month)...
+Error: No previously deleted formula found.
+==> Searching taps on GitHub...
+Error: No formulae found in taps.
+$
+```
+前回と同じになった。  
+
 </details>
 
 <a name="practicaluseGUIPerlTk"></a>
