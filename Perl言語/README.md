@@ -12058,6 +12058,25 @@ Perl実行でネットワーク接続を許可するか、みたいな・・・�
   * DBIで自動エラー処理の提供。  
 
 
+<a name="practicalusesqlDBIconnectanddisconnectpostgres"></a>
+#### 利用するデータベースの構築。
+以下、作業手順。
+```terminal
+$ docker run -dit --name postgres20220225 -v "$HOME/study勉強用Githubリポジトリ/Perl言語/応用知識用の勉強/sqlDBI/docker作成データ/":/var/lib/postgresql/data postgres	←☆ドッカーでのデータベース作成。
+a75d5d8d5efb77b3cf090736e53e99307ffe50ecf0b62a4271202ef84b2d8d39
+$ docker container ls	←☆動いていない？
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+$ docker container ls --all
+CONTAINER ID   IMAGE      COMMAND                  CREATED          STATUS                      PORTS     NAMES
+a75d5d8d5efb   postgres   "docker-entrypoint.s…"   16 seconds ago   Exited (1) 14 seconds ago             postgres20220225
+$ docker ps --all	←☆作成したデータベースコンテナ確認。
+CONTAINER ID   IMAGE      COMMAND                  CREATED          STATUS                      PORTS     NAMES
+a75d5d8d5efb   postgres   "docker-entrypoint.s…"   53 seconds ago   Exited (1) 51 seconds ago             postgres20220225
+$
+```
+ちょっと失敗したようだ。  
+
+
 </details>
 
 <a name="practicaluseGUIPerlTk"></a>
