@@ -3,6 +3,7 @@ use v5.24;
 use DBI;
 #use DBI::Pg;
 #use Pg;
+#use DBD::mysql;
 
 package dbimySQL;
 sub main() {
@@ -20,7 +21,8 @@ sub main() {
 	#my $dbh = DBI->connect("dbi:Pg:dbname=$database", "", "");
 		# また、エラーが発生した。
 		#	install_driver(Pg) failed: Can't locate DBD/Pg.pm in @INC (you may need to install the DBD::Pg module) (@INC contains: 〜) at (eval 6) line 3.
-	my $dsn = "DBI:mysql:database=$database;host=$hostname;port=$port";
-	my $dbh = DBI->connect("$dsn", "", "");
+	my $drh = DBI->install_driver("mysql");
+#	my $dsn = "DBI:mysql:database=$database;host=$hostname;port=$port";
+#	my $dbh = DBI->connect("$dsn", "", "");
 }
 main();

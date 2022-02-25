@@ -12322,6 +12322,38 @@ $
 
 </details>
 
+MySQL用のDBDをインストールしていない場合、接続に失敗する(当たり前)。  
+そのため、以下、導入。
+```terminal
+$ cpanm DBD::mysql
+--> Working on DBD::mysql
+Fetching http://www.cpan.org/authors/id/D/DV/DVEEDEN/DBD-mysql-4.050.tar.gz ... OK
+==> Found dependencies: Devel::CheckLib
+--> Working on Devel::CheckLib
+Fetching http://www.cpan.org/authors/id/M/MA/MATTN/Devel-CheckLib-1.14.tar.gz ... OK
+Configuring Devel-CheckLib-1.14 ... OK
+==> Found dependencies: Mock::Config, Capture::Tiny
+--> Working on Mock::Config
+Fetching http://www.cpan.org/authors/id/R/RU/RURBAN/Mock-Config-0.03.tar.gz ... OK
+Configuring Mock-Config-0.03 ... OK
+Building and testing Mock-Config-0.03 ... OK
+Successfully installed Mock-Config-0.03
+--> Working on Capture::Tiny
+Fetching http://www.cpan.org/authors/id/D/DA/DAGOLDEN/Capture-Tiny-0.48.tar.gz ... OK
+Configuring Capture-Tiny-0.48 ... OK
+Building and testing Capture-Tiny-0.48 ... OK
+Successfully installed Capture-Tiny-0.48
+Building and testing Devel-CheckLib-1.14 ... OK
+Successfully installed Devel-CheckLib-1.14
+Configuring DBD-mysql-4.050 ... N/A
+! Configure failed for DBD-mysql-4.050. See /Users/asakunotomohiro/.cpanm/work/1645802437.3658/build.log for details.
+3 distributions installed
+$
+```
+こちらは[PostgreSQL](#practicalusesqlDBIconnectanddisconnectpostgresqlconnect)と比べてすんなり完了および成功した。  
+よかった。  
+しかし、接続できない状況は変わらず・・・困った。  
+
 </details>
 
 <a name="practicaluseGUIPerlTk"></a>
