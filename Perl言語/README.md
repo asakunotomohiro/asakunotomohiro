@@ -12060,6 +12060,8 @@ Perl実行でネットワーク接続を許可するか、みたいな・・・�
 
 <a name="practicalusesqlDBIconnectanddisconnectpostgres"></a>
 #### 利用するデータベースの構築。
+[仮想環境](../仮想環境/README.md)の[Docker](../仮想環境/docker_作業メモなど何でも詰め込む.md)を利用する。  
+
 以下、作業手順。
 ```terminal
 $ docker run -dit --name postgres20220225 -v "$HOME/study勉強用Githubリポジトリ/Perl言語/応用知識用の勉強/sqlDBI/docker作成データ/":/var/lib/postgresql/data postgres	←☆ドッカーでのデータベース作成。
@@ -12085,6 +12087,15 @@ CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
 $
 ```
 ポートが開いていないぞ？  
+
+ドッカー側の保存領域が無いように思う・・・。
+```terminal
+$ docker volume ls
+DRIVER    VOLUME NAME
+$
+```
+ないから起動しない？  
+過去の作業を見返しているのだが、思い出せない。  
 
 </details>
 
