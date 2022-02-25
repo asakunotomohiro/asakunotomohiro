@@ -1,0 +1,69 @@
+"use strict";
+
+
+// ダイアログ出力。
+console.log("基礎知識5種類の勉強のうち、関数。");
+
+/*
+ * 以下、配列宣言。
+ */
+let asakuno = [ 20220224, 'asakuno', 100005983062102, ];
+
+/*
+ * 以下、関数。
+ */
+function say() {
+	// 引数無し-戻り値無し。
+	console.log("関数内から出力。");
+}
+//say();
+
+function insay(arg) {
+	// 引数あり-戻り値無し。
+	console.log("関数内から出力(" + arg + ")。");
+}
+//insay('引数');
+
+function sayret() {
+	// 引数なし-戻り値あり。
+	let func = 20220224;
+	console.log("関数内から出力。");	// 関数内から出力。
+
+	return func;
+}
+//let ret = sayret();
+//console.log("戻り値出力(" + ret + ")。");	// 戻り値出力(20220224)。
+
+function insayret(arg) {
+	// 引数あり-戻り値あり。
+	let func = 20220224;
+	console.log("関数内から出力(引数：" + arg + ", 戻り値：" + func + ")。");	// 関数内から出力(引数：asakuno, 戻り値：20220224)。
+
+	return func;
+}
+//let ret = insayret('asakuno');
+//console.log("戻り値出力(" + ret + ")。");	// 戻り値出力(20220224)。
+
+function argtest(arg) {
+	let func = 20220224;
+	console.log("関数内から出力(引数：" + arg + ", 戻り値：" + func + ")。");	// 関数内から出力(引数：asakuno, 戻り値：20220224)。
+	console.log("受け取った引き数値：" + arguments[0]);			// asakuno
+	console.log("受け取っていない引き数値：" + arguments[1]);	// 朝来野智博
+	console.log("存在しない引き数値：" + arguments[2]);			// undefined
+
+	return func;
+}
+//argtest('asakuno', '朝来野智博');
+//console.log("関数内の変数を関数が出呼び出す(" + func + ")。");	Uncaught ReferenceError: func is not defined
+
+
+{
+let testLet;	// ローカル変数。
+var testVar;	// グローバル変数。
+	testLet = 20220224;
+	testVar = 'asakuno';
+}
+//console.log("関数内の変数を関数が出呼び出すtestLet(" + testLet + ")---testVar(" + testVar + ")。");	// testLetが原因でエラーにあんる(宣言されていないとのこと)。
+console.log("関数内の変数を関数が出呼び出すtestVar(" + testVar + ")。");	// 関数内の変数を関数が出呼び出すtestVar(asakuno)。
+
+/* vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=javascript noexpandtab: */
