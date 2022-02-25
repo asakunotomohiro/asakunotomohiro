@@ -12353,6 +12353,8 @@ $
 こちらは[PostgreSQL](#practicalusesqlDBIconnectanddisconnectpostgresqlconnect)と比べてすんなり完了および成功した。  
 よかった。  
 しかし、接続できない状況は変わらず・・・困った。  
+通常であれば、**@INC**に入っているはずなのだが、インストール成功しているのに入っていないと言うこと？  
+Path通しが出来ていない？  
 
 </details>
 
