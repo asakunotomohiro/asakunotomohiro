@@ -12058,6 +12058,48 @@ Perl実行でネットワーク接続を許可するか、みたいな・・・�
   * DBIで自動エラー処理の提供。  
 
 
+<a name="practicalusesqlDBIconnectanddisconnectpostgres"></a>
+#### 利用するデータベースの構築。
+[仮想環境](../仮想環境/README.md)の[Docker](../仮想環境/docker_作業メモなど何でも詰め込む.md)を利用する。  
+
+以下、作業手順。
+```terminal
+$ docker ps --all
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+$ docker run -dit --name postgres20220225 -p 8080:80 -e POSTGRES_PASSWORD=1234 -v "$HOME/docker作成データ/":/var/lib/postgresql/data postgres	←☆ドッカーでのデータベース作成。
+b3cf3c81b383bceeee7ff8a50469b07bd00fcd75f5c467a2d5c467ded6b90337
+$ docker ps	←☆起動成功。
+CONTAINER ID   IMAGE      COMMAND                  CREATED         STATUS         PORTS                            NAMES
+b3cf3c81b383   postgres   "docker-entrypoint.s…"   9 seconds ago   Up 8 seconds   5432/tcp, 0.0.0.0:8080->80/tcp   postgres20220225
+$
+```
+※パスワード設定は必須。  
+
+以下、PostgreSQLの起動確認。
+```terminal
+$ docker exec -it postgres20220225 psql -U postgres
+psql (14.0 (Debian 14.0-1.pgdg110+1))
+Type "help" for help.
+
+postgres=# \l	←☆バックスラッシュに小文字のL字。
+                                 List of databases	←☆既存のデータベースが確認できる。
+   Name    |  Owner   | Encoding |  Collate   |   Ctype    |   Access privileges
+-----------+----------+----------+------------+------------+-----------------------
+ postgres  | postgres | UTF8     | en_US.utf8 | en_US.utf8 | 
+ template0 | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres          +
+           |          |          |            |            | postgres=CTc/postgres
+ template1 | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres          +
+           |          |          |            |            | postgres=CTc/postgres
+(3 rows)
+
+postgres=#	←☆Ctrl+dで抜け出る。
+\q
+$
+```
+DBIドライバを確認するが、Perlからは認識できていなかった。  
+データベースは手動で作成する？  
+しかし、DBIドライバとは関係ないよね。  
+
 </details>
 
 <a name="practicaluseGUIPerlTk"></a>
