@@ -12356,6 +12356,33 @@ $
 通常であれば、**@INC**に入っているはずなのだが、インストール成功しているのに入っていないと言うこと？  
 Path通しが出来ていない？  
 
+よく分からず、Perlのみで構成されたドライバをインストールした。
+```terminal
+$ cpanm DBD::mysqlPP
+--> Working on DBD::mysqlPP
+Fetching http://www.cpan.org/authors/id/T/TS/TSUCCHI/DBD-mysqlPP-0.07.tar.gz ... OK
+Configuring DBD-mysqlPP-0.07 ... OK
+==> Found dependencies: Net::MySQL
+--> Working on Net::MySQL
+Fetching http://www.cpan.org/authors/id/T/TS/TSUCCHI/Net-MySQL-0.11.tar.gz ... OK
+Configuring Net-MySQL-0.11 ... OK
+==> Found dependencies: Digest::SHA1
+--> Working on Digest::SHA1
+Fetching http://www.cpan.org/authors/id/G/GA/GAAS/Digest-SHA1-2.13.tar.gz ... OK
+Configuring Digest-SHA1-2.13 ... OK
+Building and testing Digest-SHA1-2.13 ... OK
+Successfully installed Digest-SHA1-2.13
+Building and testing Net-MySQL-0.11 ... OK
+Successfully installed Net-MySQL-0.11
+Building and testing DBD-mysqlPP-0.07 ... OK
+Successfully installed DBD-mysqlPP-0.07
+3 distributions installed
+$
+```
+これを導入後、`DBI->data_sources("mysqlPP");`を実行してもエラーが発生しなかった。  
+導入前に試していないのでなんとも言えないが、**mysql**ではだめだった。  
+PostgreSQL用の**Pg**・**PgPP**も駄目だった(ドライバインストールが出来ないのだから当たり前だが)。  
+
 </details>
 
 <a name="practicaluseGUIPerlTk"></a>
