@@ -1,7 +1,6 @@
 $VERSION = "0.002";
 use v5.24;
 use DBI;
-BEGIN { push @INC, "/Users/asakunotomohiro/.cpanm/"; }
 #use DBI::Pg;
 #use Pg;
 #use DBD::mysql;
@@ -25,6 +24,9 @@ sub main() {
 #say "@INC";
 #	my @databases = DBI->data_sources("mysql");	エラー。
 	my @databases = DBI->data_sources("mysqlPP");
+	foreach my $source ( @databases ) {
+		say "$source";	# dbi:mysqlPP:
+	}
 #	my @databases = DBI->data_sources("PgPP");	エラー。
 #	my $drh = DBI->install_driver("mysql");
 #	my $dsn = "DBI:mysql:database=$database;host=$hostname;port=$port";

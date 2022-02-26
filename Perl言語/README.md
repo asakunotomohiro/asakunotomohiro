@@ -11978,7 +11978,7 @@ main();
 
 以下、実行結果。
 ```terminal
-DBM ExampleP File Gofer Mem Proxy Sponge
+DBM ExampleP File Gofer Mem Proxy SQLite Sponge mysqlPP
 DBM
 	データソース：DBI:DBM:f_dir=.
 	データソース：DBI:DBM:f_dir=基礎知識用の勉強
@@ -11994,13 +11994,18 @@ File
 Gofer
 Mem
 Proxy	←☆なぜ項目がない？
+SQLite	←☆なぜ項目がない？
 Sponge
+mysqlPP
+	データソース：dbi:mysqlPP:
 ```
 **ADO**・**CSV**・**XBase**などないのだが、どうなっている？  
 **ODBC**があってほしかった。  
 
 ゆくゆくは、ここにmySQLやPostgreSQLなどが表示されるようになるわけね。  
 どうやって？  
+いまだによく分かっていない。  
+ドライバを別途インストール必須なのは分かったが、ドライバが何なのかが分からない。  
 
 <details><summary>Proxyモジュールのインストール。</summary>
 
@@ -12382,6 +12387,21 @@ $
 これを導入後、`DBI->data_sources("mysqlPP");`を実行してもエラーが発生しなかった。  
 導入前に試していないのでなんとも言えないが、**mysql**ではだめだった。  
 PostgreSQL用の**Pg**・**PgPP**も駄目だった(ドライバインストールが出来ないのだから当たり前だが)。  
+
+以下、プログラム実行例。
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	my @databases = DBI->data_sources("mysqlPP");
+	foreach my $source ( @databases ) {
+		say "$source";	# dbi:mysqlPP:
+	}
+}
+main();
+```
+これは、上記の[データソース名](#practicalusesqlDBIdatasource)での実行を個別指定したプログラムになる。  
 
 </details>
 
