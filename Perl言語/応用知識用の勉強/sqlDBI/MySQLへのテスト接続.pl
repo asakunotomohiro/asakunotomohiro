@@ -24,9 +24,18 @@ sub main() {
 #say "@INC";
 #	my @databases = DBI->data_sources("mysql");	エラー。
 	my @databases = DBI->data_sources("mysqlPP");
-	foreach my $source ( @databases ) {
+	my $source = 'dbi:mysqlPP:';
+	foreach $source ( @databases ) {
 		say "$source";	# dbi:mysqlPP:
 	}
+
+	my $dbh = DBI->connect(
+			"dbi:mysqlPP:database='';host=local;port=8080:80",
+			"",	# ユーザ名。
+			"1234",	# パスワード。
+			{'RaiseError' => 1},
+		);
+
 #	my @databases = DBI->data_sources("PgPP");	エラー。
 #	my $drh = DBI->install_driver("mysql");
 #	my $dsn = "DBI:mysql:database=$database;host=$hostname;port=$port";

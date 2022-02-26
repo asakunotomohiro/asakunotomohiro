@@ -12067,6 +12067,8 @@ Perl実行でネットワーク接続を許可するか、みたいな・・・�
 #### 利用するデータベースの構築。
 [仮想環境](../仮想環境/README.md)の[Docker](../仮想環境/docker_作業メモなど何でも詰め込む.md)を利用する。  
 
+<details><summary>DockerでのPostgreSQLサーバ起動作業。</summary>
+
 以下、作業手順。
 ```terminal
 $ docker ps --all
@@ -12104,6 +12106,42 @@ $
 DBIドライバを確認するが、Perlからは認識できていなかった。  
 データベースは手動で作成する？  
 しかし、DBIドライバとは関係ないよね。  
+
+</details>
+
+以下、作業手順。
+```terminal
+$ docker ps	←☆起動していない。
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+$ docker run --name mysql20220226 -p 8080:80 -e MYSQL_ROOT_PASSWORD=1234 -v "$HOME/docker作成データ/":/var/lib/postgresql/data -d mysql	←☆ドッカーでのデータベース作成。
+508bf183b95781009985c522f26cd0243cb804e4e0a1bb1fe3af3750e06a207f
+$ docker ps	←☆起動確認。
+CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS                                       NAMES
+508bf183b957   mysql     "docker-entrypoint.s…"   7 seconds ago   Up 6 seconds   3306/tcp, 33060/tcp, 0.0.0.0:8080->80/tcp   mysql20220226
+$
+$ docker exec -it mysql20220226 bash -p
+root@d128841fe79c:/# mysql -u root -p -h 127.0.0.1	←☆このIPアドレスは何？
+Enter password:	←☆1234
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 15
+Server version: 8.0.26 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> ^DBye	 ←☆ctrl+d
+root@d128841fe79c:/# exit
+$
+```
+
+以下、MySQLの起動確認。
+```terminal
+```
 
 
 <a name="practicalusesqlDBIconnectanddisconnectmysqlconnect"></a>
