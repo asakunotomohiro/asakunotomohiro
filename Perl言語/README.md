@@ -11777,7 +11777,7 @@ Whereで使われる演算子。
   * DBIそのもの。  
   * データベース用のドライバ(通称、DBD・(Database Driver)と呼ぶ)。  
     例）**Oracleドライバ**・**mySQLドライバ**・**PostgreSQLドライバ**など。  
-    DBD表現例）**[DBD::Oracle](http://perldoc.jp/docs/modules/DBD-Oracle-1.14/Oracle.pod)**・**[DBD::mysql](https://perldoc.jp/docs/modules/DBD-mysql-2.1026/DBD/mysql.pod)**・**[DBD::Pg](https://perldoc.jp/docs/modules/DBD-Pg-1.22/Pg.pod)**など。  
+    DBD表現例）**[DBD::Oracle](http://perldoc.jp/docs/modules/DBD-Oracle-1.14/Oracle.pod)**・**[DBD::mysql](https://perldoc.jp/docs/modules/DBD-mysql-2.1026/DBD/mysql.pod)**・**[DBD::Pg](https://perldoc.jp/docs/modules/DBD-Pg-1.22/Pg.pod)** など。  
 
 * ハンドルの種類  
   * [ドライバハンドル](#practicalusesqlDBImaindbiprogrammingdriverhandle)  
@@ -12156,8 +12156,8 @@ $
 </details>
 
 
-<a name="practicalusesqlDBIconnectanddisconnectconnect"></a>
-#### 接続テスト。
+<a name="practicalusesqlDBIconnectanddisconnectsqliteconnect"></a>
+#### SQLite接続テスト。
 PerlからMySQLに接続する方法は2種類あるようだ。  
 
 * DBIモジュールのためのデータベースドライバ
@@ -12165,7 +12165,6 @@ PerlからMySQLに接続する方法は2種類あるようだ。
     **DBD::PgPP**
   * [PostgreSQL](https://perldoc.jp/docs/modules/DBD-Pg-1.22/Pg.pod)  
     **DBD::Pg**  
-    `DBI->connect using 'old-style' syntax is deprecated and will be an error in future versions at XXXX.pl line XX.`
   * [SQLite-DBIドライバでの自己完結型(Self Contained)RDBMS](https://perldoc.jp/docs/modules/DBD-SQLite-0.19/SQLite.pod)  
     **DBD::SQLite**
   * [MySQL-Perlだけで構築されたDBIドライバ](https://perldoc.jp/docs/modules/DBD-mysqlPP-0.03/mysqlPP.pod)  
@@ -12460,7 +12459,34 @@ main();
 これは、上記の[データソース名](#practicalusesqlDBIdatasource)での実行を個別指定したプログラムになる。  
 </details>
 
+**DBD::SQLite**は全てのものをディストリビューションに含んでいると言うことは、これ以外で用意するものがないと言うことか。  
+素晴らしいな。  
 
+以下、データベースと言う名のファイルへの接続。
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	my $databasefilename = '../../Perl-sqlDBI作成データ/sqlite.db';
+	my $dbh = DBI->connect(
+			"dbi:SQLite:database=$databasefilename",
+			"",	# ユーザ名。
+			"",	# パスワード。
+			{'RaiseError' => 1},
+		) or die "接続失敗。";
+}
+main();
+```
+これだけで、指定場所に**sqlite.db**ファイルが作られた。  
+で、ユーザ名やパスワード欄が空なまま作られたのだが、これでいいのか？  
+
+以下、上記で接続したデータベースを切断する。
+```perl
+my $rc = $dbh->disconnect() or warn "$dbhからの切断失敗\n";
+```
+SQLiteなので、本当に切断できるのか不安だ。  
+しかし、本来プログラムが終了する直前まで接続するのがCPUを無駄遣いしなくて済むらしいから気にする必要は無いのかもね。
 
 </details>
 
