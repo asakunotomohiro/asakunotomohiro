@@ -11978,7 +11978,7 @@ main();
 
 以下、実行結果。
 ```terminal
-DBM ExampleP File Gofer Mem Proxy Sponge
+DBM ExampleP File Gofer Mem Proxy SQLite Sponge mysqlPP
 DBM
 	データソース：DBI:DBM:f_dir=.
 	データソース：DBI:DBM:f_dir=基礎知識用の勉強
@@ -11994,13 +11994,18 @@ File
 Gofer
 Mem
 Proxy	←☆なぜ項目がない？
+SQLite	←☆なぜ項目がない？
 Sponge
+mysqlPP
+	データソース：dbi:mysqlPP:
 ```
 **ADO**・**CSV**・**XBase**などないのだが、どうなっている？  
 **ODBC**があってほしかった。  
 
 ゆくゆくは、ここにmySQLやPostgreSQLなどが表示されるようになるわけね。  
 どうやって？  
+いまだによく分かっていない。  
+ドライバを別途インストール必須なのは分かったが、ドライバが何なのかが分からない。  
 
 <details><summary>Proxyモジュールのインストール。</summary>
 
@@ -12062,6 +12067,8 @@ Perl実行でネットワーク接続を許可するか、みたいな・・・�
 #### 利用するデータベースの構築。
 [仮想環境](../仮想環境/README.md)の[Docker](../仮想環境/docker_作業メモなど何でも詰め込む.md)を利用する。  
 
+<details><summary>DockerでのPostgreSQLサーバ起動作業。</summary>
+
 以下、作業手順。
 ```terminal
 $ docker ps --all
@@ -12100,10 +12107,58 @@ DBIドライバを確認するが、Perlからは認識できていなかった�
 データベースは手動で作成する？  
 しかし、DBIドライバとは関係ないよね。  
 
+</details>
 
-<a name="practicalusesqlDBIconnectanddisconnectpostgresqlconnect"></a>
-#### PostgreSQL接続テスト。
-PerlからPostgreSQLに接続する方法は2種類あるようだ。  
+<details><summary>DockerでのMySQLサーバ起動作業。</summary>
+
+以下、作業手順。
+```terminal
+$ docker ps	←☆起動していない。
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+$ docker run --name mysql20220226 -p 8080:80 -e MYSQL_ROOT_PASSWORD=1234 -v "$HOME/docker作成データ/":/var/lib/postgresql/data -d mysql	←☆ドッカーでのデータベース作成。
+508bf183b95781009985c522f26cd0243cb804e4e0a1bb1fe3af3750e06a207f
+$ docker ps	←☆起動確認。
+CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS                                       NAMES
+508bf183b957   mysql     "docker-entrypoint.s…"   7 seconds ago   Up 6 seconds   3306/tcp, 33060/tcp, 0.0.0.0:8080->80/tcp   mysql20220226
+$
+```
+
+以下、MySQLの起動確認。
+```terminal
+$ docker exec -it mysql20220226 bash -p
+root@d128841fe79c:/# mysql -u root -p -h 127.0.0.1	←☆このIPアドレスは何？
+Enter password:	←☆1234
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 15
+Server version: 8.0.26 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2021, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> ^DBye	 ←☆ctrl+d
+root@d128841fe79c:/# exit
+$
+```
+
+以下、外部向けのIPアドレスが設定されていない。
+```terminal
+$ docker container inspect --format="{{.NetworkSettings.IPAddress}}" mysql20220226
+
+$
+```
+なぜに何も出てこない？  
+
+</details>
+
+
+<a name="practicalusesqlDBIconnectanddisconnectconnect"></a>
+#### 接続テスト。
+PerlからMySQLに接続する方法は2種類あるようだ。  
 
 * DBIモジュールのためのデータベースドライバ
   * [PostgreSQL-Perlだけで構築されたDBIドライバ](https://perldoc.jp/docs/modules/DBD-PgPP-0.05/PgPP.pod)  
@@ -12122,12 +12177,16 @@ PerlからPostgreSQLに接続する方法は2種類あるようだ。
   * [DB2](https://perldoc.jp/docs/modules/DBD-DB2-0.76/DB2.pod)  
     **DBD::DB2**
 
-これらは、何の話？  
 DBIデータベースドライバ作成として、[DBI::DBD](https://perldoc.jp/docs/modules/DBI-1.612/DBI/DBD.pod)を使ったガイドも付いている。  
 DBIのためのODBCドライバ用の[DBD::ODBC](https://perldoc.jp/docs/modules/DBD-ODBC-1.05/ODBC.pod)がある。  
+これらは、何の話？  
 
+<a name="practicalusesqlDBIconnectanddisconnectpostgresqlconnect"></a>
 <details><summary>PostgreSQL導入失敗。</summary>
 
+ここの項目ボツ。  
+
+#### PostgreSQL接続テスト。
 **DBI->connect**を使った接続が古く、将来は使えなくなるそうだ・・・どういうこと？  
 現在は、非推奨の接続方法のようだ。  
 
@@ -12317,6 +12376,91 @@ $
 まだやることあるのか・・・辛い。  
 
 </details>
+
+<a name="practicalusesqlDBIconnectanddisconnectmysqlconnect"></a>
+<details><summary>MySQL導入失敗。</summary>
+
+ここの項目ボツ。  
+
+#### MySQL接続テスト。
+MySQL用のDBDをインストールしていない場合、接続に失敗する(当たり前)。  
+そのため、以下、導入。
+```terminal
+$ cpanm DBD::mysql
+--> Working on DBD::mysql
+Fetching http://www.cpan.org/authors/id/D/DV/DVEEDEN/DBD-mysql-4.050.tar.gz ... OK
+==> Found dependencies: Devel::CheckLib
+--> Working on Devel::CheckLib
+Fetching http://www.cpan.org/authors/id/M/MA/MATTN/Devel-CheckLib-1.14.tar.gz ... OK
+Configuring Devel-CheckLib-1.14 ... OK
+==> Found dependencies: Mock::Config, Capture::Tiny
+--> Working on Mock::Config
+Fetching http://www.cpan.org/authors/id/R/RU/RURBAN/Mock-Config-0.03.tar.gz ... OK
+Configuring Mock-Config-0.03 ... OK
+Building and testing Mock-Config-0.03 ... OK
+Successfully installed Mock-Config-0.03
+--> Working on Capture::Tiny
+Fetching http://www.cpan.org/authors/id/D/DA/DAGOLDEN/Capture-Tiny-0.48.tar.gz ... OK
+Configuring Capture-Tiny-0.48 ... OK
+Building and testing Capture-Tiny-0.48 ... OK
+Successfully installed Capture-Tiny-0.48
+Building and testing Devel-CheckLib-1.14 ... OK
+Successfully installed Devel-CheckLib-1.14
+Configuring DBD-mysql-4.050 ... N/A
+! Configure failed for DBD-mysql-4.050. See /Users/asakunotomohiro/.cpanm/work/1645802437.3658/build.log for details.
+3 distributions installed
+$
+```
+こちらは[PostgreSQL](#practicalusesqlDBIconnectanddisconnectpostgresqlconnect)と比べてすんなり完了および成功した。  
+よかった。  
+しかし、接続できない状況は変わらず・・・困った。  
+通常であれば、**@INC**に入っているはずなのだが、インストール成功しているのに入っていないと言うこと？  
+Path通しが出来ていない？  
+
+よく分からず、Perlのみで構成されたドライバをインストールした。
+```terminal
+$ cpanm DBD::mysqlPP
+--> Working on DBD::mysqlPP
+Fetching http://www.cpan.org/authors/id/T/TS/TSUCCHI/DBD-mysqlPP-0.07.tar.gz ... OK
+Configuring DBD-mysqlPP-0.07 ... OK
+==> Found dependencies: Net::MySQL
+--> Working on Net::MySQL
+Fetching http://www.cpan.org/authors/id/T/TS/TSUCCHI/Net-MySQL-0.11.tar.gz ... OK
+Configuring Net-MySQL-0.11 ... OK
+==> Found dependencies: Digest::SHA1
+--> Working on Digest::SHA1
+Fetching http://www.cpan.org/authors/id/G/GA/GAAS/Digest-SHA1-2.13.tar.gz ... OK
+Configuring Digest-SHA1-2.13 ... OK
+Building and testing Digest-SHA1-2.13 ... OK
+Successfully installed Digest-SHA1-2.13
+Building and testing Net-MySQL-0.11 ... OK
+Successfully installed Net-MySQL-0.11
+Building and testing DBD-mysqlPP-0.07 ... OK
+Successfully installed DBD-mysqlPP-0.07
+3 distributions installed
+$
+```
+これを導入後、`DBI->data_sources("mysqlPP");`を実行してもエラーが発生しなかった。  
+導入前に試していないのでなんとも言えないが、**mysql**ではだめだった。  
+PostgreSQL用の**Pg**・**PgPP**も駄目だった(ドライバインストールが出来ないのだから当たり前だが)。  
+
+以下、プログラム実行例。
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	my @databases = DBI->data_sources("mysqlPP");
+	foreach my $source ( @databases ) {
+		say "$source";	# dbi:mysqlPP:
+	}
+}
+main();
+```
+これは、上記の[データソース名](#practicalusesqlDBIdatasource)での実行を個別指定したプログラムになる。  
+</details>
+
+
 
 </details>
 
