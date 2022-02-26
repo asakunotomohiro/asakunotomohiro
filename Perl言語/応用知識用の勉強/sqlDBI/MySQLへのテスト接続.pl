@@ -23,21 +23,24 @@ sub main() {
 		#	install_driver(Pg) failed: Can't locate DBD/Pg.pm in @INC (you may need to install the DBD::Pg module) (@INC contains: 〜) at (eval 6) line 3.
 #say "@INC";
 #	my @databases = DBI->data_sources("mysql");	エラー。
-	my @databases = DBI->data_sources("mysqlPP");
-	my $source = 'dbi:mysqlPP:';
-	foreach $source ( @databases ) {
-		say "$source";	# dbi:mysqlPP:
+	#my @databases = DBI->data_sources("mysqlPP");
+	my @databases = DBI->data_sources("SQLite");
+	say "@databases";	# 空文字列(undef)
+	foreach my $source ( @databases ) {
+		say "$source";	#
 	}
 
+	my $databasefilename = '../../Perl-sqlDBI作成データ/sqlite.db';
 	my $dbh = DBI->connect(
 			#"dbi:mysqlPP:database='hoge';host=localhost;port=8080:80",
 			#"dbi:mysqlPP:database='hoge';host=0.0.0.0;port=8080:80",
 			#"dbi:mysqlPP:database='hoge';host=local;port=8080:80",
 			#"dbi:mysqlPP:database='hoge';host=local;port=3306:80",
 			#"dbi:mysqlPP:database='hoge';host=local;port=33060:80",
-			"dbi:mysqlPP:database='hoge';host=mysql20220226;port=8080:80",
-			"root",	# ユーザ名。
-			"1234",	# パスワード。
+			#"dbi:mysqlPP:database='hoge';host=mysql20220226;port=8080:80",
+			"dbi:SQLite:database=$databasefilename",
+			"",	# ユーザ名。
+			"",	# パスワード。
 			{'RaiseError' => 1},
 		);
 

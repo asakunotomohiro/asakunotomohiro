@@ -12156,8 +12156,8 @@ $
 </details>
 
 
-<a name="practicalusesqlDBIconnectanddisconnectconnect"></a>
-#### 接続テスト。
+<a name="practicalusesqlDBIconnectanddisconnectsqliteconnect"></a>
+#### SQLite接続テスト。
 PerlからMySQLに接続する方法は2種類あるようだ。  
 
 * DBIモジュールのためのデータベースドライバ
@@ -12165,7 +12165,6 @@ PerlからMySQLに接続する方法は2種類あるようだ。
     **DBD::PgPP**
   * [PostgreSQL](https://perldoc.jp/docs/modules/DBD-Pg-1.22/Pg.pod)  
     **DBD::Pg**  
-    `DBI->connect using 'old-style' syntax is deprecated and will be an error in future versions at XXXX.pl line XX.`
   * [SQLite-DBIドライバでの自己完結型(Self Contained)RDBMS](https://perldoc.jp/docs/modules/DBD-SQLite-0.19/SQLite.pod)  
     **DBD::SQLite**
   * [MySQL-Perlだけで構築されたDBIドライバ](https://perldoc.jp/docs/modules/DBD-mysqlPP-0.03/mysqlPP.pod)  
@@ -12460,6 +12459,27 @@ main();
 これは、上記の[データソース名](#practicalusesqlDBIdatasource)での実行を個別指定したプログラムになる。  
 </details>
 
+**DBD::SQLite**は全てのものをディストリビューションに含んでいると言うことは、これ以外で用意するものがないと言うことか。  
+素晴らしいな。  
+
+以下、データベースと言う名のファイルへの接続。
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	my $databasefilename = '../../Perl-sqlDBI作成データ/sqlite.db';
+	my $dbh = DBI->connect(
+			"dbi:SQLite:database=$databasefilename",
+			"",	# ユーザ名。
+			"",	# パスワード。
+			{'RaiseError' => 1},
+		);
+}
+main();
+```
+これだけで、指定場所に**sqlite.db**ファイルが作られた。  
+で、ユーザ名やパスワード欄が空なまま作られたのだが、これでいいのか？  
 
 
 </details>
