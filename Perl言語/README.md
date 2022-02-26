@@ -12119,6 +12119,10 @@ $ docker ps	←☆起動確認。
 CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS                                       NAMES
 508bf183b957   mysql     "docker-entrypoint.s…"   7 seconds ago   Up 6 seconds   3306/tcp, 33060/tcp, 0.0.0.0:8080->80/tcp   mysql20220226
 $
+```
+
+以下、MySQLの起動確認。
+```terminal
 $ docker exec -it mysql20220226 bash -p
 root@d128841fe79c:/# mysql -u root -p -h 127.0.0.1	←☆このIPアドレスは何？
 Enter password:	←☆1234
@@ -12139,9 +12143,13 @@ root@d128841fe79c:/# exit
 $
 ```
 
-以下、MySQLの起動確認。
+以下、外部向けのIPアドレスが設定されていない。
 ```terminal
+$ docker container inspect --format="{{.NetworkSettings.IPAddress}}" mysql20220226
+
+$
 ```
+なぜに何も出てこない？  
 
 
 <a name="practicalusesqlDBIconnectanddisconnectmysqlconnect"></a>

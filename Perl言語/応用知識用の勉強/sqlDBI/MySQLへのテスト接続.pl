@@ -30,7 +30,7 @@ sub main() {
 	}
 
 	my $dbh = DBI->connect(
-			"dbi:mysqlPP:database='';host=local;port=8080:80",
+			"dbi:mysqlPP:database='hoge';host=local;port=8080:80",
 			"",	# ユーザ名。
 			"1234",	# パスワード。
 			{'RaiseError' => 1},
