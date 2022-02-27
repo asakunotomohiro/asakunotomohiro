@@ -12387,6 +12387,48 @@ SQLiteなので、本当に切断できるのか不安だ。
 DBIのエラー処理は、例外を用いることで簡単に原因追及できるようになっている。  
 自動メッセージ発行後、**warn()**・**die()**のどちらかを実行する。  
 
+以下、プログラム。
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	# データベース(ファイル)名定義。
+	my $database = '../../Perl-sqlDBI作成データ/sqlite.db';
+
+	my %option = (
+			PrintError => 0,	# 警告レベルメッセージ出力なし。
+			RaiseError => 0,
+		);
+
+	my $dbh1 = DBI->connect(
+			"dbi:SQLite:database=$database",
+			"",	# ユーザ名。
+			"",	# パスワード。
+			\%option,
+		) or die "接続失敗($database)。";
+	$dbh1->{PrintError} = 1;	# 警告レベルの自動エラー報告を有効にする。
+
+	my $sth = $dbh1->prepare('select * from hoge')
+		or die "SQL文の準備失敗。";
+		# DBD::SQLite::db prepare failed: no such table: hoge at エラー処理(SQLite版).pl line 22.	←☆20行目の警告レベル設定を変更していない場合、このメッセージは出力されず、自前で用意したメッセージだけが出る(以下の1行のみ)。
+		# SQL文の準備失敗。 at /Users/asakunotomohiro/Desktop/エラー処理(SQLite版).pl line 22.
+
+	$sth->execute
+		or die "SQL文の実行失敗。";
+
+	#my @selectret = $sth->fetchrow_array();	# セレクト文の結果取得。
+
+	unlink $database or warn "ファイル削除失敗($!)。";	# 上記の処理でプログラムが終了しているため、後始末が行われない。
+	my $rc = $dbh1->disconnect
+			or warn "$databaseからの切断失敗\n";
+	say "$rc";	# 1
+}
+main();
+```
+後始末を行うためにもオブジェクト指向プログラミングが有効なのだろう。  
+今回は、エラーを発生させるために、わざわざ警告レベルメッセージを抑止後、データベースへの接続成功後に有効化した。  
+今回作成した限りでは、接続自体も失敗する可能性があるため、最初から有効にしておくのが良いだろう(当たり前だろうが)。  
 
 </details>
 
