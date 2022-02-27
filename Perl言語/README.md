@@ -12396,9 +12396,9 @@ sub main() {
 	# データベース(ファイル)名定義。
 	my $database = '../../Perl-sqlDBI作成データ/sqlite.db';
 
-	my %option = (
-			PrintError => 0,	# 警告レベルメッセージ出力なし。
-			RaiseError => 0,
+	my %option = (	# 警告レベルメッセージ出力なし。
+			PrintError => 0,	# warn経由でエラー報告無し。
+			RaiseError => 0,	# die経由でエラー報告無し。
 		);
 
 	my $dbh1 = DBI->connect(
@@ -12429,6 +12429,231 @@ main();
 後始末を行うためにもオブジェクト指向プログラミングが有効なのだろう。  
 今回は、エラーを発生させるために、わざわざ警告レベルメッセージを抑止後、データベースへの接続成功後に有効化した。  
 今回作成した限りでは、接続自体も失敗する可能性があるため、最初から有効にしておくのが良いだろう(当たり前だろうが)。  
+
+※基本的に、**PrintError**は、標準で有効化されている。  
+あとは、**RaiseError**を手動で有効化すれば良い。  
+
+* 組み合わせ。
+  * PrintError => X,	# warn経由でエラー報告有無の設定。
+  * RaiseError => X,	# die経由でエラー報告有無の設定。
+  * dir処理あり。  
+
+<details><summary>展開。</summary>
+
+以下、**PrintError(0)**・**RaiseError(0)**
+```perl
+    # 略。
+PrintError => 0,	# warn経由でエラー報告無し。
+RaiseError => 0,	# die経由でエラー報告無し。
+}
+    # 略。
+my $sth = $dbh1->prepare('select * from hoge')
+	or die "SQL文の準備失敗。";
+```
+
+以下、出力結果。
+```terminal
+SQL文の準備失敗。 at XXXX.pl line xx.
+```
+
+以下、**PrintError(1)**・**RaiseError(0)**
+```perl
+PrintError => 1,	# warn経由でエラー報告有り。
+RaiseError => 0,	# die経由でエラー報告無し。
+}
+    # 略。
+my $sth = $dbh1->prepare('select * from hoge')
+	or die "SQL文の準備失敗。";
+```
+
+以下、出力結果。
+```terminal
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+SQL文の準備失敗。 at XXXX.pl line xx.
+```
+
+以下、**PrintError(0)**・**RaiseError(1)**
+```perl
+PrintError => 0,	# warn経由でエラー報告無し。
+RaiseError => 1,	# die経由でエラー報告有り。
+}
+    # 略。
+my $sth = $dbh1->prepare('select * from hoge')
+	or die "SQL文の準備失敗。";
+```
+
+以下、出力結果。
+```terminal
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+```
+
+以下、**PrintError(1)**・**RaiseError(1)**
+```perl
+PrintError => 1,	# warn経由でエラー報告有り。
+RaiseError => 1,	# die経由でエラー報告有り。
+}
+    # 略。
+my $sth = $dbh1->prepare('select * from hoge')
+	or die "SQL文の準備失敗。";
+```
+
+以下、出力結果。
+```terminal
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+```
+両方有効にするのはきついな。  
+
+</details>
+
+* 組み合わせ。
+  * PrintError => X,	# warn経由でエラー報告有無の設定。
+  * RaiseError => X,	# die経由でエラー報告有無の設定。
+  * prepareメソッド実行にdir処理なし。  
+
+<details><summary>展開。</summary>
+
+以下、**PrintError(0)**・**RaiseError(0)**
+```perl
+PrintError => 0,	# warn経由でエラー報告なし。
+RaiseError => 0,	# die経由でエラー報告なし。
+}
+    # 略。
+my $sth = $dbh1->prepare('select * from hoge');	←☆こちらにdieがない。
+$sth->execute
+	or die "SQL文の実行失敗。";
+```
+
+以下、出力結果。
+```terminal
+Can't call method "execute" on an undefined value at XXXX.pl line xx.
+```
+
+以下、**PrintError(0)**・**RaiseError(1)**
+```perl
+PrintError => 0,	# warn経由でエラー報告なし。
+RaiseError => 1,	# die経由でエラー報告有り。
+}
+    # 略。
+my $sth = $dbh1->prepare('select * from hoge');	←☆こちらにdieがない。
+$sth->execute
+	or die "SQL文の実行失敗。";
+```
+
+以下、出力結果。
+```terminal
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+```
+
+以下、**PrintError(1)**・**RaiseError(0)**
+```perl
+PrintError => 1,	# warn経由でエラー報告有り。
+RaiseError => 0,	# die経由でエラー報告なし。
+}
+    # 略。
+my $sth = $dbh1->prepare('select * from hoge');	←☆こちらにdieがない。	←☆こちらにdieがない。
+$sth->execute
+	or die "SQL文の実行失敗。";
+```
+
+以下、出力結果。
+```terminal
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+Can't call method "execute" on an undefined value at XXXX.pl line xx.
+```
+
+以下、**PrintError(1)**・**RaiseError(1)**
+```perl
+PrintError => 1,	# warn経由でエラー報告有り。
+RaiseError => 1,	# die経由でエラー報告有り。
+}
+    # 略。
+my $sth = $dbh1->prepare('select * from hoge');	←☆こちらにdieがない。
+$sth->execute
+	or die "SQL文の実行失敗。";
+```
+
+以下、出力結果。
+```terminal
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+```
+両方有効にするのはきついな。  
+
+</details>
+
+* 組み合わせ。
+  * PrintError => X,	# warn経由でエラー報告有無の設定。
+  * RaiseError => X,	# die経由でエラー報告有無の設定。
+  * どのメソッド実行にもdir処理およびwarn処理なし。  
+
+<details><summary>展開。</summary>
+
+以下、**PrintError(0)**・**RaiseError(0)**
+```perl
+PrintError => 0,	# warn経由でエラー報告なし。
+RaiseError => 0,	# die経由でエラー報告なし。
+}
+    # 略(ここ以降die及びwarnなし)。
+```
+
+以下、出力結果。
+```terminal
+Can't call method "execute" on an undefined value at XXXX.pl line xx.
+```
+
+以下、**PrintError(0)**・**RaiseError(1)**
+```perl
+PrintError => 0,	# warn経由でエラー報告なし。
+RaiseError => 1,	# die経由でエラー報告有り。
+}
+    # 略(ここ以降die及びwarnなし)。
+```
+
+以下、出力結果。
+```terminal
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+```
+
+以下、**PrintError(1)**・**RaiseError(0)**
+```perl
+PrintError => 1,	# warn経由でエラー報告有り。
+RaiseError => 0,	# die経由でエラー報告なし。
+}
+    # 略(ここ以降die及びwarnなし)。
+```
+
+以下、出力結果。
+```terminal
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+Can't call method "execute" on an undefined value at XXXX.pl line xx.
+```
+
+以下、**PrintError(1)**・**RaiseError(1)**
+```perl
+PrintError => 1,	# warn経由でエラー報告有り。
+RaiseError => 1,	# die経由でエラー報告有り。
+}
+    # 略(ここ以降die及びwarnなし)。
+```
+
+以下、出力結果。
+```terminal
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+```
+どんな状況だろうが、両方を有効化している場合は、2つ同じのが出る訳ね。  
+
+</details>
+
+デフォルト値のままでも問題なさそうだな(勉強ならばってことだけど)。  
+PrintError => 1,	# warn経由でエラー報告有り。  
+RaiseError => 0,	# die経由でエラー報告なし。  
+
+ゆくゆくは、デフォルト値を入れ替える。  
+PrintError => 0,	# warn経由でエラー報告なし。  
+RaiseError => 1,	# die経由でエラー報告有り。  
+そして、独自のエラーチェック処理を入れる。  
 
 </details>
 
