@@ -79,19 +79,20 @@ sub dbconnect() {
 			"",	# ユーザ名。
 			"",	# パスワード。
 			\%option,
-		) or die "接続失敗($databasefilename)。";	# 接続失敗した場合も戻り値があるため、接続可否が判断できないように思うぞ。だからdieするのか。
+		) or die "接続失敗($DBI::errstr)。";	# 接続失敗した場合も戻り値があるため、接続可否が判断できないように思うぞ。だからdieするのか。
 	$self->{dbh} = $dbh1;
 	$dbh1->{PrintError} = 1;	# 警告レベルの自動エラー報告を再度有効にする。	←☆現時点で、接続に失敗しているため、ここの処理まで来ない。
 }
 
 sub select() {
+	# このファイルの中で一番やりたい処理がここの関数。
 	my $self = shift;
 
 	my $sth = $self->{dbh}->prepare('select * from hoge')
-		or die "SQL文の準備失敗。";
+		or die "SQL文の準備失敗(" . $self->{dbh}->errstr . ")。";
 
 	$sth->execute
-		or die "SQL文の実行失敗。";
+		or die "SQL文の実行失敗($sth->errstr)。";
 
 	$sth->fetchrow_array();
 }

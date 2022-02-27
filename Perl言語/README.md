@@ -12385,7 +12385,7 @@ SQLiteなので、本当に切断できるのか不安だ。
 <a name="practicalusesqlDBIerrorhandling"></a>
 ### エラー処理
 DBIのエラー処理は、例外を用いることで簡単に原因追及できるようになっている。  
-自動メッセージ発行後、**warn()**・**die()**のどちらかを実行する。  
+自動メッセージ発行後、**warn()**・**die()** のどちらかを実行する。  
 
 以下、プログラム。
 ```perl
@@ -12434,8 +12434,8 @@ main();
 あとは、**RaiseError**を手動で有効化すれば良い。  
 
 * 組み合わせ。
-  * PrintError => X,	# warn経由でエラー報告有無の設定。
-  * RaiseError => X,	# die経由でエラー報告有無の設定。
+  * PrintError => X	←☆warn経由でエラー報告有無の設定。
+  * RaiseError => X	←☆die経由でエラー報告有無の設定。
   * dir処理あり。  
 
 <details><summary>展開。</summary>
@@ -12507,8 +12507,8 @@ DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
 </details>
 
 * 組み合わせ。
-  * PrintError => X,	# warn経由でエラー報告有無の設定。
-  * RaiseError => X,	# die経由でエラー報告有無の設定。
+  * PrintError => X	←☆warn経由でエラー報告有無の設定。
+  * RaiseError => X	←☆die経由でエラー報告有無の設定。
   * prepareメソッド実行にdir処理なし。  
 
 <details><summary>展開。</summary>
@@ -12583,8 +12583,8 @@ DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
 </details>
 
 * 組み合わせ。
-  * PrintError => X,	# warn経由でエラー報告有無の設定。
-  * RaiseError => X,	# die経由でエラー報告有無の設定。
+  * PrintError => X	←☆warn経由でエラー報告有無の設定。
+  * RaiseError => X	←☆die経由でエラー報告有無の設定。
   * どのメソッド実行にもdir処理およびwarn処理なし。  
 
 <details><summary>展開。</summary>
@@ -12647,13 +12647,66 @@ DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
 </details>
 
 デフォルト値のままでも問題なさそうだな(勉強ならばってことだけど)。  
-PrintError => 1,	# warn経由でエラー報告有り。  
-RaiseError => 0,	# die経由でエラー報告なし。  
+PrintError => 1	←☆warn経由でエラー報告有り。  
+RaiseError => 0	←☆die経由でエラー報告なし。  
 
 ゆくゆくは、デフォルト値を入れ替える。  
-PrintError => 0,	# warn経由でエラー報告なし。  
-RaiseError => 1,	# die経由でエラー報告有り。  
+PrintError => 0	←☆warn経由でエラー報告なし。  
+RaiseError => 1	←☆die経由でエラー報告有り。  
 そして、独自のエラーチェック処理を入れる。  
+
+プログラム実行時のエラーで、終了させたくない場合は、両方をOffにし、独自のエラーチェック処理で作業が継続できるようにうまく立ち回れるプログラムにする必要があると言うこと。  
+
+
+<a name="practicalusesqlDBIerrorhandlingdiagnose"></a>
+#### エラー診断
+エラーが出るだけでは心許ない。  
+そのため、詳細な内容は、以下のメソッドで取得できる。  
+
+* エラー診断用メソッド。  
+  このメソッドは、ハンドル変数に利用するもの(connectメソッドの戻り値から利用する・prepareメソッドの戻り値から利用するなど)。  
+  * err  
+    エラー発生に関するエラー番号が返ってくる。  
+    データベース依存になるため、無駄な番号の場合もあり、当てにしない方が良い。  
+  * errstr  
+    上記errで返される番号に紐付いたエラーメッセージが返ってくるため、一応は役に立つようだ。  
+  * state  
+    SQLSTATEの5文字エラー文字列が返ってくるため、あまり役に立たないようだ。  
+
+以下、使用例）
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	# データベース(ファイル)名定義。
+	my $database = './sqlite.db';
+
+	my %option = (	# 警告レベルメッセージ出力なし。
+			PrintError => 0,	# warn経由でエラー報告無し。
+			RaiseError => 0,	# die経由でエラー報告無し。
+		);
+
+	my $dbh1 = DBI->connect(
+			"dbi:SQLite:database=$database",
+			"",	# ユーザ名。
+			"",	# パスワード。
+			\%option,
+		) or die "接続失敗($DBI::errstr)。";	←☆ここ。
+
+	my $sth = $dbh1->prepare('select * from hoge')
+		or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";	←☆ここ。
+		# SQL文の準備失敗(no such table: hoge)。 at エラー処理(SQLite版).pl line 21.
+
+	#$sth->execute	←☆上記でテーブル内容を取得できないため、実行できず、どのようなエラー内容になるか分からない。
+	#	or die "SQL文の実行失敗($sth->errstr)。";	←☆ここ。
+
+	unlink $database or warn "ファイル削除失敗($!)。";
+	$dbh1->disconnect
+			or warn "$databaseからの切断失敗($dbh1->errstr)。";	←☆ここ。
+}
+main();
+```
 
 </details>
 
