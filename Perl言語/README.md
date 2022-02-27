@@ -11696,6 +11696,7 @@ ODBCは仕事で使ったことあるが、DBI(Database Interface)はない。
   * [DBIプログラミング](#practicalusesqlDBImaindbiprogramming)  
   * [データソース名](#practicalusesqlDBIdatasource)  
   * [接続と切断](#practicalusesqlDBIconnectanddisconnect)  
+  * [エラー処理](#practicalusesqlDBIerrorhandling)  
 
 
 <a name="practicalusesqlDBIquerylanguageparlance"></a>
@@ -12356,6 +12357,13 @@ my $rc = $dbh->disconnect() or warn "$dbhからの切断失敗\n";
 ```
 SQLiteなので、本当に切断できるのか不安だ。  
 しかし、本来プログラムが終了する直前まで接続するのがCPUを無駄遣いしなくて済むらしいから気にする必要は無いのかもね。
+
+
+<a name="practicalusesqlDBIerrorhandling"></a>
+### エラー処理
+DBIのエラー処理は、例外を用いることで簡単に原因追及できるようになっている。  
+自動メッセージ発行後、**warn()**・**die()**のどちらかを実行する。  
+
 
 </details>
 
