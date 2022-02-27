@@ -12680,30 +12680,31 @@ use DBI;
 
 sub main() {
 	# データベース(ファイル)名定義。
-	my $database = './sqlite.db';
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+	my $dirname = 'testDBDir';
+	my $database = "./$dirname/sqlite.db";
+	mkdir $dirname, 0555 or warn "ディレクトリ($dirname)作成失敗($!)。";
+	#say "ディレクトリ作成失敗($!)。" if( -d $dirname );
 
 	my %option = (	# 警告レベルメッセージ出力なし。
 			PrintError => 0,	# warn経由でエラー報告無し。
 			RaiseError => 0,	# die経由でエラー報告無し。
 		);
 
-	my $dbh1 = DBI->connect(
+	my $dbh1 = DBI->connect(	←☆ここ。
 			"dbi:SQLite:database=$database",
 			"",	# ユーザ名。
 			"",	# パスワード。
 			\%option,
-		) or die "接続失敗($DBI::errstr)。";	←☆ここ。
+		) or die "接続失敗(" . $DBI::errstr . ")。";	←☆ここ。
+		# 接続失敗(unable to open database file)。 at エラー処理(SQLite版).pl line 17.	←☆これ。
 
-	my $sth = $dbh1->prepare('select * from hoge')
-		or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";	←☆ここ。
-		# SQL文の準備失敗(no such table: hoge)。 at エラー処理(SQLite版).pl line 21.	←☆これ。
-
-	#$sth->execute
-	#	or die "SQL文の実行失敗($sth->errstr)。";
-
-	unlink $database or warn "ファイル削除失敗($!)。";
-	$dbh1->disconnect
-			or warn "$databaseからの切断失敗($dbh1->errstr)。";	←☆ここ。
+	my $rc = $dbh1->disconnect
+			or warn "$databaseからの切断失敗(" . $dbh1->errstr . ")。";
+	say "$rc";	# 1
+	#unlink $database or warn "ファイル削除失敗($!)。";	←☆そもそもファイルが作られない(権限が無いため)。
+	rmdir $dirname or warn "ディレクトリ削除失敗($!)。";
+	#say "ディレクトリ削除失敗($!)。" if( -d $dirname );	# ディレクトリが存在すると言うこと。
 }
 main();
 ```
@@ -12728,7 +12729,7 @@ sub main() {
 			"",	# ユーザ名。
 			"",	# パスワード。
 			\%option,
-		) or die "接続失敗($DBI::errstr)。";
+		) or die "接続失敗(" . $DBI::errstr . ")。";
 
 	my $sth = $dbh1->prepare('create table hoge( boo INTEGER, bar varchar(20) )')
 		or die "テーブル作成の準備失敗(" . $dbh1->errstr . ")。";

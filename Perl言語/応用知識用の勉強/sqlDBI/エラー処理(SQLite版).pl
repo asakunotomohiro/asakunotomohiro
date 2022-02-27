@@ -33,7 +33,7 @@ sub new() {
 	mkdir $dirname, 0755 or warn "ディレクトリ($dirname)作成失敗($!)。";
 
 	if( -d $dirname ) {
-		say "ディレクトリ作成成功。";
+		say "ディレクトリ作成成功。";	# ディレクトリがある。
 	}
 	else{
 		say "ディレクトリ作成失敗。";
@@ -52,7 +52,7 @@ sub DESTROY() {
 	unlink $self->{database} or warn "ファイル削除失敗($!)。";
 	rmdir $self->{dirname} or warn "ディレクトリ削除失敗($!)。";
 	if( -d $self->{dirname} ) {
-		say "ディレクトリ削除失敗。";
+		say "ディレクトリ削除失敗。";	# ディレクトリが存在する。
 	}
 	else{
 		say "ディレクトリ削除済み。";
