@@ -13572,6 +13572,19 @@ sub guiPlace() {
 
 エラーをトラップする処理として、evalブロックを使う。  
 
+以下、プログラム例）
+```perl
+use v5.24;
+
+sub funcEval() {
+	#say 5/0;	Illegal division by zero at eval.pl line 4.
+	my $hoge = eval{
+		say 20220228/0;	# 何も出力されない。
+	};
+	say "<$hoge>";	# <>	←☆例外発生により、空文字列(undef)になっている(正常の場合は1)。
+}
+&funcEval();
+```
 
 </details>
 
