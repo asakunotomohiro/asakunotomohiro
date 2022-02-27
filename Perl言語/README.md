@@ -12696,16 +12696,79 @@ sub main() {
 
 	my $sth = $dbh1->prepare('select * from hoge')
 		or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";	←☆ここ。
-		# SQL文の準備失敗(no such table: hoge)。 at エラー処理(SQLite版).pl line 21.
+		# SQL文の準備失敗(no such table: hoge)。 at エラー処理(SQLite版).pl line 21.	←☆これ。
 
-	#$sth->execute	←☆上記でテーブル内容を取得できないため、実行できず、どのようなエラー内容になるか分からない。
-	#	or die "SQL文の実行失敗($sth->errstr)。";	←☆ここ。
+	#$sth->execute
+	#	or die "SQL文の実行失敗($sth->errstr)。";
 
 	unlink $database or warn "ファイル削除失敗($!)。";
 	$dbh1->disconnect
 			or warn "$databaseからの切断失敗($dbh1->errstr)。";	←☆ここ。
 }
 main();
+```
+
+<details><summary>正常に動くプログラム。</summary>
+
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	# データベース(ファイル)名定義。
+	my $database = './sqlite.db';
+
+	my %option = (	# 警告レベルメッセージ出力なし。
+			PrintError => 0,	# warn経由でエラー報告無し。
+			RaiseError => 0,	# die経由でエラー報告無し。
+		);
+
+	my $dbh1 = DBI->connect(
+			"dbi:SQLite:database=$database",
+			"",	# ユーザ名。
+			"",	# パスワード。
+			\%option,
+		) or die "接続失敗($DBI::errstr)。";
+
+	my $sth = $dbh1->prepare('create table hoge( boo INTEGER, bar varchar(20) )')
+		or die "テーブル作成の準備失敗(" . $dbh1->errstr . ")。";
+	$sth->execute
+		or die "テーブル作成失敗(" . $sth->errstr . ")。";
+
+	my $sth = $dbh1->prepare('insert into hoge (boo, bar) values (?, ?);')
+		or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+	$sth->execute('ほげ', 'ぼげぇ〜')
+		or die "SQL文の実行失敗(" . $sth->errstr . ")。";
+
+	my $sth = $dbh1->prepare('select * from hoge')
+		or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+	$sth->execute
+		or die "SQL文の実行失敗(" . $sth->errstr . ")。";
+
+	my @table = $sth->fetchrow_array();
+	say "テーブル内容：@table";	# ほげ ぼげぇ〜
+
+	my $rc = $dbh1->disconnect
+			or warn "$databaseからの切断失敗(" . $dbh1->errstr . ")。";
+			# DBI::db=HASH(0x7f86fc964878)->disconnect invalidates 1 active statement handle (either destroy statement handles or call finish on them before disconnecting) at エラー処理(SQLite版).pl line 38.
+	say "$rc";	# 1
+	unlink $database or warn "ファイル削除失敗($!)。";
+}
+main();
+```
+正常に動きはするが、切断するときに、意図しないエラーが発生した。  
+まだ、どこかでつかんでいるようなのだが、そこを切り離すことが出来なかった(select文作成後に実行した処理が原因のはず)。  
+
+</details>
+
+
+**$sth->errstr**の出力用プログラム(上記からプログラム抜粋)。
+```perl
+my $sth = $dbh1->prepare('insert into hoge (boo, bar) values (?, ?);')
+	or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+$sth->execute('ほげ')
+	or die "SQL文の実行失敗(" . $sth->errstr . ")。";	←☆ここ。
+	# SQL文の実行失敗(called with 1 bind variables when 2 are needed)。 at エラー処理(SQLite版).pl line 27.	←☆これ。
 ```
 
 </details>
