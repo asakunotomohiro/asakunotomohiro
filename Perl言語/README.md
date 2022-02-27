@@ -11696,6 +11696,7 @@ ODBCは仕事で使ったことあるが、DBI(Database Interface)はない。
   * [DBIプログラミング](#practicalusesqlDBImaindbiprogramming)  
   * [データソース名](#practicalusesqlDBIdatasource)  
   * [接続と切断](#practicalusesqlDBIconnectanddisconnect)  
+    * [SQLiteの特徴](#practicalusesqlDBIconnectanddisconnectsqliteconnectfeature)  
   * [エラー処理](#practicalusesqlDBIerrorhandling)  
 
 
@@ -12357,6 +12358,28 @@ my $rc = $dbh->disconnect() or warn "$dbhからの切断失敗\n";
 ```
 SQLiteなので、本当に切断できるのか不安だ。  
 しかし、本来プログラムが終了する直前まで接続するのがCPUを無駄遣いしなくて済むらしいから気にする必要は無いのかもね。
+
+<a name="practicalusesqlDBIconnectanddisconnectsqliteconnectfeature"></a>
+※ファイルへの書き込みをデータベースとしているため、ユーザ権限という概念が存在しない。  
+また、以下にSQLiteの特徴を挙げる。  
+
+* SQLiteでできること。  
+  SQLコマンドはSQL92に準拠している。  
+  * テーブル  
+  * ビュー  
+  * インデックス  
+  * トランザクション  
+  * トリガーの一部  
+  * 主キー・外部キーなどのフィールド制約  
+  * 自動番号付与  
+
+* SQLiteでできないこと。  
+  * トリガーの一部機能  
+  * フィールドの追加以外のAlter Tableコマンド  
+  * 右外部結合及び完全外部結合  
+    ※外部結合(OuterJoin)および和集合演算(Union)などはできる。  
+  * ビューへの書き込み  
+  * GrantおよびRevokeコマンド  
 
 
 <a name="practicalusesqlDBIerrorhandling"></a>
