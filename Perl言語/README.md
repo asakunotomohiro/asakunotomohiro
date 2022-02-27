@@ -11694,7 +11694,8 @@ ODBCは仕事で使ったことあるが、DBI(Database Interface)はない。
     * [比較演算子](#practicalusesqlDBIcomparisonoperator)  
     * [論理演算子](#practicalusesqlDBIlogicaloperator)  
   * [DBIプログラミング](#practicalusesqlDBImaindbiprogramming)  
-  * [データソース名](#practicalusesqlDBImaindatasource)  
+  * [データソース名](#practicalusesqlDBIdatasource)  
+  * [接続と切断](#practicalusesqlDBIconnectanddisconnect)  
 
 
 <a name="practicalusesqlDBIquerylanguageparlance"></a>
@@ -11776,7 +11777,7 @@ Whereで使われる演算子。
   * DBIそのもの。  
   * データベース用のドライバ(通称、DBD・(Database Driver)と呼ぶ)。  
     例）**Oracleドライバ**・**mySQLドライバ**・**PostgreSQLドライバ**など。  
-    DBD表現例）**[DBD::Oracle](http://perldoc.jp/docs/modules/DBD-Oracle-1.14/Oracle.pod)**・**[DBD::mysql](https://perldoc.jp/docs/modules/DBD-mysql-2.1026/DBD/mysql.pod)**・**[DBD::Pg](https://perldoc.jp/docs/modules/DBD-Pg-1.22/Pg.pod)**など。  
+    DBD表現例）**[DBD::Oracle](http://perldoc.jp/docs/modules/DBD-Oracle-1.14/Oracle.pod)**・**[DBD::mysql](https://perldoc.jp/docs/modules/DBD-mysql-2.1026/DBD/mysql.pod)**・**[DBD::Pg](https://perldoc.jp/docs/modules/DBD-Pg-1.22/Pg.pod)** など。  
 
 * ハンドルの種類  
   * [ドライバハンドル](#practicalusesqlDBImaindbiprogrammingdriverhandle)  
@@ -11817,7 +11818,7 @@ DBIからインスタンス生成したオブジェクトのこと。
 ※データベースハンドルの子に相当する。  
 
 
-<a name="practicalusesqlDBImaindatasource"></a>
+<a name="practicalusesqlDBIdatasource"></a>
 ### データソース名
 **dbi::ドライバ名**にて、データベースに接続する。  
 以下、端末で利用できるドライバ名の一覧取得。  
@@ -11853,10 +11854,6 @@ Enter 'h' for help.
 cpan[1]> install DBI
 Reading '.cpan/Metadata'
   Database was generated on Sat, 15 Jan 2022 03:55:46 GMT
-Fetching with HTTP::Tiny:
-https://cpan.org/authors/01mailrc.txt.gz
-HTTP::Tiny failed with an internal error: IO::Socket::SSL 1.42 must be installed for https support
-Net::SSLeay 1.49 must be installed for https support
 　　　・
 　　　・
 　　　・
@@ -11873,14 +11870,6 @@ $
 $ brew install ssl*
 Warning: You are using macOS 10.14.
 We (and Apple) do not provide support for this old version.
-You will encounter build failures with some formulae.
-Please create pull requests instead of asking for help on Homebrew's GitHub,
-Twitter or any other official channels. You are responsible for resolving
-any issues you experience while you are running this
-old version.
-
-==> Downloading https://www.openssl.org/source/openssl-1.1.1m.tar.gz
-Already downloaded: Library/Caches/Homebrew/downloads/1fe651091c8b3c36a2f89a1bc970c0d3167db729f9ad9d8bde7b149d5f343c41--openssl-1.1.1m.tar.gz
 　　　・
 　　　・
 　　　・
@@ -11900,15 +11889,7 @@ Enter 'h' for help.
 
 cpan[1]> install DBI
 Reading '.cpan/Metadata'
-  Database was generated on Sat, 15 Jan 2022 03:55:46 GMT
-Running install for module 'DBI'
-Fetching with HTTP::Tiny:
-https://cpan.org/authors/id/T/TI/TIMB/DBI-1.643.tar.gz
-HTTP::Tiny failed with an internal error: IO::Socket::SSL 1.42 must be installed for https support
-Net::SSLeay 1.49 must be installed for https support
-
-Giving up on '.cpan/sources/authors/id/T/TI/TIMB/DBI-1.643.tar.gz'
-Note: Current database in memory was generated on Sat, 15 Jan 2022 03:55:46 GMT
+　　　・・・
 
 cpan[2]> q
 Lockfile removed.
@@ -11921,22 +11902,6 @@ $ brew install cpanm
 Warning: You are using macOS 10.14.
 We (and Apple) do not provide support for this old version.
 You will encounter build failures with some formulae.
-Please create pull requests instead of asking for help on Homebrew's GitHub,
-Twitter or any other official channels. You are responsible for resolving
-any issues you experience while you are running this
-old version.
-
-==> Downloading https://ghcr.io/v2/homebrew/core/cpanminus/manifests/1.9019
-######################################################################## 100.0%
-==> Downloading https://ghcr.io/v2/homebrew/core/cpanminus/blobs/sha256:6a9b5bde63d8c5860788c67470c9dffcfe12036d38e331ad4c5028455ad
-==> Downloading from https://pkg-containers.githubusercontent.com/ghcr1/blobs/sha256:6a9b5bde63d8c5860788c67470c9dffcfe12036d38e331
-######################################################################## 100.0%
-==> Pouring cpanminus--1.9019.mojave.bottle.tar.gz
-🍺  /usr/local/Cellar/cpanminus/1.9019: 4 files, 561.0KB
-==> `brew cleanup` has not been run in the last 30 days, running now...
-Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.
-Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
-Removing: Library/Caches/Homebrew/automake--1.16.5... (970.6KB)
 　　　・
 　　　・
 　　　・
@@ -11977,7 +11942,7 @@ main();
 
 以下、実行結果。
 ```terminal
-DBM ExampleP File Gofer Mem Proxy Sponge
+DBM ExampleP File Gofer Mem Proxy SQLite Sponge mysqlPP
 DBM
 	データソース：DBI:DBM:f_dir=.
 	データソース：DBI:DBM:f_dir=基礎知識用の勉強
@@ -11993,13 +11958,18 @@ File
 Gofer
 Mem
 Proxy	←☆なぜ項目がない？
+SQLite	←☆なぜ項目がない？
 Sponge
+mysqlPP
+	データソース：dbi:mysqlPP:
 ```
 **ADO**・**CSV**・**XBase**などないのだが、どうなっている？  
 **ODBC**があってほしかった。  
 
 ゆくゆくは、ここにmySQLやPostgreSQLなどが表示されるようになるわけね。  
 どうやって？  
+いまだによく分かっていない。  
+ドライバを別途インストール必須なのは分かったが、ドライバが何なのかが分からない。  
 
 <details><summary>Proxyモジュールのインストール。</summary>
 
@@ -12019,14 +11989,9 @@ Perhaps a module that DBD::Proxy requires hasn't been fully installed
 $ cpanm RPC::PlClient
 --> Working on RPC::PlClient
 Fetching http://www.cpan.org/authors/id/M/MN/MNOONING/PlRPC/PlRPC-0.2020.tar.gz ... OK
-Configuring PlRPC-0.2018 ... OK
-==> Found dependencies: Net::Daemon
---> Working on Net::Daemon
-Fetching http://www.cpan.org/authors/id/T/TO/TODDR/Net-Daemon-0.49.tar.gz ... OK
-Configuring Net-Daemon-0.49 ... OK
-Building and testing Net-Daemon-0.49 ... OK
-Successfully installed Net-Daemon-0.49
-Building and testing PlRPC-0.2020 ... OK
+　　　・
+　　　・
+　　　・
 Successfully installed PlRPC-0.2020
 2 distributions installed
 $
@@ -12035,6 +12000,362 @@ $
 Perl実行でネットワーク接続を許可するか、みたいな・・・許可したが、よかったか？  
 
 </details>
+
+
+<a name="practicalusesqlDBIconnectanddisconnect"></a>
+### 接続と切断
+接続様式：
+`$dbh = DBI->connect( データソース名, ユーザ名, パスワード, オプション, );`  
+具体例）
+`$dbh = DBI->connect( $data_source, $username, $password, \%attr );`  
+
+切断様式：
+`$rc = $dbh->disconnect();`  
+
+
+* データベース利用時の必要情報。  
+  * データソース名  
+  * ユーザ名  
+  * パスワード
+
+* オプション  
+  * DBIで自動エラー処理の提供。  
+
+
+<a name="practicalusesqlDBIconnectanddisconnectpostgres"></a>
+#### 利用するデータベースの構築。
+[仮想環境](../仮想環境/README.md)の[Docker](../仮想環境/docker_作業メモなど何でも詰め込む.md)を利用する。  
+
+<details><summary>DockerでのPostgreSQLサーバ起動作業。</summary>
+
+以下、作業手順。
+```terminal
+$ docker ps --all
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+$ docker run -dit --name postgres20220225 -p 8080:80 -e POSTGRES_PASSWORD=1234 -v "$HOME/docker作成データ/":/var/lib/postgresql/data postgres	←☆ドッカーでのデータベース作成。
+b3cf3c81b383bceeee7ff8a50469b07bd00fcd75f5c467a2d5c467ded6b90337
+$ docker ps	←☆起動成功。
+CONTAINER ID   IMAGE      COMMAND                  CREATED         STATUS         PORTS                            NAMES
+b3cf3c81b383   postgres   "docker-entrypoint.s…"   9 seconds ago   Up 8 seconds   5432/tcp, 0.0.0.0:8080->80/tcp   postgres20220225
+$
+```
+※パスワード設定は必須。  
+
+以下、PostgreSQLの起動確認。
+```terminal
+$ docker exec -it postgres20220225 psql -U postgres
+psql (14.0 (Debian 14.0-1.pgdg110+1))
+Type "help" for help.
+
+postgres=# \l	←☆バックスラッシュに小文字のL字。
+                                 List of databases	←☆既存のデータベースが確認できる。
+   Name    |  Owner   | Encoding |  Collate   |   Ctype    |   Access privileges
+-----------+----------+----------+------------+------------+-----------------------
+ postgres  | postgres | UTF8     | en_US.utf8 | en_US.utf8 | 
+ template0 | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres          +
+           |          |          |            |            | postgres=CTc/postgres
+ template1 | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres          +
+           |          |          |            |            | postgres=CTc/postgres
+(3 rows)
+
+postgres=#	←☆Ctrl+dで抜け出る。
+\q
+$
+```
+DBIドライバを確認するが、Perlからは認識できていなかった。  
+データベースは手動で作成する？  
+しかし、DBIドライバとは関係ないよね。  
+
+</details>
+
+<details><summary>DockerでのMySQLサーバ起動作業。</summary>
+
+以下、作業手順。
+```terminal
+$ docker ps	←☆起動していない。
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+$ docker run --name mysql20220226 -p 8080:80 -e MYSQL_ROOT_PASSWORD=1234 -v "$HOME/docker作成データ/":/var/lib/postgresql/data -d mysql	←☆ドッカーでのデータベース作成。
+508bf183b95781009985c522f26cd0243cb804e4e0a1bb1fe3af3750e06a207f
+$ docker ps	←☆起動確認。
+CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS                                       NAMES
+508bf183b957   mysql     "docker-entrypoint.s…"   7 seconds ago   Up 6 seconds   3306/tcp, 33060/tcp, 0.0.0.0:8080->80/tcp   mysql20220226
+$
+```
+
+以下、MySQLの起動確認。
+```terminal
+$ docker exec -it mysql20220226 bash -p
+root@d128841fe79c:/# mysql -u root -p -h 127.0.0.1	←☆このIPアドレスは何？
+Enter password:	←☆1234
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+　　　・・・
+
+mysql> ^DBye	 ←☆ctrl+d
+root@d128841fe79c:/# exit
+$
+```
+
+以下、外部向けのIPアドレスが設定されていない。
+```terminal
+$ docker container inspect --format="{{.NetworkSettings.IPAddress}}" mysql20220226
+
+$
+```
+なぜに何も出てこない？  
+
+</details>
+
+
+<a name="practicalusesqlDBIconnectanddisconnectsqliteconnect"></a>
+#### SQLite接続テスト。
+PerlからMySQLに接続する方法は2種類あるようだ。  
+
+* DBIモジュールのためのデータベースドライバ
+  * [PostgreSQL-Perlだけで構築されたDBIドライバ](https://perldoc.jp/docs/modules/DBD-PgPP-0.05/PgPP.pod)  
+    **DBD::PgPP**
+  * [PostgreSQL](https://perldoc.jp/docs/modules/DBD-Pg-1.22/Pg.pod)  
+    **DBD::Pg**  
+  * [SQLite-DBIドライバでの自己完結型(Self Contained)RDBMS](https://perldoc.jp/docs/modules/DBD-SQLite-0.19/SQLite.pod)  
+    **DBD::SQLite**
+  * [MySQL-Perlだけで構築されたDBIドライバ](https://perldoc.jp/docs/modules/DBD-mysqlPP-0.03/mysqlPP.pod)  
+    **DBD::mysqlPP**
+  * [MySQL](https://perldoc.jp/docs/modules/DBD-mysql-2.1026/DBD/mysql.pod)  
+    **DBD::mysql**  
+  * [Oracle](http://perldoc.jp/docs/modules/DBD-Oracle-1.14/Oracle.pod)  
+    **DBD::Oracle**  
+  * [DB2](https://perldoc.jp/docs/modules/DBD-DB2-0.76/DB2.pod)  
+    **DBD::DB2**
+
+DBIデータベースドライバ作成として、[DBI::DBD](https://perldoc.jp/docs/modules/DBI-1.612/DBI/DBD.pod)を使ったガイドも付いている。  
+DBIのためのODBCドライバ用の[DBD::ODBC](https://perldoc.jp/docs/modules/DBD-ODBC-1.05/ODBC.pod)がある。  
+これらは、何の話？  
+
+<a name="practicalusesqlDBIconnectanddisconnectpostgresqlconnect"></a>
+<details><summary>PostgreSQL導入失敗。</summary>
+
+ここの項目ボツ。  
+
+#### PostgreSQL接続テスト。
+**DBI->connect**を使った接続が古く、将来は使えなくなるそうだ・・・どういうこと？  
+現在は、非推奨の接続方法のようだ。  
+
+PostgreSQL用のDBIドライバをどのように導入すればいい？
+```terminal
+$ cpanm DBD::Pg	←☆なぜ失敗する？
+--> Working on DBD::Pg
+Fetching http://www.cpan.org/authors/id/T/TU/TURNSTEP/DBD-Pg-3.15.1.tar.gz ... OK
+Configuring DBD-Pg-3.15.1 ... N/A
+! No MYMETA file is found after configure. Your toolchain is too old?
+! Configure failed for DBD-Pg-3.15.1. See .cpanm/work/1645789457.89632/build.log for details.
+$
+$ cat .cpanm/work/1645789457.89632/build.log
+cpanm (App::cpanminus) 1.9018 on perl 5.034000 built for darwin-2level
+Work directory is .cpanm/work/1645789457.89632
+You have make /usr/bin/make
+　　　・
+　　　・
+　　　・
+Path to pg_config?
+No POSTGRES_HOME defined, cannot find automatically
+Configuring DBD::Pg 3.15.1
+-> N/A
+-> FAIL No MYMETA file is found after configure. Your toolchain is too old?	←☆古い？どうやって新しくする？
+-> FAIL Configure failed for DBD-Pg-3.15.1. See .cpanm/work/1645789457.89632/build.log for details.
+$
+$ cpanm IO::Socket
+--> Working on IO::Socket
+Fetching http://www.cpan.org/authors/id/T/TO/TODDR/IO-1.48.tar.gz ... OK
+Configuring IO-1.48 ... OK
+Building and testing IO-1.48 ... OK
+Successfully installed IO-1.48 (upgraded from 1.46)
+1 distribution installed
+$ perl -MDBI -e’print $DBI::VERSION’ ; echo
+Unrecognized character \xE2; marked by <-- HERE after <-- HERE near column 1 at -e line 1.
+
+$ perl -MDBD::Pg -e’print $DBD::Pg::VERSION’ ; echo
+Can't locate DBD/Pg.pm in @INC (you may need to install the DBD::Pg module) (@INC contains: 〜).
+BEGIN failed--compilation aborted.
+
+$
+```
+解決方法が全く分からない。  
+
+何をやっている？
+```terminal
+$ cpanm DBD::SQLite
+--> Working on DBD::SQLite
+Fetching http://www.cpan.org/authors/id/I/IS/ISHIGAKI/DBD-SQLite-1.70.tar.gz ... OK
+Configuring DBD-SQLite-1.70 ... OK
+Building and testing DBD-SQLite-1.70 ... OK
+Successfully installed DBD-SQLite-1.70
+1 distribution installed
+$
+```
+欲しくないドライバがインストールできたぞ。  
+
+解決法方法が全く分からない。  
+しかたないため、Makefileからインストールをしようとしたが、ここでもこける。  
+```terminal
+$ perl Makefile.PL
+Configuring DBD::Pg 3.15.1
+Path to pg_config?
+No POSTGRES_HOME defined, cannot find automatically
+$ export POSTGRES_HOME=/usr/local/pgsql
+$ export POSTGRES_DATA='$HOME/docker作成データ/'
+$ export POSTGRES_INCLUDE=/usr/local/pgsql/include
+$ export POSTGRES_LIB=/usr/local/pgsql/lib
+$ perl Makefile.PL
+Configuring DBD::Pg 3.15.1
+Path to pg_config?
+PostgreSQL version: 0 (default port: 0)
+　　　・
+　　　・
+　　　・
+==> Searching for a previously deleted formula (in the last month)...
+Error: No previously deleted formula found.
+==> Searching taps on GitHub...
+Error: No formulae found in taps.
+$
+```
+前回と同じになった。  
+
+ゆえに、本物をインストールした。
+```terminal
+$ brew install postgresql
+Warning: You are using macOS 10.14.
+We (and Apple) do not provide support for this old version.
+　　　・
+　　　・
+　　　・
+  brew services restart postgresql
+Or, if you don't want/need a background service you can just run:
+  /usr/local/opt/postgresql/bin/postgres -D /usr/local/var/postgres
+$
+```
+あぁこれをしてしまっては、私の完全なる敗北だ。  
+
+さらに敗北感を味わうのは、何の意味も成さなかったこと。
+```terminal
+$ cpanm DBD::Pg
+--> Working on DBD::Pg
+Fetching http://www.cpan.org/authors/id/T/TU/TURNSTEP/DBD-Pg-3.15.1.tar.gz ... OK
+　　　・
+　　　・
+　　　・
+Searching DBD::Pg () on cpanmetadb ...
+--> Working on DBD::Pg
+Fetching http://www.cpan.org/authors/id/T/TU/TURNSTEP/DBD-Pg-3.15.1.tar.gz
+-> OK
+Unpacking DBD-Pg-3.15.1.tar.gz
+　　　・
+　　　・
+　　　・
+Writing Makefile for DBD::Pg
+Writing MYMETA.yml and MYMETA.json
+-> OK
+　　　・
+　　　・
+　　　・
+# Adjusted:                   initdb
+# Error was: Unix-domain socket path ".cpanm/work/1645798310.2394/DBD-Pg-3.15.1/dbdpg_test_database/data/socket/.s.PGSQL.5440" is too long (maximum 103 bytes) at t/dbdpg_test_setup.pl line 608.
+Bailout called.  Further testing stopped:  Cannot continue: connection failed
+FAILED--Further testing stopped: Cannot continue: connection failed
+make: *** [test_dynamic] Error 255
+-> FAIL Installing DBD::Pg failed. See .cpanm/work/1645798310.2394/build.log for details. Retry with --force to force install it.
+$
+```
+まだやることあるのか・・・辛い。  
+
+</details>
+
+<a name="practicalusesqlDBIconnectanddisconnectmysqlconnect"></a>
+<details><summary>MySQL導入失敗。</summary>
+
+ここの項目ボツ。  
+
+#### MySQL接続テスト。
+MySQL用のDBDをインストールしていない場合、接続に失敗する(当たり前)。  
+そのため、以下、導入。
+```terminal
+$ cpanm DBD::mysql
+--> Working on DBD::mysql
+Fetching http://www.cpan.org/authors/id/D/DV/DVEEDEN/DBD-mysql-4.050.tar.gz ... OK
+　　　・
+　　　・
+　　　・
+Successfully installed Devel-CheckLib-1.14
+Configuring DBD-mysql-4.050 ... N/A
+! Configure failed for DBD-mysql-4.050. See /Users/asakunotomohiro/.cpanm/work/1645802437.3658/build.log for details.
+3 distributions installed
+$
+```
+こちらは[PostgreSQL](#practicalusesqlDBIconnectanddisconnectpostgresqlconnect)と比べてすんなり完了および成功した。  
+よかった。  
+しかし、接続できない状況は変わらず・・・困った。  
+通常であれば、**@INC**に入っているはずなのだが、インストール成功しているのに入っていないと言うこと？  
+Path通しが出来ていない？  
+
+よく分からず、Perlのみで構成されたドライバをインストールした。
+```terminal
+$ cpanm DBD::mysqlPP
+--> Working on DBD::mysqlPP
+Fetching http://www.cpan.org/authors/id/T/TS/TSUCCHI/DBD-mysqlPP-0.07.tar.gz ... OK
+　　　・
+　　　・
+　　　・
+Building and testing DBD-mysqlPP-0.07 ... OK
+Successfully installed DBD-mysqlPP-0.07
+3 distributions installed
+$
+```
+これを導入後、`DBI->data_sources("mysqlPP");`を実行してもエラーが発生しなかった。  
+導入前に試していないのでなんとも言えないが、**mysql**ではだめだった。  
+PostgreSQL用の**Pg**・**PgPP**も駄目だった(ドライバインストールが出来ないのだから当たり前だが)。  
+
+以下、プログラム実行例。
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	my @databases = DBI->data_sources("mysqlPP");
+	foreach my $source ( @databases ) {
+		say "$source";	# dbi:mysqlPP:
+	}
+}
+main();
+```
+これは、上記の[データソース名](#practicalusesqlDBIdatasource)での実行を個別指定したプログラムになる。  
+</details>
+
+**DBD::SQLite**は全てのものをディストリビューションに含んでいると言うことは、これ以外で用意するものがないと言うことか。  
+素晴らしいな。  
+
+以下、データベースと言う名のファイルへの接続。
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	my $databasefilename = '../../Perl-sqlDBI作成データ/sqlite.db';
+	my $dbh = DBI->connect(
+			"dbi:SQLite:database=$databasefilename",
+			"",	# ユーザ名。
+			"",	# パスワード。
+			{'RaiseError' => 1},
+		) or die "接続失敗。";
+}
+main();
+```
+これだけで、指定場所に**sqlite.db**ファイルが作られた。  
+で、ユーザ名やパスワード欄が空なまま作られたのだが、これでいいのか？  
+
+以下、上記で接続したデータベースを切断する。
+```perl
+my $rc = $dbh->disconnect() or warn "$dbhからの切断失敗\n";
+```
+SQLiteなので、本当に切断できるのか不安だ。  
+しかし、本来プログラムが終了する直前まで接続するのがCPUを無駄遣いしなくて済むらしいから気にする必要は無いのかもね。
 
 </details>
 
