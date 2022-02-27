@@ -233,6 +233,7 @@ $
     * [x] [switch(given-when)](#practicaluseGivenwhen)  
   * [x] [パッケージ](#practicalusePackages)  
   * [ ] [GUI/Tk](#practicaluseGUIPerlTk)  
+  * [ ] [eval(例外処理)](#practicaluseevalexceptionhandling)  
 
 </details>
 
@@ -13562,6 +13563,14 @@ sub guiPlace() {
 
 <a name="practicaluseTkgeometrymanagementplacemethod"></a>
 ##### ジオメトリマネージャPlaceのメソッド
+
+
+</details>
+
+<a name="practicaluseevalexceptionhandling"></a>
+<details><summary>応用知識-eval(例外処理)</summary>
+
+エラーをトラップする処理として、evalブロックを使う。  
 
 
 </details>
