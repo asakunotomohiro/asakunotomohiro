@@ -12761,6 +12761,12 @@ main();
 
 </details>
 
+**$dbh1->errstr**の出力用プログラム(上記からプログラム抜粋)。
+```perl
+my $sth = $dbh1->prepare('create table hoge')
+	or die "テーブル作成の準備失敗(" . $dbh1->errstr . ")。";
+	# テーブル作成の準備失敗(incomplete input)。 at エラー処理(SQLite版).pl line 20.
+```
 
 **$sth->errstr**の出力用プログラム(上記からプログラム抜粋)。
 ```perl
