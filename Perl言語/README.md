@@ -13105,6 +13105,9 @@ sqlite trace: rc = 0 at dbdimp.c line 737
   * neat\_list()  
     スカラー値のリストに作用する。  
 
+文字列がクォートされるが、数字やundefはクォートされない。  
+また、第2引数に文字数を指定するが、それはクォート文字も含んでの数字になる。  
+
 <a name="practicalusesqlDBIutilitymethodandfunctionplasticsurgeryneat"></a>
 以下、neat()の実行。
 ```perl
@@ -13137,6 +13140,7 @@ sub main() {
 }
 main();
 ```
+内部で、neatを呼び出しているようだ(本当に？)。  
 
 </details>
 
