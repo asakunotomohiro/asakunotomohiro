@@ -11698,6 +11698,7 @@ ODBCは仕事で使ったことあるが、DBI(Database Interface)はない。
   * [接続と切断](#practicalusesqlDBIconnectanddisconnect)  
     * [SQLiteの特徴](#practicalusesqlDBIconnectanddisconnectsqliteconnectfeature)  
   * [エラー処理](#practicalusesqlDBIerrorhandling)  
+  * [ユーティリティメソッドと関数](#practicalusesqlDBIutilitymethodandfunction)  
 
 
 <a name="practicalusesqlDBIquerylanguageparlance"></a>
@@ -12784,6 +12785,18 @@ $sth->execute('ほげ')
 	or die "SQL文の実行失敗(" . $sth->errstr . ")。";	←☆ここ。
 	# SQL文の実行失敗(called with 1 bind variables when 2 are needed)。 at エラー処理(SQLite版).pl line 27.	←☆これ。
 ```
+
+
+<a name="practicalusesqlDBIutilitymethodandfunction"></a>
+### ユーティリティメソッドと関数
+今後のデータベース処理に対して有用なメソッドなどがある。  
+
+* 有用メソッド例）  
+  * クォートメソッド。  
+  * DBI動作追跡。  
+  * 文字列整形。  
+  * 数値テスト。  
+
 
 </details>
 
