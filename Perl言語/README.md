@@ -12413,7 +12413,7 @@ sub main() {
 	my $sth = $dbh1->prepare('select * from hoge')
 		or die "SQL文の準備失敗。";
 		# DBD::SQLite::db prepare failed: no such table: hoge at エラー処理(SQLite版).pl line 22.	←☆20行目の警告レベル設定を変更していない場合、このメッセージは出力されず、自前で用意したメッセージだけが出る(以下の1行のみ)。
-		# SQL文の準備失敗。 at /Users/asakunotomohiro/Desktop/エラー処理(SQLite版).pl line 22.
+		# SQL文の準備失敗。 at エラー処理(SQLite版).pl line 22.
 
 	$sth->execute
 		or die "SQL文の実行失敗。";
@@ -12694,12 +12694,12 @@ sub main() {
 
 	my $dbh1 = '接続用';
 	my $err = eval{
-		$dbh1 = DBI->connect(#	←☆ここ。
+		$dbh1 = DBI->connect(	←☆ここ。
 			"dbi:SQLite:database=$database",
 			"",	# ユーザ名。
 			"",	# パスワード。
 			\%option,
-		) or die "接続失敗(" . $DBI::errstr . ")。";#	←☆ここ。
+		) or die "接続失敗(" . $DBI::errstr . ")。";	←☆ここ。
 	};
 	print "DBI->connect失敗：$@";	# DBI->connect失敗：接続失敗(unable to open database file)。 at XXXX.pl line 19.	←☆これ。
 
@@ -12793,7 +12793,7 @@ $sth->execute('ほげ')
 
 * 有用メソッド例）  
   * [クォートメソッド。](#practicalusesqlDBIutilitymethodandfunctionquote)  
-  * DBI動作追跡。  
+  * [DBI動作追跡。](#practicalusesqlDBIutilitymethodandfunctiondbitracking)  
   * 文字列整形。  
   * 数値テスト。  
 
@@ -12804,10 +12804,295 @@ $sth->execute('ほげ')
 これは、エスケープ処理などは、データベースに依存するため、必要メソッドに渡すだけでそれらを行ってくれる優れた機能。  
 様式：
 `$dbh->quote( $string );`  
-この**$string**に、**I don't want to die**などがあり、シングルクォートをエスケープしてくれるというわけ。  
+この **$string** に、**I don't want to die**などがあり、シングルクォートをエスケープしてくれるというわけ。  
 
 todo:
 データベースにデータを入れてから挙動を確認すること。  
+
+
+<a name="practicalusesqlDBIutilitymethodandfunctiondbitracking"></a>
+#### DBI動作追跡
+様式：
+`DBI->trace()`  
+
+出力内容は、
+**->** から始まる行ならば、メソッドに入ることを示す。  
+**<-** から始まる行ならば、メソッドから戻ることを示す。  
+また、出力の先頭は半角スペース4分が付与されている。  
+
+|追跡水準|意味|
+|:------:|----|
+|0|追跡無効。|
+|[1](#practicalusesqlDBIutilitymethodandfunctiondbitrackingone)|戻り値とエラーを示しながらDBIメソッドの実行を追跡する。|
+|[2](#practicalusesqlDBIutilitymethodandfunctiondbitrackingtwo)|1に加え、出力先を指定する。|
+|[3](#practicalusesqlDBIutilitymethodandfunctiondbitrackingthree)|2に加え、より内部的なドライバの追跡情報も示す。|
+|[4](#practicalusesqlDBIutilitymethodandfunctiondbitrackingfour)|今まで以上に役立つ詳細な内容を示す。|
+
+上記とは別に、環境変数での設定も可能になっている。  
+環境変数名：**DBI\_TRACE**  
+
+|設定値|設定効果|
+|:----:|--------|
+|1|DBI-\>trace(1);|
+|ログファイル名|DBI-\>trace(2, ログファイル名);|
+|4=ログファイル名|DBI-\>trace(4, ログファイル名);|
+※ログファイル名だけの指定ならば、水準2として動く。  
+
+ちなみに、DBIの部分は、各変数名(**$dbh**・**$sth**など)でも対応可能。  
+例）
+`$dbh->trace(2);`  
+
+
+<a name="practicalusesqlDBIutilitymethodandfunctiondbitrackingone"></a>
+##### 水準1
+何もないより、あったほうがログを出している感が得られる内容(重複表現か？)。  
+
+<details><summary>使用プログラム。</summary>
+
+以下のプログラムを他の水準でも使う。  
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	my $permissions = "0755";	# このままでは10進数と解釈される(8進数に置き換え必須)。
+	my $dirname = 'testDBDir';
+	mkdir $dirname, 0755 or warn "ディレクトリ($dirname)作成失敗($!)。";
+	my $database = "./$dirname/sqlite.db";
+
+	my %option = (	# 警告レベルメッセージ出力なし。
+			PrintError => 0,	# warn経由でエラー報告無し。
+			RaiseError => 0,	# die経由でエラー報告無し。
+		);
+
+	my $dbh1 = '接続用';
+	DBI->trace(1);	# 今回重要な処理。
+	my $err = eval{
+		$dbh1 = DBI->connect(
+			"dbi:SQLite:database=$database",
+			"",	# ユーザ名。
+			"",	# パスワード。
+			\%option,
+		) or die "接続失敗(" . $DBI::errstr . ")。";
+	};
+	print "DBI->connect失敗：$@" if $@;
+
+	my $rc = '切断用';
+	$err = eval{
+		$rc = $dbh1->disconnect
+			or warn "$databaseからの切断失敗(" . $dbh1->errstr . ")。";
+	};
+	print "$err切断失敗-$@" if $@;
+	unlink $database or warn "データベースファイル削除失敗($!)。";
+	rmdir $dirname or warn "ディレクトリ削除失敗($!)。";
+}
+main();
+```
+
+</details>
+
+<details><summary>出力結果。</summary>
+
+```terminal
+    DBI 1.643-nothread default trace level set to 0x0/1 (pid 87223 pi 0) at DBI動作追跡処理(SQLite版).pl line 16 via DBI動作追跡処理(SQLite版).pl line 36
+    -> DBI->connect(dbi:SQLite:database=./testDBDir/sqlite.db, , ****, HASH(0x7fea7d13e218))
+    -> DBI->install_driver(SQLite) for darwin perl=5.034000 pid=87223 ruid=501 euid=501
+       install_driver: DBD::SQLite version 1.70 loaded from perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBD/SQLite.pm
+    <- install_driver= DBI::dr=HASH(0x7fea7d2e9380)
+    <- connect('database=./testDBDir/sqlite.db', '', ...)= ( DBI::db=HASH(0x7fea7d29a770) ) [1 items] at DBI.pm line 679
+    <- STORE('RaiseError', 0)= ( 1 ) [1 items] at DBI.pm line 731
+    <- STORE('PrintError', 0)= ( 1 ) [1 items] at DBI.pm line 731
+    <- STORE('AutoCommit', 1)= ( 1 ) [1 items] at DBI.pm line 731
+    <- STORE('Username', '')= ( 1 ) [1 items] at DBI.pm line 734
+    <- connected('dbi:SQLite:database=./testDBDir/sqlite.db', '', ...)= ( undef ) [1 items] at DBI.pm line 741
+    <- connect= DBI::db=HASH(0x7fea7d29a770)
+    <- STORE('dbi_connect_closure', CODE(0x7fea7d01c230))= ( 1 ) [1 items] at DBI.pm line 750
+sqlite trace: Closing DB at dbdimp.c line 735
+sqlite trace: rc = 0 at dbdimp.c line 737
+    <- disconnect= ( 1 ) [1 items] at DBI動作追跡処理(SQLite版).pl line 29
+    <- DESTROY(DBI::db=HASH(0x7fea7d29a6c8))= ( undef ) [1 items] at DBI動作追跡処理(SQLite版).pl line 34
+    <- disconnect_all= ( '' ) [1 items] at DBI.pm line 758
+!   <- DESTROY(DBI::dr=HASH(0x7fea7d2e9380))= ( undef ) [1 items] during global destruction
+```
+
+</details>
+
+水準2に比べ、メソッドに入る処理(**->**)が隠れたままになっていること。  
+
+
+<a name="practicalusesqlDBIutilitymethodandfunctiondbitrackingtwo"></a>
+##### 水準2
+プログラムは、上記水準1を使い、引数部分を変更するだけ。  
+`DBI->trace(2, undef);`  
+undefにすることで、出力先をSTDERRにしている。  
+ファイル名を設定した場合は、そのファイルに書き出す。  
+
+<details><summary>出力結果。</summary>
+
+```terminal
+    DBI 1.643-nothread default trace level set to 0x0/2 (pid 87454 pi 0) at DBI動作追跡処理(SQLite版).pl line 16 via DBI動作追跡処理(SQLite版).pl line 36
+    -> DBI->connect(dbi:SQLite:database=./testDBDir/sqlite.db, , ****, HASH(0x7ff90a061a18))
+    -> DBI->install_driver(SQLite) for darwin perl=5.034000 pid=87454 ruid=501 euid=501
+       install_driver: DBD::SQLite version 1.70 loaded from perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBD/SQLite.pm
+    <- install_driver= DBI::dr=HASH(0x7ff90b1d9b80)
+    -> connect for DBD::SQLite::dr (DBI::dr=HASH(0x7ff90b1d9b80)~0x7ff90b1da7b0 'database=./testDBDir/sqlite.db' '' **** HASH(0x7ff90a073ef8))
+    <- connect= ( DBI::db=HASH(0x7ff90b18c7b8) ) [1 items] at DBI.pm line 679
+    -> STORE for DBD::SQLite::db (DBI::db=HASH(0x7ff90b18c710)~INNER 'RaiseError' 0)
+    <- STORE= ( 1 ) [1 items] at DBI.pm line 731
+    -> STORE for DBD::SQLite::db (DBI::db=HASH(0x7ff90b18c710)~INNER 'PrintError' 0)
+    <- STORE= ( 1 ) [1 items] at DBI.pm line 731
+    -> STORE for DBD::SQLite::db (DBI::db=HASH(0x7ff90b18c710)~INNER 'AutoCommit' 1)
+    <- STORE= ( 1 ) [1 items] at DBI.pm line 731
+    -> STORE for DBD::SQLite::db (DBI::db=HASH(0x7ff90b18c710)~INNER 'Username' '')
+    <- STORE= ( 1 ) [1 items] at DBI.pm line 734
+    -> connected in DBD::_::db for DBD::SQLite::db (DBI::db=HASH(0x7ff90b18c7b8)~0x7ff90b18c710 'dbi:SQLite:database=./testDBDir/sqlite.db' '' **** HASH(0x7ff90a061a18))
+    <- connected= ( undef ) [1 items] at DBI.pm line 741
+    <- connect= DBI::db=HASH(0x7ff90b18c7b8)
+    -> STORE for DBD::SQLite::db (DBI::db=HASH(0x7ff90b18c710)~INNER 'dbi_connect_closure' CODE(0x7ff909805430))
+    <- STORE= ( 1 ) [1 items] at DBI.pm line 750
+    -> disconnect for DBD::SQLite::db (DBI::db=HASH(0x7ff90b18c7b8)~0x7ff90b18c710)
+sqlite trace: Closing DB at dbdimp.c line 735
+sqlite trace: rc = 0 at dbdimp.c line 737
+    <- disconnect= ( 1 ) [1 items] at DBI動作追跡処理(SQLite版).pl line 29
+    -> DESTROY for DBD::SQLite::db (DBI::db=HASH(0x7ff90b18c710)~INNER)
+    <- DESTROY= ( undef ) [1 items] at DBI動作追跡処理(SQLite版).pl line 34
+    -- DBI::END ($@: , $!: )
+    -> disconnect_all for DBD::SQLite::dr (DBI::dr=HASH(0x7ff90b1d9b80)~0x7ff90b1da7b0)
+    <- disconnect_all= ( '' ) [1 items] at DBI.pm line 758
+!   -> DESTROY in DBD::_::common for DBD::SQLite::dr (DBI::dr=HASH(0x7ff90b1da7b0)~INNER)
+!   <- DESTROY= ( undef ) [1 items] during global destruction
+```
+
+</details>
+
+水準1に比べて、出力量が増えた。  
+倍になった？  
+
+
+<a name="practicalusesqlDBIutilitymethodandfunctiondbitrackingthree"></a>
+##### 水準3
+プログラムは、上記水準1を使い、引数部分を変更するだけ。  
+`DBI->trace(3, undef);`  
+undefにすることで、出力先をSTDERRにしている。  
+ファイル名を設定した場合は、そのファイルに書き出す。  
+
+<details><summary>出力結果。</summary>
+
+```terminal
+    DBI 1.643-nothread default trace level set to 0x0/3 (pid 87580 pi 0) at DBI動作追跡処理(SQLite版).pl line 16 via DBI動作追跡処理(SQLite版).pl line 36
+    -> DBI->connect(dbi:SQLite:database=./testDBDir/sqlite.db, , ****, HASH(0x7fdc15126618))
+    -> DBI->install_driver(SQLite) for darwin perl=5.034000 pid=87580 ruid=501 euid=501
+       install_driver: DBD::SQLite version 1.70 loaded from perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBD/SQLite.pm
+    <- install_driver= DBI::dr=HASH(0x7fdc152d1f80)
+    -> connect for DBD::SQLite::dr (DBI::dr=HASH(0x7fdc152d1f80)~0x7fdc152d2bb0 'database=./testDBDir/sqlite.db' '' **** HASH(0x7fdc15137af8))
+sqlite trace: login './testDBDir/sqlite.db' (version 3.36.0) at dbdimp.c line 485
+    <- sqlite_collation_needed= ( undef ) [1 items] at SQLite.pm line 141 via  at DBI動作追跡処理(SQLite版).pl line 18
+    <- sqlite_create_function= ( 1 ) [1 items] at SQLite.pm line 142 via  at DBI動作追跡処理(SQLite版).pl line 18
+    <- sqlite_register_fts3_perl_tokenizer= ( 0 ) [1 items] at SQLite.pm line 143 via  at DBI動作追跡処理(SQLite版).pl line 18
+    <- connect= ( DBI::db=HASH(0x7fdc152833b8) ) [1 items] at DBI.pm line 679 via  at DBI動作追跡処理(SQLite版).pl line 17
+    -> STORE for DBD::SQLite::db (DBI::db=HASH(0x7fdc15283310)~INNER 'RaiseError' 0)
+    STORE DBI::db=HASH(0x7fdc15283310) 'RaiseError' => 0
+    <- STORE= ( 1 ) [1 items] at DBI.pm line 731 via  at DBI動作追跡処理(SQLite版).pl line 17
+    -> STORE for DBD::SQLite::db (DBI::db=HASH(0x7fdc15283310)~INNER 'PrintError' 0)
+    STORE DBI::db=HASH(0x7fdc15283310) 'PrintError' => 0
+    <- STORE= ( 1 ) [1 items] at DBI.pm line 731 via  at DBI動作追跡処理(SQLite版).pl line 17
+    -> STORE for DBD::SQLite::db (DBI::db=HASH(0x7fdc15283310)~INNER 'AutoCommit' 1)
+    <- STORE= ( 1 ) [1 items] at DBI.pm line 731 via  at DBI動作追跡処理(SQLite版).pl line 17
+    -> STORE for DBD::SQLite::db (DBI::db=HASH(0x7fdc15283310)~INNER 'Username' '')
+    STORE DBI::db=HASH(0x7fdc15283310) 'Username' => ''
+    <- STORE= ( 1 ) [1 items] at DBI.pm line 734 via  at DBI動作追跡処理(SQLite版).pl line 18
+    -> connected in DBD::_::db for DBD::SQLite::db (DBI::db=HASH(0x7fdc152833b8)~0x7fdc15283310 'dbi:SQLite:database=./testDBDir/sqlite.db' '' **** HASH(0x7fdc15126618))
+    <- connected= ( undef ) [1 items] at DBI.pm line 741 via  at DBI動作追跡処理(SQLite版).pl line 17
+    <- connect= DBI::db=HASH(0x7fdc152833b8)
+    -> STORE for DBD::SQLite::db (DBI::db=HASH(0x7fdc15283310)~INNER 'dbi_connect_closure' CODE(0x7fdc150053b8))
+    STORE DBI::db=HASH(0x7fdc15283310) 'dbi_connect_closure' => CODE(0x7fdc150053b8)
+    <- STORE= ( 1 ) [1 items] at DBI.pm line 750 via  at DBI動作追跡処理(SQLite版).pl line 18
+    -> disconnect for DBD::SQLite::db (DBI::db=HASH(0x7fdc152833b8)~0x7fdc15283310)
+sqlite trace: Closing DB at dbdimp.c line 735
+sqlite trace: rc = 0 at dbdimp.c line 737
+    <- disconnect= ( 1 ) [1 items] at DBI動作追跡処理(SQLite版).pl line 29 via  at DBI動作追跡処理(SQLite版).pl line 28
+    <> DESTROY(DBI::db=HASH(0x7fdc152833b8)) ignored for outer handle (inner DBI::db=HASH(0x7fdc15283310) has ref cnt 1)
+    -> DESTROY for DBD::SQLite::db (DBI::db=HASH(0x7fdc15283310)~INNER)
+    <- DESTROY= ( undef ) [1 items] at DBI動作追跡処理(SQLite版).pl line 34 via  at DBI動作追跡処理(SQLite版).pl line 34
+    -- DBI::END ($@: , $!: )
+    -> disconnect_all for DBD::SQLite::dr (DBI::dr=HASH(0x7fdc152d1f80)~0x7fdc152d2bb0)
+    <- disconnect_all= ( '' ) [1 items] at DBI.pm line 758 via  at DBI動作追跡処理(SQLite版).pl line 0
+!   -> DESTROY in DBD::_::common for DBD::SQLite::dr (DBI::dr=HASH(0x7fdc152d2bb0)~INNER)
+!   <- DESTROY= ( undef ) [1 items] during global destruction
+!   <> DESTROY for DBI::dr=HASH(0x7fdc152d1f80) ignored (inner handle gone)
+```
+
+</details>
+
+水準2の情報に加えて、より内部的なドライバ情報まで含まれている。  
+多い。  
+
+
+<a name="practicalusesqlDBIutilitymethodandfunctiondbitrackingfour"></a>
+##### 水準4
+プログラムは、上記水準1を使い、引数部分を変更するだけ。  
+`DBI->trace(4, undef);`  
+undefにすることで、出力先をSTDERRにしている。  
+ファイル名を設定した場合は、そのファイルに書き出す。  
+
+<details><summary>出力結果。</summary>
+
+```terminal
+    DBI 1.643-nothread default trace level set to 0x0/4 (pid 87767 pi 0) at DBI動作追跡処理(SQLite版).pl line 16 via DBI動作追跡処理(SQLite版).pl line 36
+    -> DBI->connect(dbi:SQLite:database=./testDBDir/sqlite.db, , ****, HASH(0x7fb93893e218))
+    -> DBI->install_driver(SQLite) for darwin perl=5.034000 pid=87767 ruid=501 euid=501
+       install_driver: DBD::SQLite version 1.70 loaded from perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBD/SQLite.pm
+    <- install_driver= DBI::dr=HASH(0x7fb938ae9380)
+    -> connect for DBD::SQLite::dr (DBI::dr=HASH(0x7fb938ae9380)~0x7fb938ae9fb0 'database=./testDBDir/sqlite.db' '' **** HASH(0x7fb93894f6f8))
+sqlite trace: login './testDBDir/sqlite.db' (version 3.36.0) at dbdimp.c line 485
+    -> sqlite_collation_needed for DBD::SQLite::db (DBI::db=HASH(0x7fb938a9a7b8)~0x7fb938a9a710 CODE(0x7fb938a6b118))
+    <- sqlite_collation_needed= ( undef ) [1 items] at perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBD/SQLite.pm line 141 via  at DBI動作追跡処理(SQLite版).pl line 18
+    -> sqlite_create_function for DBD::SQLite::db (DBI::db=HASH(0x7fb938a9a7b8)~0x7fb938a9a710 'REGEXP' 2 CODE(0x7fb938a6b250))
+    <- sqlite_create_function= ( 1 ) [1 items] at perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBD/SQLite.pm line 142 via  at DBI動作追跡処理(SQLite版).pl line 18
+    -> sqlite_register_fts3_perl_tokenizer for DBD::SQLite::db (DBI::db=HASH(0x7fb938a9a7b8)~0x7fb938a9a710)
+    <- sqlite_register_fts3_perl_tokenizer= ( 0 ) [1 items] at perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBD/SQLite.pm line 143 via  at DBI動作追跡処理(SQLite版).pl line 18
+    <- connect= ( DBI::db=HASH(0x7fb938a9a7b8) ) [1 items] at perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBI.pm line 679 via  at DBI動作追跡処理(SQLite版).pl line 17
+    -> STORE for DBD::SQLite::db (DBI::db=HASH(0x7fb938a9a710)~INNER 'RaiseError' 0)
+    STORE DBI::db=HASH(0x7fb938a9a710) 'RaiseError' => 0
+    <- STORE= ( 1 ) [1 items] at perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBI.pm line 731 via  at DBI動作追跡処理(SQLite版).pl line 17
+    -> STORE for DBD::SQLite::db (DBI::db=HASH(0x7fb938a9a710)~INNER 'PrintError' 0)
+    STORE DBI::db=HASH(0x7fb938a9a710) 'PrintError' => 0
+    <- STORE= ( 1 ) [1 items] at perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBI.pm line 731 via  at DBI動作追跡処理(SQLite版).pl line 17
+    -> STORE for DBD::SQLite::db (DBI::db=HASH(0x7fb938a9a710)~INNER 'AutoCommit' 1)
+    <- STORE= ( 1 ) [1 items] at perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBI.pm line 731 via  at DBI動作追跡処理(SQLite版).pl line 17
+    -> STORE for DBD::SQLite::db (DBI::db=HASH(0x7fb938a9a710)~INNER 'Username' '')
+    STORE DBI::db=HASH(0x7fb938a9a710) 'Username' => ''
+    <- STORE= ( 1 ) [1 items] at perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBI.pm line 734 via  at DBI動作追跡処理(SQLite版).pl line 18
+    -> connected in DBD::_::db for DBD::SQLite::db (DBI::db=HASH(0x7fb938a9a7b8)~0x7fb938a9a710 'dbi:SQLite:database=./testDBDir/sqlite.db' '' **** HASH(0x7fb93893e218))
+    <- connected= ( undef ) [1 items] at perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBI.pm line 741 via  at DBI動作追跡処理(SQLite版).pl line 17
+    <- connect= DBI::db=HASH(0x7fb938a9a7b8)
+    -> STORE for DBD::SQLite::db (DBI::db=HASH(0x7fb938a9a710)~INNER 'dbi_connect_closure' CODE(0x7fb93881c1b8))
+    STORE DBI::db=HASH(0x7fb938a9a710) 'dbi_connect_closure' => CODE(0x7fb93881c1b8)
+    <- STORE= ( 1 ) [1 items] at perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBI.pm line 750 via  at DBI動作追跡処理(SQLite版).pl line 18
+    -> disconnect for DBD::SQLite::db (DBI::db=HASH(0x7fb938a9a7b8)~0x7fb938a9a710)
+sqlite trace: Closing DB at dbdimp.c line 735
+sqlite trace: rc = 0 at dbdimp.c line 737
+    <- disconnect= ( 1 ) [1 items] at DBI動作追跡処理(SQLite版).pl line 29 via  at DBI動作追跡処理(SQLite版).pl line 28
+    <> DESTROY(DBI::db=HASH(0x7fb938a9a7b8)) ignored for outer handle (inner DBI::db=HASH(0x7fb938a9a710) has ref cnt 1)
+    -> DESTROY for DBD::SQLite::db (DBI::db=HASH(0x7fb938a9a710)~INNER)
+    <- DESTROY= ( undef ) [1 items] at DBI動作追跡処理(SQLite版).pl line 34 via  at DBI動作追跡処理(SQLite版).pl line 34
+    dbih_clearcom 0x7fb938a9a710 (com 0x7fb938464cb0, type 2) done.
+
+    -- DBI::END ($@: , $!: )
+    -> disconnect_all for DBD::SQLite::dr (DBI::dr=HASH(0x7fb938ae9380)~0x7fb938ae9fb0)
+    <- disconnect_all= ( '' ) [1 items] at perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBI.pm line 758 via  at DBI動作追跡処理(SQLite版).pl line 0
+!   -> DESTROY in DBD::_::common for DBD::SQLite::dr (DBI::dr=HASH(0x7fb938ae9fb0)~INNER)
+!   <- DESTROY= ( undef ) [1 items] during global destruction
+    dbih_clearcom 0x7fb938ae9380 (com 0x7fb9384cd560, type 1) done.
+
+!   <> DESTROY for DBI::dr=HASH(0x7fb938ae9380) ignored (inner handle gone)
+```
+
+</details>
+
+さらに役立つ詳細内容が出力されるのは理解した・・・していない。  
+これが役立つ情報なのか全く判断できない。  
+それほど莫大な量に翻弄されていると言うこと。  
 
 </details>
 
