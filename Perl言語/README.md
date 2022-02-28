@@ -13640,6 +13640,23 @@ sub funcEval() {
 &funcEval();
 ```
 
+以下、本格エラートラップ。
+```perl
+use v5.24;
+
+sub funcEval() {
+	my $hoge = eval{
+		my $boo = '20220228';
+		die '本日は快晴なり。' if $boo == 20220228;	←☆ここでdieする。
+		say '以上。';	←☆ここは出力されない(ここまで処理が走らない)。
+	} // 'エラー発生';
+	if( $@ =~ /快晴/ ) {
+		print "$@";	# 本日は快晴なり。 at dieとの組み合わせ.pl line 6.
+	}
+}
+&funcEval();
+```
+
 </details>
 
 
