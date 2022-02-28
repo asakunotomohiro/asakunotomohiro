@@ -11699,6 +11699,7 @@ ODBCは仕事で使ったことあるが、DBI(Database Interface)はない。
     * [SQLiteの特徴](#practicalusesqlDBIconnectanddisconnectsqliteconnectfeature)  
   * [エラー処理](#practicalusesqlDBIerrorhandling)  
   * [ユーティリティメソッドと関数](#practicalusesqlDBIutilitymethodandfunction)  
+  * [簡単な問い合わせの発行](#practicalusesqlDBissuingsimpleinquiry)  
 
 
 <a name="practicalusesqlDBIquerylanguageparlance"></a>
@@ -12757,16 +12758,16 @@ sub main() {
 	my @table = $sth->fetchrow_array();
 	say "テーブル内容：@table";	# ほげ ぼげぇ〜
 
+	$sth->finish();	# 強制的にフェッチを切断した(切断しない場合、下記のエラーが発生する)。
+			# DBI::db=HASH(0x7f86fc964878)->disconnect invalidates 1 active statement handle (either destroy statement handles or call finish on them before disconnecting) at XXXX.pl line xx.
 	my $rc = $dbh1->disconnect
 			or warn "$databaseからの切断失敗(" . $dbh1->errstr . ")。";
-			# DBI::db=HASH(0x7f86fc964878)->disconnect invalidates 1 active statement handle (either destroy statement handles or call finish on them before disconnecting) at エラー処理(SQLite版).pl line 38.
 	say "$rc";	# 1
 	unlink $database or warn "ファイル削除失敗($!)。";
 }
-main();
+&main();
 ```
-正常に動きはするが、切断するときに、意図しないエラーが発生した。  
-まだ、どこかでつかんでいるようなのだが、そこを切り離すことが出来なかった(select文作成後に実行した処理が原因のはず)。  
+本来であれば、取得したデータを使う必要があるのだろうが、今回は強制切断により、接続を中止した。  
 
 </details>
 
@@ -13190,6 +13191,24 @@ sub main() {
 main();
 ```
 内部で、neatを呼び出しているようだ(本当に？)。  
+
+
+<a name="practicalusesqlDBissuingsimpleinquiry"></a>
+### 簡単な問い合わせの発行
+DBIを使ってデータベースからデータを取り出すことは、次の4つの段階を繰り返す。  
+
+* データ取り出し。  
+  1. 準備段階(prepare)では、SQL文を解析し、有効化したステートメントハンドル(例：$sth)を取得する。  
+     `my $sth = $dbh->prepare('select * Table;');`  
+  1. そのステートメントハンドルが正常な場合、それを使い、SQL文を実行する段階。  
+     `$sth->execute();`
+  1. SQL文の実行後、フェッチ(fetch)段階として、ステートメントハンドルを使い、結果を取得する。  
+     `my @table = $sth->fetchrow_array();`  
+     全データのフェッチにより、終了する(何が終了するの？)。  
+     途中で終了する場合は、**finish()**メソッドを使う。
+     後からフェッチを再開する場合は、**execute()**をする必要があるとのこと(2つ目の手順)。  
+  1. ステートメントハンドルなどを切断する段階。  
+
 
 </details>
 
