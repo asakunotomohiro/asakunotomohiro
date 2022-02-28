@@ -12794,7 +12794,7 @@ $sth->execute('ほげ')
 * 有用メソッド例）  
   * [クォートメソッド。](#practicalusesqlDBIutilitymethodandfunctionquote)  
   * [DBI動作追跡。](#practicalusesqlDBIutilitymethodandfunctiondbitracking)  
-  * 文字列整形。  
+  * [文字列整形。](#practicalusesqlDBIutilitymethodandfunctionplasticsurgery)  
   * 数値テスト。  
 
 
@@ -13093,6 +13093,18 @@ sqlite trace: rc = 0 at dbdimp.c line 737
 さらに役立つ詳細内容が出力されるのは理解した・・・していない。  
 これが役立つ情報なのか全く判断できない。  
 それほど莫大な量に翻弄されていると言うこと。  
+
+
+<a name="practicalusesqlDBIutilitymethodandfunctionplasticsurgery"></a>
+#### 文字列整形
+人間が見やすい形式に整えるメソッド。  
+
+* 種類。  
+  * neat()  
+    単一スカラー値に作用する。  
+  * neat_list()  
+    スカラー値のリストに作用する。  
+
 
 </details>
 
