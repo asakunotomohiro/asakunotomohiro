@@ -13105,6 +13105,22 @@ sqlite trace: rc = 0 at dbdimp.c line 737
   * neat_list()  
     スカラー値のリストに作用する。  
 
+<a name="practicalusesqlDBIutilitymethodandfunctionplasticsurgeryneat"></a>
+以下、neat()の実行。
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	my $main = "main's neat() 関数";
+	say DBI::neat($main);		# 日本語部分が文字化けする。
+	say DBI::neat($main, 14);	# 'main's ne...'
+	my $main = 20220228 + 1;
+	say DBI::neat($main);		# 20220229
+	say DBI::neat( undef );		# undef
+}
+main();
+```
 
 </details>
 
