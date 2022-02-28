@@ -13102,7 +13102,7 @@ sqlite trace: rc = 0 at dbdimp.c line 737
 * 種類。  
   * neat()  
     単一スカラー値に作用する。  
-  * neat_list()  
+  * neat\_list()  
     スカラー値のリストに作用する。  
 
 <a name="practicalusesqlDBIutilitymethodandfunctionplasticsurgeryneat"></a>
@@ -13118,6 +13118,22 @@ sub main() {
 	my $main = 20220228 + 1;
 	say DBI::neat($main);		# 20220229
 	say DBI::neat( undef );		# undef
+}
+main();
+```
+
+<a name="practicalusesqlDBIutilitymethodandfunctionplasticsurgeryneatlist"></a>
+以下、neat\_list()の実行。
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	my $scalar = 'Plastic surgery';
+	my @main = ("main's neat() function", '', 20220228+1, undef, $scalar);
+	say DBI::neat_list(\@main);					# 'main's neat() function', '', 20220229, undef, 'Plastic surgery'
+	say DBI::neat_list(\@main, 10);				# 'main'...', '', 20220229, undef, 'Plast...'
+	say DBI::neat_list(\@main, 10, "] >|< [");	# 'main'...'] >|< [''] >|< [20220229] >|< [undef] >|< ['Plast...'
 }
 main();
 ```
