@@ -12816,8 +12816,8 @@ todo:
 `DBI->trace()`  
 
 出力内容は、
-**->**から始まる行ならば、メソッドに入ることを示す。  
-**<-**から始まる行ならば、メソッドから戻ることを示す。  
+**->** から始まる行ならば、メソッドに入ることを示す。  
+**<-** から始まる行ならば、メソッドから戻ることを示す。  
 また、出力の先頭は半角スペース4分が付与されている。  
 
 |追跡水準|意味|
@@ -12828,10 +12828,22 @@ todo:
 |[3](#practicalusesqlDBIutilitymethodandfunctiondbitrackingthree)|2に加え、より内部的なドライバの追跡情報も示す。|
 |[4](#practicalusesqlDBIutilitymethodandfunctiondbitrackingfour)|今まで以上に役立つ詳細な内容を示す。|
 
+上記とは別に、環境変数での設定も可能になっている。  
+環境変数名：DBI\_TRACE  
+
+|設定値|設定効果|
+|:----:|--------|
+|1|**DBI->trace(1);**|
+|ログファイル名|**DBI->trace(2, ログファイル名);**|
+|4=ログファイル名|**DBI->trace(4, ログファイル名);**|
+※ログファイル名だけの指定ならば、水準2として動く。  
+
+
 <a name="practicalusesqlDBIutilitymethodandfunctiondbitrackingone"></a>
 ##### 水準1
 1のプログラム。
 
+以下のプログラムを他の水準でも使う。  
 ```perl
 use v5.24;
 use DBI;
