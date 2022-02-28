@@ -13601,6 +13601,21 @@ sub funcEval() {
 &funcEval();
 ```
 
+エラー内容を取得したい場合は、特殊変数(`$@`)を利用する必要がある。
+```perl
+use v5.24;
+
+sub funcEval() {
+	my $hoge = eval{
+		say 20220228/0;	# 何も出力されない。
+	} // 'エラー発生';
+	say "<$hoge>$@";	# <エラー発生>Illegal division by zero at eval.pl line 5.
+}
+&funcEval();
+```
+また、例外が発生しない場合、undefになるため、if文で$@を判断することもできる。  
+`print "例外発生 $@" if $@;`  
+
 
 </details>
 
