@@ -12793,7 +12793,7 @@ $sth->execute('ほげ')
 
 * 有用メソッド例）  
   * [クォートメソッド。](#practicalusesqlDBIutilitymethodandfunctionquote)  
-  * DBI動作追跡。  
+  * [DBI動作追跡。](#practicalusesqlDBIutilitymethodandfunctiondbitracking)  
   * 文字列整形。  
   * 数値テスト。  
 
@@ -12808,6 +12808,20 @@ $sth->execute('ほげ')
 
 todo:
 データベースにデータを入れてから挙動を確認すること。  
+
+
+<a name="practicalusesqlDBIutilitymethodandfunctiondbitracking"></a>
+#### DBI動作追跡
+様式：
+`DBI->trace()`  
+
+|追跡水準|意味|
+|:------:|----|
+|0|追跡無効。|
+|1|戻り値とエラーを示しながらDBIメソッドの実行を追跡する。|
+|2|1に加え、出力先を指定する。|
+|3|2に加え、より内部的なドライバの追跡情報も示す。|
+|4|今まで以上に役立つ詳細な内容を示す。|
 
 </details>
 
