@@ -12691,23 +12691,30 @@ sub main() {
 			RaiseError => 0,	# die経由でエラー報告無し。
 		);
 
-	my $dbh1 = DBI->connect(	←☆ここ。
+	my $dbh1 = '接続用';
+	my $err = eval{
+		$dbh1 = DBI->connect(#	←☆ここ。
 			"dbi:SQLite:database=$database",
 			"",	# ユーザ名。
 			"",	# パスワード。
 			\%option,
-		) or die "接続失敗(" . $DBI::errstr . ")。";	←☆ここ。
-		# 接続失敗(unable to open database file)。 at エラー処理(SQLite版).pl line 17.	←☆これ。
+		) or die "接続失敗(" . $DBI::errstr . ")。";#	←☆ここ。
+	};
+	print "DBI->connect失敗：$@";	# DBI->connect失敗：接続失敗(unable to open database file)。 at XXXX.pl line 19.	←☆これ。
 
-	my $rc = $dbh1->disconnect
+	my $rc = '切断用';
+	$err = eval{
+		$rc = $dbh1->disconnect
 			or warn "$databaseからの切断失敗(" . $dbh1->errstr . ")。";
-	say "$rc";	# 1
+	};
+	print "$rc-$@";	# 切断用-Can't call method "disconnect" on an undefined value at XXXX.pl line 30.
 	#unlink $database or warn "ファイル削除失敗($!)。";	←☆そもそもファイルが作られない(権限が無いため)。
 	rmdir $dirname or warn "ディレクトリ削除失敗($!)。";
 	#say "ディレクトリ削除失敗($!)。" if( -d $dirname );	# ディレクトリが存在すると言うこと。
 }
 main();
 ```
+[eval(エラートラップ)](#practicaluseevalexceptionhandling)での対処により、ディレクトリ削除まで出来るようにしている。  
 
 <details><summary>正常に動くプログラム。</summary>
 
