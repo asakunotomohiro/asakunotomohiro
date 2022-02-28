@@ -12893,10 +12893,52 @@ sqlite trace: rc = 0 at dbdimp.c line 737
     <- disconnect_all= ( '' ) [1 items] at DBI.pm line 758
 !   <- DESTROY(DBI::dr=HASH(0x7fea7d2e9380))= ( undef ) [1 items] during global destruction
 ```
+水準2に比べ、メソッドに入る処理(**->**)が隠れたままになっていること。  
 
 
 <a name="practicalusesqlDBIutilitymethodandfunctiondbitrackingtwo"></a>
 ##### 水準2
+プログラムは、上記水準1を使い、引数部分を変更するだけ。  
+`DBI->trace(2, undef);`  
+undefにすることで、出力先をSTDERRにしている。  
+ファイル名を設定した場合は、そのファイルに書き出す。  
+
+以下、出力結果。
+```terminal
+    DBI 1.643-nothread default trace level set to 0x0/2 (pid 87454 pi 0) at SQLiteへのテスト接続.pl line 16 via SQLiteへのテスト接続.pl line 36
+    -> DBI->connect(dbi:SQLite:database=./testDBDir/sqlite.db, , ****, HASH(0x7ff90a061a18))
+    -> DBI->install_driver(SQLite) for darwin perl=5.034000 pid=87454 ruid=501 euid=501
+       install_driver: DBD::SQLite version 1.70 loaded from perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBD/SQLite.pm
+    <- install_driver= DBI::dr=HASH(0x7ff90b1d9b80)
+    -> connect for DBD::SQLite::dr (DBI::dr=HASH(0x7ff90b1d9b80)~0x7ff90b1da7b0 'database=./testDBDir/sqlite.db' '' **** HASH(0x7ff90a073ef8))
+    <- connect= ( DBI::db=HASH(0x7ff90b18c7b8) ) [1 items] at DBI.pm line 679
+    -> STORE for DBD::SQLite::db (DBI::db=HASH(0x7ff90b18c710)~INNER 'RaiseError' 0)
+    <- STORE= ( 1 ) [1 items] at DBI.pm line 731
+    -> STORE for DBD::SQLite::db (DBI::db=HASH(0x7ff90b18c710)~INNER 'PrintError' 0)
+    <- STORE= ( 1 ) [1 items] at DBI.pm line 731
+    -> STORE for DBD::SQLite::db (DBI::db=HASH(0x7ff90b18c710)~INNER 'AutoCommit' 1)
+    <- STORE= ( 1 ) [1 items] at DBI.pm line 731
+    -> STORE for DBD::SQLite::db (DBI::db=HASH(0x7ff90b18c710)~INNER 'Username' '')
+    <- STORE= ( 1 ) [1 items] at DBI.pm line 734
+    -> connected in DBD::_::db for DBD::SQLite::db (DBI::db=HASH(0x7ff90b18c7b8)~0x7ff90b18c710 'dbi:SQLite:database=./testDBDir/sqlite.db' '' **** HASH(0x7ff90a061a18))
+    <- connected= ( undef ) [1 items] at DBI.pm line 741
+    <- connect= DBI::db=HASH(0x7ff90b18c7b8)
+    -> STORE for DBD::SQLite::db (DBI::db=HASH(0x7ff90b18c710)~INNER 'dbi_connect_closure' CODE(0x7ff909805430))
+    <- STORE= ( 1 ) [1 items] at DBI.pm line 750
+    -> disconnect for DBD::SQLite::db (DBI::db=HASH(0x7ff90b18c7b8)~0x7ff90b18c710)
+sqlite trace: Closing DB at dbdimp.c line 735
+sqlite trace: rc = 0 at dbdimp.c line 737
+    <- disconnect= ( 1 ) [1 items] at SQLiteへのテスト接続.pl line 29
+    -> DESTROY for DBD::SQLite::db (DBI::db=HASH(0x7ff90b18c710)~INNER)
+    <- DESTROY= ( undef ) [1 items] at SQLiteへのテスト接続.pl line 34
+    -- DBI::END ($@: , $!: )
+    -> disconnect_all for DBD::SQLite::dr (DBI::dr=HASH(0x7ff90b1d9b80)~0x7ff90b1da7b0)
+    <- disconnect_all= ( '' ) [1 items] at DBI.pm line 758
+!   -> DESTROY in DBD::_::common for DBD::SQLite::dr (DBI::dr=HASH(0x7ff90b1da7b0)~INNER)
+!   <- DESTROY= ( undef ) [1 items] during global destruction
+```
+水準1に比べて、出力量が増えた。  
+倍になった？  
 
 
 <a name="practicalusesqlDBIutilitymethodandfunctiondbitrackingthree"></a>
