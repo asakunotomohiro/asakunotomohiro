@@ -136,7 +136,7 @@ $
     [x] 添え字での最大数確認  
     [x] 空確認  
     [ ] リスト演算子(`grep`・`map`)  
-    [ ] eval  
+    [x] [eval](#practicaluseevalexceptionhandling)  
     [x] [構造体](#practicaluseArrangementArrayStructure)  
   * [ ] [条件分岐](#practicaluseConditional条件分岐)  
     * [x] [三項演算子](#practicaluseConditionalternary)(`?:`)  
@@ -233,6 +233,7 @@ $
     * [x] [switch(given-when)](#practicaluseGivenwhen)  
   * [x] [パッケージ](#practicalusePackages)  
   * [ ] [GUI/Tk](#practicaluseGUIPerlTk)  
+  * [x] [eval(例外処理)](#practicaluseevalexceptionhandling)  
 
 </details>
 
@@ -1206,6 +1207,7 @@ unless ( defined $boo[2] ) {	←☆変数に値は入っていない。
 |論理演算子|意味|備考|
 |----------|----|----|
 |`defined-or`|`||(論理和)`演算子の改良版|定義された値の評価方法の改良|
+※[eval](#practicaluseevalexceptionhandling)で利用する？  
 
 |比較方法|数値の比較|文字列の比較|補足|
 |--------|----------|------------|----|
@@ -13563,6 +13565,97 @@ sub guiPlace() {
 <a name="practicaluseTkgeometrymanagementplacemethod"></a>
 ##### ジオメトリマネージャPlaceのメソッド
 
+
+</details>
+
+<a name="practicaluseevalexceptionhandling"></a>
+<details><summary>応用知識-eval(例外処理)</summary>
+
+エラーをトラップする処理として、evalブロックを使う。  
+エラーをトラップするのであり、文法エラーを検出するわけではないことに注意すること。  
+故に、囲み方が可笑しい・処理の末尾にセミコロンが抜けている・オペランド無し・正規表現の間違いなどは、コンパイルエラーになる。  
+
+以下、プログラム例）
+```perl
+use v5.24;
+
+sub funcEval() {
+	#say 5/0;	Illegal division by zero at eval.pl line 4.
+	my $hoge = eval{
+		say 20220228/0;	# 何も出力されない。
+	};
+	say "<$hoge>";	# <>	←☆例外発生により、空文字列(undef)になっている(正常の場合は1)。
+}
+&funcEval();
+```
+
+また、defined-or演算子を使うことで、エラーメッセージなどを代入できる。  
+以下、そのプログラム。
+```perl
+use v5.24;
+
+sub funcEval() {
+	my $hoge = eval{
+		say 20220228/0;	# 何も出力されない。
+	} // 'エラー発生';
+	say "<$hoge>";	# <エラー発生>	←☆代替値表示。
+}
+&funcEval();
+```
+
+エラー内容を取得したい場合は、特殊変数(`$@`)を利用する必要がある。
+```perl
+use v5.24;
+
+sub funcEval() {
+	my $hoge = eval{
+		say 20220228/0;	# 何も出力されない。
+	} // 'エラー発生';
+	say "<$hoge>$@";	# <エラー発生>Illegal division by zero at eval.pl line 5.
+}
+&funcEval();
+```
+また、例外が発生しない場合、undefになるため、if文で$@を判断することもできる。  
+`print "例外発生 $@" if $@;`  
+
+以下、evalブロックを入れ子にしたプログラム。
+```perl
+use v5.24;
+
+sub funcEval() {
+	my $hoge = eval{
+		#say 20220228/0;	# ここで例外を発生させた場合、ブロックを抜け出るため、コメントアウトしている。
+		my $boo = eval{
+			say 20220228/0;	←☆ここ。
+		} // 'ネスト内でエラー発生。';
+		say "$boo" if $@;	# ネスト内でエラー発生。
+		unless( eval{ 20220228/0; 1 } ){	←☆ここ。
+			say 'if文内での文字列出力。' if $@;	# if文内での文字列出力。
+		}
+		20220228/0;
+		say '以上。';
+	} // 'エラー発生';
+	say "<$hoge>$@";	# <エラー発生>Illegal division by zero at eval.pl line 13.
+}
+&funcEval();
+```
+
+以下、本格エラートラップ。
+```perl
+use v5.24;
+
+sub funcEval() {
+	my $hoge = eval{
+		my $boo = '20220228';
+		die '本日は快晴なり。' if $boo == 20220228;	←☆ここでdieする。
+		say '以上。';	←☆ここは出力されない(ここまで処理が走らない)。
+	} // 'エラー発生';
+	if( $@ =~ /快晴/ ) {
+		print "$@";	# 本日は快晴なり。 at dieとの組み合わせ.pl line 6.
+	}
+}
+&funcEval();
+```
 
 </details>
 
