@@ -12793,9 +12793,9 @@ $sth->execute('ほげ')
 
 * 有用メソッド例）  
   * [クォートメソッド。](#practicalusesqlDBIutilitymethodandfunctionquote)  
+  * [数値テスト。](#practicalusesqlDBIutilitymethodandfunctionquotenumerical)  
   * [DBI動作追跡。](#practicalusesqlDBIutilitymethodandfunctiondbitracking)  
   * [文字列整形。](#practicalusesqlDBIutilitymethodandfunctionplasticsurgery)  
-  * 数値テスト。  
 
 
 <a name="practicalusesqlDBIutilitymethodandfunctionquote"></a>
@@ -12808,6 +12808,55 @@ $sth->execute('ほげ')
 
 todo:
 データベースにデータを入れてから挙動を確認すること。  
+
+
+<a name="practicalusesqlDBIutilitymethodandfunctionquotenumerical"></a>
+#### 数値テスト
+数値らしいものを判定する関数に、looks_like_numberがある。  
+上記クォートメソッドでクォートするかどうかの判断に役立つそうだ。
+
+以下、プログラム。
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	my @values = (
+			20220228,
+			undef,
+			'本日は晴天なり。',
+			0x0F,
+			'hoge',
+			'0x0F',
+		);
+	my @numbers = DBI::looks_like_number( @values );
+	while (my ($index, $value) = each @numbers) {
+		print "values[$index]--->「";
+		if( defined $value ) {
+			if( $numbers[$index] ) {
+				say "$values[$index]」は数値。";
+			}
+			else{
+				say "$values[$index]」は文字列。";
+			}
+		}
+		else{
+			say "undef」。";
+		}
+	}
+}
+main();
+```
+
+以下、実行結果。
+```terminal
+values[0]--->「20220228」は数値。
+values[1]--->「undef」。
+values[2]--->「本日は晴天なり。」は文字列。
+values[3]--->「15」は数値。
+values[4]--->「hoge」は文字列。
+values[5]--->「0x0F」は文字列。
+```
 
 
 <a name="practicalusesqlDBIutilitymethodandfunctiondbitracking"></a>
