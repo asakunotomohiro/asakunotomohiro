@@ -12792,11 +12792,22 @@ $sth->execute('ほげ')
 今後のデータベース処理に対して有用なメソッドなどがある。  
 
 * 有用メソッド例）  
-  * クォートメソッド。  
+  * [クォートメソッド。](#practicalusesqlDBIutilitymethodandfunctionquote)  
   * DBI動作追跡。  
   * 文字列整形。  
   * 数値テスト。  
 
+
+<a name="practicalusesqlDBIutilitymethodandfunctionquote"></a>
+#### クォートメソッド
+文字列をクォートし、文字列内に含まれる特殊記号をエスケープする。  
+これは、エスケープ処理などは、データベースに依存するため、必要メソッドに渡すだけでそれらを行ってくれる優れた機能。  
+様式：
+`$dbh->quote( $string );`  
+この**$string**に、**I don't want to die**などがあり、シングルクォートをエスケープしてくれるというわけ。  
+
+todo:
+データベースにデータを入れてから挙動を確認すること。  
 
 </details>
 
