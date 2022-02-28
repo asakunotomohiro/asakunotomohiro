@@ -117,4 +117,8 @@ sub main() {
 	$object->dbconnect();
 	$object->select();
 }
-main();
+&main();
+
+
+say "以上。"
+# vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=perl noexpandtab:
