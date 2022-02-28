@@ -12694,12 +12694,12 @@ sub main() {
 
 	my $dbh1 = '接続用';
 	my $err = eval{
-		$dbh1 = DBI->connect(#	←☆ここ。
+		$dbh1 = DBI->connect(	←☆ここ。
 			"dbi:SQLite:database=$database",
 			"",	# ユーザ名。
 			"",	# パスワード。
 			\%option,
-		) or die "接続失敗(" . $DBI::errstr . ")。";#	←☆ここ。
+		) or die "接続失敗(" . $DBI::errstr . ")。";	←☆ここ。
 	};
 	print "DBI->connect失敗：$@";	# DBI->connect失敗：接続失敗(unable to open database file)。 at XXXX.pl line 19.	←☆これ。
 
@@ -12815,13 +12815,97 @@ todo:
 様式：
 `DBI->trace()`  
 
+出力内容は、
+**->**から始まる行ならば、メソッドに入ることを示す。  
+**<-**から始まる行ならば、メソッドから戻ることを示す。  
+また、出力の先頭は半角スペース4分が付与されている。  
+
 |追跡水準|意味|
 |:------:|----|
 |0|追跡無効。|
-|1|戻り値とエラーを示しながらDBIメソッドの実行を追跡する。|
-|2|1に加え、出力先を指定する。|
-|3|2に加え、より内部的なドライバの追跡情報も示す。|
-|4|今まで以上に役立つ詳細な内容を示す。|
+|[1](#practicalusesqlDBIutilitymethodandfunctiondbitrackingone)|戻り値とエラーを示しながらDBIメソッドの実行を追跡する。|
+|[2](#practicalusesqlDBIutilitymethodandfunctiondbitrackingtwo)|1に加え、出力先を指定する。|
+|[3](#practicalusesqlDBIutilitymethodandfunctiondbitrackingthree)|2に加え、より内部的なドライバの追跡情報も示す。|
+|[4](#practicalusesqlDBIutilitymethodandfunctiondbitrackingfour)|今まで以上に役立つ詳細な内容を示す。|
+
+<a name="practicalusesqlDBIutilitymethodandfunctiondbitrackingone"></a>
+##### 水準1
+1のプログラム。
+
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	my $permissions = "0755";	# このままでは10進数と解釈される(8進数に置き換え必須)。
+	my $dirname = 'testDBDir';
+	mkdir $dirname, 0755 or warn "ディレクトリ($dirname)作成失敗($!)。";
+	my $database = "./$dirname/sqlite.db";
+
+	my %option = (	# 警告レベルメッセージ出力なし。
+			PrintError => 0,	# warn経由でエラー報告無し。
+			RaiseError => 0,	# die経由でエラー報告無し。
+		);
+
+	my $dbh1 = '接続用';
+	DBI->trace(1);	# 今回重要な処理。
+	my $err = eval{
+		$dbh1 = DBI->connect(
+			"dbi:SQLite:database=$database",
+			"",	# ユーザ名。
+			"",	# パスワード。
+			\%option,
+		) or die "接続失敗(" . $DBI::errstr . ")。";
+	};
+	print "DBI->connect失敗：$@" if $@;
+
+	my $rc = '切断用';
+	$err = eval{
+		$rc = $dbh1->disconnect
+			or warn "$databaseからの切断失敗(" . $dbh1->errstr . ")。";
+	};
+	print "$err切断失敗-$@" if $@;
+	unlink $database or warn "データベースファイル削除失敗($!)。";
+	rmdir $dirname or warn "ディレクトリ削除失敗($!)。";
+}
+main();
+```
+
+以下、出力結果。
+```terminal
+    DBI 1.643-nothread default trace level set to 0x0/1 (pid 87223 pi 0) at SQLiteへのテスト接続.pl line 16 via SQLiteへのテスト接続.pl line 36
+    -> DBI->connect(dbi:SQLite:database=./testDBDir/sqlite.db, , ****, HASH(0x7fea7d13e218))
+    -> DBI->install_driver(SQLite) for darwin perl=5.034000 pid=87223 ruid=501 euid=501
+       install_driver: DBD::SQLite version 1.70 loaded from perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBD/SQLite.pm
+    <- install_driver= DBI::dr=HASH(0x7fea7d2e9380)
+    <- connect('database=./testDBDir/sqlite.db', '', ...)= ( DBI::db=HASH(0x7fea7d29a770) ) [1 items] at DBI.pm line 679
+    <- STORE('RaiseError', 0)= ( 1 ) [1 items] at DBI.pm line 731
+    <- STORE('PrintError', 0)= ( 1 ) [1 items] at DBI.pm line 731
+    <- STORE('AutoCommit', 1)= ( 1 ) [1 items] at DBI.pm line 731
+    <- STORE('Username', '')= ( 1 ) [1 items] at DBI.pm line 734
+    <- connected('dbi:SQLite:database=./testDBDir/sqlite.db', '', ...)= ( undef ) [1 items] at DBI.pm line 741
+    <- connect= DBI::db=HASH(0x7fea7d29a770)
+    <- STORE('dbi_connect_closure', CODE(0x7fea7d01c230))= ( 1 ) [1 items] at DBI.pm line 750
+sqlite trace: Closing DB at dbdimp.c line 735
+sqlite trace: rc = 0 at dbdimp.c line 737
+    <- disconnect= ( 1 ) [1 items] at SQLiteへのテスト接続.pl line 29
+    <- DESTROY(DBI::db=HASH(0x7fea7d29a6c8))= ( undef ) [1 items] at SQLiteへのテスト接続.pl line 34
+    <- disconnect_all= ( '' ) [1 items] at DBI.pm line 758
+!   <- DESTROY(DBI::dr=HASH(0x7fea7d2e9380))= ( undef ) [1 items] during global destruction
+```
+
+
+<a name="practicalusesqlDBIutilitymethodandfunctiondbitrackingtwo"></a>
+##### 水準2
+
+
+<a name="practicalusesqlDBIutilitymethodandfunctiondbitrackingthree"></a>
+##### 水準3
+
+
+<a name="practicalusesqlDBIutilitymethodandfunctiondbitrackingfour"></a>
+##### 水準4
+
 
 </details>
 
