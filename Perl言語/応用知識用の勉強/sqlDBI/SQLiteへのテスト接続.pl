@@ -2,7 +2,7 @@ $VERSION = "0.002";
 use v5.24;
 use DBI;
 
-package dbimySQL;
+package dbisqlite;
 sub main() {
 #	my @databases = DBI->data_sources("SQLite");
 #	say "@databases";	# 空文字列(undef)

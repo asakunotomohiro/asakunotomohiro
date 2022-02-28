@@ -11696,6 +11696,8 @@ ODBCは仕事で使ったことあるが、DBI(Database Interface)はない。
   * [DBIプログラミング](#practicalusesqlDBImaindbiprogramming)  
   * [データソース名](#practicalusesqlDBIdatasource)  
   * [接続と切断](#practicalusesqlDBIconnectanddisconnect)  
+    * [SQLiteの特徴](#practicalusesqlDBIconnectanddisconnectsqliteconnectfeature)  
+  * [エラー処理](#practicalusesqlDBIerrorhandling)  
 
 
 <a name="practicalusesqlDBIquerylanguageparlance"></a>
@@ -12356,6 +12358,432 @@ my $rc = $dbh->disconnect() or warn "$dbhからの切断失敗\n";
 ```
 SQLiteなので、本当に切断できるのか不安だ。  
 しかし、本来プログラムが終了する直前まで接続するのがCPUを無駄遣いしなくて済むらしいから気にする必要は無いのかもね。
+
+<a name="practicalusesqlDBIconnectanddisconnectsqliteconnectfeature"></a>
+※ファイルへの書き込みをデータベースとしているため、ユーザ権限という概念が存在しない。  
+また、以下にSQLiteの特徴を挙げる。  
+
+* SQLiteでできること。  
+  SQLコマンドはSQL92に準拠している。  
+  * テーブル  
+  * ビュー  
+  * インデックス  
+  * トランザクション  
+  * トリガーの一部  
+  * 主キー・外部キーなどのフィールド制約  
+  * 自動番号付与  
+
+* SQLiteでできないこと。  
+  * トリガーの一部機能  
+  * フィールドの追加以外のAlter Tableコマンド  
+  * 右外部結合及び完全外部結合  
+    ※外部結合(OuterJoin)および和集合演算(Union)などはできる。  
+  * ビューへの書き込み  
+  * GrantおよびRevokeコマンド  
+
+
+<a name="practicalusesqlDBIerrorhandling"></a>
+### エラー処理
+DBIのエラー処理は、例外を用いることで簡単に原因追及できるようになっている。  
+自動メッセージ発行後、**warn()**・**die()** のどちらかを実行する。  
+
+以下、プログラム。
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	# データベース(ファイル)名定義。
+	my $database = '../../Perl-sqlDBI作成データ/sqlite.db';
+
+	my %option = (	# 警告レベルメッセージ出力なし。
+			PrintError => 0,	# warn経由でエラー報告無し。
+			RaiseError => 0,	# die経由でエラー報告無し。
+		);
+
+	my $dbh1 = DBI->connect(
+			"dbi:SQLite:database=$database",
+			"",	# ユーザ名。
+			"",	# パスワード。
+			\%option,
+		) or die "接続失敗($database)。";
+	$dbh1->{PrintError} = 1;	# 警告レベルの自動エラー報告を有効にする。
+
+	my $sth = $dbh1->prepare('select * from hoge')
+		or die "SQL文の準備失敗。";
+		# DBD::SQLite::db prepare failed: no such table: hoge at エラー処理(SQLite版).pl line 22.	←☆20行目の警告レベル設定を変更していない場合、このメッセージは出力されず、自前で用意したメッセージだけが出る(以下の1行のみ)。
+		# SQL文の準備失敗。 at /Users/asakunotomohiro/Desktop/エラー処理(SQLite版).pl line 22.
+
+	$sth->execute
+		or die "SQL文の実行失敗。";
+
+	#my @selectret = $sth->fetchrow_array();	# セレクト文の結果取得。
+
+	unlink $database or warn "ファイル削除失敗($!)。";	# 上記の処理でプログラムが終了しているため、後始末が行われない。
+	my $rc = $dbh1->disconnect
+			or warn "$databaseからの切断失敗\n";
+	say "$rc";	# 1
+}
+main();
+```
+後始末を行うためにもオブジェクト指向プログラミングが有効なのだろう。  
+今回は、エラーを発生させるために、わざわざ警告レベルメッセージを抑止後、データベースへの接続成功後に有効化した。  
+今回作成した限りでは、接続自体も失敗する可能性があるため、最初から有効にしておくのが良いだろう(当たり前だろうが)。  
+
+※基本的に、**PrintError**は、標準で有効化されている。  
+あとは、**RaiseError**を手動で有効化すれば良い。  
+
+* 組み合わせ。
+  * PrintError => X	←☆warn経由でエラー報告有無の設定。
+  * RaiseError => X	←☆die経由でエラー報告有無の設定。
+  * dir処理あり。  
+
+<details><summary>展開。</summary>
+
+以下、**PrintError(0)**・**RaiseError(0)**
+```perl
+    # 略。
+PrintError => 0,	# warn経由でエラー報告無し。
+RaiseError => 0,	# die経由でエラー報告無し。
+}
+    # 略。
+my $sth = $dbh1->prepare('select * from hoge')
+	or die "SQL文の準備失敗。";
+```
+
+以下、出力結果。
+```terminal
+SQL文の準備失敗。 at XXXX.pl line xx.
+```
+
+以下、**PrintError(1)**・**RaiseError(0)**
+```perl
+PrintError => 1,	# warn経由でエラー報告有り。
+RaiseError => 0,	# die経由でエラー報告無し。
+}
+    # 略。
+my $sth = $dbh1->prepare('select * from hoge')
+	or die "SQL文の準備失敗。";
+```
+
+以下、出力結果。
+```terminal
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+SQL文の準備失敗。 at XXXX.pl line xx.
+```
+
+以下、**PrintError(0)**・**RaiseError(1)**
+```perl
+PrintError => 0,	# warn経由でエラー報告無し。
+RaiseError => 1,	# die経由でエラー報告有り。
+}
+    # 略。
+my $sth = $dbh1->prepare('select * from hoge')
+	or die "SQL文の準備失敗。";
+```
+
+以下、出力結果。
+```terminal
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+```
+
+以下、**PrintError(1)**・**RaiseError(1)**
+```perl
+PrintError => 1,	# warn経由でエラー報告有り。
+RaiseError => 1,	# die経由でエラー報告有り。
+}
+    # 略。
+my $sth = $dbh1->prepare('select * from hoge')
+	or die "SQL文の準備失敗。";
+```
+
+以下、出力結果。
+```terminal
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+```
+両方有効にするのはきついな。  
+
+</details>
+
+* 組み合わせ。
+  * PrintError => X	←☆warn経由でエラー報告有無の設定。
+  * RaiseError => X	←☆die経由でエラー報告有無の設定。
+  * prepareメソッド実行にdir処理なし。  
+
+<details><summary>展開。</summary>
+
+以下、**PrintError(0)**・**RaiseError(0)**
+```perl
+PrintError => 0,	# warn経由でエラー報告なし。
+RaiseError => 0,	# die経由でエラー報告なし。
+}
+    # 略。
+my $sth = $dbh1->prepare('select * from hoge');	←☆こちらにdieがない。
+$sth->execute
+	or die "SQL文の実行失敗。";
+```
+
+以下、出力結果。
+```terminal
+Can't call method "execute" on an undefined value at XXXX.pl line xx.
+```
+
+以下、**PrintError(0)**・**RaiseError(1)**
+```perl
+PrintError => 0,	# warn経由でエラー報告なし。
+RaiseError => 1,	# die経由でエラー報告有り。
+}
+    # 略。
+my $sth = $dbh1->prepare('select * from hoge');	←☆こちらにdieがない。
+$sth->execute
+	or die "SQL文の実行失敗。";
+```
+
+以下、出力結果。
+```terminal
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+```
+
+以下、**PrintError(1)**・**RaiseError(0)**
+```perl
+PrintError => 1,	# warn経由でエラー報告有り。
+RaiseError => 0,	# die経由でエラー報告なし。
+}
+    # 略。
+my $sth = $dbh1->prepare('select * from hoge');	←☆こちらにdieがない。	←☆こちらにdieがない。
+$sth->execute
+	or die "SQL文の実行失敗。";
+```
+
+以下、出力結果。
+```terminal
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+Can't call method "execute" on an undefined value at XXXX.pl line xx.
+```
+
+以下、**PrintError(1)**・**RaiseError(1)**
+```perl
+PrintError => 1,	# warn経由でエラー報告有り。
+RaiseError => 1,	# die経由でエラー報告有り。
+}
+    # 略。
+my $sth = $dbh1->prepare('select * from hoge');	←☆こちらにdieがない。
+$sth->execute
+	or die "SQL文の実行失敗。";
+```
+
+以下、出力結果。
+```terminal
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+```
+両方有効にするのはきついな。  
+
+</details>
+
+* 組み合わせ。
+  * PrintError => X	←☆warn経由でエラー報告有無の設定。
+  * RaiseError => X	←☆die経由でエラー報告有無の設定。
+  * どのメソッド実行にもdir処理およびwarn処理なし。  
+
+<details><summary>展開。</summary>
+
+以下、**PrintError(0)**・**RaiseError(0)**
+```perl
+PrintError => 0,	# warn経由でエラー報告なし。
+RaiseError => 0,	# die経由でエラー報告なし。
+}
+    # 略(ここ以降die及びwarnなし)。
+```
+
+以下、出力結果。
+```terminal
+Can't call method "execute" on an undefined value at XXXX.pl line xx.
+```
+
+以下、**PrintError(0)**・**RaiseError(1)**
+```perl
+PrintError => 0,	# warn経由でエラー報告なし。
+RaiseError => 1,	# die経由でエラー報告有り。
+}
+    # 略(ここ以降die及びwarnなし)。
+```
+
+以下、出力結果。
+```terminal
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+```
+
+以下、**PrintError(1)**・**RaiseError(0)**
+```perl
+PrintError => 1,	# warn経由でエラー報告有り。
+RaiseError => 0,	# die経由でエラー報告なし。
+}
+    # 略(ここ以降die及びwarnなし)。
+```
+
+以下、出力結果。
+```terminal
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+Can't call method "execute" on an undefined value at XXXX.pl line xx.
+```
+
+以下、**PrintError(1)**・**RaiseError(1)**
+```perl
+PrintError => 1,	# warn経由でエラー報告有り。
+RaiseError => 1,	# die経由でエラー報告有り。
+}
+    # 略(ここ以降die及びwarnなし)。
+```
+
+以下、出力結果。
+```terminal
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+```
+どんな状況だろうが、両方を有効化している場合は、2つ同じのが出る訳ね。  
+
+</details>
+
+デフォルト値のままでも問題なさそうだな(勉強ならばってことだけど)。  
+PrintError => 1	←☆warn経由でエラー報告有り。  
+RaiseError => 0	←☆die経由でエラー報告なし。  
+
+ゆくゆくは、デフォルト値を入れ替える。  
+PrintError => 0	←☆warn経由でエラー報告なし。  
+RaiseError => 1	←☆die経由でエラー報告有り。  
+そして、独自のエラーチェック処理を入れる。  
+
+プログラム実行時のエラーで、終了させたくない場合は、両方をOffにし、独自のエラーチェック処理で作業が継続できるようにうまく立ち回れるプログラムにする必要があると言うこと。  
+
+
+<a name="practicalusesqlDBIerrorhandlingdiagnose"></a>
+#### エラー診断
+エラーが出るだけでは心許ない。  
+そのため、詳細な内容は、以下のメソッドで取得できる。  
+
+* エラー診断用メソッド。  
+  このメソッドは、ハンドル変数に利用するもの(connectメソッドの戻り値から利用する・prepareメソッドの戻り値から利用するなど)。  
+  * err  
+    エラー発生に関するエラー番号が返ってくる。  
+    データベース依存になるため、無駄な番号の場合もあり、当てにしない方が良い。  
+  * errstr  
+    上記errで返される番号に紐付いたエラーメッセージが返ってくるため、一応は役に立つようだ。  
+  * state  
+    SQLSTATEの5文字エラー文字列が返ってくるため、あまり役に立たないようだ。  
+
+以下、使用例）
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	# データベース(ファイル)名定義。
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+	my $dirname = 'testDBDir';
+	my $database = "./$dirname/sqlite.db";
+	mkdir $dirname, 0555 or warn "ディレクトリ($dirname)作成失敗($!)。";
+	#say "ディレクトリ作成失敗($!)。" if( -d $dirname );
+
+	my %option = (	# 警告レベルメッセージ出力なし。
+			PrintError => 0,	# warn経由でエラー報告無し。
+			RaiseError => 0,	# die経由でエラー報告無し。
+		);
+
+	my $dbh1 = '接続用';
+	my $err = eval{
+		$dbh1 = DBI->connect(#	←☆ここ。
+			"dbi:SQLite:database=$database",
+			"",	# ユーザ名。
+			"",	# パスワード。
+			\%option,
+		) or die "接続失敗(" . $DBI::errstr . ")。";#	←☆ここ。
+	};
+	print "DBI->connect失敗：$@";	# DBI->connect失敗：接続失敗(unable to open database file)。 at XXXX.pl line 19.	←☆これ。
+
+	my $rc = '切断用';
+	$err = eval{
+		$rc = $dbh1->disconnect
+			or warn "$databaseからの切断失敗(" . $dbh1->errstr . ")。";
+	};
+	print "$rc-$@";	# 切断用-Can't call method "disconnect" on an undefined value at XXXX.pl line 30.
+	#unlink $database or warn "ファイル削除失敗($!)。";	←☆そもそもファイルが作られない(権限が無いため)。
+	rmdir $dirname or warn "ディレクトリ削除失敗($!)。";
+	#say "ディレクトリ削除失敗($!)。" if( -d $dirname );	# ディレクトリが存在すると言うこと。
+}
+main();
+```
+[eval(エラートラップ)](#practicaluseevalexceptionhandling)での対処により、ディレクトリ削除まで出来るようにしている。  
+
+<details><summary>正常に動くプログラム。</summary>
+
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	# データベース(ファイル)名定義。
+	my $database = './sqlite.db';
+
+	my %option = (	# 警告レベルメッセージ出力なし。
+			PrintError => 0,	# warn経由でエラー報告無し。
+			RaiseError => 0,	# die経由でエラー報告無し。
+		);
+
+	my $dbh1 = DBI->connect(
+			"dbi:SQLite:database=$database",
+			"",	# ユーザ名。
+			"",	# パスワード。
+			\%option,
+		) or die "接続失敗(" . $DBI::errstr . ")。";
+
+	my $sth = $dbh1->prepare('create table hoge( boo INTEGER, bar varchar(20) )')
+		or die "テーブル作成の準備失敗(" . $dbh1->errstr . ")。";
+	$sth->execute
+		or die "テーブル作成失敗(" . $sth->errstr . ")。";
+
+	my $sth = $dbh1->prepare('insert into hoge (boo, bar) values (?, ?);')
+		or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+	$sth->execute('ほげ', 'ぼげぇ〜')
+		or die "SQL文の実行失敗(" . $sth->errstr . ")。";
+
+	my $sth = $dbh1->prepare('select * from hoge')
+		or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+	$sth->execute
+		or die "SQL文の実行失敗(" . $sth->errstr . ")。";
+
+	my @table = $sth->fetchrow_array();
+	say "テーブル内容：@table";	# ほげ ぼげぇ〜
+
+	my $rc = $dbh1->disconnect
+			or warn "$databaseからの切断失敗(" . $dbh1->errstr . ")。";
+			# DBI::db=HASH(0x7f86fc964878)->disconnect invalidates 1 active statement handle (either destroy statement handles or call finish on them before disconnecting) at エラー処理(SQLite版).pl line 38.
+	say "$rc";	# 1
+	unlink $database or warn "ファイル削除失敗($!)。";
+}
+main();
+```
+正常に動きはするが、切断するときに、意図しないエラーが発生した。  
+まだ、どこかでつかんでいるようなのだが、そこを切り離すことが出来なかった(select文作成後に実行した処理が原因のはず)。  
+
+</details>
+
+**$dbh1->errstr**の出力用プログラム(上記からプログラム抜粋)。
+```perl
+my $sth = $dbh1->prepare('create table hoge')
+	or die "テーブル作成の準備失敗(" . $dbh1->errstr . ")。";
+	# テーブル作成の準備失敗(incomplete input)。 at エラー処理(SQLite版).pl line 20.
+```
+
+**$sth->errstr**の出力用プログラム(上記からプログラム抜粋)。
+```perl
+my $sth = $dbh1->prepare('insert into hoge (boo, bar) values (?, ?);')
+	or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+$sth->execute('ほげ')
+	or die "SQL文の実行失敗(" . $sth->errstr . ")。";	←☆ここ。
+	# SQL文の実行失敗(called with 1 bind variables when 2 are needed)。 at エラー処理(SQLite版).pl line 27.	←☆これ。
+```
 
 </details>
 
