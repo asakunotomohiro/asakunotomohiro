@@ -12794,7 +12794,7 @@ $sth->execute('ほげ')
 * 有用メソッド例）  
   * [クォートメソッド。](#practicalusesqlDBIutilitymethodandfunctionquote)  
   * [DBI動作追跡。](#practicalusesqlDBIutilitymethodandfunctiondbitracking)  
-  * 文字列整形。  
+  * [文字列整形。](#practicalusesqlDBIutilitymethodandfunctionplasticsurgery)  
   * 数値テスト。  
 
 
@@ -13093,6 +13093,54 @@ sqlite trace: rc = 0 at dbdimp.c line 737
 さらに役立つ詳細内容が出力されるのは理解した・・・していない。  
 これが役立つ情報なのか全く判断できない。  
 それほど莫大な量に翻弄されていると言うこと。  
+
+
+<a name="practicalusesqlDBIutilitymethodandfunctionplasticsurgery"></a>
+#### 文字列整形
+人間が見やすい形式に整えるメソッド。  
+
+* 種類。  
+  * neat()  
+    単一スカラー値に作用する。  
+  * neat\_list()  
+    スカラー値のリストに作用する。  
+
+文字列がクォートされるが、数字やundefはクォートされない。  
+また、第2引数に文字数を指定するが、それはクォート文字も含んでの数字になる。  
+
+<a name="practicalusesqlDBIutilitymethodandfunctionplasticsurgeryneat"></a>
+以下、neat()の実行。
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	my $main = "main's neat() 関数";
+	say DBI::neat($main);		# 日本語部分が文字化けする。
+	say DBI::neat($main, 14);	# 'main's ne...'
+	my $main = 20220228 + 1;
+	say DBI::neat($main);		# 20220229
+	say DBI::neat( undef );		# undef
+}
+main();
+```
+
+<a name="practicalusesqlDBIutilitymethodandfunctionplasticsurgeryneatlist"></a>
+以下、neat\_list()の実行。
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	my $scalar = 'Plastic surgery';
+	my @main = ("main's neat() function", '', 20220228+1, undef, $scalar);
+	say DBI::neat_list(\@main);					# 'main's neat() function', '', 20220229, undef, 'Plastic surgery'
+	say DBI::neat_list(\@main, 10);				# 'main'...', '', 20220229, undef, 'Plast...'
+	say DBI::neat_list(\@main, 10, "] >|< [");	# 'main'...'] >|< [''] >|< [20220229] >|< [undef] >|< ['Plast...'
+}
+main();
+```
+内部で、neatを呼び出しているようだ(本当に？)。  
 
 </details>
 
