@@ -11816,12 +11816,17 @@ DBIからインスタンス生成したオブジェクトのこと。
 
 ※これも具体的な想像が出来ず、理解できない部分がある。  
 複数のデータベースに、1つのオブジェクトから同時接続できる？  
+※そもそもデータベースハンドルとは、**$dbh**のこと？  
 
 
 <a name="practicalusesqlDBImaindbiprogrammingstatementhandle"></a>
 #### ステートメントハンドル
 データベースへのSQL操作を行うハンドル。  
 ※データベースハンドルの子に相当する。  
+
+例）
+`my $sth = $dbh->prepare('select * from hoge');`  
+ステートメントハンドルとは、**$sth**のこと？  
 
 
 <a name="practicalusesqlDBIdatasource"></a>
@@ -12064,7 +12069,7 @@ postgres=# \l	←☆バックスラッシュに小文字のL字。
            |          |          |            |            | postgres=CTc/postgres
 (3 rows)
 
-postgres=#	←☆Ctrl+dで抜け出る。
+postgres=#	←☆Ctrl+dで抜け出る(\qだけで抜けられる)。
 \q
 $
 ```
@@ -13626,6 +13631,39 @@ fetchrow\_arrayrefを使えってことでしょうね。
 引数に書式を渡すことで、成形した形で出力結果に反映させられる。  
 `my $table = $sth->dump_results(5, '\n', ':');`  
 ※今回1行レコードのみのため、出力結果ほぼ変わらず。  
+
+
+<a name="practicalusesqlDBissuingsimpleinquiry"></a>
+#### フェッチ-途中退場
+ステートメントハンドルは、生きたままになっているため、再利用できる。
+※フェッチを中断しただけであって、他のは生きている。  
+
+以下、それを使ったプログラム(必要箇所のみ[抜粋](#practicalusesqlDBIerrorhandlingdiagnoseprogram))。
+```perl
+	$sth->execute('ほげ1', 'ぼげぇ〜1')	←☆3レコード追加。
+	$sth->execute('ほげ2', 'ぼげぇ〜2')
+	$sth->execute('ほげ3', 'ぼげぇ〜3')
+　　　・
+　　　・
+　　　・
+	eval{
+		my $table = '';
+		$table = $sth->fetchrow_arrayref();	←☆1レコードのみ取得。
+		say "テーブル内容：$table->[0], $table->[1]";
+            #テーブル内容：ほげ1, ぼげぇ〜1
+
+		$sth->finish();	# 強制的にフェッチを切断した。
+
+		$sth->execute or die "SQL文の実行失敗(" . $sth->errstr . ")。";	←☆再度SQL文実行(これがない場合、以下のフェッチ処理は動かない)。
+		while( $table = $sth->fetchrow_arrayref()){	←☆再度フェッチするため、1レコード目から再開する(切断しているため、続きからの再開ではない)。
+			say "テーブル内容：$table->[0], $table->[1]";
+                #テーブル内容：ほげ1, ぼげぇ〜1
+                #テーブル内容：ほげ2, ぼげぇ〜2
+                #テーブル内容：ほげ3, ぼげぇ〜3
+		}
+	};
+```
+ピンポイントで1レコードのみ取得した瞬間に切断する場合に、**finish**メソッドを使うようだ。  
 
 </details>
 
