@@ -12293,6 +12293,38 @@ Building and testing DBD-Pg-3.15.1 ... 2022-03-01 22:02:32.347 JST [6699] ERROR:
 FAIL
 ! Installing DBD::Pg failed. See /Users/asakunotomohiro/.cpanm/work/1646139742.6259/build.log for details. Retry with --force to force install it.
 $
+$ psql postgres
+psql (14.2)
+Type "help" for help.
+
+postgres=# \dn
+           List of schemas
+       Name        |      Owner
+-------------------+-----------------
+ dbd_pg_testschema | asakunotomohiro
+ public            | asakunotomohiro
+(2 rows)
+
+postgres=# ALTER SCHEMA dbd_pg_testschema OWNER TO postgres;	←☆スキーマの名前変更。
+ALTER SCHEMA
+postgres=# \dn
+           List of schemas
+       Name        |      Owner
+-------------------+-----------------
+ dbd_pg_testschema | postgres
+ public            | asakunotomohiro
+(2 rows)
+
+postgres=# \q
+$ cpanm DBD::Pg
+--> Working on DBD::Pg
+Fetching http://www.cpan.org/authors/id/T/TU/TURNSTEP/DBD-Pg-3.15.1.tar.gz ... OK
+Configuring DBD-Pg-3.15.1 ... OK
+Building and testing DBD-Pg-3.15.1 ... 2022-03-01 22:06:59.714 JST [7270] ERROR:  permission denied for database postgres
+2022-03-01 22:06:59.714 JST [7270] STATEMENT:  CREATE SCHEMA dbd_pg_testschema	←☆スキーマの名前を変えたら駄目だったようだ。
+FAIL
+! Installing DBD::Pg failed. See /Users/asakunotomohiro/.cpanm/work/1646140011.6831/build.log for details. Retry with --force to force install it.
+$
 ```
 
 何をやっている？
