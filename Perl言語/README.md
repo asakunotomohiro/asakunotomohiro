@@ -13210,6 +13210,16 @@ DBIを使ってデータベースからデータを取り出すことは、次�
   1. ステートメントハンドルなどを切断する段階。  
 
 
+<a name="practicalusesqlDBissuingsimpleinquiryonthefly"></a>
+#### 動的なWebサイトの構築
+何をすれば良いのか全く分からない。  
+
+todo:
+後日調べる。  
+
+
+
+
 </details>
 
 <a name="practicaluseGUIPerlTk"></a>
