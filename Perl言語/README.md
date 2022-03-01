@@ -13675,6 +13675,9 @@ fetchrow\_arrayrefを使えってことでしょうね。
 };	←☆フェッチが残っているのだが、このブロックを抜け出た瞬間に、フェッチ作業がなかったことになり、警告は出ない。
 ```
 
+todo:
+Kids属性及びActiveKids属性を調べる。  
+
 </details>
 
 <a name="practicaluseGUIPerlTk"></a>
