@@ -12361,6 +12361,44 @@ postgres=# CREATE ROLE postgres CREATEDB;	←☆データベース作成権限�
 ERROR:  role "postgres" already exists
 postgres=# \q
 $
+$ psql postgres
+psql (14.2)
+Type "help" for help.
+
+postgres=# \du
+                                      List of roles
+    Role name    |                         Attributes                         | Member of
+-----------------+------------------------------------------------------------+-----------
+ asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+
+postgres=# CREATE ROLE postgres CREATEDB;
+CREATE ROLE
+postgres=# \du
+                                      List of roles
+    Role name    |                         Attributes                         | Member of
+-----------------+------------------------------------------------------------+-----------
+ asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+ postgres        | Create DB, Cannot login                                    | {}
+
+postgres=# GRANT postgres TO asakunotomohiro;
+GRANT ROLE
+postgres=# \du
+                                       List of roles
+    Role name    |                         Attributes                         | Member of
+-----------------+------------------------------------------------------------+------------
+ asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {postgres}
+ postgres        | Create DB, Cannot login                                    | {}
+
+postgres=# \q
+$ cpanm DBD::Pg
+--> Working on DBD::Pg
+Fetching http://www.cpan.org/authors/id/T/TU/TURNSTEP/DBD-Pg-3.15.1.tar.gz ... OK
+Configuring DBD-Pg-3.15.1 ... OK
+Building and testing DBD-Pg-3.15.1 ... 2022-03-01 22:46:18.070 JST [9159] FATAL:  role "postgres" is not permitted to log in
+2022-03-01 22:46:18.074 JST [9160] FATAL:  role "postgres" is not permitted to log in
+FAIL
+! Installing DBD::Pg failed. See /Users/asakunotomohiro/.cpanm/work/1646142368.8723/build.log for details. Retry with --force to force install it.
+$
 ```
 
 何をやっている？
