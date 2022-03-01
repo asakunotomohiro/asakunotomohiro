@@ -11701,6 +11701,8 @@ ODBCは仕事で使ったことあるが、DBI(Database Interface)はない。
   * [ユーティリティメソッドと関数](#practicalusesqlDBIutilitymethodandfunction)  
   * [簡単な問い合わせの発行](#practicalusesqlDBissuingsimpleinquiry)  
 
+※参考書籍：[入門 Perl DBI](https://www.oreilly.co.jp/books/4873110505/)  
+
 
 <a name="practicalusesqlDBIquerylanguageparlance"></a>
 ### 問い合わせ言語用語
@@ -12718,6 +12720,7 @@ main();
 ```
 [eval(エラートラップ)](#practicaluseevalexceptionhandling)での対処により、ディレクトリ削除まで出来るようにしている。  
 
+<a name="practicalusesqlDBIerrorhandlingdiagnoseprogram"></a>
 <details><summary>正常に動くプログラム。</summary>
 
 ```perl
@@ -12755,6 +12758,7 @@ sub main() {
 	$sth->execute
 		or die "SQL文の実行失敗(" . $sth->errstr . ")。";
 
+	# 以下、1レコード文のみ取得しているため、本来ならば、whileで全データを総なめする必要がある。
 	my @table = $sth->fetchrow_array();
 	say "テーブル内容：@table";	# ほげ ぼげぇ〜
 
@@ -13201,12 +13205,15 @@ DBIを使ってデータベースからデータを取り出すことは、次�
   1. 準備段階(prepare)では、SQL文を解析し、有効化したステートメントハンドル(例：$sth)を取得する。  
      `my $sth = $dbh->prepare('select * Table;');`  
   1. そのステートメントハンドルが正常な場合、それを使い、SQL文を実行する段階。  
-     `$sth->execute();`
+     `$sth->execute();`  
+     実行成功の場合の戻り値：true  
+     そうでない場合、undef。  
   1. SQL文の実行後、フェッチ(fetch)段階として、ステートメントハンドルを使い、結果を取得する。  
      `my @table = $sth->fetchrow_array();`  
      全データのフェッチにより、終了する(何が終了するの？)。  
      途中で終了する場合は、**finish()**メソッドを使う。
      後からフェッチを再開する場合は、**execute()**をする必要があるとのこと(2つ目の手順)。  
+     ※逆行(逆走)できないため、戻る場合は最初からやり直しになる。  
   1. ステートメントハンドルなどを切断する段階。  
 
 
@@ -13218,7 +13225,78 @@ todo:
 後日調べる。  
 
 
+<a name="practicalusesqlDBissuingsimpleinquiryfetch"></a>
+#### フェッチ
+フェッチ時のデータが無くなり次第、空リストを返す。  
+そして、エラーが発生した場合もループ処理を抜け出るため、ループ直後にエラー判定処理を入れておくべし。  
 
+以下、[エラー診断](#practicalusesqlDBIerrorhandlingdiagnose)での[プログラム](#practicalusesqlDBIerrorhandlingdiagnoseprogram)から抜粋。  
+```perl
+	#my @table = $sth->fetchrow_array();	←☆1レコードのみ出すのは中止。
+	my @table = ();
+	say "テーブル内容：@table" while @table = $sth->fetchrow_array();	# ほげ ぼげぇ〜	←☆whileで全て抜き出す。
+	die "フェッチ作業失敗 $DBI::errstr" if $DBI::err;	←☆ここで確認して大丈夫か？
+
+	#$sth->finish();	# 強制的にフェッチを切断した。	←☆上記で全データ取り出したことにより、強制切断も中止。
+	my $rc = $dbh1->disconnect
+			or warn "$databaseからの切断失敗(" . $dbh1->errstr . ")。";
+```
+
+P119に誤字がある。  
+最後の段落に**fetchrow_array**を使わず、**fetchrow_array**を使うことで〜ってある。  
+同じやん。  
+誤字やん。  
+fetchrow_arrayrefを使えってことでしょうね。  
+以下、それを使ったプログラム(抜粋していることは変わらない)。
+```perl
+	eval{
+	my $table = '';
+	say "テーブル内容：@{$table}" while $table = $sth->fetchrow_arrayref();	# 配列リファレンスからデータを取り出す。
+			# 出力結果：ほげ ぼげぇ〜	←☆配列ではなく、項目ごとに取り出す場合は、以下参照。
+	#say "テーブル内容：$table->[0], $table->[1]" while $table = $sth->fetchrow_arrayref();
+			# 出力結果：ほげ, ぼげぇ〜	←☆配列なので、左端の項目から0添え字が割り振られるのだろう。
+	};
+```
+配列のリファレンス取得は扱いにくいというか、利便性に欠けそうに思う。  
+しかし、通常のフェッチよりは、性能上の利点はある。  
+
+また、ハッシュ版のフェッチ方法もある。  
+当然リファレンス利用前提だ。  
+以下、そのプログラム(その部分のみ抜粋)。
+```perl
+	eval{
+	my $table = '';
+	#say "テーブル内容：$table" while $table = $sth->fetchrow_hashref();	# ハッシュリファレンスからデータを取り出す。
+			# 出力結果：HASH(0x7fe61e93f8a8)	←☆項目内容の取り出しは、項目名をキーとする。
+	say "テーブル内容：$table->{boo}, $table->{bar}" while $table = $sth->fetchrow_hashref();
+			# 出力結果：ほげ, ぼげぇ〜
+	};
+```
+今回は取得に成功したが、データベースによっては、項目名を全て大文字もしくは、全て小文字にする場合がある。  
+そのため、事前に小文字に指定するか、もしくは全て大文字に指定しておく方が吉。  
+
+以下、項目名を全て小文字化した作業。
+```perl
+	eval{
+	my $table = '';
+	say "テーブル内容：$table->{boo}, $table->{bar}" while $table = $sth->fetchrow_hashref('NAME_lc');
+			# 出力結果：ほげ, ぼげぇ〜
+	};
+```
+
+以下、項目名を全て大文字化した作業。
+```perl
+	eval{
+	my $table = '';
+	say "テーブル内容：$table->{BOO}, $table->{BAR}" while $table = $sth->fetchrow_hashref('NAME_uc');
+			# 出力結果：ほげ, ぼげぇ〜
+	};
+```
+項目名の大小文字化は性能上何ら影響はないとのこと。  
+
+一番の問題点は、キーは、一意であるため、**id**などのように、他テーブルとの結合で名前が重複する場合、どちらか一方のテーブルの**id**項目のみ取得できる。  
+ハッシュリファレンスを使わなければ回避できるはず。  
+そんなことせずとも、項目名にエイリアスを付けることで、普通に回避できる。  
 
 </details>
 
