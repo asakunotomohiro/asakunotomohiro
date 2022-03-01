@@ -12324,6 +12324,18 @@ Building and testing DBD-Pg-3.15.1 ... 2022-03-01 22:06:59.714 JST [7270] ERROR:
 2022-03-01 22:06:59.714 JST [7270] STATEMENT:  CREATE SCHEMA dbd_pg_testschema	←☆スキーマの名前を変えたら駄目だったようだ。
 FAIL
 ! Installing DBD::Pg failed. See /Users/asakunotomohiro/.cpanm/work/1646140011.6831/build.log for details. Retry with --force to force install it.
+$ psql postgres
+psql (14.2)
+Type "help" for help.
+
+postgres=# \dn	←☆ロールに従った箇所に移動する？
+     List of schemas
+  Name  |      Owner
+--------+-----------------
+ public | asakunotomohiro
+(1 row)
+
+postgres=# \q
 $
 ```
 
