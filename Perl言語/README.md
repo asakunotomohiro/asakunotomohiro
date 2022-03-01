@@ -13665,6 +13665,16 @@ fetchrow\_arrayrefを使えってことでしょうね。
 ```
 ピンポイントで1レコードのみ取得した瞬間に切断する場合に、**finish**メソッドを使うようだ。  
 
+また、以下のように、ブロック内で宣言する場合は、ブロックから抜け出た時点で変数が破棄されるため、フェッチが残っていることの警告は出てこない。
+```perl
+{
+	my $sth = $dbh1->prepare('select * from hoge')	←☆新しい変数に代入する(SQL文作成)。
+		or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+	$sth->execute or die "SQL文の実行失敗(" . $sth->errstr . ")。";	←☆SQL文実行。
+	my $table = $sth->fetchrow_arrayref();	←☆フェッチする。
+};	←☆フェッチが残っているのだが、このブロックを抜け出た瞬間に、フェッチ作業がなかったことになり、警告は出ない。
+```
+
 </details>
 
 <a name="practicaluseGUIPerlTk"></a>
