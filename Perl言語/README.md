@@ -12201,9 +12201,7 @@ $ psql postgres
 psql (14.2)
 Type "help" for help.
 
-postgres=# ^C
-postgres=#
-\q
+postgres=# \q
 $ psql postgres
 psql (14.2)
 Type "help" for help.
@@ -12335,6 +12333,32 @@ postgres=# \dn	←☆ロールに従った箇所に移動する？
  public | asakunotomohiro
 (1 row)
 
+postgres=# \q
+$
+$ psql postgres
+psql (14.2)
+Type "help" for help.
+
+postgres=# \du
+                                      List of roles
+    Role name    |                         Attributes                         | Member of
+-----------------+------------------------------------------------------------+-----------
+ asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+ postgres        |                                                            | {}
+
+postgres=# GRANT postgres TO asakunotomohiro;	←☆権限を付与？
+GRANT ROLE
+postgres=# \du
+                                       List of roles
+    Role name    |                         Attributes                         | Member of
+-----------------+------------------------------------------------------------+------------
+ asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {postgres}	←☆何か付いた。
+ postgres        |                                                            | {}
+
+postgres=# CREATE ROLE postgres CREATEDB;	←☆データベース作成権限付与・・・失敗。
+2022-03-01 22:36:39.658 JST [8532] ERROR:  role "postgres" already exists
+2022-03-01 22:36:39.658 JST [8532] STATEMENT:  CREATE ROLE postgres CREATEDB;
+ERROR:  role "postgres" already exists
 postgres=# \q
 $
 ```
