@@ -12241,6 +12241,60 @@ FAIL
 $
 ```
 
+以下、上記の続き。
+```terminal
+$ psql postgres
+psql (14.2)
+Type "help" for help.
+
+postgres=# create schema dbd_pg_testschema;	←☆スキーマの作成。
+CREATE SCHEMA
+postgres=# \dn
+           List of schemas
+       Name        |      Owner
+-------------------+-----------------
+ dbd_pg_testschema | asakunotomohiro
+ public            | asakunotomohiro
+(2 rows)
+
+postgres=# \q
+$ cpanm DBD::Pg
+--> Working on DBD::Pg
+Fetching http://www.cpan.org/authors/id/T/TU/TURNSTEP/DBD-Pg-3.15.1.tar.gz ... OK
+Configuring DBD-Pg-3.15.1 ... OK
+Building and testing DBD-Pg-3.15.1 ... 2022-03-01 22:02:32.347 JST [6699] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:32.347 JST [6699] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:32.798 JST [6702] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:32.798 JST [6702] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:33.049 JST [6704] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:33.049 JST [6704] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:33.293 JST [6706] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:33.293 JST [6706] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:33.541 JST [6708] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:33.541 JST [6708] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:33.768 JST [6710] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:33.768 JST [6710] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:34.005 JST [6712] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:34.005 JST [6712] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:34.234 JST [6714] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:34.234 JST [6714] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:34.473 JST [6716] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:34.473 JST [6716] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:34.723 JST [6718] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:34.723 JST [6718] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:34.971 JST [6720] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:34.971 JST [6720] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:35.201 JST [6722] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:35.201 JST [6722] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:35.470 JST [6724] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:35.470 JST [6724] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:35.715 JST [6726] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:35.715 JST [6726] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+FAIL
+! Installing DBD::Pg failed. See /Users/asakunotomohiro/.cpanm/work/1646139742.6259/build.log for details. Retry with --force to force install it.
+$
+```
+
 何をやっている？
 ```terminal
 $ cpanm DBD::SQLite
