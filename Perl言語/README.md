@@ -12365,29 +12365,29 @@ $ psql postgres
 psql (14.2)
 Type "help" for help.
 
-postgres=# \du
+postgres=# \du	←☆postgresユーザ不在。
                                       List of roles
     Role name    |                         Attributes                         | Member of
 -----------------+------------------------------------------------------------+-----------
  asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
 
-postgres=# CREATE ROLE postgres CREATEDB;
+postgres=# CREATE ROLE postgres CREATEDB;	←☆ユーザ作成。
 CREATE ROLE
 postgres=# \du
                                       List of roles
     Role name    |                         Attributes                         | Member of
 -----------------+------------------------------------------------------------+-----------
  asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
- postgres        | Create DB, Cannot login                                    | {}
+ postgres        | Create DB, Cannot login                                    | {}	←☆postgresユーザがいる。
 
-postgres=# GRANT postgres TO asakunotomohiro;
+postgres=# GRANT postgres TO asakunotomohiro;	←☆スーパユーザに属させる？
 GRANT ROLE
 postgres=# \du
                                        List of roles
     Role name    |                         Attributes                         | Member of
 -----------------+------------------------------------------------------------+------------
- asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {postgres}
- postgres        | Create DB, Cannot login                                    | {}
+ asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {postgres}	←☆何か付いた。
+ postgres        | Create DB, Cannot login                                    | {}	←☆ログイン権限なし。
 
 postgres=# \q
 $ cpanm DBD::Pg
@@ -12398,6 +12398,62 @@ Building and testing DBD-Pg-3.15.1 ... 2022-03-01 22:46:18.070 JST [9159] FATAL:
 2022-03-01 22:46:18.074 JST [9160] FATAL:  role "postgres" is not permitted to log in
 FAIL
 ! Installing DBD::Pg failed. See /Users/asakunotomohiro/.cpanm/work/1646142368.8723/build.log for details. Retry with --force to force install it.
+$
+$ psql postgres
+psql (14.2)
+Type "help" for help.
+
+postgres=# \du
+                                       List of roles
+    Role name    |                         Attributes                         | Member of
+-----------------+------------------------------------------------------------+------------
+ asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {postgres}
+ postgres        | Create DB, Cannot login                                    | {}
+
+postgres=# ALTER ROLE postgres LOGIN;	←☆ログイン権限付与。
+ALTER ROLE
+postgres=# \du
+                                       List of roles
+    Role name    |                         Attributes                         | Member of
+-----------------+------------------------------------------------------------+------------
+ asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {postgres}
+ postgres        | Create DB                                                  | {}	←☆ログイン可能になったようだ。
+
+postgres=# \q
+$ cpanm DBD::Pg
+--> Working on DBD::Pg
+Fetching http://www.cpan.org/authors/id/T/TU/TURNSTEP/DBD-Pg-3.15.1.tar.gz ... OK
+Configuring DBD-Pg-3.15.1 ... OK
+Building and testing DBD-Pg-3.15.1 ... 2022-03-01 22:48:48.490 JST [9697] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:48.490 JST [9697] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:49.118 JST [9700] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:49.118 JST [9700] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:49.445 JST [9702] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:49.445 JST [9702] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:49.783 JST [9704] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:49.783 JST [9704] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:50.102 JST [9706] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:50.102 JST [9706] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:50.448 JST [9708] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:50.448 JST [9708] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:50.787 JST [9710] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:50.787 JST [9710] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:51.185 JST [9713] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:51.185 JST [9713] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:51.556 JST [9719] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:51.556 JST [9719] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:51.919 JST [9721] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:51.919 JST [9721] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:52.250 JST [9724] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:52.250 JST [9724] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:52.588 JST [9726] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:52.588 JST [9726] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:52.956 JST [9728] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:52.956 JST [9728] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:53.279 JST [9730] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:53.279 JST [9730] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+FAIL
+! Installing DBD::Pg failed. See /Users/asakunotomohiro/.cpanm/work/1646142518.9256/build.log for details. Retry with --force to force install it.
 $
 ```
 
