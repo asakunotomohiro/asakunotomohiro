@@ -12455,6 +12455,38 @@ Building and testing DBD-Pg-3.15.1 ... 2022-03-01 22:48:48.490 JST [9697] ERROR:
 FAIL
 ! Installing DBD::Pg failed. See /Users/asakunotomohiro/.cpanm/work/1646142518.9256/build.log for details. Retry with --force to force install it.
 $
+$ psql postgres
+psql (14.2)
+Type "help" for help.
+
+postgres=# \du
+                                       List of roles
+    Role name    |                         Attributes                         | Member of
+-----------------+------------------------------------------------------------+------------
+ asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {postgres}
+ postgres        | Create DB                                                  | {}
+
+postgres=# CREATE ROLE postgres CREATEROLE;	←☆ロール作成権限付与失敗。
+2022-03-01 22:52:23.346 JST [9890] ERROR:  role "postgres" already exists
+2022-03-01 22:52:23.346 JST [9890] STATEMENT:  CREATE ROLE postgres CREATEROLE;
+ERROR:  role "postgres" already exists
+postgres=# CREATE ROLE postgres PASSWORD '1234';	←☆パスワード権限付与失敗。
+2022-03-01 22:53:00.211 JST [9890] ERROR:  role "postgres" already exists
+2022-03-01 22:53:00.211 JST [9890] STATEMENT:  CREATE ROLE postgres PASSWORD '1234';
+ERROR:  role "postgres" already exists
+postgres=# CREATE ROLE postgres SUPERUSER;	←☆スーパユーザ権限付与失敗。
+2022-03-01 22:53:37.219 JST [9890] ERROR:  role "postgres" already exists
+2022-03-01 22:53:37.219 JST [9890] STATEMENT:  CREATE ROLE postgres SUPERUSER;
+ERROR:  role "postgres" already exists
+postgres=# \du
+                                       List of roles
+    Role name    |                         Attributes                         | Member of
+-----------------+------------------------------------------------------------+------------
+ asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {postgres}
+ postgres        | Create DB                                                  | {}
+
+postgres=# \q
+$
 ```
 
 何をやっている？
