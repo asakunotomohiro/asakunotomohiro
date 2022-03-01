@@ -12186,6 +12186,61 @@ $
 ```
 解決方法が全く分からない。  
 
+以下、環境変数の設定後、再度インストール。
+```terminal
+$ export PGPORT=5432
+$ cpanm DBD::Pg
+--> Working on DBD::Pg
+Fetching http://www.cpan.org/authors/id/T/TU/TURNSTEP/DBD-Pg-3.15.1.tar.gz ... OK
+Configuring DBD-Pg-3.15.1 ... OK
+Building and testing DBD-Pg-3.15.1 ... 2022-03-01 21:20:28.783 JST [5356] FATAL:  role "postgres" does not exist
+2022-03-01 21:20:28.787 JST [5357] FATAL:  role "postgres" does not exist
+FAIL
+! Installing DBD::Pg failed. See /Users/asakunotomohiro/.cpanm/work/1646137219.4919/build.log for details. Retry with --force to force install it.
+$ psql postgres
+psql (14.2)
+Type "help" for help.
+
+postgres=# ^C
+postgres=#
+\q
+$ psql postgres
+psql (14.2)
+Type "help" for help.
+
+template1=# \du
+                                      List of roles
+    Role name    |                         Attributes                         | Member of
+-----------------+------------------------------------------------------------+-----------
+ asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+
+template1=#
+\q
+$ createuser postgres	←☆ユーザの追加。
+$ psql postgres
+psql (14.2)
+Type "help" for help.
+
+postgres=# \du
+                                      List of roles
+    Role name    |                         Attributes                         | Member of
+-----------------+------------------------------------------------------------+-----------
+ asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+ postgres        |                                                            | {}	←☆追加された。
+
+postgres=#
+\q
+$ cpanm DBD::Pg
+--> Working on DBD::Pg
+Fetching http://www.cpan.org/authors/id/T/TU/TURNSTEP/DBD-Pg-3.15.1.tar.gz ... OK
+Configuring DBD-Pg-3.15.1 ... OK
+Building and testing DBD-Pg-3.15.1 ... 2022-03-01 21:24:37.623 JST [5902] ERROR:  permission denied for database postgres
+2022-03-01 21:24:37.623 JST [5902] STATEMENT:  CREATE SCHEMA dbd_pg_testschema	←☆エラーの内容が変わった。
+FAIL
+! Installing DBD::Pg failed. See /Users/asakunotomohiro/.cpanm/work/1646137467.5464/build.log for details. Retry with --force to force install it.
+$
+```
+
 何をやっている？
 ```terminal
 $ cpanm DBD::SQLite
