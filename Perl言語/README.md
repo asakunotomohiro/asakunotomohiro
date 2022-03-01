@@ -12488,6 +12488,8 @@ postgres=# \du
 postgres=# \q
 $
 ```
+断念。  
+本格的に調べる必要がある・・・それには、PostgreSQL専用書籍が必要と言うこと。  
 
 何をやっている？
 ```terminal
@@ -13549,7 +13551,7 @@ P119に誤字がある。
 最後の段落に**fetchrow_array**を使わず、**fetchrow_array**を使うことで〜ってある。  
 同じやん。  
 誤字やん。  
-fetchrow_arrayrefを使えってことでしょうね。  
+fetchrow\_arrayrefを使えってことでしょうね。  
 以下、それを使ったプログラム(抜粋していることは変わらない)。
 ```perl
 	eval{
@@ -13600,6 +13602,30 @@ fetchrow_arrayrefを使えってことでしょうね。
 一番の問題点は、キーは、一意であるため、**id**などのように、他テーブルとの結合で名前が重複する場合、どちらか一方のテーブルの**id**項目のみ取得できる。  
 ハッシュリファレンスを使わなければ回避できるはず。  
 そんなことせずとも、項目名にエイリアスを付けることで、普通に回避できる。  
+
+
+<a name="practicalusesqlDBissuingsimpleinquiryfetch"></a>
+#### フェッチ-機敏出力
+素早くフェッチ後、出力するメソッドは、**dump_results()**を使う。  
+
+以下、それを使ったプログラム(必要箇所のみ[抜粋](#practicalusesqlDBIerrorhandlingdiagnoseprogram))。
+```perl
+	#$sth->execute('ほげ', 'ぼげぇ〜')	←☆文字化けした。
+	$sth->execute('hoge', 'hOgEe')
+　　　・
+　　　・
+　　　・
+	my $table = $sth->dump_results();	←☆出力処理がない状態で出力された。
+			# 出力結果：
+                    'hoge', 'hOgEe'	←☆今回1行のみをテーブルに入れていたため1行の出力だが、あるだけ出力するようだ。
+                    1 rows
+```
+これは、内部で[**neat_list**](#practicalusesqlDBIutilitymethodandfunctionplasticsurgeryneatlist)を使っているため、データ転送などに使うものではない。  
+人間がその場でテーブル内容を確認するためだけに使うメソッド。  
+
+引数に書式を渡すことで、成形した形で出力結果に反映させられる。  
+`my $table = $sth->dump_results(5, '\n', ':');`  
+※今回1行レコードのみのため、出力結果ほぼ変わらず。  
 
 </details>
 
