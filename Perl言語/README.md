@@ -13515,6 +13515,9 @@ DBIを使ってデータベースからデータを取り出すことは、次�
 * データ取り出し。  
   1. 準備段階(prepare)では、SQL文を解析し、有効化したステートメントハンドル(例：$sth)を取得する。  
      `my $sth = $dbh->prepare('select * Table;');`  
+     蛇足：[非select文の実行](#practicalusesqlDBInonselectexecution)には、
+     `my $sth = $dbh->do('insert into Table(abc) values(20220302);');`
+     のように、doメソッドを用いる。  
   1. そのステートメントハンドルが正常な場合、それを使い、SQL文を実行する段階。  
      `$sth->execute();`  
      実行成功の場合の戻り値：true  
@@ -13938,6 +13941,17 @@ $sth->bind_columns( undef, \$boo, \$bar, \$hoge, );
 ※上記の全体プログラムから変更箇所のみ抜粋した。  
 また、第1引数は、undef固定なのだが、**DBI 1.08**以降の場合は、省略可能。  
 そして、私の環境では省略できた。  
+
+
+<a name="practicalusesqlDBIparameterbindingmethoddoprepare"></a>
+#### doメソッドとprepareメソッドの使い分け。
+select結果の出力をPerl側の変数に紐付けることで、処理速度が向上する。  
+
+doメソッドの様式：
+`my $rc = $dbh->do('非select文') || die $dbh->errstr;`  
+`my $rc = $dbh->do('非select文', \%attr) || die $dbh->errstr;`  
+`my $rv = $dbh->do('非select文', \%attr, @bind_values) || die $dbh->errstr;`  
+※select文でも使って構わないが、値を取得することが出来ないため、無駄な処理になる。  
 
 </details>
 
