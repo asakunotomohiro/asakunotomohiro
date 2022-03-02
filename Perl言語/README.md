@@ -13770,6 +13770,17 @@ sub main() {
 ```
 データベース固有のパラメタバインドはあるが、汎用性に欠けているため、今回の方法を用いるのが吉。  
 
+以下、パラメタバインドを使わない場合のプログラム(その部分のみ抜粋)。
+```perl
+$sth = $dbh1->prepare('
+		insert into hoge (boo, bar)
+		values (' . $dbh1->quote('項目1つ目') . ',' . $dbh1->quote('2つ目の項目内容') . ');
+	') or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+```
+非常に煩わしい。  
+これは面倒くさい。  
+出力結果：項目1つ目, 2つ目の項目内容  
+
 </details>
 
 <a name="practicaluseGUIPerlTk"></a>
