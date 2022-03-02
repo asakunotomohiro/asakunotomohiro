@@ -88,19 +88,21 @@ sub select() {
 	# このファイルの中で一番やりたい処理がここの関数。
 	my $self = shift;
 
-	my $sth = $self->{dbh}->prepare('create table hoge( asakuno INTEGER, tomohiro varchar(20) )')
-		or die "テーブル作成の準備失敗(" . $self->{dbh}->errstr . ")。";
-	$sth->execute
-		or die "テーブル作成失敗($sth->errstr)。";
+	my $sth = $self->{dbh}->do('create table hoge( asakuno INTEGER, tomohiro varchar(20) )')
+		or die "テーブル作成失敗(" . $self->{dbh}->errstr . ")。";
+	#my $sth = $self->{dbh}->prepare('create table hoge( asakuno INTEGER, tomohiro varchar(20) )')
+	#	or die "テーブル作成の準備失敗(" . $self->{dbh}->errstr . ")。";
+	#$sth->execute
+	#	or die "テーブル作成失敗($sth->errstr)。";
 
 	my $sth = $self->{dbh}->prepare('insert into hoge (asakuno, tomohiro) values (?, ?);')
-		or die "SQL文の準備失敗(" . $self->{dbh}->errstr . ")。";
+		or die "insert文の準備失敗(" . $self->{dbh}->errstr . ")。";
 
 	# 以下の処理で失敗する。
 	$sth->execute('asakuno')	# 本来であれば2項目文を追加すべきなのに、今回1つしかないため、エラーになる。
-		or die "SQL文の実行失敗(" . $sth->errstr . ")。";
-		# DBD::SQLite::st execute failed: called with 1 bind variables when 2 are needed at エラー処理(SQLite版).pl line 100.
-		# SQL文の実行失敗(called with 1 bind variables when 2 are needed)。 at エラー処理(SQLite版).pl line 100.
+		or die "insert文の実行失敗(" . $sth->errstr . ")。";
+		# DBD::SQLite::st execute failed: called with 1 bind variables when 2 are needed at エラー処理(SQLite版).pl line 102.
+		# insert文の実行失敗(called with 1 bind variables when 2 are needed)。 at エラー処理(SQLite版).pl line 102.
 
 	my $sth = $self->{dbh}->prepare('select * from hoge;')
 		or die "SQL文の準備失敗(" . $self->{dbh}->errstr . ")。";

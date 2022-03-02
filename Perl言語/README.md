@@ -11699,8 +11699,9 @@ ODBCは仕事で使ったことあるが、DBI(Database Interface)はない。
     * [SQLiteの特徴](#practicalusesqlDBIconnectanddisconnectsqliteconnectfeature)  
   * [エラー処理](#practicalusesqlDBIerrorhandling)  
   * [ユーティリティメソッドと関数](#practicalusesqlDBIutilitymethodandfunction)  
-  * [簡単な問い合わせの発行](#practicalusesqlDBissuingsimpleinquiry)  
+  * [簡単な問い合わせの発行](#practicalusesqlDBIissuingsimpleinquiry)  
     * フェッチ・dump\_results・finish  
+  * [非Select文の実行](#practicalusesqlDBInonselectexecution)  
 
 ※参考書籍：[入門 Perl DBI](https://www.oreilly.co.jp/books/4873110505/)  
 
@@ -13054,11 +13055,11 @@ sub main() {
 			\%option,
 		) or die "接続失敗(" . $DBI::errstr . ")。";
 
-	my $sth = $dbh1->prepare('create table hoge( boo INTEGER, bar varchar(20) )')
-		or die "テーブル作成の準備失敗(" . $dbh1->errstr . ")。";
-	$sth->execute
-		or die "テーブル作成失敗(" . $sth->errstr . ")。";
+	my $sth = $dbh1->do('create table hoge( boo INTEGER, bar varchar(20) )')
+		or die "テーブル作成失敗(" . $dbh1->errstr . ")。";
 
+	#my $sth = $dbh1->do('insert into hoge (boo, bar) values ("ほげ", "ぼげぇ〜");')
+	#	or die "データ挿入失敗(" . $dbh1->errstr . ")。";
 	my $sth = $dbh1->prepare('insert into hoge (boo, bar) values (?, ?);')
 		or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
 	$sth->execute('ほげ', 'ぼげぇ〜')
@@ -13088,18 +13089,16 @@ sub main() {
 
 **$dbh1->errstr**の出力用プログラム(上記からプログラム抜粋)。
 ```perl
-my $sth = $dbh1->prepare('create table hoge')
+my $sth = $dbh1->do('create table hoge')
 	or die "テーブル作成の準備失敗(" . $dbh1->errstr . ")。";
 	# テーブル作成の準備失敗(incomplete input)。 at エラー処理(SQLite版).pl line 20.
 ```
 
 **$sth->errstr**の出力用プログラム(上記からプログラム抜粋)。
 ```perl
-my $sth = $dbh1->prepare('insert into hoge (boo, bar) values (?, ?);')
-	or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
-$sth->execute('ほげ')
-	or die "SQL文の実行失敗(" . $sth->errstr . ")。";	←☆ここ。
-	# SQL文の実行失敗(called with 1 bind variables when 2 are needed)。 at エラー処理(SQLite版).pl line 27.	←☆これ。
+my $sth = $dbh1->do('insert into hoge (boo, bar) values ("ほげ", "ぼげぇ〜");')
+	or die "データ挿入失敗(" . $dbh1->errstr . ")。";	←☆ここ。
+	# データ挿入失敗(no such table: hoge)。 at エラー処理(SQLite版).pl line 23.	←☆これ。
 ```
 
 
@@ -13508,7 +13507,7 @@ main();
 内部で、neatを呼び出しているようだ(本当に？)。  
 
 
-<a name="practicalusesqlDBissuingsimpleinquiry"></a>
+<a name="practicalusesqlDBIissuingsimpleinquiry"></a>
 ### 簡単な問い合わせの発行
 DBIを使ってデータベースからデータを取り出すことは、次の4つの段階を繰り返す。  
 
@@ -13528,7 +13527,7 @@ DBIを使ってデータベースからデータを取り出すことは、次�
   1. ステートメントハンドルなどを切断する段階。  
 
 
-<a name="practicalusesqlDBissuingsimpleinquiryonthefly"></a>
+<a name="practicalusesqlDBIissuingsimpleinquiryonthefly"></a>
 #### 動的なWebサイトの構築
 何をすれば良いのか全く分からない。  
 
@@ -13536,7 +13535,7 @@ todo:
 後日調べる。  
 
 
-<a name="practicalusesqlDBissuingsimpleinquiryfetch"></a>
+<a name="practicalusesqlDBIissuingsimpleinquiryfetch"></a>
 #### フェッチ
 フェッチ時のデータが無くなり次第、空リストを返す。  
 そして、エラーが発生した場合もループ処理を抜け出るため、ループ直後にエラー判定処理を入れておくべし。  
@@ -13610,7 +13609,7 @@ fetchrow\_arrayrefを使えってことでしょうね。
 そんなことせずとも、項目名にエイリアスを付けることで、普通に回避できる。  
 
 
-<a name="practicalusesqlDBissuingsimpleinquiryfetch"></a>
+<a name="practicalusesqlDBIissuingsimpleinquiryfetchdumpresults"></a>
 #### フェッチ-機敏出力
 素早くフェッチ後、出力するメソッドは、**dump_results()**を使う。  
 
@@ -13634,7 +13633,7 @@ fetchrow\_arrayrefを使えってことでしょうね。
 ※今回1行レコードのみのため、出力結果ほぼ変わらず。  
 
 
-<a name="practicalusesqlDBissuingsimpleinquiry"></a>
+<a name="practicalusesqlDBIissuingsimpleinquiryfetchfinish"></a>
 #### フェッチ-途中退場
 ステートメントハンドルは、生きたままになっているため、再利用できる。
 ※フェッチを中断しただけであって、他のは生きている。  
@@ -13679,6 +13678,26 @@ fetchrow\_arrayrefを使えってことでしょうね。
 
 todo:
 Kids属性及びActiveKids属性を調べる。  
+
+
+<a name="practicalusesqlDBInonselectexecution"></a>
+### 非Select文の実行
+Select操作と異なり、データの挿入・削除・更新操作は、1回の実行だけで完結する。  
+フェッチ作業は一切不要な状態で処理が完了する。  
+そのため、prepare・executeは使わない(冗長だ)。  
+そして、今回必要なメソッドは、**do**メソッドになる。  
+これを用いることで、上記3種類の操作が可能になる。  
+
+例）
+`my $rows = $dbh->do("delete from hoge where boo = 'bar'");`  
+※ここで、文字列を[囲んだ](#practicalusesqlDBIutilitymethodandfunctionquote)方が良いのだろう。  
+
+実行結果の戻り値内容は、操作結果の行数もしくはundef(エラーの場合)が返ってくる。  
+上記例で、5レコードが削除された場合、**$rows**には、5が格納されている。  
+また、操作結果を戻さないデータベースの場合は、**-1**が返る。  
+そして、操作結果が0レコードの場合は、**0E0**が返る。  
+これは、if文などでは0を偽扱いするため、それを防ぐ目的から純粋な0は返さない。  
+エラーの場合のみ、falseになる値を返す。  
 
 </details>
 
