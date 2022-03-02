@@ -91,21 +91,21 @@ sub dbconnect() {
 sub select() {
 	my $self = shift;
 
-	my $sth = $self->{dbh}->prepare('create table ASAKUNOTOMOHIRO( asakuno INTEGER, tomohiro varchar(20) )')
-		or die "テーブル作成の準備失敗(" . $self->{dbh}->errstr . ")。";
-	$sth->execute
-		or die "テーブル作成失敗($sth->errstr)。";
+	my $sth = $self->{dbh}->do('create table ASAKUNOTOMOHIRO( asakuno INTEGER, tomohiro varchar(20) )')
+		or die "テーブル作成失敗(" . $self->{dbh}->errstr . ")。";
+	#$sth->execute
+	#	or die "テーブル作成失敗($sth->errstr)。";
 
 	my $sth = $self->{dbh}->prepare('insert into ASAKUNOTOMOHIRO (asakuno, tomohiro) values (?, ?);')
-		or die "SQL文の準備失敗(" . $self->{dbh}->errstr . ")。";
+		or die "insert文の準備失敗(" . $self->{dbh}->errstr . ")。";
 
 	$sth->execute('asakuno', '朝来野')
-		or die "SQL文の実行失敗(" . $sth->errstr . ")。";
+		or die "insert文の実行失敗(" . $sth->errstr . ")。";
 
 	my $sth = $self->{dbh}->prepare('select * from ASAKUNOTOMOHIRO;')
-		or die "SQL文の準備失敗(" . $self->{dbh}->errstr . ")。";
+		or die "select文の準備失敗(" . $self->{dbh}->errstr . ")。";
 	$sth->execute
-		or die "SQL文の実行失敗(" . $sth->errstr . ")。";
+		or die "select文の実行失敗(" . $sth->errstr . ")。";
 
 	my @table = $sth->fetchrow_array();
 	say "テーブル内容：@table";
