@@ -13993,6 +13993,7 @@ sub main() {
 	eval{
 	my @values = qw( 本日は 晴天なり。 );
 	while( my ($index, $value) = each @values ){	←☆ここで繰り返している。
+		# 以下の処理は、何度もSQL文が準備され、何度も実行され、何度も破棄されている(要は資源の無駄使い)。
 		$sth = $dbh1->do("insert into hoge (boo, bar) values (?, ?);", undef, $index, $value)
 			or die "データ挿入失敗(" . $dbh1->errstr . ")。";
 	}
@@ -14016,6 +14017,21 @@ sub main() {
 }
 &main();
 ```
+上記の資源の無駄遣いをしている箇所は、以下のように修正できる。  
+```perl
+	my $sth = $dbh1->prepare('insert into hoge (boo, bar) values (?, ?);')	←☆ループの外でSQL文を準備する。
+		or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+	eval{
+	my @values = qw( 本日は 晴天なり。 );
+	while( my ($index, $value) = each @values ){	←☆ここのループ開始部分は変わらない。
+	$sth->execute($index, $value)	←☆引数を与え、実行する(無駄がなくなる)。
+		or die "SQL文の実行失敗(" . $sth->errstr . ")。";
+	}
+	};
+	say "$@" if $@;
+```
+無駄かどうかは言われなければ気づかないように思うのだが、慣れれば普通に使い分けできるようになるのだろうか。  
+これで処理速度は上がったが、専用ツールに比べれば、当然Perlは遅い。  
 
 </details>
 
