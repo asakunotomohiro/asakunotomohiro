@@ -13953,6 +13953,10 @@ doメソッドの様式：
 `my $rv = $dbh->do('非select文', \%attr, @bind_values) || die $dbh->errstr;`  
 ※select文でも使って構わないが、値を取得することが出来ないため、無駄な処理になる。  
 
+prepareメソッドの様式：
+`my $sth = $dbh->prepare('select文') || die $dbh->errstr;`  
+`my $sth = $dbh->prepare('select文', \%attr) || die $dbh->errstr;`  
+
 </details>
 
 <a name="practicaluseGUIPerlTk"></a>
