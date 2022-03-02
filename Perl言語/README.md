@@ -13945,17 +13945,21 @@ $sth->bind_columns( undef, \$boo, \$bar, \$hoge, );
 
 <a name="practicalusesqlDBIparameterbindingmethoddoprepare"></a>
 #### doメソッドとprepareメソッドの使い分け。
-select結果の出力をPerl側の変数に紐付けることで、処理速度が向上する。  
+doメソッドは、簡単にテーブル更新などが出来るようになっているが、処理性能に難があるため、使いどころを間違えた場合、処理速度の足を引っ張ることになるため、注意が必要である。  
 
 doメソッドの様式：
-`my $rc = $dbh->do('非select文') || die $dbh->errstr;`  
-`my $rc = $dbh->do('非select文', \%attr) || die $dbh->errstr;`  
-`my $rv = $dbh->do('非select文', \%attr, @bind_values) || die $dbh->errstr;`  
+`my $rc = $dbh->do(非select文) || die $dbh->errstr;`  
+`my $rc = $dbh->do(非select文, \%attr) || die $dbh->errstr;`  
+`my $rv = $dbh->do(非select文, \%attr, @bind_values) || die $dbh->errstr;`  
 ※select文でも使って構わないが、値を取得することが出来ないため、無駄な処理になる。  
+第1引数の部分は、`q{}`で囲むのが良いようだが、どういう意味？  
+そのまま使えそうではあるが・・・変数に格納した場合の説明だろうか(その変数に変数を埋め込んでいる場合は`qq{}`を用いる？)。  
+executeする必要はなくなるが、何度もdo呼ぶ場合は、prepareとexecuteの組み合わせのほうが効率は良い。  
 
 prepareメソッドの様式：
-`my $sth = $dbh->prepare('select文') || die $dbh->errstr;`  
-`my $sth = $dbh->prepare('select文', \%attr) || die $dbh->errstr;`  
+`my $sth = $dbh->prepare(select文) || die $dbh->errstr;`  
+`my $sth = $dbh->prepare(select文, \%attr) || die $dbh->errstr;`  
+単純なデータベースエンジン向けに、可搬性の高いプログラムを組む場合は、フェッチ中に次の準備もしくは実行することは避けるべきであり、SQL文の終了用にセミコロン`;`を付けるべきでもないとのこと。  
 
 </details>
 
