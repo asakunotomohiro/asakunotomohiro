@@ -13817,6 +13817,12 @@ $sth->bind_param(1, 'values ($column1, $column2)');	←☆こんなことはで�
 ```
 **near "?": syntax error**になる。  
 
+型指定する場合は、パラメタバインドの第3引数に型を指定する。  
+例）
+`$sth->bind_param(1, 20220302, SQL_VARCHAR);`
+その時、**use DBI qw(:sql_types);**の呼び出しが必須になる。  
+※そもそもどんな型があるのか分からない。  
+
 </details>
 
 <a name="practicaluseGUIPerlTk"></a>
