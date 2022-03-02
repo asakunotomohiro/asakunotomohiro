@@ -13779,7 +13779,7 @@ $sth = $dbh1->prepare("
 $sth->execute('ほげ', 'ぼげぇ〜')
 ```
 特に問題なく使える。  
-そして、この場合の設定型は、SQL_VARCHARが付与される。  
+そして、この場合の設定型は、SQL\_VARCHARが付与される。  
 この型指定できない問題の回避には、一度パラメタバインドメソッドをかませる必要がある。  
 以下、例）
 ```perl
@@ -13851,6 +13851,93 @@ $sth->bind_param(1, 'values ($column1, $column2)');	←☆こんなことはで�
 **bind_param_inout**メソッドを使う。  
 しかし、これは、限定されたデータベースのみ利用可能であり、しかも限定された場面でのみ有効なようだ。  
 オラクルではできるようだ。  
+
+
+<a name="practicalusesqlDBIparameterbindingoutputbind"></a>
+#### 出力列のバインド
+select結果の出力をPerl側の変数に紐付けることで、処理速度が向上する。  
+別名バインド列と言う。  
+
+以下、簡単なプログラム例を示す。
+```perl
+use v5.24;
+use DBI;
+use DBI qw(:sql_types);
+
+sub main() {
+	my $database = './sqlite.db';	# データベース(ファイル)名定義。
+
+	my %option = (	# 警告レベルメッセージ出力なし。
+			PrintError => 0,	# warn経由でエラー報告無し。
+			RaiseError => 0,	# die経由でエラー報告無し。
+		);
+
+	my $dbh1 = DBI->connect(
+			"dbi:SQLite:database=$database",
+			"",	# ユーザ名。
+			"",	# パスワード。
+			\%option,
+		) or die "接続失敗(" . $DBI::errstr . ")。";
+
+	my $sth = '';
+	eval{
+	$sth = $dbh1->prepare('create table hoge( boo INTEGER, bar varchar(20) )')
+		or die "テーブル作成の準備失敗(" . $dbh1->errstr . ")。";
+	$sth->execute
+		or die "テーブル作成失敗(" . $sth->errstr . ")。";
+	};
+	print "テーブル作成失敗->$@" if $@;
+
+	eval{
+	$sth = $dbh1->prepare("
+			insert into hoge (boo, bar)
+			values (?, ?);
+		") or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+	$sth->execute('ほげ1', 'ぼげぇ〜1')
+		or die "SQL文の実行失敗(" . $sth->errstr . ")。";
+	$sth->execute('ほげ2', 'ぼげぇ〜2')
+		or die "SQL文の実行失敗(" . $sth->errstr . ")。";
+	$sth->execute('ほげ3', 'ぼげぇ〜3')
+		or die "SQL文の実行失敗(" . $sth->errstr . ")。";
+	};
+	print "insert作業失敗->$@" if $@;
+
+	eval{
+	$sth = $dbh1->prepare('select boo from hoge')
+		or die "select文の準備失敗(" . $dbh1->errstr . ")。";
+	$sth->execute
+		or die "select文の実行失敗(" . $sth->errstr . ")。";
+	};
+	print "select文実行失敗$@" if $@;
+
+	# 以下、紐付け。
+	my ( $boo, );
+	$sth->bind_col( 1, \$boo );	←☆この部分。
+
+	eval{
+	say "項目内容：$boo" while $sth->fetch;	# 全データ取り出し。	←☆フェッチ方法が簡単になっている。
+	};
+	print "フェッチ作業失敗->$@" if $@;
+
+	eval{
+	my $rc = $dbh1->disconnect
+		or warn "$databaseからの切断失敗(" . $dbh1->errstr . ")。";
+	};
+	unlink $database or warn "ファイル削除失敗($!)。";
+}
+&main();
+```
+確実に取得項目が分かっているという場合は、使うべき技法だろう。  
+これでは指定項目が増加するたびに紐付け作業が増加する。  
+それを1行で収めるのが**bind_columns**メソッドになる。  
+以下、使用例）
+```perl
+my ( $boo, $bar, $hoge, );
+$sth->bind_columns( undef, \$boo, \$bar, \$hoge, );
+```
+※上記の全体プログラムから変更箇所のみ抜粋した。  
+また、第1引数は、undef固定なのだが、**DBI 1.08**以降の場合は、省略可能。  
+そして、私の環境では省略できた。  
 
 </details>
 
