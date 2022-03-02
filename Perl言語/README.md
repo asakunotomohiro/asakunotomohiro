@@ -11702,6 +11702,7 @@ ODBCは仕事で使ったことあるが、DBI(Database Interface)はない。
   * [簡単な問い合わせの発行](#practicalusesqlDBIissuingsimpleinquiry)  
     * フェッチ・dump\_results・finish  
   * [非Select文の実行](#practicalusesqlDBInonselectexecution)  
+  * [文へのパラメタバインド](#practicalusesqlDBIparameterbinding)  
 
 ※参考書籍：[入門 Perl DBI](https://www.oreilly.co.jp/books/4873110505/)  
 
@@ -13698,6 +13699,76 @@ Select操作と異なり、データの挿入・削除・更新操作は、1回�
 そして、操作結果が0レコードの場合は、**0E0**が返る。  
 これは、if文などでは0を偽扱いするため、それを防ぐ目的から純粋な0は返さない。  
 エラーの場合のみ、falseになる値を返す。  
+
+
+<a name="practicalusesqlDBIparameterbinding"></a>
+### 文へのパラメタバインド
+SQL文に使う文字列を動的に変更するための仕組みのことだろう。  
+
+以下、バインドプログラム例）
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	# データベース(ファイル)名定義。
+	my $database = './sqlite.db';
+
+	my %option = (	# 警告レベルメッセージ出力なし。
+			PrintError => 0,	# warn経由でエラー報告無し。
+			RaiseError => 0,	# die経由でエラー報告無し。
+		);
+
+	my $dbh1 = DBI->connect(
+			"dbi:SQLite:database=$database",
+			"",	# ユーザ名。
+			"",	# パスワード。
+			\%option,
+		) or die "接続失敗(" . $DBI::errstr . ")。";
+
+	my $sth = '';
+	eval{
+	$sth = $dbh1->prepare('create table hoge( boo INTEGER, bar varchar(20) )')
+		or die "テーブル作成の準備失敗(" . $dbh1->errstr . ")。";
+	$sth->execute
+		or die "テーブル作成失敗(" . $sth->errstr . ")。";
+	};
+	print "テーブル作成失敗->$@" if $@;
+
+	eval{
+	$sth = $dbh1->prepare('insert into hoge (boo, bar) values (?, ?);')
+		or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+	$sth->bind_param(1, 'ほげ');	# quoteメソッドは不要(のように見えて、内部で呼び出している)。
+	$sth->bind_param(2, 'ぶぅ');	# quoteメソッドは不要(のように見えて、内部で呼び出している)。
+	$sth->execute()	←☆結局は、この処理が必要。
+		or die "SQL文の実行失敗(" . $sth->errstr . ")。";
+	};
+	print "insert作業失敗->$@" if $@;
+
+	eval{
+	$sth = $dbh1->prepare('select * from hoge')
+		or die "select文の準備失敗(" . $dbh1->errstr . ")。";
+	$sth->execute
+		or die "select文の実行失敗(" . $sth->errstr . ")。";
+	};
+	print "select文実行失敗$@" if $@;
+
+	eval{
+	my $table = '';
+	say "テーブル内容：$table->[0], $table->[1]"
+		while $table = $sth->fetchrow_arrayref();	# 全データ取り出し。
+	};
+	print "フェッチ作業失敗->$@" if $@;
+
+	eval{
+	my $rc = $dbh1->disconnect
+		or warn "$databaseからの切断失敗(" . $dbh1->errstr . ")。";
+	};
+	unlink $database or warn "ファイル削除失敗($!)。";
+}
+&main();
+```
+データベース固有のパラメタバインドはあるが、汎用性に欠けているため、今回の方法を用いるのが吉。  
 
 </details>
 
