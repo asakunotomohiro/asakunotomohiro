@@ -11699,6 +11699,10 @@ ODBCは仕事で使ったことあるが、DBI(Database Interface)はない。
     * [SQLiteの特徴](#practicalusesqlDBIconnectanddisconnectsqliteconnectfeature)  
   * [エラー処理](#practicalusesqlDBIerrorhandling)  
   * [ユーティリティメソッドと関数](#practicalusesqlDBIutilitymethodandfunction)  
+  * [簡単な問い合わせの発行](#practicalusesqlDBissuingsimpleinquiry)  
+    * フェッチ・dump\_results・finish  
+
+※参考書籍：[入門 Perl DBI](https://www.oreilly.co.jp/books/4873110505/)  
 
 
 <a name="practicalusesqlDBIquerylanguageparlance"></a>
@@ -11813,12 +11817,17 @@ DBIからインスタンス生成したオブジェクトのこと。
 
 ※これも具体的な想像が出来ず、理解できない部分がある。  
 複数のデータベースに、1つのオブジェクトから同時接続できる？  
+※そもそもデータベースハンドルとは、**$dbh**のこと？  
 
 
 <a name="practicalusesqlDBImaindbiprogrammingstatementhandle"></a>
 #### ステートメントハンドル
 データベースへのSQL操作を行うハンドル。  
 ※データベースハンドルの子に相当する。  
+
+例）
+`my $sth = $dbh->prepare('select * from hoge');`  
+ステートメントハンドルとは、**$sth**のこと？  
 
 
 <a name="practicalusesqlDBIdatasource"></a>
@@ -12061,7 +12070,7 @@ postgres=# \l	←☆バックスラッシュに小文字のL字。
            |          |          |            |            | postgres=CTc/postgres
 (3 rows)
 
-postgres=#	←☆Ctrl+dで抜け出る。
+postgres=#	←☆Ctrl+dで抜け出る(\qだけで抜けられる)。
 \q
 $
 ```
@@ -12182,6 +12191,311 @@ BEGIN failed--compilation aborted.
 $
 ```
 解決方法が全く分からない。  
+
+以下、環境変数の設定後、再度インストール。
+```terminal
+$ export PGPORT=5432
+$ cpanm DBD::Pg
+--> Working on DBD::Pg
+Fetching http://www.cpan.org/authors/id/T/TU/TURNSTEP/DBD-Pg-3.15.1.tar.gz ... OK
+Configuring DBD-Pg-3.15.1 ... OK
+Building and testing DBD-Pg-3.15.1 ... 2022-03-01 21:20:28.783 JST [5356] FATAL:  role "postgres" does not exist
+2022-03-01 21:20:28.787 JST [5357] FATAL:  role "postgres" does not exist
+FAIL
+! Installing DBD::Pg failed. See /Users/asakunotomohiro/.cpanm/work/1646137219.4919/build.log for details. Retry with --force to force install it.
+$ psql postgres
+psql (14.2)
+Type "help" for help.
+
+postgres=# \q
+$ psql postgres
+psql (14.2)
+Type "help" for help.
+
+template1=# \du
+                                      List of roles
+    Role name    |                         Attributes                         | Member of
+-----------------+------------------------------------------------------------+-----------
+ asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+
+template1=#
+\q
+$ createuser postgres	←☆ユーザの追加。
+$ psql postgres
+psql (14.2)
+Type "help" for help.
+
+postgres=# \du
+                                      List of roles
+    Role name    |                         Attributes                         | Member of
+-----------------+------------------------------------------------------------+-----------
+ asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+ postgres        |                                                            | {}	←☆追加された。
+
+postgres=#
+\q
+$ cpanm DBD::Pg
+--> Working on DBD::Pg
+Fetching http://www.cpan.org/authors/id/T/TU/TURNSTEP/DBD-Pg-3.15.1.tar.gz ... OK
+Configuring DBD-Pg-3.15.1 ... OK
+Building and testing DBD-Pg-3.15.1 ... 2022-03-01 21:24:37.623 JST [5902] ERROR:  permission denied for database postgres
+2022-03-01 21:24:37.623 JST [5902] STATEMENT:  CREATE SCHEMA dbd_pg_testschema	←☆エラーの内容が変わった。
+FAIL
+! Installing DBD::Pg failed. See /Users/asakunotomohiro/.cpanm/work/1646137467.5464/build.log for details. Retry with --force to force install it.
+$
+```
+
+以下、上記の続き。
+```terminal
+$ psql postgres
+psql (14.2)
+Type "help" for help.
+
+postgres=# create schema dbd_pg_testschema;	←☆スキーマの作成。
+CREATE SCHEMA
+postgres=# \dn
+           List of schemas
+       Name        |      Owner
+-------------------+-----------------
+ dbd_pg_testschema | asakunotomohiro
+ public            | asakunotomohiro
+(2 rows)
+
+postgres=# \q
+$ cpanm DBD::Pg
+--> Working on DBD::Pg
+Fetching http://www.cpan.org/authors/id/T/TU/TURNSTEP/DBD-Pg-3.15.1.tar.gz ... OK
+Configuring DBD-Pg-3.15.1 ... OK
+Building and testing DBD-Pg-3.15.1 ... 2022-03-01 22:02:32.347 JST [6699] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:32.347 JST [6699] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:32.798 JST [6702] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:32.798 JST [6702] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:33.049 JST [6704] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:33.049 JST [6704] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:33.293 JST [6706] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:33.293 JST [6706] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:33.541 JST [6708] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:33.541 JST [6708] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:33.768 JST [6710] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:33.768 JST [6710] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:34.005 JST [6712] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:34.005 JST [6712] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:34.234 JST [6714] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:34.234 JST [6714] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:34.473 JST [6716] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:34.473 JST [6716] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:34.723 JST [6718] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:34.723 JST [6718] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:34.971 JST [6720] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:34.971 JST [6720] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:35.201 JST [6722] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:35.201 JST [6722] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:35.470 JST [6724] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:35.470 JST [6724] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:35.715 JST [6726] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:35.715 JST [6726] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+FAIL
+! Installing DBD::Pg failed. See /Users/asakunotomohiro/.cpanm/work/1646139742.6259/build.log for details. Retry with --force to force install it.
+$
+$ psql postgres
+psql (14.2)
+Type "help" for help.
+
+postgres=# \dn
+           List of schemas
+       Name        |      Owner
+-------------------+-----------------
+ dbd_pg_testschema | asakunotomohiro
+ public            | asakunotomohiro
+(2 rows)
+
+postgres=# ALTER SCHEMA dbd_pg_testschema OWNER TO postgres;	←☆スキーマの名前変更。
+ALTER SCHEMA
+postgres=# \dn
+           List of schemas
+       Name        |      Owner
+-------------------+-----------------
+ dbd_pg_testschema | postgres
+ public            | asakunotomohiro
+(2 rows)
+
+postgres=# \q
+$ cpanm DBD::Pg
+--> Working on DBD::Pg
+Fetching http://www.cpan.org/authors/id/T/TU/TURNSTEP/DBD-Pg-3.15.1.tar.gz ... OK
+Configuring DBD-Pg-3.15.1 ... OK
+Building and testing DBD-Pg-3.15.1 ... 2022-03-01 22:06:59.714 JST [7270] ERROR:  permission denied for database postgres
+2022-03-01 22:06:59.714 JST [7270] STATEMENT:  CREATE SCHEMA dbd_pg_testschema	←☆スキーマの名前を変えたら駄目だったようだ。
+FAIL
+! Installing DBD::Pg failed. See /Users/asakunotomohiro/.cpanm/work/1646140011.6831/build.log for details. Retry with --force to force install it.
+$ psql postgres
+psql (14.2)
+Type "help" for help.
+
+postgres=# \dn	←☆ロールに従った箇所に移動する？
+     List of schemas
+  Name  |      Owner
+--------+-----------------
+ public | asakunotomohiro
+(1 row)
+
+postgres=# \q
+$
+$ psql postgres
+psql (14.2)
+Type "help" for help.
+
+postgres=# \du
+                                      List of roles
+    Role name    |                         Attributes                         | Member of
+-----------------+------------------------------------------------------------+-----------
+ asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+ postgres        |                                                            | {}
+
+postgres=# GRANT postgres TO asakunotomohiro;	←☆権限を付与？
+GRANT ROLE
+postgres=# \du
+                                       List of roles
+    Role name    |                         Attributes                         | Member of
+-----------------+------------------------------------------------------------+------------
+ asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {postgres}	←☆何か付いた。
+ postgres        |                                                            | {}
+
+postgres=# CREATE ROLE postgres CREATEDB;	←☆データベース作成権限付与・・・失敗。
+2022-03-01 22:36:39.658 JST [8532] ERROR:  role "postgres" already exists
+2022-03-01 22:36:39.658 JST [8532] STATEMENT:  CREATE ROLE postgres CREATEDB;
+ERROR:  role "postgres" already exists
+postgres=# \q
+$
+$ psql postgres
+psql (14.2)
+Type "help" for help.
+
+postgres=# \du	←☆postgresユーザ不在。
+                                      List of roles
+    Role name    |                         Attributes                         | Member of
+-----------------+------------------------------------------------------------+-----------
+ asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+
+postgres=# CREATE ROLE postgres CREATEDB;	←☆ユーザ作成。
+CREATE ROLE
+postgres=# \du
+                                      List of roles
+    Role name    |                         Attributes                         | Member of
+-----------------+------------------------------------------------------------+-----------
+ asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+ postgres        | Create DB, Cannot login                                    | {}	←☆postgresユーザがいる。
+
+postgres=# GRANT postgres TO asakunotomohiro;	←☆スーパユーザに属させる？
+GRANT ROLE
+postgres=# \du
+                                       List of roles
+    Role name    |                         Attributes                         | Member of
+-----------------+------------------------------------------------------------+------------
+ asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {postgres}	←☆何か付いた。
+ postgres        | Create DB, Cannot login                                    | {}	←☆ログイン権限なし。
+
+postgres=# \q
+$ cpanm DBD::Pg
+--> Working on DBD::Pg
+Fetching http://www.cpan.org/authors/id/T/TU/TURNSTEP/DBD-Pg-3.15.1.tar.gz ... OK
+Configuring DBD-Pg-3.15.1 ... OK
+Building and testing DBD-Pg-3.15.1 ... 2022-03-01 22:46:18.070 JST [9159] FATAL:  role "postgres" is not permitted to log in
+2022-03-01 22:46:18.074 JST [9160] FATAL:  role "postgres" is not permitted to log in
+FAIL
+! Installing DBD::Pg failed. See /Users/asakunotomohiro/.cpanm/work/1646142368.8723/build.log for details. Retry with --force to force install it.
+$
+$ psql postgres
+psql (14.2)
+Type "help" for help.
+
+postgres=# \du
+                                       List of roles
+    Role name    |                         Attributes                         | Member of
+-----------------+------------------------------------------------------------+------------
+ asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {postgres}
+ postgres        | Create DB, Cannot login                                    | {}
+
+postgres=# ALTER ROLE postgres LOGIN;	←☆ログイン権限付与。
+ALTER ROLE
+postgres=# \du
+                                       List of roles
+    Role name    |                         Attributes                         | Member of
+-----------------+------------------------------------------------------------+------------
+ asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {postgres}
+ postgres        | Create DB                                                  | {}	←☆ログイン可能になったようだ。
+
+postgres=# \q
+$ cpanm DBD::Pg
+--> Working on DBD::Pg
+Fetching http://www.cpan.org/authors/id/T/TU/TURNSTEP/DBD-Pg-3.15.1.tar.gz ... OK
+Configuring DBD-Pg-3.15.1 ... OK
+Building and testing DBD-Pg-3.15.1 ... 2022-03-01 22:48:48.490 JST [9697] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:48.490 JST [9697] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:49.118 JST [9700] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:49.118 JST [9700] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:49.445 JST [9702] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:49.445 JST [9702] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:49.783 JST [9704] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:49.783 JST [9704] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:50.102 JST [9706] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:50.102 JST [9706] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:50.448 JST [9708] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:50.448 JST [9708] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:50.787 JST [9710] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:50.787 JST [9710] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:51.185 JST [9713] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:51.185 JST [9713] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:51.556 JST [9719] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:51.556 JST [9719] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:51.919 JST [9721] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:51.919 JST [9721] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:52.250 JST [9724] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:52.250 JST [9724] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:52.588 JST [9726] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:52.588 JST [9726] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:52.956 JST [9728] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:52.956 JST [9728] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:53.279 JST [9730] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:53.279 JST [9730] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+FAIL
+! Installing DBD::Pg failed. See /Users/asakunotomohiro/.cpanm/work/1646142518.9256/build.log for details. Retry with --force to force install it.
+$
+$ psql postgres
+psql (14.2)
+Type "help" for help.
+
+postgres=# \du
+                                       List of roles
+    Role name    |                         Attributes                         | Member of
+-----------------+------------------------------------------------------------+------------
+ asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {postgres}
+ postgres        | Create DB                                                  | {}
+
+postgres=# CREATE ROLE postgres CREATEROLE;	←☆ロール作成権限付与失敗。
+2022-03-01 22:52:23.346 JST [9890] ERROR:  role "postgres" already exists
+2022-03-01 22:52:23.346 JST [9890] STATEMENT:  CREATE ROLE postgres CREATEROLE;
+ERROR:  role "postgres" already exists
+postgres=# CREATE ROLE postgres PASSWORD '1234';	←☆パスワード権限付与失敗。
+2022-03-01 22:53:00.211 JST [9890] ERROR:  role "postgres" already exists
+2022-03-01 22:53:00.211 JST [9890] STATEMENT:  CREATE ROLE postgres PASSWORD '1234';
+ERROR:  role "postgres" already exists
+postgres=# CREATE ROLE postgres SUPERUSER;	←☆スーパユーザ権限付与失敗。
+2022-03-01 22:53:37.219 JST [9890] ERROR:  role "postgres" already exists
+2022-03-01 22:53:37.219 JST [9890] STATEMENT:  CREATE ROLE postgres SUPERUSER;
+ERROR:  role "postgres" already exists
+postgres=# \du
+                                       List of roles
+    Role name    |                         Attributes                         | Member of
+-----------------+------------------------------------------------------------+------------
+ asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {postgres}
+ postgres        | Create DB                                                  | {}
+
+postgres=# \q
+$
+```
+断念。  
+本格的に調べる必要がある・・・それには、PostgreSQL専用書籍が必要と言うこと。  
 
 何をやっている？
 ```terminal
@@ -12717,6 +13031,7 @@ main();
 ```
 [eval(エラートラップ)](#practicaluseevalexceptionhandling)での対処により、ディレクトリ削除まで出来るようにしている。  
 
+<a name="practicalusesqlDBIerrorhandlingdiagnoseprogram"></a>
 <details><summary>正常に動くプログラム。</summary>
 
 ```perl
@@ -12754,19 +13069,20 @@ sub main() {
 	$sth->execute
 		or die "SQL文の実行失敗(" . $sth->errstr . ")。";
 
+	# 以下、1レコード文のみ取得しているため、本来ならば、whileで全データを総なめする必要がある。
 	my @table = $sth->fetchrow_array();
 	say "テーブル内容：@table";	# ほげ ぼげぇ〜
 
+	$sth->finish();	# 強制的にフェッチを切断した(切断しない場合、下記のエラーが発生する)。
+			# DBI::db=HASH(0x7f86fc964878)->disconnect invalidates 1 active statement handle (either destroy statement handles or call finish on them before disconnecting) at XXXX.pl line xx.
 	my $rc = $dbh1->disconnect
 			or warn "$databaseからの切断失敗(" . $dbh1->errstr . ")。";
-			# DBI::db=HASH(0x7f86fc964878)->disconnect invalidates 1 active statement handle (either destroy statement handles or call finish on them before disconnecting) at エラー処理(SQLite版).pl line 38.
 	say "$rc";	# 1
 	unlink $database or warn "ファイル削除失敗($!)。";
 }
-main();
+&main();
 ```
-正常に動きはするが、切断するときに、意図しないエラーが発生した。  
-まだ、どこかでつかんでいるようなのだが、そこを切り離すことが出来なかった(select文作成後に実行した処理が原因のはず)。  
+本来であれば、取得したデータを使う必要があるのだろうが、今回は強制切断により、接続を中止した。  
 
 </details>
 
@@ -13190,6 +13506,179 @@ sub main() {
 main();
 ```
 内部で、neatを呼び出しているようだ(本当に？)。  
+
+
+<a name="practicalusesqlDBissuingsimpleinquiry"></a>
+### 簡単な問い合わせの発行
+DBIを使ってデータベースからデータを取り出すことは、次の4つの段階を繰り返す。  
+
+* データ取り出し。  
+  1. 準備段階(prepare)では、SQL文を解析し、有効化したステートメントハンドル(例：$sth)を取得する。  
+     `my $sth = $dbh->prepare('select * Table;');`  
+  1. そのステートメントハンドルが正常な場合、それを使い、SQL文を実行する段階。  
+     `$sth->execute();`  
+     実行成功の場合の戻り値：true  
+     そうでない場合、undef。  
+  1. SQL文の実行後、フェッチ(fetch)段階として、ステートメントハンドルを使い、結果を取得する。  
+     `my @table = $sth->fetchrow_array();`  
+     全データのフェッチにより、終了する(何が終了するの？)。  
+     途中で終了する場合は、**finish()**メソッドを使う。
+     後からフェッチを再開する場合は、**execute()**をする必要があるとのこと(2つ目の手順)。  
+     ※逆行(逆走)できないため、戻る場合は最初からやり直しになる。  
+  1. ステートメントハンドルなどを切断する段階。  
+
+
+<a name="practicalusesqlDBissuingsimpleinquiryonthefly"></a>
+#### 動的なWebサイトの構築
+何をすれば良いのか全く分からない。  
+
+todo:
+後日調べる。  
+
+
+<a name="practicalusesqlDBissuingsimpleinquiryfetch"></a>
+#### フェッチ
+フェッチ時のデータが無くなり次第、空リストを返す。  
+そして、エラーが発生した場合もループ処理を抜け出るため、ループ直後にエラー判定処理を入れておくべし。  
+
+以下、[エラー診断](#practicalusesqlDBIerrorhandlingdiagnose)での[プログラム](#practicalusesqlDBIerrorhandlingdiagnoseprogram)から抜粋。  
+```perl
+	#my @table = $sth->fetchrow_array();	←☆1レコードのみ出すのは中止。
+	my @table = ();
+	say "テーブル内容：@table" while @table = $sth->fetchrow_array();	# ほげ ぼげぇ〜	←☆whileで全て抜き出す。
+	die "フェッチ作業失敗 $DBI::errstr" if $DBI::err;	←☆ここで確認して大丈夫か？
+
+	#$sth->finish();	# 強制的にフェッチを切断した。	←☆上記で全データ取り出したことにより、強制切断も中止。
+	my $rc = $dbh1->disconnect
+			or warn "$databaseからの切断失敗(" . $dbh1->errstr . ")。";
+```
+
+P119に誤字がある。  
+最後の段落に**fetchrow_array**を使わず、**fetchrow_array**を使うことで〜ってある。  
+同じやん。  
+誤字やん。  
+fetchrow\_arrayrefを使えってことでしょうね。  
+以下、それを使ったプログラム(抜粋していることは変わらない)。
+```perl
+	eval{
+	my $table = '';
+	say "テーブル内容：@{$table}" while $table = $sth->fetchrow_arrayref();	# 配列リファレンスからデータを取り出す。
+			# 出力結果：ほげ ぼげぇ〜	←☆配列ではなく、項目ごとに取り出す場合は、以下参照。
+	#say "テーブル内容：$table->[0], $table->[1]" while $table = $sth->fetchrow_arrayref();
+			# 出力結果：ほげ, ぼげぇ〜	←☆配列なので、左端の項目から0添え字が割り振られるのだろう。
+	};
+```
+配列のリファレンス取得は扱いにくいというか、利便性に欠けそうに思う。  
+しかし、通常のフェッチよりは、性能上の利点はある。  
+
+また、ハッシュ版のフェッチ方法もある。  
+当然リファレンス利用前提だ。  
+以下、そのプログラム(その部分のみ抜粋)。
+```perl
+	eval{
+	my $table = '';
+	#say "テーブル内容：$table" while $table = $sth->fetchrow_hashref();	# ハッシュリファレンスからデータを取り出す。
+			# 出力結果：HASH(0x7fe61e93f8a8)	←☆項目内容の取り出しは、項目名をキーとする。
+	say "テーブル内容：$table->{boo}, $table->{bar}" while $table = $sth->fetchrow_hashref();
+			# 出力結果：ほげ, ぼげぇ〜
+	};
+```
+今回は取得に成功したが、データベースによっては、項目名を全て大文字もしくは、全て小文字にする場合がある。  
+そのため、事前に小文字に指定するか、もしくは全て大文字に指定しておく方が吉。  
+
+以下、項目名を全て小文字化した作業。
+```perl
+	eval{
+	my $table = '';
+	say "テーブル内容：$table->{boo}, $table->{bar}" while $table = $sth->fetchrow_hashref('NAME_lc');
+			# 出力結果：ほげ, ぼげぇ〜
+	};
+```
+
+以下、項目名を全て大文字化した作業。
+```perl
+	eval{
+	my $table = '';
+	say "テーブル内容：$table->{BOO}, $table->{BAR}" while $table = $sth->fetchrow_hashref('NAME_uc');
+			# 出力結果：ほげ, ぼげぇ〜
+	};
+```
+項目名の大小文字化は性能上何ら影響はないとのこと。  
+
+一番の問題点は、キーは、一意であるため、**id**などのように、他テーブルとの結合で名前が重複する場合、どちらか一方のテーブルの**id**項目のみ取得できる。  
+ハッシュリファレンスを使わなければ回避できるはず。  
+そんなことせずとも、項目名にエイリアスを付けることで、普通に回避できる。  
+
+
+<a name="practicalusesqlDBissuingsimpleinquiryfetch"></a>
+#### フェッチ-機敏出力
+素早くフェッチ後、出力するメソッドは、**dump_results()**を使う。  
+
+以下、それを使ったプログラム(必要箇所のみ[抜粋](#practicalusesqlDBIerrorhandlingdiagnoseprogram))。
+```perl
+	#$sth->execute('ほげ', 'ぼげぇ〜')	←☆文字化けした。
+	$sth->execute('hoge', 'hOgEe')
+　　　・
+　　　・
+　　　・
+	my $table = $sth->dump_results();	←☆出力処理がない状態で出力された。
+			# 出力結果：
+                    'hoge', 'hOgEe'	←☆今回1行のみをテーブルに入れていたため、1行の出力になったが、基本は全レコードを出力する。
+                    1 rows
+```
+これは、内部で[**neat_list**](#practicalusesqlDBIutilitymethodandfunctionplasticsurgeryneatlist)を使っているため、データ転送などに使うものではない。  
+ユーザがその場でテーブル内容を確認するためだけに使う開発者向けのメソッド。  
+
+引数に書式を渡すことで、成形した形を出力させる。  
+`my $table = $sth->dump_results(5, '\n', ':');`  
+※今回1行レコードのみのため、出力結果ほぼ変わらず。  
+
+
+<a name="practicalusesqlDBissuingsimpleinquiry"></a>
+#### フェッチ-途中退場
+ステートメントハンドルは、生きたままになっているため、再利用できる。
+※フェッチを中断しただけであって、他のは生きている。  
+
+以下、それを使ったプログラム(必要箇所のみ[抜粋](#practicalusesqlDBIerrorhandlingdiagnoseprogram))。
+```perl
+	$sth->execute('ほげ1', 'ぼげぇ〜1')	←☆3レコード追加。
+	$sth->execute('ほげ2', 'ぼげぇ〜2')
+	$sth->execute('ほげ3', 'ぼげぇ〜3')
+　　　・
+　　　・
+　　　・
+	eval{
+		my $table = '';
+		$table = $sth->fetchrow_arrayref();	←☆1レコードのみ取得。
+		say "テーブル内容：$table->[0], $table->[1]";
+            #テーブル内容：ほげ1, ぼげぇ〜1
+
+		$sth->finish();	# 強制的にフェッチを切断した。
+
+		$sth->execute or die "SQL文の実行失敗(" . $sth->errstr . ")。";	←☆再度SQL文実行(これがない場合、以下のフェッチ処理は動かない)。
+		while( $table = $sth->fetchrow_arrayref()){	←☆再度フェッチするため、1レコード目から再開する(切断しているため、続きからの再開ではない)。
+			say "テーブル内容：$table->[0], $table->[1]";
+                #テーブル内容：ほげ1, ぼげぇ〜1
+                #テーブル内容：ほげ2, ぼげぇ〜2
+                #テーブル内容：ほげ3, ぼげぇ〜3
+		}
+	};
+```
+ピンポイントで1レコードのみ取得した瞬間に切断する場合に、**finish**メソッドを使うようだ。  
+
+また、以下のように、ブロック内で宣言する場合は、ブロックから抜け出た時点で変数が破棄されるため、フェッチが残っていることの警告は出てこない。
+```perl
+{
+	my $sth = $dbh1->prepare('select * from hoge')	←☆新しい変数に代入する(SQL文作成)。
+		or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+	$sth->execute or die "SQL文の実行失敗(" . $sth->errstr . ")。";	←☆SQL文実行。
+	my $table = $sth->fetchrow_arrayref();	←☆フェッチする。
+};	←☆フェッチが残っているのだが、このブロックを抜け出た瞬間に、フェッチ作業がなかったことになり、警告は出ない。
+```
+**fetchrow_\***メソッドでフェッチした直後に、**$sth**などの変数を破棄することでも同様の結果になる。  
+
+todo:
+Kids属性及びActiveKids属性を調べる。  
 
 </details>
 
