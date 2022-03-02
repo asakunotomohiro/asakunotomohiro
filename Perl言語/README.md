@@ -14046,6 +14046,23 @@ sub main() {
 
 <a name="practicalusesqlDBIparameterbindingatomicbatchfetchatomic"></a>
 ##### アトミックフェッチ処理
+1レコードだけを取得するため、Where句か何かで絞り込む必要があるのかもしれない。  
+便利ではあるのだが、使い道が思いつかない。  
+
+以下、該当プログラム。
+```perl
+my( $boo, $bar ) = $dbh1->selectrow_array('select * from hoge')
+	or die "1レコード取得失敗(" . $dbh1->errstr . ")。";
+say "テーブル内容：$boo, $bar";	# 0, 本日は
+```
+本来のテーブル内容は、2レコードある。
+```text
+0 本日は
+1 晴天なり。
+```
+
+ちなみに、リファレンス版もある。  
+**selectrow_arrayref**メソッド。  
 
 
 <a name="practicalusesqlDBIparameterbindingatomicbatchfetchbatch"></a>
