@@ -14067,7 +14067,26 @@ say "テーブル内容：$boo, $bar";	# 0, 本日は
 
 <a name="practicalusesqlDBIparameterbindingatomicbatchfetchbatch"></a>
 ##### バッチフェッチ処理
+これも2種類ある。  
 
+* メソッド一覧。  
+  * fetchall\_arrayref  
+  * selectall\_arrayref  
+
+以下、**fetchall_arrayref**メソッド利用のプログラム(必要部分のみ抜粋)。
+```perl
+$sth = $dbh1->prepare('select * from hoge')
+	or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+$sth->execute or die "SQL文の実行失敗(" . $sth->errstr . ")。";
+$tabledata = $sth->fetchall_arrayref();	←☆1回のみ実行(結果は2次元配列)。
+foreach my $row ( @$tabledata ) {	←☆リファレンスから取り出し。
+	my ( $boo, $bar, ) = @$row;	←☆さらに取り出し。
+	say "テーブル内容：$boo, $bar";
+```
+
+
+evalで囲む必要があるのか？  
+その辺の判断がまだ分かっていない。  
 
 </details>
 
