@@ -13803,6 +13803,20 @@ $sth = $dbh1->prepare("
 ```
 出力結果：朝来野, 智博  
 
+バインド可能な文字列は、テーブルに対する変化可能な値のみになる。  
+要は、**prepare**で解析可能にしておく必要がある。  
+具体的には、**FROM**や**WHERE**などの文字をバインド出来ないと言うこと(それに続く文字のみをバインドすること)。  
+```perl
+$sth = $dbh1->prepare("
+		insert into hoge (boo, bar)
+		?;	←☆ここをバインド。
+    ・
+    ・
+    ・
+$sth->bind_param(1, 'values ($column1, $column2)');	←☆こんなことはできない。
+```
+**near "?": syntax error**になる。  
+
 </details>
 
 <a name="practicaluseGUIPerlTk"></a>
