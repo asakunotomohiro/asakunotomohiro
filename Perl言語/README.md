@@ -13770,6 +13770,28 @@ sub main() {
 ```
 データベース固有のパラメタバインドはあるが、汎用性に欠けているため、今回の方法を用いるのが吉。  
 
+以下、別の方法でのパラメタバインド用プログラム(その部分のみ抜粋)
+```perl
+$sth = $dbh1->prepare("
+		insert into hoge (boo, bar)
+		values (?, ?);
+	") or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+$sth->execute('ほげ', 'ぼげぇ〜')
+```
+特に問題なく使える。  
+そして、この場合の設定型は、SQL_VARCHARが付与される。  
+この型指定できない問題の回避には、一度パラメタバインドメソッドをかませる必要がある。  
+以下、例）
+```perl
+$sth = $dbh1->prepare("
+		insert into hoge (boo, bar)
+		values (?, ?);
+	") or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+`$sth->bind_param(1, 20220302, SQL_INTEGER);`
+$sth->execute(20220302)	←☆数列として扱われる。  
+```
+素直にパラメタバインドだけで十分に思うが？  
+
 以下、パラメタバインドを使わない場合の埋め込みプログラムその1(その部分のみ抜粋)。
 ```perl
 $sth = $dbh1->prepare('
