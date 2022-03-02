@@ -13823,6 +13823,13 @@ $sth->bind_param(1, 'values ($column1, $column2)');	←☆こんなことはで�
 その時、**use DBI qw(:sql_types);**の呼び出しが必須になる。  
 ※そもそもどんな型があるのか分からない。  
 
+
+<a name="practicalusesqlDBIparameterbindinginputoutput"></a>
+#### 入出力パラメタのバインド
+**bind_param_inout**メソッドを使う。  
+しかし、これは、限定されたデータベースのみ利用可能であり、しかも限定された場面でのみ有効なようだ。  
+オラクルではできるようだ。  
+
 </details>
 
 <a name="practicaluseGUIPerlTk"></a>
