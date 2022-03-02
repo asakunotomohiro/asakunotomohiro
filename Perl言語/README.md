@@ -13783,14 +13783,25 @@ $sth = $dbh1->prepare('
 
 以下、パラメタバインドを使わない場合の埋め込みプログラムその2(その部分のみ抜粋)。
 ```perl
-my $column1 = '20220302';	←☆文字列駄目だった(英語・日本語問わず)。数列のみOK。
-my $column2 = '12345678';	←☆文字列駄目だった(英語・日本語問わず)。数列のみOK。
+my $column1 = '20220302';	←☆数列のみ登録可能。対策以下その3参照。
+my $column2 = '12345678';	←☆数列のみ登録可能。対策以下その3参照。
 $sth = $dbh1->prepare("
 		insert into hoge (boo, bar)
 		values ($column1, $column2);
 	") or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
 ```
 出力結果：20220302, 12345678  
+
+以下、パラメタバインドを使わない場合の埋め込みプログラムその3(その部分のみ抜粋)。
+```perl
+	my $column1 = $dbh1->quote('朝来野');	←☆文字列は、クォート必須。
+	my $column2 = $dbh1->quote('智博');	←☆文字列は、クォート必須。
+	$sth = $dbh1->prepare("
+			insert into hoge (boo, bar)
+			values ($column1, $column2);
+		") or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+```
+出力結果：朝来野, 智博  
 
 </details>
 
