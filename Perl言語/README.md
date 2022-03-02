@@ -14033,6 +14033,25 @@ sub main() {
 無駄かどうかは言われなければ気づかないように思うのだが、慣れれば普通に使い分けできるようになるのだろうか。  
 これで処理速度は上がったが、専用ツールに比べれば、当然Perlは遅い。  
 
+
+<a name="practicalusesqlDBIparameterbindingatomicbatchfetch"></a>
+#### アトミックフェッチ処理とバッチフェッチ処理
+
+* 2種類の処理がある。  
+  * アトミックフェッチ処理  
+    1レコードのみ取得する。  
+  * バッチフェッチ処理  
+    全レコードを一度に取得する(2次元配列)。  
+
+
+<a name="practicalusesqlDBIparameterbindingatomicbatchfetchatomic"></a>
+##### アトミックフェッチ処理
+
+
+<a name="practicalusesqlDBIparameterbindingatomicbatchfetchbatch"></a>
+##### バッチフェッチ処理
+
+
 </details>
 
 <a name="practicaluseGUIPerlTk"></a>
