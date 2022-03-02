@@ -11702,6 +11702,7 @@ ODBCは仕事で使ったことあるが、DBI(Database Interface)はない。
   * [簡単な問い合わせの発行](#practicalusesqlDBIissuingsimpleinquiry)  
     * フェッチ・dump\_results・finish  
   * [非Select文の実行](#practicalusesqlDBInonselectexecution)  
+  * [文へのパラメタバインド](#practicalusesqlDBIparameterbinding)  
 
 ※参考書籍：[入門 Perl DBI](https://www.oreilly.co.jp/books/4873110505/)  
 
@@ -13698,6 +13699,158 @@ Select操作と異なり、データの挿入・削除・更新操作は、1回�
 そして、操作結果が0レコードの場合は、**0E0**が返る。  
 これは、if文などでは0を偽扱いするため、それを防ぐ目的から純粋な0は返さない。  
 エラーの場合のみ、falseになる値を返す。  
+
+
+<a name="practicalusesqlDBIparameterbinding"></a>
+### 文へのパラメタバインド
+SQL文に使う文字列を動的に変更するための仕組みのことだろう。  
+
+以下、バインドプログラム例）
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	# データベース(ファイル)名定義。
+	my $database = './sqlite.db';
+
+	my %option = (	# 警告レベルメッセージ出力なし。
+			PrintError => 0,	# warn経由でエラー報告無し。
+			RaiseError => 0,	# die経由でエラー報告無し。
+		);
+
+	my $dbh1 = DBI->connect(
+			"dbi:SQLite:database=$database",
+			"",	# ユーザ名。
+			"",	# パスワード。
+			\%option,
+		) or die "接続失敗(" . $DBI::errstr . ")。";
+
+	my $sth = '';
+	eval{
+	$sth = $dbh1->prepare('create table hoge( boo INTEGER, bar varchar(20) )')
+		or die "テーブル作成の準備失敗(" . $dbh1->errstr . ")。";
+	$sth->execute
+		or die "テーブル作成失敗(" . $sth->errstr . ")。";
+	};
+	print "テーブル作成失敗->$@" if $@;
+
+	eval{
+	$sth = $dbh1->prepare('insert into hoge (boo, bar) values (?, ?);')
+		or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+	$sth->bind_param(1, 'ほげ');	# quoteメソッドは不要(のように見えて、内部で呼び出している)。
+	$sth->bind_param(2, 'ぶぅ');	# quoteメソッドは不要(のように見えて、内部で呼び出している)。
+	$sth->execute()	←☆結局は、この処理が必要。
+		or die "SQL文の実行失敗(" . $sth->errstr . ")。";
+	};
+	print "insert作業失敗->$@" if $@;
+
+	eval{
+	$sth = $dbh1->prepare('select * from hoge')
+		or die "select文の準備失敗(" . $dbh1->errstr . ")。";
+	$sth->execute
+		or die "select文の実行失敗(" . $sth->errstr . ")。";
+	};
+	print "select文実行失敗$@" if $@;
+
+	eval{
+	my $table = '';
+	say "テーブル内容：$table->[0], $table->[1]"
+		while $table = $sth->fetchrow_arrayref();	# 全データ取り出し。
+	};
+	print "フェッチ作業失敗->$@" if $@;
+
+	eval{
+	my $rc = $dbh1->disconnect
+		or warn "$databaseからの切断失敗(" . $dbh1->errstr . ")。";
+	};
+	unlink $database or warn "ファイル削除失敗($!)。";
+}
+&main();
+```
+データベース固有のパラメタバインドはあるが、汎用性に欠けているため、今回の方法を用いるのが吉。  
+
+以下、別の方法でのパラメタバインド用プログラム(その部分のみ抜粋)
+```perl
+$sth = $dbh1->prepare("
+		insert into hoge (boo, bar)
+		values (?, ?);
+	") or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+$sth->execute('ほげ', 'ぼげぇ〜')
+```
+特に問題なく使える。  
+そして、この場合の設定型は、SQL_VARCHARが付与される。  
+この型指定できない問題の回避には、一度パラメタバインドメソッドをかませる必要がある。  
+以下、例）
+```perl
+$sth = $dbh1->prepare("
+		insert into hoge (boo, bar)
+		values (?, ?);
+	") or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+`$sth->bind_param(1, 20220302, SQL_INTEGER);`
+$sth->execute(20220302)	←☆数列として扱われる。  
+```
+素直にパラメタバインドだけで十分に思うが？  
+
+以下、パラメタバインドを使わない場合の埋め込みプログラムその1(その部分のみ抜粋)。
+```perl
+$sth = $dbh1->prepare('
+		insert into hoge (boo, bar)
+		values (' . $dbh1->quote('項目1つ目') . ',' . $dbh1->quote('2つ目の項目内容') . ');
+	') or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+```
+非常に煩わしい。  
+これは面倒くさい。  
+出力結果：項目1つ目, 2つ目の項目内容  
+
+以下、パラメタバインドを使わない場合の埋め込みプログラムその2(その部分のみ抜粋)。
+```perl
+my $column1 = '20220302';	←☆数列のみ登録可能。対策以下その3参照。
+my $column2 = '12345678';	←☆数列のみ登録可能。対策以下その3参照。
+$sth = $dbh1->prepare("
+		insert into hoge (boo, bar)
+		values ($column1, $column2);
+	") or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+```
+出力結果：20220302, 12345678  
+
+以下、パラメタバインドを使わない場合の埋め込みプログラムその3(その部分のみ抜粋)。
+```perl
+	my $column1 = $dbh1->quote('朝来野');	←☆文字列は、クォート必須。
+	my $column2 = $dbh1->quote('智博');	←☆文字列は、クォート必須。
+	$sth = $dbh1->prepare("
+			insert into hoge (boo, bar)
+			values ($column1, $column2);
+		") or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+```
+出力結果：朝来野, 智博  
+
+バインド可能な文字列は、テーブルに対する変化可能な値のみになる。  
+要は、**prepare**で解析可能にしておく必要がある。  
+具体的には、**FROM**や**WHERE**などの文字をバインド出来ないと言うこと(それに続く文字のみをバインドすること)。  
+```perl
+$sth = $dbh1->prepare("
+		insert into hoge (boo, bar)
+		?;	←☆ここをバインド。
+    ・
+    ・
+    ・
+$sth->bind_param(1, 'values ($column1, $column2)');	←☆こんなことはできない。
+```
+**near "?": syntax error**になる。  
+
+型指定する場合は、パラメタバインドの第3引数に型を指定する。  
+例）
+`$sth->bind_param(1, 20220302, SQL_VARCHAR);`
+その時、**use DBI qw(:sql_types);**の呼び出しが必須になる。  
+※そもそもどんな型があるのか分からない。  
+
+
+<a name="practicalusesqlDBIparameterbindinginputoutput"></a>
+#### 入出力パラメタのバインド
+**bind_param_inout**メソッドを使う。  
+しかし、これは、限定されたデータベースのみ利用可能であり、しかも限定された場面でのみ有効なようだ。  
+オラクルではできるようだ。  
 
 </details>
 
