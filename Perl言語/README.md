@@ -11699,8 +11699,9 @@ ODBCは仕事で使ったことあるが、DBI(Database Interface)はない。
     * [SQLiteの特徴](#practicalusesqlDBIconnectanddisconnectsqliteconnectfeature)  
   * [エラー処理](#practicalusesqlDBIerrorhandling)  
   * [ユーティリティメソッドと関数](#practicalusesqlDBIutilitymethodandfunction)  
-  * [簡単な問い合わせの発行](#practicalusesqlDBissuingsimpleinquiry)  
+  * [簡単な問い合わせの発行](#practicalusesqlDBIissuingsimpleinquiry)  
     * フェッチ・dump\_results・finish  
+  * [非Select文の実行](#practicalusesqlDBInonselectexecution)  
 
 ※参考書籍：[入門 Perl DBI](https://www.oreilly.co.jp/books/4873110505/)  
 
@@ -13508,7 +13509,7 @@ main();
 内部で、neatを呼び出しているようだ(本当に？)。  
 
 
-<a name="practicalusesqlDBissuingsimpleinquiry"></a>
+<a name="practicalusesqlDBIissuingsimpleinquiry"></a>
 ### 簡単な問い合わせの発行
 DBIを使ってデータベースからデータを取り出すことは、次の4つの段階を繰り返す。  
 
@@ -13528,7 +13529,7 @@ DBIを使ってデータベースからデータを取り出すことは、次�
   1. ステートメントハンドルなどを切断する段階。  
 
 
-<a name="practicalusesqlDBissuingsimpleinquiryonthefly"></a>
+<a name="practicalusesqlDBIissuingsimpleinquiryonthefly"></a>
 #### 動的なWebサイトの構築
 何をすれば良いのか全く分からない。  
 
@@ -13536,7 +13537,7 @@ todo:
 後日調べる。  
 
 
-<a name="practicalusesqlDBissuingsimpleinquiryfetch"></a>
+<a name="practicalusesqlDBIissuingsimpleinquiryfetch"></a>
 #### フェッチ
 フェッチ時のデータが無くなり次第、空リストを返す。  
 そして、エラーが発生した場合もループ処理を抜け出るため、ループ直後にエラー判定処理を入れておくべし。  
@@ -13610,7 +13611,7 @@ fetchrow\_arrayrefを使えってことでしょうね。
 そんなことせずとも、項目名にエイリアスを付けることで、普通に回避できる。  
 
 
-<a name="practicalusesqlDBissuingsimpleinquiryfetch"></a>
+<a name="practicalusesqlDBIissuingsimpleinquiryfetchdumpresults"></a>
 #### フェッチ-機敏出力
 素早くフェッチ後、出力するメソッドは、**dump_results()**を使う。  
 
@@ -13634,7 +13635,7 @@ fetchrow\_arrayrefを使えってことでしょうね。
 ※今回1行レコードのみのため、出力結果ほぼ変わらず。  
 
 
-<a name="practicalusesqlDBissuingsimpleinquiry"></a>
+<a name="practicalusesqlDBIissuingsimpleinquiryfetchfinish"></a>
 #### フェッチ-途中退場
 ステートメントハンドルは、生きたままになっているため、再利用できる。
 ※フェッチを中断しただけであって、他のは生きている。  
@@ -13679,6 +13680,7 @@ fetchrow\_arrayrefを使えってことでしょうね。
 
 todo:
 Kids属性及びActiveKids属性を調べる。  
+
 
 </details>
 
