@@ -13961,6 +13961,62 @@ prepareメソッドの様式：
 `my $sth = $dbh->prepare(select文, \%attr) || die $dbh->errstr;`  
 単純なデータベースエンジン向けに、可搬性の高いプログラムを組む場合は、フェッチ中に次の準備もしくは実行することは避けるべきであり、SQL文の終了用にセミコロン`;`を付けるべきでもないとのこと。  
 
+以下、doメソッドを使った処理速度を低下させるプログラム。
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	# データベース(ファイル)名定義。
+	my $database = './sqlite.db';
+
+	my %option = (	# 警告レベルメッセージ出力なし。
+			PrintError => 0,	# warn経由でエラー報告無し。
+			RaiseError => 0,	# die経由でエラー報告無し。
+		);
+
+	my $dbh1 = DBI->connect(
+			"dbi:SQLite:database=$database",
+			"",	# ユーザ名。
+			"",	# パスワード。
+			\%option,
+		) or die "接続失敗(" . $DBI::errstr . ")。";
+
+	my $sth = '';
+	eval{
+	$sth = $dbh1->do('create table hoge( boo INTEGER, bar varchar(20) )')
+		or die "テーブル作成失敗(" . $dbh1->errstr . ")。";
+	};
+	say "$@" if $@;
+
+	my $sth = '';
+	eval{
+	my @values = qw( 本日は 晴天なり。 );
+	while( my ($index, $value) = each @values ){	←☆ここで繰り返している。
+		$sth = $dbh1->do("insert into hoge (boo, bar) values (?, ?);", undef, $index, $value)
+			or die "データ挿入失敗(" . $dbh1->errstr . ")。";
+	}
+	};
+	say "$@" if $@;
+
+	eval{
+	$sth = $dbh1->prepare('select * from hoge')
+		or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+	$sth->execute
+		or die "SQL文の実行失敗(" . $sth->errstr . ")。";
+	};
+	say "$@" if $@;
+
+	my @table = ();
+	say "テーブル内容：@table" while @table = $sth->fetchrow_array();
+
+	my $rc = $dbh1->disconnect
+			or warn "$databaseからの切断失敗(" . $dbh1->errstr . ")。";
+	unlink $database or warn "ファイル削除失敗($!)。";
+}
+&main();
+```
+
 </details>
 
 <a name="practicaluseGUIPerlTk"></a>
