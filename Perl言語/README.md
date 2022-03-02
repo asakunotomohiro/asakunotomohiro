@@ -13515,6 +13515,9 @@ DBIを使ってデータベースからデータを取り出すことは、次�
 * データ取り出し。  
   1. 準備段階(prepare)では、SQL文を解析し、有効化したステートメントハンドル(例：$sth)を取得する。  
      `my $sth = $dbh->prepare('select * Table;');`  
+     蛇足：[非select文の実行](#practicalusesqlDBInonselectexecution)には、
+     `my $sth = $dbh->do('insert into Table(abc) values(20220302);');`
+     のように、doメソッドを用いる。  
   1. そのステートメントハンドルが正常な場合、それを使い、SQL文を実行する段階。  
      `$sth->execute();`  
      実行成功の場合の戻り値：true  
@@ -13938,6 +13941,97 @@ $sth->bind_columns( undef, \$boo, \$bar, \$hoge, );
 ※上記の全体プログラムから変更箇所のみ抜粋した。  
 また、第1引数は、undef固定なのだが、**DBI 1.08**以降の場合は、省略可能。  
 そして、私の環境では省略できた。  
+
+
+<a name="practicalusesqlDBIparameterbindingmethoddoprepare"></a>
+#### doメソッドとprepareメソッドの使い分け。
+doメソッドは、簡単にテーブル更新などが出来るようになっているが、処理性能に難があるため、使いどころを間違えた場合、処理速度の足を引っ張ることになるため、注意が必要である。  
+
+doメソッドの様式：
+`my $rc = $dbh->do(非select文) || die $dbh->errstr;`  
+`my $rc = $dbh->do(非select文, \%attr) || die $dbh->errstr;`  
+`my $rv = $dbh->do(非select文, \%attr, @bind_values) || die $dbh->errstr;`  
+※select文でも使って構わないが、値を取得することが出来ないため、無駄な処理になる。  
+第1引数の部分は、`q{}`で囲むのが良いようだが、どういう意味？  
+そのまま使えそうではあるが・・・変数に格納した場合の説明だろうか(その変数に変数を埋め込んでいる場合は`qq{}`を用いる？)。  
+executeする必要はなくなるが、何度もdo呼ぶ場合は、prepareとexecuteの組み合わせのほうが効率は良い。  
+
+prepareメソッドの様式：
+`my $sth = $dbh->prepare(select文) || die $dbh->errstr;`  
+`my $sth = $dbh->prepare(select文, \%attr) || die $dbh->errstr;`  
+単純なデータベースエンジン向けに、可搬性の高いプログラムを組む場合は、フェッチ中に次の準備もしくは実行することは避けるべきであり、SQL文の終了用にセミコロン`;`を付けるべきでもないとのこと。  
+
+以下、doメソッドを使った処理速度を低下させるプログラム。
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	# データベース(ファイル)名定義。
+	my $database = './sqlite.db';
+
+	my %option = (	# 警告レベルメッセージ出力なし。
+			PrintError => 0,	# warn経由でエラー報告無し。
+			RaiseError => 0,	# die経由でエラー報告無し。
+		);
+
+	my $dbh1 = DBI->connect(
+			"dbi:SQLite:database=$database",
+			"",	# ユーザ名。
+			"",	# パスワード。
+			\%option,
+		) or die "接続失敗(" . $DBI::errstr . ")。";
+
+	my $sth = '';
+	eval{
+	$sth = $dbh1->do('create table hoge( boo INTEGER, bar varchar(20) )')
+		or die "テーブル作成失敗(" . $dbh1->errstr . ")。";
+	};
+	say "$@" if $@;
+
+	my $sth = '';
+	eval{
+	my @values = qw( 本日は 晴天なり。 );
+	while( my ($index, $value) = each @values ){	←☆ここで繰り返している。
+		# 以下の処理は、何度もSQL文が準備され、何度も実行され、何度も破棄されている(要は資源の無駄使い)。
+		$sth = $dbh1->do("insert into hoge (boo, bar) values (?, ?);", undef, $index, $value)
+			or die "データ挿入失敗(" . $dbh1->errstr . ")。";
+	}
+	};
+	say "$@" if $@;
+
+	eval{
+	$sth = $dbh1->prepare('select * from hoge')
+		or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+	$sth->execute
+		or die "SQL文の実行失敗(" . $sth->errstr . ")。";
+	};
+	say "$@" if $@;
+
+	my @table = ();
+	say "テーブル内容：@table" while @table = $sth->fetchrow_array();
+
+	my $rc = $dbh1->disconnect
+			or warn "$databaseからの切断失敗(" . $dbh1->errstr . ")。";
+	unlink $database or warn "ファイル削除失敗($!)。";
+}
+&main();
+```
+上記の資源の無駄遣いをしている箇所は、以下のように修正できる。  
+```perl
+	my $sth = $dbh1->prepare('insert into hoge (boo, bar) values (?, ?);')	←☆ループの外でSQL文を準備する。
+		or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+	eval{
+	my @values = qw( 本日は 晴天なり。 );
+	while( my ($index, $value) = each @values ){	←☆ここのループ開始部分は変わらない。
+	$sth->execute($index, $value)	←☆引数を与え、実行する(無駄がなくなる)。
+		or die "SQL文の実行失敗(" . $sth->errstr . ")。";
+	}
+	};
+	say "$@" if $@;
+```
+無駄かどうかは言われなければ気づかないように思うのだが、慣れれば普通に使い分けできるようになるのだろうか。  
+これで処理速度は上がったが、専用ツールに比べれば、当然Perlは遅い。  
 
 </details>
 
