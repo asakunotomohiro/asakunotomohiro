@@ -14072,12 +14072,16 @@ say "テーブル内容：$boo, $bar";	# 0, 本日は
 
 * メソッド一覧。  
   * fetchall\_arrayref  
+    [引数無し。](#practicalusesqlDBIparameterbindingatomicbatchfetchbatchfetchnoarg)  
+    [配列引数。](#practicalusesqlDBIparameterbindingatomicbatchfetchbatchfetcharray)  
+    [ハッシュ引数。](#practicalusesqlDBIparameterbindingatomicbatchfetchbatchfetchhash)  
   * selectall\_arrayref  
 
 これらの利用は、evalで囲む必要があるのか？  
 その辺の判断がまだ分かっていない。  
 実行に失敗する可能性があるのだから必要だとは思っているのだが・・・。  
 
+<a name="practicalusesqlDBIparameterbindingatomicbatchfetchbatchfetchnoarg"></a>
 以下、**fetchall_arrayref**メソッド利用の引数無しプログラム(必要部分のみ抜粋)。
 ```perl
 $sth = $dbh1->prepare('select * from hoge')	←☆アスタリスクでの項目取得になるため、テーブルに依存する。
@@ -14092,6 +14096,7 @@ foreach my $row ( @$tabledata ) {	←☆リファレンスから取り出し。
         # テーブル内容：1, 晴天なり。
 ```
 
+<a name="practicalusesqlDBIparameterbindingatomicbatchfetchbatchfetcharray"></a>
 以下、**fetchall_arrayref**メソッド利用の配列用引数ありプログラム(必要部分のみ抜粋)。
 ```perl
 $sth = $dbh1->prepare('select bar, boo from hoge')	←☆barに値。booにインデックス。
@@ -14107,6 +14112,7 @@ foreach my $row ( @$tabledata ) {
 }
 ```
 
+<a name="practicalusesqlDBIparameterbindingatomicbatchfetchbatchfetchhash"></a>
 以下、**fetchall_arrayref**メソッド利用のハッシュ用引数ありプログラム(必要部分のみ抜粋)。
 ```perl
 $sth = $dbh1->prepare('select * from hoge')
