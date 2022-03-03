@@ -13615,7 +13615,7 @@ fetchrow\_arrayrefを使えってことでしょうね。
 
 <a name="practicalusesqlDBIissuingsimpleinquiryfetchdumpresults"></a>
 #### フェッチ-機敏出力
-素早くフェッチ後、出力するメソッドは、**dump_results()**を使う。  
+素早くフェッチ後、出力するメソッドは、**dump_results()** を使う。  
 
 以下、それを使ったプログラム(必要箇所のみ[抜粋](#practicalusesqlDBIerrorhandlingdiagnoseprogram))。
 ```perl
@@ -14075,7 +14075,7 @@ say "テーブル内容：$boo, $bar";	# 0, 本日は
     [引数無し。](#practicalusesqlDBIparameterbindingatomicbatchfetchbatchfetchnoarg)  
     [配列引数。](#practicalusesqlDBIparameterbindingatomicbatchfetchbatchfetcharray)  
     [ハッシュ引数。](#practicalusesqlDBIparameterbindingatomicbatchfetchbatchfetchhash)  
-  * selectall\_arrayref  
+  * [selectall\_arrayref](#practicalusesqlDBIparameterbindingatomicbatchfetchbatchselect)  
 
 これらの利用は、evalで囲む必要があるのか？  
 その辺の判断がまだ分かっていない。  
@@ -14127,6 +14127,18 @@ foreach my $row ( @$tabledata ) {
 項目名に合わせて大文字にしたときは、取得に失敗した。  
 ※また、複数テーブル利用により、同名の項目名がある場合は取得が出来ない。
 これは、ハッシュを利用する場合は、[フェッチ](#practicalusesqlDBIissuingsimpleinquiryfetch)全般に言えることなのかもしれない。  
+
+<a name="practicalusesqlDBIparameterbindingatomicbatchfetchbatchselect"></a>
+以下、**selectall_arrayref**メソッド利用の引数無しプログラム(必要部分のみ抜粋)。
+```perl
+$tabledata = $dbh1->selectall_arrayref( 'select boo, bar from hoge' );
+foreach my $row ( @$tabledata ) {
+	say "テーブル内容：$row->[0], $row->[1]";
+}
+    # 出力結果。
+        # テーブル内容：0, 本日は
+        # テーブル内容：1, 晴天なり。
+```
 
 </details>
 
