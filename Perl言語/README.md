@@ -14073,20 +14073,39 @@ say "テーブル内容：$boo, $bar";	# 0, 本日は
   * fetchall\_arrayref  
   * selectall\_arrayref  
 
-以下、**fetchall_arrayref**メソッド利用のプログラム(必要部分のみ抜粋)。
+これらの利用は、evalで囲む必要があるのか？  
+その辺の判断がまだ分かっていない。  
+実行に失敗する可能性があるのだから必要だとは思っているのだが・・・。  
+
+以下、**fetchall_arrayref**メソッド利用の引数無しプログラム(必要部分のみ抜粋)。
 ```perl
-$sth = $dbh1->prepare('select * from hoge')
+$sth = $dbh1->prepare('select * from hoge')	←☆アスタリスクでの項目取得になるため、テーブルに依存する。
 	or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
 $sth->execute or die "SQL文の実行失敗(" . $sth->errstr . ")。";
 $tabledata = $sth->fetchall_arrayref();	←☆1回のみ実行(結果は2次元配列)。
 foreach my $row ( @$tabledata ) {	←☆リファレンスから取り出し。
 	my ( $boo, $bar, ) = @$row;	←☆さらに取り出し。
 	say "テーブル内容：$boo, $bar";
+    # 出力結果。
+        # テーブル内容：0, 本日は
+        # テーブル内容：1, 晴天なり。
 ```
 
+以下、**fetchall_arrayref**メソッド利用の引数ありプログラム(必要部分のみ抜粋)。
+```perl
+$sth = $dbh1->prepare('select bar, boo from hoge')	←☆barに値。booにインデックス。
+	or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+$sth->execute or die "SQL文の実行失敗(" . $sth->errstr . ")。";
+$tabledata = $sth->fetchall_arrayref([0]);	←☆barのみ取得。
+foreach my $row ( @$tabledata ) {
+	my ( $boo, $bar, ) = @$row;	←☆boo変数に、barカラム内容が格納される。
+	say "テーブル内容：$boo, $bar";
+    # 出力結果。
+        # テーブル内容：本日は, 
+        # テーブル内容：晴天なり。, 
+}
+```
 
-evalで囲む必要があるのか？  
-その辺の判断がまだ分かっていない。  
 
 </details>
 
