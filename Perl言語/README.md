@@ -3711,7 +3711,7 @@ use v5.24;
 
 use Exporter;
 our @ISA = qw(Exporter);
-our @EXPORT = qw(asakuno);	←☆バージョン番号を外部から呼び出したい場合もここに追加するが、個々のモジュールバージョンを知りたい人がいないため、追加不要。
+our @EXPORT = qw(hogebarboo);	←☆バージョン番号を外部から呼び出したい場合もここに追加するが、個々のモジュールバージョンを知りたい人がいないため、追加不要。
 
 sub xxxyyyzzz {
 	say "関数ライブラリ：@_";
@@ -13615,7 +13615,7 @@ fetchrow\_arrayrefを使えってことでしょうね。
 
 <a name="practicalusesqlDBIissuingsimpleinquiryfetchdumpresults"></a>
 #### フェッチ-機敏出力
-素早くフェッチ後、出力するメソッドは、**dump_results()**を使う。  
+素早くフェッチ後、出力するメソッドは、**dump_results()** を使う。  
 
 以下、それを使ったプログラム(必要箇所のみ[抜粋](#practicalusesqlDBIerrorhandlingdiagnoseprogram))。
 ```perl
@@ -13819,14 +13819,14 @@ $sth = $dbh1->prepare("
 
 以下、パラメタバインドを使わない場合の埋め込みプログラムその3(その部分のみ抜粋)。
 ```perl
-	my $column1 = $dbh1->quote('朝来野');	←☆文字列は、クォート必須。
-	my $column2 = $dbh1->quote('智博');	←☆文字列は、クォート必須。
+	my $column1 = $dbh1->quote('本日は');	←☆文字列は、クォート必須。
+	my $column2 = $dbh1->quote('晴天なり。');	←☆文字列は、クォート必須。
 	$sth = $dbh1->prepare("
 			insert into hoge (boo, bar)
 			values ($column1, $column2);
 		") or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
 ```
-出力結果：朝来野, 智博  
+出力結果：本日は, 晴天なり。  
 
 バインド可能な文字列は、テーブルに対する変化可能な値のみになる。  
 要は、**prepare**で解析可能にしておく必要がある。  
@@ -14038,9 +14038,9 @@ sub main() {
 #### アトミックフェッチ処理とバッチフェッチ処理
 
 * 2種類の処理がある。  
-  * アトミックフェッチ処理  
+  * [アトミックフェッチ処理](#practicalusesqlDBIparameterbindingatomicbatchfetchatomic)  
     1レコードのみ取得する。  
-  * バッチフェッチ処理  
+  * [バッチフェッチ処理](#practicalusesqlDBIparameterbindingatomicbatchfetchbatch)  
     全レコードを一度に取得する(2次元配列)。  
 
 
@@ -14067,7 +14067,78 @@ say "テーブル内容：$boo, $bar";	# 0, 本日は
 
 <a name="practicalusesqlDBIparameterbindingatomicbatchfetchbatch"></a>
 ##### バッチフェッチ処理
+これも2種類ある。  
+そして、これは、一度に大量のデータを取得することになるため、テーブル内容を把握せずに使う場合、メモリが枯渇する可能性がある。  
 
+* メソッド一覧。  
+  * fetchall\_arrayref  
+    [引数無し。](#practicalusesqlDBIparameterbindingatomicbatchfetchbatchfetchnoarg)  
+    [配列引数。](#practicalusesqlDBIparameterbindingatomicbatchfetchbatchfetcharray)  
+    [ハッシュ引数。](#practicalusesqlDBIparameterbindingatomicbatchfetchbatchfetchhash)  
+  * [selectall\_arrayref](#practicalusesqlDBIparameterbindingatomicbatchfetchbatchselect)  
+
+これらの利用は、evalで囲む必要があるのか？  
+その辺の判断がまだ分かっていない。  
+実行に失敗する可能性があるのだから必要だとは思っているのだが・・・。  
+
+<a name="practicalusesqlDBIparameterbindingatomicbatchfetchbatchfetchnoarg"></a>
+以下、**fetchall_arrayref**メソッド利用の引数無しプログラム(必要部分のみ抜粋)。
+```perl
+$sth = $dbh1->prepare('select * from hoge')	←☆アスタリスクでの項目取得になるため、テーブルに依存する。
+	or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+$sth->execute or die "SQL文の実行失敗(" . $sth->errstr . ")。";
+$tabledata = $sth->fetchall_arrayref();	←☆1回のみ実行(結果は2次元配列)。
+foreach my $row ( @$tabledata ) {	←☆リファレンスから取り出し。
+	my ( $boo, $bar, ) = @$row;	←☆さらに取り出し。
+	say "テーブル内容：$boo, $bar";
+    # 出力結果。
+        # テーブル内容：0, 本日は
+        # テーブル内容：1, 晴天なり。
+```
+
+<a name="practicalusesqlDBIparameterbindingatomicbatchfetchbatchfetcharray"></a>
+以下、**fetchall_arrayref**メソッド利用の配列用引数ありプログラム(必要部分のみ抜粋)。
+```perl
+$sth = $dbh1->prepare('select bar, boo from hoge')	←☆barに値。booにインデックス。
+	or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+$sth->execute or die "SQL文の実行失敗(" . $sth->errstr . ")。";
+$tabledata = $sth->fetchall_arrayref([0]);	←☆barのみ取得。
+foreach my $row ( @$tabledata ) {
+	my ( $boo, $bar, ) = @$row;	←☆boo変数に、barカラム内容が格納される。
+	say "テーブル内容：$boo, $bar";
+    # 出力結果。
+        # テーブル内容：本日は, 
+        # テーブル内容：晴天なり。, 
+}
+```
+
+<a name="practicalusesqlDBIparameterbindingatomicbatchfetchbatchfetchhash"></a>
+以下、**fetchall_arrayref**メソッド利用のハッシュ用引数ありプログラム(必要部分のみ抜粋)。
+```perl
+$sth = $dbh1->prepare('select * from hoge')
+	or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+$sth->execute or die "SQL文の実行失敗(" . $sth->errstr . ")。";
+$tabledata = $sth->fetchall_arrayref( { boo=>1, bar=>2, } );	←☆ハッシュを引数にしている(テーブルの項目名と一致させる必要がある)。
+foreach my $row ( @$tabledata ) {
+	say "テーブル内容：$row->{boo}, $row->{bar}";
+}
+```
+※テーブルの項目名が大文字だろうが、ハッシュに使うキーは小文字にしておくこと。  
+項目名に合わせて大文字にしたときは、取得に失敗した。  
+※また、複数テーブル利用により、同名の項目名がある場合は取得が出来ない。
+これは、ハッシュを利用する場合は、[フェッチ](#practicalusesqlDBIissuingsimpleinquiryfetch)全般に言えることなのかもしれない。  
+
+<a name="practicalusesqlDBIparameterbindingatomicbatchfetchbatchselect"></a>
+以下、**selectall_arrayref**メソッド利用の引数無しプログラム(必要部分のみ抜粋)。
+```perl
+$tabledata = $dbh1->selectall_arrayref( 'select boo, bar from hoge' );
+foreach my $row ( @$tabledata ) {
+	say "テーブル内容：$row->[0], $row->[1]";
+}
+    # 出力結果。
+        # テーブル内容：0, 本日は
+        # テーブル内容：1, 晴天なり。
+```
 
 </details>
 
