@@ -1924,6 +1924,8 @@ int main(void)
 #### エラトステネスの篩
 効率よく[素数](#findAPrimeNumberChapter2)を求めることができるアルゴリズムのこと。  
 
+<details><summary>最初の見た目。</summary>
+
 以下、篩いにかける表プログラム。
 ```c
 #include <stdio.h>
@@ -1958,6 +1960,8 @@ int main(void)
  90 91 92 93 94 95 96 97 98 99
 ```
 これを表示するだけなのに、数十分かかってしまった。  
+
+</details>
 
 以下、プログラム。
 ```c
@@ -2095,6 +2099,7 @@ int main(void)
   /  /  / 83  /  /  /  /  / 89
   /  /  /  /  /  /  / 97  /  /
 ```
+3時間かかって落胆していたが、なかなかのできばえかな。  
 
 
 <a name="understandnAryNotationChapter2"></a>
