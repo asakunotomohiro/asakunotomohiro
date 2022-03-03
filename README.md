@@ -172,14 +172,14 @@ infoは省略可能です。
 
 
 <a name="PythonAcquireKnowledgeAndSkillsOfLifelongThings"></a>
-### 「Pythonで学ぶアルゴリズムの教科書」
+#### 「Pythonで学ぶアルゴリズムの教科書」
 簡単なプログラミングに使う基礎知識を統一するところから始める。  
 
 <details><summary>基礎知識5種類一覧</summary>
 
 * 変数  
 * 配列  
-  ここでのPythoでは、`リスト(list)`を配列と呼んでいる。  
+  ここでのPythonでは、`リスト(list)`を配列と呼んでいる。  
 * 条件分岐  
 * 繰り返し  
 * 関数  
@@ -802,7 +802,7 @@ infoは省略可能です。
 しかし、本当に触り部分だけ。  
 それだけで十分ではあるのだが、プログラミング言語によっては、範囲が広がるだろう。  
 
-#### 具体的な基礎知識5種類の手順
+##### 具体的な基礎知識5種類の手順
 
 [ ] 手順1. 勉強用のブランチに移動する。  
 [ ] 手順2. ルートディレクトリのひな形ディレクトリを勉強用ディレクトリとしてコピーする。  
@@ -822,7 +822,7 @@ infoは省略可能です。
 
 ここでは、以下の手順でアルゴリズムの勉強を進める。
 
-#### 具体的なアルゴリズムの勉強手順
+##### 具体的なアルゴリズムの勉強手順
 
 [ ] 手順1. 勉強用のブランチに移動する。  
 [ ] 手順2. "ひな形/README.md"を参考に作業を進める。  
@@ -830,7 +830,8 @@ infoは省略可能です。
 
 </details>
 
-<a name="PythonDevelopmentEnvironment"></a>
+
+<a name="programmingDevelopmentenvironment"></a>
 #### 開発環境
 できる限り`MacVim`を使うつもりだが、基本は`Visual Studio Code(VSCode)`だろう。  
 理由は、vim環境で **C#** をコンパイルできなかった(Macだからという理由ではないはず)。  
@@ -905,7 +906,7 @@ $
 </details>
 
 
-<a name="PythonGitMergeRules"></a>
+<a name="HowToUseTheBranchGitMergeRules"></a>
 #### Gitのマージルール
 個々の言語ごとにブランチをそれぞれ作成する。  
 そのブランチで作業する。  

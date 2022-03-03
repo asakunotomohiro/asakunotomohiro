@@ -232,6 +232,7 @@ $
   * [ ] [スマートマッチ演算子`~~`](#practicaluseSmartmatch)  
     * [x] [switch(given-when)](#practicaluseGivenwhen)  
   * [x] [パッケージ](#practicalusePackages)  
+  * [ ] [SQL/DBI](#practicalusesqlDBI)  
   * [ ] [GUI/Tk](#practicaluseGUIPerlTk)  
   * [x] [eval(例外処理)](#practicaluseevalexceptionhandling)  
 
@@ -3712,7 +3713,7 @@ use v5.24;
 
 use Exporter;
 our @ISA = qw(Exporter);
-our @EXPORT = qw(asakuno);	←☆バージョン番号を外部から呼び出したい場合もここに追加するが、個々のモジュールバージョンを知りたい人がいないため、追加不要。
+our @EXPORT = qw(hogebarboo);	←☆バージョン番号を外部から呼び出したい場合もここに追加するが、個々のモジュールバージョンを知りたい人がいないため、追加不要。
 
 sub xxxyyyzzz {
 	say "関数ライブラリ：@_";
@@ -11670,6 +11671,2490 @@ sub listcontext {
 }
 &listcontext("boo, bar 20220128, 本日は晴天なり。");
 ```
+
+</details>
+
+<a name="practicalusesqlDBI"></a>
+<details><summary>応用知識-SQL/DBI</summary>
+
+SQL(Structured Query Language：構造化問い合わせ言語)  
+
+唐突に何の脈絡もなく、本当に突然データベース接続がしたくなったため、手に取った。  
+SQL構文の勉強は別途行うことと、何より必要に迫られた勉強ではなく、本当に唐突に何の脈絡もなく始めただけなので、概略だけに留める。  
+
+そして、調べて思ったことは、DBIと言うのはインタフェイスのことで有り、ODBCと同じような扱いなのだと言うこと。  
+DBIとODBCを組み合わせるのかと思ったが、全く違った。  
+そのため、インタフェイスと言うだけのことはあり、令和のこの時代にもデータベースと接続する方法として、未だにDBIを使っている。  
+素晴らしい。  
+ODBCは仕事で使ったことあるが、DBI(Database Interface)はない。  
+これからが楽しみだ。  
+
+* 目次  
+  * [問い合わせ言語用語](#practicalusesqlDBIquerylanguageparlance)  
+  * [データ型](#practicalusesqlDBIdatatype)  
+  * 演算子  
+    * [比較演算子](#practicalusesqlDBIcomparisonoperator)  
+    * [論理演算子](#practicalusesqlDBIlogicaloperator)  
+  * [DBIプログラミング](#practicalusesqlDBImaindbiprogramming)  
+  * [データソース名](#practicalusesqlDBIdatasource)  
+  * [接続と切断](#practicalusesqlDBIconnectanddisconnect)  
+    * [SQLiteの特徴](#practicalusesqlDBIconnectanddisconnectsqliteconnectfeature)  
+  * [エラー処理](#practicalusesqlDBIerrorhandling)  
+  * [ユーティリティメソッドと関数](#practicalusesqlDBIutilitymethodandfunction)  
+  * [簡単な問い合わせの発行](#practicalusesqlDBIissuingsimpleinquiry)  
+    * フェッチ・dump\_results・finish  
+  * [非Select文の実行](#practicalusesqlDBInonselectexecution)  
+    * doメソッド  
+  * [文へのパラメタバインド](#practicalusesqlDBIparameterbinding)  
+    * prepare・bind\_param
+
+※参考書籍：[入門 Perl DBI](https://www.oreilly.co.jp/books/4873110505/)  
+
+
+<a name="practicalusesqlDBIquerylanguageparlance"></a>
+### 問い合わせ言語用語
+
+* C.R.U.D.用語  
+  * フェッチ(Fetching)・選択(selecting)  
+    データベース内からデータを取り出す操作。  
+    SQLのSELECTによって実現する。  
+  * 格納(Storing)・挿入(inserting)  
+    データベース内にデータを格納する操作。  
+    SQLのINSERTによって実現する。  
+  * 更新(Updating)  
+    データベース内のデータを変更する操作。  
+    SQLのUPDATEによって実現する。  
+  * 削除(Deleting)  
+    データベース内のデータを削除する操作。  
+    SQLのDELETEによって実現する。  
+
+* C.R.U.D.  
+  下記の頭文字をとり、上記の操作を表す。  
+  * **C**
+    Create  
+  * **R**
+    Read  
+  * **U**
+    Update  
+  * **D**
+    Delete  
+
+
+<a name="practicalusesqlDBIdatatype"></a>
+### データ型
+Perlのデータ型は寛容に出来ており、SQLは厳格に出来ている。  
+その取り持ちが必要になる。  
+
+* データ型の種類。  
+  * 数値データ型  
+  * 文字データ型  
+  * 日付データ型  
+  * バイナリオブジェクトデータ型  
+  * Null値  
+
+
+<a name="practicalusesqlDBIcomparisonoperator"></a>
+### 比較演算子
+Whereで使われる演算子。  
+
+比較演算子
+|比較内容|演算子|補足|
+|--------|----------|------------|----|
+|等号|`=`|正確(厳格)に比較する。|
+|不等|`<>`・`!=`・`^=`・`~=`など|等しくないことを比較する。|
+|より大きい|`>`||
+|より小さい|`<`||
+|以上(等しいもしくは大きい)|`>=`||
+|以下(等しいもしくは小さい)|`<=`||
+|含み比較|`IN`|`ID IN (1, 2, 3)`などの括弧内に含まれる値があるかどうかを比較する。|
+|検索比較|`LIKE`|`name LIKE '%hoge%'`などの文字列をワイルドカード込みで検索比較する(記法が複数あるため例示できない)。|
+
+
+<a name="practicalusesqlDBIlogicaloperator"></a>
+### 論理演算子
+Whereで使われる演算子。  
+
+以下の演算子を用いる。
+|演算子|意味|備考|
+|------|----|----|
+|`AND`|論理積||
+|`OR`|論理和||
+|`NOT`|否定||
+
+
+<a name="practicalusesqlDBImaindbiprogramming"></a>
+### DBIプログラミング
+前提：`use DBI;`  
+
+* DBIアーキテクチャ  
+  * DBIそのもの。  
+  * データベース用のドライバ(通称、DBD・(Database Driver)と呼ぶ)。  
+    例）**Oracleドライバ**・**mySQLドライバ**・**PostgreSQLドライバ**など。  
+    DBD表現例）**[DBD::Oracle](http://perldoc.jp/docs/modules/DBD-Oracle-1.14/Oracle.pod)**・**[DBD::mysql](https://perldoc.jp/docs/modules/DBD-mysql-2.1026/DBD/mysql.pod)**・**[DBD::Pg](https://perldoc.jp/docs/modules/DBD-Pg-1.22/Pg.pod)** など。  
+
+* ハンドルの種類  
+  * [ドライバハンドル](#practicalusesqlDBImaindbiprogrammingdriverhandle)  
+  * [DBIハンドル(データベースハンドル)](#practicalusesqlDBImaindbiprogrammingdbihandle)  
+  * [ステートメントハンドル](#practicalusesqlDBImaindbiprogrammingstatementhandle)  
+
+
+<a name="practicalusesqlDBImaindbiprogrammingdriverhandle"></a>
+#### ドライバハンドル
+ロードされたハンドルのこと(現時点では、どこのデータベースとも関わりが無い)。  
+
+* 利用可能メソッド  
+  * data\_sources  
+    接続の列挙用メソッド。  
+  * connect  
+    データベースへの接点を作るメソッド。  
+
+また、通常は、意識しないハンドルになる(connectメソッド実行時にすでに動いているため)。  
+
+※全体的に説明が理解できない。  
+
+
+<a name="practicalusesqlDBImaindbiprogrammingdbihandle"></a>
+#### DBIハンドル(データベースハンドル)
+DBIからインスタンス生成したオブジェクトのこと。  
+特定のデータベースへの接続方法を持ち、それがカプセル化されている。  
+様式：
+`my $dbh = DBI->connect( $data_source, ・・・ );`  
+※ドライバハンドルの子に相当する。  
+
+※これも具体的な想像が出来ず、理解できない部分がある。  
+複数のデータベースに、1つのオブジェクトから同時接続できる？  
+※そもそもデータベースハンドルとは、**$dbh**のこと？  
+
+
+<a name="practicalusesqlDBImaindbiprogrammingstatementhandle"></a>
+#### ステートメントハンドル
+データベースへのSQL操作を行うハンドル。  
+※データベースハンドルの子に相当する。  
+
+例）
+`my $sth = $dbh->prepare('select * from hoge');`  
+ステートメントハンドルとは、**$sth**のこと？  
+
+
+<a name="practicalusesqlDBIdatasource"></a>
+### データソース名
+**dbi::ドライバ名**にて、データベースに接続する。  
+以下、端末で利用できるドライバ名の一覧取得。  
+`DBI->available_drivers();`  
+
+以下、利用例）
+```perl
+use v5.24;
+use DBI;	←☆必須。
+
+sub main() {
+	my @drivers = DBI->available_drivers();
+	say "@drivers";	# DBM ExampleP File Gofer Mem Proxy Sponge	←☆この情報だけでは何も分からない。
+}
+main();
+```
+とりあえず実行できた。  
+
+<details><summary>DBIモジュールのインストール。</summary>
+
+※~~私の環境では、DBIがインストールされておらず、呼び出せなかった。~~  
+ようやく長い格闘の末、インストールできた。  
+
+CPANに繋がらない。
+```terminal
+$ perldoc DBI
+No documentation found for "DBI".
+$ perl -MCPAN -e shell
+
+cpan shell -- CPAN exploration and modules installation (v2.29)
+Enter 'h' for help.
+
+cpan[1]> install DBI
+Reading '.cpan/Metadata'
+  Database was generated on Sat, 15 Jan 2022 03:55:46 GMT
+　　　・
+　　　・
+　　　・
+Giving up on '.cpan/sources/authors/id/T/TI/TIMB/DBI-1.643.tar.gz'
+Note: Current database in memory was generated on Sat, 15 Jan 2022 03:55:46 GMT
+
+cpan[2]> quit
+Lockfile removed.
+$
+```
+
+以下、SSL関連と思い、インストール。
+```terminal
+$ brew install ssl*
+Warning: You are using macOS 10.14.
+We (and Apple) do not provide support for this old version.
+　　　・
+　　　・
+　　　・
+Error: An exception occurred within a child process:
+  NoMethodError: super: no superclass method `on_linux' for #<Formulary::FormulaNamespacea75a85ca396df0bd5be983e48a50d88d::OpensslAT11:0x00007fb89c2633b8>
+$ echo $?
+1
+$
+```
+そもそもがSSL導入に失敗するのだが？  
+ゆえに、以下の再挑戦も失敗する。
+```terminal
+$ perl -MCPAN -e shell
+
+cpan shell -- CPAN exploration and modules installation (v2.29)
+Enter 'h' for help.
+
+cpan[1]> install DBI
+Reading '.cpan/Metadata'
+　　　・・・
+
+cpan[2]> q
+Lockfile removed.
+$
+```
+
+以下、成功。
+```terminal
+$ brew install cpanm
+Warning: You are using macOS 10.14.
+We (and Apple) do not provide support for this old version.
+You will encounter build failures with some formulae.
+　　　・
+　　　・
+　　　・
+Removing: Library/Logs/Homebrew/openssl@3... (7 files, 7.2MB)
+$ cpanm DBI
+--> Working on DBI
+Fetching http://www.cpan.org/authors/id/T/TI/TIMB/DBI-1.643.tar.gz ... OK
+Configuring DBI-1.643 ... OK
+Building and testing DBI-1.643 ... OK
+Successfully installed DBI-1.643
+1 distribution installed
+$
+```
+まさか・・・こんなこととは・・・。  
+[Perl/Tk](#practicaluseGUIPerlTk)でも[インストール](#practicaluseTkinstall)ができなかった。  
+それは、CPANを使っていたからなのだろう。  
+
+</details>
+
+データソースとドライバが紐付けられているプログラム。
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	my @drivers = DBI->available_drivers();
+
+	foreach my $value ( @drivers ) {
+		say "$value";
+		my @datasources = DBI->data_sources( $value );
+		foreach my $source ( @datasources ) {
+			say "\tデータソース：$source";
+		}
+	}
+}
+main();
+```
+
+以下、実行結果。
+```terminal
+DBM ExampleP File Gofer Mem Proxy SQLite Sponge mysqlPP
+DBM
+	データソース：DBI:DBM:f_dir=.
+	データソース：DBI:DBM:f_dir=基礎知識用の勉強
+	データソース：DBI:DBM:f_dir=応用知識用の勉強
+	データソース：DBI:DBM:f_dir=Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける
+ExampleP
+	データソース：dbi:ExampleP:dir=.
+File
+	データソース：DBI:File:f_dir=.
+	データソース：DBI:File:f_dir=基礎知識用の勉強
+	データソース：DBI:File:f_dir=応用知識用の勉強
+	データソース：DBI:File:f_dir=Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける
+Gofer
+Mem
+Proxy	←☆なぜ項目がない？
+SQLite	←☆なぜ項目がない？
+Sponge
+mysqlPP
+	データソース：dbi:mysqlPP:
+```
+**ADO**・**CSV**・**XBase**などないのだが、どうなっている？  
+**ODBC**があってほしかった。  
+
+ゆくゆくは、ここにmySQLやPostgreSQLなどが表示されるようになるわけね。  
+どうやって？  
+いまだによく分かっていない。  
+ドライバを別途インストール必須なのは分かったが、ドライバが何なのかが分からない。  
+
+<details><summary>Proxyモジュールのインストール。</summary>
+
+以下、上記プログラム実行結果。
+```terminal
+install_driver(Proxy) failed: Can't locate RPC/PlClient.pm in @INC (you may need to install the RPC::PlClient module) (@INC 〜) at perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBD/Proxy.pm line 29.
+BEGIN failed--compilation aborted at perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBD/Proxy.pm line 29.
+Compilation failed in require at (eval 29) line 3.
+Perhaps a module that DBD::Proxy requires hasn't been fully installed
+ at データソース名.pl line 13.
+```
+なぜか実行失敗。  
+またか・・・。  
+
+以下、導入作業。
+```terminal
+$ cpanm RPC::PlClient
+--> Working on RPC::PlClient
+Fetching http://www.cpan.org/authors/id/M/MN/MNOONING/PlRPC/PlRPC-0.2020.tar.gz ... OK
+　　　・
+　　　・
+　　　・
+Successfully installed PlRPC-0.2020
+2 distributions installed
+$
+```
+実行時に警告が出てきた。  
+Perl実行でネットワーク接続を許可するか、みたいな・・・許可したが、よかったか？  
+
+</details>
+
+
+<a name="practicalusesqlDBIconnectanddisconnect"></a>
+### 接続と切断
+接続様式：
+`$dbh = DBI->connect( データソース名, ユーザ名, パスワード, オプション, );`  
+具体例）
+`$dbh = DBI->connect( $data_source, $username, $password, \%attr );`  
+
+切断様式：
+`$rc = $dbh->disconnect();`  
+
+
+* データベース利用時の必要情報。  
+  * データソース名  
+  * ユーザ名  
+  * パスワード
+
+* オプション  
+  * DBIで自動エラー処理の提供。  
+
+
+<a name="practicalusesqlDBIconnectanddisconnectpostgres"></a>
+#### 利用するデータベースの構築。
+[仮想環境](../仮想環境/README.md)の[Docker](../仮想環境/docker_作業メモなど何でも詰め込む.md)を利用する。  
+
+<details><summary>DockerでのPostgreSQLサーバ起動作業。</summary>
+
+以下、作業手順。
+```terminal
+$ docker ps --all
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+$ docker run -dit --name postgres20220225 -p 8080:80 -e POSTGRES_PASSWORD=1234 -v "$HOME/docker作成データ/":/var/lib/postgresql/data postgres	←☆ドッカーでのデータベース作成。
+b3cf3c81b383bceeee7ff8a50469b07bd00fcd75f5c467a2d5c467ded6b90337
+$ docker ps	←☆起動成功。
+CONTAINER ID   IMAGE      COMMAND                  CREATED         STATUS         PORTS                            NAMES
+b3cf3c81b383   postgres   "docker-entrypoint.s…"   9 seconds ago   Up 8 seconds   5432/tcp, 0.0.0.0:8080->80/tcp   postgres20220225
+$
+```
+※パスワード設定は必須。  
+
+以下、PostgreSQLの起動確認。
+```terminal
+$ docker exec -it postgres20220225 psql -U postgres
+psql (14.0 (Debian 14.0-1.pgdg110+1))
+Type "help" for help.
+
+postgres=# \l	←☆バックスラッシュに小文字のL字。
+                                 List of databases	←☆既存のデータベースが確認できる。
+   Name    |  Owner   | Encoding |  Collate   |   Ctype    |   Access privileges
+-----------+----------+----------+------------+------------+-----------------------
+ postgres  | postgres | UTF8     | en_US.utf8 | en_US.utf8 | 
+ template0 | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres          +
+           |          |          |            |            | postgres=CTc/postgres
+ template1 | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres          +
+           |          |          |            |            | postgres=CTc/postgres
+(3 rows)
+
+postgres=#	←☆Ctrl+dで抜け出る(\qだけで抜けられる)。
+\q
+$
+```
+DBIドライバを確認するが、Perlからは認識できていなかった。  
+データベースは手動で作成する？  
+しかし、DBIドライバとは関係ないよね。  
+
+</details>
+
+<details><summary>DockerでのMySQLサーバ起動作業。</summary>
+
+以下、作業手順。
+```terminal
+$ docker ps	←☆起動していない。
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+$ docker run --name mysql20220226 -p 8080:80 -e MYSQL_ROOT_PASSWORD=1234 -v "$HOME/docker作成データ/":/var/lib/postgresql/data -d mysql	←☆ドッカーでのデータベース作成。
+508bf183b95781009985c522f26cd0243cb804e4e0a1bb1fe3af3750e06a207f
+$ docker ps	←☆起動確認。
+CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS                                       NAMES
+508bf183b957   mysql     "docker-entrypoint.s…"   7 seconds ago   Up 6 seconds   3306/tcp, 33060/tcp, 0.0.0.0:8080->80/tcp   mysql20220226
+$
+```
+
+以下、MySQLの起動確認。
+```terminal
+$ docker exec -it mysql20220226 bash -p
+root@d128841fe79c:/# mysql -u root -p -h 127.0.0.1	←☆このIPアドレスは何？
+Enter password:	←☆1234
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+　　　・・・
+
+mysql> ^DBye	 ←☆ctrl+d
+root@d128841fe79c:/# exit
+$
+```
+
+以下、外部向けのIPアドレスが設定されていない。
+```terminal
+$ docker container inspect --format="{{.NetworkSettings.IPAddress}}" mysql20220226
+
+$
+```
+なぜに何も出てこない？  
+
+</details>
+
+
+<a name="practicalusesqlDBIconnectanddisconnectsqliteconnect"></a>
+#### SQLite接続テスト。
+PerlからMySQLに接続する方法は2種類あるようだ。  
+
+* DBIモジュールのためのデータベースドライバ
+  * [PostgreSQL-Perlだけで構築されたDBIドライバ](https://perldoc.jp/docs/modules/DBD-PgPP-0.05/PgPP.pod)  
+    **DBD::PgPP**
+  * [PostgreSQL](https://perldoc.jp/docs/modules/DBD-Pg-1.22/Pg.pod)  
+    **DBD::Pg**  
+  * [SQLite-DBIドライバでの自己完結型(Self Contained)RDBMS](https://perldoc.jp/docs/modules/DBD-SQLite-0.19/SQLite.pod)  
+    **DBD::SQLite**
+  * [MySQL-Perlだけで構築されたDBIドライバ](https://perldoc.jp/docs/modules/DBD-mysqlPP-0.03/mysqlPP.pod)  
+    **DBD::mysqlPP**
+  * [MySQL](https://perldoc.jp/docs/modules/DBD-mysql-2.1026/DBD/mysql.pod)  
+    **DBD::mysql**  
+  * [Oracle](http://perldoc.jp/docs/modules/DBD-Oracle-1.14/Oracle.pod)  
+    **DBD::Oracle**  
+  * [DB2](https://perldoc.jp/docs/modules/DBD-DB2-0.76/DB2.pod)  
+    **DBD::DB2**
+
+DBIデータベースドライバ作成として、[DBI::DBD](https://perldoc.jp/docs/modules/DBI-1.612/DBI/DBD.pod)を使ったガイドも付いている。  
+DBIのためのODBCドライバ用の[DBD::ODBC](https://perldoc.jp/docs/modules/DBD-ODBC-1.05/ODBC.pod)がある。  
+これらは、何の話？  
+
+<a name="practicalusesqlDBIconnectanddisconnectpostgresqlconnect"></a>
+<details><summary>PostgreSQL導入失敗。</summary>
+
+ここの項目ボツ。  
+
+#### PostgreSQL接続テスト。
+**DBI->connect**を使った接続が古く、将来は使えなくなるそうだ・・・どういうこと？  
+現在は、非推奨の接続方法のようだ。  
+
+PostgreSQL用のDBIドライバをどのように導入すればいい？
+```terminal
+$ cpanm DBD::Pg	←☆なぜ失敗する？
+--> Working on DBD::Pg
+Fetching http://www.cpan.org/authors/id/T/TU/TURNSTEP/DBD-Pg-3.15.1.tar.gz ... OK
+Configuring DBD-Pg-3.15.1 ... N/A
+! No MYMETA file is found after configure. Your toolchain is too old?
+! Configure failed for DBD-Pg-3.15.1. See .cpanm/work/1645789457.89632/build.log for details.
+$
+$ cat .cpanm/work/1645789457.89632/build.log
+cpanm (App::cpanminus) 1.9018 on perl 5.034000 built for darwin-2level
+Work directory is .cpanm/work/1645789457.89632
+You have make /usr/bin/make
+　　　・
+　　　・
+　　　・
+Path to pg_config?
+No POSTGRES_HOME defined, cannot find automatically
+Configuring DBD::Pg 3.15.1
+-> N/A
+-> FAIL No MYMETA file is found after configure. Your toolchain is too old?	←☆古い？どうやって新しくする？
+-> FAIL Configure failed for DBD-Pg-3.15.1. See .cpanm/work/1645789457.89632/build.log for details.
+$
+$ cpanm IO::Socket
+--> Working on IO::Socket
+Fetching http://www.cpan.org/authors/id/T/TO/TODDR/IO-1.48.tar.gz ... OK
+Configuring IO-1.48 ... OK
+Building and testing IO-1.48 ... OK
+Successfully installed IO-1.48 (upgraded from 1.46)
+1 distribution installed
+$ perl -MDBI -e’print $DBI::VERSION’ ; echo
+Unrecognized character \xE2; marked by <-- HERE after <-- HERE near column 1 at -e line 1.
+
+$ perl -MDBD::Pg -e’print $DBD::Pg::VERSION’ ; echo
+Can't locate DBD/Pg.pm in @INC (you may need to install the DBD::Pg module) (@INC contains: 〜).
+BEGIN failed--compilation aborted.
+
+$
+```
+解決方法が全く分からない。  
+
+以下、環境変数の設定後、再度インストール。
+```terminal
+$ export PGPORT=5432
+$ cpanm DBD::Pg
+--> Working on DBD::Pg
+Fetching http://www.cpan.org/authors/id/T/TU/TURNSTEP/DBD-Pg-3.15.1.tar.gz ... OK
+Configuring DBD-Pg-3.15.1 ... OK
+Building and testing DBD-Pg-3.15.1 ... 2022-03-01 21:20:28.783 JST [5356] FATAL:  role "postgres" does not exist
+2022-03-01 21:20:28.787 JST [5357] FATAL:  role "postgres" does not exist
+FAIL
+! Installing DBD::Pg failed. See /Users/asakunotomohiro/.cpanm/work/1646137219.4919/build.log for details. Retry with --force to force install it.
+$ psql postgres
+psql (14.2)
+Type "help" for help.
+
+postgres=# \q
+$ psql postgres
+psql (14.2)
+Type "help" for help.
+
+template1=# \du
+                                      List of roles
+    Role name    |                         Attributes                         | Member of
+-----------------+------------------------------------------------------------+-----------
+ asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+
+template1=#
+\q
+$ createuser postgres	←☆ユーザの追加。
+$ psql postgres
+psql (14.2)
+Type "help" for help.
+
+postgres=# \du
+                                      List of roles
+    Role name    |                         Attributes                         | Member of
+-----------------+------------------------------------------------------------+-----------
+ asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+ postgres        |                                                            | {}	←☆追加された。
+
+postgres=#
+\q
+$ cpanm DBD::Pg
+--> Working on DBD::Pg
+Fetching http://www.cpan.org/authors/id/T/TU/TURNSTEP/DBD-Pg-3.15.1.tar.gz ... OK
+Configuring DBD-Pg-3.15.1 ... OK
+Building and testing DBD-Pg-3.15.1 ... 2022-03-01 21:24:37.623 JST [5902] ERROR:  permission denied for database postgres
+2022-03-01 21:24:37.623 JST [5902] STATEMENT:  CREATE SCHEMA dbd_pg_testschema	←☆エラーの内容が変わった。
+FAIL
+! Installing DBD::Pg failed. See /Users/asakunotomohiro/.cpanm/work/1646137467.5464/build.log for details. Retry with --force to force install it.
+$
+```
+
+以下、上記の続き。
+```terminal
+$ psql postgres
+psql (14.2)
+Type "help" for help.
+
+postgres=# create schema dbd_pg_testschema;	←☆スキーマの作成。
+CREATE SCHEMA
+postgres=# \dn
+           List of schemas
+       Name        |      Owner
+-------------------+-----------------
+ dbd_pg_testschema | asakunotomohiro
+ public            | asakunotomohiro
+(2 rows)
+
+postgres=# \q
+$ cpanm DBD::Pg
+--> Working on DBD::Pg
+Fetching http://www.cpan.org/authors/id/T/TU/TURNSTEP/DBD-Pg-3.15.1.tar.gz ... OK
+Configuring DBD-Pg-3.15.1 ... OK
+Building and testing DBD-Pg-3.15.1 ... 2022-03-01 22:02:32.347 JST [6699] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:32.347 JST [6699] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:32.798 JST [6702] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:32.798 JST [6702] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:33.049 JST [6704] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:33.049 JST [6704] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:33.293 JST [6706] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:33.293 JST [6706] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:33.541 JST [6708] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:33.541 JST [6708] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:33.768 JST [6710] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:33.768 JST [6710] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:34.005 JST [6712] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:34.005 JST [6712] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:34.234 JST [6714] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:34.234 JST [6714] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:34.473 JST [6716] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:34.473 JST [6716] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:34.723 JST [6718] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:34.723 JST [6718] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:34.971 JST [6720] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:34.971 JST [6720] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:35.201 JST [6722] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:35.201 JST [6722] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:35.470 JST [6724] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:35.470 JST [6724] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:02:35.715 JST [6726] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:02:35.715 JST [6726] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+FAIL
+! Installing DBD::Pg failed. See /Users/asakunotomohiro/.cpanm/work/1646139742.6259/build.log for details. Retry with --force to force install it.
+$
+$ psql postgres
+psql (14.2)
+Type "help" for help.
+
+postgres=# \dn
+           List of schemas
+       Name        |      Owner
+-------------------+-----------------
+ dbd_pg_testschema | asakunotomohiro
+ public            | asakunotomohiro
+(2 rows)
+
+postgres=# ALTER SCHEMA dbd_pg_testschema OWNER TO postgres;	←☆スキーマの名前変更。
+ALTER SCHEMA
+postgres=# \dn
+           List of schemas
+       Name        |      Owner
+-------------------+-----------------
+ dbd_pg_testschema | postgres
+ public            | asakunotomohiro
+(2 rows)
+
+postgres=# \q
+$ cpanm DBD::Pg
+--> Working on DBD::Pg
+Fetching http://www.cpan.org/authors/id/T/TU/TURNSTEP/DBD-Pg-3.15.1.tar.gz ... OK
+Configuring DBD-Pg-3.15.1 ... OK
+Building and testing DBD-Pg-3.15.1 ... 2022-03-01 22:06:59.714 JST [7270] ERROR:  permission denied for database postgres
+2022-03-01 22:06:59.714 JST [7270] STATEMENT:  CREATE SCHEMA dbd_pg_testschema	←☆スキーマの名前を変えたら駄目だったようだ。
+FAIL
+! Installing DBD::Pg failed. See /Users/asakunotomohiro/.cpanm/work/1646140011.6831/build.log for details. Retry with --force to force install it.
+$ psql postgres
+psql (14.2)
+Type "help" for help.
+
+postgres=# \dn	←☆ロールに従った箇所に移動する？
+     List of schemas
+  Name  |      Owner
+--------+-----------------
+ public | asakunotomohiro
+(1 row)
+
+postgres=# \q
+$
+$ psql postgres
+psql (14.2)
+Type "help" for help.
+
+postgres=# \du
+                                      List of roles
+    Role name    |                         Attributes                         | Member of
+-----------------+------------------------------------------------------------+-----------
+ asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+ postgres        |                                                            | {}
+
+postgres=# GRANT postgres TO asakunotomohiro;	←☆権限を付与？
+GRANT ROLE
+postgres=# \du
+                                       List of roles
+    Role name    |                         Attributes                         | Member of
+-----------------+------------------------------------------------------------+------------
+ asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {postgres}	←☆何か付いた。
+ postgres        |                                                            | {}
+
+postgres=# CREATE ROLE postgres CREATEDB;	←☆データベース作成権限付与・・・失敗。
+2022-03-01 22:36:39.658 JST [8532] ERROR:  role "postgres" already exists
+2022-03-01 22:36:39.658 JST [8532] STATEMENT:  CREATE ROLE postgres CREATEDB;
+ERROR:  role "postgres" already exists
+postgres=# \q
+$
+$ psql postgres
+psql (14.2)
+Type "help" for help.
+
+postgres=# \du	←☆postgresユーザ不在。
+                                      List of roles
+    Role name    |                         Attributes                         | Member of
+-----------------+------------------------------------------------------------+-----------
+ asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+
+postgres=# CREATE ROLE postgres CREATEDB;	←☆ユーザ作成。
+CREATE ROLE
+postgres=# \du
+                                      List of roles
+    Role name    |                         Attributes                         | Member of
+-----------------+------------------------------------------------------------+-----------
+ asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+ postgres        | Create DB, Cannot login                                    | {}	←☆postgresユーザがいる。
+
+postgres=# GRANT postgres TO asakunotomohiro;	←☆スーパユーザに属させる？
+GRANT ROLE
+postgres=# \du
+                                       List of roles
+    Role name    |                         Attributes                         | Member of
+-----------------+------------------------------------------------------------+------------
+ asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {postgres}	←☆何か付いた。
+ postgres        | Create DB, Cannot login                                    | {}	←☆ログイン権限なし。
+
+postgres=# \q
+$ cpanm DBD::Pg
+--> Working on DBD::Pg
+Fetching http://www.cpan.org/authors/id/T/TU/TURNSTEP/DBD-Pg-3.15.1.tar.gz ... OK
+Configuring DBD-Pg-3.15.1 ... OK
+Building and testing DBD-Pg-3.15.1 ... 2022-03-01 22:46:18.070 JST [9159] FATAL:  role "postgres" is not permitted to log in
+2022-03-01 22:46:18.074 JST [9160] FATAL:  role "postgres" is not permitted to log in
+FAIL
+! Installing DBD::Pg failed. See /Users/asakunotomohiro/.cpanm/work/1646142368.8723/build.log for details. Retry with --force to force install it.
+$
+$ psql postgres
+psql (14.2)
+Type "help" for help.
+
+postgres=# \du
+                                       List of roles
+    Role name    |                         Attributes                         | Member of
+-----------------+------------------------------------------------------------+------------
+ asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {postgres}
+ postgres        | Create DB, Cannot login                                    | {}
+
+postgres=# ALTER ROLE postgres LOGIN;	←☆ログイン権限付与。
+ALTER ROLE
+postgres=# \du
+                                       List of roles
+    Role name    |                         Attributes                         | Member of
+-----------------+------------------------------------------------------------+------------
+ asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {postgres}
+ postgres        | Create DB                                                  | {}	←☆ログイン可能になったようだ。
+
+postgres=# \q
+$ cpanm DBD::Pg
+--> Working on DBD::Pg
+Fetching http://www.cpan.org/authors/id/T/TU/TURNSTEP/DBD-Pg-3.15.1.tar.gz ... OK
+Configuring DBD-Pg-3.15.1 ... OK
+Building and testing DBD-Pg-3.15.1 ... 2022-03-01 22:48:48.490 JST [9697] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:48.490 JST [9697] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:49.118 JST [9700] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:49.118 JST [9700] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:49.445 JST [9702] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:49.445 JST [9702] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:49.783 JST [9704] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:49.783 JST [9704] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:50.102 JST [9706] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:50.102 JST [9706] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:50.448 JST [9708] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:50.448 JST [9708] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:50.787 JST [9710] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:50.787 JST [9710] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:51.185 JST [9713] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:51.185 JST [9713] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:51.556 JST [9719] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:51.556 JST [9719] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:51.919 JST [9721] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:51.919 JST [9721] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:52.250 JST [9724] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:52.250 JST [9724] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:52.588 JST [9726] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:52.588 JST [9726] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:52.956 JST [9728] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:52.956 JST [9728] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+2022-03-01 22:48:53.279 JST [9730] ERROR:  must be owner of schema dbd_pg_testschema
+2022-03-01 22:48:53.279 JST [9730] STATEMENT:  DROP SCHEMA dbd_pg_testschema CASCADE
+FAIL
+! Installing DBD::Pg failed. See /Users/asakunotomohiro/.cpanm/work/1646142518.9256/build.log for details. Retry with --force to force install it.
+$
+$ psql postgres
+psql (14.2)
+Type "help" for help.
+
+postgres=# \du
+                                       List of roles
+    Role name    |                         Attributes                         | Member of
+-----------------+------------------------------------------------------------+------------
+ asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {postgres}
+ postgres        | Create DB                                                  | {}
+
+postgres=# CREATE ROLE postgres CREATEROLE;	←☆ロール作成権限付与失敗。
+2022-03-01 22:52:23.346 JST [9890] ERROR:  role "postgres" already exists
+2022-03-01 22:52:23.346 JST [9890] STATEMENT:  CREATE ROLE postgres CREATEROLE;
+ERROR:  role "postgres" already exists
+postgres=# CREATE ROLE postgres PASSWORD '1234';	←☆パスワード権限付与失敗。
+2022-03-01 22:53:00.211 JST [9890] ERROR:  role "postgres" already exists
+2022-03-01 22:53:00.211 JST [9890] STATEMENT:  CREATE ROLE postgres PASSWORD '1234';
+ERROR:  role "postgres" already exists
+postgres=# CREATE ROLE postgres SUPERUSER;	←☆スーパユーザ権限付与失敗。
+2022-03-01 22:53:37.219 JST [9890] ERROR:  role "postgres" already exists
+2022-03-01 22:53:37.219 JST [9890] STATEMENT:  CREATE ROLE postgres SUPERUSER;
+ERROR:  role "postgres" already exists
+postgres=# \du
+                                       List of roles
+    Role name    |                         Attributes                         | Member of
+-----------------+------------------------------------------------------------+------------
+ asakunotomohiro | Superuser, Create role, Create DB, Replication, Bypass RLS | {postgres}
+ postgres        | Create DB                                                  | {}
+
+postgres=# \q
+$
+```
+断念。  
+本格的に調べる必要がある・・・それには、PostgreSQL専用書籍が必要と言うこと。  
+
+何をやっている？
+```terminal
+$ cpanm DBD::SQLite
+--> Working on DBD::SQLite
+Fetching http://www.cpan.org/authors/id/I/IS/ISHIGAKI/DBD-SQLite-1.70.tar.gz ... OK
+Configuring DBD-SQLite-1.70 ... OK
+Building and testing DBD-SQLite-1.70 ... OK
+Successfully installed DBD-SQLite-1.70
+1 distribution installed
+$
+```
+欲しくないドライバがインストールできたぞ。  
+
+解決法方法が全く分からない。  
+しかたないため、Makefileからインストールをしようとしたが、ここでもこける。  
+```terminal
+$ perl Makefile.PL
+Configuring DBD::Pg 3.15.1
+Path to pg_config?
+No POSTGRES_HOME defined, cannot find automatically
+$ export POSTGRES_HOME=/usr/local/pgsql
+$ export POSTGRES_DATA='$HOME/docker作成データ/'
+$ export POSTGRES_INCLUDE=/usr/local/pgsql/include
+$ export POSTGRES_LIB=/usr/local/pgsql/lib
+$ perl Makefile.PL
+Configuring DBD::Pg 3.15.1
+Path to pg_config?
+PostgreSQL version: 0 (default port: 0)
+　　　・
+　　　・
+　　　・
+==> Searching for a previously deleted formula (in the last month)...
+Error: No previously deleted formula found.
+==> Searching taps on GitHub...
+Error: No formulae found in taps.
+$
+```
+前回と同じになった。  
+
+ゆえに、本物をインストールした。
+```terminal
+$ brew install postgresql
+Warning: You are using macOS 10.14.
+We (and Apple) do not provide support for this old version.
+　　　・
+　　　・
+　　　・
+  brew services restart postgresql
+Or, if you don't want/need a background service you can just run:
+  /usr/local/opt/postgresql/bin/postgres -D /usr/local/var/postgres
+$
+```
+あぁこれをしてしまっては、私の完全なる敗北だ。  
+
+さらに敗北感を味わうのは、何の意味も成さなかったこと。
+```terminal
+$ cpanm DBD::Pg
+--> Working on DBD::Pg
+Fetching http://www.cpan.org/authors/id/T/TU/TURNSTEP/DBD-Pg-3.15.1.tar.gz ... OK
+　　　・
+　　　・
+　　　・
+Searching DBD::Pg () on cpanmetadb ...
+--> Working on DBD::Pg
+Fetching http://www.cpan.org/authors/id/T/TU/TURNSTEP/DBD-Pg-3.15.1.tar.gz
+-> OK
+Unpacking DBD-Pg-3.15.1.tar.gz
+　　　・
+　　　・
+　　　・
+Writing Makefile for DBD::Pg
+Writing MYMETA.yml and MYMETA.json
+-> OK
+　　　・
+　　　・
+　　　・
+# Adjusted:                   initdb
+# Error was: Unix-domain socket path ".cpanm/work/1645798310.2394/DBD-Pg-3.15.1/dbdpg_test_database/data/socket/.s.PGSQL.5440" is too long (maximum 103 bytes) at t/dbdpg_test_setup.pl line 608.
+Bailout called.  Further testing stopped:  Cannot continue: connection failed
+FAILED--Further testing stopped: Cannot continue: connection failed
+make: *** [test_dynamic] Error 255
+-> FAIL Installing DBD::Pg failed. See .cpanm/work/1645798310.2394/build.log for details. Retry with --force to force install it.
+$
+```
+まだやることあるのか・・・辛い。  
+
+</details>
+
+<a name="practicalusesqlDBIconnectanddisconnectmysqlconnect"></a>
+<details><summary>MySQL導入失敗。</summary>
+
+ここの項目ボツ。  
+
+#### MySQL接続テスト。
+MySQL用のDBDをインストールしていない場合、接続に失敗する(当たり前)。  
+そのため、以下、導入。
+```terminal
+$ cpanm DBD::mysql
+--> Working on DBD::mysql
+Fetching http://www.cpan.org/authors/id/D/DV/DVEEDEN/DBD-mysql-4.050.tar.gz ... OK
+　　　・
+　　　・
+　　　・
+Successfully installed Devel-CheckLib-1.14
+Configuring DBD-mysql-4.050 ... N/A
+! Configure failed for DBD-mysql-4.050. See /Users/asakunotomohiro/.cpanm/work/1645802437.3658/build.log for details.
+3 distributions installed
+$
+```
+こちらは[PostgreSQL](#practicalusesqlDBIconnectanddisconnectpostgresqlconnect)と比べてすんなり完了および成功した。  
+よかった。  
+しかし、接続できない状況は変わらず・・・困った。  
+通常であれば、**@INC**に入っているはずなのだが、インストール成功しているのに入っていないと言うこと？  
+Path通しが出来ていない？  
+
+よく分からず、Perlのみで構成されたドライバをインストールした。
+```terminal
+$ cpanm DBD::mysqlPP
+--> Working on DBD::mysqlPP
+Fetching http://www.cpan.org/authors/id/T/TS/TSUCCHI/DBD-mysqlPP-0.07.tar.gz ... OK
+　　　・
+　　　・
+　　　・
+Building and testing DBD-mysqlPP-0.07 ... OK
+Successfully installed DBD-mysqlPP-0.07
+3 distributions installed
+$
+```
+これを導入後、`DBI->data_sources("mysqlPP");`を実行してもエラーが発生しなかった。  
+導入前に試していないのでなんとも言えないが、**mysql**ではだめだった。  
+PostgreSQL用の**Pg**・**PgPP**も駄目だった(ドライバインストールが出来ないのだから当たり前だが)。  
+
+以下、プログラム実行例。
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	my @databases = DBI->data_sources("mysqlPP");
+	foreach my $source ( @databases ) {
+		say "$source";	# dbi:mysqlPP:
+	}
+}
+main();
+```
+これは、上記の[データソース名](#practicalusesqlDBIdatasource)での実行を個別指定したプログラムになる。  
+</details>
+
+**DBD::SQLite**は全てのものをディストリビューションに含んでいると言うことは、これ以外で用意するものがないと言うことか。  
+素晴らしいな。  
+
+以下、データベースと言う名のファイルへの接続。
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	my $databasefilename = '../../Perl-sqlDBI作成データ/sqlite.db';
+	my $dbh = DBI->connect(
+			"dbi:SQLite:database=$databasefilename",
+			"",	# ユーザ名。
+			"",	# パスワード。
+			{'RaiseError' => 1},
+		) or die "接続失敗。";
+}
+main();
+```
+これだけで、指定場所に**sqlite.db**ファイルが作られた。  
+で、ユーザ名やパスワード欄が空なまま作られたのだが、これでいいのか？  
+
+以下、上記で接続したデータベースを切断する。
+```perl
+my $rc = $dbh->disconnect() or warn "$dbhからの切断失敗\n";
+```
+SQLiteなので、本当に切断できるのか不安だ。  
+しかし、本来プログラムが終了する直前まで接続するのがCPUを無駄遣いしなくて済むらしいから気にする必要は無いのかもね。
+
+<a name="practicalusesqlDBIconnectanddisconnectsqliteconnectfeature"></a>
+※ファイルへの書き込みをデータベースとしているため、ユーザ権限という概念が存在しない。  
+また、以下にSQLiteの特徴を挙げる。  
+
+* SQLiteでできること。  
+  SQLコマンドはSQL92に準拠している。  
+  * テーブル  
+  * ビュー  
+  * インデックス  
+  * トランザクション  
+  * トリガーの一部  
+  * 主キー・外部キーなどのフィールド制約  
+  * 自動番号付与  
+
+* SQLiteでできないこと。  
+  * トリガーの一部機能  
+  * フィールドの追加以外のAlter Tableコマンド  
+  * 右外部結合及び完全外部結合  
+    ※外部結合(OuterJoin)および和集合演算(Union)などはできる。  
+  * ビューへの書き込み  
+  * GrantおよびRevokeコマンド  
+
+
+<a name="practicalusesqlDBIerrorhandling"></a>
+### エラー処理
+DBIのエラー処理は、例外を用いることで簡単に原因追及できるようになっている。  
+自動メッセージ発行後、**warn()**・**die()** のどちらかを実行する。  
+
+以下、プログラム。
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	# データベース(ファイル)名定義。
+	my $database = '../../Perl-sqlDBI作成データ/sqlite.db';
+
+	my %option = (	# 警告レベルメッセージ出力なし。
+			PrintError => 0,	# warn経由でエラー報告無し。
+			RaiseError => 0,	# die経由でエラー報告無し。
+		);
+
+	my $dbh1 = DBI->connect(
+			"dbi:SQLite:database=$database",
+			"",	# ユーザ名。
+			"",	# パスワード。
+			\%option,
+		) or die "接続失敗($database)。";
+	$dbh1->{PrintError} = 1;	# 警告レベルの自動エラー報告を有効にする。
+
+	my $sth = $dbh1->prepare('select * from hoge')
+		or die "SQL文の準備失敗。";
+		# DBD::SQLite::db prepare failed: no such table: hoge at エラー処理(SQLite版).pl line 22.	←☆20行目の警告レベル設定を変更していない場合、このメッセージは出力されず、自前で用意したメッセージだけが出る(以下の1行のみ)。
+		# SQL文の準備失敗。 at エラー処理(SQLite版).pl line 22.
+
+	$sth->execute
+		or die "SQL文の実行失敗。";
+
+	#my @selectret = $sth->fetchrow_array();	# セレクト文の結果取得。
+
+	unlink $database or warn "ファイル削除失敗($!)。";	# 上記の処理でプログラムが終了しているため、後始末が行われない。
+	my $rc = $dbh1->disconnect
+			or warn "$databaseからの切断失敗\n";
+	say "$rc";	# 1
+}
+main();
+```
+後始末を行うためにもオブジェクト指向プログラミングが有効なのだろう。  
+今回は、エラーを発生させるために、わざわざ警告レベルメッセージを抑止後、データベースへの接続成功後に有効化した。  
+今回作成した限りでは、接続自体も失敗する可能性があるため、最初から有効にしておくのが良いだろう(当たり前だろうが)。  
+
+※基本的に、**PrintError**は、標準で有効化されている。  
+あとは、**RaiseError**を手動で有効化すれば良い。  
+
+* 組み合わせ。
+  * PrintError => X	←☆warn経由でエラー報告有無の設定。
+  * RaiseError => X	←☆die経由でエラー報告有無の設定。
+  * dir処理あり。  
+
+<details><summary>展開。</summary>
+
+以下、**PrintError(0)**・**RaiseError(0)**
+```perl
+    # 略。
+PrintError => 0,	# warn経由でエラー報告無し。
+RaiseError => 0,	# die経由でエラー報告無し。
+}
+    # 略。
+my $sth = $dbh1->prepare('select * from hoge')
+	or die "SQL文の準備失敗。";
+```
+
+以下、出力結果。
+```terminal
+SQL文の準備失敗。 at XXXX.pl line xx.
+```
+
+以下、**PrintError(1)**・**RaiseError(0)**
+```perl
+PrintError => 1,	# warn経由でエラー報告有り。
+RaiseError => 0,	# die経由でエラー報告無し。
+}
+    # 略。
+my $sth = $dbh1->prepare('select * from hoge')
+	or die "SQL文の準備失敗。";
+```
+
+以下、出力結果。
+```terminal
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+SQL文の準備失敗。 at XXXX.pl line xx.
+```
+
+以下、**PrintError(0)**・**RaiseError(1)**
+```perl
+PrintError => 0,	# warn経由でエラー報告無し。
+RaiseError => 1,	# die経由でエラー報告有り。
+}
+    # 略。
+my $sth = $dbh1->prepare('select * from hoge')
+	or die "SQL文の準備失敗。";
+```
+
+以下、出力結果。
+```terminal
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+```
+
+以下、**PrintError(1)**・**RaiseError(1)**
+```perl
+PrintError => 1,	# warn経由でエラー報告有り。
+RaiseError => 1,	# die経由でエラー報告有り。
+}
+    # 略。
+my $sth = $dbh1->prepare('select * from hoge')
+	or die "SQL文の準備失敗。";
+```
+
+以下、出力結果。
+```terminal
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+```
+両方有効にするのはきついな。  
+
+</details>
+
+* 組み合わせ。
+  * PrintError => X	←☆warn経由でエラー報告有無の設定。
+  * RaiseError => X	←☆die経由でエラー報告有無の設定。
+  * prepareメソッド実行にdir処理なし。  
+
+<details><summary>展開。</summary>
+
+以下、**PrintError(0)**・**RaiseError(0)**
+```perl
+PrintError => 0,	# warn経由でエラー報告なし。
+RaiseError => 0,	# die経由でエラー報告なし。
+}
+    # 略。
+my $sth = $dbh1->prepare('select * from hoge');	←☆こちらにdieがない。
+$sth->execute
+	or die "SQL文の実行失敗。";
+```
+
+以下、出力結果。
+```terminal
+Can't call method "execute" on an undefined value at XXXX.pl line xx.
+```
+
+以下、**PrintError(0)**・**RaiseError(1)**
+```perl
+PrintError => 0,	# warn経由でエラー報告なし。
+RaiseError => 1,	# die経由でエラー報告有り。
+}
+    # 略。
+my $sth = $dbh1->prepare('select * from hoge');	←☆こちらにdieがない。
+$sth->execute
+	or die "SQL文の実行失敗。";
+```
+
+以下、出力結果。
+```terminal
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+```
+
+以下、**PrintError(1)**・**RaiseError(0)**
+```perl
+PrintError => 1,	# warn経由でエラー報告有り。
+RaiseError => 0,	# die経由でエラー報告なし。
+}
+    # 略。
+my $sth = $dbh1->prepare('select * from hoge');	←☆こちらにdieがない。	←☆こちらにdieがない。
+$sth->execute
+	or die "SQL文の実行失敗。";
+```
+
+以下、出力結果。
+```terminal
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+Can't call method "execute" on an undefined value at XXXX.pl line xx.
+```
+
+以下、**PrintError(1)**・**RaiseError(1)**
+```perl
+PrintError => 1,	# warn経由でエラー報告有り。
+RaiseError => 1,	# die経由でエラー報告有り。
+}
+    # 略。
+my $sth = $dbh1->prepare('select * from hoge');	←☆こちらにdieがない。
+$sth->execute
+	or die "SQL文の実行失敗。";
+```
+
+以下、出力結果。
+```terminal
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+```
+両方有効にするのはきついな。  
+
+</details>
+
+* 組み合わせ。
+  * PrintError => X	←☆warn経由でエラー報告有無の設定。
+  * RaiseError => X	←☆die経由でエラー報告有無の設定。
+  * どのメソッド実行にもdir処理およびwarn処理なし。  
+
+<details><summary>展開。</summary>
+
+以下、**PrintError(0)**・**RaiseError(0)**
+```perl
+PrintError => 0,	# warn経由でエラー報告なし。
+RaiseError => 0,	# die経由でエラー報告なし。
+}
+    # 略(ここ以降die及びwarnなし)。
+```
+
+以下、出力結果。
+```terminal
+Can't call method "execute" on an undefined value at XXXX.pl line xx.
+```
+
+以下、**PrintError(0)**・**RaiseError(1)**
+```perl
+PrintError => 0,	# warn経由でエラー報告なし。
+RaiseError => 1,	# die経由でエラー報告有り。
+}
+    # 略(ここ以降die及びwarnなし)。
+```
+
+以下、出力結果。
+```terminal
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+```
+
+以下、**PrintError(1)**・**RaiseError(0)**
+```perl
+PrintError => 1,	# warn経由でエラー報告有り。
+RaiseError => 0,	# die経由でエラー報告なし。
+}
+    # 略(ここ以降die及びwarnなし)。
+```
+
+以下、出力結果。
+```terminal
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+Can't call method "execute" on an undefined value at XXXX.pl line xx.
+```
+
+以下、**PrintError(1)**・**RaiseError(1)**
+```perl
+PrintError => 1,	# warn経由でエラー報告有り。
+RaiseError => 1,	# die経由でエラー報告有り。
+}
+    # 略(ここ以降die及びwarnなし)。
+```
+
+以下、出力結果。
+```terminal
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+DBD::SQLite::db prepare failed: no such table: hoge at XXXX.pl line xx.
+```
+どんな状況だろうが、両方を有効化している場合は、2つ同じのが出る訳ね。  
+
+</details>
+
+デフォルト値のままでも問題なさそうだな(勉強ならばってことだけど)。  
+PrintError => 1	←☆warn経由でエラー報告有り。  
+RaiseError => 0	←☆die経由でエラー報告なし。  
+
+ゆくゆくは、デフォルト値を入れ替える。  
+PrintError => 0	←☆warn経由でエラー報告なし。  
+RaiseError => 1	←☆die経由でエラー報告有り。  
+そして、独自のエラーチェック処理を入れる。  
+
+プログラム実行時のエラーで、終了させたくない場合は、両方をOffにし、独自のエラーチェック処理で作業が継続できるようにうまく立ち回れるプログラムにする必要があると言うこと。  
+
+
+<a name="practicalusesqlDBIerrorhandlingdiagnose"></a>
+#### エラー診断
+エラーが出るだけでは心許ない。  
+そのため、詳細な内容は、以下のメソッドで取得できる。  
+
+* エラー診断用メソッド。  
+  このメソッドは、ハンドル変数に利用するもの(connectメソッドの戻り値から利用する・prepareメソッドの戻り値から利用するなど)。  
+  * err  
+    エラー発生に関するエラー番号が返ってくる。  
+    データベース依存になるため、無駄な番号の場合もあり、当てにしない方が良い。  
+  * errstr  
+    上記errで返される番号に紐付いたエラーメッセージが返ってくるため、一応は役に立つようだ。  
+  * state  
+    SQLSTATEの5文字エラー文字列が返ってくるため、あまり役に立たないようだ。  
+
+以下、使用例）
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	# データベース(ファイル)名定義。
+	my $permissions = "0755";	# このまま使う場合、10進数と解釈される(8進数に置き換える必要がある)。
+	my $dirname = 'testDBDir';
+	my $database = "./$dirname/sqlite.db";
+	mkdir $dirname, 0555 or warn "ディレクトリ($dirname)作成失敗($!)。";
+	#say "ディレクトリ作成失敗($!)。" if( -d $dirname );
+
+	my %option = (	# 警告レベルメッセージ出力なし。
+			PrintError => 0,	# warn経由でエラー報告無し。
+			RaiseError => 0,	# die経由でエラー報告無し。
+		);
+
+	my $dbh1 = '接続用';
+	my $err = eval{
+		$dbh1 = DBI->connect(	←☆ここ。
+			"dbi:SQLite:database=$database",
+			"",	# ユーザ名。
+			"",	# パスワード。
+			\%option,
+		) or die "接続失敗(" . $DBI::errstr . ")。";	←☆ここ。
+	};
+	print "DBI->connect失敗：$@";	# DBI->connect失敗：接続失敗(unable to open database file)。 at XXXX.pl line 19.	←☆これ。
+
+	my $rc = '切断用';
+	$err = eval{
+		$rc = $dbh1->disconnect
+			or warn "$databaseからの切断失敗(" . $dbh1->errstr . ")。";
+	};
+	print "$rc-$@";	# 切断用-Can't call method "disconnect" on an undefined value at XXXX.pl line 30.
+	#unlink $database or warn "ファイル削除失敗($!)。";	←☆そもそもファイルが作られない(権限が無いため)。
+	rmdir $dirname or warn "ディレクトリ削除失敗($!)。";
+	#say "ディレクトリ削除失敗($!)。" if( -d $dirname );	# ディレクトリが存在すると言うこと。
+}
+main();
+```
+[eval(エラートラップ)](#practicaluseevalexceptionhandling)での対処により、ディレクトリ削除まで出来るようにしている。  
+
+<a name="practicalusesqlDBIerrorhandlingdiagnoseprogram"></a>
+<details><summary>正常に動くプログラム。</summary>
+
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	# データベース(ファイル)名定義。
+	my $database = './sqlite.db';
+
+	my %option = (	# 警告レベルメッセージ出力なし。
+			PrintError => 0,	# warn経由でエラー報告無し。
+			RaiseError => 0,	# die経由でエラー報告無し。
+		);
+
+	my $dbh1 = DBI->connect(
+			"dbi:SQLite:database=$database",
+			"",	# ユーザ名。
+			"",	# パスワード。
+			\%option,
+		) or die "接続失敗(" . $DBI::errstr . ")。";
+
+	my $sth = $dbh1->do('create table hoge( boo INTEGER, bar varchar(20) )')
+		or die "テーブル作成失敗(" . $dbh1->errstr . ")。";
+
+	#my $sth = $dbh1->do('insert into hoge (boo, bar) values ("ほげ", "ぼげぇ〜");')
+	#	or die "データ挿入失敗(" . $dbh1->errstr . ")。";
+	my $sth = $dbh1->prepare('insert into hoge (boo, bar) values (?, ?);')
+		or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+	$sth->execute('ほげ', 'ぼげぇ〜')
+		or die "SQL文の実行失敗(" . $sth->errstr . ")。";
+
+	my $sth = $dbh1->prepare('select * from hoge')
+		or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+	$sth->execute
+		or die "SQL文の実行失敗(" . $sth->errstr . ")。";
+
+	# 以下、1レコード文のみ取得しているため、本来ならば、whileで全データを総なめする必要がある。
+	my @table = $sth->fetchrow_array();
+	say "テーブル内容：@table";	# ほげ ぼげぇ〜
+
+	$sth->finish();	# 強制的にフェッチを切断した(切断しない場合、下記のエラーが発生する)。
+			# DBI::db=HASH(0x7f86fc964878)->disconnect invalidates 1 active statement handle (either destroy statement handles or call finish on them before disconnecting) at XXXX.pl line xx.
+	my $rc = $dbh1->disconnect
+			or warn "$databaseからの切断失敗(" . $dbh1->errstr . ")。";
+	say "$rc";	# 1
+	unlink $database or warn "ファイル削除失敗($!)。";
+}
+&main();
+```
+本来であれば、取得したデータを使う必要があるのだろうが、今回は強制切断により、接続を中止した。  
+
+</details>
+
+**$dbh1->errstr**の出力用プログラム(上記からプログラム抜粋)。
+```perl
+my $sth = $dbh1->do('create table hoge')
+	or die "テーブル作成の準備失敗(" . $dbh1->errstr . ")。";
+	# テーブル作成の準備失敗(incomplete input)。 at エラー処理(SQLite版).pl line 20.
+```
+
+**$sth->errstr**の出力用プログラム(上記からプログラム抜粋)。
+```perl
+my $sth = $dbh1->do('insert into hoge (boo, bar) values ("ほげ", "ぼげぇ〜");')
+	or die "データ挿入失敗(" . $dbh1->errstr . ")。";	←☆ここ。
+	# データ挿入失敗(no such table: hoge)。 at エラー処理(SQLite版).pl line 23.	←☆これ。
+```
+
+
+<a name="practicalusesqlDBIutilitymethodandfunction"></a>
+### ユーティリティメソッドと関数
+今後のデータベース処理に対して有用なメソッドなどがある。  
+
+* 有用メソッド例）  
+  * [クォートメソッド。](#practicalusesqlDBIutilitymethodandfunctionquote)  
+  * [数値テスト。](#practicalusesqlDBIutilitymethodandfunctionquotenumerical)  
+  * [DBI動作追跡。](#practicalusesqlDBIutilitymethodandfunctiondbitracking)  
+  * [文字列整形。](#practicalusesqlDBIutilitymethodandfunctionplasticsurgery)  
+
+
+<a name="practicalusesqlDBIutilitymethodandfunctionquote"></a>
+#### クォートメソッド
+文字列をクォートし、文字列内に含まれる特殊記号をエスケープする。  
+これは、エスケープ処理などは、データベースに依存するため、必要メソッドに渡すだけでそれらを行ってくれる優れた機能。  
+様式：
+`$dbh->quote( $string );`  
+この **$string** に、**I don't want to die**などがあり、シングルクォートをエスケープしてくれるというわけ。  
+
+todo:
+データベースにデータを入れてから挙動を確認すること。  
+
+
+<a name="practicalusesqlDBIutilitymethodandfunctionquotenumerical"></a>
+#### 数値テスト
+数値らしいものを判定する関数に、looks\_like\_numberがある。  
+上記クォートメソッドでクォートするかどうかの判断に役立つそうだ。
+
+以下、プログラム。
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	my @values = (
+			20220228,
+			undef,
+			'本日は晴天なり。',
+			0x0F,
+			'hoge',
+			'0x0F',
+		);
+	my @numbers = DBI::looks_like_number( @values );
+	while (my ($index, $value) = each @numbers) {
+		print "values[$index]--->「";
+		if( defined $value ) {
+			if( $numbers[$index] ) {
+				say "$values[$index]」は数値。";
+			}
+			else{
+				say "$values[$index]」は文字列。";
+			}
+		}
+		else{
+			say "undef」。";
+		}
+	}
+}
+main();
+```
+
+以下、実行結果。
+```terminal
+values[0]--->「20220228」は数値。
+values[1]--->「undef」。
+values[2]--->「本日は晴天なり。」は文字列。
+values[3]--->「15」は数値。
+values[4]--->「hoge」は文字列。
+values[5]--->「0x0F」は文字列。
+```
+
+
+<a name="practicalusesqlDBIutilitymethodandfunctiondbitracking"></a>
+#### DBI動作追跡
+様式：
+`DBI->trace()`  
+
+出力内容は、
+**->** から始まる行ならば、メソッドに入ることを示す。  
+**<-** から始まる行ならば、メソッドから戻ることを示す。  
+また、出力の先頭は半角スペース4分が付与されている。  
+
+|追跡水準|意味|
+|:------:|----|
+|0|追跡無効。|
+|[1](#practicalusesqlDBIutilitymethodandfunctiondbitrackingone)|戻り値とエラーを示しながらDBIメソッドの実行を追跡する。|
+|[2](#practicalusesqlDBIutilitymethodandfunctiondbitrackingtwo)|1に加え、出力先を指定する。|
+|[3](#practicalusesqlDBIutilitymethodandfunctiondbitrackingthree)|2に加え、より内部的なドライバの追跡情報も示す。|
+|[4](#practicalusesqlDBIutilitymethodandfunctiondbitrackingfour)|今まで以上に役立つ詳細な内容を示す。|
+
+上記とは別に、環境変数での設定も可能になっている。  
+環境変数名：**DBI\_TRACE**  
+
+|設定値|設定効果|
+|:----:|--------|
+|1|DBI-\>trace(1);|
+|ログファイル名|DBI-\>trace(2, ログファイル名);|
+|4=ログファイル名|DBI-\>trace(4, ログファイル名);|
+※ログファイル名だけの指定ならば、水準2として動く。  
+
+ちなみに、DBIの部分は、各変数名(**$dbh**・**$sth**など)でも対応可能。  
+例）
+`$dbh->trace(2);`  
+
+
+<a name="practicalusesqlDBIutilitymethodandfunctiondbitrackingone"></a>
+##### 水準1
+何もないより、あったほうがログを出している感が得られる内容(重複表現か？)。  
+
+<details><summary>使用プログラム。</summary>
+
+以下のプログラムを他の水準でも使う。  
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	my $permissions = "0755";	# このままでは10進数と解釈される(8進数に置き換え必須)。
+	my $dirname = 'testDBDir';
+	mkdir $dirname, 0755 or warn "ディレクトリ($dirname)作成失敗($!)。";
+	my $database = "./$dirname/sqlite.db";
+
+	my %option = (	# 警告レベルメッセージ出力なし。
+			PrintError => 0,	# warn経由でエラー報告無し。
+			RaiseError => 0,	# die経由でエラー報告無し。
+		);
+
+	my $dbh1 = '接続用';
+	DBI->trace(1);	# 今回重要な処理。
+	my $err = eval{
+		$dbh1 = DBI->connect(
+			"dbi:SQLite:database=$database",
+			"",	# ユーザ名。
+			"",	# パスワード。
+			\%option,
+		) or die "接続失敗(" . $DBI::errstr . ")。";
+	};
+	print "DBI->connect失敗：$@" if $@;
+
+	my $rc = '切断用';
+	$err = eval{
+		$rc = $dbh1->disconnect
+			or warn "$databaseからの切断失敗(" . $dbh1->errstr . ")。";
+	};
+	print "$err切断失敗-$@" if $@;
+	unlink $database or warn "データベースファイル削除失敗($!)。";
+	rmdir $dirname or warn "ディレクトリ削除失敗($!)。";
+}
+main();
+```
+
+</details>
+
+<details><summary>出力結果。</summary>
+
+```terminal
+    DBI 1.643-nothread default trace level set to 0x0/1 (pid 87223 pi 0) at DBI動作追跡処理(SQLite版).pl line 16 via DBI動作追跡処理(SQLite版).pl line 36
+    -> DBI->connect(dbi:SQLite:database=./testDBDir/sqlite.db, , ****, HASH(0x7fea7d13e218))
+    -> DBI->install_driver(SQLite) for darwin perl=5.034000 pid=87223 ruid=501 euid=501
+       install_driver: DBD::SQLite version 1.70 loaded from perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBD/SQLite.pm
+    <- install_driver= DBI::dr=HASH(0x7fea7d2e9380)
+    <- connect('database=./testDBDir/sqlite.db', '', ...)= ( DBI::db=HASH(0x7fea7d29a770) ) [1 items] at DBI.pm line 679
+    <- STORE('RaiseError', 0)= ( 1 ) [1 items] at DBI.pm line 731
+    <- STORE('PrintError', 0)= ( 1 ) [1 items] at DBI.pm line 731
+    <- STORE('AutoCommit', 1)= ( 1 ) [1 items] at DBI.pm line 731
+    <- STORE('Username', '')= ( 1 ) [1 items] at DBI.pm line 734
+    <- connected('dbi:SQLite:database=./testDBDir/sqlite.db', '', ...)= ( undef ) [1 items] at DBI.pm line 741
+    <- connect= DBI::db=HASH(0x7fea7d29a770)
+    <- STORE('dbi_connect_closure', CODE(0x7fea7d01c230))= ( 1 ) [1 items] at DBI.pm line 750
+sqlite trace: Closing DB at dbdimp.c line 735
+sqlite trace: rc = 0 at dbdimp.c line 737
+    <- disconnect= ( 1 ) [1 items] at DBI動作追跡処理(SQLite版).pl line 29
+    <- DESTROY(DBI::db=HASH(0x7fea7d29a6c8))= ( undef ) [1 items] at DBI動作追跡処理(SQLite版).pl line 34
+    <- disconnect_all= ( '' ) [1 items] at DBI.pm line 758
+!   <- DESTROY(DBI::dr=HASH(0x7fea7d2e9380))= ( undef ) [1 items] during global destruction
+```
+
+</details>
+
+水準2に比べ、メソッドに入る処理(**->**)が隠れたままになっていること。  
+
+
+<a name="practicalusesqlDBIutilitymethodandfunctiondbitrackingtwo"></a>
+##### 水準2
+プログラムは、上記水準1を使い、引数部分を変更するだけ。  
+`DBI->trace(2, undef);`  
+undefにすることで、出力先をSTDERRにしている。  
+ファイル名を設定した場合は、そのファイルに書き出す。  
+
+<details><summary>出力結果。</summary>
+
+```terminal
+    DBI 1.643-nothread default trace level set to 0x0/2 (pid 87454 pi 0) at DBI動作追跡処理(SQLite版).pl line 16 via DBI動作追跡処理(SQLite版).pl line 36
+    -> DBI->connect(dbi:SQLite:database=./testDBDir/sqlite.db, , ****, HASH(0x7ff90a061a18))
+    -> DBI->install_driver(SQLite) for darwin perl=5.034000 pid=87454 ruid=501 euid=501
+       install_driver: DBD::SQLite version 1.70 loaded from perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBD/SQLite.pm
+    <- install_driver= DBI::dr=HASH(0x7ff90b1d9b80)
+    -> connect for DBD::SQLite::dr (DBI::dr=HASH(0x7ff90b1d9b80)~0x7ff90b1da7b0 'database=./testDBDir/sqlite.db' '' **** HASH(0x7ff90a073ef8))
+    <- connect= ( DBI::db=HASH(0x7ff90b18c7b8) ) [1 items] at DBI.pm line 679
+    -> STORE for DBD::SQLite::db (DBI::db=HASH(0x7ff90b18c710)~INNER 'RaiseError' 0)
+    <- STORE= ( 1 ) [1 items] at DBI.pm line 731
+    -> STORE for DBD::SQLite::db (DBI::db=HASH(0x7ff90b18c710)~INNER 'PrintError' 0)
+    <- STORE= ( 1 ) [1 items] at DBI.pm line 731
+    -> STORE for DBD::SQLite::db (DBI::db=HASH(0x7ff90b18c710)~INNER 'AutoCommit' 1)
+    <- STORE= ( 1 ) [1 items] at DBI.pm line 731
+    -> STORE for DBD::SQLite::db (DBI::db=HASH(0x7ff90b18c710)~INNER 'Username' '')
+    <- STORE= ( 1 ) [1 items] at DBI.pm line 734
+    -> connected in DBD::_::db for DBD::SQLite::db (DBI::db=HASH(0x7ff90b18c7b8)~0x7ff90b18c710 'dbi:SQLite:database=./testDBDir/sqlite.db' '' **** HASH(0x7ff90a061a18))
+    <- connected= ( undef ) [1 items] at DBI.pm line 741
+    <- connect= DBI::db=HASH(0x7ff90b18c7b8)
+    -> STORE for DBD::SQLite::db (DBI::db=HASH(0x7ff90b18c710)~INNER 'dbi_connect_closure' CODE(0x7ff909805430))
+    <- STORE= ( 1 ) [1 items] at DBI.pm line 750
+    -> disconnect for DBD::SQLite::db (DBI::db=HASH(0x7ff90b18c7b8)~0x7ff90b18c710)
+sqlite trace: Closing DB at dbdimp.c line 735
+sqlite trace: rc = 0 at dbdimp.c line 737
+    <- disconnect= ( 1 ) [1 items] at DBI動作追跡処理(SQLite版).pl line 29
+    -> DESTROY for DBD::SQLite::db (DBI::db=HASH(0x7ff90b18c710)~INNER)
+    <- DESTROY= ( undef ) [1 items] at DBI動作追跡処理(SQLite版).pl line 34
+    -- DBI::END ($@: , $!: )
+    -> disconnect_all for DBD::SQLite::dr (DBI::dr=HASH(0x7ff90b1d9b80)~0x7ff90b1da7b0)
+    <- disconnect_all= ( '' ) [1 items] at DBI.pm line 758
+!   -> DESTROY in DBD::_::common for DBD::SQLite::dr (DBI::dr=HASH(0x7ff90b1da7b0)~INNER)
+!   <- DESTROY= ( undef ) [1 items] during global destruction
+```
+
+</details>
+
+水準1に比べて、出力量が増えた。  
+倍になった？  
+
+
+<a name="practicalusesqlDBIutilitymethodandfunctiondbitrackingthree"></a>
+##### 水準3
+プログラムは、上記水準1を使い、引数部分を変更するだけ。  
+`DBI->trace(3, undef);`  
+undefにすることで、出力先をSTDERRにしている。  
+ファイル名を設定した場合は、そのファイルに書き出す。  
+
+<details><summary>出力結果。</summary>
+
+```terminal
+    DBI 1.643-nothread default trace level set to 0x0/3 (pid 87580 pi 0) at DBI動作追跡処理(SQLite版).pl line 16 via DBI動作追跡処理(SQLite版).pl line 36
+    -> DBI->connect(dbi:SQLite:database=./testDBDir/sqlite.db, , ****, HASH(0x7fdc15126618))
+    -> DBI->install_driver(SQLite) for darwin perl=5.034000 pid=87580 ruid=501 euid=501
+       install_driver: DBD::SQLite version 1.70 loaded from perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBD/SQLite.pm
+    <- install_driver= DBI::dr=HASH(0x7fdc152d1f80)
+    -> connect for DBD::SQLite::dr (DBI::dr=HASH(0x7fdc152d1f80)~0x7fdc152d2bb0 'database=./testDBDir/sqlite.db' '' **** HASH(0x7fdc15137af8))
+sqlite trace: login './testDBDir/sqlite.db' (version 3.36.0) at dbdimp.c line 485
+    <- sqlite_collation_needed= ( undef ) [1 items] at SQLite.pm line 141 via  at DBI動作追跡処理(SQLite版).pl line 18
+    <- sqlite_create_function= ( 1 ) [1 items] at SQLite.pm line 142 via  at DBI動作追跡処理(SQLite版).pl line 18
+    <- sqlite_register_fts3_perl_tokenizer= ( 0 ) [1 items] at SQLite.pm line 143 via  at DBI動作追跡処理(SQLite版).pl line 18
+    <- connect= ( DBI::db=HASH(0x7fdc152833b8) ) [1 items] at DBI.pm line 679 via  at DBI動作追跡処理(SQLite版).pl line 17
+    -> STORE for DBD::SQLite::db (DBI::db=HASH(0x7fdc15283310)~INNER 'RaiseError' 0)
+    STORE DBI::db=HASH(0x7fdc15283310) 'RaiseError' => 0
+    <- STORE= ( 1 ) [1 items] at DBI.pm line 731 via  at DBI動作追跡処理(SQLite版).pl line 17
+    -> STORE for DBD::SQLite::db (DBI::db=HASH(0x7fdc15283310)~INNER 'PrintError' 0)
+    STORE DBI::db=HASH(0x7fdc15283310) 'PrintError' => 0
+    <- STORE= ( 1 ) [1 items] at DBI.pm line 731 via  at DBI動作追跡処理(SQLite版).pl line 17
+    -> STORE for DBD::SQLite::db (DBI::db=HASH(0x7fdc15283310)~INNER 'AutoCommit' 1)
+    <- STORE= ( 1 ) [1 items] at DBI.pm line 731 via  at DBI動作追跡処理(SQLite版).pl line 17
+    -> STORE for DBD::SQLite::db (DBI::db=HASH(0x7fdc15283310)~INNER 'Username' '')
+    STORE DBI::db=HASH(0x7fdc15283310) 'Username' => ''
+    <- STORE= ( 1 ) [1 items] at DBI.pm line 734 via  at DBI動作追跡処理(SQLite版).pl line 18
+    -> connected in DBD::_::db for DBD::SQLite::db (DBI::db=HASH(0x7fdc152833b8)~0x7fdc15283310 'dbi:SQLite:database=./testDBDir/sqlite.db' '' **** HASH(0x7fdc15126618))
+    <- connected= ( undef ) [1 items] at DBI.pm line 741 via  at DBI動作追跡処理(SQLite版).pl line 17
+    <- connect= DBI::db=HASH(0x7fdc152833b8)
+    -> STORE for DBD::SQLite::db (DBI::db=HASH(0x7fdc15283310)~INNER 'dbi_connect_closure' CODE(0x7fdc150053b8))
+    STORE DBI::db=HASH(0x7fdc15283310) 'dbi_connect_closure' => CODE(0x7fdc150053b8)
+    <- STORE= ( 1 ) [1 items] at DBI.pm line 750 via  at DBI動作追跡処理(SQLite版).pl line 18
+    -> disconnect for DBD::SQLite::db (DBI::db=HASH(0x7fdc152833b8)~0x7fdc15283310)
+sqlite trace: Closing DB at dbdimp.c line 735
+sqlite trace: rc = 0 at dbdimp.c line 737
+    <- disconnect= ( 1 ) [1 items] at DBI動作追跡処理(SQLite版).pl line 29 via  at DBI動作追跡処理(SQLite版).pl line 28
+    <> DESTROY(DBI::db=HASH(0x7fdc152833b8)) ignored for outer handle (inner DBI::db=HASH(0x7fdc15283310) has ref cnt 1)
+    -> DESTROY for DBD::SQLite::db (DBI::db=HASH(0x7fdc15283310)~INNER)
+    <- DESTROY= ( undef ) [1 items] at DBI動作追跡処理(SQLite版).pl line 34 via  at DBI動作追跡処理(SQLite版).pl line 34
+    -- DBI::END ($@: , $!: )
+    -> disconnect_all for DBD::SQLite::dr (DBI::dr=HASH(0x7fdc152d1f80)~0x7fdc152d2bb0)
+    <- disconnect_all= ( '' ) [1 items] at DBI.pm line 758 via  at DBI動作追跡処理(SQLite版).pl line 0
+!   -> DESTROY in DBD::_::common for DBD::SQLite::dr (DBI::dr=HASH(0x7fdc152d2bb0)~INNER)
+!   <- DESTROY= ( undef ) [1 items] during global destruction
+!   <> DESTROY for DBI::dr=HASH(0x7fdc152d1f80) ignored (inner handle gone)
+```
+
+</details>
+
+水準2の情報に加えて、より内部的なドライバ情報まで含まれている。  
+多い。  
+
+
+<a name="practicalusesqlDBIutilitymethodandfunctiondbitrackingfour"></a>
+##### 水準4
+プログラムは、上記水準1を使い、引数部分を変更するだけ。  
+`DBI->trace(4, undef);`  
+undefにすることで、出力先をSTDERRにしている。  
+ファイル名を設定した場合は、そのファイルに書き出す。  
+
+<details><summary>出力結果。</summary>
+
+```terminal
+    DBI 1.643-nothread default trace level set to 0x0/4 (pid 87767 pi 0) at DBI動作追跡処理(SQLite版).pl line 16 via DBI動作追跡処理(SQLite版).pl line 36
+    -> DBI->connect(dbi:SQLite:database=./testDBDir/sqlite.db, , ****, HASH(0x7fb93893e218))
+    -> DBI->install_driver(SQLite) for darwin perl=5.034000 pid=87767 ruid=501 euid=501
+       install_driver: DBD::SQLite version 1.70 loaded from perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBD/SQLite.pm
+    <- install_driver= DBI::dr=HASH(0x7fb938ae9380)
+    -> connect for DBD::SQLite::dr (DBI::dr=HASH(0x7fb938ae9380)~0x7fb938ae9fb0 'database=./testDBDir/sqlite.db' '' **** HASH(0x7fb93894f6f8))
+sqlite trace: login './testDBDir/sqlite.db' (version 3.36.0) at dbdimp.c line 485
+    -> sqlite_collation_needed for DBD::SQLite::db (DBI::db=HASH(0x7fb938a9a7b8)~0x7fb938a9a710 CODE(0x7fb938a6b118))
+    <- sqlite_collation_needed= ( undef ) [1 items] at perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBD/SQLite.pm line 141 via  at DBI動作追跡処理(SQLite版).pl line 18
+    -> sqlite_create_function for DBD::SQLite::db (DBI::db=HASH(0x7fb938a9a7b8)~0x7fb938a9a710 'REGEXP' 2 CODE(0x7fb938a6b250))
+    <- sqlite_create_function= ( 1 ) [1 items] at perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBD/SQLite.pm line 142 via  at DBI動作追跡処理(SQLite版).pl line 18
+    -> sqlite_register_fts3_perl_tokenizer for DBD::SQLite::db (DBI::db=HASH(0x7fb938a9a7b8)~0x7fb938a9a710)
+    <- sqlite_register_fts3_perl_tokenizer= ( 0 ) [1 items] at perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBD/SQLite.pm line 143 via  at DBI動作追跡処理(SQLite版).pl line 18
+    <- connect= ( DBI::db=HASH(0x7fb938a9a7b8) ) [1 items] at perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBI.pm line 679 via  at DBI動作追跡処理(SQLite版).pl line 17
+    -> STORE for DBD::SQLite::db (DBI::db=HASH(0x7fb938a9a710)~INNER 'RaiseError' 0)
+    STORE DBI::db=HASH(0x7fb938a9a710) 'RaiseError' => 0
+    <- STORE= ( 1 ) [1 items] at perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBI.pm line 731 via  at DBI動作追跡処理(SQLite版).pl line 17
+    -> STORE for DBD::SQLite::db (DBI::db=HASH(0x7fb938a9a710)~INNER 'PrintError' 0)
+    STORE DBI::db=HASH(0x7fb938a9a710) 'PrintError' => 0
+    <- STORE= ( 1 ) [1 items] at perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBI.pm line 731 via  at DBI動作追跡処理(SQLite版).pl line 17
+    -> STORE for DBD::SQLite::db (DBI::db=HASH(0x7fb938a9a710)~INNER 'AutoCommit' 1)
+    <- STORE= ( 1 ) [1 items] at perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBI.pm line 731 via  at DBI動作追跡処理(SQLite版).pl line 17
+    -> STORE for DBD::SQLite::db (DBI::db=HASH(0x7fb938a9a710)~INNER 'Username' '')
+    STORE DBI::db=HASH(0x7fb938a9a710) 'Username' => ''
+    <- STORE= ( 1 ) [1 items] at perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBI.pm line 734 via  at DBI動作追跡処理(SQLite版).pl line 18
+    -> connected in DBD::_::db for DBD::SQLite::db (DBI::db=HASH(0x7fb938a9a7b8)~0x7fb938a9a710 'dbi:SQLite:database=./testDBDir/sqlite.db' '' **** HASH(0x7fb93893e218))
+    <- connected= ( undef ) [1 items] at perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBI.pm line 741 via  at DBI動作追跡処理(SQLite版).pl line 17
+    <- connect= DBI::db=HASH(0x7fb938a9a7b8)
+    -> STORE for DBD::SQLite::db (DBI::db=HASH(0x7fb938a9a710)~INNER 'dbi_connect_closure' CODE(0x7fb93881c1b8))
+    STORE DBI::db=HASH(0x7fb938a9a710) 'dbi_connect_closure' => CODE(0x7fb93881c1b8)
+    <- STORE= ( 1 ) [1 items] at perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBI.pm line 750 via  at DBI動作追跡処理(SQLite版).pl line 18
+    -> disconnect for DBD::SQLite::db (DBI::db=HASH(0x7fb938a9a7b8)~0x7fb938a9a710)
+sqlite trace: Closing DB at dbdimp.c line 735
+sqlite trace: rc = 0 at dbdimp.c line 737
+    <- disconnect= ( 1 ) [1 items] at DBI動作追跡処理(SQLite版).pl line 29 via  at DBI動作追跡処理(SQLite版).pl line 28
+    <> DESTROY(DBI::db=HASH(0x7fb938a9a7b8)) ignored for outer handle (inner DBI::db=HASH(0x7fb938a9a710) has ref cnt 1)
+    -> DESTROY for DBD::SQLite::db (DBI::db=HASH(0x7fb938a9a710)~INNER)
+    <- DESTROY= ( undef ) [1 items] at DBI動作追跡処理(SQLite版).pl line 34 via  at DBI動作追跡処理(SQLite版).pl line 34
+    dbih_clearcom 0x7fb938a9a710 (com 0x7fb938464cb0, type 2) done.
+
+    -- DBI::END ($@: , $!: )
+    -> disconnect_all for DBD::SQLite::dr (DBI::dr=HASH(0x7fb938ae9380)~0x7fb938ae9fb0)
+    <- disconnect_all= ( '' ) [1 items] at perl5/perlbrew/perls/perl-5.34.0/lib/site_perl/5.34.0/darwin-2level/DBI.pm line 758 via  at DBI動作追跡処理(SQLite版).pl line 0
+!   -> DESTROY in DBD::_::common for DBD::SQLite::dr (DBI::dr=HASH(0x7fb938ae9fb0)~INNER)
+!   <- DESTROY= ( undef ) [1 items] during global destruction
+    dbih_clearcom 0x7fb938ae9380 (com 0x7fb9384cd560, type 1) done.
+
+!   <> DESTROY for DBI::dr=HASH(0x7fb938ae9380) ignored (inner handle gone)
+```
+
+</details>
+
+さらに役立つ詳細内容が出力されるのは理解した・・・していない。  
+これが役立つ情報なのか全く判断できない。  
+それほど莫大な量に翻弄されていると言うこと。  
+
+
+<a name="practicalusesqlDBIutilitymethodandfunctionplasticsurgery"></a>
+#### 文字列整形
+人間が見やすい形式に整えるメソッド。  
+
+* 種類。  
+  * neat()  
+    単一スカラー値に作用する。  
+  * neat\_list()  
+    スカラー値のリストに作用する。  
+
+文字列がクォートされるが、数字やundefはクォートされない。  
+また、第2引数に文字数を指定するが、それはクォート文字も含んでの数字になる。  
+
+<a name="practicalusesqlDBIutilitymethodandfunctionplasticsurgeryneat"></a>
+以下、neat()の実行。
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	my $main = "main's neat() 関数";
+	say DBI::neat($main);		# 日本語部分が文字化けする。
+	say DBI::neat($main, 14);	# 'main's ne...'
+	my $main = 20220228 + 1;
+	say DBI::neat($main);		# 20220229
+	say DBI::neat( undef );		# undef
+}
+main();
+```
+
+<a name="practicalusesqlDBIutilitymethodandfunctionplasticsurgeryneatlist"></a>
+以下、neat\_list()の実行。
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	my $scalar = 'Plastic surgery';
+	my @main = ("main's neat() function", '', 20220228+1, undef, $scalar);
+	say DBI::neat_list(\@main);					# 'main's neat() function', '', 20220229, undef, 'Plastic surgery'
+	say DBI::neat_list(\@main, 10);				# 'main'...', '', 20220229, undef, 'Plast...'
+	say DBI::neat_list(\@main, 10, "] >|< [");	# 'main'...'] >|< [''] >|< [20220229] >|< [undef] >|< ['Plast...'
+}
+main();
+```
+内部で、neatを呼び出しているようだ(本当に？)。  
+
+
+<a name="practicalusesqlDBIissuingsimpleinquiry"></a>
+### 簡単な問い合わせの発行
+DBIを使ってデータベースからデータを取り出すことは、次の4つの段階を繰り返す。  
+
+* データ取り出し。  
+  1. 準備段階(prepare)では、SQL文を解析し、有効化したステートメントハンドル(例：$sth)を取得する。  
+     `my $sth = $dbh->prepare('select * Table;');`  
+     蛇足：[非select文の実行](#practicalusesqlDBInonselectexecution)には、
+     `my $sth = $dbh->do('insert into Table(abc) values(20220302);');`
+     のように、doメソッドを用いる。  
+  1. そのステートメントハンドルが正常な場合、それを使い、SQL文を実行する段階。  
+     `$sth->execute();`  
+     実行成功の場合の戻り値：true  
+     そうでない場合、undef。  
+  1. SQL文の実行後、フェッチ(fetch)段階として、ステートメントハンドルを使い、結果を取得する。  
+     `my @table = $sth->fetchrow_array();`  
+     全データのフェッチにより、終了する(何が終了するの？)。  
+     途中で終了する場合は、**finish()**メソッドを使う。
+     後からフェッチを再開する場合は、**execute()**をする必要があるとのこと(2つ目の手順)。  
+     ※逆行(逆走)できないため、戻る場合は最初からやり直しになる。  
+  1. ステートメントハンドルなどを切断する段階。  
+
+
+<a name="practicalusesqlDBIissuingsimpleinquiryonthefly"></a>
+#### 動的なWebサイトの構築
+何をすれば良いのか全く分からない。  
+
+todo:
+後日調べる。  
+
+
+<a name="practicalusesqlDBIissuingsimpleinquiryfetch"></a>
+#### フェッチ
+フェッチ時のデータが無くなり次第、空リストを返す。  
+そして、エラーが発生した場合もループ処理を抜け出るため、ループ直後にエラー判定処理を入れておくべし。  
+
+以下、[エラー診断](#practicalusesqlDBIerrorhandlingdiagnose)での[プログラム](#practicalusesqlDBIerrorhandlingdiagnoseprogram)から抜粋。  
+```perl
+	#my @table = $sth->fetchrow_array();	←☆1レコードのみ出すのは中止。
+	my @table = ();
+	say "テーブル内容：@table" while @table = $sth->fetchrow_array();	# ほげ ぼげぇ〜	←☆whileで全て抜き出す。
+	die "フェッチ作業失敗 $DBI::errstr" if $DBI::err;	←☆ここで確認して大丈夫か？
+
+	#$sth->finish();	# 強制的にフェッチを切断した。	←☆上記で全データ取り出したことにより、強制切断も中止。
+	my $rc = $dbh1->disconnect
+			or warn "$databaseからの切断失敗(" . $dbh1->errstr . ")。";
+```
+
+P119に誤字がある。  
+最後の段落に**fetchrow_array**を使わず、**fetchrow_array**を使うことで〜ってある。  
+同じやん。  
+誤字やん。  
+fetchrow\_arrayrefを使えってことでしょうね。  
+以下、それを使ったプログラム(抜粋していることは変わらない)。
+```perl
+	eval{
+	my $table = '';
+	say "テーブル内容：@{$table}" while $table = $sth->fetchrow_arrayref();	# 配列リファレンスからデータを取り出す。
+			# 出力結果：ほげ ぼげぇ〜	←☆配列ではなく、項目ごとに取り出す場合は、以下参照。
+	#say "テーブル内容：$table->[0], $table->[1]" while $table = $sth->fetchrow_arrayref();
+			# 出力結果：ほげ, ぼげぇ〜	←☆配列なので、左端の項目から0添え字が割り振られるのだろう。
+	};
+```
+配列のリファレンス取得は扱いにくいというか、利便性に欠けそうに思う。  
+しかし、通常のフェッチよりは、性能上の利点はある。  
+
+また、ハッシュ版のフェッチ方法もある。  
+当然リファレンス利用前提だ。  
+以下、そのプログラム(その部分のみ抜粋)。
+```perl
+	eval{
+	my $table = '';
+	#say "テーブル内容：$table" while $table = $sth->fetchrow_hashref();	# ハッシュリファレンスからデータを取り出す。
+			# 出力結果：HASH(0x7fe61e93f8a8)	←☆項目内容の取り出しは、項目名をキーとする。
+	say "テーブル内容：$table->{boo}, $table->{bar}" while $table = $sth->fetchrow_hashref();
+			# 出力結果：ほげ, ぼげぇ〜
+	};
+```
+今回は取得に成功したが、データベースによっては、項目名を全て大文字もしくは、全て小文字にする場合がある。  
+そのため、事前に小文字に指定するか、もしくは全て大文字に指定しておく方が吉。  
+
+以下、項目名を全て小文字化した作業。
+```perl
+	eval{
+	my $table = '';
+	say "テーブル内容：$table->{boo}, $table->{bar}" while $table = $sth->fetchrow_hashref('NAME_lc');
+			# 出力結果：ほげ, ぼげぇ〜
+	};
+```
+
+以下、項目名を全て大文字化した作業。
+```perl
+	eval{
+	my $table = '';
+	say "テーブル内容：$table->{BOO}, $table->{BAR}" while $table = $sth->fetchrow_hashref('NAME_uc');
+			# 出力結果：ほげ, ぼげぇ〜
+	};
+```
+項目名の大小文字化は性能上何ら影響はないとのこと。  
+
+一番の問題点は、キーは、一意であるため、**id**などのように、他テーブルとの結合で名前が重複する場合、どちらか一方のテーブルの**id**項目のみ取得できる。  
+ハッシュリファレンスを使わなければ回避できるはず。  
+そんなことせずとも、項目名にエイリアスを付けることで、普通に回避できる。  
+
+
+<a name="practicalusesqlDBIissuingsimpleinquiryfetchdumpresults"></a>
+#### フェッチ-機敏出力
+素早くフェッチ後、出力するメソッドは、**dump_results()** を使う。  
+
+以下、それを使ったプログラム(必要箇所のみ[抜粋](#practicalusesqlDBIerrorhandlingdiagnoseprogram))。
+```perl
+	#$sth->execute('ほげ', 'ぼげぇ〜')	←☆文字化けした。
+	$sth->execute('hoge', 'hOgEe')
+　　　・
+　　　・
+　　　・
+	my $table = $sth->dump_results();	←☆出力処理がない状態で出力された。
+			# 出力結果：
+                    'hoge', 'hOgEe'	←☆今回1行のみをテーブルに入れていたため、1行の出力になったが、基本は全レコードを出力する。
+                    1 rows
+```
+これは、内部で[**neat_list**](#practicalusesqlDBIutilitymethodandfunctionplasticsurgeryneatlist)を使っているため、データ転送などに使うものではない。  
+ユーザがその場でテーブル内容を確認するためだけに使う開発者向けのメソッド。  
+
+引数に書式を渡すことで、成形した形を出力させる。  
+`my $table = $sth->dump_results(5, '\n', ':');`  
+※今回1行レコードのみのため、出力結果ほぼ変わらず。  
+
+
+<a name="practicalusesqlDBIissuingsimpleinquiryfetchfinish"></a>
+#### フェッチ-途中退場
+ステートメントハンドルは、生きたままになっているため、再利用できる。
+※フェッチを中断しただけであって、他のは生きている。  
+
+以下、それを使ったプログラム(必要箇所のみ[抜粋](#practicalusesqlDBIerrorhandlingdiagnoseprogram))。
+```perl
+	$sth->execute('ほげ1', 'ぼげぇ〜1')	←☆3レコード追加。
+	$sth->execute('ほげ2', 'ぼげぇ〜2')
+	$sth->execute('ほげ3', 'ぼげぇ〜3')
+　　　・
+　　　・
+　　　・
+	eval{
+		my $table = '';
+		$table = $sth->fetchrow_arrayref();	←☆1レコードのみ取得。
+		say "テーブル内容：$table->[0], $table->[1]";
+            #テーブル内容：ほげ1, ぼげぇ〜1
+
+		$sth->finish();	# 強制的にフェッチを切断した。
+
+		$sth->execute or die "SQL文の実行失敗(" . $sth->errstr . ")。";	←☆再度SQL文実行(これがない場合、以下のフェッチ処理は動かない)。
+		while( $table = $sth->fetchrow_arrayref()){	←☆再度フェッチするため、1レコード目から再開する(切断しているため、続きからの再開ではない)。
+			say "テーブル内容：$table->[0], $table->[1]";
+                #テーブル内容：ほげ1, ぼげぇ〜1
+                #テーブル内容：ほげ2, ぼげぇ〜2
+                #テーブル内容：ほげ3, ぼげぇ〜3
+		}
+	};
+```
+ピンポイントで1レコードのみ取得した瞬間に切断する場合に、**finish**メソッドを使うようだ。  
+
+また、以下のように、ブロック内で宣言する場合は、ブロックから抜け出た時点で変数が破棄されるため、フェッチが残っていることの警告は出てこない。
+```perl
+{
+	my $sth = $dbh1->prepare('select * from hoge')	←☆新しい変数に代入する(SQL文作成)。
+		or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+	$sth->execute or die "SQL文の実行失敗(" . $sth->errstr . ")。";	←☆SQL文実行。
+	my $table = $sth->fetchrow_arrayref();	←☆フェッチする。
+};	←☆フェッチが残っているのだが、このブロックを抜け出た瞬間に、フェッチ作業がなかったことになり、警告は出ない。
+```
+**fetchrow_\***メソッドでフェッチした直後に、**$sth**などの変数を破棄することでも同様の結果になる。  
+
+todo:
+Kids属性及びActiveKids属性を調べる。  
+
+
+<a name="practicalusesqlDBInonselectexecution"></a>
+### 非Select文の実行
+Select操作と異なり、データの挿入・削除・更新操作は、1回の実行だけで完結する。  
+フェッチ作業は一切不要な状態で処理が完了する。  
+そのため、prepare・executeは使わない(冗長だ)。  
+そして、今回必要なメソッドは、**do**メソッドになる。  
+これを用いることで、上記3種類の操作が可能になる。  
+
+例）
+`my $rows = $dbh->do("delete from hoge where boo = 'bar'");`  
+※ここで、文字列を[囲んだ](#practicalusesqlDBIutilitymethodandfunctionquote)方が良いのだろう。  
+
+実行結果の戻り値内容は、操作結果の行数もしくはundef(エラーの場合)が返ってくる。  
+上記例で、5レコードが削除された場合、**$rows**には、5が格納されている。  
+また、操作結果を戻さないデータベースの場合は、**-1**が返る。  
+そして、操作結果が0レコードの場合は、**0E0**が返る。  
+これは、if文などでは0を偽扱いするため、それを防ぐ目的から純粋な0は返さない。  
+エラーの場合のみ、falseになる値を返す。  
+
+
+<a name="practicalusesqlDBIparameterbinding"></a>
+### 文へのパラメタバインド
+SQL文に使う文字列を動的に変更するための仕組みのことだろう。  
+
+以下、バインドプログラム例）
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	# データベース(ファイル)名定義。
+	my $database = './sqlite.db';
+
+	my %option = (	# 警告レベルメッセージ出力なし。
+			PrintError => 0,	# warn経由でエラー報告無し。
+			RaiseError => 0,	# die経由でエラー報告無し。
+		);
+
+	my $dbh1 = DBI->connect(
+			"dbi:SQLite:database=$database",
+			"",	# ユーザ名。
+			"",	# パスワード。
+			\%option,
+		) or die "接続失敗(" . $DBI::errstr . ")。";
+
+	my $sth = '';
+	eval{
+	$sth = $dbh1->prepare('create table hoge( boo INTEGER, bar varchar(20) )')
+		or die "テーブル作成の準備失敗(" . $dbh1->errstr . ")。";
+	$sth->execute
+		or die "テーブル作成失敗(" . $sth->errstr . ")。";
+	};
+	print "テーブル作成失敗->$@" if $@;
+
+	eval{
+	$sth = $dbh1->prepare('insert into hoge (boo, bar) values (?, ?);')
+		or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+	$sth->bind_param(1, 'ほげ');	# quoteメソッドは不要(のように見えて、内部で呼び出している)。
+	$sth->bind_param(2, 'ぶぅ');	# quoteメソッドは不要(のように見えて、内部で呼び出している)。
+	$sth->execute()	←☆結局は、この処理が必要。
+		or die "SQL文の実行失敗(" . $sth->errstr . ")。";
+	};
+	print "insert作業失敗->$@" if $@;
+
+	eval{
+	$sth = $dbh1->prepare('select * from hoge')
+		or die "select文の準備失敗(" . $dbh1->errstr . ")。";
+	$sth->execute
+		or die "select文の実行失敗(" . $sth->errstr . ")。";
+	};
+	print "select文実行失敗$@" if $@;
+
+	eval{
+	my $table = '';
+	say "テーブル内容：$table->[0], $table->[1]"
+		while $table = $sth->fetchrow_arrayref();	# 全データ取り出し。
+	};
+	print "フェッチ作業失敗->$@" if $@;
+
+	eval{
+	my $rc = $dbh1->disconnect
+		or warn "$databaseからの切断失敗(" . $dbh1->errstr . ")。";
+	};
+	unlink $database or warn "ファイル削除失敗($!)。";
+}
+&main();
+```
+データベース固有のパラメタバインドはあるが、汎用性に欠けているため、今回の方法を用いるのが吉。  
+
+以下、別の方法でのパラメタバインド用プログラム(その部分のみ抜粋)
+```perl
+$sth = $dbh1->prepare("
+		insert into hoge (boo, bar)
+		values (?, ?);
+	") or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+$sth->execute('ほげ', 'ぼげぇ〜')
+```
+特に問題なく使える。  
+そして、この場合の設定型は、SQL\_VARCHARが付与される。  
+この型指定できない問題の回避には、一度パラメタバインドメソッドをかませる必要がある。  
+以下、例）
+```perl
+$sth = $dbh1->prepare("
+		insert into hoge (boo, bar)
+		values (?, ?);
+	") or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+`$sth->bind_param(1, 20220302, SQL_INTEGER);`
+$sth->execute(20220302)	←☆数列として扱われる。  
+```
+素直にパラメタバインドだけで十分に思うが？  
+
+以下、パラメタバインドを使わない場合の埋め込みプログラムその1(その部分のみ抜粋)。
+```perl
+$sth = $dbh1->prepare('
+		insert into hoge (boo, bar)
+		values (' . $dbh1->quote('項目1つ目') . ',' . $dbh1->quote('2つ目の項目内容') . ');
+	') or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+```
+非常に煩わしい。  
+これは面倒くさい。  
+出力結果：項目1つ目, 2つ目の項目内容  
+
+以下、パラメタバインドを使わない場合の埋め込みプログラムその2(その部分のみ抜粋)。
+```perl
+my $column1 = '20220302';	←☆数列のみ登録可能。対策以下その3参照。
+my $column2 = '12345678';	←☆数列のみ登録可能。対策以下その3参照。
+$sth = $dbh1->prepare("
+		insert into hoge (boo, bar)
+		values ($column1, $column2);
+	") or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+```
+出力結果：20220302, 12345678  
+
+以下、パラメタバインドを使わない場合の埋め込みプログラムその3(その部分のみ抜粋)。
+```perl
+	my $column1 = $dbh1->quote('本日は');	←☆文字列は、クォート必須。
+	my $column2 = $dbh1->quote('晴天なり。');	←☆文字列は、クォート必須。
+	$sth = $dbh1->prepare("
+			insert into hoge (boo, bar)
+			values ($column1, $column2);
+		") or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+```
+出力結果：本日は, 晴天なり。  
+
+バインド可能な文字列は、テーブルに対する変化可能な値のみになる。  
+要は、**prepare**で解析可能にしておく必要がある。  
+具体的には、**FROM**や**WHERE**などの文字をバインド出来ないと言うこと(それに続く文字のみをバインドすること)。  
+```perl
+$sth = $dbh1->prepare("
+		insert into hoge (boo, bar)
+		?;	←☆ここをバインド。
+    ・
+    ・
+    ・
+$sth->bind_param(1, 'values ($column1, $column2)');	←☆valuesを含めるような書き方は出来ない。
+```
+**near "?": syntax error**になる。  
+
+型指定する場合は、パラメタバインドの第3引数に型を指定する。  
+例）
+`$sth->bind_param(1, 20220302, SQL_VARCHAR);`
+その時、**use DBI qw(:sql_types);**の呼び出しが必須になる。  
+※そもそもどんな型があるのか分からない。  
+
+
+<a name="practicalusesqlDBIparameterbindinginputoutput"></a>
+#### 入出力パラメタのバインド
+**bind_param_inout**メソッドを使う。  
+しかし、これは、限定されたデータベースのみ利用可能であり、しかも限定された場面でのみ有効なようだ。  
+オラクルではできるようだ。  
+
+
+<a name="practicalusesqlDBIparameterbindingoutputbind"></a>
+#### 出力列のバインド
+select結果の出力をPerl側の変数に紐付けることで、処理速度が向上する。  
+別名バインド列と言う。  
+
+以下、簡単なプログラム例を示す。
+```perl
+use v5.24;
+use DBI;
+use DBI qw(:sql_types);
+
+sub main() {
+	my $database = './sqlite.db';	# データベース(ファイル)名定義。
+
+	my %option = (	# 警告レベルメッセージ出力なし。
+			PrintError => 0,	# warn経由でエラー報告無し。
+			RaiseError => 0,	# die経由でエラー報告無し。
+		);
+
+	my $dbh1 = DBI->connect(
+			"dbi:SQLite:database=$database",
+			"",	# ユーザ名。
+			"",	# パスワード。
+			\%option,
+		) or die "接続失敗(" . $DBI::errstr . ")。";
+
+	my $sth = '';
+	eval{
+	$sth = $dbh1->prepare('create table hoge( boo INTEGER, bar varchar(20) )')
+		or die "テーブル作成の準備失敗(" . $dbh1->errstr . ")。";
+	$sth->execute
+		or die "テーブル作成失敗(" . $sth->errstr . ")。";
+	};
+	print "テーブル作成失敗->$@" if $@;
+
+	eval{
+	$sth = $dbh1->prepare("
+			insert into hoge (boo, bar)
+			values (?, ?);
+		") or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+	$sth->execute('ほげ1', 'ぼげぇ〜1')
+		or die "SQL文の実行失敗(" . $sth->errstr . ")。";
+	$sth->execute('ほげ2', 'ぼげぇ〜2')
+		or die "SQL文の実行失敗(" . $sth->errstr . ")。";
+	$sth->execute('ほげ3', 'ぼげぇ〜3')
+		or die "SQL文の実行失敗(" . $sth->errstr . ")。";
+	};
+	print "insert作業失敗->$@" if $@;
+
+	eval{
+	$sth = $dbh1->prepare('select boo from hoge')
+		or die "select文の準備失敗(" . $dbh1->errstr . ")。";
+	$sth->execute
+		or die "select文の実行失敗(" . $sth->errstr . ")。";
+	};
+	print "select文実行失敗$@" if $@;
+
+	# 以下、紐付け。
+	my ( $boo, );
+	$sth->bind_col( 1, \$boo );	←☆この部分。
+
+	eval{
+	say "項目内容：$boo" while $sth->fetch;	# 全データ取り出し。	←☆フェッチ方法が簡単になっている。
+	};
+	print "フェッチ作業失敗->$@" if $@;
+
+	eval{
+	my $rc = $dbh1->disconnect
+		or warn "$databaseからの切断失敗(" . $dbh1->errstr . ")。";
+	};
+	unlink $database or warn "ファイル削除失敗($!)。";
+}
+&main();
+```
+確実に取得項目が分かっているという場合は、使うべき技法だろう。  
+これでは指定項目が増加するたびに紐付け作業が増加する。  
+それを1行で収めるのが**bind_columns**メソッドになる。  
+以下、使用例）
+```perl
+my ( $boo, $bar, $hoge, );
+$sth->bind_columns( undef, \$boo, \$bar, \$hoge, );
+```
+※上記の全体プログラムから変更箇所のみ抜粋した。  
+また、第1引数は、undef固定なのだが、**DBI 1.08**以降の場合は、省略可能。  
+そして、私の環境では省略できた。  
+
+
+<a name="practicalusesqlDBIparameterbindingmethoddoprepare"></a>
+#### doメソッドとprepareメソッドの使い分け。
+doメソッドは、簡単にテーブル更新などが出来るようになっているが、処理性能に難があるため、使いどころを間違えた場合、処理速度の足を引っ張ることになるため、注意が必要である。  
+
+doメソッドの様式：
+`my $rc = $dbh->do(非select文) || die $dbh->errstr;`  
+`my $rc = $dbh->do(非select文, \%attr) || die $dbh->errstr;`  
+`my $rv = $dbh->do(非select文, \%attr, @bind_values) || die $dbh->errstr;`  
+※select文でも使って構わないが、値を取得することが出来ないため、無駄な処理になる。  
+第1引数の部分は、`q{}`で囲むのが良いようだが、どういう意味？  
+そのまま使えそうではあるが・・・変数に格納した場合の説明だろうか(その変数に変数を埋め込んでいる場合は`qq{}`を用いる？)。  
+executeする必要はなくなるが、何度もdo呼ぶ場合は、prepareとexecuteの組み合わせのほうが効率は良い。  
+
+prepareメソッドの様式：
+`my $sth = $dbh->prepare(select文) || die $dbh->errstr;`  
+`my $sth = $dbh->prepare(select文, \%attr) || die $dbh->errstr;`  
+単純なデータベースエンジン向けに、可搬性の高いプログラムを組む場合は、フェッチ中に次の準備もしくは実行することは避けるべきであり、SQL文の終了用にセミコロン`;`を付けるべきでもないとのこと。  
+
+以下、doメソッドを使った処理速度を低下させるプログラム。
+```perl
+use v5.24;
+use DBI;
+
+sub main() {
+	# データベース(ファイル)名定義。
+	my $database = './sqlite.db';
+
+	my %option = (	# 警告レベルメッセージ出力なし。
+			PrintError => 0,	# warn経由でエラー報告無し。
+			RaiseError => 0,	# die経由でエラー報告無し。
+		);
+
+	my $dbh1 = DBI->connect(
+			"dbi:SQLite:database=$database",
+			"",	# ユーザ名。
+			"",	# パスワード。
+			\%option,
+		) or die "接続失敗(" . $DBI::errstr . ")。";
+
+	my $sth = '';
+	eval{
+	$sth = $dbh1->do('create table hoge( boo INTEGER, bar varchar(20) )')
+		or die "テーブル作成失敗(" . $dbh1->errstr . ")。";
+	};
+	say "$@" if $@;
+
+	my $sth = '';
+	eval{
+	my @values = qw( 本日は 晴天なり。 );
+	while( my ($index, $value) = each @values ){	←☆ここで繰り返している。
+		# 以下の処理は、何度もSQL文が準備され、何度も実行され、何度も破棄されている(要は資源の無駄使い)。
+		$sth = $dbh1->do("insert into hoge (boo, bar) values (?, ?);", undef, $index, $value)
+			or die "データ挿入失敗(" . $dbh1->errstr . ")。";
+	}
+	};
+	say "$@" if $@;
+
+	eval{
+	$sth = $dbh1->prepare('select * from hoge')
+		or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+	$sth->execute
+		or die "SQL文の実行失敗(" . $sth->errstr . ")。";
+	};
+	say "$@" if $@;
+
+	my @table = ();
+	say "テーブル内容：@table" while @table = $sth->fetchrow_array();
+
+	my $rc = $dbh1->disconnect
+			or warn "$databaseからの切断失敗(" . $dbh1->errstr . ")。";
+	unlink $database or warn "ファイル削除失敗($!)。";
+}
+&main();
+```
+上記の資源の無駄遣いをしている箇所は、以下のように修正できる。  
+```perl
+	my $sth = $dbh1->prepare('insert into hoge (boo, bar) values (?, ?);')	←☆ループの外でSQL文を準備する。
+		or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+	eval{
+	my @values = qw( 本日は 晴天なり。 );
+	while( my ($index, $value) = each @values ){	←☆ここのループ開始部分は変わらない。
+	$sth->execute($index, $value)	←☆引数を与え、実行する(無駄がなくなる)。
+		or die "SQL文の実行失敗(" . $sth->errstr . ")。";
+	}
+	};
+	say "$@" if $@;
+```
+無駄かどうかは言われなければ気づかないように思うのだが、慣れれば普通に使い分けできるようになるのだろうか。  
+これで処理速度は上がったが、専用ツールに比べれば、当然Perlは遅い。  
+
+
+<a name="practicalusesqlDBIparameterbindingatomicbatchfetch"></a>
+#### アトミックフェッチ処理とバッチフェッチ処理
+
+* 2種類の処理がある。  
+  * [アトミックフェッチ処理](#practicalusesqlDBIparameterbindingatomicbatchfetchatomic)  
+    1レコードのみ取得する。  
+  * [バッチフェッチ処理](#practicalusesqlDBIparameterbindingatomicbatchfetchbatch)  
+    全レコードを一度に取得する(2次元配列)。  
+
+
+<a name="practicalusesqlDBIparameterbindingatomicbatchfetchatomic"></a>
+##### アトミックフェッチ処理
+1レコードだけを取得するため、Where句か何かで絞り込む必要があるのかもしれない。  
+便利ではあるのだが、使い道が思いつかない。  
+
+以下、該当プログラム。
+```perl
+my( $boo, $bar ) = $dbh1->selectrow_array('select * from hoge')
+	or die "1レコード取得失敗(" . $dbh1->errstr . ")。";
+say "テーブル内容：$boo, $bar";	# 0, 本日は
+```
+本来のテーブル内容は、2レコードある。
+```text
+0 本日は
+1 晴天なり。
+```
+
+ちなみに、リファレンス版もある。  
+**selectrow_arrayref**メソッド。  
+
+
+<a name="practicalusesqlDBIparameterbindingatomicbatchfetchbatch"></a>
+##### バッチフェッチ処理
+これも2種類ある。  
+そして、これは、一度に大量のデータを取得することになるため、テーブル内容を把握せずに使う場合、メモリが枯渇する可能性がある。  
+
+* メソッド一覧。  
+  * fetchall\_arrayref  
+    [引数無し。](#practicalusesqlDBIparameterbindingatomicbatchfetchbatchfetchnoarg)  
+    [配列引数。](#practicalusesqlDBIparameterbindingatomicbatchfetchbatchfetcharray)  
+    [ハッシュ引数。](#practicalusesqlDBIparameterbindingatomicbatchfetchbatchfetchhash)  
+  * [selectall\_arrayref](#practicalusesqlDBIparameterbindingatomicbatchfetchbatchselect)  
+
+これらの利用は、evalで囲む必要があるのか？  
+その辺の判断がまだ分かっていない。  
+実行に失敗する可能性があるのだから必要だとは思っているのだが・・・。  
+
+<a name="practicalusesqlDBIparameterbindingatomicbatchfetchbatchfetchnoarg"></a>
+以下、**fetchall_arrayref**メソッド利用の引数無しプログラム(必要部分のみ抜粋)。
+```perl
+$sth = $dbh1->prepare('select * from hoge')	←☆アスタリスクでの項目取得になるため、テーブルに依存する。
+	or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+$sth->execute or die "SQL文の実行失敗(" . $sth->errstr . ")。";
+$tabledata = $sth->fetchall_arrayref();	←☆1回のみ実行(結果は2次元配列)。
+foreach my $row ( @$tabledata ) {	←☆リファレンスから取り出し。
+	my ( $boo, $bar, ) = @$row;	←☆さらに取り出し。
+	say "テーブル内容：$boo, $bar";
+    # 出力結果。
+        # テーブル内容：0, 本日は
+        # テーブル内容：1, 晴天なり。
+```
+
+<a name="practicalusesqlDBIparameterbindingatomicbatchfetchbatchfetcharray"></a>
+以下、**fetchall_arrayref**メソッド利用の配列用引数ありプログラム(必要部分のみ抜粋)。
+```perl
+$sth = $dbh1->prepare('select bar, boo from hoge')	←☆barに値。booにインデックス。
+	or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+$sth->execute or die "SQL文の実行失敗(" . $sth->errstr . ")。";
+$tabledata = $sth->fetchall_arrayref([0]);	←☆barのみ取得。
+foreach my $row ( @$tabledata ) {
+	my ( $boo, $bar, ) = @$row;	←☆boo変数に、barカラム内容が格納される。
+	say "テーブル内容：$boo, $bar";
+    # 出力結果。
+        # テーブル内容：本日は, 
+        # テーブル内容：晴天なり。, 
+}
+```
+
+<a name="practicalusesqlDBIparameterbindingatomicbatchfetchbatchfetchhash"></a>
+以下、**fetchall_arrayref**メソッド利用のハッシュ用引数ありプログラム(必要部分のみ抜粋)。
+```perl
+$sth = $dbh1->prepare('select * from hoge')
+	or die "SQL文の準備失敗(" . $dbh1->errstr . ")。";
+$sth->execute or die "SQL文の実行失敗(" . $sth->errstr . ")。";
+$tabledata = $sth->fetchall_arrayref( { boo=>1, bar=>2, } );	←☆ハッシュを引数にしている(テーブルの項目名と一致させる必要がある)。
+foreach my $row ( @$tabledata ) {
+	say "テーブル内容：$row->{boo}, $row->{bar}";
+}
+```
+※テーブルの項目名が大文字だろうが、ハッシュに使うキーは小文字にしておくこと。  
+項目名に合わせて大文字にしたときは、取得に失敗した。  
+※また、複数テーブル利用により、同名の項目名がある場合は取得が出来ない。
+これは、ハッシュを利用する場合は、[フェッチ](#practicalusesqlDBIissuingsimpleinquiryfetch)全般に言えることなのかもしれない。  
+
+<a name="practicalusesqlDBIparameterbindingatomicbatchfetchbatchselect"></a>
+以下、**selectall_arrayref**メソッド利用の引数無しプログラム(必要部分のみ抜粋)。
+```perl
+$tabledata = $dbh1->selectall_arrayref( 'select boo, bar from hoge' );
+foreach my $row ( @$tabledata ) {
+	say "テーブル内容：$row->[0], $row->[1]";
+}
+    # 出力結果。
+        # テーブル内容：0, 本日は
+        # テーブル内容：1, 晴天なり。
+```
+
+
+<a name="practicalusesqlDBIadvancedtechnique"></a>
+### DBIの上級テクニック
+
+
+<a name="practicalusesqlDBIandodbc"></a>
+### ODBCとDBI
+
+
+<a name="practicalusesqlDBIshellanddatabaseproxy"></a>
+### DBIシェルとデータベースプロキシ。
 
 </details>
 
