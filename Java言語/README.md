@@ -1569,6 +1569,8 @@ class factorial {
 また、その呼び出す仕組みの関数を再帰関数という。  
 
 <a name="findTheFactorialOfNChapter2factorialsample"></a>
+<details><summary>再帰用プログラム例。</summary>
+
 以下、再帰関数例）
 ```java
 class factorial {
@@ -1599,6 +1601,39 @@ class factorial {
 再帰関数 3回目の実行
 再帰関数 2回目の実行
 再帰関数 1回目の実行
+```
+
+</details>
+
+* ルール1  
+  再帰関数を使わない。  
+  * 関数定義は行わない(私のプログラムでは行う)。  
+  * `for`を使う。  
+
+以下、ルール1のプログラム。
+```java
+class factorial {
+	static int factorial1(final int MAX){
+		// 階乗を求める関数。
+		//	この関数は、サンプル関数に引数を受け取る形にしただけのもの。
+		int count = 1;
+		for( int ii = MAX; 0 < ii; ii-- ) {
+			count *= ii;
+		}
+
+		return count;
+	}
+
+	public static void main(String[] args){
+		int factorial = factorial1(10);
+		System.out.printf("10!：%d\n", factorial);
+	}
+}
+```
+
+以下、実行結果。
+```terminal
+10!：3628800
 ```
 
 

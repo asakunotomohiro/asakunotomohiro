@@ -17,7 +17,21 @@ class factorial {
 		return count;
 	}
 
+	static int factorial1(final int MAX){
+		// 階乗を求める関数。
+		//	この関数は、サンプル関数に引数を受け取る形にしただけのもの。
+		int count = 1;
+		for( int ii = MAX; 0 < ii; ii-- ) {
+			count *= ii;
+		}
+
+		return count;
+	}
+
 	public static void main(String[] args){
+		int factorial = factorial1(10);
+		System.out.printf("10!：%d\n", factorial);	// 10!：3628800
+
 		recursionsample();	// 10!：3628800
 		factorialsample(10);	// 再帰
 	}
