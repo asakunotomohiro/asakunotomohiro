@@ -1545,25 +1545,61 @@ public static void main(String[] args){
 1からnまでの全ての整数の積をnの階乗という。  
 
 <a name="findTheFactorialOfNChapter2recursionsample"></a>
+<details><summary>再帰用プログラム例。</summary>
+
 以下、サンプルプログラム。
 ```java
 class factorial {
 	public static void main(String[] args){
-		recursionsample();
 		// 10の階乗を求める。
 		int total = 10;
 		for( int ii = 9; 0 < ii; ii-- ) {	←☆9から0になるまでデクリメントを行う。
 			total *= ii;
 		}
-		System.out.printf("10!：%d", total);
+		System.out.printf("10!：%d\n", total);
 		// 10!：3628800	←☆10の階乗になっている。
 	}
 }
 ```
 
+</details>
+
 **再帰関数とは**
 関数内から自身の関数を呼び出すことを再帰処理という。
 また、その呼び出す仕組みの関数を再帰関数という。  
+
+<a name="findTheFactorialOfNChapter2factorialsample"></a>
+以下、再帰関数例）
+```java
+class factorial {
+	static int factorialsample(int count){
+		if( count > 0 ) {
+			System.out.printf("再帰関数%2d回目の実行\n", count);
+			factorialsample( count - 1 );
+		}
+
+		return count;
+	}
+
+	public static void main(String[] args){
+		factorialsample(10);	// 再帰
+	}
+}
+```
+
+以下、実行結果。
+```terminal
+再帰関数10回目の実行
+再帰関数 9回目の実行
+再帰関数 8回目の実行
+再帰関数 7回目の実行
+再帰関数 6回目の実行
+再帰関数 5回目の実行
+再帰関数 4回目の実行
+再帰関数 3回目の実行
+再帰関数 2回目の実行
+再帰関数 1回目の実行
+```
 
 
 <a name="eratosthenesSieveChapter2"></a>
