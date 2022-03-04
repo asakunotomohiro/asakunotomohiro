@@ -1094,7 +1094,7 @@ class スコープ {
   [x] [1からnまで足し合わせる。](#addFrom1tonChapter2)2022/01/29  
   [x] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)2022/02/11  
   [x] [素数を求める。](#findAPrimeNumberChapter2)2022/02/25  
-  [ ] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
+  [x] [nの階乗を求める。](#findTheFactorialOfNChapter2)2022/03/04  
   [ ] [エラトステネスの篩](#eratosthenesSieveChapter2)  
   [ ] [n進法を理解する。](#understandnAryNotationChapter2)  
 <a name="algorithmTextbookLearnedinPythonChapter3"></a>
@@ -1541,6 +1541,138 @@ public static void main(String[] args){
 
 <a name="findTheFactorialOfNChapter2"></a>
 #### nの階乗を求める。
+**階乗とは**
+1からnまでの全ての整数の積をnの階乗という。  
+
+<a name="findTheFactorialOfNChapter2recursionsample"></a>
+<details><summary>再帰用プログラム例。</summary>
+
+以下、サンプルプログラム。
+```java
+class factorial {
+	public static void main(String[] args){
+		// 10の階乗を求める。
+		int total = 10;
+		for( int ii = 9; 0 < ii; ii-- ) {	←☆9から0になるまでデクリメントを行う。
+			total *= ii;
+		}
+		System.out.printf("10!：%d\n", total);
+		// 10!：3628800	←☆10の階乗になっている。
+	}
+}
+```
+
+</details>
+
+**再帰関数とは**
+関数内から自身の関数を呼び出すことを再帰処理という。
+また、その呼び出す仕組みの関数を再帰関数という。  
+
+<a name="findTheFactorialOfNChapter2factorialsample"></a>
+<details><summary>再帰用プログラム例。</summary>
+
+以下、再帰関数例）
+```java
+class factorial {
+	static int factorialsample(int count){
+		if( count > 0 ) {
+			System.out.printf("再帰関数%2d回目の実行\n", count);
+			factorialsample( count - 1 );
+		}
+
+		return count;
+	}
+
+	public static void main(String[] args){
+		factorialsample(10);	// 再帰
+	}
+}
+```
+
+以下、実行結果。
+```terminal
+再帰関数10回目の実行
+再帰関数 9回目の実行
+再帰関数 8回目の実行
+再帰関数 7回目の実行
+再帰関数 6回目の実行
+再帰関数 5回目の実行
+再帰関数 4回目の実行
+再帰関数 3回目の実行
+再帰関数 2回目の実行
+再帰関数 1回目の実行
+```
+
+</details>
+
+* ルール1  
+  再帰関数を使わない。  
+  * 関数定義は行わない(私のプログラムでは行う)。  
+  * `for`を使う。  
+
+以下、ルール1のプログラム。
+```java
+class factorial {
+	static int factorial1(final int MAX){
+		// 階乗を求める関数。
+		//	この関数は、サンプル関数に引数を受け取る形にしただけのもの。
+		int count = 1;
+		for( int ii = MAX; 0 < ii; ii-- ) {
+			count *= ii;
+		}
+
+		return count;
+	}
+
+	public static void main(String[] args){
+		int factorial = factorial1(10);
+		System.out.printf("10!：%d\n", factorial);
+	}
+}
+```
+
+以下、実行結果。
+```terminal
+10!：3628800
+```
+
+* ルール2  
+  再帰関数を使う。  
+  * 再帰関数の定義ルール  
+    * `n = 0`
+      **n! = 1**  
+    * `n > 0`
+      **n! = n * (n-1) * (n-2) * ・・・ * 2 * 1**
+      nから1引いた数を掛け、さらに1づつ引き続けながらnが1にまるまで続ける。  
+
+以下、ルール2のプログラム。
+```java
+class factorial {
+	static int factorial2(int count){
+		// 階乗を求める関数。
+		int total = 0;
+		if( count == 0 ) {
+			total = 1;
+		}
+		else {
+			total = count * factorial2(count - 1);
+		}
+
+		return total;
+	}
+
+	public static void main(String[] args){
+		int factorial2 = factorial2(10);
+		System.out.printf("10!：%d\n", factorial2);
+	}
+}
+```
+
+以下、実行結果。
+```terminal
+10!：3628800
+```
+
 
 <a name="eratosthenesSieveChapter2"></a>
 #### エラトステネスの篩
