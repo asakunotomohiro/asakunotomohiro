@@ -1093,7 +1093,7 @@ class スコープ {
   [x] [平均値を求める。](#findTheAverageValueChapter2)2022/01/11  
   [x] [1からnまで足し合わせる。](#addFrom1tonChapter2)2022/01/29  
   [x] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)2022/02/11  
-  [ ] [素数を求める。](#findAPrimeNumberChapter2)  
+  [x] [素数を求める。](#findAPrimeNumberChapter2)2022/02/25  
   [ ] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
   [ ] [エラトステネスの篩](#eratosthenesSieveChapter2)  
   [ ] [n進法を理解する。](#understandnAryNotationChapter2)  
@@ -1499,6 +1499,45 @@ class kuku {
 
 <a name="findAPrimeNumberChapter2"></a>
 #### 素数を求める。
+素数とは、1とその数以外に約数を持たない2以上の自然数のこと。  
+
+Pythonに倣い、試す数は**2〜2分のn**までの数で割ることを調べる方法をとる。  
+例えば、10を調べる場合、その半分より大きい数(**6**・**7**・**8**・**9**)では、10を割ることが出来ない。  
+そのことを利用した方法で素数を求める。  
+後日、[エラトステネスの篩](#eratosthenesSieveChapter2)を使った効率のいいアルゴリズムを勉強する。  
+
+* 素数を求めるルール  
+  * 二重ループを使う。  
+  * 2から2分のnまでの数で割る。  
+    ※それらの数で割り切れなければ素数。  
+
+以下、プログラム。
+```java
+class prime {
+public static void main(String[] args){
+	for( int ii = 2; 101 > ii; ii++ ){
+		int half = ii / 2;	// 商を求める。
+		boolean flag = true;
+		for( int jj = 2; half >= jj; jj++ ){
+			if(( ii % jj ) == 0 ){
+				// 剰余算にて、割り切れるならば、出力対象外にする。
+				flag = false;
+				break;
+			}
+		}
+		if( flag == true ) {
+			System.out.printf("%d,", ii);
+		}
+	}
+}
+}
+```
+
+以下、出力結果。
+```terminal
+2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,
+```
+
 
 <a name="findTheFactorialOfNChapter2"></a>
 #### nの階乗を求める。
