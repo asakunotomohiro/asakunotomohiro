@@ -1094,7 +1094,7 @@ class スコープ {
   [x] [1からnまで足し合わせる。](#addFrom1tonChapter2)2022/01/29  
   [x] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)2022/02/11  
   [x] [素数を求める。](#findAPrimeNumberChapter2)2022/02/25  
-  [ ] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
+  [x] [nの階乗を求める。](#findTheFactorialOfNChapter2)2022/03/04  
   [ ] [エラトステネスの篩](#eratosthenesSieveChapter2)  
   [ ] [n進法を理解する。](#understandnAryNotationChapter2)  
 <a name="algorithmTextbookLearnedinPythonChapter3"></a>
@@ -1541,6 +1541,30 @@ public static void main(String[] args){
 
 <a name="findTheFactorialOfNChapter2"></a>
 #### nの階乗を求める。
+**階乗とは**
+1からnまでの全ての整数の積をnの階乗という。  
+
+<a name="findTheFactorialOfNChapter2recursionsample"></a>
+以下、サンプルプログラム。
+```java
+class factorial {
+	public static void main(String[] args){
+		recursionsample();
+		// 10の階乗を求める。
+		int total = 10;
+		for( int ii = 9; 0 < ii; ii-- ) {	←☆9から0になるまでデクリメントを行う。
+			total *= ii;
+		}
+		System.out.printf("10!：%d", total);
+		// 10!：3628800	←☆10の階乗になっている。
+	}
+}
+```
+
+**再帰関数とは**
+関数内から自身の関数を呼び出すことを再帰処理という。
+また、その呼び出す仕組みの関数を再帰関数という。  
+
 
 <a name="eratosthenesSieveChapter2"></a>
 #### エラトステネスの篩
