@@ -2184,6 +2184,29 @@ int main(void)
 |`<<`|左シフト|`a=a << 2;`||
 |`>>`|右シフト|`a=a >> 2;`||
 
+以下、簡易なプログラム。
+```c
+#include <stdio.h>
+
+int main(void)
+{
+	// 以下、ビット単位演算子。
+	int bit, original=0x55555555;
+	printf("%#x\n", original);		// 0x55555555
+	bit = original & 0x0000FFFF;	// 論理積
+	printf("%#x\n", bit);	// 0x5555
+	bit = original | 0x0000FFFF;	// 論理和
+	printf("%#x\n", bit);	// 0x5555ffff
+	bit = original ^ 0x0000FFFF;	// 排他的論理和
+	printf("%#x\n", bit);	// 0x5555aaaa
+	bit = ~original;				// 補数(not処理)
+	printf("%#x\n", bit);	// 0xaaaaaaaa
+
+	return 0;
+}
+```
+8桁表示ではなく、切り詰められるんだな。  
+
 
 <a name="sortOverviewChapter5"></a>
 ### ソート

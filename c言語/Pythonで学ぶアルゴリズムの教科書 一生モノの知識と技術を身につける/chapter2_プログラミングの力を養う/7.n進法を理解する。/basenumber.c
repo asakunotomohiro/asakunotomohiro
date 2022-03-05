@@ -7,6 +7,18 @@ int bit(void)
 	printf("%d\n", 0377);		// 255	←☆8進数。
 	printf("%d\n", 0xff);		// 255	←☆16進数。
 
+	// 以下、ビット単位演算子。
+	int bit, asakuno=0x55555555;
+	printf("%#x\n", asakuno);	// 0x55555555
+	bit = asakuno & 0x0000FFFF;	// 論理積
+	printf("%#x\n", bit);		// 0x5555
+	bit = asakuno | 0x0000FFFF;	// 論理和
+	printf("%#x\n", bit);		// 0x5555ffff
+	bit = asakuno ^ 0x0000FFFF;	// 排他的論理和
+	printf("%#x\n", bit);		// 0x5555aaaa
+	bit = ~asakuno;				// 補数(not処理)
+	printf("%#x\n", bit);		// 0xaaaaaaaa
+
 	return 0;
 }
 
