@@ -7209,10 +7209,31 @@ sub timeformatChange {
 </details>
 
 <a name="practicalusemap"></a>
-<details><summary>応用知識-map</summary>
+<details><summary>応用知識-map演算子</summary>
 
 リストの要素に変更を加える場合に用いる。  
 また、その変更結果は、別リストになるため、元のリストは一切影響を受けない。  
+
+todo:
+いずれ、演算子を1つにまとめる。  
+
+
+<a name="practicalusemap"></a>
+### 簡易プログラム
+以下、mapを使ったプログラム例）
+```perl
+use v5.24;
+
+sub mapSample() {
+	my @mapList = qw( 本日は 晴天なり。 我思う 故に我あり );
+	# 以下、リストの文字列を<>記号で挟む。
+	say "@mapList";		# 本日は 晴天なり。 我思う 故に我あり
+	my @changeList = map { "<$_>" } @mapList;
+	say "@changeList";	# <本日は> <晴天なり。> <我思う> <故に我あり>
+}
+&mapSample();
+```
+1行の処理で完結するのは便利。  
 
 </details>
 
