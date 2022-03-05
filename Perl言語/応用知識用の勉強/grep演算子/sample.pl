@@ -13,7 +13,9 @@ sub asakunoGrep() {
 	my @tomohiro = grep { /野/ } @asakuno;
 	say "@tomohiro";	# 朝来野 朝来野智博
 }
-#&asakunoGrep();
+&asakunoGrep();
+
+say '-' x 30;
 
 sub asakunoNotGrep() {
 	my @tomohiro;

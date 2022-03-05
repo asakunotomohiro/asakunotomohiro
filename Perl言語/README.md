@@ -7284,6 +7284,22 @@ sub notgrepSample() {
 &notgrepSample();
 ```
 
+以下、ファイル行数を数えるプログラム。
+```perl
+use v5.24;
+
+sub grepFilelinecount() {
+	my @filename = glob '~/Desktop/*.txt';	# グロブ利用。
+
+	open my $file_fh, '<', $filename[0]
+		or die "$filename[0]のファイルオープン失敗($!)";
+	my $line = grep /./s, <$file_fh>;
+	say "行数：$line";	# 空行も含めた結果が出てくる。
+	close $file_fh;
+}
+&grepFilelinecount();
+```
+
 </details>
 
 <a name="practicalusemap"></a>
