@@ -226,6 +226,44 @@ $
 
 </details>
 
+<a name="breakingAwayFromBasicKnowledge"></a>
+<details><summary>応用知識の項目</summary>
+
+<a name="expandTheScopeOfBasicKnowledge"></a>
+### 基礎知識5種類の勉強範囲を広げる
+基礎知識5種類の勉強は、アルゴリズムの勉強用に特化していたが、この部分は、通常開発ができる範囲に手を広げる。  
+
+* 基礎知識5種類の範囲を広げる  
+  * [ ] [変数](#practicaluseVariable変数)  
+  * [ ] [配列](#practicaluseArrangement配列)  
+  * [ ] [条件分岐](#practicaluseConditional条件分岐)  
+  * [ ] [繰り返し](#practicaluseRepetition繰り返し)  
+  * [ ] [関数](#practicaluseFunction関数)  
+
+
+<a name="rangeOtherThanBasicKnowledge"></a>
+### 基礎知識5種類の勉強以外の項目
+基礎知識5種類に納められない範囲の勉強に手を広げる。  
+
+* [応用知識](#appliedknowledge)  
+  * [ ] [ポインタ・リファレンス](#practicalusePointer)  
+  * [ ] [NULL・nil](#practicaluseNull)  
+  * [ ] [ハッシュ(連想配列)](#practicaluseHash)  
+  * [ ] [ファイル操作](#practicaluseFileoperation)  
+  * [ ] [ディレクトリ操作](#practicaluseDirectorymanipulation)  
+  * [ ] [オブジェクト指向](#practicaluseObjectorientation)  
+  * [ ] [テスト方法](#practicaluseTester)  
+  * [ ] [標準関数(モジュール)](#practicaluseModule)  
+  * [ ] [プロセス管理](#practicaluseSystemfunc)  
+  * [ ] [正規表現](#practicaluseRegularexpression)  
+    ※正規表現を使う手段の説明に終始すること(正規表現そのものは別ファイル)。  
+  * [ ] [TCP/IPソケット通信](#practicalusesqltcpipprotocol)  
+  * [ ] [SQL/接続手段名](#practicalusesqlInterface)  
+    ※データベースへの接続方法の説明に特化した説明に終始すること(SQLそのものは別ファイル)。  
+  * [ ] [GUI/フレームワーク名](#practicalusegui)  
+
+</details>
+
 
 <a name="algorithmNotes"></a>
 ### ※注意事項
@@ -2335,6 +2373,19 @@ Python限定にしたくなかったが、他のプログラミング言語に�
 
 <a name="letsDrawTheMandelbrotSetChapter8"></a>
 #### マンデルブロー集合を描こう。
+
+
+<a name="appliedknowledge"></a>
+## 応用知識
+基礎知識5種類だけでは不足する知識を補う。  
+
+* 応用部分  
+  * [ ] [ソケット通信(TCP/IP)](#practicalusesqltcpipprotocol)  
+
+
+<a name="practicalusesqltcpipprotocol"></a>
+### ソケット通信(TCP/IP)
+TCP/IPと呼ぶ通信プロトコルを利用するためにソケット(Socket)の勉強を行う。  
 
 
 ## ※Gitのマージルール
