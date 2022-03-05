@@ -135,7 +135,7 @@ $
     [x] 要素数確認  
     [x] 添え字での最大数確認  
     [x] 空確認  
-    [ ] リスト演算子(`grep`・`map`)  
+    [ ] リスト演算子(`grep`・[`map`](#practicalusemap))  
     [x] [eval](#practicaluseevalexceptionhandling)  
     [x] [構造体](#practicaluseArrangementArrayStructure)  
   * [ ] [条件分岐](#practicaluseConditional条件分岐)  
@@ -180,6 +180,7 @@ $
     [x] 値の削除方法。  
     [x] OSの環境変数  
     [x] OSのシグナル  
+  * [ ] [map](#practicalusemap)  
   * [x] [ファイルテスト](#practicaluseFiletest)  
     [x] ファイルテスト演算子  
     todo: 途中。  
@@ -1417,7 +1418,7 @@ while( ( my $index, my $value ) = each @hoge ) {
     使ってはいるが、説明していないからな。  
   * [ ] grepによる繰り返し。  
     リストからgrepによる取り出し。  
-  * [ ] mapによる繰り返し。  
+  * [x] [map](#practicalusemap)による繰り返し。  
     リスト要素の変換。  
 
 * ジャンプ処理  
@@ -7204,6 +7205,14 @@ sub timeformatChange {
 	最後のinode変更時刻：2022年1月15日(土) 15時2分3秒
 タイムスタンプ.txtファイル削除済み。
 ```
+
+</details>
+
+<a name="practicalusemap"></a>
+<details><summary>応用知識-map</summary>
+
+リストの要素に変更を加える場合に用いる。  
+また、その変更結果は、別リストになるため、元のリストは一切影響を受けない。  
 
 </details>
 
