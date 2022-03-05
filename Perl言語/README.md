@@ -156,7 +156,7 @@ $
 基礎知識5種類に納められない範囲の勉強に手を広げる。  
 
 * [応用知識](#appliedknowledge)  
-  * [ ] [ポインタ・リファレンス](#practicalusePointer)  
+  * [ ] [ポインタ・リファレンス](#appliedknowledge)  
     * [x] リファレンス  
       [x] 変数  
       [x] 配列  
@@ -169,7 +169,7 @@ $
       本当は途中。  
     * [ ] 応用利用  
   * [ ] [NULL・nil](#practicaluseNull)  
-  * [ ] [ハッシュ(連想配列)](#practicaluseHash)  
+  * [ ] [ハッシュ(連想配列)](#appliedknowledge)  
     [x] 特徴  
     [x] 作成方法  
     [x] 取得方法  
@@ -180,8 +180,9 @@ $
     [x] 値の削除方法。  
     [x] OSの環境変数  
     [x] OSのシグナル  
-  * [ ] [map](#practicalusemap)  
-  * [x] [ファイルテスト](#practicaluseFiletest)  
+  * [ ] [grep](#appliedknowledge)  
+  * [ ] [map](#appliedknowledge)  
+  * [x] [ファイルテスト](#appliedknowledge)  
     [x] ファイルテスト演算子  
     todo: 途中。  
     [x] stat関数  
@@ -189,7 +190,7 @@ $
     [x] [ローカルタイム関数変換(エポック経過秒数)](#practicaluseFiletestlocaltime)。  
     [ ] ビット演算子  
     todo: 途中。  
-  * [ ] [ファイル操作](#practicaluseFileoperation)  
+  * [ ] [ファイル操作](#appliedknowledge)  
     [x] 標準入力。  
     [x] 標準出力。  
     [x] ファイル読み込み。  
@@ -199,13 +200,13 @@ $
     [x] リンクファイル  
     [x] 特殊変数(`$.`・`$/`・`$\`・`$,`・`$"`・`$0`・`$^W`・`$ARGV`・`@ARGV`・`@F`・`DATAファイルハンドル`・本来はまだある)  
     [x] [プロパティ変更(パーミッション・オーナー・タイムスタンプ)](#practicalusePropertymanipulation)  
-  * [ ] [ディレクトリ操作](#practicaluseDirectorymanipulation)  
+  * [ ] [ディレクトリ操作](#appliedknowledge)  
     [x] カレントディレクトリ取得。  
     [x] ディレクトリ移動。  
     [x] グロブ  
     [x] ディレクトリハンドル。  
     [x] [プロパティ変更(パーミッション・オーナー・タイムスタンプ)](#practicalusePropertymanipulation)  
-  * [ ] [オブジェクト指向](#practicaluseObjectorientation)  
+  * [ ] [オブジェクト指向](#appliedknowledge)  
     [x] オブジェクト指向入門(読み切っていない)  
         * [オブジェクト指向入門](#objectorientedPerl4894713004one)を読み直す(要は全般)。  
     [x] Perl入門(todoあり)  
@@ -222,20 +223,21 @@ $
     [ ] 総称  
     [ ] 多重ディスパッチ  
     [ ] 永続オブジェクト  
+  * [ ] [system関数](#appliedknowledge)  
   * [ ] [テスト方法](#practicaluseTester)  
   * [x] [標準関数(モジュール)](#practicaluseFunctionLibuse)  
     [インストール](#practicalusecpan)利用などは別にある。  
   * [ ] [プロセス管理](#practicaluseSystemfunc)  
-  * [x] [正規表現](#practicaluseRegularexpression)  
+  * [x] [正規表現](#appliedknowledge)  
     別ファイルでの記載が詳細なため、ここでは簡易ながらも説明完了とする。  
-  * [x] [置換演算子](#practicaluseSubstitutedisplacement)  
+  * [x] [置換演算子](#appliedknowledge)  
     todo: あり。  
   * [ ] [スマートマッチ演算子`~~`](#practicaluseSmartmatch)  
-    * [x] [switch(given-when)](#practicaluseGivenwhen)  
+    * [x] [switch(given-when)](#appliedknowledge)  
   * [x] [パッケージ](#practicalusePackages)  
-  * [ ] [SQL/DBI](#practicalusesqlDBI)  
-  * [ ] [GUI/Tk](#practicaluseGUIPerlTk)  
-  * [x] [eval(例外処理)](#practicaluseevalexceptionhandling)  
+  * [ ] [SQL/DBI](#appliedknowledge)  
+  * [ ] [GUI/Tk](#appliedknowledge)  
+  * [x] [eval(例外処理)](#appliedknowledge)  
 
 </details>
 
@@ -3160,12 +3162,25 @@ Python限定にしたくなかったが、他のプログラミング言語に�
 ## 応用知識
 基礎知識5種類だけではアルゴリズムの勉強に足りない部分が発生したため、ちょっとだけ手を広げて勉強した。  
 
+<a name="appliedknowledgeContents"></a>
 * 応用部分  
   * [リファレンス](#practicalusePointer)  
   * [ハッシュ(連想配列)](#practicaluseHash)  
+  * [クロージャ](#practicaluseClosure)  
+  * [system関数](#practicalusesystem)  
   * [オブジェクト指向](#practicaluseObjectorientation)  
     2021/11/11〜  
   * [switchステートメント](#practicaluseGivenwhen)  
+  * [ファイルテスト](#practicaluseFiletest)  
+  * [ファイル操作(入出力・File-I/O)](#practicaluseFileoperation)  
+  * [ディレクトリ操作(入出力・File-I/O)](#practicaluseDirectorymanipulation)  
+  * [正規表現(Regular expression)](#practicaluseRegularexpression)  
+  * [置換演算子(Substitution operator)](#practicaluseSubstitutedisplacement)  
+  * [grep](#practicalusegrep)  
+  * [map](#practicalusemap)  
+  * [eval(例外処理)](#practicaluseevalexceptionhandling)  
+  * [SQL/DBI](#practicalusesqlDBI)  
+  * [Perl/Tk(GUI)](#practicaluseGUIPerlTk)  
   * 今後も機会があれば増やしていく。  
 
 
@@ -3327,6 +3342,8 @@ $hoge[9] = 20210901 + 9;	# 20210901
 ```
 ※この場合、[2]から[8]は、`undef`が自動的に格納されている。  
 
+[応用知識の目次に戻る](#appliedknowledgeContents)  
+
 </details>
 
 <a name="practicaluseArrangementArrayStructure"></a>
@@ -3425,6 +3442,8 @@ my $bar = {boo=>'本日は', bar=>'晴天なり',};	# 無名ハッシュ
 &resembleTypedef(\%boo, $bar);
 ```
 
+[応用知識の目次に戻る](#appliedknowledgeContents)  
+
 </details>
 
 <a name="practicaluseConditional条件分岐"></a>
@@ -3483,6 +3502,8 @@ say $hoge;	# 日付なし
 
 </details>
 
+[応用知識の目次に戻る](#appliedknowledgeContents)  
+
 </details>
 
 <a name="practicaluseConditionalifmodifier"></a>
@@ -3518,6 +3539,8 @@ say $hoge	if $hoge;	# 出力なし。
 `defined-or`演算子の出番はないと思って良いだろう。  
 
 当然ながら**if**だけでなく、**unless**・**until**・**while**・**foreach**がある。  
+
+[応用知識の目次に戻る](#appliedknowledgeContents)  
 
 </details>
 
@@ -3579,6 +3602,8 @@ sub hoge {
 1;	←☆真を返すための決まり事。
 ```
 この決まり事があるが故に、関数呼び出し後に1が返ってきていた過去がある。  
+
+[応用知識の目次に戻る](#appliedknowledgeContents)  
 
 </details>
 
@@ -3736,6 +3761,8 @@ BEGIN{
 }
 ```
 `BEGIN`は、コンパイル時に読み込まれる部分(何度useしようが、1回のみ読み込まれる)。  
+
+[応用知識の目次に戻る](#appliedknowledgeContents)  
 
 </details>
 
@@ -4531,6 +4558,8 @@ say $function;	# CODE(0x7f90fc01c608)
 
 #### 応用利用
 
+[応用知識の目次に戻る](#appliedknowledgeContents)  
+
 </details>
 
 <a name="practicaluseHash"></a>
@@ -4953,6 +4982,21 @@ for (1..1000000) {
 　　　省略）
 ```
 **760493回目**直後にキー入力を行い、**760500回目**直後に反応した。  
+
+[応用知識の目次に戻る](#appliedknowledgeContents)  
+
+</details>
+
+<a name="practicalusesystem"></a>
+<details><summary>応用知識-system関数</summary>
+
+外部(システム側の)コマンドをPerlで叩き、その結果を受け取る。  
+Perlプログラムは、どのようなシステムでも同じ処理を行い、同じ結果を残す。  
+しかし、外部コマンドは、外部にあるか分からないのもあるが、同じ結果を返すかどうかも分からない。  
+動作確認は入念に行う必要があるだろう。  
+
+
+[応用知識の目次に戻る](#appliedknowledgeContents)  
 
 </details>
 
@@ -6504,6 +6548,8 @@ $
 ```
 この技法は今後活用していこうと思う。  
 
+[応用知識の目次に戻る](#appliedknowledgeContents)  
+
 </details>
 
 
@@ -6900,6 +6946,7 @@ $
 それができるのは、[File::Path](https://perldoc.jp/docs/modules/File-Temp-0.22/Temp.pod)の**rmtree()関数**はずなのだが、Perlに付属していないのか、Helpに載っていなかったぞ!?  
 [MetaCPAN](https://metacpan.org)に[File::Path](https://metacpan.org/pod/File::Path)がある？  
 
+[応用知識の目次に戻る](#appliedknowledgeContents)  
 
 </details>
 
@@ -7206,6 +7253,8 @@ sub timeformatChange {
 タイムスタンプ.txtファイル削除済み。
 ```
 
+[応用知識の目次に戻る](#appliedknowledgeContents)  
+
 </details>
 
 <a name="practicalusegrep"></a>
@@ -7300,6 +7349,8 @@ sub grepFilelinecount() {
 &grepFilelinecount();
 ```
 
+[応用知識の目次に戻る](#appliedknowledgeContents)  
+
 </details>
 
 <a name="practicalusemap"></a>
@@ -7354,6 +7405,8 @@ sprintfとの組み合わせも可能。
 
 1行の単純式ならばブロック括弧は省略できる。  
 `map "<$_>", @配列名;`  
+
+[応用知識の目次に戻る](#appliedknowledgeContents)  
 
 </details>
 
@@ -9935,8 +9988,9 @@ todo:
 例えば、本格的にファイル権限などを操作する時に重要になることだろう。  
 何より、ビット演算子の活用は、C言語以外でお目に掛ったことがない。  
 
-</details>
+[応用知識の目次に戻る](#appliedknowledgeContents)  
 
+</details>
 
 <a name="practicalusePackages"></a>
 <details><summary>応用知識-パッケージ</summary>
@@ -10059,6 +10113,8 @@ $Subboo::bar::hoge::VERSION = 1.00;
 バージョンの問題から変数宣言時に`my`を付ける必要がある。  
 これを付けた場合、[レキシカル変数](#subVariable2)になってしまう。  
 
+[応用知識の目次に戻る](#appliedknowledgeContents)  
+
 </details>
 
 <a name="practicaluseAutoload"></a>
@@ -10103,6 +10159,8 @@ sub sample(){
 	say "Sub入れ子パッケージsample関数";
 }
 ```
+
+[応用知識の目次に戻る](#appliedknowledgeContents)  
 
 </details>
 
@@ -10218,6 +10276,8 @@ say $func->(5);	# 20211212+111+5
 	# 出力結果：20211328
 ```
 
+[応用知識の目次に戻る](#appliedknowledgeContents)  
+
 </details>
 
 <a name="practicaluseTypeglob"></a>
@@ -10296,6 +10356,8 @@ say %{*$hoge}{3};	# 3hoge
 オブジェクト指向プログラミングでも疲れないが、今回は無理矢理使うため、勉強項目として設けられているようだ・・・何ともかんとも・・・。  
 
 ※バグの温床になる技術になるため、使わないようにすること。  
+
+[応用知識の目次に戻る](#appliedknowledgeContents)  
 
 </details>
 
@@ -10382,6 +10444,8 @@ $
 インストール失敗。  
 これを`use`する？  
 手作業でのインストールは大変とのこと。  
+
+[応用知識の目次に戻る](#appliedknowledgeContents)  
 
 </details>
 
@@ -10595,6 +10659,8 @@ Perlにおけるオブジェクト指向は、標準的な言語機能(ハッシ
 <a name="objectorientedPerl4894713004appendixd"></a>
 #### 付録D 用語集
 
+
+[応用知識の目次に戻る](#appliedknowledgeContents)  
 
 </details>
 
@@ -11163,8 +11229,9 @@ sub hoge {
 引数として渡した文字列を1文字づつ数えるプログラム。  
 配列の中に入っている文字列を**foreach**で取り出し、**when**で仕分ける。  
 
-</details>
+[応用知識の目次に戻る](#appliedknowledgeContents)  
 
+</details>
 
 <a name="practicaluseGivenwhen"></a>
 <details><summary>応用知識-switchステートメント(given-when)</summary>
@@ -11379,8 +11446,9 @@ continueがあることにより、文字列が尽きるまで**given**に戻り
 気になるのは、**continue**文を置くことで、**default**が実行されると言うこと(困る)。回避方法はないものか。  
 回避させるには最後の**when**の`/e/`から**continue**を取り除けば良いのだろうけど・・・。  
 
-</details>
+[応用知識の目次に戻る](#appliedknowledgeContents)  
 
+</details>
 
 <a name="practicaluseRegularexpression"></a>
 <details><summary>応用知識-正規表現(Regular expression)</summary>
@@ -11492,8 +11560,9 @@ sub regexSample {
 ```
 上記2つ目の検索に[パターンマッチ演算子](#practicaluseRegularexpressionPatternmatchoperator)を使うことでスラッシュ記号へのエスケープシーケンスが不要になっている。  
 
-</details>
+[応用知識の目次に戻る](#appliedknowledgeContents)  
 
+</details>
 
 <a name="practicaluseSubstitutedisplacement"></a>
 <details><summary>応用知識-置換演算子(Substitution operator)</summary>
@@ -11821,6 +11890,8 @@ sub listcontext {
 }
 &listcontext("boo, bar 20220128, 本日は晴天なり。");
 ```
+
+[応用知識の目次に戻る](#appliedknowledgeContents)  
 
 </details>
 
@@ -14306,6 +14377,8 @@ foreach my $row ( @$tabledata ) {
 <a name="practicalusesqlDBIshellanddatabaseproxy"></a>
 ### DBIシェルとデータベースプロキシ。
 
+[応用知識の目次に戻る](#appliedknowledgeContents)  
+
 </details>
 
 <a name="practicaluseGUIPerlTk"></a>
@@ -16200,6 +16273,8 @@ sub guiPlace() {
 <a name="practicaluseTkgeometrymanagementplacemethod"></a>
 ##### ジオメトリマネージャPlaceのメソッド
 
+
+[応用知識の目次に戻る](#appliedknowledgeContents)  
 
 </details>
 
