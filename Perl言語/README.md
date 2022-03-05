@@ -7256,6 +7256,9 @@ sub notmapSample() {
 sprintfとの組み合わせも可能。  
 `map { sprintf("<%s>", $_) } @配列名;`  
 
+1行の単純式ならばブロック括弧は省略できる。  
+`map "<$_>", @配列名;`  
+
 </details>
 
 <a name="practicaluseFiletest"></a>
