@@ -1292,7 +1292,7 @@ int hogefunc(int hoge[], int size) {
   [x] [素数を求める。](#findAPrimeNumberChapter2)2022/02/12  
   [x] [nの階乗を求める。](#findTheFactorialOfNChapter2)2022/02/23  
   [x] [エラトステネスの篩](#eratosthenesSieveChapter2)2022/03/03  
-  [ ] [n進法を理解する。](#understandnAryNotationChapter2)  
+  [x] [n進法を理解する。](#understandnAryNotationChapter2)2022/03/05  
 <a name="algorithmTextbookLearnedinPythonChapter3"></a>
 * [Chapter3 データ構造を学ぶ](#learnDataStructuresOverviewChapter3)  
   今までに勉強した配列(リスト)を用いた発展を遂げる。  
@@ -2105,6 +2105,25 @@ int main(void)
 
 <a name="understandnAryNotationChapter2"></a>
 #### n進法を理解する。
+アルゴリズムの1つとして勉強することではない。  
+普通の一般説明。  
+[ビット演算(`&`・`|`・`^`・`~`)](#learnBitwiseOperationsChapter4)は、別の機会。  
+
+以下、プログラム。
+```c
+#include <stdio.h>
+
+int main(void)
+{
+	printf("%d\n", 255);		// 255
+	printf("%d\n", 0b11111111);	// 255	←☆2進数。
+	printf("%d\n", 0377);		// 255	←☆8進数。
+	printf("%d\n", 0xff);		// 255	←☆16進数。
+
+	return 0;
+}
+```
+
 
 <a name="learnDataStructuresOverviewChapter3"></a>
 ### データ構造を学ぶ
@@ -2167,6 +2186,41 @@ int main(void)
 
 <a name="learnBitwiseOperationsChapter4"></a>
 #### ビット演算を学ぶ
+ビット演算(`&`・`|`・`^`・`~`)  
+
+|演算子|意味|例|説明|
+|:----:|----|--|----|
+|`&`|論理積(AND)|`a=b & 0x7FFF;`|両方のビットが1のとき、結果が1になる。|
+|`|`|論理和(OR)|`a=b | 0x8000;`|片方のビットが1のとき、結果が1になる。|
+|`^`|排他的論理和(XOR)|`a=b ^ 0x000F;`|両方のビットが異なるとき、結果が1になる。|
+|`~`|補数(Not)|`a = ~a;`|ビットを反転する。|
+|||||
+|`<<`|左シフト|`a=a << 2;`||
+|`>>`|右シフト|`a=a >> 2;`||
+
+以下、簡易なプログラム。
+```c
+#include <stdio.h>
+
+int main(void)
+{
+	// 以下、ビット単位演算子。
+	int bit, original=0x55555555;
+	printf("%#x\n", original);		// 0x55555555
+	bit = original & 0x0000FFFF;	// 論理積
+	printf("%#x\n", bit);	// 0x5555
+	bit = original | 0x0000FFFF;	// 論理和
+	printf("%#x\n", bit);	// 0x5555ffff
+	bit = original ^ 0x0000FFFF;	// 排他的論理和
+	printf("%#x\n", bit);	// 0x5555aaaa
+	bit = ~original;				// 補数(not処理)
+	printf("%#x\n", bit);	// 0xaaaaaaaa
+
+	return 0;
+}
+```
+8桁表示ではなく、切り詰められるんだな。  
+
 
 <a name="sortOverviewChapter5"></a>
 ### ソート
