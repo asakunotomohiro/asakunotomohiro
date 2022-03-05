@@ -135,7 +135,7 @@ $
     [x] 要素数確認  
     [x] 添え字での最大数確認  
     [x] 空確認  
-    [ ] リスト演算子(`grep`・[`map`](#practicalusemap))  
+    [ ] リスト演算子([`grep`](#practicalusegrep)・[`map`](#practicalusemap))  
     [x] [eval](#practicaluseevalexceptionhandling)  
     [x] [構造体](#practicaluseArrangementArrayStructure)  
   * [ ] [条件分岐](#practicaluseConditional条件分岐)  
@@ -1416,7 +1416,7 @@ while( ( my $index, my $value ) = each @hoge ) {
   * [ ] 文字列の繰り返し。  
     例）`say "-" x 30;`
     使ってはいるが、説明していないからな。  
-  * [ ] grepによる繰り返し。  
+  * [x] [grep](#practicalusegrep)による繰り返し。  
     リストからgrepによる取り出し。  
   * [x] [map](#practicalusemap)による繰り返し。  
     リスト要素の変換。  
@@ -7208,6 +7208,100 @@ sub timeformatChange {
 
 </details>
 
+<a name="practicalusegrep"></a>
+<details><summary>応用知識-grep演算子</summary>
+
+リストから一部の要素を取り出す場合に用いる。  
+また、その変更結果は、別リストになるため、元のリストは一切影響を受けない。  
+
+todo:
+いずれ、演算子を1つにまとめる。  
+
+
+<a name="practicalusegrepsample"></a>
+### 簡易プログラム
+以下、grepを使ったプログラム例）
+```perl
+use v5.24;
+
+sub grepSample() {
+	# 以下、リストから"の"を含む文字列を取り出す。
+	my @greplist = qw( 大荒木の もりの 下草老いぬれば 駒もすさめず 刈る人も なし );
+	my @changeList;
+	say "@greplist";	# 大荒木の もりの 下草老いぬれば 駒もすさめず 刈る人も なし
+	my @changeList = grep { /の/ } @greplist;
+	say "@changeList";	# 大荒木の もりの
+}
+&grepSample();
+```
+1行の処理で完結するのは便利。  
+
+以下は、上記のやり方をmapを使わずに同じ結果を出すプログラム。
+```perl
+use v5.24;
+
+sub notgrepSample() {
+	# 以下、リストから"の"を含む文字列を取り出す。
+	my @greplist = qw( 大荒木の もりの 下草老いぬれば 駒もすさめず 刈る人も なし );
+	my @changeList;
+	say "@greplist";	# 大荒木の もりの 下草老いぬれば 駒もすさめず 刈る人も なし
+	foreach ( @greplist ) {
+		if( /の/ ) {
+			push @changeList, $_;
+		}
+	}
+	say "@changeList";	# 大荒木の もりの
+}
+&notgrepSample();
+```
+同じ結果を出すならば、grepを使って構わないだろう。  
+
+1行の単純式ならばブロック括弧は省略できる。  
+`grep /検索単語/, @配列名;`  
+
+※検索方法は、[正規表現](#practicaluseRegularexpression)のこと。  
+
+以下、奇数を抜き出すプログラム。
+```perl
+use v5.24;
+
+sub notgrepSample() {
+	my @changeList = grep { $_ % 2 } 1..10;
+	say "@changeList";	# 1 3 5 7 9
+}
+&notgrepSample();
+```
+
+以下、偶数を抜き出すプログラム。
+```perl
+use v5.24;
+
+sub notgrepSample() {
+	my @changeList;
+	my @changeList = grep { $_ % 2 == 0 } 1..10;
+	say "@changeList";	# 2 4 6 8 10
+}
+&notgrepSample();
+```
+
+以下、ファイル行数を数えるプログラム。
+```perl
+use v5.24;
+
+sub grepFilelinecount() {
+	my @filename = glob '~/Desktop/*.txt';	# グロブ利用。
+
+	open my $file_fh, '<', $filename[0]
+		or die "$filename[0]のファイルオープン失敗($!)";
+	my $line = grep /./s, <$file_fh>;
+	say "行数：$line";	# 空行も含めた結果が出てくる。
+	close $file_fh;
+}
+&grepFilelinecount();
+```
+
+</details>
+
 <a name="practicalusemap"></a>
 <details><summary>応用知識-map演算子</summary>
 
@@ -7218,7 +7312,7 @@ todo:
 いずれ、演算子を1つにまとめる。  
 
 
-<a name="practicalusemap"></a>
+<a name="practicalusemapsample"></a>
 ### 簡易プログラム
 以下、mapを使ったプログラム例）
 ```perl
