@@ -13,7 +13,18 @@ sub asakunoMap() {
 	my @tomohiro = map { "<$_>" } @asakuno;
 	say "@tomohiro";
 }
-&asakunoMap();
+#&asakunoMap();
+
+sub asakunoNotMap() {
+	my @tomohiro;
+	# 以下、リストの文字列を<>記号で挟む。
+	say "@asakuno";	# 朝来野 智博 朝来野智博
+	foreach my $value (@asakuno) {
+		push @tomohiro, "<$value>";
+	}
+	say "@tomohiro";	# <朝来野> <智博> <朝来野智博>
+}
+&asakunoNotMap();
 
 
 say "以上。"

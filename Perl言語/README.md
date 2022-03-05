@@ -7235,6 +7235,24 @@ sub mapSample() {
 ```
 1行の処理で完結するのは便利。  
 
+以下は、上記のやり方をmapを使わずに同じ結果を出すプログラム。
+```perl
+use v5.24;
+
+sub notmapSample() {
+	my @array = qw( 本日は 晴天なり。 我思う 故に我あり );
+	my @arraylist;
+	# 以下、リストの文字列を<>記号で挟む。
+	say "@array";	# 本日は 晴天なり。 我思う 故に我あり
+	foreach my $value (@array) {
+		push @arraylist, "<$value>";
+	}
+	say "@arraylist";	# <本日は> <晴天なり。> <我思う> <故に我あり>
+}
+&notmapSample();
+```
+同じ結果を出すならば、mapを使って構わないだろう。  
+
 </details>
 
 <a name="practicaluseFiletest"></a>
