@@ -2109,6 +2109,20 @@ int main(void)
 普通の一般説明。  
 [ビット演算(`&`・`|`・`^`・`~`)](#learnBitwiseOperationsChapter4)は、別の機会。  
 
+以下、プログラム。
+```c
+#include <stdio.h>
+
+int main(void)
+{
+	printf("%d\n", 255);		// 255
+	printf("%d\n", 0b11111111);	// 255	←☆2進数。
+	printf("%d\n", 0377);		// 255	←☆8進数。
+	printf("%d\n", 0xff);		// 255	←☆16進数。
+
+	return 0;
+}
+```
 
 
 <a name="learnDataStructuresOverviewChapter3"></a>
