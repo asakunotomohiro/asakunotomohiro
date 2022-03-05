@@ -7253,6 +7253,9 @@ sub notmapSample() {
 ```
 同じ結果を出すならば、mapを使って構わないだろう。  
 
+sprintfとの組み合わせも可能。  
+`map { sprintf("<%s>", $_) } @配列名;`  
+
 </details>
 
 <a name="practicaluseFiletest"></a>
