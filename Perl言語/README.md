@@ -7229,6 +7229,8 @@ sub mapSample() {
 	# 以下、リストの文字列を<>記号で挟む。
 	say "@mapList";		# 本日は 晴天なり。 我思う 故に我あり
 	my @changeList = map { "<$_>" } @mapList;
+	#my @changeList = map { sprintf("<%s>", $_) } @mapList;	←☆上記と同じ処理結果が出る。
+	#my @changeList = map "<$_>", @mapList;	←☆上記と同じ処理結果が出る。
 	say "@changeList";	# <本日は> <晴天なり。> <我思う> <故に我あり>
 }
 &mapSample();
