@@ -135,7 +135,7 @@ $
     [x] 要素数確認  
     [x] 添え字での最大数確認  
     [x] 空確認  
-    [ ] リスト演算子(`grep`・[`map`](#practicalusemap))  
+    [ ] リスト演算子([`grep`](#practicalusegrep)・[`map`](#practicalusemap))  
     [x] [eval](#practicaluseevalexceptionhandling)  
     [x] [構造体](#practicaluseArrangementArrayStructure)  
   * [ ] [条件分岐](#practicaluseConditional条件分岐)  
@@ -1416,7 +1416,7 @@ while( ( my $index, my $value ) = each @hoge ) {
   * [ ] 文字列の繰り返し。  
     例）`say "-" x 30;`
     使ってはいるが、説明していないからな。  
-  * [ ] grepによる繰り返し。  
+  * [x] [grep](#practicalusegrep)による繰り返し。  
     リストからgrepによる取り出し。  
   * [x] [map](#practicalusemap)による繰り返し。  
     リスト要素の変換。  
@@ -7208,6 +7208,14 @@ sub timeformatChange {
 
 </details>
 
+<a name="practicalusegrep"></a>
+<details><summary>応用知識-grep演算子</summary>
+
+リストから一部の要素を取り出す場合に用いる。  
+また、その変更結果は、別リストになるため、元のリストは一切影響を受けない。  
+
+</details>
+
 <a name="practicalusemap"></a>
 <details><summary>応用知識-map演算子</summary>
 
@@ -7218,7 +7226,7 @@ todo:
 いずれ、演算子を1つにまとめる。  
 
 
-<a name="practicalusemap"></a>
+<a name="practicalusemapsample"></a>
 ### 簡易プログラム
 以下、mapを使ったプログラム例）
 ```perl
