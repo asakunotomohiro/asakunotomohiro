@@ -7214,6 +7214,27 @@ sub timeformatChange {
 リストから一部の要素を取り出す場合に用いる。  
 また、その変更結果は、別リストになるため、元のリストは一切影響を受けない。  
 
+todo:
+いずれ、演算子を1つにまとめる。  
+
+
+<a name="practicalusegrepsample"></a>
+### 簡易プログラム
+以下、grepを使ったプログラム例）
+```perl
+use v5.24;
+
+sub grepSample() {
+	# 以下、リストから"の"を含む文字列を取り出す。
+	my @greplist = qw( 大荒木の もりの 下草老いぬれば 駒もすさめず 刈る人も なし );
+	my @changeList;
+	say "@greplist";	# 大荒木の もりの 下草老いぬれば 駒もすさめず 刈る人も なし
+	my @changeList = grep { /の/ } @greplist;
+	say "@changeList";	# 大荒木の もりの
+}
+&grepSample();
+```
+
 </details>
 
 <a name="practicalusemap"></a>
