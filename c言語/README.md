@@ -71,19 +71,17 @@ $
 ### ハローワールドプログラム
 `main`文言の先頭に`int`を付けることでワーニングが解消できた。  
 
-```c:helloWorld.c
-$ cat helloWorld.c
-#include <stdio.h>
-
-int main()
-{
-	printf("hello, world\n");
-}
-$ gcc helloWorld.c
-$ ./a.out
-hello, world
-$
-```
+    $ cat helloWorld.c
+    #include <stdio.h>
+    
+    int main()
+    {
+    	printf("hello, world\n");
+    }
+    $ gcc helloWorld.c
+    $ ./a.out
+    hello, world
+    $
 
 しかし、この`int`は、戻り値になるはず。  
 それなのに、`return`がなくても問題にならないのは矛盾しているよね。  
@@ -95,23 +93,21 @@ $
 **K&R**の **Hello World.** 出力は難易度が高かった
 (参考にする書籍のP8)。  
 
-```c:warningありのhelloWorld.c
-$ cat helloWorld.c
-#include <stdio.h>
-
-main()
-{
-	printf("hello, world\n");
-}
-$ gcc helloWorld.c
-helloWorld.c:3:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
-main()
-^
-1 warning generated.
-$ ./a.out
-hello, world
-$
-```
+    $ cat helloWorld.c
+    #include <stdio.h>
+    
+    main()
+    {
+    	printf("hello, world\n");
+    }
+    $ gcc helloWorld.c
+    helloWorld.c:3:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+    main()
+    ^
+    1 warning generated.
+    $ ./a.out
+    hello, world
+    $
 
 一応コンパイルが通り、実行できるのだが、ワーニングが出るのはちょっとな・・・。  
 お守り変わりにして使わない発言した直後に使うのもどうかと思ったが、普通のプログラムの掲載がK&R本だけだったよ。  
@@ -119,16 +115,15 @@ $
 <a name="algorithmbonusHelloWorld"></a>
 #### おまけ。
 以下の戻り値無し版もだめだった。
-```c:sample.c
-#include <stdio.h>
 
-void main()
-{
-	printf("hello, world\n");
-}
-```
+    #include <stdio.h>
+    
+    void main()
+    {
+    	printf("hello, world\n");
+    }
 
-原因は分からないが、コンパイルのせいだろう。  
+原因は分からないが、コンパイラのせいだろう。  
 
 </details>
 
@@ -155,7 +150,7 @@ void main()
 * [アルゴリズム勉強目次](#algorithmTextbookLearnedinPython)  
   * [x] Chapter 1 プログラミングの基礎知識  
     現時点で完了している(上記の基礎知識5種類として)。  
-  * [ ] [Chapter 2 プログラミングの力を養う](#algorithmTextbookLearnedinPythonChapter2)  
+  * [x] [Chapter 2 プログラミングの力を養う](#algorithmTextbookLearnedinPythonChapter2)  
   * [ ] [Chapter 3 データ構造を学ぶ](#algorithmTextbookLearnedinPythonChapter3)  
   * [ ] [Chapter 4 サーチ](#algorithmTextbookLearnedinPythonChapter4)  
   * [ ] [Chapter 5 ソート](#algorithmTextbookLearnedinPythonChapter5)  
@@ -238,6 +233,9 @@ void main()
 しかし、やる気を維持するためにも1冊分を読了させることも目的としており、深掘りせずに進めることも考慮すること。  
 要は、深く踏み込むか、流し読み程度に抑えるかどうかはそのときに決める。  
 
+※基本的に、インクルード処理は、省略する(マークダウン記法の先頭にはシャープ記号を配置したくないため)。  
+特別な断りが無ければ、**stdio.h**をインクルードしていることとする。  
+
 
 <a name="variable変数sub"></a>
 <details><summary>実際の変数の勉強</summary>
@@ -279,8 +277,6 @@ void main()
 
 以下、普通に変数を使ってみる。
 ```c:変数.c
-#include <stdio.h>
-
 int main(void)
 {
 	int ho = 20210808;
@@ -312,8 +308,6 @@ int main(void)
 `printf`関数を利用することで変数値を出力できる。  
 
 ```c
-#include <stdio.h>
-
 int main(void)
 {
 	int bar = 20210808;
@@ -434,8 +428,6 @@ printf("int：%d\n", int_hoge);	// int：2021
 
 constが有効活用されており、完全に **定数** として機能しているのがわかる。
 ```c
-#include <stdio.h>
-
 int main(void)
 {
 	const int hoge = 20210808;	// err：note: variable 'hoge' declared const here
@@ -447,8 +439,6 @@ int main(void)
 
 以下、定数が存在しないプログラム。
 ```c
-#include <stdio.h>
-
 int main(void)
 {
 	int hoge = 20210808;
@@ -467,8 +457,6 @@ int main(void)
 
 以下、上記の書き換え対策。
 ```c
-#include <stdio.h>
-
 int main(void)
 {
 	int hoge = 20210808;
@@ -696,8 +684,6 @@ c++を含んだC言語での[浮動小数点リテラル](https://www.ibm.com/do
 
 以下、例）
 ```c
-#include <stdio.h>
-
 int main(void)
 {
 	int hoge[5] = {0};	// 5つ全てが0クリアされる。
@@ -713,6 +699,9 @@ int main(void)
 	printf("hoge = %d\n", hoge[2]);		// hoge = 20210905
 	printf("hoge = %d\n", hoge[3]);		// hoge = 20210906
 	printf("hoge = %d\n", *(hoge+4) );	// hoge = 20210907
+
+	// 以下、1次元配列の場合。
+	printf("hoge配列サイズ%ld\n", sizeof(hoge)/sizeof(hoge[0]));	// hoge配列サイズ5
 }
 ```
 
@@ -737,8 +726,6 @@ strcpy(配列名[1], "代入したい文字列");
 `データ型 配列名[配列要素数][配列要素数];`  
 
 ```c
-#include <stdio.h>
-
 int main(void)
 {
 	int hoge[5][3] = {0};
@@ -918,9 +905,6 @@ C99規格以降であれば、初期化部分で変数の宣言が行える(例�
 
 これは頻繁に使う処理だと思う。
 ```c
-#include <stdio.h>
-#include <ctype.h>
-
 int main(void)
 {
 	int hoge = 0;
@@ -930,6 +914,7 @@ int main(void)
 	}
 }
 ```
+※インクルードファイルに、**ctype.h**を読み込む。  
 
 以下、出力結果。
 ```c
@@ -1179,9 +1164,6 @@ int hogefunc(int arg) {
 様式：
 
 ```c
-#include <stdio.h>
-#include <ctype.h>
-
 // 以下、プロトタイプ宣言。
 int hogefunc(int [], int);
 
@@ -1221,6 +1203,7 @@ int hogefunc(int hoge[], int size) {
 	return 20210914 + hoge[0];
 }
 ```
+※インクルードファイルに、**ctype.h**を読み込む。  
 
 以下、関数内での出力結果。
 ```terminal
@@ -1283,13 +1266,13 @@ int hogefunc(int hoge[], int size) {
   基礎的なプログラミングの力を養っていく。  
   例えば、配列利用の関数定義・繰り返し・再帰関数・条件分岐など。  
   以下、各項目(目次)。  
-  [ ] [平均値を求める。](#findTheAverageValueChapter2)  
-  [ ] [1からnまで足し合わせる。](#addFrom1tonChapter2)  
-  [ ] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
-  [ ] [素数を求める。](#findAPrimeNumberChapter2)  
-  [ ] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
-  [ ] [エラトステネスの篩](#eratosthenesSieveChapter2)  
-  [ ] [n進法を理解する。](#understandnAryNotationChapter2)  
+  [x] [平均値を求める。](#findTheAverageValueChapter2)  
+  [x] [1からnまで足し合わせる。](#addFrom1tonChapter2)  
+  [x] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
+  [x] [素数を求める。](#findAPrimeNumberChapter2)  
+  [x] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
+  [x] [エラトステネスの篩](#eratosthenesSieveChapter2)  
+  [x] [n進法を理解する。](#understandnAryNotationChapter2)  
 <a name="algorithmTextbookLearnedinPythonChapter3"></a>
 * [Chapter3 データ構造を学ぶ](#learnDataStructuresOverviewChapter3)  
   今までに勉強した配列(リスト)を用いた発展を遂げる。  
@@ -1314,6 +1297,7 @@ int hogefunc(int hoge[], int size) {
   [ ] [ランダウの記号](#landauSignChapter4)  
   [ ] [数当てゲーム](#numberGuessingGameChapter4)  
   [ ] [ビット演算を学ぶ](#learnBitwiseOperationsChapter4)  
+  少しだけ取り組む。  
 <a name="algorithmTextbookLearnedinPythonChapter5"></a>
 * [Chapter5 ソート](#sortOverviewChapter5)  
   一定の規則に従い並び替えること。  
@@ -1361,35 +1345,782 @@ int hogefunc(int hoge[], int size) {
 ### プログラミングの力を養う
 基礎的なプログラミングの力を養っていく。  
 
-* 各項目。  
-  * [平均値を求める。](#findTheAverageValueChapter2)  
-  * [1からnまで足し合わせる。](#addFrom1tonChapter2)  
-  * [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
-  * [素数を求める。](#findAPrimeNumberChapter2)  
-  * [nの階乗を求める。](#findTheFactorialOfNChapter2)  
-  * [エラトステネスの篩](#eratosthenesSieveChapter2)  
-  * [n進法を理解する。](#understandnAryNotationChapter2)  
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)  
+
 
 <a name="findTheAverageValueChapter2"></a>
 #### 平均値を求める。
+勉強内容はPythonと基本同じ。  
+それをPerl用に移植する。  
+
+* ルールもPythonと同じ。  
+  * 点数を配列で定義する。  
+    `my @score = (70, 98, 92, 88, 64);`  
+  * `for`を用いる。  
+
+<details><summary>展開。</summary>
+
+以下、プログラム。
+```c
+int main(void)
+{
+	// 以下の配列に入っている数字を使い、合計点及び平均点を求める。
+	int score[] = {70, 98, 92, 88, 64};
+	int scorecount = 0;	// 配列の大きさを格納する。
+	int total = 0;		// 合計値用変数。
+	int average = 0;	// 平均値用変数。
+	float faverage = 0;	// 平均値用変数。
+
+	scorecount = sizeof(score)/sizeof(score[0]);
+	for( int ii = 0; scorecount > ii; ii++ ) {
+		// 以下、合算。
+		total += score[ii];
+	}
+	average = total / scorecount;	// 平均値を求める。
+	faverage = (float)total / scorecount;	// 平均値を求める。
+
+	printf("合計点     ：%d\n", total);		// 合計点     ：412
+	printf("平均点int  ：%d\n", average);	// 平均点int  ：82
+	printf("平均点float：%f\n", faverage);	// 平均点float：82.400002
+}
+```
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)  
+
 
 <a name="addFrom1tonChapter2"></a>
 #### 1からnまで足し合わせる。
+勉強内容はPythonと基本は同じ。  
+それをC用に移植するだけのこと。  
+
+* ルール1もPythonと同じ。  
+  * `for`を用いる。  
+  * 関数は定義しない。  
+    私のルールは、必ず関数定義をすると言うことなので、ここだけ無視する。  
+
+<details><summary>展開。</summary>
+
+以下、ルール1のプログラム。
+```c
+int addup1()
+{
+	int total = 0;
+	for( int ii = 1; ii <= 10; ii++ ) {
+		total += ii;
+	}
+
+	return total;
+}
+
+int main(void)
+{
+	int ret = addup1();
+	printf("1から10までの加算結果：%d\n", ret);
+		// 1から10までの加算結果：55
+
+	return 0;
+}
+```
+
+</details>
+
+* ルール2もPythonと同じ。  
+  * nまでの値を関数の引数で受け取る。  
+  * 関数内で合算した結果をreturnで返す。  
+    あぁルール1でやったことだよ・・・。  
+
+<details><summary>展開。</summary>
+
+以下、ルール2のプログラム。
+```c
+int addup2(int num)
+{
+	int total = 0;
+	for( int ii = 1; ii <= num; ii++ ) {
+		total += ii;
+	}
+
+	return total;
+}
+
+int main(void)
+{
+	int ret = addup2(10);
+	printf("1からnまでの加算結果：%d\n", ret);
+		// 1からnまでの加算結果：55
+
+	return 0;
+}
+```
+何のひねりもないプログラムになった。  
+
+</details>
+
+* ルール3もPythonと同じ。  
+  * 工夫して計算する。  
+  * (初めの数+終わりの数)*(足し合わせる個数/2)  
+
+<details><summary>展開。</summary>
+
+以下、ルール3のプログラム。
+```c
+int addup3(int num)
+{
+	int total = (1 + num) * num / 2;
+
+	return total;
+}
+
+int main(void)
+{
+	int ret = addup3(10);
+	printf("工夫した加算結果：%d\n", ret);
+		// 工夫した加算結果：55
+
+	return 0;
+}
+```
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)  
+
 
 <a name="outputTheMultiplicationTableChapter2"></a>
 #### 九九の式を出力する。
+Pythonでやったように、九九の式を出すのではなく、九九表を出すことにする。  
+ルールはPythonと同じ。  
+※[二重ループ(forの入れ子)](#subRepetition4)を使う。  
+
+* 作業ルール。  
+  * 二重ループを使う。  
+
+<details><summary>縦に並ぶ出力結果</summary>
+
+以下、プログラム。
+```c
+int kuku()
+{
+	int total = 0;
+	for( int ii = 1; ii < 10; ii++ ) {
+		for( int jj = 1; jj < 10; jj++ ) {
+			printf("%2d x %2d = %2d", ii, jj, ii*jj);
+			printf("\n");
+		}
+		printf("\n");
+	}
+
+	return total;
+}
+
+int main(void)
+{
+	kuku();
+
+	return 0;
+}
+```
+
+以下、出力結果。
+```terminal
+ 1 x  1 =  1
+ 1 x  2 =  2
+ 1 x  3 =  3
+ 1 x  4 =  4
+ 1 x  5 =  5
+ 1 x  6 =  6
+ 1 x  7 =  7
+ 1 x  8 =  8
+ 1 x  9 =  9
+
+ 2 x  1 =  2
+ 2 x  2 =  4
+ 2 x  3 =  6
+ 2 x  4 =  8
+ 2 x  5 = 10
+ 2 x  6 = 12
+ 2 x  7 = 14
+ 2 x  8 = 16
+ 2 x  9 = 18
+
+ 3 x  1 =  3
+ 3 x  2 =  6
+ 3 x  3 =  9
+ 3 x  4 = 12
+ 3 x  5 = 15
+ 3 x  6 = 18
+ 3 x  7 = 21
+ 3 x  8 = 24
+ 3 x  9 = 27
+
+ 4 x  1 =  4
+ 4 x  2 =  8
+ 4 x  3 = 12
+ 4 x  4 = 16
+ 4 x  5 = 20
+ 4 x  6 = 24
+ 4 x  7 = 28
+ 4 x  8 = 32
+ 4 x  9 = 36
+
+ 5 x  1 =  5
+ 5 x  2 = 10
+ 5 x  3 = 15
+ 5 x  4 = 20
+ 5 x  5 = 25
+ 5 x  6 = 30
+ 5 x  7 = 35
+ 5 x  8 = 40
+ 5 x  9 = 45
+
+ 6 x  1 =  6
+ 6 x  2 = 12
+ 6 x  3 = 18
+ 6 x  4 = 24
+ 6 x  5 = 30
+ 6 x  6 = 36
+ 6 x  7 = 42
+ 6 x  8 = 48
+ 6 x  9 = 54
+
+ 7 x  1 =  7
+ 7 x  2 = 14
+ 7 x  3 = 21
+ 7 x  4 = 28
+ 7 x  5 = 35
+ 7 x  6 = 42
+ 7 x  7 = 49
+ 7 x  8 = 56
+ 7 x  9 = 63
+
+ 8 x  1 =  8
+ 8 x  2 = 16
+ 8 x  3 = 24
+ 8 x  4 = 32
+ 8 x  5 = 40
+ 8 x  6 = 48
+ 8 x  7 = 56
+ 8 x  8 = 64
+ 8 x  9 = 72
+
+ 9 x  1 =  9
+ 9 x  2 = 18
+ 9 x  3 = 27
+ 9 x  4 = 36
+ 9 x  5 = 45
+ 9 x  6 = 54
+ 9 x  7 = 63
+ 9 x  8 = 72
+ 9 x  9 = 81
+```
+
+</details>
+
+<details><summary>適度に折り返された表示形式。</summary>
+
+以下、四角形っぽい表示に置き換えたプログラム。
+```c
+int kuku()
+{
+	for( int ii = 1; ii < 10; ii++ ) {
+		for( int jj = 1; jj < 10; jj++ ) {
+			printf("%2dx%d=%2d", ii, jj, ii*jj);	←☆ここの処理で改行部分を調整した。
+		}
+		printf("\n");
+	}
+
+	return 0;
+}
+
+int main(void)
+{
+	kuku();
+
+	return 0;
+}
+```
+
+以下、出力結果。
+```c
+ 1x1= 1 1x2= 2 1x3= 3 1x4= 4 1x5= 5 1x6= 6 1x7= 7 1x8= 8 1x9= 9
+ 2x1= 2 2x2= 4 2x3= 6 2x4= 8 2x5=10 2x6=12 2x7=14 2x8=16 2x9=18
+ 3x1= 3 3x2= 6 3x3= 9 3x4=12 3x5=15 3x6=18 3x7=21 3x8=24 3x9=27
+ 4x1= 4 4x2= 8 4x3=12 4x4=16 4x5=20 4x6=24 4x7=28 4x8=32 4x9=36
+ 5x1= 5 5x2=10 5x3=15 5x4=20 5x5=25 5x6=30 5x7=35 5x8=40 5x9=45
+ 6x1= 6 6x2=12 6x3=18 6x4=24 6x5=30 6x6=36 6x7=42 6x8=48 6x9=54
+ 7x1= 7 7x2=14 7x3=21 7x4=28 7x5=35 7x6=42 7x7=49 7x8=56 7x9=63
+ 8x1= 8 8x2=16 8x3=24 8x4=32 8x5=40 8x6=48 8x7=56 8x8=64 8x9=72
+ 9x1= 9 9x2=18 9x3=27 9x4=36 9x5=45 9x6=54 9x7=63 9x8=72 9x9=81
+```
+
+</details>
+
+<details><summary>展開。</summary>
+
+以下、我々学生時代から親しんできた九九表プログラム。
+```c
+int kuku()
+{
+	for( int ii = 1; ii < 10; ii++ ) {
+		for( int jj = 1; jj < 10; jj++ ) {
+			printf("%3d", ii*jj);
+		}
+		printf("\n");
+	}
+
+	return 0;
+}
+
+int main(void)
+{
+	kuku();
+
+	return 0;
+}
+```
+
+以下、出力結果。
+```terminal
+  1  2  3  4  5  6  7  8  9
+  2  4  6  8 10 12 14 16 18
+  3  6  9 12 15 18 21 24 27
+  4  8 12 16 20 24 28 32 36
+  5 10 15 20 25 30 35 40 45
+  6 12 18 24 30 36 42 48 54
+  7 14 21 28 35 42 49 56 63
+  8 16 24 32 40 48 56 64 72
+  9 18 27 36 45 54 63 72 81
+```
+これぞ九九表だろう。  
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)  
+
 
 <a name="findAPrimeNumberChapter2"></a>
 #### 素数を求める。
+素数とは、1とその数以外に約数を持たない2以上の自然数のこと。  
+
+Pythonに倣い、試す数は**2〜2分のn**までの数で割ることを調べる方法をとる。  
+例えば、10を調べる場合、その半分より大きい数(**6**・**7**・**8**・**9**)では、10を割ることが出来ない。  
+そのことを利用した方法で素数を求める。  
+後日、[エラトステネスの篩](#eratosthenesSieveChapter2)を使った効率のいいアルゴリズムを勉強する。  
+
+* 素数を求めるルール  
+  * 二重ループを使う。  
+  * 2から2分のnまでの数で割る。  
+    ※それらの数で割り切れなければ素数。  
+
+<details><summary>展開。</summary>
+
+以下、プログラム。
+```c
+int prime()
+{
+	// 2から100までの素数を出力する関数。
+	for( int ii = 2; ii < 101; ii++ ) {
+		int half = ii / 2;	// 商を求める。
+		bool flag = true;
+		for( int jj = 2; jj < half+1; jj++ ) {
+			if( (ii % jj) == 0 ) {
+				// 剰余算にて、割り切れるならば、
+				flag = false;	// falseを代入する(要は、出力対象外)。
+				break;
+			}
+		}
+		if( flag == true ) {
+			printf("%d,", ii );
+		}
+	}
+
+	return 0;
+}
+
+int main(void)
+{
+	prime();
+
+	return 0;
+}
+```
+※インクルードファイルに、**stdbool.h**を読み込む。  
+bool型を使うために必要。  
+
+以下、実行結果。
+```terminal
+2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,
+```
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)  
+
 
 <a name="findTheFactorialOfNChapter2"></a>
 #### nの階乗を求める。
+**階乗とは**
+1からnまでの全ての整数の積をnの階乗という。  
+
+<a name="findTheFactorialOfNChapter2recursionsample"></a>
+<details><summary>階乗プログラム例。</summary>
+
+以下、サンプルプログラム。
+```c
+int main(void)
+{
+	// 10の階乗を求める。
+	int total = 10;
+	for( int ii = 9; 0 < ii; ii-- ) {	←☆9から0になるまでデクリメントを行う。
+		total *= ii;
+	}
+	printf("10!：%d", total );
+	// 出力結果：10!：3628800	←☆10の階乗になっている。
+
+	return 0;
+}
+```
+
+</details>
+
+**再帰関数とは**
+関数内から自身の関数を呼び出すことを再帰処理という。
+また、その呼び出す仕組みの関数を再帰関数という。  
+
+<a name="findTheFactorialOfNChapter2factorialsample"></a>
+<details><summary>再帰用プログラム例。</summary>
+
+以下、再帰関数プログラム例）
+```c
+int recursion_sample(int count)
+{
+	if ( count > 0 ) {
+		printf("再帰関数%d回目の実行\n", count );	←☆記述場所を変えることで、1から開始できる。
+		recursion_sample( count - 1 );
+	}
+
+	return 0;
+}
+
+int main(void)
+{
+	recursion_sample(10);	// 再帰関数呼び出し。
+
+	return 0;
+}
+```
+
+以下、実行結果。
+```terminal
+再帰関数10回目の実行
+再帰関数9回目の実行
+再帰関数8回目の実行
+再帰関数7回目の実行
+再帰関数6回目の実行
+再帰関数5回目の実行
+再帰関数4回目の実行
+再帰関数3回目の実行
+再帰関数2回目の実行
+再帰関数1回目の実行
+```
+
+</details>
+
+* ルール1  
+  再帰関数を使わない。  
+  * 関数定義は行わない(私のプログラムでは行う)。  
+  * `for`を使う。  
+
+<details><summary>展開。</summary>
+
+以下、ルール1のプログラム。
+```c
+int factorial1(const int MAX)
+{
+	// 階乗を求める関数。
+	//	この関数は、サンプル関数に引数を受け取る形にしただけのもの。
+	int count = 1;
+	for( int ii = MAX; ii > 0; ii-- ) {
+		count *= ii;
+	}
+
+	return count;
+}
+
+int main(void)
+{
+	int factorial = factorial1(10);		// ルール1に従った階乗を求める関数呼び出し。
+	printf("10!：%d\n", factorial );	// 10!：3628800
+
+	return 0;
+}
+```
+
+以下、実行結果。
+```terminal
+10!：3628800
+```
+
+</details>
+
+* ルール2  
+  再帰関数を使う。  
+  * 再帰関数の定義ルール  
+    * `n = 0`
+      **n! = 1**  
+    * `n > 0`
+      **n! = n * (n-1) * (n-2) * ・・・ * 2 * 1**
+      nから1引いた数を掛け、さらに1づつ引き続けながらnが1にまるまで続ける。  
+
+<details><summary>展開。</summary>
+
+以下、ルール2のプログラム。
+```c
+int factorial2(int count)
+{
+	// 階乗を求める関数。
+	int total = 0;
+	if( count == 0 ) {
+		total = 1;
+	}
+	else{
+		total = count * factorial2(count - 1);
+	}
+
+	return total;
+}
+
+int main(void)
+{
+	int factorial = factorial2(10);
+	printf("10!：%d", factorial );
+
+	return 0;
+}
+```
+
+以下、実行結果。
+```terminal
+10!：3628800
+```
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)  
+
 
 <a name="eratosthenesSieveChapter2"></a>
 #### エラトステネスの篩
+効率よく[素数](#findAPrimeNumberChapter2)を求めることができるアルゴリズムのこと。  
+
+<details><summary>最初の見た目。</summary>
+
+以下、篩いにかける表プログラム。
+```c
+int main(void)
+{
+	for( int ii = 0, count = 10; 100 > ii; ii++ ) {
+		printf("%3d", ii );
+		count--;
+		if( count == 0 ) {
+			printf("\n");
+			count = 10;
+		}
+	}
+
+	return 0;
+}
+```
+0から99までの整数から素数を識別するため、まずは、その整数を並べた。  
+
+以下、出力結果。
+```terminal
+  0  1  2  3  4  5  6  7  8  9
+ 10 11 12 13 14 15 16 17 18 19
+ 20 21 22 23 24 25 26 27 28 29
+ 30 31 32 33 34 35 36 37 38 39
+ 40 41 42 43 44 45 46 47 48 49
+ 50 51 52 53 54 55 56 57 58 59
+ 60 61 62 63 64 65 66 67 68 69
+ 70 71 72 73 74 75 76 77 78 79
+ 80 81 82 83 84 85 86 87 88 89
+ 90 91 92 93 94 95 96 97 98 99
+```
+これを表示するだけなのに、数十分かかってしまった。  
+
+</details>
+
+<details><summary>展開。</summary>
+
+以下、プログラム。
+```c
+int tablecreate(int *table)
+{
+	// 篩いテーブル作成。
+	for( int ii = 0; 100 > ii; ii++ ) {
+		table[ii] = ii;
+	}
+	table[0] = 999;	// falseのつもり。
+	table[1] = 999;	// falseのつもり。
+	// 篩いテーブル内容表示。
+	for( int ii=0, jj=0; 100 > ii; ii++, jj++ ) {
+		if( jj == 10 ) {
+			printf("\n");
+			jj=0;
+		}
+		if( table[ii] == 999 ) {
+			printf("  /");
+		}
+		else{
+			printf("%3d", table[ii]);
+		}
+	}
+
+	return 0;
+}
+
+int eratosthenesSieveProcess(int *table, int start)
+{
+	// エラトステネスの篩を処理する関数
+	printf("%dの倍数をふるい落とす。\n", start);
+	for( int ii = start + start; 100 > ii; ii += start ) {
+		table[ii] = 999;
+	}
+
+	return 0;
+}
+
+int eratosthenesSieve(int *table)
+{
+	// エラトステネスの篩を表示する関数。
+	for( int ii=0, jj=0; 100 > ii; ii++, jj++ ) {
+		if( jj == 10 ) {
+			printf("\n");
+			jj=0;
+		}
+		if( table[ii] == 999 ) {
+			printf("  /");
+		}
+		else{
+			printf("%3d", table[ii]);
+		}
+	}
+
+	return 0;
+}
+
+int main(void)
+{
+	int table[10*10];	// 10x10のテーブル作成(1次元配列)。
+	tablecreate(table);	// テーブル作成後に表示する。
+	for( int ii = 2; 10 > ii; ii++ ) {
+		if( table[ii] == 999 ) {
+			continue;
+		}
+		printf("\n-------\n");
+		eratosthenesSieveProcess(table, ii);
+		eratosthenesSieve(table);
+	}
+
+}
+```
+
+以下、出力結果。
+```terminal
+  /  /  2  3  4  5  6  7  8  9
+ 10 11 12 13 14 15 16 17 18 19
+ 20 21 22 23 24 25 26 27 28 29
+ 30 31 32 33 34 35 36 37 38 39
+ 40 41 42 43 44 45 46 47 48 49
+ 50 51 52 53 54 55 56 57 58 59
+ 60 61 62 63 64 65 66 67 68 69
+ 70 71 72 73 74 75 76 77 78 79
+ 80 81 82 83 84 85 86 87 88 89
+ 90 91 92 93 94 95 96 97 98 99
+-------
+2の倍数をふるい落とす。
+  /  /  2  3  /  5  /  7  /  9
+  / 11  / 13  / 15  / 17  / 19
+  / 21  / 23  / 25  / 27  / 29
+  / 31  / 33  / 35  / 37  / 39
+  / 41  / 43  / 45  / 47  / 49
+  / 51  / 53  / 55  / 57  / 59
+  / 61  / 63  / 65  / 67  / 69
+  / 71  / 73  / 75  / 77  / 79
+  / 81  / 83  / 85  / 87  / 89
+  / 91  / 93  / 95  / 97  / 99
+-------
+3の倍数をふるい落とす。
+  /  /  2  3  /  5  /  7  /  /
+  / 11  / 13  /  /  / 17  / 19
+  /  /  / 23  / 25  /  /  / 29
+  / 31  /  /  / 35  / 37  /  /
+  / 41  / 43  /  /  / 47  / 49
+  /  /  / 53  / 55  /  /  / 59
+  / 61  /  /  / 65  / 67  /  /
+  / 71  / 73  /  /  / 77  / 79
+  /  /  / 83  / 85  /  /  / 89
+  / 91  /  /  / 95  / 97  /  /
+-------
+5の倍数をふるい落とす。
+  /  /  2  3  /  5  /  7  /  /
+  / 11  / 13  /  /  / 17  / 19
+  /  /  / 23  /  /  /  /  / 29
+  / 31  /  /  /  /  / 37  /  /
+  / 41  / 43  /  /  / 47  / 49
+  /  /  / 53  /  /  /  /  / 59
+  / 61  /  /  /  /  / 67  /  /
+  / 71  / 73  /  /  / 77  / 79
+  /  /  / 83  /  /  /  /  / 89
+  / 91  /  /  /  /  / 97  /  /
+-------
+7の倍数をふるい落とす。
+  /  /  2  3  /  5  /  7  /  /
+  / 11  / 13  /  /  / 17  / 19
+  /  /  / 23  /  /  /  /  / 29
+  / 31  /  /  /  /  / 37  /  /
+  / 41  / 43  /  /  / 47  /  /
+  /  /  / 53  /  /  /  /  / 59
+  / 61  /  /  /  /  / 67  /  /
+  / 71  / 73  /  /  /  /  / 79
+  /  /  / 83  /  /  /  /  / 89
+  /  /  /  /  /  /  / 97  /  /
+```
+あっているように思えないのだが、本当に、このやり方で良いのか？  
+結果だけを見れば(たまたま)あっているだけに思えてならない。  
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)  
+
 
 <a name="understandnAryNotationChapter2"></a>
 #### n進法を理解する。
+アルゴリズムとして勉強することではない。  
+普通の一般説明。  
+[ビット演算(`&`・`|`・`^`・`~`)](#learnBitwiseOperationsChapter4)は、別の機会。  
+
+<details><summary>展開。</summary>
+
+以下、プログラム。
+```c
+int main(void)
+{
+	printf("%d\n", 255);		// 255
+	printf("%d\n", 0b11111111);	// 255	←☆2進数。
+	printf("%d\n", 0377);		// 255	←☆8進数。
+	printf("%d\n", 0xff);		// 255	←☆16進数。
+
+	return 0;
+}
+```
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)  
+
 
 <a name="learnDataStructuresOverviewChapter3"></a>
 ### データ構造を学ぶ
@@ -1452,6 +2183,40 @@ int hogefunc(int hoge[], int size) {
 
 <a name="learnBitwiseOperationsChapter4"></a>
 #### ビット演算を学ぶ
+ビット演算(`&`・`|`・`^`・`~`)  
+
+|演算子|意味|例|説明|
+|:----:|----|--|----|
+|`&`|論理積(AND)|`a=b & 0x7FFF;`|両方のビットが1のとき、結果が1になる。|
+|`|`|論理和(OR)|`a=b | 0x8000;`|片方のビットが1のとき、結果が1になる。|
+|`^`|排他的論理和(XOR)|`a=b ^ 0x000F;`|両方のビットが異なるとき、結果が1になる。|
+|`~`|補数(Not)|`a = ~a;`|ビットを反転する。|
+|||||
+|`<<`|左シフト|`a=a << 2;`||
+|`>>`|右シフト|`a=a >> 2;`||
+
+以下、簡易なプログラム。
+```c
+int main(void)
+{
+	// 以下、ビット単位演算子。
+	int bit, original=0x55555555;
+	printf("%#x\n", original);		// 0x55555555
+	bit = original & 0x0000FFFF;	// 論理積
+	printf("%#x\n", bit);	// 0x5555
+	bit = original | 0x0000FFFF;	// 論理和
+	printf("%#x\n", bit);	// 0x5555ffff
+	bit = original ^ 0x0000FFFF;	// 排他的論理和
+	printf("%#x\n", bit);	// 0x5555aaaa
+	bit = ~original;				// 補数(not処理)
+	printf("%#x\n", bit);	// 0xaaaaaaaa
+
+	return 0;
+}
+```
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter4)  
+
 
 <a name="sortOverviewChapter5"></a>
 ### ソート
