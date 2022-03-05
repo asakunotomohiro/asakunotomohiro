@@ -71,19 +71,17 @@ $
 ### ハローワールドプログラム
 `main`文言の先頭に`int`を付けることでワーニングが解消できた。  
 
-```c:helloWorld.c
-$ cat helloWorld.c
-#include <stdio.h>
-
-int main()
-{
-	printf("hello, world\n");
-}
-$ gcc helloWorld.c
-$ ./a.out
-hello, world
-$
-```
+    $ cat helloWorld.c
+    #include <stdio.h>
+    
+    int main()
+    {
+    	printf("hello, world\n");
+    }
+    $ gcc helloWorld.c
+    $ ./a.out
+    hello, world
+    $
 
 しかし、この`int`は、戻り値になるはず。  
 それなのに、`return`がなくても問題にならないのは矛盾しているよね。  
@@ -95,23 +93,21 @@ $
 **K&R**の **Hello World.** 出力は難易度が高かった
 (参考にする書籍のP8)。  
 
-```c:warningありのhelloWorld.c
-$ cat helloWorld.c
-#include <stdio.h>
-
-main()
-{
-	printf("hello, world\n");
-}
-$ gcc helloWorld.c
-helloWorld.c:3:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
-main()
-^
-1 warning generated.
-$ ./a.out
-hello, world
-$
-```
+    $ cat helloWorld.c
+    #include <stdio.h>
+    
+    main()
+    {
+    	printf("hello, world\n");
+    }
+    $ gcc helloWorld.c
+    helloWorld.c:3:1: warning: type specifier missing, defaults to 'int' [-Wimplicit-int]
+    main()
+    ^
+    1 warning generated.
+    $ ./a.out
+    hello, world
+    $
 
 一応コンパイルが通り、実行できるのだが、ワーニングが出るのはちょっとな・・・。  
 お守り変わりにして使わない発言した直後に使うのもどうかと思ったが、普通のプログラムの掲載がK&R本だけだったよ。  
@@ -119,16 +115,15 @@ $
 <a name="algorithmbonusHelloWorld"></a>
 #### おまけ。
 以下の戻り値無し版もだめだった。
-```c:sample.c
-#include <stdio.h>
 
-void main()
-{
-	printf("hello, world\n");
-}
-```
+    #include <stdio.h>
+    
+    void main()
+    {
+    	printf("hello, world\n");
+    }
 
-原因は分からないが、コンパイルのせいだろう。  
+原因は分からないが、コンパイラのせいだろう。  
 
 </details>
 
@@ -238,6 +233,9 @@ void main()
 しかし、やる気を維持するためにも1冊分を読了させることも目的としており、深掘りせずに進めることも考慮すること。  
 要は、深く踏み込むか、流し読み程度に抑えるかどうかはそのときに決める。  
 
+※基本的に、インクルード処理は、省略する(マークダウン記法の先頭にはシャープ記号を配置したくないため)。  
+特別な断りが無ければ、**stdio.h**をインクルードしていることとする。  
+
 
 <a name="variable変数sub"></a>
 <details><summary>実際の変数の勉強</summary>
@@ -279,8 +277,6 @@ void main()
 
 以下、普通に変数を使ってみる。
 ```c:変数.c
-#include <stdio.h>
-
 int main(void)
 {
 	int ho = 20210808;
@@ -312,8 +308,6 @@ int main(void)
 `printf`関数を利用することで変数値を出力できる。  
 
 ```c
-#include <stdio.h>
-
 int main(void)
 {
 	int bar = 20210808;
@@ -434,8 +428,6 @@ printf("int：%d\n", int_hoge);	// int：2021
 
 constが有効活用されており、完全に **定数** として機能しているのがわかる。
 ```c
-#include <stdio.h>
-
 int main(void)
 {
 	const int hoge = 20210808;	// err：note: variable 'hoge' declared const here
@@ -447,8 +439,6 @@ int main(void)
 
 以下、定数が存在しないプログラム。
 ```c
-#include <stdio.h>
-
 int main(void)
 {
 	int hoge = 20210808;
@@ -467,8 +457,6 @@ int main(void)
 
 以下、上記の書き換え対策。
 ```c
-#include <stdio.h>
-
 int main(void)
 {
 	int hoge = 20210808;
@@ -696,8 +684,6 @@ c++を含んだC言語での[浮動小数点リテラル](https://www.ibm.com/do
 
 以下、例）
 ```c
-#include <stdio.h>
-
 int main(void)
 {
 	int hoge[5] = {0};	// 5つ全てが0クリアされる。
@@ -740,8 +726,6 @@ strcpy(配列名[1], "代入したい文字列");
 `データ型 配列名[配列要素数][配列要素数];`  
 
 ```c
-#include <stdio.h>
-
 int main(void)
 {
 	int hoge[5][3] = {0};
@@ -921,9 +905,6 @@ C99規格以降であれば、初期化部分で変数の宣言が行える(例�
 
 これは頻繁に使う処理だと思う。
 ```c
-#include <stdio.h>
-#include <ctype.h>
-
 int main(void)
 {
 	int hoge = 0;
@@ -933,6 +914,7 @@ int main(void)
 	}
 }
 ```
+※インクルードファイルに、**ctype.h**を読み込む。  
 
 以下、出力結果。
 ```c
@@ -1182,9 +1164,6 @@ int hogefunc(int arg) {
 様式：
 
 ```c
-#include <stdio.h>
-#include <ctype.h>
-
 // 以下、プロトタイプ宣言。
 int hogefunc(int [], int);
 
@@ -1224,6 +1203,7 @@ int hogefunc(int hoge[], int size) {
 	return 20210914 + hoge[0];
 }
 ```
+※インクルードファイルに、**ctype.h**を読み込む。  
 
 以下、関数内での出力結果。
 ```terminal
@@ -1422,8 +1402,6 @@ int main(void)
 
 以下、ルール1のプログラム。
 ```c
-#include <stdio.h>
-
 int addup1()
 {
 	int total = 0;
@@ -1453,8 +1431,6 @@ int main(void)
 
 以下、ルール2のプログラム。
 ```c
-#include <stdio.h>
-
 int addup2(int num)
 {
 	int total = 0;
@@ -1482,8 +1458,6 @@ int main(void)
 
 以下、ルール3のプログラム。
 ```c
-#include <stdio.h>
-
 int addup3(int num)
 {
 	int total = (1 + num) * num / 2;
@@ -1517,8 +1491,6 @@ Pythonでやったように、九九の式を出すのではなく、九九表�
 
 以下、プログラム。
 ```c
-#include <stdio.h>
-
 int kuku()
 {
 	int total = 0;
@@ -1640,8 +1612,6 @@ int main(void)
 
 以下、四角形っぽい表示に置き換えたプログラム。
 ```c
-#include <stdio.h>
-
 int kuku()
 {
 	for( int ii = 1; ii < 10; ii++ ) {
@@ -1679,8 +1649,6 @@ int main(void)
 
 以下、我々学生時代から親しんできた九九表プログラム。
 ```c
-#include <stdio.h>
-
 int kuku()
 {
 	for( int ii = 1; ii < 10; ii++ ) {
@@ -1732,9 +1700,6 @@ Pythonに倣い、試す数は**2〜2分のn**までの数で割ることを調�
 
 以下、プログラム。
 ```c
-#include <stdio.h>
-#include <stdbool.h>	// bool型を使うための読み込み(準備)。
-
 int prime()
 {
 	// 2から100までの素数を出力する関数。
@@ -1763,6 +1728,8 @@ int main(void)
 	return 0;
 }
 ```
+※インクルードファイルに、**stdbool.h**を読み込む。  
+bool型を使うために必要。  
 
 以下、実行結果。
 ```terminal
@@ -1780,8 +1747,6 @@ int main(void)
 
 以下、サンプルプログラム。
 ```c
-#include <stdio.h>
-
 int main(void)
 {
 	// 10の階乗を求める。
@@ -1807,8 +1772,6 @@ int main(void)
 
 以下、再帰関数例）
 ```c
-#include <stdio.h>
-
 int recursion_sample(int count)
 {
 	if ( count > 0 ) {
@@ -1850,8 +1813,6 @@ int main(void)
 
 以下、ルール1のプログラム。
 ```c
-#include <stdio.h>
-
 int factorial1(const int MAX)
 {
 	// 階乗を求める関数。
@@ -1889,8 +1850,6 @@ int main(void)
 
 以下、ルール2のプログラム。
 ```c
-#include <stdio.h>
-
 int factorial2(int count)
 {
 	// 階乗を求める関数。
@@ -1928,8 +1887,6 @@ int main(void)
 
 以下、篩いにかける表プログラム。
 ```c
-#include <stdio.h>
-
 int main(void)
 {
 	for( int ii = 0, count = 10; 100 > ii; ii++ ) {
@@ -1965,8 +1922,6 @@ int main(void)
 
 以下、プログラム。
 ```c
-#include <stdio.h>
-
 int tablecreate(int *table)
 {
 	// 篩いテーブル作成。
@@ -2111,8 +2066,6 @@ int main(void)
 
 以下、プログラム。
 ```c
-#include <stdio.h>
-
 int main(void)
 {
 	printf("%d\n", 255);		// 255
@@ -2200,8 +2153,6 @@ int main(void)
 
 以下、簡易なプログラム。
 ```c
-#include <stdio.h>
-
 int main(void)
 {
 	// 以下、ビット単位演算子。
