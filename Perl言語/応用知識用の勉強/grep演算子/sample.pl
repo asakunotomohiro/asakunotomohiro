@@ -13,7 +13,20 @@ sub asakunoGrep() {
 	my @tomohiro = grep { /野/ } @asakuno;
 	say "@tomohiro";	# 朝来野 朝来野智博
 }
-&asakunoGrep();
+#&asakunoGrep();
+
+sub asakunoNotGrep() {
+	my @tomohiro;
+	# 以下、リストから"野"を含む文字列を取り出す。
+	say "@asakuno";	# 朝来野 智博 朝来野智博
+	foreach my $value (@asakuno) {
+		if( $value =~ /野/ ) {
+			push @tomohiro, $value;
+		}
+	}
+	say "@tomohiro";	# 朝来野 朝来野智博
+}
+&asakunoNotGrep();
 
 
 say "以上。"

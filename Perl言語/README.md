@@ -7234,6 +7234,27 @@ sub grepSample() {
 }
 &grepSample();
 ```
+1行の処理で完結するのは便利。  
+
+以下は、上記のやり方をmapを使わずに同じ結果を出すプログラム。
+```perl
+use v5.24;
+
+sub notgrepSample() {
+	# 以下、リストから"の"を含む文字列を取り出す。
+	my @greplist = qw( 大荒木の もりの 下草老いぬれば 駒もすさめず 刈る人も なし );
+	my @changeList;
+	say "@greplist";	# 大荒木の もりの 下草老いぬれば 駒もすさめず 刈る人も なし
+	foreach ( @greplist ) {
+		if( /の/ ) {
+			push @changeList, $_;
+		}
+	}
+	say "@changeList";	# 大荒木の もりの
+}
+&notgrepSample();
+```
+同じ結果を出すならば、grepを使って構わないだろう。  
 
 </details>
 
