@@ -7261,6 +7261,29 @@ sub notgrepSample() {
 
 ※検索方法は、[正規表現](#practicaluseRegularexpression)のこと。  
 
+以下、奇数を抜き出すプログラム。
+```perl
+use v5.24;
+
+sub notgrepSample() {
+	my @changeList = grep { $_ % 2 } 1..10;
+	say "@changeList";	# 1 3 5 7 9
+}
+&notgrepSample();
+```
+
+以下、偶数を抜き出すプログラム。
+```perl
+use v5.24;
+
+sub notgrepSample() {
+	my @changeList;
+	my @changeList = grep { $_ % 2 == 0 } 1..10;
+	say "@changeList";	# 2 4 6 8 10
+}
+&notgrepSample();
+```
+
 </details>
 
 <a name="practicalusemap"></a>
