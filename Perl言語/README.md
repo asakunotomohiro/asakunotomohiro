@@ -7256,6 +7256,9 @@ sub notgrepSample() {
 ```
 同じ結果を出すならば、grepを使って構わないだろう。  
 
+1行の単純式ならばブロック括弧は省略できる。  
+`grep /検索単語/, @配列名;`  
+
 </details>
 
 <a name="practicalusemap"></a>
