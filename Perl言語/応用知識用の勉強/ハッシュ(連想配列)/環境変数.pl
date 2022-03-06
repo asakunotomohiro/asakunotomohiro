@@ -7,6 +7,10 @@ say "ハッシュ";
 
 sub associativearray() {
 	say "$ENV{HISTCONTROL}";	# ignoreboth
+	say '-' x 30;
+	foreach my $key ( keys %ENV ) {
+		say "$key->$ENV{$key}";	# 予想以上に大量に出てきた。
+	}
 }
 &associativearray();
 

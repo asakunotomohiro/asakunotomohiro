@@ -5016,8 +5016,8 @@ Perlプログラムからdateコマンドを使う例）
 <a name="practicalusesystemfuncargv"></a>
 #### system関数-引数
 引数1個の場合は、Perlから普通に動かす。  
-単純な場合でもPathからコマンドを探すこともあり、このPathは、**$ENV{'PATH'}**にて、変更可能な環境変数になっている。  
-そして、特殊記号が含まれている場合は、Bourne(/bin/sh)シェルもしくは、**cmd /x/d/c**(Windows・PERL5SHELL環境変数)を呼び出し、動かす。  
+単純な場合でもPathからコマンドを探すこともあり、このPathは、**$ENV{'PATH'}**にて、変更可能な[環境変数(Perlではハッシュで扱う)](#practicaluseHash)になっている。  
+そして、特殊記号が含まれている場合は、Bourne(/bin/sh)シェルもしくは、**cmd /x/d/c**(Windows・PERL5SHELL[環境変数](#practicaluseHashenv))を呼び出し、動かす。  
 
 以下、実行例）
 ```perl
