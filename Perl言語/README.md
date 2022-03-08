@@ -4923,6 +4923,7 @@ sub associativearray() {
 
 <a name="practicaluseHashenv"></a>
 #### OSの環境変数(`%ENV`)
+※[システム管理](#practicalusesystem)にも影響する項目。  
 
 以下、環境変数をPerlで取得する。
 ```terminal
@@ -5047,6 +5048,8 @@ say "<$date>";				# <0>
 第2引数以降が存在する場合、シェルなどを呼び出すことなく実行することになる。  
 これは、セキュリティ上の問題になるため、第1引数のコマンドにオプションが必要な場合は、そのオプションを第2引数に振り分けた方がセキュリティ向上に寄与できる。  
 ただ、何でもかんでも第2引数に放り込めば良いとは限らないようだ。  
+
+これらとは別に、[ハッシュ](#practicaluseHash)の[**OSの環境変数**](#practicaluseHashenv)が今回のプロセス管理に関わってくるため、参照しておくこと。  
 
 
 [応用知識の目次に戻る](#appliedknowledgeContents)  
