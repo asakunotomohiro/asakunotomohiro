@@ -6516,6 +6516,25 @@ JSONとは、
 JavaScript Object Notationの略が**JSON**と言うことだと今回初めて知ったよ。  
 要は、ブラウザとのやりとりに便利ってこと？  
 
+ざっくりした説明で言うならば、[ハッシュ](#practicaluseHash)そのもの。  
+以下、例）
+```json
+[	←☆無名配列リファレンス
+    {	←☆無名ハッシュリファレンス
+        "No":1,	←☆Noがキー・1が値。
+        "Name":"初めてのPerl 第7版",
+        "ISBN":"978-4-87311-824-6",
+        "URL":"https://www.oreilly.co.jp/books/9784873118246/",
+    }
+    {	←☆2つ目の無名ハッシュリファレンス
+        "No":2,	←☆Noがキー・2が値。
+        "Name":"続・初めてのPerl 改訂第2版",
+        "ISBN":"978-4-87311-628-0",
+        "URL":"https://www.oreilly.co.jp/books/9784873116280/",
+    }
+]
+```
+
 </details>
 
 <a name="practicaluseDirectorymanipulation"></a>
