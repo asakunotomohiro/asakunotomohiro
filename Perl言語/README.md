@@ -4931,7 +4931,7 @@ HISTCONTROL=ignoreboth
 $
 ```
 
-以下、取得できている。
+以下、取得できている(取得結果は一例)。
 ```perl
 say "$ENV{HISTCONTROL}";	# ignoreboth
 ```
@@ -4946,6 +4946,10 @@ $
 ```
 
 何に使うのか分からないが、GoでのGUI開発は日本語文字を取得するのに環境変数を利用しているな・・・。  
+また、OSによっては、Pathの区切り方(ディレクトリの階層表現)が異なる。  
+[関数(モジュール作成use)](#practicaluseFunctionLibuse)で説明している。  
+
+そのため、Pathの区切りを良い塩梅にするためのモジュールが用意されており、それが**Config**になる。  
 
 
 <a name="practicaluseHashsigint"></a>
