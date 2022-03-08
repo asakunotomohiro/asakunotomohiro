@@ -205,6 +205,7 @@ $
     [x] グロブ  
     [x] ディレクトリハンドル。  
     [x] [プロパティ変更(パーミッション・オーナー・タイムスタンプ)](#practicalusePropertymanipulation)  
+  * [ ] [json](#practicalusejsonfile)  
   * [ ] [オブジェクト指向](#practicaluseObjectorientation)  
     [x] オブジェクト指向入門(読み切っていない)  
         * [オブジェクト指向入門](#objectorientedPerl4894713004one)を読み直す(要は全般)。  
@@ -6506,6 +6507,16 @@ $
 
 </details>
 
+<a name="practicalusejsonfile"></a>
+<details><summary>応用知識-jsonデータ</summary>
+
+JSONとは、
+> JavaScriptのオブジェクト記法を用いたデータ交換フォーマット形式のこと。  
+
+JavaScript Object Notationの略が**JSON**と言うことだと今回初めて知ったよ。  
+要は、ブラウザとのやりとりに便利ってこと？  
+
+</details>
 
 <a name="practicaluseDirectorymanipulation"></a>
 <details><summary>応用知識-ディレクトリ操作(入出力・File-I/O)</summary>
