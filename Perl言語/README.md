@@ -4946,10 +4946,22 @@ $
 ```
 
 何に使うのか分からないが、GoでのGUI開発は日本語文字を取得するのに環境変数を利用しているな・・・。  
-また、OSによっては、Pathの区切り方(ディレクトリの階層表現)が異なる。  
-[関数(モジュール作成use)](#practicaluseFunctionLibuse)で説明している。  
+また、OSによっては、環境変数への区切り記号が異なる。  
 
-そのため、Pathの区切りを良い塩梅にするためのモジュールが用意されており、それが**Config**になる。  
+そのため、良い塩梅の記号を用いてもらうためのモジュールが用意されており、それが**Config**になる。  
+以下、例）
+```perl
+use v5.24;
+use Config;
+
+sub config() {
+	# 以下、OSに合わせた設定値の区切り記号で値を追加できる。
+	$ENV{HOGE} = join $Config{path_sep},
+					'/home/hoge/bin', $ENV{HOGE};
+	say "HOGE：$ENV{HOGE}";	←☆Mac環境では、末尾にコロン:記号が付与されていた。
+}
+&config();
+```
 
 
 <a name="practicaluseHashsigint"></a>
