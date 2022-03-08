@@ -6535,6 +6535,24 @@ JavaScript Object Notationの略が**JSON**と言うことだと今回初めて�
 ]
 ```
 
+* JSONのデータ型
+  * 文字列  
+    ダブルクォーテーションで囲む。  
+    例）"初めてのPerl 第7版"  
+  * 数値  
+    数字のみ。  
+    例）1  
+  * null  
+    小文字で記述する。  
+    例）null  
+  * bool値  
+    例）true  
+  * オブジェクト  
+    入れ子ができる。  
+  * 配列  
+    []記号で囲む。  
+    例）"配列":[1, 2, 3, 4,]  
+
 </details>
 
 <a name="practicaluseDirectorymanipulation"></a>
