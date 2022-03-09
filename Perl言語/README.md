@@ -6523,6 +6523,7 @@ JavaScript Object Notationの略が**JSON**と言うことだと今回初めて�
   * [space_before(前にスペース付与)オプション](#practicalusejsonfileoptionspace_before)  
   * [space_after(後ろにスペース付与)オプション](#practicalusejsonfileoptionspace_after)  
   * [relaxed((デコード時に整形する)オプション](#practicalusejsonfileoptionrelaxed)  
+  * [canonical(並び替え)オプション](#practicalusejsonfileoptioncanonical)  
 
 ざっくりした説明で言うならば、[ハッシュ](#practicaluseHash)そのもの。  
 以下、例）
@@ -6695,6 +6696,36 @@ sub json() {
 無効`my $json = $json->relaxed(0);`  
 有効`my $json = $json->relaxed(1);`  
 
+
+<a name="practicalusejsonfileoptioncanonical"></a>
+#### オプション-canonical
+並び替えるオプション。
+```perl
+use v5.24;
+use JSON::PP;
+use Encode;
+
+sub json() {
+	my %hash = (
+			today => 20220309,
+			apple => 'Lightning',
+			cable => 'USB-TypeC',
+			phone => 'ガラケー',
+		);
+
+	my $json = JSON::PP->new();
+	say '-' x 30;
+	my $json = $json->canonical(0);	# 偽(標準動作)。
+	my $string =  decode('utf-8', $json->utf8->space_after->encode( \%hash ) );
+	say $string;	# {"today": 20220309,"cable": "USB-TypeC","apple": "Lightning","phone": "ガラケー"}
+	my $json = $json->canonical('真');	# キーで並び替える(エンコード時に有効)。
+	my $string =  decode('utf-8', $json->utf8->space_after->encode( \%hash ) );
+	say $string;	# {"apple": "Lightning","cable": "USB-TypeC","phone": "ガラケー","today": 20220309}
+}
+&json();
+```
+欠点は、過負荷が発生すること。  
+しかし、常に有効化したい。  
 
 </details>
 
