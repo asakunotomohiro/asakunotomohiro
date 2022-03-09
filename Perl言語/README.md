@@ -6525,6 +6525,7 @@ JavaScript Object Notationの略が**JSON**と言うことだと今回初めて�
   * [relaxed((デコード時に整形する)オプション](#practicalusejsonfileoptionrelaxed)  
   * [canonical(並び替え)オプション](#practicalusejsonfileoptioncanonical)  
   * [allow_nonref(常に有効化された)オプション](#practicalusejsonfileoptionallownonref)  
+  * [allow_unknown(よく分からない)オプション](#practicalusejsonfileoptionallowunknown)  
 
 ざっくりした説明で言うならば、[ハッシュ](#practicaluseHash)そのもの。  
 以下、例）
@@ -6759,6 +6760,34 @@ sub json() {
 ```
 スカラーなどを渡せばエラーが発生して変化がわかるのだろうが、そんな変化は見たくない。  
 何より、エラーを発生することは全く求めていない。  
+
+
+<a name="practicalusejsonfileoptionallowunknown"></a>
+#### オプション-allow_unknown
+これ何？
+```perl
+use v5.24;
+use JSON::PP;
+use Encode;
+
+sub json() {
+	my %hash = (
+			today => 20220309,
+			apple => 'Lightning',
+			cable => 'USB-TypeC',
+			phone => 'ガラケー',
+		);
+
+	my $json = JSON::PP->new();
+	my $json = $json->allow_unknown(0);	# 偽。
+	my $string =  decode('utf-8', $json->utf8->space_after->encode( \%hash ) );
+	say $string;	# {"today": 20220309,"cable": "USB-TypeC","apple": "Lightning","phone": "ガラケー"}
+	my $json = $json->allow_unknown('真');	# これは何をするオプション？
+	my $string =  decode('utf-8', $json->utf8->space_after->encode( \%hash ) );
+	say $string;	# {"today": 20220309,"cable": "USB-TypeC","apple": "Lightning","phone": "ガラケー"}
+}
+&json();
+```
 
 </details>
 
