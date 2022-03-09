@@ -6520,6 +6520,7 @@ JavaScript Object Notationの略が**JSON**と言うことだと今回初めて�
   * [JSONのデータ型](#practicalusejsonfiledatatype)  
   * [簡易プログラム](#practicalusejsonfilesampleprogram)  
   * [pretty(見やすく成形)オプション](#practicalusejsonfileoptionpretty)  
+  * [space_before(前にスペース付与)オプション](#practicalusejsonfileoptionspace_before)  
 
 ざっくりした説明で言うならば、[ハッシュ](#practicaluseHash)そのもの。  
 以下、例）
@@ -6626,6 +6627,35 @@ sub json() {
 &json();
 ```
 使う時には、有効化しておきたいオプションのひとつ。  
+
+
+<a name="practicalusejsonfileoptionspace_before"></a>
+#### オプション-space_before
+前に余分なスペースを付けるオプション。
+```perl
+use v5.24;
+use JSON::PP;
+use Encode;
+
+sub json() {
+	my %hash = (
+			today => 20220309,
+			apple => 'Lightning',
+			cable => 'USB-TypeC',
+			phone => 'ガラケー',
+		);
+	my $json = JSON::PP->new();
+	#my $json = $json->space_before(0);	# 偽がデフォルト値のようだ。
+	my $string =  decode('utf-8', $json->utf8->space_after->encode( \%hash ) );
+	say $string;	# {"phone": "ガラケー","today": 20220309,"apple": "Lightning","cable": "USB-TypeC"}
+
+	my $json = $json->space_before('真');	# 前に余分なスペースを付ける。
+	my $string =  decode('utf-8', $json->utf8->space_after->encode( \%hash ) );
+	say $string;	# {"phone" : "ガラケー","today" : 20220309,"apple" : "Lightning","cable" : "USB-TypeC"}
+}
+&json();
+```
+コロン`:`記号の前に付いているように見えるが、前って本当にコロンの前？  
 
 
 </details>
