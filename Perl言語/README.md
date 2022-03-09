@@ -6524,6 +6524,7 @@ JavaScript Object Notationの略が**JSON**と言うことだと今回初めて�
   * [space_after(後ろにスペース付与)オプション](#practicalusejsonfileoptionspace_after)  
   * [relaxed((デコード時に整形する)オプション](#practicalusejsonfileoptionrelaxed)  
   * [canonical(並び替え)オプション](#practicalusejsonfileoptioncanonical)  
+  * [allow_nonref(常に有効化された)オプション](#practicalusejsonfileoptionallownonref)  
 
 ざっくりした説明で言うならば、[ハッシュ](#practicaluseHash)そのもの。  
 以下、例）
@@ -6726,6 +6727,38 @@ sub json() {
 ```
 欠点は、過負荷が発生すること。  
 しかし、常に有効化したい。  
+
+
+<a name="practicalusejsonfileoptionallownonref"></a>
+#### オプション-allow_nonref
+常に有効化されたオプション。  
+無効化の場合、エンコード時に、配列リファレンスもしくはハッシュリファレンスを渡さない場合エラーになるなど色々制約があるため、無効化する必要が無い。  
+以下、変化が見られないプログラム。
+```perl
+use v5.24;
+use JSON::PP;
+use Encode;
+
+sub json() {
+	my %hash = (
+			today => 20220309,
+			apple => 'Lightning',
+			cable => 'USB-TypeC',
+			phone => 'ガラケー',
+		);
+
+	my $json = JSON::PP->new();
+	my $json = $json->allow_nonref(0);	# 偽。
+	my $string =  decode('utf-8', $json->utf8->space_after->encode( \%hash ) );
+	say $string;	# {"phone": "ガラケー","cable": "USB-TypeC","today": 20220309,"apple": "Lightning"}
+	my $json = $json->allow_nonref('真');	# いいように変換(標準動作)。
+	my $string =  decode('utf-8', $json->utf8->space_after->encode( \%hash ) );
+	say $string;	# {"phone": "ガラケー","cable": "USB-TypeC","today": 20220309,"apple": "Lightning"}
+}
+&json();
+```
+スカラーなどを渡せばエラーが発生して変化がわかるのだろうが、そんな変化は見たくない。  
+何より、エラーを発生することは全く求めていない。  
 
 </details>
 
