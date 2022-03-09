@@ -205,7 +205,7 @@ $
     [x] グロブ  
     [x] ディレクトリハンドル。  
     [x] [プロパティ変更(パーミッション・オーナー・タイムスタンプ)](#practicalusePropertymanipulation)  
-  * [ ] [json](#practicalusejsonfile)  
+  * [x] [JSONデータ](#practicalusejsonfile)2022/03/09  
   * [ ] [オブジェクト指向](#practicaluseObjectorientation)  
     [x] オブジェクト指向入門(読み切っていない)  
         * [オブジェクト指向入門](#objectorientedPerl4894713004one)を読み直す(要は全般)。  
@@ -6516,6 +6516,10 @@ JSONとは、
 JavaScript Object Notationの略が**JSON**と言うことだと今回初めて知ったよ。  
 要は、ブラウザとのやりとりに便利ってこと？  
 
+* 簡易目次  
+  * [JSONのデータ型](#practicalusejsonfiledatatype)  
+  * [簡易プログラム](#practicalusejsonfilesampleprogram)  
+
 ざっくりした説明で言うならば、[ハッシュ](#practicaluseHash)そのもの。  
 以下、例）
 ```json
@@ -6538,6 +6542,7 @@ JSONの場合は、キーもダブルクォーテーションで囲むことが�
 シングルクォートで囲むのは間違い。  
 どちらにせよ、Perlのハッシュの場合、キーにはそんなもの不要で扱える。  
 
+<a name="practicalusejsonfiledatatype"></a>
 * JSONのデータ型
   * 文字列  
     ダブルクォーテーションで囲む。  
@@ -6555,6 +6560,42 @@ JSONの場合は、キーもダブルクォーテーションで囲むことが�
   * 配列  
     []記号で囲む。  
     例）"配列":[1, 2, 3, 4,]  
+
+<a name="practicalusejsonfilesampleprogram"></a>
+### 簡易プログラム
+PerlのハッシュをJSONデータに変換。
+```perl
+use v5.24;
+use JSON::PP;
+use Encode;
+
+sub json() {
+	my %hash = (	←☆これを変換する。
+			today => 20220309,
+			apple => 'Lightning',
+			cable => 'USB-TypeC',
+			phone => 'ガラケー',
+		);
+
+	my $json = JSON::PP->new->utf8->space_after->encode( decode('utf-8', \%hash ));
+	say $json;	# "HASH(0x7fbf87805340)"	←☆なぜか文字列扱いされている(これでは取り出せない？)。
+
+	my $json = JSON::PP->new->utf8->space_after->encode( decode('utf-8', %hash ));
+	say $json;	# "4"
+
+	my $output = decode( 'utf-8', encode_json ( \%hash ));	# 上記の処理とは逆だった。
+		# 今回の処理で成功したのは、json形式に変換後、utf8に変換しているから正常に表示されている。
+		# 今までのやり方は、utf8に変換後にjson形式にしようとしているため、ハッシュリファレンスがそのまま文字列扱いされている・・・のだろう。
+	say $output;	# {"phone":"ガラケー","cable":"USB-TypeC","today":20220309,"apple":"Lightning"}
+
+	my $string =  decode('utf-8', JSON::PP->new->utf8->space_after->encode( \%hash ) );	# ってことで、これも正解。
+	say $string;	# {"today": 20220309,"phone": "ガラケー","cable": "USB-TypeC","apple": "Lightning"}
+}
+&json();
+```
+
+
+
 
 </details>
 
