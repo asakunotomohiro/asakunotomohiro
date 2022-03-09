@@ -6526,6 +6526,8 @@ JavaScript Object Notationの略が**JSON**と言うことだと今回初めて�
   * [canonical(並び替え)オプション](#practicalusejsonfileoptioncanonical)  
   * [allow_nonref(常に有効化された)オプション](#practicalusejsonfileoptionallownonref)  
   * [allow_unknown(よく分からない)オプション](#practicalusejsonfileoptionallowunknown)  
+  * [allow_blessed(よく分からない)オプション](#practicalusejsonfileoptionallowblessed)  
+  * [convert_blessed(よく分からない)オプション](#practicalusejsonfileoptionconvertblessed)  
 
 ざっくりした説明で言うならば、[ハッシュ](#practicaluseHash)そのもの。  
 以下、例）
@@ -6788,6 +6790,18 @@ sub json() {
 }
 &json();
 ```
+
+
+<a name="practicalusejsonfileoptionallowblessed"></a>
+#### オプション-allow_blessed
+よく分からない。  
+[bless演算子](#practicaluseblessoperator)が関わっているのは確かだろう。  
+
+
+<a name="practicalusejsonfileoptionconvertblessed"></a>
+#### オプション-convert_blessed
+[bless演算子](#practicaluseblessoperator)が関わっているのは確かだろう。  
+
 
 </details>
 
