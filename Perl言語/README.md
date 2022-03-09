@@ -6518,7 +6518,8 @@ JavaScript Object Notationの略が**JSON**と言うことだと今回初めて�
 
 * 簡易目次  
   * [JSONのデータ型](#practicalusejsonfiledatatype)  
-  * [簡易プログラム](#practicalusejsonfilesampleprogram)  
+  * [簡易プログラム(Perl⇒JSON)](#practicalusejsonfilesampleprogramperltojson)  
+  * [簡易プログラム(Perl⇒JSON⇒ファイル書き出し)](#practicalusejsonfilesampleprogramperltojsontofileoutput)  
   * [pretty(見やすく成形)オプション](#practicalusejsonfileoptionpretty)  
   * [space_before(前にスペース付与)オプション](#practicalusejsonfileoptionspace_before)  
   * [space_after(後ろにスペース付与)オプション](#practicalusejsonfileoptionspace_after)  
@@ -6592,7 +6593,7 @@ JSONの場合は、キーもダブルクォーテーションで囲むことが�
     例）"配列":[1, 2, 3, 4,]  
 
 
-<a name="practicalusejsonfilesampleprogram"></a>
+<a name="practicalusejsonfilesampleprogramperltojson"></a>
 ### 簡易プログラム
 PerlのハッシュをJSONデータに変換。
 ```perl
@@ -6621,6 +6622,57 @@ sub json() {
 
 	my $string =  decode('utf-8', JSON::PP->new->utf8->space_after->encode( \%hash ) );	# ってことで、これも正解。
 	say $string;	# {"today": 20220309,"phone": "ガラケー","cable": "USB-TypeC","apple": "Lightning"}
+}
+&json();
+```
+
+
+<a name="practicalusejsonfilesampleprogramperltojsontofileoutput"></a>
+### 簡易プログラム
+PerlのハッシュをJSONデータに変換後ファイルに書き出し。  
+```perl
+use v5.24;
+use JSON::PP;
+use Encode;
+
+sub json() {
+	my $filename = 'hashテスト書き込み.txt';
+	my %hash = (
+			today => 20220309,
+			apple => 'Lightning',
+			cable => 'USB-TypeC',
+			phone => 'ガラケー',
+		);
+
+	my $json = JSON::PP->new();
+
+	my $string =  decode('utf-8', $json->utf8->pretty->canonical->encode( \%hash ) );
+	say $string;	←☆JSONデータに書き換えられている(これをファイルに書き出す)。
+		# {
+		#    "apple" : "Lightning",
+		#    "cable" : "USB-TypeC",
+		#    "phone" : "ガラケー",
+		#    "today" : 20220309
+		# }
+	say '-' x 30;
+
+	open my $file_fh, '>', $filename
+		or die "$filenameファイルオープン失敗($!)。";
+	print {$file_fh} $string;	←☆JSONデータとしてファイルに書き込み。
+	close $file_fh;
+
+	open my $fileFh, '<', $filename
+		or die "$filenameファイルオープン失敗($!)。";
+	say $fileFh;	# GLOB(0x7fbb0481c6b0)
+	foreach my $value ( <$fileFh> ) {
+		print $value;	←☆ファイルに書き込まれたかを確認しているだけなので、JSONデータとして読み込んではいない。
+			# {
+			#    "apple" : "Lightning",
+			#    "cable" : "USB-TypeC",
+			#    "phone" : "ガラケー",
+			#    "today" : 20220309
+			# }
+	}
 }
 &json();
 ```
