@@ -6519,6 +6519,7 @@ JavaScript Object Notationの略が**JSON**と言うことだと今回初めて�
 * 簡易目次  
   * [JSONのデータ型](#practicalusejsonfiledatatype)  
   * [簡易プログラム](#practicalusejsonfilesampleprogram)  
+  * [pretty(見やすく成形)オプション](#practicalusejsonfileoptionpretty)  
 
 ざっくりした説明で言うならば、[ハッシュ](#practicaluseHash)そのもの。  
 以下、例）
@@ -6561,6 +6562,7 @@ JSONの場合は、キーもダブルクォーテーションで囲むことが�
     []記号で囲む。  
     例）"配列":[1, 2, 3, 4,]  
 
+
 <a name="practicalusejsonfilesampleprogram"></a>
 ### 簡易プログラム
 PerlのハッシュをJSONデータに変換。
@@ -6595,6 +6597,35 @@ sub json() {
 ```
 
 
+<a name="practicalusejsonfileoptionpretty"></a>
+#### オプション-pretty
+見やすいように成形するオプション。
+```perl
+use v5.24;
+use JSON::PP;
+use Encode;
+
+sub json() {
+	my %hash = (
+			today => 20220309,
+			apple => 'Lightning',
+			cable => 'USB-TypeC',
+			phone => 'ガラケー',
+		);
+	my $json = JSON::PP->new();
+	my $json = $json->pretty('真');	# もっとも読みやすく加工される。
+	my $string =  decode('utf-8', $json->utf8->space_after->encode( \%hash ) );
+	say $string;
+	# {	←☆めちゃくちゃ見やすくなった(上記設定値を偽にした場合は、1行表示になる)。
+	#    "apple" : "Lightning",
+	#    "today" : 20220309,
+	#    "phone" : "ガラケー",
+	#    "cable" : "USB-TypeC"
+	# }	←☆ただし、結局はハッシュなので、順不同で、都度変わる。
+}
+&json();
+```
+使う時には、有効化しておきたいオプションのひとつ。  
 
 
 </details>
