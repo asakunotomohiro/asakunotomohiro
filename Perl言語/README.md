@@ -6521,6 +6521,7 @@ JavaScript Object Notationの略が**JSON**と言うことだと今回初めて�
   * [簡易プログラム](#practicalusejsonfilesampleprogram)  
   * [pretty(見やすく成形)オプション](#practicalusejsonfileoptionpretty)  
   * [space_before(前にスペース付与)オプション](#practicalusejsonfileoptionspace_before)  
+  * [space_after(後ろにスペース付与)オプション](#practicalusejsonfileoptionspace_after)  
 
 ざっくりした説明で言うならば、[ハッシュ](#practicaluseHash)そのもの。  
 以下、例）
@@ -6656,6 +6657,35 @@ sub json() {
 &json();
 ```
 コロン`:`記号の前に付いているように見えるが、前って本当にコロンの前？  
+
+
+<a name="practicalusejsonfileoptionspace_after"></a>
+#### オプション-space_after
+後ろに余分なスペースを付けるオプション。
+```perl
+use v5.24;
+use JSON::PP;
+use Encode;
+
+sub json() {
+	my %hash = (
+			today => 20220309,
+			apple => 'Lightning',
+			cable => 'USB-TypeC',
+			phone => 'ガラケー',
+		);
+
+	my $json = JSON::PP->new();
+	my $json = $json->space_after(0);	# 偽(後ろの余分なスペースを外す)。エンコード時に有効。
+	my $string =  decode('utf-8', $json->utf8->space_after->encode( \%hash ) );
+	say $string;	# {"today": 20220309,"phone": "ガラケー","apple": "Lightning","cable": "USB-TypeC"}
+	my $json = $json->space_after('真');	# 真(後ろに余分なスペースを付ける)。エンコード時に有効。
+	my $string =  decode('utf-8', $json->utf8->space_after->encode( \%hash ) );
+	say $string;	# {"today": 20220309,"phone": "ガラケー","apple": "Lightning","cable": "USB-TypeC"}
+}
+&json();
+```
+変わっているように見えない。  
 
 
 </details>
