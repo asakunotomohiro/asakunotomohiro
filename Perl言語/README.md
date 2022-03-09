@@ -6530,6 +6530,25 @@ JavaScript Object Notationの略が**JSON**と言うことだと今回初めて�
   * [convert_blessed(よく分からない)オプション](#practicalusejsonfileoptionconvertblessed)  
   * [allow_tags(よく分からない)オプション](#practicalusejsonfileoptionallowtags)  
   * [boolean_values(よく分からない)オプション](#practicalusejsonfileoptionbooleanvalues)  
+  * [filter_json_object(よく分からない)オプション](#practicalusejsonfileoptionfilterjsonobject)  
+  * [filter_json_single_key_object(よく分からない)オプション](#practicalusejsonfileoptionfilterjsonsinglekeyobject)  
+  * [shrink(よく分からない)オプション](#practicalusejsonfileoptionshrink)  
+  * [max_depth(よく分からない)オプション](#practicalusejsonfileoptionmaxdepth)  
+  * [max_size(よく分からない)オプション](#practicalusejsonfileoptionmaxsize)  
+  * [encodeオプション](#practicalusejsonfileoptionencode)  
+  * [decodeオプション](#practicalusejsonfileoptiondecode)  
+  * [decode_prefix(よく分からない)オプション](#practicalusejsonfileoptiondecodeprefix)  
+  * [allow_singlequote(よく分からない)オプション](#practicalusejsonfileoptionallowsinglequote)  
+  * [allow_barekey(よく分からない)オプション](#practicalusejsonfileoptionallow)  
+  * [allow_bignum(よく分からない)オプション](#practicalusejsonfileoptionallowbignum)  
+  * [loose(よく分からない)オプション](#practicalusejsonfileoptionloose)  
+  * [escape_slash(よく分からない)オプション](#practicalusejsonfileoptionescapeslash)  
+  * [indent_length(よく分からない)オプション](#practicalusejsonfileoptionindentlength)  
+  * [sort_by(よく分からない)オプション](#practicalusejsonfileoptionsortby)  
+  * [incr_parse(よく分からない)オプション](#practicalusejsonfileoptionincrparse)  
+  * [incr_text(よく分からない)オプション](#practicalusejsonfileoptionincrtext)  
+  * [incr_skip(よく分からない)オプション](#practicalusejsonfileoptionincrskip)  
+  * [incr_reset(よく分からない)オプション](#practicalusejsonfileoptionincrreset)  
 
 ざっくりした説明で言うならば、[ハッシュ](#practicaluseHash)そのもの。  
 以下、例）
@@ -6815,6 +6834,92 @@ sub json() {
 #### オプション-boolean\_values
 よく分からない。  
 
+
+<a name="practicalusejsonfileoptionfilterjsonobject"></a>
+#### オプション-filter\_json\_object
+
+
+<a name="practicalusejsonfileoptionfilterjsonsinglekeyobject"></a>
+#### オプション-filter\_json\_single\_key\_object
+
+
+<a name="practicalusejsonfileoptionshrink"></a>
+#### オプション-shrink
+
+
+<a name="practicalusejsonfileoptionmaxdepth"></a>
+#### オプション-max\_depth
+
+
+<a name="practicalusejsonfileoptionmaxsize"></a>
+#### オプション-max\_size
+
+
+<a name="practicalusejsonfileoptionencode"></a>
+#### オプション-encode
+
+
+<a name="practicalusejsonfileoptiondecode"></a>
+#### オプション-decode
+
+
+<a name="practicalusejsonfileoptiondecodeprefix"></a>
+#### オプション-decode\_prefix
+
+
+<a name="practicalusejsonfileoptionallowsinglequote"></a>
+#### オプション-allow\_singlequote
+※JSON::PP限定
+
+
+<a name="practicalusejsonfileoptionallow\_barekey"></a>
+#### オプション-allow\_barekey
+※JSON::PP限定
+
+
+<a name="practicalusejsonfileoptionallowbignum"></a>
+#### オプション-allow\_bignum
+※JSON::PP限定
+
+
+<a name="practicalusejsonfileoptionloose"></a>
+#### オプション-loose
+※JSON::PP限定
+
+
+<a name="practicalusejsonfileoptionescapeslash"></a>
+#### オプション-escape\_slash
+※JSON::PP限定
+
+
+<a name="practicalusejsonfileoptionindentlength"></a>
+#### オプション-indentlength
+※JSON::PP限定
+
+
+<a name="practicalusejsonfileoptionsortby"></a>
+#### オプション-sort\_by
+※JSON::PP限定
+
+
+<a name="practicalusejsonfileoptionincrparse"></a>
+#### オプション-incr\_parse
+※インクリメンタルパーシング  
+
+
+<a name="practicalusejsonfileoptionincrtext"></a>
+#### オプション-incr\_text
+※インクリメンタルパーシング  
+
+
+<a name="practicalusejsonfileoptionincrskip"></a>
+#### オプション-incr\_skip
+※インクリメンタルパーシング  
+
+
+<a name="practicalusejsonfileoptionincrreset"></a>
+#### オプション-incr\_reset
+※インクリメンタルパーシング  
 
 </details>
 
