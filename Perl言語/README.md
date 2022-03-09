@@ -6519,6 +6519,36 @@ JavaScript Object Notationの略が**JSON**と言うことだと今回初めて�
 * 簡易目次  
   * [JSONのデータ型](#practicalusejsonfiledatatype)  
   * [簡易プログラム](#practicalusejsonfilesampleprogram)  
+  * [pretty(見やすく成形)オプション](#practicalusejsonfileoptionpretty)  
+  * [space_before(前にスペース付与)オプション](#practicalusejsonfileoptionspace_before)  
+  * [space_after(後ろにスペース付与)オプション](#practicalusejsonfileoptionspace_after)  
+  * [relaxed((デコード時に整形する)オプション](#practicalusejsonfileoptionrelaxed)  
+  * [canonical(並び替え)オプション](#practicalusejsonfileoptioncanonical)  
+  * [allow_nonref(常に有効化された)オプション](#practicalusejsonfileoptionallownonref)  
+  * [allow_unknown(よく分からない)オプション](#practicalusejsonfileoptionallowunknown)  
+  * [allow_blessed(よく分からない)オプション](#practicalusejsonfileoptionallowblessed)  
+  * [convert_blessed(よく分からない)オプション](#practicalusejsonfileoptionconvertblessed)  
+  * [allow_tags(よく分からない)オプション](#practicalusejsonfileoptionallowtags)  
+  * [boolean_values(よく分からない)オプション](#practicalusejsonfileoptionbooleanvalues)  
+  * [filter_json_object(よく分からない)オプション](#practicalusejsonfileoptionfilterjsonobject)  
+  * [filter_json_single_key_object(よく分からない)オプション](#practicalusejsonfileoptionfilterjsonsinglekeyobject)  
+  * [shrink(よく分からない)オプション](#practicalusejsonfileoptionshrink)  
+  * [max_depth(よく分からない)オプション](#practicalusejsonfileoptionmaxdepth)  
+  * [max_size(よく分からない)オプション](#practicalusejsonfileoptionmaxsize)  
+  * [encodeオプション](#practicalusejsonfileoptionencode)  
+  * [decodeオプション](#practicalusejsonfileoptiondecode)  
+  * [decode_prefix(よく分からない)オプション](#practicalusejsonfileoptiondecodeprefix)  
+  * [allow_singlequote(よく分からない)オプション](#practicalusejsonfileoptionallowsinglequote)  
+  * [allow_barekey(よく分からない)オプション](#practicalusejsonfileoptionallow)  
+  * [allow_bignum(よく分からない)オプション](#practicalusejsonfileoptionallowbignum)  
+  * [loose(よく分からない)オプション](#practicalusejsonfileoptionloose)  
+  * [escape_slash(よく分からない)オプション](#practicalusejsonfileoptionescapeslash)  
+  * [indent_length(よく分からない)オプション](#practicalusejsonfileoptionindentlength)  
+  * [sort_by(よく分からない)オプション](#practicalusejsonfileoptionsortby)  
+  * [incr_parse(よく分からない)オプション](#practicalusejsonfileoptionincrparse)  
+  * [incr_text(よく分からない)オプション](#practicalusejsonfileoptionincrtext)  
+  * [incr_skip(よく分からない)オプション](#practicalusejsonfileoptionincrskip)  
+  * [incr_reset(よく分からない)オプション](#practicalusejsonfileoptionincrreset)  
 
 ざっくりした説明で言うならば、[ハッシュ](#practicaluseHash)そのもの。  
 以下、例）
@@ -6561,6 +6591,7 @@ JSONの場合は、キーもダブルクォーテーションで囲むことが�
     []記号で囲む。  
     例）"配列":[1, 2, 3, 4,]  
 
+
 <a name="practicalusejsonfilesampleprogram"></a>
 ### 簡易プログラム
 PerlのハッシュをJSONデータに変換。
@@ -6595,7 +6626,309 @@ sub json() {
 ```
 
 
+<a name="practicalusejsonfileoptionpretty"></a>
+#### オプション-pretty
+見やすいように成形するオプション。
+```perl
+use v5.24;
+use JSON::PP;
+use Encode;
 
+sub json() {
+	my %hash = (
+			today => 20220309,
+			apple => 'Lightning',
+			cable => 'USB-TypeC',
+			phone => 'ガラケー',
+		);
+	my $json = JSON::PP->new();
+	my $json = $json->pretty('真');	# もっとも読みやすく加工される。
+	my $string =  decode('utf-8', $json->utf8->space_after->encode( \%hash ) );
+	say $string;
+	# {	←☆めちゃくちゃ見やすくなった(上記設定値を偽にした場合は、1行表示になる)。
+	#    "apple" : "Lightning",
+	#    "today" : 20220309,
+	#    "phone" : "ガラケー",
+	#    "cable" : "USB-TypeC"
+	# }	←☆ただし、結局はハッシュなので、順不同で、都度変わる。
+}
+&json();
+```
+使う時には、有効化しておきたいオプションのひとつ。  
+
+
+<a name="practicalusejsonfileoptionspacebefore"></a>
+#### オプション-space\_before
+前に余分なスペースを付けるオプション。
+```perl
+use v5.24;
+use JSON::PP;
+use Encode;
+
+sub json() {
+	my %hash = (
+			today => 20220309,
+			apple => 'Lightning',
+			cable => 'USB-TypeC',
+			phone => 'ガラケー',
+		);
+	my $json = JSON::PP->new();
+	#my $json = $json->space_before(0);	# 偽がデフォルト値のようだ。
+	my $string =  decode('utf-8', $json->utf8->space_after->encode( \%hash ) );
+	say $string;	# {"phone": "ガラケー","today": 20220309,"apple": "Lightning","cable": "USB-TypeC"}
+
+	my $json = $json->space_before('真');	# 前に余分なスペースを付ける。
+	my $string =  decode('utf-8', $json->utf8->space_after->encode( \%hash ) );
+	say $string;	# {"phone" : "ガラケー","today" : 20220309,"apple" : "Lightning","cable" : "USB-TypeC"}
+}
+&json();
+```
+コロン`:`記号の前に付いているように見えるが、前って本当にコロンの前？  
+
+
+<a name="practicalusejsonfileoptionspaceafter"></a>
+#### オプション-space\_after
+後ろに余分なスペースを付けるオプション。
+```perl
+use v5.24;
+use JSON::PP;
+use Encode;
+
+sub json() {
+	my %hash = (
+			today => 20220309,
+			apple => 'Lightning',
+			cable => 'USB-TypeC',
+			phone => 'ガラケー',
+		);
+
+	my $json = JSON::PP->new();
+	my $json = $json->space_after(0);	# 偽(後ろの余分なスペースを外す)。エンコード時に有効。
+	my $string =  decode('utf-8', $json->utf8->space_after->encode( \%hash ) );
+	say $string;	# {"today": 20220309,"phone": "ガラケー","apple": "Lightning","cable": "USB-TypeC"}
+	my $json = $json->space_after('真');	# 真(後ろに余分なスペースを付ける)。エンコード時に有効。
+	my $string =  decode('utf-8', $json->utf8->space_after->encode( \%hash ) );
+	say $string;	# {"today": 20220309,"phone": "ガラケー","apple": "Lightning","cable": "USB-TypeC"}
+}
+&json();
+```
+変わっているように見えない。  
+
+
+<a name="practicalusejsonfileoptionrelaxed"></a>
+#### オプション-relaxed
+データ末尾にもカンマを付けたり、シャープ・ダブルスラッシュ・スラッシュアスタリスクでコメント化など有効にするオプション。  
+
+無効`my $json = $json->relaxed(0);`  
+有効`my $json = $json->relaxed(1);`  
+
+
+<a name="practicalusejsonfileoptioncanonical"></a>
+#### オプション-canonical
+並び替えるオプション。
+```perl
+use v5.24;
+use JSON::PP;
+use Encode;
+
+sub json() {
+	my %hash = (
+			today => 20220309,
+			apple => 'Lightning',
+			cable => 'USB-TypeC',
+			phone => 'ガラケー',
+		);
+
+	my $json = JSON::PP->new();
+	say '-' x 30;
+	my $json = $json->canonical(0);	# 偽(標準動作)。
+	my $string =  decode('utf-8', $json->utf8->space_after->encode( \%hash ) );
+	say $string;	# {"today": 20220309,"cable": "USB-TypeC","apple": "Lightning","phone": "ガラケー"}
+	my $json = $json->canonical('真');	# キーで並び替える(エンコード時に有効)。
+	my $string =  decode('utf-8', $json->utf8->space_after->encode( \%hash ) );
+	say $string;	# {"apple": "Lightning","cable": "USB-TypeC","phone": "ガラケー","today": 20220309}
+}
+&json();
+```
+欠点は、過負荷が発生すること。  
+しかし、常に有効化したい。  
+
+
+<a name="practicalusejsonfileoptionallownonref"></a>
+#### オプション-allow\_nonref
+常に有効化されたオプション。  
+無効化の場合、エンコード時に、配列リファレンスもしくはハッシュリファレンスを渡さない場合エラーになるなど色々制約があるため、無効化する必要が無い。  
+以下、変化が見られないプログラム。
+```perl
+use v5.24;
+use JSON::PP;
+use Encode;
+
+sub json() {
+	my %hash = (
+			today => 20220309,
+			apple => 'Lightning',
+			cable => 'USB-TypeC',
+			phone => 'ガラケー',
+		);
+
+	my $json = JSON::PP->new();
+	my $json = $json->allow_nonref(0);	# 偽。
+	my $string =  decode('utf-8', $json->utf8->space_after->encode( \%hash ) );
+	say $string;	# {"phone": "ガラケー","cable": "USB-TypeC","today": 20220309,"apple": "Lightning"}
+	my $json = $json->allow_nonref('真');	# いいように変換(標準動作)。
+	my $string =  decode('utf-8', $json->utf8->space_after->encode( \%hash ) );
+	say $string;	# {"phone": "ガラケー","cable": "USB-TypeC","today": 20220309,"apple": "Lightning"}
+}
+&json();
+```
+スカラーなどを渡せばエラーが発生して変化がわかるのだろうが、そんな変化は見たくない。  
+何より、エラーを発生することは全く求めていない。  
+
+
+<a name="practicalusejsonfileoptionallowunknown"></a>
+#### オプション-allow\_unknown
+これ何？
+```perl
+use v5.24;
+use JSON::PP;
+use Encode;
+
+sub json() {
+	my %hash = (
+			today => 20220309,
+			apple => 'Lightning',
+			cable => 'USB-TypeC',
+			phone => 'ガラケー',
+		);
+
+	my $json = JSON::PP->new();
+	my $json = $json->allow_unknown(0);	# 偽。
+	my $string =  decode('utf-8', $json->utf8->space_after->encode( \%hash ) );
+	say $string;	# {"today": 20220309,"cable": "USB-TypeC","apple": "Lightning","phone": "ガラケー"}
+	my $json = $json->allow_unknown('真');	# これは何をするオプション？
+	my $string =  decode('utf-8', $json->utf8->space_after->encode( \%hash ) );
+	say $string;	# {"today": 20220309,"cable": "USB-TypeC","apple": "Lightning","phone": "ガラケー"}
+}
+&json();
+```
+
+
+<a name="practicalusejsonfileoptionallowblessed"></a>
+#### オプション-allow\_blessed
+よく分からない。  
+[bless演算子](#practicaluseblessoperator)が関わっているのは確かだろう。  
+
+
+<a name="practicalusejsonfileoptionconvertblessed"></a>
+#### オプション-convert\_blessed
+よく分からない。  
+[bless演算子](#practicaluseblessoperator)が関わっているのは確かだろう。  
+
+
+<a name="practicalusejsonfileoptionallowtags"></a>
+#### オプション-allow\_tags
+よく分からない。  
+
+
+<a name="practicalusejsonfileoptionbooleanvalues"></a>
+#### オプション-boolean\_values
+よく分からない。  
+
+
+<a name="practicalusejsonfileoptionfilterjsonobject"></a>
+#### オプション-filter\_json\_object
+よく分からない。  
+
+
+<a name="practicalusejsonfileoptionfilterjsonsinglekeyobject"></a>
+#### オプション-filter\_json\_single\_key\_object
+よく分からない。  
+
+
+<a name="practicalusejsonfileoptionshrink"></a>
+#### オプション-shrink
+よく分からない。  
+
+
+<a name="practicalusejsonfileoptionmaxdepth"></a>
+#### オプション-max\_depth
+よく分からない。  
+
+
+<a name="practicalusejsonfileoptionmaxsize"></a>
+#### オプション-max\_size
+よく分からない。  
+
+
+<a name="practicalusejsonfileoptionencode"></a>
+#### オプション-encode
+よく分からない。  
+
+
+<a name="practicalusejsonfileoptiondecode"></a>
+#### オプション-decode
+よく分からない。  
+
+
+<a name="practicalusejsonfileoptiondecodeprefix"></a>
+#### オプション-decode\_prefix
+よく分からない。  
+
+
+<a name="practicalusejsonfileoptionallowsinglequote"></a>
+#### オプション-allow\_singlequote
+※JSON::PP限定  
+
+
+<a name="practicalusejsonfileoptionallow\_barekey"></a>
+#### オプション-allow\_barekey
+※JSON::PP限定  
+
+
+<a name="practicalusejsonfileoptionallowbignum"></a>
+#### オプション-allow\_bignum
+※JSON::PP限定  
+
+
+<a name="practicalusejsonfileoptionloose"></a>
+#### オプション-loose
+※JSON::PP限定  
+
+
+<a name="practicalusejsonfileoptionescapeslash"></a>
+#### オプション-escape\_slash
+※JSON::PP限定  
+
+
+<a name="practicalusejsonfileoptionindentlength"></a>
+#### オプション-indentlength
+※JSON::PP限定  
+
+
+<a name="practicalusejsonfileoptionsortby"></a>
+#### オプション-sort\_by
+※JSON::PP限定  
+
+
+<a name="practicalusejsonfileoptionincrparse"></a>
+#### オプション-incr\_parse
+※インクリメンタルパーシング  
+
+
+<a name="practicalusejsonfileoptionincrtext"></a>
+#### オプション-incr\_text
+※インクリメンタルパーシング  
+
+
+<a name="practicalusejsonfileoptionincrskip"></a>
+#### オプション-incr\_skip
+※インクリメンタルパーシング  
+
+
+<a name="practicalusejsonfileoptionincrreset"></a>
+#### オプション-incr\_reset
+※インクリメンタルパーシング  
 
 </details>
 
