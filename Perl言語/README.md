@@ -6522,6 +6522,7 @@ JavaScript Object Notationの略が**JSON**と言うことだと今回初めて�
   * [pretty(見やすく成形)オプション](#practicalusejsonfileoptionpretty)  
   * [space_before(前にスペース付与)オプション](#practicalusejsonfileoptionspace_before)  
   * [space_after(後ろにスペース付与)オプション](#practicalusejsonfileoptionspace_after)  
+  * [relaxed((デコード時に整形する)オプション](#practicalusejsonfileoptionrelaxed)  
 
 ざっくりした説明で言うならば、[ハッシュ](#practicaluseHash)そのもの。  
 以下、例）
@@ -6686,6 +6687,13 @@ sub json() {
 &json();
 ```
 変わっているように見えない。  
+
+
+<a name="practicalusejsonfileoptionrelaxed"></a>
+#### オプション-relaxed
+データ末尾にもカンマを付けたり、シャープ・ダブルスラッシュ・スラッシュアスタリスクでコメント化など有効にするオプション。
+無効`my $json = $json->relaxed(0);`  
+有効`my $json = $json->relaxed(1);`  
 
 
 </details>
