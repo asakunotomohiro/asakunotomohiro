@@ -6520,6 +6520,7 @@ JavaScript Object Notationの略が**JSON**と言うことだと今回初めて�
   * [JSONのデータ型](#practicalusejsonfiledatatype)  
   * [簡易プログラム(Perl⇒JSON)](#practicalusejsonfilesampleprogramperltojson)  
   * [簡易プログラム(Perl⇒JSON⇒ファイル書き出し)](#practicalusejsonfilesampleprogramperltojsontofileoutput)  
+  * [簡易プログラム(JSONファイル⇒Perl)](#practicalusejsonfilesampleprogramjsonfiletoperl)  
   * [pretty(見やすく成形)オプション](#practicalusejsonfileoptionpretty)  
   * [space_before(前にスペース付与)オプション](#practicalusejsonfileoptionspace_before)  
   * [space_after(後ろにスペース付与)オプション](#practicalusejsonfileoptionspace_after)  
@@ -6676,6 +6677,52 @@ sub json() {
 }
 &json();
 ```
+
+
+<a name="practicalusejsonfilesampleprogramjsonfiletoperl"></a>
+### 簡易プログラム
+ファイルのJSONデータをPerlで読み込む。
+```perl
+use v5.24;
+use JSON::PP;
+use Encode;
+
+sub json() {
+	my $filename = 'JSONデータ.txt';
+	open my $fileFh, '<', $filename
+		or die "デスクトップの$filenameファイルオープン失敗($!)。";
+	my @file = <$fileFh>;
+	foreach my $value ( @file ) {
+		chomp $value;
+		say $value;
+	}
+
+	my $json = JSON::PP->new();
+	my $string = $json->utf8(0)->decode( "@file" );	# UTF8がOFFになっているようだ？
+	say $string;	# HASH(0x7fa95d001bd0)
+	while( my( $key, $value ) = each ( %$string )) {
+		say "$key->$value";	# 当たり前だが、出力は順不同。
+			# today->20220309
+			# phone->ガラケー
+			# cable->USB-TypeC
+			# apple->Lightning
+	}
+	say '-' x 30;
+	$string->{phone} = 'スマートフォン';	# ハッシュデータとして書き換え。
+	#my $output = decode('utf-8', $json->utf8(1)->pretty->canonical->encode( $string ));	# 書き換えたデータをJSONに置き換え。
+	my $output = $json->utf8(0)->pretty->canonical->encode( $string );	# 上記と同じ結果になるようだ(今回UTF8-OFF)。
+	say $output;
+		# {
+		#    "apple" : "Lightning",
+		#    "cable" : "USB-TypeC",
+		#    "phone" : "スマートフォン",	←☆書き換わっている。
+		#    "today" : 20220309
+		# }
+}
+&json();
+```
+UTF-8プラグマが何ともしがたい存在。  
+それ以外は、普通のハッシュなどの扱いなので、困ることはないだろう。  
 
 
 <a name="practicalusejsonfileoptionpretty"></a>
