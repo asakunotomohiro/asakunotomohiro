@@ -4923,6 +4923,7 @@ sub associativearray() {
 
 <a name="practicaluseHashenv"></a>
 #### OSの環境変数(`%ENV`)
+※[システム管理](#practicalusesystem)にも影響する項目。  
 
 以下、環境変数をPerlで取得する。
 ```terminal
@@ -4931,7 +4932,7 @@ HISTCONTROL=ignoreboth
 $
 ```
 
-以下、取得できている。
+以下、取得できている(取得結果は一例)。
 ```perl
 say "$ENV{HISTCONTROL}";	# ignoreboth
 ```
@@ -4946,6 +4947,22 @@ $
 ```
 
 何に使うのか分からないが、GoでのGUI開発は日本語文字を取得するのに環境変数を利用しているな・・・。  
+また、OSによっては、環境変数への区切り記号が異なる。  
+
+そのため、良い塩梅の記号を用いてもらうためのモジュールが用意されており、それが**Config**になる。  
+以下、例）
+```perl
+use v5.24;
+use Config;
+
+sub config() {
+	# 以下、OSに合わせた設定値の区切り記号で値を追加できる。
+	$ENV{HOGE} = join $Config{path_sep},
+					'/home/hoge/bin', $ENV{HOGE};
+	say "HOGE：$ENV{HOGE}";	←☆Mac環境では、末尾にコロン:記号が付与されていた。
+}
+&config();
+```
 
 
 <a name="practicaluseHashsigint"></a>
@@ -5031,6 +5048,8 @@ say "<$date>";				# <0>
 第2引数以降が存在する場合、シェルなどを呼び出すことなく実行することになる。  
 これは、セキュリティ上の問題になるため、第1引数のコマンドにオプションが必要な場合は、そのオプションを第2引数に振り分けた方がセキュリティ向上に寄与できる。  
 ただ、何でもかんでも第2引数に放り込めば良いとは限らないようだ。  
+
+これらとは別に、[ハッシュ](#practicaluseHash)の[**OSの環境変数**](#practicaluseHashenv)が今回のプロセス管理に関わってくるため、参照しておくこと。  
 
 
 [応用知識の目次に戻る](#appliedknowledgeContents)  
