@@ -3168,6 +3168,7 @@ Python限定にしたくなかったが、他のプログラミング言語に�
   * [ハッシュ(連想配列)](#practicaluseHash)  
   * [クロージャ](#practicaluseClosure)  
   * [system関数](#practicalusesystem)  
+  * [exec関数](#practicaluseexec)  
   * [オブジェクト指向](#practicaluseObjectorientation)  
     2021/11/11〜  
   * [switchステートメント](#practicaluseGivenwhen)  
@@ -5012,11 +5013,11 @@ Perlプログラムは、どのようなシステムでも同じ処理を行い�
 しかし、外部コマンドは、外部にあるか分からないのもあるが、同じ結果を返すかどうかも分からない。  
 動作確認は入念に行う必要があるだろう。  
 
-
 <a name="practicalusesystemfunc"></a>
 ### system関数
-子プロセスを起動から外部プログラムを実行するのが手軽な方法。  
-その方法が、**system関数**を使うこと。  
+子プロセスを起動し、外部プログラムを実行する方法として、**system関数**を使う。  
+※完全にPerlプログラムから切り離されて動く([exec関数](#practicaluseexec)の場合は、Perlプログラムに連動(?)して動く)。  
+
 Perlプログラムからdateコマンドを使う例）
 `system 'date';  
 当然ながらPerlプログラム外(OS側)に、**date**コマンドが存在する前提になる。  
@@ -5050,6 +5051,18 @@ say "<$date>";				# <0>
 ただ、何でもかんでも第2引数に放り込めば良いとは限らないようだ。  
 
 これらとは別に、[ハッシュ](#practicaluseHash)の[**OSの環境変数**](#practicaluseHashenv)が今回のプロセス管理に関わってくるため、参照しておくこと。  
+
+
+[応用知識の目次に戻る](#appliedknowledgeContents)  
+
+
+<a name="practicaluseexec"></a>
+<details><summary>応用知識-exec関数</summary>
+
+外部(システム側の)コマンドをPerlで叩き、その結果を受け取る。  
+Perlプログラムは、どのようなシステムでも同じ処理を行い、同じ結果を残す。  
+しかし、外部コマンドは、外部にあるか分からないのもあるが、同じ結果を返すかどうかも分からない。  
+動作確認は入念に行う必要があるだろう。  
 
 
 [応用知識の目次に戻る](#appliedknowledgeContents)  
