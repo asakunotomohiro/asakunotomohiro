@@ -5006,12 +5006,13 @@ for (1..1000000) {
 </details>
 
 <a name="practicalusesystem"></a>
-<details><summary>応用知識-system関数</summary>
+<details><summary>応用知識-system関数(外部コマンド実行)</summary>
 
 外部(システム側の)コマンドをPerlで叩き、その結果を受け取る。  
 Perlプログラムは、どのようなシステムでも同じ処理を行い、同じ結果を残す。  
 しかし、外部コマンドは、外部にあるか分からないのもあるが、同じ結果を返すかどうかも分からない。  
 動作確認は入念に行う必要があるだろう。  
+また、出力結果は標準出力に送られるため、結果が欲しい場合は、[バッククォート](#practicalusebackquote)を使う必要がある。  
 
 
 <a name="practicalusesystemfunc"></a>
@@ -5058,11 +5059,12 @@ say "<$date>";				# <0>
 
 
 <a name="practicaluseexec"></a>
-<details><summary>応用知識-exec関数</summary>
+<details><summary>応用知識-exec関数(外部コマンド実行)</summary>
 
 外部(システム側の)コマンドをPerlで叩き、その結果を受け取る。  
 Perlプログラムは、どのようなシステムでも同じ処理を行い、同じ結果を残す。  
 そして、外部コマンドは、外部にあるか分からないため、動作確認は入念に行う必要があるだろう。  
+また、出力結果は標準出力に送られるため、結果が欲しい場合は、[バッククォート](#practicalusebackquote)を使う必要がある。  
 
 
 <a name="practicaluseexecfunc"></a>
@@ -5077,6 +5079,16 @@ Perlプログラムからdateコマンドを使う例）
 そのため、基本的には、exec関数を使う場合、forkと組み合わせる。  
 
 [応用知識の目次に戻る](#appliedknowledgeContents)  
+
+</details>
+
+<a name="practicalusebackquote"></a>
+<details><summary>応用知識-バッククォート(外部コマンド実行)</summary>
+
+既出の[system関数](#practicalusesystem)・[exec関数](#practicaluseexec)では、出力結果を標準出力に送る。  
+今回のバッククォートでは、出力結果を戻り値として受け取ることができる。  
+しかし、Unixのシェル結果と異なり、Perlで取得する場合は改行まで含めるため、改行削除作業が必要になるだろう。  
+
 
 </details>
 
