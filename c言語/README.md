@@ -2391,6 +2391,7 @@ TCP/IPと呼ぶ通信プロトコルを利用するためにソケット(Socket)
 * 目次  
   * [ヘッダ](#practicalusesqltcpipprotocolheader)  
     `<sys/socket.h>`  
+  * [ソケット用関数](#practicalusesqltcpipprotocolsocketfunc)  
 
 
 <a name="practicalusesqltcpipprotocolheader"></a>
@@ -2398,6 +2399,31 @@ TCP/IPと呼ぶ通信プロトコルを利用するためにソケット(Socket)
 `#include <sys/socket.h>`  
 ※ソケットライブラリのリンク付けに利用する。  
 ※コンパイル時にオプション指定が必要な場合がある？  
+
+
+<a name="practicalusesqltcpipprotocolsocketfunc"></a>
+### ソケット用に用意された関数
+ソケット利用に使う関数一覧。
+|関数名|説明|
+|------|----|
+|**accept**|connectによる接続を待つ。必須利用。|
+|**bind**|ソケットとプロセスを合体する。必須利用。|
+|**connect**|サーバに接続する。必須利用。|
+|**getpeername**|接続相手の名前を得る。|
+|**getsockname**|自身のソケット名を得る。|
+|**listen**|聞く体制に入る。必須利用。|
+|**recv**|サーバからデータを受信する？必須利用。|
+|**recvfrom**|データを受信する(何から？)。|
+|**send**|サーバにデータを送信する？必須利用。|
+|**sendto**|データを送信する(どこに？)。|
+|**setsockopt**|ソケットオプション値を設定する。|
+|**getsockopt**|ソケットオプション値を取得する。|
+|**shutdown**|ソケットをシャットダウンする。|
+|**socket**|ソケットハンドラを得る。必須利用。|
+|**socketpair**|ソケットペアを作成する。|
+
+socketで得られるハンドラは、通常のファイルディスクリプタとして扱えるため、**close**により終了する。  
+TCP/IPで接続する場合のgetpeername・getsocknameは、IPアドレスとポート番号を取得できる。  
 
 </details>
 
