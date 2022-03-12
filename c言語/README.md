@@ -2384,8 +2384,22 @@ Python限定にしたくなかったが、他のプログラミング言語に�
 
 
 <a name="practicalusesqltcpipprotocol"></a>
-### ソケット通信(TCP/IP)
-TCP/IPと呼ぶ通信プロトコルを利用するためにソケット(Socket)の勉強を行う。  
+<details><summary>応用知識-ソケット通信(TCP/IP)</summary>
+
+TCP/IPと呼ぶ通信プロトコルを利用するためにソケット(Socket)を使う。  
+
+* 目次  
+  * [ヘッダ](#practicalusesqltcpipprotocolheader)  
+    `<sys/socket.h>`  
+
+
+<a name="practicalusesqltcpipprotocolheader"></a>
+### ソケット利用のためのヘッダ
+`#include <sys/socket.h>`  
+※ソケットライブラリのリンク付けに利用する。  
+※コンパイル時にオプション指定が必要な場合がある？  
+
+</details>
 
 
 ## ※Gitのマージルール
