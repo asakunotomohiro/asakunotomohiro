@@ -31,6 +31,10 @@ sub main() {
 	my $date = `date -a`;	# 上記のエラーが発生する(変数には収まらない)。
 	#chomp $date;
 	#say $date;	←☆空文字列(undef)
+
+	my $date = `date < /dev/null`;
+	chomp $date;
+	say $date;	# 2022年 3月13日 日曜日 21時21分43秒 JST
 }
 &main();
 
