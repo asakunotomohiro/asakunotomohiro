@@ -5099,6 +5099,16 @@ say "$date";
 		# 	←☆改行が含まれている。
 ```
 
+バッククォート内では、変数展開が行われる。
+```perl
+use v5.24;
+
+my $pwd = 'pwd';	# 現在地取得。
+my $ret = `$pwd`;	←☆変数展開。
+chomp $ret;	←☆改行削除。
+say "<$ret>";	# </Users/asakunotomohiro/study勉強用Githubリポジトリ/Perl言語>
+```
+
 </details>
 
 <a name="practicaluseFileoperation"></a>

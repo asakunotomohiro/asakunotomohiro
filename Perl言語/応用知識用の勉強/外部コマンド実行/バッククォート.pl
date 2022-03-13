@@ -14,6 +14,11 @@ sub main() {
 	chomp $date;
 	say "$date";
 			# 2022年 3月11日 金曜日 18時17分28秒 JST	←☆改行が取り除かれている。
+
+	my $pwd = 'pwd';
+	my $ret = `$pwd`;
+	chomp $ret;
+	say "<$ret>";
 }
 &main();
 
