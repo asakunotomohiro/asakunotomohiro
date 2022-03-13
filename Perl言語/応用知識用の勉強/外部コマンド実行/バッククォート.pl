@@ -19,6 +19,10 @@ sub main() {
 	my $ret = `$pwd`;
 	chomp $ret;
 	say "<$ret>";
+
+	my $pid = qx(echo $$);
+	chomp $pid;
+	say $pid;	# 54515	←☆PIDなので、実行毎に数字が変わる。
 }
 &main();
 

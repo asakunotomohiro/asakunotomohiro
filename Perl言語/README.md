@@ -559,11 +559,12 @@ print "$hoge's" . $hoge;	# boo	←☆なぜこの表記になるのか分から�
    * 丸括弧`()`  
      `(〜)`を`qw/ /`に置き換えられる。  
 
-|標準形|一般形|意味|展開|
-|------|------|----|----|
+<a name="subVariable3quarts"></a>
+|標準形|一般形|意味|変数展開|
+|------|------|----|--------|
 |`''`|`q//`|リテラル文字列|しない|
 |`""`|`qq//`|リテラル文字列|する|
-|``` `` ```|`qx//`|コマンド実行|する|
+|``` `` ```|[`qx//`](#practicalusebackquote)|コマンド実行|する|
 |`()`|`qw//`|ワードリスト|しない|
 |`s///`|`s///`|パターン置換|する|
 |`y///`|`tr///`|文字変換|しない|
@@ -5057,6 +5058,7 @@ say "<$date>";				# <0>
 
 [応用知識の目次に戻る](#appliedknowledgeContents)  
 
+</details>
 
 <a name="practicaluseexec"></a>
 <details><summary>応用知識-exec関数(外部コマンド実行)</summary>
@@ -5099,7 +5101,8 @@ say "$date";
 		# 	←☆改行が含まれている。
 ```
 
-バッククォート内では、変数展開が行われる。
+<a name="practicalusebackquotebackquarts"></a>
+[バッククォート内](#variable変数)では、[変数展開](#subVariable3quarts)が行われる。
 ```perl
 use v5.24;
 
@@ -5107,6 +5110,12 @@ my $pwd = 'pwd';	# 現在地取得。
 my $ret = `$pwd`;	←☆変数展開。
 chomp $ret;	←☆改行削除。
 say "<$ret>";	# </Users/asakunotomohiro/study勉強用Githubリポジトリ/Perl言語>
+```
+以下、qxでも対応可能。
+```perl
+my $pid = qx(echo $$);	←☆qxは、``で囲むことを表している。
+chomp $pid;	←☆改行削除。
+say $pid;	# 54515	←☆PIDなので、実行毎に数字が変わる。
 ```
 
 </details>
