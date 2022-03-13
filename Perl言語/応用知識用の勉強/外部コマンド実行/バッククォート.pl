@@ -23,6 +23,14 @@ sub main() {
 	my $pid = qx(echo $$);
 	chomp $pid;
 	say $pid;	# 54515	←☆PIDなので、実行毎に数字が変わる。
+
+	#`date -a`;
+		# date: illegal option -- a
+		# usage: date [-jnRu] [-d dst] [-r seconds] [-t west] [-v[+|-]val[ymwdHMS]] ... 
+		#             [-f fmt date | [[[mm]dd]HH]MM[[cc]yy][.ss]] [+format]
+	my $date = `date -a`;	# 上記のエラーが発生する(変数には収まらない)。
+	#chomp $date;
+	#say $date;	←☆空文字列(undef)
 }
 &main();
 
