@@ -5912,6 +5912,16 @@ Perlから子プロセスを生成し、やりとりをしつつ子プロセス�
 パイプ記号`|`を外部コマンドの前もしくは後ろに付けることで、それが実現する。  
 open関数に、ファイル扱いとして引数を渡すため、パイプオープン(piped open)と呼ぶことがあるそうだ。  
 
+* パイプ配置場所  
+  * 前(`|date`)  
+    Perlプログラムからの標準出力先をコマンド(**date**)への引数として渡す。  
+    プロンプト表記例）`$ perlProgram | date`  
+    例）`open DATE, '|date' or die "失敗$!";`  
+  * 後(`date|`)  
+    コマンド(**date**)の出力結果をPerlプログラムの入力用として受け取る。  
+    プロンプト表記例）`$ date | perlProgram`  
+    例）`open DATE, 'date|' or die "失敗$!";`  
+
 
 <a name="practicaluseFileoperationfilehandleiomodule"></a>
 ### IO::Handle
