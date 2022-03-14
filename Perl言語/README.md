@@ -5191,13 +5191,15 @@ say $who;
   * [標準入力](#practicaluseFileoperationinputoutput)  
     Perlへの引数をファイルとして、それを読み込む。  
   * [整形出力(printf)](#practicaluseFileoperationprintf)  
-  * [配列とprintfの組み合わせ](#practicaluseFileoperationarrayprintf)  
-    **x演算子**による、繰り返し処理。  
+    * [配列とprintfの組み合わせ](#practicaluseFileoperationarrayprintf)  
+      **x演算子**による、繰り返し処理。  
   * [ファイルハンドル](#practicaluseFileoperationfilehandle)  
+  * [プロセスをファイルハンドル化](#practicaluseFileoperationfilehandleprocesspipe)  
   * [IO::Handle](#practicaluseFileoperationfilehandleiomodule)  
   * [ファイル削除](#practicaluseFileoperationFiledelete)  
   * [ファイル名変更](#practicaluseFileoperationFilenamechange)  
   * [リンクとファイル](#practicaluseFileoperationlinkandfile)  
+  * [特殊変数](#practicaluseFileoperationSpecialvariables)  
 
 <a name="practicaluseFileoperationinputoutput"></a>
 ### [入力と出力](https://perldoc.jp/docs/perl/5.34.0/perlclib.pod)
@@ -5375,6 +5377,10 @@ Perlと外部との結びつき(コネクション)を言う。
     Perl5.6より古い場合に使われるが、それ以降でも使う。  
     命名規則：英数字とアンダースコアを付ける(先頭は数字以外)。  
     ※すべて大文字にすることで、将来でてくる予約語とかぶることなく使える。  
+    [ファイルハンドルオープン失敗die](#practicaluseFileoperationfilehandleopenFailuredie)  
+    [ファイルハンドルオープン失敗warn](#practicaluseFileoperationfilehandleopenFailurewarn)  
+    [ファイルハンドルからのファイル書き込み](#practicaluseFileoperationfileopenwrite)  
+    [標準エラーをファイルに書き込む](#practicaluseFileoperationfileopenerrwrite)  
   * [スカラー変数](#practicaluseFileoperationScalarfilehandle)  
     Perl5.6以降に出来た。  
   * [リファレンス](#practicaluseFileoperationfilehandlereference)  
@@ -5388,7 +5394,8 @@ Perlと外部との結びつき(コネクション)を言う。
       標準出力ストリーム(standard output stream)  
     * STDERR  
       標準エラーストリーム(standard error stream)  
-    * DATA  
+    * [DATA](#practicaluseFileoperationSpecialvariablesdata)  
+      DATAファイルハンドルのことだよね？  
     * ARGV  
     * ARGVOUT  
 
@@ -5899,6 +5906,12 @@ sub inputOutput() {
 
 </details>
 
+<a name="practicaluseFileoperationfilehandleprocesspipe"></a>
+### プロセスをファイルハンドル化
+Perlから子プロセスを生成し、やりとりをしつつ子プロセス独自で動く方法として、プロセスをファイルハンドル化させる。  
+パイプ記号`|`を外部コマンドの前もしくは後ろに付けることで、それが実現する。  
+open関数に、ファイル扱いとして引数を渡すため、パイプオープン(piped open)と呼ぶことがあるそうだ。  
+
 
 <a name="practicaluseFileoperationfilehandleiomodule"></a>
 ### IO::Handle
@@ -6328,8 +6341,10 @@ $
   困らない理由は、元ファイル削除後は、ハードリンクファイルが元ファイルに昇華するため。  
   また、ハードリンクファイルを削除した場合、元ファイルも引きずられて消える場合がある。  
 
+  * [ハードリンクファイル作成](#practicaluseFileoperationlinkandfilehardlink)  
+
 * 上記の制限回避方法  
-  * [シンボリックリンク](#practicaluseFileoperationlinkandfilesymboliclink)(ソフトリンク・symbolic link・soft link)の活用。  
+  * [シンボリックリンクファイル作成](#practicaluseFileoperationlinkandfilesymboliclink)(ソフトリンク・symbolic link・soft link)。  
     `symlink '元ファイル名', 'リンクファイル名' or "シンボリックリンク作成失敗$!"`
     * [ソフトリンクファイルから大本にたどる方法。](#practicaluseFileoperationlinkandfilesymboliclinkfollow)  
     * [存在しないファイルからソフトリンクファイルの作成。](#practicaluseFileoperationlinkandfilesymboliclinkmakeghost)  
@@ -6712,10 +6727,11 @@ $
     コマンドライン引数。  
   * `@F`  
     オートスプリット配列というものだが、それが何か分からない。  
-  * `DATAファイルハンドル`  
+  * [`DATAファイルハンドル`](#practicaluseFileoperationSpecialvariablesdata)  
     同じファイル内に記述した文字列を **\_\_END\_\_** になるまで読み込む。  
 
 
+<a name="practicaluseFileoperationSpecialvariablesdata"></a>
 #### DATAファイルハンドル
 一部のファイル読み取り処理の動作確認用に、同じファイル内にファイル内容を記載しておき、それを読み取るという仕組み。  
 
