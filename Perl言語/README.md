@@ -5015,6 +5015,10 @@ Perlプログラムは、どのようなシステムでも同じ処理を行い�
 動作確認は入念に行う必要があるだろう。  
 また、出力結果は標準出力に送られるため、結果が欲しい場合は、[バッククォート](#practicalusebackquote)を使う必要がある。  
 
+[CPAN](#practicalusecpan)から入手することを厭わないのならば、[IPC::System::Simple](https://metacpan.org/pod/IPC::System::Simple)というモジュールを使うことにより、堅牢なsystem実行が可能になる。  
+※今回使わない。  
+しかし、可能ならば、このモジュールを用いたsystem関数を利用すべきとのこと。  
+
 
 <a name="practicalusesystemfunc"></a>
 ### system関数
