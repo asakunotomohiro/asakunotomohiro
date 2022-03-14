@@ -5142,6 +5142,29 @@ say $pid;	# 54515	←☆PIDなので、実行毎に数字が変わる。
 今回の場合は、Unixでの対処をしたが、OSによって異なるため、その都度調べる必要が出てくる。  
 Windowsの場合は、`date < NUL`になる。  
 
+複数行出力の代入に、スカラー変数を選んだ場合、1個の文字列にまとめられて代入される。  
+以下、その例）
+```perl
+my $who = `who`;
+say $who;
+	# 以下、出力結果。
+	# asakunotomohiro console  Mar  5 10:47	←☆末尾に半角スペースが付いている。
+	# asakunotomohiro ttys001  Mar 14 19:55	←☆末尾に半角スペースが付いている。
+```
+
+配列に代入させる場合は、1つの要素に1行が代入される。  
+以下、その例）
+```perl
+	my @who = `who`;
+	foreach my $value ( @who ) {
+		chomp $value;
+		say $value;
+	}
+	# 以下、出力結果。
+	# asakunotomohiro console  Mar  5 10:47	←☆末尾に半角スペースが付いている。
+	# asakunotomohiro ttys001  Mar 14 19:55	←☆末尾に半角スペースが付いている。
+```
+
 </details>
 
 <a name="practicaluseFileoperation"></a>

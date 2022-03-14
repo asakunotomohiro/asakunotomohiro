@@ -35,6 +35,17 @@ sub main() {
 	my $date = `date < /dev/null`;
 	chomp $date;
 	say $date;	# 2022年 3月13日 日曜日 21時21分43秒 JST
+
+	my $who = `who`;
+	say $who;
+
+	say '-' x 30;
+
+	my @who = `who`;
+	foreach my $value ( @who ) {
+		chomp $value;
+		say $value;
+	}
 }
 &main();
 
