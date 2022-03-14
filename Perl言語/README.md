@@ -5017,7 +5017,7 @@ Perlプログラムは、どのようなシステムでも同じ処理を行い�
 
 [CPAN](#practicalusecpan)から入手することを厭わないのならば、[IPC::System::Simple](https://metacpan.org/pod/IPC::System::Simple)というモジュールを使うことにより、堅牢なsystem実行が可能になる。  
 ※今回使わない。  
-しかし、可能ならば、このモジュールを用いたsystem関数を利用すべきとのこと。  
+しかし、可能ならば、このモジュールを用いたsystem関数を利用すべきとのこと(書籍のP272に誤字あり)。  
 
 
 <a name="practicalusesystemfunc"></a>
@@ -5186,6 +5186,18 @@ say $who;
 
 <a name="practicaluseFileoperation"></a>
 <details><summary>応用知識-ファイル操作(入出力・File-I/O)</summary>
+
+* 小さい目次。  
+  * [標準入力](#practicaluseFileoperationinputoutput)  
+    Perlへの引数をファイルとして、それを読み込む。  
+  * [整形出力(printf)](#practicaluseFileoperationprintf)  
+  * [配列とprintfの組み合わせ](#practicaluseFileoperationarrayprintf)  
+    **x演算子**による、繰り返し処理。  
+  * [ファイルハンドル](#practicaluseFileoperationfilehandle)  
+  * [IO::Handle](#practicaluseFileoperationfilehandleiomodule)  
+  * [ファイル削除](#practicaluseFileoperationFiledelete)  
+  * [ファイル名変更](#practicaluseFileoperationFilenamechange)  
+  * [リンクとファイル](#practicaluseFileoperationlinkandfile)  
 
 <a name="practicaluseFileoperationinputoutput"></a>
 ### [入力と出力](https://perldoc.jp/docs/perl/5.34.0/perlclib.pod)
@@ -5888,7 +5900,7 @@ sub inputOutput() {
 </details>
 
 
-<a name="practicaluseFileoperationfilehandlereference"></a>
+<a name="practicaluseFileoperationfilehandleiomodule"></a>
 ### IO::Handle
 **IO::Handle**を基底とした派生クラスのモジュールを使うことで使い勝手が向上するそうだ。  
 
