@@ -559,11 +559,12 @@ print "$hoge's" . $hoge;	# boo	←☆なぜこの表記になるのか分から�
    * 丸括弧`()`  
      `(〜)`を`qw/ /`に置き換えられる。  
 
-|標準形|一般形|意味|展開|
-|------|------|----|----|
+<a name="subVariable3quarts"></a>
+|標準形|一般形|意味|変数展開|
+|------|------|----|--------|
 |`''`|`q//`|リテラル文字列|しない|
 |`""`|`qq//`|リテラル文字列|する|
-|``` `` ```|`qx//`|コマンド実行|する|
+|``` `` ```|[`qx//`](#practicalusebackquote)|コマンド実行|する|
 |`()`|`qw//`|ワードリスト|しない|
 |`s///`|`s///`|パターン置換|する|
 |`y///`|`tr///`|文字変換|しない|
@@ -5006,12 +5007,13 @@ for (1..1000000) {
 </details>
 
 <a name="practicalusesystem"></a>
-<details><summary>応用知識-system関数</summary>
+<details><summary>応用知識-system関数(外部コマンド実行)</summary>
 
 外部(システム側の)コマンドをPerlで叩き、その結果を受け取る。  
 Perlプログラムは、どのようなシステムでも同じ処理を行い、同じ結果を残す。  
 しかし、外部コマンドは、外部にあるか分からないのもあるが、同じ結果を返すかどうかも分からない。  
 動作確認は入念に行う必要があるだろう。  
+また、出力結果は標準出力に送られるため、結果が欲しい場合は、[バッククォート](#practicalusebackquote)を使う必要がある。  
 
 
 <a name="practicalusesystemfunc"></a>
@@ -5056,13 +5058,15 @@ say "<$date>";				# <0>
 
 [応用知識の目次に戻る](#appliedknowledgeContents)  
 
+</details>
 
 <a name="practicaluseexec"></a>
-<details><summary>応用知識-exec関数</summary>
+<details><summary>応用知識-exec関数(外部コマンド実行)</summary>
 
 外部(システム側の)コマンドをPerlで叩き、その結果を受け取る。  
 Perlプログラムは、どのようなシステムでも同じ処理を行い、同じ結果を残す。  
 そして、外部コマンドは、外部にあるか分からないため、動作確認は入念に行う必要があるだろう。  
+また、出力結果は標準出力に送られるため、結果が欲しい場合は、[バッククォート](#practicalusebackquote)を使う必要がある。  
 
 
 <a name="practicaluseexecfunc"></a>
@@ -5077,6 +5081,102 @@ Perlプログラムからdateコマンドを使う例）
 そのため、基本的には、exec関数を使う場合、forkと組み合わせる。  
 
 [応用知識の目次に戻る](#appliedknowledgeContents)  
+
+</details>
+
+<a name="practicalusebackquote"></a>
+<details><summary>応用知識-バッククォート(外部コマンド実行)</summary>
+
+既出の[system関数](#practicalusesystem)・[exec関数](#practicaluseexec)では、出力結果を標準出力に送る。  
+今回のバッククォートでは、出力結果を戻り値として受け取ることができる。  
+しかし、Unixのシェル結果と異なり、Perlで取得する場合は改行まで含めるため、改行削除作業が必要になるだろう。  
+そして、実行エラーになった場合、標準エラー出力側に出力される。  
+
+以下、実行例）
+```perl
+use v5.24;
+my $date = `date`;	# 結果は、変数に代入される(そのため、標準出力なし)。
+
+say "$date";
+		# 2022年 3月11日 金曜日 18時17分28秒 JST
+		# 	←☆改行が含まれている。
+```
+
+* 小さい目次。  
+  * [通常の変数展開](#practicalusebackquotebackquarts)
+  * [qxでの変数展開](#practicalusebackquotebackquartqx)
+  * [標準エラー出力](#practicalusebackquoteerr)
+  * [標準入力への対処](#practicalusebackquoteinput)
+  * [変数への代入](#practicalusebackquotescalar)
+  * [配列への代入](#practicalusebackquotearray)
+
+<a name="practicalusebackquotebackquarts"></a>
+[バッククォート内](#variable変数)では、[変数展開](#subVariable3quarts)が行われる。
+```perl
+use v5.24;
+
+my $pwd = 'pwd';	# 現在地取得。
+my $ret = `$pwd`;	←☆変数展開。
+chomp $ret;	←☆改行削除。
+say "<$ret>";	# </Users/asakunotomohiro/study勉強用Githubリポジトリ/Perl言語>
+```
+<a name="practicalusebackquotebackquartqx"></a>
+以下、qxでも対応可能。
+```perl
+my $pid = qx(echo $$);	←☆qxは、``で囲むことを表している。
+chomp $pid;	←☆改行削除。
+say $pid;	# 54515	←☆PIDなので、実行毎に数字が変わる。
+```
+
+<a name="practicalusebackquoteerr"></a>
+以下、実行エラー。
+```perl
+`date -a`;
+	# date: illegal option -- a
+	# usage: date [-jnRu] [-d dst] [-r seconds] [-t west] [-v[+|-]val[ymwdHMS]] ... 
+	#             [-f fmt date | [[[mm]dd]HH]MM[[cc]yy][.ss]] [+format]
+```
+そもそも、セキュリティ上問題が発生する。  
+引数を渡す場合を考慮するならば、[system関数](#practicalusesystem)を使うこと(引数に変数を渡す処理の場合、予期せぬコマンドが仕込まれる可能性があり、それが必ず実行されることになるため、虚弱性になってしまう)。  
+実行結果が標準エラー出力に行くため、変数に代入する処理になっている場合も標準エラー出力に吐き出す。  
+
+<a name="practicalusebackquoteinput"></a>
+標準入力に対して、何かしらの事前メッセージ出力での促しが必要。  
+もしくは、標準入力を無視する仕組みを作る。  
+以下、そのプログラム。
+```perl
+	my $date = `date < /dev/null`;	←☆標準入力から入力を待機させないようにする。
+	chomp $date;
+	say $date;
+```
+今回の場合は、Unixでの対処をしたが、OSによって異なるため、その都度調べる必要が出てくる。  
+Windowsの場合は、`date < NUL`になる。  
+
+<a name="practicalusebackquotescalar"></a>
+複数行出力の代入に、スカラー変数を選んだ場合、1個の文字列にまとめられて代入される。  
+以下、その例）
+```perl
+my $who = `who`;
+say $who;
+	# 以下、出力結果。
+	# asakunotomohiro console  Mar  5 10:47	←☆末尾に半角スペースが付いている。
+	# asakunotomohiro ttys001  Mar 14 19:55	←☆末尾に半角スペースが付いている。
+```
+
+<a name="practicalusebackquotearray"></a>
+配列に代入させる場合は、1つの要素に1行が代入される。  
+以下、その例）
+```perl
+	my @who = `who`;
+	foreach my $value ( @who ) {
+		chomp $value;
+		say $value;
+	}
+	# 以下、出力結果。
+	# asakunotomohiro console  Mar  5 10:47	←☆末尾に半角スペースが付いている。
+	# asakunotomohiro ttys001  Mar 14 19:55	←☆末尾に半角スペースが付いている。
+```
+とりあえず、変数よりは、盲滅法に配列代入で問題ないかもね。  
 
 </details>
 
