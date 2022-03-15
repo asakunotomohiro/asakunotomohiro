@@ -182,8 +182,7 @@ $
     [x] OSのシグナル  
   * [ ] [grep](#appliedknowledge)  
   * [ ] [map](#appliedknowledge)  
-  * [x] [ファイルテスト](#appliedknowledge)  
-    [x] ファイルテスト演算子  
+  * [x] [ファイルテスト演算子](#appliedknowledge)  
     todo: 途中。  
     [x] stat関数  
     [x] lstat関数  
@@ -5017,7 +5016,7 @@ Perlプログラムは、どのようなシステムでも同じ処理を行い�
 
 [CPAN](#practicalusecpan)から入手することを厭わないのならば、[IPC::System::Simple](https://metacpan.org/pod/IPC::System::Simple)というモジュールを使うことにより、堅牢なsystem実行が可能になる。  
 ※今回使わない。  
-しかし、可能ならば、このモジュールを用いたsystem関数を利用すべきとのこと。  
+しかし、可能ならば、このモジュールを用いたsystem関数を利用すべきとのこと(書籍のP272に誤字あり)。  
 
 
 <a name="practicalusesystemfunc"></a>
@@ -5095,6 +5094,9 @@ Perlプログラムからdateコマンドを使う例）
 今回のバッククォートでは、出力結果を戻り値として受け取ることができる。  
 しかし、Unixのシェル結果と異なり、Perlで取得する場合は改行まで含めるため、改行削除作業が必要になるだろう。  
 そして、実行エラーになった場合、標準エラー出力側に出力される。  
+さらに説明を付け加えるならば、今回のバッククォート実行では、実行が完全に終わるまで待機する必要がある。  
+その時間が長い場合、結果が返るまで処理が固まったように見えるため、そのような場合には不適切な使い方になるだろう。  
+その場合は、[プロセスをファイルハンドル化](#practicaluseFileoperationfilehandleprocesspipe)を使った方が良い。  
 
 以下、実行例）
 ```perl
@@ -5186,6 +5188,20 @@ say $who;
 
 <a name="practicaluseFileoperation"></a>
 <details><summary>応用知識-ファイル操作(入出力・File-I/O)</summary>
+
+* 小さい目次。  
+  * [標準入力](#practicaluseFileoperationinputoutput)  
+    Perlへの引数をファイルとして、それを読み込む。  
+  * [整形出力(printf)](#practicaluseFileoperationprintf)  
+    * [配列とprintfの組み合わせ](#practicaluseFileoperationarrayprintf)  
+      **x演算子**による、繰り返し処理。  
+  * [ファイルハンドル](#practicaluseFileoperationfilehandle)  
+  * [プロセスをファイルハンドル化](#practicaluseFileoperationfilehandleprocesspipe)  
+  * [IO::Handle](#practicaluseFileoperationfilehandleiomodule)  
+  * [ファイル削除](#practicaluseFileoperationFiledelete)  
+  * [ファイル名変更](#practicaluseFileoperationFilenamechange)  
+  * [リンクとファイル](#practicaluseFileoperationlinkandfile)  
+  * [特殊変数](#practicaluseFileoperationSpecialvariables)  
 
 <a name="practicaluseFileoperationinputoutput"></a>
 ### [入力と出力](https://perldoc.jp/docs/perl/5.34.0/perlclib.pod)
@@ -5363,6 +5379,10 @@ Perlと外部との結びつき(コネクション)を言う。
     Perl5.6より古い場合に使われるが、それ以降でも使う。  
     命名規則：英数字とアンダースコアを付ける(先頭は数字以外)。  
     ※すべて大文字にすることで、将来でてくる予約語とかぶることなく使える。  
+    [ファイルハンドルオープン失敗die](#practicaluseFileoperationfilehandleopenFailuredie)  
+    [ファイルハンドルオープン失敗warn](#practicaluseFileoperationfilehandleopenFailurewarn)  
+    [ファイルハンドルからのファイル書き込み](#practicaluseFileoperationfileopenwrite)  
+    [標準エラーをファイルに書き込む](#practicaluseFileoperationfileopenerrwrite)  
   * [スカラー変数](#practicaluseFileoperationScalarfilehandle)  
     Perl5.6以降に出来た。  
   * [リファレンス](#practicaluseFileoperationfilehandlereference)  
@@ -5376,7 +5396,8 @@ Perlと外部との結びつき(コネクション)を言う。
       標準出力ストリーム(standard output stream)  
     * STDERR  
       標準エラーストリーム(standard error stream)  
-    * DATA  
+    * [DATA](#practicaluseFileoperationSpecialvariablesdata)  
+      DATAファイルハンドルのことだよね？  
     * ARGV  
     * ARGVOUT  
 
@@ -5387,24 +5408,24 @@ Perlが必要と判断したときに、自動でファイルハンドルを開�
 
 * `open HOGE, 'boo';`の挙動  
   **boo**という名前のファイルを**HOGE**というファイルハンドルに紐付ける。  
-  今後のPerlプログラムでは、**HOGE**を通じて**booファイル**をイジれるようになる。  
+  実行時の説明：**HOGE**を通じて**booファイル**が変更される。  
 
-* `open HOGE, '<boo';`の挙動  
+* `open HOGE, '<', 'boo';`の挙動  
   上記と紐付けは同じだが、入力用に使うところが今回の挙動になる。  
   ※ただし、これは、上記と同じ挙動とも言える(デフォルト動作が入力用になっているため)。  
-  また、ファイル名が変数名の場合、変数を展開することになるのだが、変数に特殊記号を埋め込まれていた場合、脆弱を含むことになる。  
-  今後の書き方：`open HOGE, '<', 'boo';`
+  また、以下の場合は、ファイル名が変数名の場合、変数を展開することになるのだが、変数に特殊記号を埋め込まれていた場合、脆弱を含むことになる。  
+  古い記述方法：`open HOGE, '<boo';`  
 
-* `open HOGE, '>boo';`の挙動  
+* `open HOGE, '>', 'boo';`の挙動  
   上記と紐付けは同じだが、出力用に使うところが今回の挙動になる。  
   ※既存のファイルの場合は、上書きする。  
-  今後の書き方：`open HOGE, '>', 'boo';`
+  古い記述方法：`open HOGE, '>boo';`  
 
-* `open HOGE, '>>boo';`の挙動  
+* `open HOGE, '>>', 'boo';`の挙動  
   上記と紐付けは同じだが、追記出力用に使うところが今回の挙動になる。  
   `$bar='outBar.txt'; open HOGE, "> $bar";`  
   の場合、`>`の直後に半角スペースがある。これは、追加書き込みになる(スペースがない場合新規作成)。  
-  今後の書き方：`open HOGE, '>>', 'boo';`
+  古い記述方法：`open HOGE, '>>Boo';`  
 
 * エンコーディング(encoding)  
   文字コードを指定することができる。  
@@ -5887,8 +5908,54 @@ sub inputOutput() {
 
 </details>
 
+<a name="practicaluseFileoperationfilehandleprocesspipe"></a>
+### プロセスをファイルハンドル化(外部コマンド実行)
+Perlから子プロセスを生成し、やりとりをしつつ子プロセス独自で動く方法として、プロセスをファイルハンドル化させる。  
+パイプ記号`|`を外部コマンドの前もしくは後ろに付けることで、それが実現する。  
+open関数に、ファイル扱いとして引数を渡すため、パイプオープン(piped open)と呼ぶことがあるそうだ。  
+通常の[ファイルハンドル](#practicaluseFileoperationfilehandleopen)と同じように、第3引数まで指定が可能になっている。  
 
-<a name="practicaluseFileoperationfilehandlereference"></a>
+* パイプ配置場所  
+  * 前(`|date`)  
+    Perlプログラムからの標準出力先をコマンド(**date**)への引数として渡す。  
+    プロンプト表記例）`$ perlProgram | date`  
+    例）`open DATE, '|date' or die "失敗$!";`  
+    第3引数利用例）`open DATE, '|-', 'date' or die "失敗$!";`  
+  * 後(`date|`)  
+    コマンド(**date**)の出力結果をPerlプログラムの入力用として受け取る。  
+    プロンプト表記例）`$ date | perlProgram`  
+    例）`open DATE, 'date|' or die "失敗$!";`  
+    第3引数利用例）`open DATE, '-|', 'date' or die "失敗$!";`  
+
+今回のファイルハンドル専用として、第4引数への指定も可能になっている。  
+内容は、コマンドへの引数を指定する。  
+しかし、Windowsの場合は、リスト形式では動かないため、別途モジュールを導入する必要があるそうだ。  
+
+以下、入力用の使用例）
+```perl
+use v5.24;
+
+sub process() {
+	my $find_fh;
+	open $find_fh, '-|', 'find', qw(. -type f -name *pl) or die "findコマンド実行失敗($!)";	←☆windowsでは、第4引数が使えない？
+	while( <$find_fh> ) {
+		chomp;
+		say;
+	}
+	close $find_fh;
+	die "閉鎖失敗 $?" if $?;	←☆終了結果を確認している(成功は0)。
+}
+&process();
+```
+第4引数に、シングルクォートで囲んだ文字列を渡したときにはエラーになった。  
+そのため、Windowsではそもそも第4引数を使った構文が利用できないのかもしれない。  
+
+今回利用したfindコマンドは、検索結果が多い場合も見つかり次第処理を行う。  
+そして、[バッククォート](#practicalusebackquote)で同じコマンドと引数の組み合わせを実行した場合は、実行が終わるまで待機する。  
+結果が多い場合、処理が固まってしまったように見えるため、その場合は、今回のようにパイプオープンを用いた方が良い。  
+
+
+<a name="practicaluseFileoperationfilehandleiomodule"></a>
 ### IO::Handle
 **IO::Handle**を基底とした派生クラスのモジュールを使うことで使い勝手が向上するそうだ。  
 
@@ -6316,8 +6383,10 @@ $
   困らない理由は、元ファイル削除後は、ハードリンクファイルが元ファイルに昇華するため。  
   また、ハードリンクファイルを削除した場合、元ファイルも引きずられて消える場合がある。  
 
+  * [ハードリンクファイル作成](#practicaluseFileoperationlinkandfilehardlink)  
+
 * 上記の制限回避方法  
-  * [シンボリックリンク](#practicaluseFileoperationlinkandfilesymboliclink)(ソフトリンク・symbolic link・soft link)の活用。  
+  * [シンボリックリンクファイル作成](#practicaluseFileoperationlinkandfilesymboliclink)(ソフトリンク・symbolic link・soft link)。  
     `symlink '元ファイル名', 'リンクファイル名' or "シンボリックリンク作成失敗$!"`
     * [ソフトリンクファイルから大本にたどる方法。](#practicaluseFileoperationlinkandfilesymboliclinkfollow)  
     * [存在しないファイルからソフトリンクファイルの作成。](#practicaluseFileoperationlinkandfilesymboliclinkmakeghost)  
@@ -6700,10 +6769,11 @@ $
     コマンドライン引数。  
   * `@F`  
     オートスプリット配列というものだが、それが何か分からない。  
-  * `DATAファイルハンドル`  
+  * [`DATAファイルハンドル`](#practicaluseFileoperationSpecialvariablesdata)  
     同じファイル内に記述した文字列を **\_\_END\_\_** になるまで読み込む。  
 
 
+<a name="practicaluseFileoperationSpecialvariablesdata"></a>
 #### DATAファイルハンドル
 一部のファイル読み取り処理の動作確認用に、同じファイル内にファイル内容を記載しておき、それを読み取るという仕組み。  
 
@@ -8877,7 +8947,7 @@ sub pipehandle() {
 	# ファイル名定義。
 	my $filename = $currentDir . '/filehandle.txt';
 
-	unless( -p $filename ) {
+	unless( -f $filename ) {
 		say "ファイル作成前。";
 	}
 
@@ -8888,37 +8958,35 @@ sub pipehandle() {
 
 	open my $file_fh, '-|', "cat $filename"
 		or die "$filenameのファイルオープン失敗($!)";
-		# このファイルハンドルは、子プロセスからの読み込みになる？
+		# このファイルハンドルは、子プロセスからの読み込み。
+		# ※catコマンドの結果を受け取る用のファイルハンドル。
 
 	if( -p $filename ) {
+		# そもそもファイルハンドルではない変数と比較している。
 		say "ファイルハンドルあり($filename)。" . '< $filename';
 	}
 	elsif( -p $file_fh ) {
-		say "ファイルハンドルあり($file_fh)。" . '< $file_fh';	←☆これが出力されている。
+		say "ファイルハンドルあり($file_fh)。" . '< $file_fh';#	←☆これが出力されている。
 	}
 	else{
 		say "ファイルハンドルなし。";
 	}
 	close $file_fh;
+	die "閉鎖失敗 $?" if $?;
 
 	say "ファイルハンドル閉じ済み。";
-	if( -p $filename ) {
-		say "ファイルハンドルあり($filename)。" . '< $filename';
-	}
-	elsif( -p $file_fh ) {
+	if( -p $file_fh ) {
+		# 閉じているため、ここには来ない。
 		say "ファイルハンドルあり($file_fh)。" . '< $file_fh';
 	}
 	else{
-		say "ファイルハンドルなし。";	←☆これが出力されている。
+		say "ファイルハンドルなし。";#	←☆これが出力されている。
 	}
 
 	say "ファイル削除。";
 	unlink $filename or warn "ファイル削除失敗($!)。";
-	if( -p $filename ) {
+	if( -f $filename ) {
 		say "ファイルあり。";
-	}
-	elsif( -p $file_fh ) {
-		say "ファイルハンドルあり。";
 	}
 	else{
 		say "ファイルなし(削除済み)。";
@@ -8927,9 +8995,7 @@ sub pipehandle() {
 &pipehandle();
 ```
 当然なのだろうが、ファイルハンドルは開いた状態で確認する必要がある。  
-
-todo:
-パイプというのを別途調べる必要がある。  
+※パイプは、[ファイル操作(入出力・File-I/O)](#practicaluseFileoperation)の[プロセスをファイルハンドル化](#practicaluseFileoperationfilehandleprocesspipe)にて、説明済み。  
 
 以下、出力結果。
 ```terminal
