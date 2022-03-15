@@ -5929,6 +5929,25 @@ open関数に、ファイル扱いとして引数を渡すため、パイプオ�
 内容は、コマンドへの引数を指定する。  
 しかし、Windowsの場合は、リスト形式では動かないため、別途モジュールを導入する必要があるそうだ。  
 
+以下、入力用の使用例）
+```perl
+use v5.24;
+
+sub process() {
+	my $find_fh;
+	open $find_fh, '-|', 'find', qw(. -type f -name *pl) or die "findコマンド実行失敗($!)";	←☆windowsでは、第4引数が使えない？
+	while( <$find_fh> ) {
+		chomp;
+		say;
+	}
+	close $find_fh;
+	die "閉鎖失敗 $?" if $?;
+}
+&process();
+```
+第4引数に、シングルクォートで囲んだ文字列を渡したときにはエラーになった。  
+そのため、Windowsではそもそも第4引数を使った構文が利用できないのかもしれない。  
+
 
 <a name="practicaluseFileoperationfilehandleiomodule"></a>
 ### IO::Handle
