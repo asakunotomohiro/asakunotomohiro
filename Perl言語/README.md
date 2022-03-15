@@ -3169,6 +3169,7 @@ Python限定にしたくなかったが、他のプログラミング言語に�
   * [クロージャ](#practicaluseClosure)  
   * [system関数](#practicalusesystem)  
   * [exec関数](#practicaluseexec)  
+  * [fork(外部コマンド実行)](#practicalusefork)  
   * [オブジェクト指向](#practicaluseObjectorientation)  
     2021/11/11〜  
   * [switchステートメント](#practicaluseGivenwhen)  
@@ -5183,6 +5184,14 @@ say $who;
 	# asakunotomohiro ttys001  Mar 14 19:55	←☆末尾に半角スペースが付いている。
 ```
 とりあえず、変数よりは、盲滅法に配列代入で問題ないかもね。  
+
+</details>
+
+<a name="practicalusefork"></a>
+<details><summary>応用知識-フォーク(外部コマンド実行)</summary>
+
+この仕組みは難しいそうだ。  
+そのため、今まで使ったことがない場合は、今まで通り[system関数](#practicalusesystem)を使うことで問題なく処理をこなせるとのこと。  
 
 </details>
 
