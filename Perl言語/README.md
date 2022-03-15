@@ -182,8 +182,7 @@ $
     [x] OSのシグナル  
   * [ ] [grep](#appliedknowledge)  
   * [ ] [map](#appliedknowledge)  
-  * [x] [ファイルテスト](#appliedknowledge)  
-    [x] ファイルテスト演算子  
+  * [x] [ファイルテスト演算子](#appliedknowledge)  
     todo: 途中。  
     [x] stat関数  
     [x] lstat関数  
@@ -8941,7 +8940,7 @@ sub pipehandle() {
 	# ファイル名定義。
 	my $filename = $currentDir . '/filehandle.txt';
 
-	unless( -p $filename ) {
+	unless( -f $filename ) {
 		say "ファイル作成前。";
 	}
 
@@ -8952,37 +8951,35 @@ sub pipehandle() {
 
 	open my $file_fh, '-|', "cat $filename"
 		or die "$filenameのファイルオープン失敗($!)";
-		# このファイルハンドルは、子プロセスからの読み込みになる？
+		# このファイルハンドルは、子プロセスからの読み込み。
+		# ※catコマンドの結果を受け取る用のファイルハンドル。
 
 	if( -p $filename ) {
+		# そもそもファイルハンドルではない変数と比較している。
 		say "ファイルハンドルあり($filename)。" . '< $filename';
 	}
 	elsif( -p $file_fh ) {
-		say "ファイルハンドルあり($file_fh)。" . '< $file_fh';	←☆これが出力されている。
+		say "ファイルハンドルあり($file_fh)。" . '< $file_fh';#	←☆これが出力されている。
 	}
 	else{
 		say "ファイルハンドルなし。";
 	}
 	close $file_fh;
+	die "閉鎖失敗 $?" if $?;
 
 	say "ファイルハンドル閉じ済み。";
-	if( -p $filename ) {
-		say "ファイルハンドルあり($filename)。" . '< $filename';
-	}
-	elsif( -p $file_fh ) {
+	if( -p $file_fh ) {
+		# 閉じているため、ここには来ない。
 		say "ファイルハンドルあり($file_fh)。" . '< $file_fh';
 	}
 	else{
-		say "ファイルハンドルなし。";	←☆これが出力されている。
+		say "ファイルハンドルなし。";#	←☆これが出力されている。
 	}
 
 	say "ファイル削除。";
 	unlink $filename or warn "ファイル削除失敗($!)。";
-	if( -p $filename ) {
+	if( -f $filename ) {
 		say "ファイルあり。";
-	}
-	elsif( -p $file_fh ) {
-		say "ファイルハンドルあり。";
 	}
 	else{
 		say "ファイルなし(削除済み)。";
@@ -8991,9 +8988,7 @@ sub pipehandle() {
 &pipehandle();
 ```
 当然なのだろうが、ファイルハンドルは開いた状態で確認する必要がある。  
-
-todo:
-パイプというのを別途調べる必要がある。  
+※パイプは、[ファイル操作(入出力・File-I/O)](#practicaluseFileoperation)の[プロセスをファイルハンドル化](#practicaluseFileoperationfilehandleprocesspipe)にて、説明済み。  
 
 以下、出力結果。
 ```terminal
