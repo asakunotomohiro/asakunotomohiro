@@ -5260,6 +5260,36 @@ INT
 $
 ```
 
+
+<a name="practicalusesignalprocessidprint"></a>
+### プロセスIDの表示例
+以下、プロセスIDを表示した。
+```terminal
+$ echo $$; ps -A | grep $$ | grep -v grep
+15680
+15680 ttys013    0:05.25 -bash
+$
+```
+結局この番号はどこから発生した？  
+
+ターミナル本体のプロセスなのだろう。
+```terminal
+$ echo $$; ps -A | grep $$ | grep -v grep
+62118
+62118 ttys000    0:00.03 -bash
+$
+[プロセスが完了しました]	←☆別のターミナルから「kill -9 62118」を実行。
+```
+このターミナルは使えない(終了しているため)。  
+以下、そのターミナルでの操作。
+```terminal
+$ kill -9 62118
+$ echo $?	←☆無事に措置完了。
+0
+$
+```
+
+
 </details>
 
 <a name="practicaluseFileoperation"></a>
