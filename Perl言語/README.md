@@ -3170,6 +3170,7 @@ Python限定にしたくなかったが、他のプログラミング言語に�
   * [system関数](#practicalusesystem)  
   * [exec関数](#practicaluseexec)  
   * [fork(外部コマンド実行)](#practicalusefork)  
+  * [シグナルの送受信](#practicalusesignal)  
   * [オブジェクト指向](#practicaluseObjectorientation)  
     2021/11/11〜  
   * [switchステートメント](#practicaluseGivenwhen)  
@@ -5026,11 +5027,11 @@ Perlプログラムは、どのようなシステムでも同じ処理を行い�
 ※完全にPerlプログラムから切り離されて動く([exec関数](#practicaluseexec)の場合は、Perlプログラムに連動(?)して動く)。  
 
 Perlプログラムからdateコマンドを使う例）
-`system 'date';  
-当然ながらPerlプログラム外(OS側)に、**date**コマンドが存在する前提になる。  
+`system 'date';`  
+当然ながらPerlプログラム外(OS側)に、 **date** コマンドが存在する前提になる。  
 そして、存在する場合も、オプションの違いや取得結果の違いが出てくるため、汎用性は低くなるだろう。  
-何より、オプションに指定する場合の環境変数名は、**$HOME**のようにPerlの変数と同じ形式になっている。  
-今回の**$HOME**は、ホームディレクトリを指すため、変数展開されては困る。  
+何より、オプションに指定する場合の環境変数名は、**$HOME** のようにPerlの変数と同じ形式になっている。  
+今回の **$HOME** は、ホームディレクトリを指すため、変数展開されては困る。  
 そのため、Perl側では、`system 'ls $HOME';`のようにシングルクォートで囲むか、`system "ls \$HOME";`のようにエスケープするかのどちらかが必要になる。  
 また、結果が返ってくるまでPerlは待機する。  
 それを避けるには、バックグラウンドで実行させる必要がある。  
@@ -5041,7 +5042,7 @@ Perlプログラムからdateコマンドを使う例）
 <a name="practicalusesystemfuncargv"></a>
 #### system関数-引数
 引数1個の場合は、Perlから普通に動かす。  
-単純な場合でもPathからコマンドを探すこともあり、このPathは、**$ENV{'PATH'}**にて、変更可能な[環境変数(Perlではハッシュで扱う)](#practicaluseHash)になっている。  
+単純な場合でもPathからコマンドを探すこともあり、このPathは、**$ENV{'PATH'}** にて、変更可能な[環境変数(Perlではハッシュで扱う)](#practicaluseHash)になっている。  
 そして、特殊記号が含まれている場合は、Bourne(/bin/sh)シェルもしくは、**cmd /x/d/c**(Windows・PERL5SHELL[環境変数](#practicaluseHashenv))を呼び出し、動かす。  
 
 以下、実行例）
@@ -5220,6 +5221,15 @@ sub main() {
 
 todo:
 後日forkについて勉強し直す。  
+
+<a name="practicalusesignal"></a>
+<details><summary>応用知識-シグナルの送受信</summary>
+
+通常は、OSにシグナルを送り、プロセスの生殺与奪権を行使する。  
+Perlプログラムのシグナル送信は、Perlプログラムで生成した子プロセスへ送る。  
+しかし、プロセスIDを使う必要があるため、それを取得するのが非常に手間暇掛かりそうに思う。  
+
+</details>
 
 <a name="practicaluseFileoperation"></a>
 <details><summary>応用知識-ファイル操作(入出力・File-I/O)</summary>
