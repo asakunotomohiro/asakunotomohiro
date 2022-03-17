@@ -5290,6 +5290,19 @@ $
 ```
 
 
+<a name="practicalusesignalnoprocess"></a>
+### 存在しないプロセスIDの扱い
+以下、存在しないプロセスを首切りする。
+```terminal
+$ ps -A | grep 20220317 | grep -v grep
+$ kill -9 20220317	←☆存在しないため、当たり前のように失敗する。
+-bash: kill: (20220317) - No such process
+$ echo $?	←☆失敗した場合、0以外が返る？
+1
+$
+```
+Perlプログラムで存在しないプロセスを断頭する(失敗する)場合は、[偽(要は0)](#variable変数)が返るため、気をつけること。  
+
 </details>
 
 <a name="practicaluseFileoperation"></a>
