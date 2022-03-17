@@ -5303,6 +5303,67 @@ $
 ```
 Perlプログラムで存在しないプロセスを断頭する(失敗する)場合は、[偽(要は0)](#variable変数)が返るため、気をつけること。  
 
+以下、プログラム。
+```perl
+use v5.24;
+
+sub main() {
+	defined(my $pid = fork) or die "フォーク失敗：$?";
+	unless( $pid ) {
+		# 子プロセス
+		exec 'date';	←☆実行される。
+		die "失敗(exec date)";
+	}
+
+	if( kill 0, $pid ) {
+		say "プロセスが存在する。";	←☆表示する。
+	}
+
+	# 親プロセス
+	waitpid($pid, 0);
+}
+&main();
+```
+
+以下、dateコマンドが実行されないプログラム。
+```perl
+use v5.24;
+
+sub main() {
+	defined(my $pid = fork) or die "フォーク失敗：$?";
+	unless( $pid ) {
+		# 子プロセス
+		exec 'date';	←☆実行されない。
+		die "失敗(exec date)";
+	}
+	kill 9, $pid;	←☆上記のdateコマンドより後に実行したはずだが、上記のdateコマンドは実行されない。
+
+	if( kill 0, $pid ) {
+	#if( kill 0, 20220317 ) {
+		say "プロセスが存在する。";	←☆表示する。
+	}
+
+	# 親プロセス
+	waitpid($pid, 0);
+}
+&main();
+```
+
+以下、存在しないプロセスの確認プログラム。
+```perl
+use v5.24;
+
+sub main() {
+	if( kill 0, 20220317 ) {	←☆存在しないプロセスを確認する。
+		say "プロセスが存在する。";
+	}
+	else{
+		say '存在しないプロセス。';	←☆こちらが出力する。
+	}
+}
+&main();
+```
+
 </details>
 
 <a name="practicaluseFileoperation"></a>
