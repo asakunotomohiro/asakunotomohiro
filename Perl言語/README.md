@@ -5229,6 +5229,37 @@ todo:
 Perlプログラムのシグナル送信は、Perlプログラムで生成した子プロセスへ送る。  
 しかし、プロセスIDを使う必要があるため、それを取得するのが非常に手間暇掛かりそうに思う。  
 
+
+<a name="practicalusesignalunixsig"></a>
+### Unixのシグナルとは異なる。
+Perl独自のシグナルではあるが、Unixのシグナルに酷似しており、そしてUnixのシグナルのように扱える。  
+
+以下、Macのシグナル一覧。
+```terminal
+$ kill -l
+ 1) SIGHUP	 2) SIGINT	 3) SIGQUIT	 4) SIGILL
+ 5) SIGTRAP	 6) SIGABRT	 7) SIGEMT	 8) SIGFPE
+ 9) SIGKILL	10) SIGBUS	11) SIGSEGV	12) SIGSYS
+13) SIGPIPE	14) SIGALRM	15) SIGTERM	16) SIGURG
+17) SIGSTOP	18) SIGTSTP	19) SIGCONT	20) SIGCHLD
+21) SIGTTIN	22) SIGTTOU	23) SIGIO	24) SIGXCPU
+25) SIGXFSZ	26) SIGVTALRM	27) SIGPROF	28) SIGWINCH
+29) SIGINFO	30) SIGUSR1	31) SIGUSR2	
+$
+```
+31種類ある。  
+そして、Windowsでは、ほぼ異なるそうだ。  
+シグナルを使う場合は、接頭辞である**SIG**を付けずに指定する。  
+
+以下、使用例）
+```terminal
+$ kill -l INT	←☆第2引数。
+2
+$ kill -l 2
+INT
+$
+```
+
 </details>
 
 <a name="practicaluseFileoperation"></a>
