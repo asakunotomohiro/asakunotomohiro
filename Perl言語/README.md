@@ -3169,6 +3169,7 @@ Python限定にしたくなかったが、他のプログラミング言語に�
   * [クロージャ](#practicaluseClosure)  
   * [system関数](#practicalusesystem)  
   * [exec関数](#practicaluseexec)  
+  * [fork(外部コマンド実行)](#practicalusefork)  
   * [オブジェクト指向](#practicaluseObjectorientation)  
     2021/11/11〜  
   * [switchステートメント](#practicaluseGivenwhen)  
@@ -5185,6 +5186,40 @@ say $who;
 とりあえず、変数よりは、盲滅法に配列代入で問題ないかもね。  
 
 </details>
+
+<a name="practicalusefork"></a>
+<details><summary>応用知識-フォーク(外部コマンド実行)</summary>
+
+この仕組みは難しいそうだ。  
+そのため、今まで使ったことがない場合は、今まで通り[system関数](#practicalusesystem)を使うことで問題なく処理をこなせるとのこと。  
+
+プログラムのみ記載する。
+```perl
+use v5.24;
+
+sub main() {
+	system 'date';
+
+	defined(my $pid = fork) or die "フォーク失敗：$?";
+	say $pid;	# 0	←☆ここ以降の処理を動かさない(コメントアウトした)場合も0以外が出力される(いつ呼び出されているのか不明)。
+	unless( $pid ) {	←☆親プロセスは0になるため、ここでは0以外の場合に子プロセスと判断し、子プロセスとして実行する(認識あっている？)。
+		# 子プロセス
+		exec 'date';	# dateと言うのがコマンドのようで、後ろに文字列を付けた場合、dateコマンドの引数扱いされるようだ。
+						# 当然ながら実行時間が表示される。
+		die "失敗(exec date)";	←☆上記のexecを実行しない場合、失敗する。
+	}
+
+	# 親プロセス
+	waitpid($pid, 0);	←☆この引数の扱いが全く分からない。
+}
+&main();
+```
+私には理解できない。  
+
+</details>
+
+todo:
+後日forkについて勉強し直す。  
 
 <a name="practicaluseFileoperation"></a>
 <details><summary>応用知識-ファイル操作(入出力・File-I/O)</summary>
