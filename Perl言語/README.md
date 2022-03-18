@@ -226,7 +226,7 @@ $
   * [ ] [テスト方法](#practicaluseTester)  
   * [x] [標準関数(モジュール)](#practicaluseFunctionLibuse)  
     [インストール](#practicalusecpan)利用などは別にある。  
-  * [ ] [プロセス管理](#practicaluseSystemfunc)  
+  * [x] [プロセス管理](#practicaluseSystemfunc)  
   * [x] [正規表現](#appliedknowledge)  
     別ファイルでの記載が詳細なため、ここでは簡易ながらも説明完了とする。  
   * [x] [置換演算子](#appliedknowledge)  
@@ -3167,10 +3167,16 @@ Python限定にしたくなかったが、他のプログラミング言語に�
   * [リファレンス](#practicalusePointer)  
   * [ハッシュ(連想配列)](#practicaluseHash)  
   * [クロージャ](#practicaluseClosure)  
-  * [system関数](#practicalusesystem)  
-  * [exec関数](#practicaluseexec)  
-  * [fork(外部コマンド実行)](#practicalusefork)  
-  * [シグナルの送受信](#practicalusesignal)  
+  <a name="practicaluseSystemfunc"></a>
+  * プロセス管理。  
+    ※現在大まかな説明に留まり、何よりまだ調査が残っている。  
+    ※[ハッシュ](#practicaluseHash)の[環境変数](#practicaluseHashenv)も関係ある。  
+    * [プロセスをファイルハンドル化](#practicaluseFileoperation)
+    * [system関数](#practicalusesystem)  
+    * [exec関数](#practicaluseexec)  
+    * [fork(外部コマンド実行)](#practicalusefork)  
+    * [バッククォート(外部コマンド実行)](#practicalusebackquote)  
+    * [シグナルの送受信](#practicalusesignal)  
   * [オブジェクト指向](#practicaluseObjectorientation)  
     2021/11/11〜  
   * [switchステートメント](#practicaluseGivenwhen)  
@@ -4970,7 +4976,7 @@ sub config() {
 
 <a name="practicaluseHashsigint"></a>
 #### OSのシグナル(`%SIG`)
-OSのシグナルをPerl側で制御できるようになる。  
+OSの[シグナル](#practicalusesignal)をPerl側で制御できるようになる。  
 以下、利用例）
 ```perl
 use v5.24;
@@ -5225,13 +5231,32 @@ todo:
 <a name="practicalusesignal"></a>
 <details><summary>応用知識-シグナルの送受信</summary>
 
-通常は、OSにシグナルを送り、プロセスの生殺与奪権を行使する。  
+プロセスの生殺与奪権を行使できるのが今回のシグナル送信や受信にあたる。  
 Perlプログラムのシグナル送信は、Perlプログラムで生成した子プロセスへ送る。  
 しかし、プロセスIDを使う必要があるため、それを取得するのが非常に手間暇掛かりそうに思う。  
 
+* 小さい目次。
+  * [PerlのシグナルはUnixと酷似](#practicalusesignalunixsig)  
+  * [プロセスIDの表示例](#practicalusesignalprocessidprint)  
+  * [存在しないプロセスIDの扱い](#practicalusesignalnoprocess)  
+  * [シグナル受信](#practicalusesignalreceive)  
+    [ハッシュ](#practicaluseHash)を使う。  
+
+Perlプログラムでの大まかな実行方法例）
+`kill シグナル番号もしくはシグナル名, プロセスID or die '行使失敗$!';`  
+具体例）
+`kill 9, 12345;`  
+プロセスID**12345**に対して、シグナル番号9を送る。  
+シグナル番号よりは、シグナル名を使う方が分かりやすいだろう。  
+上記と同じ意味）
+`kill 'KILL', 12345;`  
+また、太い矢印 **=>** を使う場合は、シグナル名をクォートで囲む必要が無い。  
+`kill KILL => 12345;`  
+これも上記と同じ意味。  
+
 
 <a name="practicalusesignalunixsig"></a>
-### Unixのシグナルとは異なる。
+### PerlのシグナルはUnixのシグナルと酷似
 Perl独自のシグナルではあるが、Unixのシグナルに酷似しており、そしてUnixのシグナルのように扱える。  
 
 以下、Macのシグナル一覧。
@@ -5248,9 +5273,9 @@ $ kill -l
 $
 ```
 31種類ある。  
-そして、Windowsでは、ほぼ異なるそうだ。  
-シグナルを使う場合は、接頭辞である**SIG**を付けずに指定する。  
+そして、Windowsでは、Unixのシグナルの意味とは大幅に異なるそうだ。  
 
+シグナルを使う場合は、接頭辞である**SIG**を付けずに指定する。  
 以下、使用例）
 ```terminal
 $ kill -l INT	←☆第2引数。
@@ -5263,6 +5288,8 @@ $
 
 <a name="practicalusesignalprocessidprint"></a>
 ### プロセスIDの表示例
+※今回は、Perl無関係(Macでのターミナル操作)。  
+
 以下、プロセスIDを表示した。
 ```terminal
 $ echo $$; ps -A | grep $$ | grep -v grep
@@ -5270,7 +5297,7 @@ $ echo $$; ps -A | grep $$ | grep -v grep
 15680 ttys013    0:05.25 -bash
 $
 ```
-結局この番号はどこから発生した？  
+~~結局この番号はどこから発生した？~~  
 
 ターミナル本体のプロセスなのだろう。
 ```terminal
@@ -5281,7 +5308,7 @@ $
 [プロセスが完了しました]	←☆別のターミナルから「kill -9 62118」を実行。
 ```
 このターミナルは使えない(終了しているため)。  
-以下、そのターミナルでの操作。
+以下、そのターミナルに対する操作。
 ```terminal
 $ kill -9 62118
 $ echo $?	←☆無事に措置完了。
@@ -5292,6 +5319,8 @@ $
 
 <a name="practicalusesignalnoprocess"></a>
 ### 存在しないプロセスIDの扱い
+※Perlプログラムから確認あり。  
+
 以下、存在しないプロセスを首切りする。
 ```terminal
 $ ps -A | grep 20220317 | grep -v grep
@@ -5348,6 +5377,7 @@ sub main() {
 }
 &main();
 ```
+実行時期が全く把握できないため、調べる必要がある。  
 
 以下、存在しないプロセスの確認プログラム。
 ```perl
@@ -5407,7 +5437,7 @@ $ ps -A | grep シグナル受信 | grep -v grep
 $ kill -9 65934	←☆シグナル送信により、上記の状況にて、9が表示されている部分が今回の作業に該当する。
 ```
 
-パッケージ内に宣言できないながら使い勝手が悪いかもしれない。  
+パッケージ内に宣言できない場合、使い勝手が悪いかもしれない。  
 もう少し調べる必要がある。  
 
 todo:
