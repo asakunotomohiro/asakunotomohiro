@@ -226,7 +226,7 @@ $
   * [ ] [テスト方法](#practicaluseTester)  
   * [x] [標準関数(モジュール)](#practicaluseFunctionLibuse)  
     [インストール](#practicalusecpan)利用などは別にある。  
-  * [ ] [プロセス管理](#practicaluseSystemfunc)  
+  * [x] [プロセス管理](#practicaluseSystemfunc)  
   * [x] [正規表現](#appliedknowledge)  
     別ファイルでの記載が詳細なため、ここでは簡易ながらも説明完了とする。  
   * [x] [置換演算子](#appliedknowledge)  
@@ -3167,9 +3167,16 @@ Python限定にしたくなかったが、他のプログラミング言語に�
   * [リファレンス](#practicalusePointer)  
   * [ハッシュ(連想配列)](#practicaluseHash)  
   * [クロージャ](#practicaluseClosure)  
-  * [system関数](#practicalusesystem)  
-  * [exec関数](#practicaluseexec)  
-  * [fork(外部コマンド実行)](#practicalusefork)  
+  <a name="practicaluseSystemfunc"></a>
+  * プロセス管理。  
+    ※現在大まかな説明に留まり、何よりまだ調査が残っている。  
+    ※[ハッシュ](#practicaluseHash)の[環境変数](#practicaluseHashenv)も関係ある。  
+    * [プロセスをファイルハンドル化](#practicaluseFileoperation)
+    * [system関数](#practicalusesystem)  
+    * [exec関数](#practicaluseexec)  
+    * [fork(外部コマンド実行)](#practicalusefork)  
+    * [バッククォート(外部コマンド実行)](#practicalusebackquote)  
+    * [シグナルの送受信](#practicalusesignal)  
   * [オブジェクト指向](#practicaluseObjectorientation)  
     2021/11/11〜  
   * [switchステートメント](#practicaluseGivenwhen)  
@@ -4969,7 +4976,7 @@ sub config() {
 
 <a name="practicaluseHashsigint"></a>
 #### OSのシグナル(`%SIG`)
-OSのシグナルをPerl側で制御できるようになる。  
+OSの[シグナル](#practicalusesignal)をPerl側で制御できるようになる。  
 以下、利用例）
 ```perl
 use v5.24;
@@ -5026,11 +5033,11 @@ Perlプログラムは、どのようなシステムでも同じ処理を行い�
 ※完全にPerlプログラムから切り離されて動く([exec関数](#practicaluseexec)の場合は、Perlプログラムに連動(?)して動く)。  
 
 Perlプログラムからdateコマンドを使う例）
-`system 'date';  
-当然ながらPerlプログラム外(OS側)に、**date**コマンドが存在する前提になる。  
+`system 'date';`  
+当然ながらPerlプログラム外(OS側)に、 **date** コマンドが存在する前提になる。  
 そして、存在する場合も、オプションの違いや取得結果の違いが出てくるため、汎用性は低くなるだろう。  
-何より、オプションに指定する場合の環境変数名は、**$HOME**のようにPerlの変数と同じ形式になっている。  
-今回の**$HOME**は、ホームディレクトリを指すため、変数展開されては困る。  
+何より、オプションに指定する場合の環境変数名は、**$HOME** のようにPerlの変数と同じ形式になっている。  
+今回の **$HOME** は、ホームディレクトリを指すため、変数展開されては困る。  
 そのため、Perl側では、`system 'ls $HOME';`のようにシングルクォートで囲むか、`system "ls \$HOME";`のようにエスケープするかのどちらかが必要になる。  
 また、結果が返ってくるまでPerlは待機する。  
 それを避けるには、バックグラウンドで実行させる必要がある。  
@@ -5041,7 +5048,7 @@ Perlプログラムからdateコマンドを使う例）
 <a name="practicalusesystemfuncargv"></a>
 #### system関数-引数
 引数1個の場合は、Perlから普通に動かす。  
-単純な場合でもPathからコマンドを探すこともあり、このPathは、**$ENV{'PATH'}**にて、変更可能な[環境変数(Perlではハッシュで扱う)](#practicaluseHash)になっている。  
+単純な場合でもPathからコマンドを探すこともあり、このPathは、**$ENV{'PATH'}** にて、変更可能な[環境変数(Perlではハッシュで扱う)](#practicaluseHash)になっている。  
 そして、特殊記号が含まれている場合は、Bourne(/bin/sh)シェルもしくは、**cmd /x/d/c**(Windows・PERL5SHELL[環境変数](#practicaluseHashenv))を呼び出し、動かす。  
 
 以下、実行例）
@@ -5220,6 +5227,223 @@ sub main() {
 
 todo:
 後日forkについて勉強し直す。  
+
+<a name="practicalusesignal"></a>
+<details><summary>応用知識-シグナルの送受信</summary>
+
+プロセスの生殺与奪権を行使できるのが今回のシグナル送信や受信にあたる。  
+Perlプログラムのシグナル送信は、Perlプログラムで生成した子プロセスへ送る。  
+しかし、プロセスIDを使う必要があるため、それを取得するのが非常に手間暇掛かりそうに思う。  
+
+* 小さい目次。
+  * [PerlのシグナルはUnixと酷似](#practicalusesignalunixsig)  
+  * [プロセスIDの表示例](#practicalusesignalprocessidprint)  
+  * [存在しないプロセスIDの扱い](#practicalusesignalnoprocess)  
+  * [シグナル受信](#practicalusesignalreceive)  
+    [ハッシュ](#practicaluseHash)を使う。  
+
+Perlプログラムでの大まかな実行方法例）
+`kill シグナル番号もしくはシグナル名, プロセスID or die '行使失敗$!';`  
+具体例）
+`kill 9, 12345;`  
+プロセスID**12345**に対して、シグナル番号9を送る。  
+シグナル番号よりは、シグナル名を使う方が分かりやすいだろう。  
+上記と同じ意味）
+`kill 'KILL', 12345;`  
+また、太い矢印 **=>** を使う場合は、シグナル名をクォートで囲む必要が無い。  
+`kill KILL => 12345;`  
+これも上記と同じ意味。  
+
+
+<a name="practicalusesignalunixsig"></a>
+### PerlのシグナルはUnixのシグナルと酷似
+Perl独自のシグナルではあるが、Unixのシグナルに酷似しており、そしてUnixのシグナルのように扱える。  
+
+以下、Macのシグナル一覧。
+```terminal
+$ kill -l
+ 1) SIGHUP	 2) SIGINT	 3) SIGQUIT	 4) SIGILL
+ 5) SIGTRAP	 6) SIGABRT	 7) SIGEMT	 8) SIGFPE
+ 9) SIGKILL	10) SIGBUS	11) SIGSEGV	12) SIGSYS
+13) SIGPIPE	14) SIGALRM	15) SIGTERM	16) SIGURG
+17) SIGSTOP	18) SIGTSTP	19) SIGCONT	20) SIGCHLD
+21) SIGTTIN	22) SIGTTOU	23) SIGIO	24) SIGXCPU
+25) SIGXFSZ	26) SIGVTALRM	27) SIGPROF	28) SIGWINCH
+29) SIGINFO	30) SIGUSR1	31) SIGUSR2	
+$
+```
+31種類ある。  
+そして、Windowsでは、Unixのシグナルの意味とは大幅に異なるそうだ。  
+
+シグナルを使う場合は、接頭辞である**SIG**を付けずに指定する。  
+以下、使用例）
+```terminal
+$ kill -l INT	←☆第2引数。
+2
+$ kill -l 2
+INT
+$
+```
+
+
+<a name="practicalusesignalprocessidprint"></a>
+### プロセスIDの表示例
+※今回は、Perl無関係(Macでのターミナル操作)。  
+
+以下、プロセスIDを表示した。
+```terminal
+$ echo $$; ps -A | grep $$ | grep -v grep
+15680
+15680 ttys013    0:05.25 -bash
+$
+```
+~~結局この番号はどこから発生した？~~  
+
+ターミナル本体のプロセスなのだろう。
+```terminal
+$ echo $$; ps -A | grep $$ | grep -v grep
+62118
+62118 ttys000    0:00.03 -bash
+$
+[プロセスが完了しました]	←☆別のターミナルから「kill -9 62118」を実行。
+```
+このターミナルは使えない(終了しているため)。  
+以下、そのターミナルに対する操作。
+```terminal
+$ kill -9 62118
+$ echo $?	←☆無事に措置完了。
+0
+$
+```
+
+
+<a name="practicalusesignalnoprocess"></a>
+### 存在しないプロセスIDの扱い
+※Perlプログラムから確認あり。  
+
+以下、存在しないプロセスを首切りする。
+```terminal
+$ ps -A | grep 20220317 | grep -v grep
+$ kill -9 20220317	←☆存在しないため、当たり前のように失敗する。
+-bash: kill: (20220317) - No such process
+$ echo $?	←☆失敗した場合、0以外が返る？
+1
+$
+```
+Perlプログラムで存在しないプロセスを断頭する(失敗する)場合は、[偽(要は0)](#variable変数)が返るため、気をつけること。  
+
+以下、プログラム。
+```perl
+use v5.24;
+
+sub main() {
+	defined(my $pid = fork) or die "フォーク失敗：$?";
+	unless( $pid ) {
+		# 子プロセス
+		exec 'date';	←☆実行される。
+		die "失敗(exec date)";
+	}
+
+	if( kill 0, $pid ) {
+		say "プロセスが存在する。";	←☆表示する。
+	}
+
+	# 親プロセス
+	waitpid($pid, 0);
+}
+&main();
+```
+
+以下、dateコマンドが実行されないプログラム。
+```perl
+use v5.24;
+
+sub main() {
+	defined(my $pid = fork) or die "フォーク失敗：$?";
+	unless( $pid ) {
+		# 子プロセス
+		exec 'date';	←☆実行されない。
+		die "失敗(exec date)";
+	}
+	kill 9, $pid;	←☆上記のdateコマンドより後に実行したはずだが、上記のdateコマンドは実行されない。
+
+	if( kill 0, $pid ) {
+	#if( kill 0, 20220317 ) {
+		say "プロセスが存在する。";	←☆表示する。
+	}
+
+	# 親プロセス
+	waitpid($pid, 0);
+}
+&main();
+```
+実行時期が全く把握できないため、調べる必要がある。  
+
+以下、存在しないプロセスの確認プログラム。
+```perl
+use v5.24;
+
+sub main() {
+	if( kill 0, 20220317 ) {	←☆存在しないプロセスを確認する。
+		say "プロセスが存在する。";
+	}
+	else{
+		say '存在しないプロセス。';	←☆こちらが出力する。
+	}
+}
+&main();
+```
+
+
+<a name="practicalusesignalreceive"></a>
+### シグナル受信
+今回のシグナル受信設定は、ハッシュで管理されているため、シグナルの種類をハッシュのキーを指定し、そこに関数名を代入することで、シグナル受信時に、その関数を呼ぶことができる。  
+しかし、私の環境では、関数をパッケージ内に作った場合、呼び出すことが出来なかった。  
+
+以下、プログラム。
+```perl
+use v5.24;
+
+my $count = 0;
+sub signalReceive {
+	$count++;
+	say "シグナル受信($count回目)";
+}
+
+$SIG{'INT'} = 'signalReceive';	←☆Ctrl+Cの押下にて呼ばれる。
+$SIG{'KILL'} = 'signalReceive';	←☆Killシグナル受信で呼ばれると思ったが、失敗した。
+
+sub main() {
+	while() {
+		# 無限ループ。
+	}
+}
+&main();
+```
+
+以下、呼ばれる状況記録。
+```terminal
+$ perl シグナル受信.pl	←☆プログラム実行。
+^Cシグナル受信(1回目)	←☆Ctrl+C押下後の出力(1回目)。
+^Cシグナル受信(2回目)	←☆Ctrl+C押下後の出力(2回目)。
+Killed: 9	←☆Killシグナル受信するが、関数は呼ばれなかった。
+$
+```
+
+以下、作業。
+```terminal
+$ ps -A | grep シグナル受信 | grep -v grep
+65934 ttys015    0:05.45 perl シグナル受信.pl	←☆無限ループで動いている。
+$ kill -9 65934	←☆シグナル送信により、上記の状況にて、9が表示されている部分が今回の作業に該当する。
+```
+
+パッケージ内に宣言できない場合、使い勝手が悪いかもしれない。  
+もう少し調べる必要がある。  
+
+todo:
+シグナルを受信する条件を調べる。  
+
+</details>
 
 <a name="practicaluseFileoperation"></a>
 <details><summary>応用知識-ファイル操作(入出力・File-I/O)</summary>
