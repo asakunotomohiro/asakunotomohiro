@@ -1584,7 +1584,7 @@ fn retiffunc( hoge: i32 ) -> i32 {
   [x] [平均値を求める。](#findTheAverageValueChapter2)2022/01/11  
   [x] [1からnまで足し合わせる。](#addFrom1tonChapter2)2022/02/10  
   [x] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)2022/02/25  
-  [ ] [素数を求める。](#findAPrimeNumberChapter2)  
+  [x] [素数を求める。](#findAPrimeNumberChapter2)2022/03/21  
   [ ] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
   [ ] [エラトステネスの篩](#eratosthenesSieveChapter2)  
   [ ] [n進法を理解する。](#understandnAryNotationChapter2)  
@@ -1985,6 +1985,73 @@ fn main() {
 
 <a name="findAPrimeNumberChapter2"></a>
 #### 素数を求める。
+素数とは、1とその数以外に約数を持たない2以上の自然数のこと。  
+
+Pythonに倣い、試す数は**2〜2分のn**までの数で割ることを調べる方法をとる。  
+例えば、10を調べる場合、その半分より大きい数(**6**・**7**・**8**・**9**)では、10を割ることが出来ない。  
+そのことを利用した方法で素数を求める。  
+後日、[エラトステネスの篩](#eratosthenesSieveChapter2)を使った効率のいいアルゴリズムを勉強する。  
+
+* 素数を求めるルール  
+  * 二重ループを使う。  
+  * 2から2分のnまでの数で割る。  
+    ※それらの数で割り切れなければ素数。  
+
+以下、プログラム。
+```rust
+fn main() {
+	for ii in 2..101 {
+		let half = ii / 2;	// 商を求める(halfは、書き換えない変数)。
+		let mut flag = true;
+		let mut jj = 2;
+		while jj < half+1 {
+			if (ii % jj) == 0 {
+				flag = false;
+				break;
+			}
+			jj += 1;
+		}
+		if flag == true {
+			print!("{0},", ii );
+		}
+	}
+}
+```
+
+以下、出力結果。
+```terminal
+2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,
+```
+
+<details><summary>プロジェクト作成</summary>
+
+作り方を毎回忘れてしまう。  
+
+以下、作業。
+```terminal
+$ cargo new prime
+     Created binary (application) `prime` package
+$ git status
+On branch rustLang
+Your branch is ahead of 'origin/rustLang' by 17 commits.
+  (use "git push" to publish your local commits)
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   ../../../README.md
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	prime/Cargo.toml
+	prime/src/main.rs
+
+no changes added to commit (use "git add" and/or "git commit -a")
+$
+```
+
+</details>
+
 
 <a name="findTheFactorialOfNChapter2"></a>
 #### nの階乗を求める。
