@@ -136,7 +136,6 @@ $
     [x] 添え字での最大数確認  
     [x] 空確認  
     [ ] リスト演算子([`grep`](#practicalusegrep)・[`map`](#practicalusemap))  
-    [x] [eval](#practicaluseevalexceptionhandling)  
     [x] [構造体](#practicaluseArrangementArrayStructure)  
   * [ ] [条件分岐](#practicaluseConditional条件分岐)  
     * [x] [三項演算子](#practicaluseConditionalternary)(`?:`)  
@@ -180,9 +179,9 @@ $
     [x] 値の削除方法。  
     [x] OSの環境変数  
     [x] OSのシグナル  
+  * [ ] [grep](#practicalusegrep)  
   * [ ] [map](#practicalusemap)  
-  * [x] [ファイルテスト](#practicaluseFiletest)  
-    [x] ファイルテスト演算子  
+  * [x] [ファイルテスト演算子](#practicaluseFiletest)  
     todo: 途中。  
     [x] stat関数  
     [x] lstat関数  
@@ -205,10 +204,10 @@ $
     [x] グロブ  
     [x] ディレクトリハンドル。  
     [x] [プロパティ変更(パーミッション・オーナー・タイムスタンプ)](#practicalusePropertymanipulation)  
-  * [x] [JSONデータ](#practicalusejsonfile)2022/03/09  
+  * [x] [JSONデータ](#practicalusejsonfile)  
   * [ ] [オブジェクト指向](#practicaluseObjectorientation)  
     [x] オブジェクト指向入門(読み切っていない)  
-        * [オブジェクト指向入門](#objectorientedPerl4894713004one)を読み直す(要は全般)。  
+        * [オブジェクト指向入門(1章)](#objectorientedPerl4894713004one)を読み直す。  
     [x] Perl入門(todoあり)  
         * [モジュール](#practicaluseFunctionLibuse)部分読み直し。  
     [ ] オブジェクト指向Perl入門  
@@ -226,7 +225,14 @@ $
   * [ ] [テスト方法](#practicaluseTester)  
   * [x] [標準関数(モジュール)](#practicaluseFunctionLibuse)  
     [インストール](#practicalusecpan)利用などは別にある。  
-  * [ ] [プロセス管理](#practicaluseSystemfunc)  
+  * [x] [プロセス管理](#practicaluseSystemfunc)  
+    ※基本は外部コマンドを叩く。  
+    * プロセスをファイルハンドル化  
+    * system関数  
+    * exec関数  
+    * fork  
+    * バッククォート  
+    * シグナルの送受信  
   * [x] [正規表現](#practicaluseRegularexpression)  
     別ファイルでの記載が詳細なため、ここでは簡易ながらも説明完了とする。  
   * [x] [置換演算子](#practicaluseSubstitutedisplacement)  
@@ -558,11 +564,12 @@ print "$hoge's" . $hoge;	# boo	←☆なぜこの表記になるのか分から�
    * 丸括弧`()`  
      `(〜)`を`qw/ /`に置き換えられる。  
 
-|標準形|一般形|意味|展開|
-|------|------|----|----|
+<a name="subVariable3quarts"></a>
+|標準形|一般形|意味|変数展開|
+|------|------|----|--------|
 |`''`|`q//`|リテラル文字列|しない|
 |`""`|`qq//`|リテラル文字列|する|
-|``` `` ```|`qx//`|コマンド実行|する|
+|``` `` ```|[`qx//`](#practicalusebackquote)|コマンド実行|する|
 |`()`|`qw//`|ワードリスト|しない|
 |`s///`|`s///`|パターン置換|する|
 |`y///`|`tr///`|文字変換|しない|
@@ -3161,12 +3168,39 @@ Python限定にしたくなかったが、他のプログラミング言語に�
 ## 応用知識
 基礎知識5種類だけではアルゴリズムの勉強に足りない部分が発生したため、ちょっとだけ手を広げて勉強した。  
 
+<a name="appliedknowledgeContents"></a>
 * 応用部分  
   * [リファレンス](#practicalusePointer)  
   * [ハッシュ(連想配列)](#practicaluseHash)  
+  * [クロージャ](#practicaluseClosure)  
+  <a name="practicaluseSystemfunc"></a>
+  * プロセス管理。  
+    ※現在大まかな説明に留まり、何よりまだ調査が残っている。  
+    ※[ハッシュ](#practicaluseHash)の[環境変数](#practicaluseHashenv)も関係ある。  
+    * [プロセスをファイルハンドル化](#practicaluseFileoperation)
+    * [system関数(外部コマンド実行)](#practicalusesystem)  
+      子プロセスがコマンドを実行する(Perlプログラムから制御が離れ、勝手に動く)。  
+      出力結果を標準出力などに送る。  
+    * [exec関数(外部コマンド実行)](#practicaluseexec)  
+      Perlプログラムが外部コマンドの手綱を握る(むしろ、存在が入れ替わる)。  
+      出力結果を標準出力などに送る。  
+    * [fork(外部コマンド実行)](#practicalusefork)  
+    * [バッククォート(外部コマンド実行)](#practicalusebackquote)  
+      結果を受け取る。  
+    * [シグナルの送受信](#practicalusesignal)  
   * [オブジェクト指向](#practicaluseObjectorientation)  
     2021/11/11〜  
   * [switchステートメント](#practicaluseGivenwhen)  
+  * [ファイルテスト演算子](#practicaluseFiletest)  
+  * [ファイル操作(入出力・File-I/O)](#practicaluseFileoperation)  
+  * [ディレクトリ操作(入出力・File-I/O)](#practicaluseDirectorymanipulation)  
+  * [正規表現(Regular expression)](#practicaluseRegularexpression)  
+  * [置換演算子(Substitution operator)](#practicaluseSubstitutedisplacement)  
+  * [grep](#practicalusegrep)  
+  * [map](#practicalusemap)  
+  * [eval(例外処理)](#practicaluseevalexceptionhandling)  
+  * [SQL/DBI](#practicalusesqlDBI)  
+  * [Perl/Tk(GUI)](#practicaluseGUIPerlTk)  
   * 今後も機会があれば増やしていく。  
 
 
@@ -3328,6 +3362,8 @@ $hoge[9] = 20210901 + 9;	# 20210901
 ```
 ※この場合、[2]から[8]は、`undef`が自動的に格納されている。  
 
+[応用知識の目次に戻る](#appliedknowledgeContents)  
+
 </details>
 
 <a name="practicaluseArrangementArrayStructure"></a>
@@ -3426,6 +3462,8 @@ my $bar = {boo=>'本日は', bar=>'晴天なり',};	# 無名ハッシュ
 &resembleTypedef(\%boo, $bar);
 ```
 
+[応用知識の目次に戻る](#appliedknowledgeContents)  
+
 </details>
 
 <a name="practicaluseConditional条件分岐"></a>
@@ -3484,6 +3522,8 @@ say $hoge;	# 日付なし
 
 </details>
 
+[応用知識の目次に戻る](#appliedknowledgeContents)  
+
 </details>
 
 <a name="practicaluseConditionalifmodifier"></a>
@@ -3519,6 +3559,8 @@ say $hoge	if $hoge;	# 出力なし。
 `defined-or`演算子の出番はないと思って良いだろう。  
 
 当然ながら**if**だけでなく、**unless**・**until**・**while**・**foreach**がある。  
+
+[応用知識の目次に戻る](#appliedknowledgeContents)  
 
 </details>
 
@@ -3580,6 +3622,8 @@ sub hoge {
 1;	←☆真を返すための決まり事。
 ```
 この決まり事があるが故に、関数呼び出し後に1が返ってきていた過去がある。  
+
+[応用知識の目次に戻る](#appliedknowledgeContents)  
 
 </details>
 
@@ -3737,6 +3781,8 @@ BEGIN{
 }
 ```
 `BEGIN`は、コンパイル時に読み込まれる部分(何度useしようが、1回のみ読み込まれる)。  
+
+[応用知識の目次に戻る](#appliedknowledgeContents)  
 
 </details>
 
@@ -4532,6 +4578,8 @@ say $function;	# CODE(0x7f90fc01c608)
 
 #### 応用利用
 
+[応用知識の目次に戻る](#appliedknowledgeContents)  
+
 </details>
 
 <a name="practicaluseHash"></a>
@@ -4895,6 +4943,7 @@ sub associativearray() {
 
 <a name="practicaluseHashenv"></a>
 #### OSの環境変数(`%ENV`)
+※[システム管理](#practicalusesystem)にも影響する項目。  
 
 以下、環境変数をPerlで取得する。
 ```terminal
@@ -4903,7 +4952,7 @@ HISTCONTROL=ignoreboth
 $
 ```
 
-以下、取得できている。
+以下、取得できている(取得結果は一例)。
 ```perl
 say "$ENV{HISTCONTROL}";	# ignoreboth
 ```
@@ -4918,11 +4967,27 @@ $
 ```
 
 何に使うのか分からないが、GoでのGUI開発は日本語文字を取得するのに環境変数を利用しているな・・・。  
+また、OSによっては、環境変数への区切り記号が異なる。  
+
+そのため、良い塩梅の記号を用いてもらうためのモジュールが用意されており、それが**Config**になる。  
+以下、例）
+```perl
+use v5.24;
+use Config;
+
+sub config() {
+	# 以下、OSに合わせた設定値の区切り記号で値を追加できる。
+	$ENV{HOGE} = join $Config{path_sep},
+					'/home/hoge/bin', $ENV{HOGE};
+	say "HOGE：$ENV{HOGE}";	←☆Mac環境では、末尾にコロン:記号が付与されていた。
+}
+&config();
+```
 
 
 <a name="practicaluseHashsigint"></a>
 #### OSのシグナル(`%SIG`)
-OSのシグナルをPerl側で制御できるようになる。  
+OSの[シグナル](#practicalusesignal)をPerl側で制御できるようになる。  
 以下、利用例）
 ```perl
 use v5.24;
@@ -4955,10 +5020,468 @@ for (1..1000000) {
 ```
 **760493回目**直後にキー入力を行い、**760500回目**直後に反応した。  
 
+[応用知識の目次に戻る](#appliedknowledgeContents)  
+
+</details>
+
+<a name="practicalusesystem"></a>
+<details><summary>応用知識-system関数(外部コマンド実行)</summary>
+
+外部(システム側の)コマンドをPerlで叩く。  
+Perlプログラムは、どのようなシステムでも同じ処理を行い、同じ結果を残す。  
+そして、system関数で起動されたコマンドは、子プロセスとして動くため、Perlプログラムの動きを邪魔しない。  
+しかし、外部コマンドは、外部にあるか分からないのもあるが、同じ結果を返すかどうかも分からない。  
+動作確認は入念に行う必要があるだろう。  
+また、出力結果は標準出力に送られるため、結果が欲しい場合は、[バッククォート](#practicalusebackquote)を使う必要がある。  
+
+[CPAN](#practicalusecpan)から入手することを厭わないのならば、[IPC::System::Simple](https://metacpan.org/pod/IPC::System::Simple)というモジュールを使うことにより、堅牢なsystem実行が可能になる。  
+※今回使わないが、可能ならばこのモジュールを用いたsystem関数を利用すべきとのこと(書籍のP272に誤字あり)。  
+
+正確に表現するならば、Perlプログラムが親プロセスを生成し、そこから子プロセスの複製を作成して処理を任せる。  
+そして、その子プロセスが、親Perlプログラムプロセスの標準入力・標準出力・標準エラー出力を共有する。  
+孫プロセスを生成する場合(バックグラウンド実行)は、完全にPerlプログラムから手が離れるそうだ。  
+
+
+<a name="practicalusesystemfunc"></a>
+### system関数
+子プロセスを起動し、外部プログラムを実行する方法として、**system関数**を使う。  
+※完全にPerlプログラムから切り離されて動く([exec関数](#practicaluseexec)の場合は、Perlプログラムに連動(?)して動く)。  
+
+Perlプログラムからdateコマンドを使う例）
+`system 'date';`  
+当然ながらPerlプログラム外(OS側)に、 **date** コマンドが存在する前提になる。  
+そして、存在する場合も、オプションの違いや取得結果の違いが出てくるため、汎用性は低くなるだろう。  
+何より、オプションに指定する場合の環境変数名は、**$HOME** のようにPerlの変数と同じ形式になっている。  
+今回の **$HOME** は、ホームディレクトリを指すため、変数展開されては困る。  
+そのため、Perl側では、`system 'ls $HOME';`のようにシングルクォートで囲むか、`system "ls \$HOME";`のようにエスケープするかのどちらかが必要になる。  
+また、結果が返ってくるまでPerlは待機する。  
+それを避けるには、バックグラウンドで実行させる必要がある。  
+例）
+`system 'date &';`  
+
+
+<a name="practicalusesystemfuncargv"></a>
+#### system関数-引数
+引数1個の場合は、Perlから普通に動かす。  
+単純な場合でもPathからコマンドを探すこともあり、このPathは、**$ENV{'PATH'}** にて、変更可能な[環境変数(Perlではハッシュで扱う)](#practicaluseHash)になっている。  
+そして、特殊記号が含まれている場合は、Bourne(/bin/sh)シェルもしくは、**cmd /x/d/c**(Windows・PERL5SHELL[環境変数](#practicaluseHashenv))を呼び出し、動かす。  
+
+以下、実行例）
+```perl
+my $date = system 'date';	# 2022年 3月 6日 日曜日 14時46分02秒 JST
+say "<$date>";				# <0>
+```
+実行に成功した場合は0が返ってくる。  
+失敗の場合は0以外が返ってくる。  
+0が真であり、0以外が偽になるのは、Perlプログラムの価値観と真逆になるため、気をつけること。  
+
+第2引数以降が存在する場合、シェルなどを呼び出すことなく実行することになる。  
+これは、セキュリティ上の問題になるため、第1引数のコマンドにオプションが必要な場合は、そのオプションを第2引数に振り分けた方がセキュリティ向上に寄与できる。  
+ただ、何でもかんでも第2引数に放り込めば良いとは限らないようだ。  
+
+これらとは別に、[ハッシュ](#practicaluseHash)の[**OSの環境変数**](#practicaluseHashenv)が今回のプロセス管理に関わってくるため、参照しておくこと。  
+
+
+[応用知識の目次に戻る](#appliedknowledgeContents)  
+
+</details>
+
+<a name="practicaluseexec"></a>
+<details><summary>応用知識-exec関数(外部コマンド実行)</summary>
+
+外部(システム側の)コマンドをPerlで叩く。  
+Perlプログラムは、どのようなシステムでも同じ処理を行い、同じ結果を残す。  
+そして、exec関数で起動されたコマンドは、Perlプログラムが制御しているため、goto文のように紐付いた挙動を取る。  
+しかし、外部コマンドは、外部にあるか分からないため、動作確認は入念に行う必要があるだろう。  
+また、出力結果は標準出力に送られるため、結果が欲しい場合は、[バッククォート](#practicalusebackquote)を使う必要がある。  
+
+正確に表現するならば、exec関数により、外部コマンドを呼んだ時点で既存のPerlプログラムが置き換わるため、Perlプログラムに戻る術がなくなる。  
+そのため、余り使われない関数だそうだ。  
+素直に、[system関数](#practicalusesystem)を使おう。  
+もしくは、[fork](#practicalusefork)と組み合わせて使おう。  
+
+
+<a name="practicaluseexecfunc"></a>
+### exec関数
+ほぼ[system関数](#practicalusesystem)と同じ。  
+唯一違うのは、Perlプログラムに置き換わって外部コマンドが動くこと。  
+そのため、外部コマンドが動く時点で、すでに起動していたPerlプログラムは存在せず、その代わりに外部コマンドが動いている。  
+
+Perlプログラムからdateコマンドを使う例）
+`exec 'date';`  
+この処理以降の処理は一切走らない。  
+そのため、基本的には、exec関数を使う場合、forkと組み合わせる。  
+
+[応用知識の目次に戻る](#appliedknowledgeContents)  
+
+</details>
+
+<a name="practicalusebackquote"></a>
+<details><summary>応用知識-バッククォート(外部コマンド実行)</summary>
+
+既出の[system関数](#practicalusesystem)・[exec関数](#practicaluseexec)では、出力結果を標準出力に送る。  
+今回のバッククォートでは、出力結果を戻り値として受け取ることができる。  
+しかし、Unixのシェル結果と異なり、Perlで取得する場合は改行まで含めるため、改行削除作業が必要になるだろう。  
+そして、実行エラーになった場合、標準エラー出力側に出力される。  
+さらに説明を付け加えるならば、今回のバッククォート実行では、実行が完全に終わるまで待機する必要がある。  
+その時間が長い場合、結果が返るまで処理が固まったように見えるため、そのような場合には不適切な使い方になるだろう。  
+その場合は、[プロセスをファイルハンドル化](#practicaluseFileoperationfilehandleprocesspipe)を使った方が良い。  
+
+以下、実行例）
+```perl
+use v5.24;
+my $date = `date`;	# 結果は、変数に代入される(そのため、標準出力なし)。
+
+say "$date";
+		# 2022年 3月11日 金曜日 18時17分28秒 JST
+		# 	←☆改行が含まれている。
+```
+
+* 小さい目次。  
+  * [通常の変数展開](#practicalusebackquotebackquarts)
+  * [qxでの変数展開](#practicalusebackquotebackquartqx)
+  * [標準エラー出力](#practicalusebackquoteerr)
+  * [標準入力への対処](#practicalusebackquoteinput)
+  * [変数への代入](#practicalusebackquotescalar)
+  * [配列への代入](#practicalusebackquotearray)
+
+<a name="practicalusebackquotebackquarts"></a>
+[バッククォート内](#variable変数)では、[変数展開](#subVariable3quarts)が行われる。
+```perl
+use v5.24;
+
+my $pwd = 'pwd';	# 現在地取得。
+my $ret = `$pwd`;	←☆変数展開。
+chomp $ret;	←☆改行削除。
+say "<$ret>";	# </Users/asakunotomohiro/study勉強用Githubリポジトリ/Perl言語>
+```
+<a name="practicalusebackquotebackquartqx"></a>
+以下、qxでも対応可能。
+```perl
+my $pid = qx(echo $$);	←☆qxは、``で囲むことを表している。
+chomp $pid;	←☆改行削除。
+say $pid;	# 54515	←☆PIDなので、実行毎に数字が変わる。
+```
+
+<a name="practicalusebackquoteerr"></a>
+以下、実行エラー。
+```perl
+`date -a`;
+	# date: illegal option -- a
+	# usage: date [-jnRu] [-d dst] [-r seconds] [-t west] [-v[+|-]val[ymwdHMS]] ... 
+	#             [-f fmt date | [[[mm]dd]HH]MM[[cc]yy][.ss]] [+format]
+```
+そもそも、セキュリティ上問題が発生する。  
+引数を渡す場合を考慮するならば、[system関数](#practicalusesystem)を使うこと(引数に変数を渡す処理の場合、予期せぬコマンドが仕込まれる可能性があり、それが必ず実行されることになるため、虚弱性になってしまう)。  
+実行結果が標準エラー出力に行くため、変数に代入する処理になっている場合も標準エラー出力に吐き出す。  
+
+<a name="practicalusebackquoteinput"></a>
+標準入力に対して、何かしらの事前メッセージ出力での促しが必要。  
+もしくは、標準入力を無視する仕組みを作る。  
+以下、そのプログラム。
+```perl
+	my $date = `date < /dev/null`;	←☆標準入力から入力を待機させないようにする。
+	chomp $date;
+	say $date;
+```
+今回の場合は、Unixでの対処をしたが、OSによって異なるため、その都度調べる必要が出てくる。  
+Windowsの場合は、`date < NUL`になる。  
+
+<a name="practicalusebackquotescalar"></a>
+複数行出力の代入に、スカラー変数を選んだ場合、1個の文字列にまとめられて代入される。  
+以下、その例）
+```perl
+my $who = `who`;
+say $who;
+	# 以下、出力結果。
+	# asakunotomohiro console  Mar  5 10:47	←☆末尾に半角スペースが付いている。
+	# asakunotomohiro ttys001  Mar 14 19:55	←☆末尾に半角スペースが付いている。
+```
+
+<a name="practicalusebackquotearray"></a>
+配列に代入させる場合は、1つの要素に1行が代入される。  
+以下、その例）
+```perl
+	my @who = `who`;
+	foreach my $value ( @who ) {
+		chomp $value;
+		say $value;
+	}
+	# 以下、出力結果。
+	# asakunotomohiro console  Mar  5 10:47	←☆末尾に半角スペースが付いている。
+	# asakunotomohiro ttys001  Mar 14 19:55	←☆末尾に半角スペースが付いている。
+```
+とりあえず、変数よりは、盲滅法に配列代入で問題ないかもね。  
+
+</details>
+
+<a name="practicalusefork"></a>
+<details><summary>応用知識-フォーク(外部コマンド実行)</summary>
+
+この仕組みは難しいそうだ。  
+そのため、今まで使ったことがない場合は、今まで通り[system関数](#practicalusesystem)を使うことで問題なく処理をこなせるとのこと。  
+
+プログラムのみ記載する。
+```perl
+use v5.24;
+
+sub main() {
+	system 'date';
+
+	defined(my $pid = fork) or die "フォーク失敗：$?";
+	say $pid;	# 0	←☆ここ以降の処理を動かさない(コメントアウトした)場合も0以外が出力される(いつ呼び出されているのか不明)。
+	unless( $pid ) {	←☆親プロセスは0になるため、ここでは0以外の場合に子プロセスと判断し、子プロセスとして実行する(認識あっている？)。
+		# 子プロセス
+		exec 'date';	# dateと言うのがコマンドのようで、後ろに文字列を付けた場合、dateコマンドの引数扱いされるようだ。
+						# 当然ながら実行時間が表示される。
+		die "失敗(exec date)";	←☆上記のexecを実行しない場合、失敗する。
+	}
+
+	# 親プロセス
+	waitpid($pid, 0);	←☆この引数の扱いが全く分からない。
+}
+&main();
+```
+私には理解できない。  
+
+</details>
+
+todo:
+後日forkについて勉強し直す。  
+
+<a name="practicalusesignal"></a>
+<details><summary>応用知識-シグナルの送受信</summary>
+
+プロセスの生殺与奪権を行使できるのが今回のシグナル送信や受信にあたる。  
+Perlプログラムのシグナル送信は、Perlプログラムで生成した子プロセスへ送る。  
+しかし、プロセスIDを使う必要があるため、それを取得するのが非常に手間暇掛かりそうに思う。  
+
+* 小さい目次。
+  * [PerlのシグナルはUnixと酷似](#practicalusesignalunixsig)  
+  * [プロセスIDの表示例](#practicalusesignalprocessidprint)  
+  * [存在しないプロセスIDの扱い](#practicalusesignalnoprocess)  
+  * [シグナル受信](#practicalusesignalreceive)  
+    [ハッシュ](#practicaluseHash)を使う。  
+
+Perlプログラムでの大まかな実行方法例）
+`kill シグナル番号もしくはシグナル名, プロセスID or die '行使失敗$!';`  
+具体例）
+`kill 9, 12345;`  
+プロセスID**12345**に対して、シグナル番号9を送る。  
+シグナル番号よりは、シグナル名を使う方が分かりやすいだろう。  
+上記と同じ意味）
+`kill 'KILL', 12345;`  
+また、太い矢印 **=>** を使う場合は、シグナル名をクォートで囲む必要が無い。  
+`kill KILL => 12345;`  
+これも上記と同じ意味。  
+
+
+<a name="practicalusesignalunixsig"></a>
+### PerlのシグナルはUnixのシグナルと酷似
+Perl独自のシグナルではあるが、Unixのシグナルに酷似しており、そしてUnixのシグナルのように扱える。  
+
+以下、Macのシグナル一覧。
+```terminal
+$ kill -l
+ 1) SIGHUP	 2) SIGINT	 3) SIGQUIT	 4) SIGILL
+ 5) SIGTRAP	 6) SIGABRT	 7) SIGEMT	 8) SIGFPE
+ 9) SIGKILL	10) SIGBUS	11) SIGSEGV	12) SIGSYS
+13) SIGPIPE	14) SIGALRM	15) SIGTERM	16) SIGURG
+17) SIGSTOP	18) SIGTSTP	19) SIGCONT	20) SIGCHLD
+21) SIGTTIN	22) SIGTTOU	23) SIGIO	24) SIGXCPU
+25) SIGXFSZ	26) SIGVTALRM	27) SIGPROF	28) SIGWINCH
+29) SIGINFO	30) SIGUSR1	31) SIGUSR2	
+$
+```
+31種類ある。  
+そして、Windowsでは、Unixのシグナルの意味とは大幅に異なるそうだ。  
+
+シグナルを使う場合は、接頭辞である**SIG**を付けずに指定する。  
+以下、使用例）
+```terminal
+$ kill -l INT	←☆第2引数。
+2
+$ kill -l 2
+INT
+$
+```
+
+
+<a name="practicalusesignalprocessidprint"></a>
+### プロセスIDの表示例
+※今回は、Perl無関係(Macでのターミナル操作)。  
+
+以下、プロセスIDを表示した。
+```terminal
+$ echo $$; ps -A | grep $$ | grep -v grep
+15680
+15680 ttys013    0:05.25 -bash
+$
+```
+~~結局この番号はどこから発生した？~~  
+
+ターミナル本体のプロセスなのだろう。
+```terminal
+$ echo $$; ps -A | grep $$ | grep -v grep
+62118
+62118 ttys000    0:00.03 -bash
+$
+[プロセスが完了しました]	←☆別のターミナルから「kill -9 62118」を実行。
+```
+このターミナルは使えない(終了しているため)。  
+以下、そのターミナルに対する操作。
+```terminal
+$ kill -9 62118
+$ echo $?	←☆無事に措置完了。
+0
+$
+```
+
+
+<a name="practicalusesignalnoprocess"></a>
+### 存在しないプロセスIDの扱い
+※Perlプログラムから確認あり。  
+
+以下、存在しないプロセスを首切りする。
+```terminal
+$ ps -A | grep 20220317 | grep -v grep
+$ kill -9 20220317	←☆存在しないため、当たり前のように失敗する。
+-bash: kill: (20220317) - No such process
+$ echo $?	←☆失敗した場合、0以外が返る？
+1
+$
+```
+Perlプログラムで存在しないプロセスを断頭する(失敗する)場合は、[偽(要は0)](#variable変数)が返るため、気をつけること。  
+
+以下、プログラム。
+```perl
+use v5.24;
+
+sub main() {
+	defined(my $pid = fork) or die "フォーク失敗：$?";
+	unless( $pid ) {
+		# 子プロセス
+		exec 'date';	←☆実行される。
+		die "失敗(exec date)";
+	}
+
+	if( kill 0, $pid ) {
+		say "プロセスが存在する。";	←☆表示する。
+	}
+
+	# 親プロセス
+	waitpid($pid, 0);
+}
+&main();
+```
+
+以下、dateコマンドが実行されないプログラム。
+```perl
+use v5.24;
+
+sub main() {
+	defined(my $pid = fork) or die "フォーク失敗：$?";
+	unless( $pid ) {
+		# 子プロセス
+		exec 'date';	←☆実行されない。
+		die "失敗(exec date)";
+	}
+	kill 9, $pid;	←☆上記のdateコマンドより後に実行したはずだが、上記のdateコマンドは実行されない。
+
+	if( kill 0, $pid ) {
+	#if( kill 0, 20220317 ) {
+		say "プロセスが存在する。";	←☆表示する。
+	}
+
+	# 親プロセス
+	waitpid($pid, 0);
+}
+&main();
+```
+実行時期が全く把握できないため、調べる必要がある。  
+
+以下、存在しないプロセスの確認プログラム。
+```perl
+use v5.24;
+
+sub main() {
+	if( kill 0, 20220317 ) {	←☆存在しないプロセスを確認する。
+		say "プロセスが存在する。";
+	}
+	else{
+		say '存在しないプロセス。';	←☆こちらが出力する。
+	}
+}
+&main();
+```
+
+
+<a name="practicalusesignalreceive"></a>
+### シグナル受信
+今回のシグナル受信設定は、ハッシュで管理されているため、シグナルの種類をハッシュのキーを指定し、そこに関数名を代入することで、シグナル受信時に、その関数を呼ぶことができる。  
+しかし、私の環境では、関数をパッケージ内に作った場合、呼び出すことが出来なかった。  
+
+以下、プログラム。
+```perl
+use v5.24;
+
+my $count = 0;
+sub signalReceive {
+	$count++;
+	say "シグナル受信($count回目)";
+}
+
+$SIG{'INT'} = 'signalReceive';	←☆Ctrl+Cの押下にて呼ばれる。
+$SIG{'KILL'} = 'signalReceive';	←☆Killシグナル受信で呼ばれると思ったが、失敗した。
+
+sub main() {
+	while() {
+		# 無限ループ。
+	}
+}
+&main();
+```
+
+以下、呼ばれる状況記録。
+```terminal
+$ perl シグナル受信.pl	←☆プログラム実行。
+^Cシグナル受信(1回目)	←☆Ctrl+C押下後の出力(1回目)。
+^Cシグナル受信(2回目)	←☆Ctrl+C押下後の出力(2回目)。
+Killed: 9	←☆Killシグナル受信するが、関数は呼ばれなかった。
+$
+```
+
+以下、作業。
+```terminal
+$ ps -A | grep シグナル受信 | grep -v grep
+65934 ttys015    0:05.45 perl シグナル受信.pl	←☆無限ループで動いている。
+$ kill -9 65934	←☆シグナル送信により、上記の状況にて、9が表示されている部分が今回の作業に該当する。
+```
+
+パッケージ内に宣言できない場合、使い勝手が悪いかもしれない。  
+もう少し調べる必要がある。  
+
+todo:
+シグナルを受信する条件を調べる。  
+
 </details>
 
 <a name="practicaluseFileoperation"></a>
 <details><summary>応用知識-ファイル操作(入出力・File-I/O)</summary>
+
+* 小さい目次。  
+  * [標準入力](#practicaluseFileoperationinputoutput)  
+    Perlへの引数をファイルとして、それを読み込む。  
+  * [整形出力(printf)](#practicaluseFileoperationprintf)  
+    * [配列とprintfの組み合わせ](#practicaluseFileoperationarrayprintf)  
+      **x演算子**による、繰り返し処理。  
+  * [ファイルハンドル](#practicaluseFileoperationfilehandle)  
+  * [プロセスをファイルハンドル化](#practicaluseFileoperationfilehandleprocesspipe)  
+  * [IO::Handle](#practicaluseFileoperationfilehandleiomodule)  
+  * [ファイル削除](#practicaluseFileoperationFiledelete)  
+  * [ファイル名変更](#practicaluseFileoperationFilenamechange)  
+  * [リンクとファイル](#practicaluseFileoperationlinkandfile)  
+  * [特殊変数](#practicaluseFileoperationSpecialvariables)  
 
 <a name="practicaluseFileoperationinputoutput"></a>
 ### [入力と出力](https://perldoc.jp/docs/perl/5.34.0/perlclib.pod)
@@ -5136,6 +5659,10 @@ Perlと外部との結びつき(コネクション)を言う。
     Perl5.6より古い場合に使われるが、それ以降でも使う。  
     命名規則：英数字とアンダースコアを付ける(先頭は数字以外)。  
     ※すべて大文字にすることで、将来でてくる予約語とかぶることなく使える。  
+    [ファイルハンドルオープン失敗die](#practicaluseFileoperationfilehandleopenFailuredie)  
+    [ファイルハンドルオープン失敗warn](#practicaluseFileoperationfilehandleopenFailurewarn)  
+    [ファイルハンドルからのファイル書き込み](#practicaluseFileoperationfileopenwrite)  
+    [標準エラーをファイルに書き込む](#practicaluseFileoperationfileopenerrwrite)  
   * [スカラー変数](#practicaluseFileoperationScalarfilehandle)  
     Perl5.6以降に出来た。  
   * [リファレンス](#practicaluseFileoperationfilehandlereference)  
@@ -5149,7 +5676,8 @@ Perlと外部との結びつき(コネクション)を言う。
       標準出力ストリーム(standard output stream)  
     * STDERR  
       標準エラーストリーム(standard error stream)  
-    * DATA  
+    * [DATA](#practicaluseFileoperationSpecialvariablesdata)  
+      DATAファイルハンドルのことだよね？  
     * ARGV  
     * ARGVOUT  
 
@@ -5160,24 +5688,24 @@ Perlが必要と判断したときに、自動でファイルハンドルを開�
 
 * `open HOGE, 'boo';`の挙動  
   **boo**という名前のファイルを**HOGE**というファイルハンドルに紐付ける。  
-  今後のPerlプログラムでは、**HOGE**を通じて**booファイル**をイジれるようになる。  
+  実行時の説明：**HOGE**を通じて**booファイル**が変更される。  
 
-* `open HOGE, '<boo';`の挙動  
+* `open HOGE, '<', 'boo';`の挙動  
   上記と紐付けは同じだが、入力用に使うところが今回の挙動になる。  
   ※ただし、これは、上記と同じ挙動とも言える(デフォルト動作が入力用になっているため)。  
-  また、ファイル名が変数名の場合、変数を展開することになるのだが、変数に特殊記号を埋め込まれていた場合、脆弱を含むことになる。  
-  今後の書き方：`open HOGE, '<', 'boo';`
+  また、以下の場合は、ファイル名が変数名の場合、変数を展開することになるのだが、変数に特殊記号を埋め込まれていた場合、脆弱を含むことになる。  
+  古い記述方法：`open HOGE, '<boo';`  
 
-* `open HOGE, '>boo';`の挙動  
+* `open HOGE, '>', 'boo';`の挙動  
   上記と紐付けは同じだが、出力用に使うところが今回の挙動になる。  
   ※既存のファイルの場合は、上書きする。  
-  今後の書き方：`open HOGE, '>', 'boo';`
+  古い記述方法：`open HOGE, '>boo';`  
 
-* `open HOGE, '>>boo';`の挙動  
+* `open HOGE, '>>', 'boo';`の挙動  
   上記と紐付けは同じだが、追記出力用に使うところが今回の挙動になる。  
   `$bar='outBar.txt'; open HOGE, "> $bar";`  
   の場合、`>`の直後に半角スペースがある。これは、追加書き込みになる(スペースがない場合新規作成)。  
-  今後の書き方：`open HOGE, '>>', 'boo';`
+  古い記述方法：`open HOGE, '>>Boo';`  
 
 * エンコーディング(encoding)  
   文字コードを指定することができる。  
@@ -5660,8 +6188,54 @@ sub inputOutput() {
 
 </details>
 
+<a name="practicaluseFileoperationfilehandleprocesspipe"></a>
+### プロセスをファイルハンドル化(外部コマンド実行)
+Perlから子プロセスを生成し、やりとりをしつつ子プロセス独自で動く方法として、プロセスをファイルハンドル化させる。  
+パイプ記号`|`を外部コマンドの前もしくは後ろに付けることで、それが実現する。  
+open関数に、ファイル扱いとして引数を渡すため、パイプオープン(piped open)と呼ぶことがあるそうだ。  
+通常の[ファイルハンドル](#practicaluseFileoperationfilehandleopen)と同じように、第3引数まで指定が可能になっている。  
 
-<a name="practicaluseFileoperationfilehandlereference"></a>
+* パイプ配置場所  
+  * 前(`|date`)  
+    Perlプログラムからの標準出力先をコマンド(**date**)への引数として渡す。  
+    プロンプト表記例）`$ perlProgram | date`  
+    例）`open DATE, '|date' or die "失敗$!";`  
+    第3引数利用例）`open DATE, '|-', 'date' or die "失敗$!";`  
+  * 後(`date|`)  
+    コマンド(**date**)の出力結果をPerlプログラムの入力用として受け取る。  
+    プロンプト表記例）`$ date | perlProgram`  
+    例）`open DATE, 'date|' or die "失敗$!";`  
+    第3引数利用例）`open DATE, '-|', 'date' or die "失敗$!";`  
+
+今回のファイルハンドル専用として、第4引数への指定も可能になっている。  
+内容は、コマンドへの引数を指定する。  
+しかし、Windowsの場合は、リスト形式では動かないため、別途モジュールを導入する必要があるそうだ。  
+
+以下、入力用の使用例）
+```perl
+use v5.24;
+
+sub process() {
+	my $find_fh;
+	open $find_fh, '-|', 'find', qw(. -type f -name *pl) or die "findコマンド実行失敗($!)";	←☆windowsでは、第4引数が使えない？
+	while( <$find_fh> ) {
+		chomp;
+		say;
+	}
+	close $find_fh;
+	die "閉鎖失敗 $?" if $?;	←☆終了結果を確認している(成功は0)。
+}
+&process();
+```
+第4引数に、シングルクォートで囲んだ文字列を渡したときにはエラーになった。  
+そのため、Windowsではそもそも第4引数を使った構文が利用できないのかもしれない。  
+
+今回利用したfindコマンドは、検索結果が多い場合も見つかり次第処理を行う。  
+そして、[バッククォート](#practicalusebackquote)で同じコマンドと引数の組み合わせを実行した場合は、実行が終わるまで待機する。  
+結果が多い場合、処理が固まってしまったように見えるため、その場合は、今回のようにパイプオープンを用いた方が良い。  
+
+
+<a name="practicaluseFileoperationfilehandleiomodule"></a>
 ### IO::Handle
 **IO::Handle**を基底とした派生クラスのモジュールを使うことで使い勝手が向上するそうだ。  
 
@@ -6089,8 +6663,10 @@ $
   困らない理由は、元ファイル削除後は、ハードリンクファイルが元ファイルに昇華するため。  
   また、ハードリンクファイルを削除した場合、元ファイルも引きずられて消える場合がある。  
 
+  * [ハードリンクファイル作成](#practicaluseFileoperationlinkandfilehardlink)  
+
 * 上記の制限回避方法  
-  * [シンボリックリンク](#practicaluseFileoperationlinkandfilesymboliclink)(ソフトリンク・symbolic link・soft link)の活用。  
+  * [シンボリックリンクファイル作成](#practicaluseFileoperationlinkandfilesymboliclink)(ソフトリンク・symbolic link・soft link)。  
     `symlink '元ファイル名', 'リンクファイル名' or "シンボリックリンク作成失敗$!"`
     * [ソフトリンクファイルから大本にたどる方法。](#practicaluseFileoperationlinkandfilesymboliclinkfollow)  
     * [存在しないファイルからソフトリンクファイルの作成。](#practicaluseFileoperationlinkandfilesymboliclinkmakeghost)  
@@ -6473,10 +7049,11 @@ $
     コマンドライン引数。  
   * `@F`  
     オートスプリット配列というものだが、それが何か分からない。  
-  * `DATAファイルハンドル`  
+  * [`DATAファイルハンドル`](#practicaluseFileoperationSpecialvariablesdata)  
     同じファイル内に記述した文字列を **\_\_END\_\_** になるまで読み込む。  
 
 
+<a name="practicaluseFileoperationSpecialvariablesdata"></a>
 #### DATAファイルハンドル
 一部のファイル読み取り処理の動作確認用に、同じファイル内にファイル内容を記載しておき、それを読み取るという仕組み。  
 
@@ -6504,6 +7081,8 @@ $ perl special.pl
 $
 ```
 この技法は今後活用していこうと思う。  
+
+[応用知識の目次に戻る](#appliedknowledgeContents)  
 
 </details>
 
@@ -7424,6 +8003,7 @@ $
 それができるのは、[File::Path](https://perldoc.jp/docs/modules/File-Temp-0.22/Temp.pod)の**rmtree()関数**はずなのだが、Perlに付属していないのか、Helpに載っていなかったぞ!?  
 [MetaCPAN](https://metacpan.org)に[File::Path](https://metacpan.org/pod/File::Path)がある？  
 
+[応用知識の目次に戻る](#appliedknowledgeContents)  
 
 </details>
 
@@ -7730,6 +8310,8 @@ sub timeformatChange {
 タイムスタンプ.txtファイル削除済み。
 ```
 
+[応用知識の目次に戻る](#appliedknowledgeContents)  
+
 </details>
 
 <a name="practicalusegrep"></a>
@@ -7824,6 +8406,8 @@ sub grepFilelinecount() {
 &grepFilelinecount();
 ```
 
+[応用知識の目次に戻る](#appliedknowledgeContents)  
+
 </details>
 
 <a name="practicalusemap"></a>
@@ -7878,6 +8462,8 @@ sprintfとの組み合わせも可能。
 
 1行の単純式ならばブロック括弧は省略できる。  
 `map "<$_>", @配列名;`  
+
+[応用知識の目次に戻る](#appliedknowledgeContents)  
 
 </details>
 
@@ -9164,7 +9750,7 @@ sub pipehandle() {
 	# ファイル名定義。
 	my $filename = $currentDir . '/filehandle.txt';
 
-	unless( -p $filename ) {
+	unless( -f $filename ) {
 		say "ファイル作成前。";
 	}
 
@@ -9175,37 +9761,35 @@ sub pipehandle() {
 
 	open my $file_fh, '-|', "cat $filename"
 		or die "$filenameのファイルオープン失敗($!)";
-		# このファイルハンドルは、子プロセスからの読み込みになる？
+		# このファイルハンドルは、子プロセスからの読み込み。
+		# ※catコマンドの結果を受け取る用のファイルハンドル。
 
 	if( -p $filename ) {
+		# そもそもファイルハンドルではない変数と比較している。
 		say "ファイルハンドルあり($filename)。" . '< $filename';
 	}
 	elsif( -p $file_fh ) {
-		say "ファイルハンドルあり($file_fh)。" . '< $file_fh';	←☆これが出力されている。
+		say "ファイルハンドルあり($file_fh)。" . '< $file_fh';#	←☆こっちが出力される。
 	}
 	else{
 		say "ファイルハンドルなし。";
 	}
 	close $file_fh;
+	die "閉鎖失敗 $?" if $?;
 
 	say "ファイルハンドル閉じ済み。";
-	if( -p $filename ) {
-		say "ファイルハンドルあり($filename)。" . '< $filename';
-	}
-	elsif( -p $file_fh ) {
+	if( -p $file_fh ) {
+		# 閉じているため、ここには来ない。
 		say "ファイルハンドルあり($file_fh)。" . '< $file_fh';
 	}
 	else{
-		say "ファイルハンドルなし。";	←☆これが出力されている。
+		say "ファイルハンドルなし。";#	←☆これが出力されている。
 	}
 
 	say "ファイル削除。";
 	unlink $filename or warn "ファイル削除失敗($!)。";
-	if( -p $filename ) {
+	if( -f $filename ) {
 		say "ファイルあり。";
-	}
-	elsif( -p $file_fh ) {
-		say "ファイルハンドルあり。";
 	}
 	else{
 		say "ファイルなし(削除済み)。";
@@ -9214,9 +9798,7 @@ sub pipehandle() {
 &pipehandle();
 ```
 当然なのだろうが、ファイルハンドルは開いた状態で確認する必要がある。  
-
-todo:
-パイプというのを別途調べる必要がある。  
+※パイプは、[ファイル操作(入出力・File-I/O)](#practicaluseFileoperation)の[プロセスをファイルハンドル化](#practicaluseFileoperationfilehandleprocesspipe)にて、説明済み。  
 
 以下、出力結果。
 ```terminal
@@ -10459,8 +11041,9 @@ todo:
 例えば、本格的にファイル権限などを操作する時に重要になることだろう。  
 何より、ビット演算子の活用は、C言語以外でお目に掛ったことがない。  
 
-</details>
+[応用知識の目次に戻る](#appliedknowledgeContents)  
 
+</details>
 
 <a name="practicalusePackages"></a>
 <details><summary>応用知識-パッケージ</summary>
@@ -10583,6 +11166,8 @@ $Subboo::bar::hoge::VERSION = 1.00;
 バージョンの問題から変数宣言時に`my`を付ける必要がある。  
 これを付けた場合、[レキシカル変数](#subVariable2)になってしまう。  
 
+[応用知識の目次に戻る](#appliedknowledgeContents)  
+
 </details>
 
 <a name="practicaluseAutoload"></a>
@@ -10627,6 +11212,8 @@ sub sample(){
 	say "Sub入れ子パッケージsample関数";
 }
 ```
+
+[応用知識の目次に戻る](#appliedknowledgeContents)  
 
 </details>
 
@@ -10742,6 +11329,8 @@ say $func->(5);	# 20211212+111+5
 	# 出力結果：20211328
 ```
 
+[応用知識の目次に戻る](#appliedknowledgeContents)  
+
 </details>
 
 <a name="practicaluseTypeglob"></a>
@@ -10821,10 +11410,12 @@ say %{*$hoge}{3};	# 3hoge
 
 ※バグの温床になる技術になるため、使わないようにすること。  
 
+[応用知識の目次に戻る](#appliedknowledgeContents)  
+
 </details>
 
 <a name="practicalusecpan"></a>
-<details><summary>応用知識-CPAN</summary>
+<details><summary>応用知識-CPAN(モジュール利用)</summary>
 
 [CPAN](https://www.cpan.org)から欲しいモジュールを探す。  
 [meta-CPAN](https://metacpan.org)というのもある。  
@@ -10906,6 +11497,8 @@ $
 インストール失敗。  
 これを`use`する？  
 手作業でのインストールは大変とのこと。  
+
+[応用知識の目次に戻る](#appliedknowledgeContents)  
 
 </details>
 
@@ -11119,6 +11712,8 @@ Perlにおけるオブジェクト指向は、標準的な言語機能(ハッシ
 <a name="objectorientedPerl4894713004appendixd"></a>
 #### 付録D 用語集
 
+
+[応用知識の目次に戻る](#appliedknowledgeContents)  
 
 </details>
 
@@ -11687,8 +12282,9 @@ sub hoge {
 引数として渡した文字列を1文字づつ数えるプログラム。  
 配列の中に入っている文字列を**foreach**で取り出し、**when**で仕分ける。  
 
-</details>
+[応用知識の目次に戻る](#appliedknowledgeContents)  
 
+</details>
 
 <a name="practicaluseGivenwhen"></a>
 <details><summary>応用知識-switchステートメント(given-when)</summary>
@@ -11903,8 +12499,9 @@ continueがあることにより、文字列が尽きるまで**given**に戻り
 気になるのは、**continue**文を置くことで、**default**が実行されると言うこと(困る)。回避方法はないものか。  
 回避させるには最後の**when**の`/e/`から**continue**を取り除けば良いのだろうけど・・・。  
 
-</details>
+[応用知識の目次に戻る](#appliedknowledgeContents)  
 
+</details>
 
 <a name="practicaluseRegularexpression"></a>
 <details><summary>応用知識-正規表現(Regular expression)</summary>
@@ -12016,8 +12613,9 @@ sub regexSample {
 ```
 上記2つ目の検索に[パターンマッチ演算子](#practicaluseRegularexpressionPatternmatchoperator)を使うことでスラッシュ記号へのエスケープシーケンスが不要になっている。  
 
-</details>
+[応用知識の目次に戻る](#appliedknowledgeContents)  
 
+</details>
 
 <a name="practicaluseSubstitutedisplacement"></a>
 <details><summary>応用知識-置換演算子(Substitution operator)</summary>
@@ -12345,6 +12943,8 @@ sub listcontext {
 }
 &listcontext("boo, bar 20220128, 本日は晴天なり。");
 ```
+
+[応用知識の目次に戻る](#appliedknowledgeContents)  
 
 </details>
 
@@ -14830,6 +15430,8 @@ foreach my $row ( @$tabledata ) {
 <a name="practicalusesqlDBIshellanddatabaseproxy"></a>
 ### DBIシェルとデータベースプロキシ。
 
+[応用知識の目次に戻る](#appliedknowledgeContents)  
+
 </details>
 
 <a name="practicaluseGUIPerlTk"></a>
@@ -16724,6 +17326,8 @@ sub guiPlace() {
 <a name="practicaluseTkgeometrymanagementplacemethod"></a>
 ##### ジオメトリマネージャPlaceのメソッド
 
+
+[応用知識の目次に戻る](#appliedknowledgeContents)  
 
 </details>
 
