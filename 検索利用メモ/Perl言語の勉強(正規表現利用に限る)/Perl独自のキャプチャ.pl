@@ -101,7 +101,13 @@ say $full;	# asakuno tomohiro asakunotomohiro hoge bar boo
 say $first;	# asakuno
 say $last;	# boo
 
-
 # 上記2種類は、書籍の内容を勘違いしているように思う。
+
+say '-' x 30;	# 以下のは例が悪いかな。
+my $asakuno = "asakuno hoge tomohiro asakunotomohiro hoge bar boo";
+(my $first, my $second) = $asakuno =~ /(hoge).+(\g{1})/;
+say "$first";	# hoge
+say "$second";	# hoge
+
 
 print "以上。"
