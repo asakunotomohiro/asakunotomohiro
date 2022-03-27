@@ -16,18 +16,18 @@ if ( $helloworld =~ m:^W.{3}d:m ) {
 
 if ( $helloworld =~ m|^W.{3}d| ) {
 	say "検索語|^W.{3}d|(マッチ文字列：$&)";
-	# 出力結果：
 }
 else {
 	say "検索に掛からず(検索語|^W.{3}d|)。"
+	# 出力結果：
 }
 
 if ( $helloworld =~ m{\AW.{3}d} ) {
 	say "検索語{\\AW.{3}d}(マッチ文字列：$&)";
-	# 出力結果：
 }
 else {
 	say "検索に掛からず(検索語{\\AW.{3}d})。"
+	# 出力結果：
 }
 
 if ( $helloworld =~ m{\AH.{3}o} ) {
@@ -71,10 +71,10 @@ if ( $helloworld =~ m-W.{3}d$-gcm ) {
 
 if ( $helloworld =~ m+W.{3}d$+s ) {
 	say "検索語+W.{3}d\$+(マッチ文字列：$&)";
-	# 出力結果：
 }
 else {
 	say "検索に掛からない(改行を無視して1行として認識しているからだろう)。"
+	# 出力結果：
 }
 
 
