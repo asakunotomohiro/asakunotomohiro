@@ -49,7 +49,39 @@ sub asakunoRegs {
 		say 's修飾子なし(\Nはs修飾子を付けた場合に機能するようだ)。';
 	}
 }
-&asakunoRegs();
+#&asakunoRegs();
+
+sub asakunoRegx {
+	# マッチ修飾子-x
+	my @string = qw( 本日 123 は 456 晴天 789 なり。 );
+	foreach my $value ( @string ) {
+		if( $value =~ /
+						[^0-9]	# 数字以外を抜き出す。
+					/x ) {
+			# s修飾子を付けることで、パターンの.記号を改行無視して検索するようになる。
+			print "$value";
+		}	# 本日は晴天なり。
+	}
+	say;
+
+	# 以下、半角スペースを検索する方法。
+	my $string = '本日は 晴天 なり。';
+	if( $string =~ /
+						\ 	# バックスラッシュ記号直後に半角スペースがある。
+							# ただし、最善は\sを使うこと。  
+					/x ) {
+		say "$string";	# 本日は 晴天 なり。
+	}
+
+	# シャープ記号を検索する方法。
+	my $string = '本日は#晴天 なり。';
+	if( $string =~ /
+						\#	# バックスラッシュ記号直後にシャープ記号がある。
+					/x ) {
+		say "$string";	# 本日は#晴天 なり。
+	}
+}
+&asakunoRegx();
 
 
 say "以上。"
