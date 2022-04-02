@@ -81,6 +81,22 @@ sub asakunoRegx {
 		say "$string";	# 本日は#晴天 なり。
 	}
 }
+#&asakunoRegx();
+
+sub asakunoRegx {
+	# マッチ修飾子-複数同時
+	my @string = qw( today 123 は 456 晴\n天 789 なり。 );
+	foreach my $value ( @string ) {
+		if( $value =~ /
+						TODAY	# 大小文字にかかわらず、文字に一致していればいい。
+						|		# 上記もしくは下記の場合、
+						[^0-9]	# 数字以外を抜き出す。
+					/ix ) {
+			print "$value";
+		}	# todayは晴\n天なり。
+	}
+	say;
+}
 &asakunoRegx();
 
 
