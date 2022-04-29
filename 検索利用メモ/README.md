@@ -13,7 +13,21 @@
 正規表現を使う上で欠かせないプログラミング言語がPerl言語であり、これから逃げることは出来ない。  
 その理由は、「Perl互換正規表現(Perl-Compatible Regular Expression：PCRE)」を謳っている正規表現検索ツールが出回っているのが理由だ。  
 
-そのため、まずは、Perl言語で正規表現を使う環境構築(?)を確立させる(どうやって？)。  
+そのため、まずは、Perl言語で正規表現を使う環境構築を確立させる。  
+```terminal
+$ cat targetsHoge.md
+Date: ほげ。
+TEST:
+Date: 2022/01/29
+test:
+date: 2021/09/07
+$ perl -nwE 'print if /^[Dd]ate/' targetsHoge.md
+Date: ほげ。
+Date: 2022/01/29
+date: 2021/09/07
+$
+```
+当面の目標：ワンライナー実行ができるようにする。  
 
 
 ## 現状

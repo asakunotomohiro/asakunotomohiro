@@ -57,7 +57,7 @@ if ( $name =~ m/.*(?<boo>hoge)?.*(?<tomohiro>tomohiro).*\g{tomohiro}.*/ ) {
 	say "名前無しキャプチャ：$1：$2";					# 名前無しキャプチャ：：tomohiro
 	say "名前ありキャプチャ：$+{boo}：$+{tomohiro}";	# 名前ありキャプチャ：：tomohiro
 	say "hogeをbooと言う名前でキャプチャ済み：$+{boo}"
-	# 1つ目のhogeに名前をキャプチャしたが、2回目の利用には使えなかった(これは大変残念な結果だと思う)。
+	# 1つ目のhogeに名前をキャプチャしたが、2回目の利用には使えなかった(これは大変残念な結果だと思う)。	←☆検索に掛かっていないのだから仕方ない。
 }
 
 if ( $name =~ m/(?<name>e).*\1$/ ) {
@@ -101,7 +101,13 @@ say $full;	# asakuno tomohiro asakunotomohiro hoge bar boo
 say $first;	# asakuno
 say $last;	# boo
 
-
 # 上記2種類は、書籍の内容を勘違いしているように思う。
+
+say '-' x 30;	# 以下のは例が悪いかな。
+my $asakuno = "asakuno hoge tomohiro asakunotomohiro hoge bar boo";
+(my $first, my $second) = $asakuno =~ /(hoge).+(\g{1})/;
+say "$first";	# hoge
+say "$second";	# hoge
+
 
 print "以上。"
