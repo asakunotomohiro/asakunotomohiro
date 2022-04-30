@@ -2055,6 +2055,37 @@ $
 
 <a name="findTheFactorialOfNChapter2"></a>
 #### nの階乗を求める。
+**階乗とは**
+1からnまでの全ての整数の積をnの階乗という。  
+
+
+<details><summary>プロジェクト作成</summary>
+
+以下、作業。
+```terminal
+$ cargo new factorial
+     Created binary (application) `factorial` package
+$ git status
+On branch rustLang
+Your branch is ahead of 'origin/rustLang' by 18 commits.
+  (use "git push" to publish your local commits)
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   ../../../README.md
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	factorial/Cargo.toml
+	factorial/src/main.rs
+
+no changes added to commit (use "git add" and/or "git commit -a")
+$
+```
+
+</details>
+
 
 <a name="eratosthenesSieveChapter2"></a>
 #### エラトステネスの篩
