@@ -2058,15 +2058,25 @@ $
 **階乗とは**
 1からnまでの全ての整数の積をnの階乗という。  
 
+* ルール1  
+  再帰関数を使わない。  
+  * 関数定義は行わない(私のプログラムでは行う)。  
+  * `for`を使う。  
 
-以下、階乗プログラム例）
+以下、ルール1のプログラム。
 ```rust
-fn main() {
-	let mut total = 10;
+fn factorial1( num: i32 ) -> i32 {
+	let mut total = num;
 	for ii in 1..10 {
 		total *= ii;
 	}
-	println!("10! = {0}", total);	// 3628800	←☆10の階乗として答えを得られた。
+
+	return total;
+}
+
+fn main() {
+	let ret = factorial1(10);
+	println!("10! = {0}", ret);	// 3628800
 }
 ```
 
