@@ -2065,20 +2065,28 @@ $
 
 以下、ルール1のプログラム。
 ```rust
-fn factorial1( num: i32 ) -> i32 {
+fn factorial1( num: i32 ) {
 	let mut total = num;
 	for ii in 1..10 {
 		total *= ii;
 	}
 
-	return total;
+	println!("10! = {0}", total);	// 3628800
 }
 
 fn main() {
-	let ret = factorial1(10);
-	println!("10! = {0}", ret);	// 3628800
+	factorial1(10);
 }
 ```
+
+* ルール2  
+  再帰関数を使う。  
+  * 再帰関数の定義ルール  
+    * `n = 0`
+      **n! = 1**  
+    * `n > 0`
+      **n! = n * (n-1) * (n-2) * ・・・ * 2 * 1**
+      nから1引いた数を掛け、さらに1づつ引き続けながらnが1にまるまで続ける。  
 
 **再帰関数とは**
 関数内から自身の関数を呼び出すことを再帰処理という。
@@ -2086,21 +2094,21 @@ fn main() {
 
 以下、再帰関数プログラム例）
 ```rust
-fn factorial( num: i32 ) -> i32 {
+fn factorial2( num: i32 ) -> i32 {
 	let mut _total = 0;
 	if num == 0 {
 		_total = 1;
 	}
 	else{
-		_total = num * factorial(num - 1);
+		_total = num * factorial2(num - 1);
 	}
 
 	return _total;
 }
 
 fn main() {
-	let ret = factorial(10);
-	println!("{}", ret);	// 3628800
+	let ret = factorial2(10);
+	println!("10! = {0}", ret);	// 3628800
 }
 ```
 
