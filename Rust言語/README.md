@@ -2059,6 +2059,17 @@ $
 1からnまでの全ての整数の積をnの階乗という。  
 
 
+以下、階乗プログラム例。
+```rust
+fn main() {
+	let mut total = 10;
+	for ii in 1..10 {
+		total *= ii;
+	}
+	println!("10! = {0}", total);	// 3628800	←☆10の階乗として答えを得られた。
+}
+```
+
 <details><summary>プロジェクト作成</summary>
 
 以下、作業。
