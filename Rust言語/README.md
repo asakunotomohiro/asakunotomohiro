@@ -2059,7 +2059,7 @@ $
 1からnまでの全ての整数の積をnの階乗という。  
 
 
-以下、階乗プログラム例。
+以下、階乗プログラム例）
 ```rust
 fn main() {
 	let mut total = 10;
@@ -2067,6 +2067,30 @@ fn main() {
 		total *= ii;
 	}
 	println!("10! = {0}", total);	// 3628800	←☆10の階乗として答えを得られた。
+}
+```
+
+**再帰関数とは**
+関数内から自身の関数を呼び出すことを再帰処理という。
+また、その呼び出す仕組みの関数を再帰関数という。  
+
+以下、再帰関数プログラム例）
+```rust
+fn factorial( num: i32 ) -> i32 {
+	let mut _total = 0;
+	if num == 0 {
+		_total = 1;
+	}
+	else{
+		_total = num * factorial(num - 1);
+	}
+
+	return _total;
+}
+
+fn main() {
+	let ret = factorial(10);
+	println!("{}", ret);	// 3628800
 }
 ```
 
