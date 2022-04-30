@@ -1585,7 +1585,7 @@ fn retiffunc( hoge: i32 ) -> i32 {
   [x] [1からnまで足し合わせる。](#addFrom1tonChapter2)2022/02/10  
   [x] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)2022/02/25  
   [x] [素数を求める。](#findAPrimeNumberChapter2)2022/03/21  
-  [ ] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
+  [x] [nの階乗を求める。](#findTheFactorialOfNChapter2)2022/04/30  
   [ ] [エラトステネスの篩](#eratosthenesSieveChapter2)  
   [ ] [n進法を理解する。](#understandnAryNotationChapter2)  
 <a name="algorithmTextbookLearnedinPythonChapter3"></a>
@@ -2055,6 +2055,74 @@ $
 
 <a name="findTheFactorialOfNChapter2"></a>
 #### nの階乗を求める。
+**階乗とは**
+1からnまでの全ての整数の積をnの階乗という。  
+
+* ルール1  
+  再帰関数を使わない。  
+  * 関数定義は行わない(私のプログラムでは行う)。  
+  * `for`を使う。  
+
+以下、ルール1のプログラム。
+```rust
+fn factorial1( num: i32 ) {
+	let mut total = num;
+	for ii in 1..10 {
+		total *= ii;
+	}
+
+	println!("10! = {0}", total);	// 3628800
+}
+
+fn main() {
+	factorial1(10);
+}
+```
+
+* ルール2  
+  再帰関数を使う。  
+  * 再帰関数の定義ルール  
+    * `n = 0`
+      **n! = 1**  
+    * `n > 0`
+      **n! = n * (n-1) * (n-2) * ・・・ * 2 * 1**
+      nから1引いた数を掛け、さらに1づつ引き続けながらnが1にまるまで続ける。  
+
+**再帰関数とは**
+関数内から自身の関数を呼び出すことを再帰処理という。
+また、その呼び出す仕組みの関数を再帰関数という。  
+
+以下、再帰関数プログラム例）
+```rust
+fn factorial2( num: i32 ) -> i32 {
+	let mut _total = 0;
+	if num == 0 {
+		_total = 1;
+	}
+	else{
+		_total = num * factorial2(num - 1);
+	}
+
+	return _total;
+}
+
+fn main() {
+	let ret = factorial2(10);
+	println!("10! = {0}", ret);	// 3628800
+}
+```
+
+<details><summary>プロジェクト作成</summary>
+
+以下、作業。
+```terminal
+$ cargo new factorial
+     Created binary (application) `factorial` package
+$
+```
+
+</details>
+
 
 <a name="eratosthenesSieveChapter2"></a>
 #### エラトステネスの篩
