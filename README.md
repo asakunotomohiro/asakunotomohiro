@@ -35,6 +35,7 @@
   * [Git利用方法](#computingforGit)  
     そもそものここのメモ取りに使う最低限の技術。  
 
+
 <a name="computingforEditor"></a>
 ### エディタ
 基本的に、Vimエディタを使っているが、Windowsでは秀丸エディタとサクラエディタも使っている。  
@@ -75,7 +76,8 @@ Macであれば、CotEditorも使っている。
 <a name="computingforSearch"></a>
 ### 検索方法
 普通に検索するだけならば気にすることも無ければメモとして記録に残すこともないが、基本的には正規表現を使った技術をここにメモすることにする。  
-ブランチ名：regularExpressions  
+Perlによる正規表現が有名であり、私もそれに乗っ取り調べてるが、基本はまんべんなく調べるつもり。  
+※調査中断。  
 
 
 <a name="computingforGit"></a>
@@ -85,6 +87,7 @@ Macであれば、CotEditorも使っている。
 ブランチ名：gitMemoPocket  
 
 </details>
+
 
 <a name="computerProgramming"></a>
 ## プログラミング言語
@@ -203,6 +206,7 @@ Macであれば、CotEditorも使っている。
 
 </details>
 
+
 <a name="vimscriptStructuredprogramming"></a>
 ### [vimScript言語](./vimScript言語/README.md)
 独特の癖があり、使いにくい。  
@@ -219,3 +223,4 @@ Macであれば、CotEditorも使っている。
 
 
 以上。
+<!-- vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=markdown expandtab: -->
