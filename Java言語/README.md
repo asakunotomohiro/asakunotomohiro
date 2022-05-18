@@ -1095,7 +1095,7 @@ class スコープ {
   [x] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)2022/02/11  
   [x] [素数を求める。](#findAPrimeNumberChapter2)2022/02/25  
   [x] [nの階乗を求める。](#findTheFactorialOfNChapter2)2022/03/04  
-  [ ] [エラトステネスの篩](#eratosthenesSieveChapter2)  
+  [ ] [エラトステネスの篩](#eratosthenesSieveChapter2)2022/05/18  
   [ ] [n進法を理解する。](#understandnAryNotationChapter2)  
 <a name="algorithmTextbookLearnedinPythonChapter3"></a>
 * [Chapter3 データ構造を学ぶ](#learnDataStructuresOverviewChapter3)  
@@ -1676,6 +1676,8 @@ class factorial {
 
 <a name="eratosthenesSieveChapter2"></a>
 #### エラトステネスの篩
+効率よく[素数](#findAPrimeNumberChapter2)を求めることができるアルゴリズムのこと。  
+
 
 <a name="understandnAryNotationChapter2"></a>
 #### n進法を理解する。
