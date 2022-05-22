@@ -1870,6 +1870,46 @@ namespace factorial
 }
 ```
 
+* ルール2  
+  再帰関数を使う。  
+  * 再帰関数の定義ルール  
+    * `n = 0`
+      **n! = 1**  
+    * `n > 0`
+      **n! = n * (n-1) * (n-2) * ・・・ * 2 * 1**
+      nから1引いた数を掛け、さらに1づつ引き続けながらnが1にまるまで続ける。  
+
+以下、ルール2のプログラム。
+```csharp
+using System;
+
+namespace factorial
+{
+	class MainClass
+	{
+		private static int factorial2(int count)
+		{
+			// 階乗を求める再帰呼び出し関数。
+			var total = 1;
+			if (count == 0)
+			{
+				total = 1;
+			}
+			else
+			{
+				total = count * factorial2(count - 1);
+			}
+			return total;
+		}
+		public static void Main(string[] args)
+		{
+			int ans = factorial2(10);   // ルール2に従った階乗を求める関数呼び出し。
+			Console.WriteLine("10の階乗：{0}", ans);	// 3628800
+		}
+	}
+}
+```
+
 
 <a name="eratosthenesSieveChapter2"></a>
 #### エラトステネスの篩
