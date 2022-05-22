@@ -1765,8 +1765,10 @@ namespace prime
 **階乗とは**
 1からnまでの全ての整数の積をnの階乗という。  
 
+<a name="findTheFactorialOfNChapter2recursionsample"></a>
+<details><summary>階乗プログラム例。</summary>
 
-以下、階乗プログラム例）
+以下、サンプルプログラム。
 ```csharp
 using System;
 
@@ -1787,7 +1789,16 @@ namespace factorial
 }
 ```
 
-以下、階乗プログラム例）
+</details>
+
+**再帰関数とは**
+関数内から自身の関数を呼び出すことを再帰処理という。
+また、その呼び出す仕組みの関数を再帰関数という。  
+
+<a name="findTheFactorialOfNChapter2factorialsample"></a>
+<details><summary>再帰プログラム例。</summary>
+
+以下、サンプルプログラム。
 ```csharp
 using System;
 
@@ -1795,31 +1806,68 @@ namespace factorial
 {
 	class MainClass
 	{
-		private static int sample(int count)
+		private static int factorialSample(int count)
 		{
-			var total = 0;
-			if (count == 0)
+			if (count > 0)
 			{
-				total = 1;
+				Console.WriteLine("再帰関数{0, 2}回目の実行", count);
+				factorialSample(count - 1);
 			}
-			else
-			{
-				total = count * sample(count - 1);
-			}
-			return total;
+			return count;
 		}
 		public static void Main(string[] args)
 		{
-			int ans = sample(10);
-			Console.WriteLine("10の階乗：{0}", ans);
+			factorialSample(10);    // 再帰呼び出し。
 		}
 	}
 }
 ```
 
-以下、出力結果。
+以下、実行結果。
 ```terminal
-10の階乗：3628800
+再帰関数10回目の実行
+再帰関数 9回目の実行
+再帰関数 8回目の実行
+再帰関数 7回目の実行
+再帰関数 6回目の実行
+再帰関数 5回目の実行
+再帰関数 4回目の実行
+再帰関数 3回目の実行
+再帰関数 2回目の実行
+再帰関数 1回目の実行
+```
+
+</details>
+
+* ルール1  
+  再帰関数を使わない。  
+  * 関数定義は行わない(私のプログラムでは行う)。  
+  * `for`を使う。  
+
+以下、ルール1のプログラム。
+```csharp
+using System;
+
+namespace factorial
+{
+	class MainClass
+	{
+		private static int factorial1(int MAX)
+		{
+			var count = 1;
+			for (var ii = MAX; ii > 0; ii--)
+			{
+				count *= ii;
+			}
+			return count;
+		}
+		public static void Main(string[] args)
+		{
+			int ans = factorial1(10);	// ルール1に従った階乗を求める関数呼び出し。
+			Console.WriteLine("10の階乗：{0}", ans);	// 3628800
+		}
+	}
+}
 ```
 
 
