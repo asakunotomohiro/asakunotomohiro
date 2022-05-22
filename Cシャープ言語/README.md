@@ -1781,7 +1781,37 @@ namespace factorial
 			{
 				count *= ii;
 			}
-			Console.WriteLine("10の階乗：{0}", count);
+			Console.WriteLine("10の階乗：{0}", count);	// 3628800
+		}
+	}
+}
+```
+
+以下、階乗プログラム例）
+```csharp
+using System;
+
+namespace factorial
+{
+	class MainClass
+	{
+		private static int sample(int count)
+		{
+			var total = 0;
+			if (count == 0)
+			{
+				total = 1;
+			}
+			else
+			{
+				total = count * sample(count - 1);
+			}
+			return total;
+		}
+		public static void Main(string[] args)
+		{
+			int ans = sample(10);
+			Console.WriteLine("10の階乗：{0}", ans);
 		}
 	}
 }
