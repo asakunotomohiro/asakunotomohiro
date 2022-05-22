@@ -1207,7 +1207,7 @@ namespace 関数
   [x] [1からnまで足し合わせる。](#addFrom1tonChapter2)2022/01/31  
   [x] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)2022/02/16  
   [x] [素数を求める。](#findAPrimeNumberChapter2)2022/03/12  
-  [ ] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
+  [ ] [nの階乗を求める。](#findTheFactorialOfNChapter2)2022/05/22  
   [ ] [エラトステネスの篩](#eratosthenesSieveChapter2)  
   [ ] [n進法を理解する。](#understandnAryNotationChapter2)  
 <a name="algorithmTextbookLearnedinPythonChapter3"></a>
@@ -1762,6 +1762,36 @@ namespace prime
 
 <a name="findTheFactorialOfNChapter2"></a>
 #### nの階乗を求める。
+**階乗とは**
+1からnまでの全ての整数の積をnの階乗という。  
+
+
+以下、階乗プログラム例）
+```csharp
+using System;
+
+namespace factorial
+{
+	class MainClass
+	{
+		public static void Main(string[] args)
+		{
+			var count = 1;
+			for (var ii = 10; ii > 0; ii--)
+			{
+				count *= ii;
+			}
+			Console.WriteLine("10の階乗：{0}", count);
+		}
+	}
+}
+```
+
+以下、出力結果。
+```terminal
+10の階乗：3628800
+```
+
 
 <a name="eratosthenesSieveChapter2"></a>
 #### エラトステネスの篩
