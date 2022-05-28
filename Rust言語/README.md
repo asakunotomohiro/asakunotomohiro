@@ -14,11 +14,13 @@
 以下の書籍を元にして勉強を進めていく。  
 [プログラミング言語Rust入門](https://project.nikkeibp.co.jp/bnt/atcl/20/P96850/)  
 
-また、以下のサイトも参考にする。  
-[docs.microsoft.com](https://docs.microsoft.com/ja-JP/learn/paths/rust-first-steps/)  
-[The Rust Programming Language 日本語版](https://doc.rust-jp.rs/book-ja/index.html)  
-上記書籍で、この電子本を紹介しており、最初に読む本として最適とのこと。  
-[Rust言語のサンプル集](https://doc.rust-jp.rs/rust-by-example-ja/index.html)  
+* 参考サイト  
+  * [Rust ツアー](https://tourofrust.com/00_ja.html)  
+    公式(?)チュートリアル。  
+  * [docs.microsoft.com](https://docs.microsoft.com/ja-JP/learn/paths/rust-first-steps/)  
+  * [The Rust Programming Language 日本語版](https://doc.rust-jp.rs/book-ja/index.html)  
+  * 上記書籍で、この電子本を紹介しており、最初に読む本として最適とのこと。  
+  * [Rust言語のサンプル集](https://doc.rust-jp.rs/rust-by-example-ja/index.html)  
 
 
 <a name="algorithmDevelopmentEnvironment"></a>
