@@ -1586,7 +1586,7 @@ fn retiffunc( hoge: i32 ) -> i32 {
   [x] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)2022/02/25  
   [x] [素数を求める。](#findAPrimeNumberChapter2)2022/03/21  
   [x] [nの階乗を求める。](#findTheFactorialOfNChapter2)2022/04/30  
-  [ ] [エラトステネスの篩](#eratosthenesSieveChapter2)  
+  [ ] [エラトステネスの篩](#eratosthenesSieveChapter2)2022/05/28  
   [ ] [n進法を理解する。](#understandnAryNotationChapter2)  
 <a name="algorithmTextbookLearnedinPythonChapter3"></a>
 * [Chapter3 データ構造を学ぶ](#learnDataStructuresOverviewChapter3)  
@@ -2126,6 +2126,24 @@ $
 
 <a name="eratosthenesSieveChapter2"></a>
 #### エラトステネスの篩
+効率よく[素数](#findAPrimeNumberChapter2)を求めることができるアルゴリズムのこと。  
+
+以下、プロジェクト作成作業。
+```terminal
+$ cargo new prime_eratosthenes
+     Created binary (application) `prime_eratosthenes` package
+$ cd prime_eratosthenes
+$ ll -R
+total 8
+drwxr-xr-x  3 asakunotomohiro  staff   96  5 28 16:52 src/
+-rw-r--r--  1 asakunotomohiro  staff  187  5 28 16:52 Cargo.toml
+
+./src:
+total 8
+-rw-r--r--  1 asakunotomohiro  staff  45  5 28 16:52 main.rs
+$
+```
+
 
 <a name="understandnAryNotationChapter2"></a>
 #### n進法を理解する。
