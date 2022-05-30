@@ -5151,6 +5151,27 @@ $
 [マニュアル](http://perltidy.sourceforge.net/perltidy.html)は全て英語だ。  
 そもそもこれが[今回](https://metacpan.org/pod/perltidy)の[マニュアル](http://perltidy.sourceforge.net/stylekey.html)かどうか分からないが・・・。  
 
+以下、ベストプラクティスに整形してくれるオプション実行結果。
+
+    $ ll
+    total 24
+    -rw-r--r--  1 asakunotomohiro  staff  2954  5 31 00:40 tidy_init
+    -rwxr-xr-x  1 asakunotomohiro  staff   172  5 31 00:03 helloWorld.pl.tdy*
+    -rwxr-xr-x  1 asakunotomohiro  staff   160  5 30 23:11 helloWorld.pl*
+    $ perltidy -pbp helloWorld.pl	←☆pbpオプションを付ける。
+    #!/usr/bin/perl -w
+
+    print "Hello World.\n";    # Hello World.
+    print $^V . "\n";          # v5.18.4
+
+    # vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=perl noexpandtab:
+    $ ll
+    total 24
+    -rw-r--r--  1 asakunotomohiro  staff  2954  5 31 00:40 tidy_init
+    -rwxr-xr-x  1 asakunotomohiro  staff   172  5 31 00:03 helloWorld.pl.tdy*
+    -rwxr-xr-x  1 asakunotomohiro  staff   160  5 30 23:11 helloWorld.pl*
+    $
+
 
 [応用知識の目次に戻る](#appliedknowledgeContents)  
 
