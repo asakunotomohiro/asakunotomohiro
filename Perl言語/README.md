@@ -5036,6 +5036,64 @@ for (1..1000000) {
 だそうだが、ソースファイルに記述するのは可笑しいよね。  
 コマンドプロンプト`perltidy xxxx.pl`での実行により、整形されるはず。  
 
+以下、インストール失敗。
+```terminal
+$ perltidy helloWorld.pl	←☆インストールされていないため、実行失敗。
+-bash: perltidy: command not found
+$ cpan -i Perl::Tidy	←☆インストール失敗。
+Loading internal logger. Log::Log4perl recommended for better logging
+Reading '/Users/asakunotomohiro/.cpan/Metadata'
+  Database was generated on Sat, 15 Jan 2022 03:55:46 GMT
+CPAN: HTTP::Tiny loaded ok (v0.076)
+Fetching with HTTP::Tiny:
+https://cpan.org/authors/01mailrc.txt.gz
+HTTP::Tiny failed with an internal error: IO::Socket::SSL 1.42 must be installed for https support
+Net::SSLeay 1.49 must be installed for https support
+
+Fetching with HTTP::Tiny:
+https://cpan.org/modules/02packages.details.txt.gz
+HTTP::Tiny failed with an internal error: IO::Socket::SSL 1.42 must be installed for https support
+Net::SSLeay 1.49 must be installed for https support
+
+Fetching with HTTP::Tiny:
+https://cpan.org/modules/03modlist.data.gz
+HTTP::Tiny failed with an internal error: IO::Socket::SSL 1.42 must be installed for https support
+Net::SSLeay 1.49 must be installed for https support
+
+Writing /Users/asakunotomohiro/.cpan/Metadata
+Running install for module 'Perl::Tidy'
+Fetching with HTTP::Tiny:
+https://cpan.org/authors/id/S/SH/SHANCOCK/Perl-Tidy-20211029.tar.gz
+HTTP::Tiny failed with an internal error: IO::Socket::SSL 1.42 must be installed for https support
+Net::SSLeay 1.49 must be installed for https support
+
+Giving up on '/Users/asakunotomohiro/.cpan/sources/authors/id/S/SH/SHANCOCK/Perl-Tidy-20211029.tar.gz'
+Note: Current database in memory was generated on Sat, 15 Jan 2022 03:55:46 GMT
+
+$ perl -MCPAN -e shell	←☆シェル起動。
+
+cpan shell -- CPAN exploration and modules installation (v2.29)
+Enter 'h' for help.
+
+cpan[1]> install Perl::Tidy	←☆インストール失敗。
+Reading '/Users/asakunotomohiro/.cpan/Metadata'
+  Database was generated on Sat, 15 Jan 2022 03:55:46 GMT
+Running install for module 'Perl::Tidy'
+Fetching with HTTP::Tiny:
+https://cpan.org/authors/id/S/SH/SHANCOCK/Perl-Tidy-20211029.tar.gz
+HTTP::Tiny failed with an internal error: IO::Socket::SSL 1.42 must be installed for https support
+Net::SSLeay 1.49 must be installed for https support
+
+Giving up on '/Users/asakunotomohiro/.cpan/sources/authors/id/S/SH/SHANCOCK/Perl-Tidy-20211029.tar.gz'
+Note: Current database in memory was generated on Sat, 15 Jan 2022 03:55:46 GMT
+
+cpan[2]> q
+Lockfile removed.
+$ perltidy helloWorld.pl	←☆実行失敗(インストールされていない)。
+-bash: perltidy: command not found
+$
+```
+
 [応用知識の目次に戻る](#appliedknowledgeContents)  
 
 </details>
