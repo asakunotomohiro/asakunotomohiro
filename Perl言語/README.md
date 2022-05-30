@@ -155,6 +155,7 @@ $
 基礎知識5種類に納められない範囲の勉強に手を広げる。  
 
 * [応用知識](#appliedknowledge)  
+  * [ ] [整形・フォーマッタ](#practicalusefmtTidy)  
   * [ ] [ポインタ・リファレンス](#practicalusePointer)  
     * [x] リファレンス  
       [x] 変数  
@@ -3170,6 +3171,7 @@ Python限定にしたくなかったが、他のプログラミング言語に�
 
 <a name="appliedknowledgeContents"></a>
 * 応用部分  
+  * [整形・フォーマッタ](#practicalusefmtTidy)  
   * [リファレンス](#practicalusePointer)  
   * [ハッシュ(連想配列)](#practicaluseHash)  
   * [クロージャ](#practicaluseClosure)  
@@ -3202,7 +3204,6 @@ Python限定にしたくなかったが、他のプログラミング言語に�
   * [SQL/DBI](#practicalusesqlDBI)  
   * [Perl/Tk(GUI)](#practicaluseGUIPerlTk)  
   * 今後も機会があれば増やしていく。  
-
 
 <a name="practicaluseArrangement配列"></a>
 <details><summary>応用知識-配列</summary>
@@ -5023,6 +5024,22 @@ for (1..1000000) {
 [応用知識の目次に戻る](#appliedknowledgeContents)  
 
 </details>
+
+
+<a name="practicalusefmtTidy"></a>
+<details><summary>応用知識-整形・フォーマッタ</summary>
+
+### フォーマッタ(ソースファイルの整形)
+ソースファイルを整形するには、手作業ではナンセンスだ。  
+そのため、[Perl::Tidy](https://metacpan.org/pod/Perl::Tidy)を使うそうだ。  
+`use Perl::Tidy;`  
+だそうだが、ソースファイルに記述するのは可笑しいよね。  
+コマンドプロンプト`perltidy xxxx.pl`での実行により、整形されるはず。  
+
+[応用知識の目次に戻る](#appliedknowledgeContents)  
+
+</details>
+
 
 <a name="practicalusesystem"></a>
 <details><summary>応用知識-system関数(外部コマンド実行)</summary>
