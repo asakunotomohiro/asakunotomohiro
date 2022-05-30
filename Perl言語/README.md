@@ -155,6 +155,7 @@ $
 基礎知識5種類に納められない範囲の勉強に手を広げる。  
 
 * [応用知識](#appliedknowledge)  
+  * [ ] [整形・フォーマッタ](#practicalusefmtTidy)  
   * [ ] [ポインタ・リファレンス](#practicalusePointer)  
     * [x] リファレンス  
       [x] 変数  
@@ -3170,6 +3171,7 @@ Python限定にしたくなかったが、他のプログラミング言語に�
 
 <a name="appliedknowledgeContents"></a>
 * 応用部分  
+  * [整形・フォーマッタ](#practicalusefmtTidy)  
   * [リファレンス](#practicalusePointer)  
   * [ハッシュ(連想配列)](#practicaluseHash)  
   * [クロージャ](#practicaluseClosure)  
@@ -3202,7 +3204,6 @@ Python限定にしたくなかったが、他のプログラミング言語に�
   * [SQL/DBI](#practicalusesqlDBI)  
   * [Perl/Tk(GUI)](#practicaluseGUIPerlTk)  
   * 今後も機会があれば増やしていく。  
-
 
 <a name="practicaluseArrangement配列"></a>
 <details><summary>応用知識-配列</summary>
@@ -5023,6 +5024,142 @@ for (1..1000000) {
 [応用知識の目次に戻る](#appliedknowledgeContents)  
 
 </details>
+
+
+<a name="practicalusefmtTidy"></a>
+<details><summary>応用知識-整形・フォーマッタ</summary>
+
+### フォーマッタ(ソースファイルの整形)
+ソースファイルを整形するには、手作業ではナンセンスだ。  
+そのため、[Perl::Tidy](https://metacpan.org/pod/Perl::Tidy)を使うそうだ。  
+`use Perl::Tidy;`  
+だそうだが、ソースファイルに記述するのは可笑しいよね。  
+コマンドプロンプト`perltidy xxxx.pl`での実行により、整形されるはず。  
+
+<details><summary>インストール失敗作業。</summary>
+
+以下、インストール失敗。
+```terminal
+$ perltidy helloWorld.pl	←☆インストールされていないため、実行失敗。
+-bash: perltidy: command not found
+$ cpan -i Perl::Tidy	←☆インストール失敗。
+Loading internal logger. Log::Log4perl recommended for better logging
+Reading '.cpan/Metadata'
+  Database was generated on Sat, 15 Jan 2022 03:55:46 GMT
+CPAN: HTTP::Tiny loaded ok (v0.076)
+Fetching with HTTP::Tiny:
+https://cpan.org/authors/01mailrc.txt.gz
+HTTP::Tiny failed with an internal error: IO::Socket::SSL 1.42 must be installed for https support
+Net::SSLeay 1.49 must be installed for https support
+
+Fetching with HTTP::Tiny:
+https://cpan.org/modules/02packages.details.txt.gz
+HTTP::Tiny failed with an internal error: IO::Socket::SSL 1.42 must be installed for https support
+Net::SSLeay 1.49 must be installed for https support
+
+Fetching with HTTP::Tiny:
+https://cpan.org/modules/03modlist.data.gz
+HTTP::Tiny failed with an internal error: IO::Socket::SSL 1.42 must be installed for https support
+Net::SSLeay 1.49 must be installed for https support
+
+Writing .cpan/Metadata
+Running install for module 'Perl::Tidy'
+Fetching with HTTP::Tiny:
+https://cpan.org/authors/id/S/SH/SHANCOCK/Perl-Tidy-20211029.tar.gz
+HTTP::Tiny failed with an internal error: IO::Socket::SSL 1.42 must be installed for https support
+Net::SSLeay 1.49 must be installed for https support
+
+Giving up on '.cpan/sources/authors/id/S/SH/SHANCOCK/Perl-Tidy-20211029.tar.gz'
+Note: Current database in memory was generated on Sat, 15 Jan 2022 03:55:46 GMT
+
+$ perl -MCPAN -e shell	←☆シェル起動。
+
+cpan shell -- CPAN exploration and modules installation (v2.29)
+Enter 'h' for help.
+
+cpan[1]> install Perl::Tidy	←☆インストール失敗。
+Reading '.cpan/Metadata'
+  Database was generated on Sat, 15 Jan 2022 03:55:46 GMT
+Running install for module 'Perl::Tidy'
+Fetching with HTTP::Tiny:
+https://cpan.org/authors/id/S/SH/SHANCOCK/Perl-Tidy-20211029.tar.gz
+HTTP::Tiny failed with an internal error: IO::Socket::SSL 1.42 must be installed for https support
+Net::SSLeay 1.49 must be installed for https support
+
+Giving up on '.cpan/sources/authors/id/S/SH/SHANCOCK/Perl-Tidy-20211029.tar.gz'
+Note: Current database in memory was generated on Sat, 15 Jan 2022 03:55:46 GMT
+
+cpan[2]> q
+Lockfile removed.
+$ perltidy helloWorld.pl	←☆実行失敗(インストールされていない)。
+-bash: perltidy: command not found
+$
+```
+
+</details>
+
+以下、インストール作業。
+```terminal
+$ cpanm Perl::Tidy	←☆インストール作業。
+--> Working on Perl::Tidy
+Fetching http://www.cpan.org/authors/id/S/SH/SHANCOCK/Perl-Tidy-20220217.tar.gz ... OK
+Configuring Perl-Tidy-20220217 ... OK
+Building and testing Perl-Tidy-20220217 ... OK
+Successfully installed Perl-Tidy-20220217
+cannot unlink file for .cpanm/work/1645789912.89736/build.log: Permission denied at /usr/local/bin/cpanm line 549.
+cannot restore permissions to 0100644 for .cpanm/work/1645789912.89736/build.log: Permission denied at /usr/local/bin/cpanm line 549.
+cannot remove directory for .cpanm/work/1645789912.89736: Directory not empty at /usr/local/bin/cpanm line 549.
+1 distribution installed
+$ perltidy helloWorld.pl	←☆実行。
+$ ll
+total 16
+-rwxr-xr-x  1 asakunotomohiro  staff  172  5 31 00:03 helloWorld.pl.tdy*	←☆整形後。
+-rwxr-xr-x  1 asakunotomohiro  staff  160  5 30 23:11 helloWorld.pl*	←☆こっちが大本。
+$ diff helloWorld.pl helloWorld.pl.tdy	←☆整形前後の比較。
+3,4c3,4
+< print "Hello World.\n";	# Hello World.
+< print $^V . "\n";	# v5.18.4
+---
+> print "Hello World.\n";    # Hello World.
+> print $^V . "\n";          # v5.18.4
+$ diff ../../helloWorld.pl helloWorld.pl
+$
+```
+デフォルトのままでは使い物にならない。  
+私の好みに整形してくれなければ役に立たない。  
+
+**整形するときの注意事項**。  
+ソースファイルを書き換えるため、プログラムに影響が発生し、動かない可能性が出てくる。  
+そのため、整形後は、必ず動作確認をすべし。  
+
+以下、設定ファイルの書き出し。
+```terminal
+$ perltidy -dump-options > tidy_init	←☆設定の書き出し。
+$ tail tidy_init	←☆今回は、このファイルに設定が出力される。
+--nostatic-side-comments
+--notabs
+--timestamp
+--trim-qw
+--nouse-unicode-gcstring
+--valign-block-comments
+--valign-code
+--valign-side-comments
+--nowarning-output
+--noweld-nested-containers
+$
+```
+[マニュアル](http://perltidy.sourceforge.net/perltidy.html)は全て英語だ。  
+そもそもこれが[今回](https://metacpan.org/pod/perltidy)の[マニュアル](http://perltidy.sourceforge.net/stylekey.html)かどうか分からないが・・・。  
+
+ベストプラクティスに整形してくれるオプション`pbp`
+コマンド例）
+`perltidy -pbp helloWorld.pl`  
+
+
+[応用知識の目次に戻る](#appliedknowledgeContents)  
+
+</details>
+
 
 <a name="practicalusesystem"></a>
 <details><summary>応用知識-system関数(外部コマンド実行)</summary>
