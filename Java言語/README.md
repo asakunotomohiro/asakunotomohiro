@@ -1096,7 +1096,7 @@ class スコープ {
   [x] [素数を求める。](#findAPrimeNumberChapter2)2022/02/25  
   [x] [nの階乗を求める。](#findTheFactorialOfNChapter2)2022/03/04  
   [x] [エラトステネスの篩](#eratosthenesSieveChapter2)2022/05/18  
-  [ ] [n進法を理解する。](#understandnAryNotationChapter2)  
+  [ ] [n進法を理解する。](#understandnAryNotationChapter2)2022/05/30  
 <a name="algorithmTextbookLearnedinPythonChapter3"></a>
 * [Chapter3 データ構造を学ぶ](#learnDataStructuresOverviewChapter3)  
   今までに勉強した配列(リスト)を用いた発展を遂げる。  
@@ -1851,6 +1851,22 @@ class prime_eratosthenes {
 
 <a name="understandnAryNotationChapter2"></a>
 #### n進法を理解する。
+**x進数**は、一般用語。  
+[ビット演算(`&`・`|`・`^`・`~`)](#learnBitwiseOperationsChapter4)は、別の機会。  
+
+以下、プログラム。
+```java
+class basenumber {
+	public static void main(String[] args){
+		System.out.printf("%d\n", 255);	// 255	←☆10進数。
+		System.out.printf("%d\n", 0b11111111);	// 255	←☆2進数。
+		System.out.printf("%d\n", 0377);	// 255	←☆8進数。
+		System.out.printf("%d\n", 0xff);	// 255	←☆16進数。
+	}
+}
+```
+今更感はあるな。  
+
 
 <a name="learnDataStructuresOverviewChapter3"></a>
 ### データ構造を学ぶ
