@@ -5132,6 +5132,24 @@ $
 ソースファイルを書き換えるため、プログラムに影響が発生し、動かない可能性が出てくる。  
 そのため、整形後は、必ず動作確認をすべし。  
 
+以下、設定ファイルの書き出し。
+```terminal
+$ perltidy -dump-options > tidy_init	←☆設定の書き出し。
+$ head tidy_init	←☆今回は、このファイルに設定が出力される。
+# Final parameter set for this run.
+# See utility 'perltidyrc_dump.pl' for nicer formatting.
+--add-newlines
+--add-semicolons
+--add-terminal-newline
+--add-whitespace
+--backup-file-extension="bak"
+--blank-lines-before-packages=1
+--blank-lines-before-subs=1
+--blanks-before-blocks
+$
+```
+[マニュアル](http://perltidy.sourceforge.net/perltidy.html)は全て英語だ。  
+そもそもこれが[今回](https://metacpan.org/pod/perltidy)の[マニュアル](http://perltidy.sourceforge.net/stylekey.html)かどうか分からないが・・・。  
 
 
 [応用知識の目次に戻る](#appliedknowledgeContents)  
