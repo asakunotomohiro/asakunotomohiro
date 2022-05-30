@@ -2,16 +2,17 @@
 [Java言語](https://dev.java)の開発環境用に[Homebrew](https://brew.sh)を使う。  
 [JDK](https://docs.oracle.com/javase/jp/7/)が欲しいとは思っているが・・・。  
 
+
 ## brewでのJavaバージョン確認
 以下、確認作業。
 ```terminal
 $ brew search java
 ==> Formulae
-app-engine-java           java                      javacc                    jslint4java               pdftk-java
-google-java-format        java11                    javarepl                  libreadline-java
+app-engine-java           java          javacc          jslint4java             pdftk-java
+google-java-format        java11        javarepl        libreadline-java
 ==> Casks
-eclipse-java                               font-noto-sans-javanese                    homebrew/cask-versions/java-beta
-eclipse-javascript                         oracle-jdk-javadoc
+eclipse-java              font-noto-sans-javanese          homebrew/cask-versions/java-beta
+eclipse-javascript        oracle-jdk-javadoc
 
 If you meant "java" specifically:
 It was migrated from homebrew/cask to homebrew/core.
@@ -24,6 +25,7 @@ $
 **java11**の詳細(?)を確認したが、どうやら本物のJavaではないようだな。  
 **openjdk@11**だと言われたぞ。  
 
+
 ## ハードウェアの名前確認
 `uname`コマンドで確認できるようだ。
 ```terminal
@@ -33,6 +35,7 @@ $
 ```
 **Arm 64**が何を表しているのか分からないが、[**x64 DMG**](https://www.oracle.com/java/technologies/downloads/#jdk17-mac)をインストールすれば良いようだな。  
 私の環境では**x86**なんだが、関係なく**x64**でいいんだよね・・・きっと。。。他に選択肢がないので・・・いいのだろう・・・。  
+
 
 ## Oracle-Java17のインストール
 とりあえず[インストール](https://java.com/ja/download/help/mac_install.html)(`jdk-17_macos-x64_bin.dmg`)。  
@@ -87,7 +90,6 @@ $
 ```
 最後のエラーは何？  
 [ドッカー](../仮想環境/docker_作業メモなど何でも詰め込む.md)は削除したのだが・・・。  
-※後日、インストールし直した。  
 
 
 以下、**java**のインストール実施。
@@ -167,34 +169,9 @@ $ pwd
 $ ll
 total 0
 lrwxr-xr-x  1 asakunotomohiro  admin  46  6  8 21:25 jaotc@ -> ../libexec/openjdk.jdk/Contents/Home/bin/jaotc
-lrwxr-xr-x  1 asakunotomohiro  admin  44  6  8 21:25 jar@ -> ../libexec/openjdk.jdk/Contents/Home/bin/jar
-lrwxr-xr-x  1 asakunotomohiro  admin  50  6  8 21:25 jarsigner@ -> ../libexec/openjdk.jdk/Contents/Home/bin/jarsigner
-lrwxr-xr-x  1 asakunotomohiro  admin  45  6  8 21:25 java@ -> ../libexec/openjdk.jdk/Contents/Home/bin/java
-lrwxr-xr-x  1 asakunotomohiro  admin  46  6  8 21:25 javac@ -> ../libexec/openjdk.jdk/Contents/Home/bin/javac
-lrwxr-xr-x  1 asakunotomohiro  admin  48  6  8 21:25 javadoc@ -> ../libexec/openjdk.jdk/Contents/Home/bin/javadoc
-lrwxr-xr-x  1 asakunotomohiro  admin  46  6  8 21:25 javap@ -> ../libexec/openjdk.jdk/Contents/Home/bin/javap
-lrwxr-xr-x  1 asakunotomohiro  admin  45  6  8 21:25 jcmd@ -> ../libexec/openjdk.jdk/Contents/Home/bin/jcmd
-lrwxr-xr-x  1 asakunotomohiro  admin  49  6  8 21:25 jconsole@ -> ../libexec/openjdk.jdk/Contents/Home/bin/jconsole
-lrwxr-xr-x  1 asakunotomohiro  admin  44  6  8 21:25 jdb@ -> ../libexec/openjdk.jdk/Contents/Home/bin/jdb
-lrwxr-xr-x  1 asakunotomohiro  admin  50  6  8 21:25 jdeprscan@ -> ../libexec/openjdk.jdk/Contents/Home/bin/jdeprscan
-lrwxr-xr-x  1 asakunotomohiro  admin  46  6  8 21:25 jdeps@ -> ../libexec/openjdk.jdk/Contents/Home/bin/jdeps
-lrwxr-xr-x  1 asakunotomohiro  admin  44  6  8 21:25 jfr@ -> ../libexec/openjdk.jdk/Contents/Home/bin/jfr
-lrwxr-xr-x  1 asakunotomohiro  admin  46  6  8 21:25 jhsdb@ -> ../libexec/openjdk.jdk/Contents/Home/bin/jhsdb
-lrwxr-xr-x  1 asakunotomohiro  admin  47  6  8 21:25 jimage@ -> ../libexec/openjdk.jdk/Contents/Home/bin/jimage
-lrwxr-xr-x  1 asakunotomohiro  admin  46  6  8 21:25 jinfo@ -> ../libexec/openjdk.jdk/Contents/Home/bin/jinfo
-lrwxr-xr-x  1 asakunotomohiro  admin  46  6  8 21:25 jlink@ -> ../libexec/openjdk.jdk/Contents/Home/bin/jlink
-lrwxr-xr-x  1 asakunotomohiro  admin  45  6  8 21:25 jmap@ -> ../libexec/openjdk.jdk/Contents/Home/bin/jmap
-lrwxr-xr-x  1 asakunotomohiro  admin  45  6  8 21:25 jmod@ -> ../libexec/openjdk.jdk/Contents/Home/bin/jmod
-lrwxr-xr-x  1 asakunotomohiro  admin  49  6  8 21:25 jpackage@ -> ../libexec/openjdk.jdk/Contents/Home/bin/jpackage
-lrwxr-xr-x  1 asakunotomohiro  admin  44  6  8 21:25 jps@ -> ../libexec/openjdk.jdk/Contents/Home/bin/jps
-lrwxr-xr-x  1 asakunotomohiro  admin  51  6  8 21:25 jrunscript@ -> ../libexec/openjdk.jdk/Contents/Home/bin/jrunscript
-lrwxr-xr-x  1 asakunotomohiro  admin  47  6  8 21:25 jshell@ -> ../libexec/openjdk.jdk/Contents/Home/bin/jshell
-lrwxr-xr-x  1 asakunotomohiro  admin  47  6  8 21:25 jstack@ -> ../libexec/openjdk.jdk/Contents/Home/bin/jstack
-lrwxr-xr-x  1 asakunotomohiro  admin  46  6  8 21:25 jstat@ -> ../libexec/openjdk.jdk/Contents/Home/bin/jstat
-lrwxr-xr-x  1 asakunotomohiro  admin  47  6  8 21:25 jstatd@ -> ../libexec/openjdk.jdk/Contents/Home/bin/jstatd
-lrwxr-xr-x  1 asakunotomohiro  admin  48  6  8 21:25 keytool@ -> ../libexec/openjdk.jdk/Contents/Home/bin/keytool
-lrwxr-xr-x  1 asakunotomohiro  admin  45  6  8 21:25 rmid@ -> ../libexec/openjdk.jdk/Contents/Home/bin/rmid
-lrwxr-xr-x  1 asakunotomohiro  admin  52  6  8 21:25 rmiregistry@ -> ../libexec/openjdk.jdk/Contents/Home/bin/rmiregistry
+　　　・
+　　　・
+　　　・
 lrwxr-xr-x  1 asakunotomohiro  admin  50  6  8 21:25 serialver@ -> ../libexec/openjdk.jdk/Contents/Home/bin/serialver
 $ ./javac --version
 javac 16.0.2
@@ -234,39 +211,14 @@ $
 $ brew list java
 /usr/local/Cellar/openjdk/16.0.2/bin/jaotc
 /usr/local/Cellar/openjdk/16.0.2/bin/jar
-/usr/local/Cellar/openjdk/16.0.2/bin/jarsigner
-/usr/local/Cellar/openjdk/16.0.2/bin/java
-/usr/local/Cellar/openjdk/16.0.2/bin/javac
-/usr/local/Cellar/openjdk/16.0.2/bin/javadoc
-/usr/local/Cellar/openjdk/16.0.2/bin/javap
-/usr/local/Cellar/openjdk/16.0.2/bin/jcmd
-/usr/local/Cellar/openjdk/16.0.2/bin/jconsole
-/usr/local/Cellar/openjdk/16.0.2/bin/jdb
-/usr/local/Cellar/openjdk/16.0.2/bin/jdeprscan
-/usr/local/Cellar/openjdk/16.0.2/bin/jdeps
-/usr/local/Cellar/openjdk/16.0.2/bin/jfr
-/usr/local/Cellar/openjdk/16.0.2/bin/jhsdb
-/usr/local/Cellar/openjdk/16.0.2/bin/jimage
-/usr/local/Cellar/openjdk/16.0.2/bin/jinfo
-/usr/local/Cellar/openjdk/16.0.2/bin/jlink
-/usr/local/Cellar/openjdk/16.0.2/bin/jmap
-/usr/local/Cellar/openjdk/16.0.2/bin/jmod
-/usr/local/Cellar/openjdk/16.0.2/bin/jpackage
-/usr/local/Cellar/openjdk/16.0.2/bin/jps
-/usr/local/Cellar/openjdk/16.0.2/bin/jrunscript
-/usr/local/Cellar/openjdk/16.0.2/bin/jshell
-/usr/local/Cellar/openjdk/16.0.2/bin/jstack
-/usr/local/Cellar/openjdk/16.0.2/bin/jstat
-/usr/local/Cellar/openjdk/16.0.2/bin/jstatd
-/usr/local/Cellar/openjdk/16.0.2/bin/keytool
-/usr/local/Cellar/openjdk/16.0.2/bin/rmid
-/usr/local/Cellar/openjdk/16.0.2/bin/rmiregistry
-/usr/local/Cellar/openjdk/16.0.2/bin/serialver
-/usr/local/Cellar/openjdk/16.0.2/include/ (8 files)
+　　　・
+　　　・
+　　　・
 /usr/local/Cellar/openjdk/16.0.2/libexec/openjdk.jdk/ (575 files)
 /usr/local/Cellar/openjdk/16.0.2/share/man/ (29 files)
 $
 ```
+
 
 ### バージョン確認。
 
@@ -279,8 +231,6 @@ OpenJDK Runtime Environment Homebrew (build 16.0.2+0)
 OpenJDK 64-Bit Server VM Homebrew (build 16.0.2+0, mixed mode, sharing)
 $
 ```
-
-
 
 
 以上。

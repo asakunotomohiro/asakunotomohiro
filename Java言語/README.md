@@ -61,8 +61,8 @@ Javaを16にしてから補完が効かなくなったように思う。
   * 標準のフォーマット関数：`System.out.printf`  
 　　※必須記入項目ではなく、勉強途中での記載でも可とする。  
   * 単数行コメント方法：`//`  
-  * 複数行コメント方法：`/* 〜 */`  
-  * javadocと言われるドキュメント自動生成のコメント方法：`/** 〜 */`  
+  * 複数行コメント方法：`/* ～ */`  
+  * javadocと言われるドキュメント自動生成のコメント方法：`/** ～ */`  
 
 
 <a name="algorithmHelloWorld"></a>
@@ -149,7 +149,7 @@ $
 * [アルゴリズム勉強目次](#algorithmTextbookLearnedinPython)  
   * [x] Chapter 1 プログラミングの基礎知識  
     現時点で完了している(上記の基礎知識5種類として)。  
-  * [ ] [Chapter 2 プログラミングの力を養う](#algorithmTextbookLearnedinPythonChapter2)  
+  * [x] [Chapter 2 プログラミングの力を養う](#algorithmTextbookLearnedinPythonChapter2)  
   * [ ] [Chapter 3 データ構造を学ぶ](#algorithmTextbookLearnedinPythonChapter3)  
   * [ ] [Chapter 4 サーチ](#algorithmTextbookLearnedinPythonChapter4)  
   * [ ] [Chapter 5 ソート](#algorithmTextbookLearnedinPythonChapter5)  
@@ -454,13 +454,13 @@ class 配列 {
 					20210918,
 					20210919,
 					20210920,
-					};	// int型宣言
+				};	// int型宣言
 		var hoge = new int[] {
 					54755032,
 					64546030,
 					24330271,
 					bar[1]
-					};	// 型推論宣言
+				};	// 型推論宣言
 
 		System.out.println( bar[0] );	// 20210918
 		System.out.println( hoge[1] );	// 64546030
@@ -573,7 +573,7 @@ class 二次元配列 {
   * [x] [単純分岐-"もし"1つ。](#subConditional1)  
     基本構造例：if  
   * [x] [多岐分岐-"もし"2つ以上。](#subConditional1)  
-    基本構造例：if〜else if〜  
+    基本構造例：if～else if～  
   * [x] [論理演算子(ド・モルガンの法則)](#subConditional2)  
     * [x] 論理積(`AND`・`&&`)  
     * [x] 論理和(`OR`・`||`)  
@@ -890,7 +890,7 @@ while様式：
 <details><summary>今回は勉強を見送る一覧</summary>
 
 * [ ] 真偽条件での繰り返し  
-  基本構造例：do〜while( 条件式 )  
+  基本構造例：do～while( 条件式 )  
 * **break**のラベル付きで抜け出る方法。  
 * **continue**のラベル付きで抜け出る方法。  
 
@@ -1090,18 +1090,18 @@ class スコープ {
   基礎的なプログラミングの力を養っていく。  
   例えば、配列利用の関数定義・繰り返し・再帰関数・条件分岐など。  
   以下、各項目(目次)。  
-  [ ] [平均値を求める。](#findTheAverageValueChapter2)  
-  [ ] [1からnまで足し合わせる。](#addFrom1tonChapter2)  
-  [ ] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
-  [ ] [素数を求める。](#findAPrimeNumberChapter2)  
-  [ ] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
-  [ ] [エラトステネスの篩](#eratosthenesSieveChapter2)  
-  [ ] [n進法を理解する。](#understandnAryNotationChapter2)  
+  [x] [平均値を求める。](#findTheAverageValueChapter2)  
+  [x] [1からnまで足し合わせる。](#addFrom1tonChapter2)  
+  [x] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
+  [x] [素数を求める。](#findAPrimeNumberChapter2)  
+  [x] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
+  [x] [エラトステネスの篩](#eratosthenesSieveChapter2)  
+  [x] [n進法を理解する。](#understandnAryNotationChapter2)  
 <a name="algorithmTextbookLearnedinPythonChapter3"></a>
 * [Chapter3 データ構造を学ぶ](#learnDataStructuresOverviewChapter3)  
   今までに勉強した配列(リスト)を用いた発展を遂げる。  
   ※今回利用するリストはアルゴリズム(概念)用語であり、Pythonで用いているリスト(配列)という用語とは別物。  
-  ※例外処理(`try〜except〜finally`)をの説明をしている(いずれ基礎知識として勉強に組み込む必要がある？)。  
+  ※例外処理(`try～except～finally`)をの説明をしている(いずれ基礎知識として勉強に組み込む必要がある？)。  
   以下、各項目(目次)。  
   [ ] [スタック](#stackChapter3)  
   [ ] [キュー](#queueChapter3)  
@@ -1168,35 +1168,755 @@ class スコープ {
 ### プログラミングの力を養う
 基礎的なプログラミングの力を養っていく。  
 
-* 各項目。  
-  * [平均値を求める。](#findTheAverageValueChapter2)  
-  * [1からnまで足し合わせる。](#addFrom1tonChapter2)  
-  * [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
-  * [素数を求める。](#findAPrimeNumberChapter2)  
-  * [nの階乗を求める。](#findTheFactorialOfNChapter2)  
-  * [エラトステネスの篩](#eratosthenesSieveChapter2)  
-  * [n進法を理解する。](#understandnAryNotationChapter2)  
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)  
+
 
 <a name="findTheAverageValueChapter2"></a>
 #### 平均値を求める。
+勉強内容はPythonと基本同じ。  
+それをJava用に移植する。  
+
+* ルール。  
+  * 点数を配列で定義する。  
+    `int[] score = { 70, 98, 92, 88, 64, };`  
+    Python用配列：`score = [70, 98, 92, 88, 64]`  
+    Perl用配列：`my @score = (70, 98, 92, 88, 64);`  
+    vimScript9用配列：`var score = [70, 98, 92, 88, 64]`  
+    C言語用配列：`int score[] = {70, 98, 92, 88, 64};`  
+    Go言語用配列：`var score = [...]int {70, 98, 92, 88, 64};`  
+  * `for`を用いる。  
+
+<details><summary>展開。</summary>
+
+以下、プログラム。
+```java
+class average {
+	public static void main(String[] args){
+		int[] score = { 70, 98, 92, 88, 64, };
+		var total = 0;
+		// for( int ii = 0; score.length > ii; ii++ ) {	←☆下記の方法でも問題ない(こちらのほうが古典かな)。
+		// 	total += score[ii];
+		// }
+		for( int value:score ) {
+			total += value;
+		}
+		//var average = total / (float)score.length;	←☆片方だけの型変換のみで問題ない。
+		var average = (float)total / score.length;
+		System.out.printf("合計点 %d\n", total);	// 合計点 412
+		System.out.printf("平均点 %f\n", average);	// 平均点 82.400002	←☆余計な小数点部分を切り捨てるべきか？
+	}
+}
+```
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)  
+
 
 <a name="addFrom1tonChapter2"></a>
 #### 1からnまで足し合わせる。
+勉強内容はPythonと基本は同じ。  
+それをJava用に移植するだけのこと。  
+
+* ルール1もPythonと同じ。  
+  * `for`を用いる。  
+  * 関数は定義しない。  
+    私のルールは、必ず関数定義をすることに決めているため、ここだけ無視する。  
+
+<details><summary>展開(ルール1)。</summary>
+
+以下、プログラム。
+```java
+class addup1 {
+	static void addup1(){
+		var total = 0;
+		for( int ii = 0; 10 >= ii; ii++ ) {
+			total += ii;
+		}
+		System.out.printf("合計点 %d\n", total);	// 合計点 55
+	}
+	public static void main(String[] args){
+		addup1();
+	}
+}
+```
+
+</details>
+
+* ルール2もPythonと同じ。  
+  * nまでの値を関数の引数で受け取る。  
+  * 関数内で合算した結果をreturnで返す。  
+
+<details><summary>展開(ルール2)。</summary>
+
+以下、ルール2のプログラム。
+```java
+class addup2 {
+	static void addup2(int number){
+		var total = 0;
+		for( int ii = 0; number >= ii; ii++ ) {
+			total += ii;
+		}
+		System.out.printf("合計点 %d\n", total);	// 合計点 55
+	}
+	public static void main(String[] args){
+		addup2(10);
+	}
+}
+```
+ルール1ができれば、ルール2も簡単にこなせる・・・よね。  
+数字以外が来た場合どうするかとか、何も引数に渡さない場合どうするかとか、引数が記号の場合どうするかとか・・・。  
+後半はそもそもできない(考慮不要)か。  
+しかし、とんでもない天文学的数字の場合どうするかとか・・・。  
+
+</details>
+
+* ルール3もPythonと同じ。  
+  * 工夫して計算する。  
+  * (初めの数+終わりの数)*(足し合わせる個数/2)  
+
+<details><summary>展開(ルール3)。</summary>
+
+以下、ルール3のプログラム。
+```java
+class addup3 {
+	static int addup3(int number){
+		var total = (1 + number) * number / 2;
+
+		return total;
+	}
+	public static void main(String[] args){
+		var total = addup3(10);
+		System.out.printf("合計点 %d\n", total);	// 合計点 55
+	}
+}
+```
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)  
 
 <a name="outputTheMultiplicationTableChapter2"></a>
 #### 九九の式を出力する。
+Pythonでやったように、九九の式を出すのではなく、九九表を出すことにする。  
+ルールはPythonと同じ。  
+※二重[ループ](#repetition繰り返し)[(forの入れ子)](#subRepetition4)を使う。  
+
+* 作業ルール。  
+  * 二重ループを使う。  
+
+<details><summary>2重ループのサンプルプログラム(for編)。</summary>
+
+```java
+class loop {
+	public static void main(String[] args){
+		for( int ii = 0; 3 > ii; ii++ ) {
+			for( int jj = 0; 3 > jj; jj++ ) {
+				System.out.printf("ii[%d], jj[%d]\n", ii, jj);
+			}
+		}
+	}
+}
+```
+
+以下、出力結果。
+```terminal
+ii[0], jj[0]
+ii[0], jj[1]
+ii[0], jj[2]
+ii[1], jj[0]
+ii[1], jj[1]
+ii[1], jj[2]
+ii[2], jj[0]
+ii[2], jj[1]
+ii[2], jj[2]
+```
+
+</details>
+
+<details><summary>縦に並ぶ出力プログラム。</summary>
+
+以下、縦に並ぶ出力プログラム。
+```java
+class kuku1 {
+	static void kuku(){
+		for( int ii = 1; 10 > ii; ii++ ) {
+			for( int jj = 1; 10 > jj; jj++ ) {
+				System.out.printf("%2d x%2d=%2d\n", ii, jj, ii*jj);
+			}
+		}
+	}
+
+	public static void main(String[] args){
+		kuku();
+	}
+}
+```
+
+以下、出力結果。
+```terminal
+ 1 x 1= 1
+ 1 x 2= 2
+ 1 x 3= 3
+ 1 x 4= 4
+ 1 x 5= 5
+ 1 x 6= 6
+ 1 x 7= 7
+ 1 x 8= 8
+ 1 x 9= 9
+ 2 x 1= 2
+ 2 x 2= 4
+ 2 x 3= 6
+ 2 x 4= 8
+ 2 x 5=10
+ 2 x 6=12
+ 2 x 7=14
+ 2 x 8=16
+ 2 x 9=18
+ 3 x 1= 3
+ 3 x 2= 6
+ 3 x 3= 9
+ 3 x 4=12
+ 3 x 5=15
+ 3 x 6=18
+ 3 x 7=21
+ 3 x 8=24
+ 3 x 9=27
+ 4 x 1= 4
+ 4 x 2= 8
+ 4 x 3=12
+ 4 x 4=16
+ 4 x 5=20
+ 4 x 6=24
+ 4 x 7=28
+ 4 x 8=32
+ 4 x 9=36
+ 5 x 1= 5
+ 5 x 2=10
+ 5 x 3=15
+ 5 x 4=20
+ 5 x 5=25
+ 5 x 6=30
+ 5 x 7=35
+ 5 x 8=40
+ 5 x 9=45
+ 6 x 1= 6
+ 6 x 2=12
+ 6 x 3=18
+ 6 x 4=24
+ 6 x 5=30
+ 6 x 6=36
+ 6 x 7=42
+ 6 x 8=48
+ 6 x 9=54
+ 7 x 1= 7
+ 7 x 2=14
+ 7 x 3=21
+ 7 x 4=28
+ 7 x 5=35
+ 7 x 6=42
+ 7 x 7=49
+ 7 x 8=56
+ 7 x 9=63
+ 8 x 1= 8
+ 8 x 2=16
+ 8 x 3=24
+ 8 x 4=32
+ 8 x 5=40
+ 8 x 6=48
+ 8 x 7=56
+ 8 x 8=64
+ 8 x 9=72
+ 9 x 1= 9
+ 9 x 2=18
+ 9 x 3=27
+ 9 x 4=36
+ 9 x 5=45
+ 9 x 6=54
+ 9 x 7=63
+ 9 x 8=72
+ 9 x 9=81
+```
+
+</details>
+
+<details><summary>適度に折り返された表示形式。</summary>
+
+以下、四角形っぽい表示に置き換えたプログラム。
+```java
+class kuku2 {
+	static void kuku(){
+		for( int ii = 1; 10 > ii; ii++ ) {
+			for( int jj = 1; 10 > jj; jj++ ) {
+				System.out.printf(" %dx%d=%2d", jj, ii, ii*jj);
+			}
+			System.out.println("");	// 改行出力
+		}
+	}
+
+	public static void main(String[] args){
+		kuku();
+	}
+}
+```
+まま見やすくなった。  
+
+以下、出力結果。
+```terminal
+ 1x1= 1 2x1= 2 3x1= 3 4x1= 4 5x1= 5 6x1= 6 7x1= 7 8x1= 8 9x1= 9
+ 1x2= 2 2x2= 4 3x2= 6 4x2= 8 5x2=10 6x2=12 7x2=14 8x2=16 9x2=18
+ 1x3= 3 2x3= 6 3x3= 9 4x3=12 5x3=15 6x3=18 7x3=21 8x3=24 9x3=27
+ 1x4= 4 2x4= 8 3x4=12 4x4=16 5x4=20 6x4=24 7x4=28 8x4=32 9x4=36
+ 1x5= 5 2x5=10 3x5=15 4x5=20 5x5=25 6x5=30 7x5=35 8x5=40 9x5=45
+ 1x6= 6 2x6=12 3x6=18 4x6=24 5x6=30 6x6=36 7x6=42 8x6=48 9x6=54
+ 1x7= 7 2x7=14 3x7=21 4x7=28 5x7=35 6x7=42 7x7=49 8x7=56 9x7=63
+ 1x8= 8 2x8=16 3x8=24 4x8=32 5x8=40 6x8=48 7x8=56 8x8=64 9x8=72
+ 1x9= 9 2x9=18 3x9=27 4x9=36 5x9=45 6x9=54 7x9=63 8x9=72 9x9=81
+```
+
+</details>
+
+以下、学生時代から親しんできた九九表プログラム。
+
+<details><summary>展開。</summary>
+
+```java
+class kuku {
+	static void kuku(){
+		for( int ii = 1; 10 > ii; ii++ ) {
+			for( int jj = 1; 10 > jj; jj++ ) {
+				System.out.printf("%3d", ii*jj);
+			}
+			System.out.println("");
+		}
+	}
+
+	public static void main(String[] args){
+		kuku();
+	}
+}
+```
+
+以下、出力結果。
+```terminal
+  1  2  3  4  5  6  7  8  9
+  2  4  6  8 10 12 14 16 18
+  3  6  9 12 15 18 21 24 27
+  4  8 12 16 20 24 28 32 36
+  5 10 15 20 25 30 35 40 45
+  6 12 18 24 30 36 42 48 54
+  7 14 21 28 35 42 49 56 63
+  8 16 24 32 40 48 56 64 72
+  9 18 27 36 45 54 63 72 81
+```
+これぞ九九表だろう。  
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)  
+
 
 <a name="findAPrimeNumberChapter2"></a>
 #### 素数を求める。
+素数とは、1とその数以外に約数を持たない2以上の自然数のこと。  
+
+Pythonに倣い、試す数は**2～2分のn**までの数で割ることを調べる方法をとる。  
+例えば、10を調べる場合、その半分より大きい数(**6**・**7**・**8**・**9**)では、10を割ることが出来ない。  
+そのことを利用した方法で素数を求める。  
+後日、[エラトステネスの篩](#eratosthenesSieveChapter2)を使った効率のいいアルゴリズムを勉強する。  
+
+* 素数を求めるルール  
+  * 二重ループを使う。  
+  * 2から2分のnまでの数で割る。  
+    ※それらの数で割り切れなければ素数。  
+
+<details><summary>展開。</summary>
+
+以下、プログラム。
+```java
+class prime {
+	public static void main(String[] args){
+		for( int ii = 2; 101 > ii; ii++ ){
+			int half = ii / 2;	// 商を求める。
+			boolean flag = true;
+			for( int jj = 2; half >= jj; jj++ ){
+				if(( ii % jj ) == 0 ){
+					// 剰余算にて、割り切れるならば、出力対象外にする。
+					flag = false;
+					break;
+				}
+			}
+			if( flag == true ) {
+				System.out.printf("%d,", ii);
+			}
+		}
+	}
+}
+```
+
+以下、出力結果。
+```terminal
+2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,
+```
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)  
+
 
 <a name="findTheFactorialOfNChapter2"></a>
 #### nの階乗を求める。
+**階乗とは**
+1からnまでの全ての整数の積をnの階乗という。  
+
+<a name="findTheFactorialOfNChapter2recursionsample"></a>
+<details><summary>再帰用プログラム例。</summary>
+
+以下、サンプルプログラム。
+```java
+class factorial {
+	public static void main(String[] args){
+		// 10の階乗を求める。
+		int total = 10;
+		for( int ii = 9; 0 < ii; ii-- ) {	←☆9から0になるまでデクリメントを行う。
+			total *= ii;
+		}
+		System.out.printf("10!：%d\n", total);
+		// 10!：3628800	←☆10の階乗になっている。
+	}
+}
+```
+
+</details>
+
+**再帰関数とは**
+関数内から自身の関数を呼び出すことを再帰処理という。
+また、その呼び出す仕組みの関数を再帰関数という。  
+
+<a name="findTheFactorialOfNChapter2factorialsample"></a>
+<details><summary>再帰用プログラム例。</summary>
+
+以下、再帰関数例）
+```java
+class factorial {
+	static int factorialsample(int count){
+		if( count > 0 ) {
+			System.out.printf("再帰関数%2d回目の実行\n", count);
+			factorialsample( count - 1 );
+		}
+
+		return count;
+	}
+
+	public static void main(String[] args){
+		factorialsample(10);	// 再帰
+	}
+}
+```
+
+以下、実行結果。
+```terminal
+再帰関数10回目の実行
+再帰関数 9回目の実行
+再帰関数 8回目の実行
+再帰関数 7回目の実行
+再帰関数 6回目の実行
+再帰関数 5回目の実行
+再帰関数 4回目の実行
+再帰関数 3回目の実行
+再帰関数 2回目の実行
+再帰関数 1回目の実行
+```
+
+</details>
+
+* ルール1  
+  再帰関数を使わない。  
+  * 関数定義は行わない(私のプログラムでは行う)。  
+  * `for`を使う。  
+
+<details><summary>展開(ルール1)。</summary>
+
+以下、ルール1のプログラム。
+```java
+class factorial {
+	static int factorial1(final int MAX){
+		// 階乗を求める関数。
+		//	この関数は、サンプル関数に引数を受け取る形にしただけのもの。
+		int count = 1;
+		for( int ii = MAX; 0 < ii; ii-- ) {
+			count *= ii;
+		}
+
+		return count;
+	}
+
+	public static void main(String[] args){
+		int factorial = factorial1(10);
+		System.out.printf("10!：%d\n", factorial);
+	}
+}
+```
+
+以下、実行結果。
+```terminal
+10!：3628800
+```
+
+</details>
+
+* ルール2  
+  再帰関数を使う。  
+  * 再帰関数の定義ルール  
+    * `n = 0`
+      **n! = 1**  
+    * `n > 0`
+      **n! = n * (n-1) * (n-2) * ・・・ * 2 * 1**
+      nから1引いた数を掛け、さらに1づつ引き続けながらnが1にまるまで続ける。  
+
+<details><summary>展開(ルール2)。</summary>
+
+以下、ルール2のプログラム。
+```java
+class factorial {
+	static int factorial2(int count){
+		// 階乗を求める関数。
+		int total = 0;
+		if( count == 0 ) {
+			total = 1;
+		}
+		else {
+			total = count * factorial2(count - 1);
+		}
+
+		return total;
+	}
+
+	public static void main(String[] args){
+		int factorial2 = factorial2(10);
+		System.out.printf("10!：%d\n", factorial2);
+	}
+}
+```
+
+以下、実行結果。
+```terminal
+10!：3628800
+```
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)  
+
 
 <a name="eratosthenesSieveChapter2"></a>
 #### エラトステネスの篩
+効率よく[素数](#findAPrimeNumberChapter2)を求めることができるアルゴリズムのこと。  
+
+<details><summary>最初の見た目。</summary>
+
+以下、篩いにかける表プログラム。
+```java
+class prime_eratosthenes {
+	public static void main(String[] args){
+		// 表の表示。
+		for( int ii = 0, count = 10; 100 > ii; ii++ ) {
+			System.out.printf("%3d", ii);
+			count--;
+			if( count == 0 ) {
+				System.out.printf("\n");
+				count = 10;
+			}
+		}
+	}
+}
+```
+0から99までの整数から素数を識別するため、まずは、その整数を並べた。  
+
+以下、出力結果。
+```terminal
+  0  1  2  3  4  5  6  7  8  9
+ 10 11 12 13 14 15 16 17 18 19
+ 20 21 22 23 24 25 26 27 28 29
+ 30 31 32 33 34 35 36 37 38 39
+ 40 41 42 43 44 45 46 47 48 49
+ 50 51 52 53 54 55 56 57 58 59
+ 60 61 62 63 64 65 66 67 68 69
+ 70 71 72 73 74 75 76 77 78 79
+ 80 81 82 83 84 85 86 87 88 89
+ 90 91 92 93 94 95 96 97 98 99
+```
+
+</details>
+
+<details><summary>プログラム展開。</summary>
+
+以下、プログラム。
+```java
+class prime_eratosthenes {
+	static int tablecreate(int[] table) {
+		// 篩いテーブル作成。
+		for( int ii = 0; 100 > ii; ii++ ) {
+			//table[ii] = true;
+			table[ii] = ii;
+		}
+		table[0] = 999;	// falseのつもり。
+		table[1] = 999;	// falseのつもり。
+		// 篩いテーブル内容表示。
+		for( int ii=0, jj=0; 100 > ii; ii++, jj++ ) {
+			if( jj == 10 ) {
+				System.out.printf("\n");
+				jj=0;
+			}
+			if( table[ii] == 999 ) {
+				System.out.printf("  /");
+			}
+			else{
+				System.out.printf("%3d", table[ii]);
+			}
+		}
+
+		return 0;
+	}
+
+	static int eratosthenesSieveProcess(int[] table, int start) {
+		// エラトステネスの篩を処理する関数
+		System.out.printf("%dの倍数をふるい落とす。\n", start);
+		for( int ii = start + start; 100 > ii; ii += start ) {
+			table[ii] = 999;
+		}
+
+		return 0;
+	}
+
+	static int eratosthenesSieve(int[] table) {
+		// エラトステネスの篩を表示する関数。
+		for( int ii=0, jj=0; 100 > ii; ii++, jj++ ) {
+			if( jj == 10 ) {
+				System.out.printf("\n");
+				jj=0;
+			}
+			if( table[ii] == 999 ) {
+				System.out.printf("  /");
+			}
+			else{
+				System.out.printf("%3d", table[ii]);
+			}
+		}
+
+		return 0;
+	}
+
+	public static void main(String[] args){
+		int[] table = new int[10*10];	// 10x10のテーブル作成(1次元配列)。
+		tablecreate(table);	// テーブル作成後に表示する。
+		for( int ii = 2; 10 > ii; ii++ ) {
+			if( table[ii] == 999 ) {
+				continue;
+			}
+			System.out.printf("\n-------\n");
+			eratosthenesSieveProcess(table, ii);
+			eratosthenesSieve(table);
+		}
+	}
+
+}
+```
+
+</details>
+
+<details><summary>出力結果展開。</summary>
+
+以下、出力結果。
+```terminal
+  /  /  2  3  4  5  6  7  8  9
+ 10 11 12 13 14 15 16 17 18 19
+ 20 21 22 23 24 25 26 27 28 29
+ 30 31 32 33 34 35 36 37 38 39
+ 40 41 42 43 44 45 46 47 48 49
+ 50 51 52 53 54 55 56 57 58 59
+ 60 61 62 63 64 65 66 67 68 69
+ 70 71 72 73 74 75 76 77 78 79
+ 80 81 82 83 84 85 86 87 88 89
+ 90 91 92 93 94 95 96 97 98 99
+-------
+2の倍数をふるい落とす。
+  /  /  2  3  /  5  /  7  /  9
+  / 11  / 13  / 15  / 17  / 19
+  / 21  / 23  / 25  / 27  / 29
+  / 31  / 33  / 35  / 37  / 39
+  / 41  / 43  / 45  / 47  / 49
+  / 51  / 53  / 55  / 57  / 59
+  / 61  / 63  / 65  / 67  / 69
+  / 71  / 73  / 75  / 77  / 79
+  / 81  / 83  / 85  / 87  / 89
+  / 91  / 93  / 95  / 97  / 99
+-------
+3の倍数をふるい落とす。
+  /  /  2  3  /  5  /  7  /  /
+  / 11  / 13  /  /  / 17  / 19
+  /  /  / 23  / 25  /  /  / 29
+  / 31  /  /  / 35  / 37  /  /
+  / 41  / 43  /  /  / 47  / 49
+  /  /  / 53  / 55  /  /  / 59
+  / 61  /  /  / 65  / 67  /  /
+  / 71  / 73  /  /  / 77  / 79
+  /  /  / 83  / 85  /  /  / 89
+  / 91  /  /  / 95  / 97  /  /
+-------
+5の倍数をふるい落とす。
+  /  /  2  3  /  5  /  7  /  /
+  / 11  / 13  /  /  / 17  / 19
+  /  /  / 23  /  /  /  /  / 29
+  / 31  /  /  /  /  / 37  /  /
+  / 41  / 43  /  /  / 47  / 49
+  /  /  / 53  /  /  /  /  / 59
+  / 61  /  /  /  /  / 67  /  /
+  / 71  / 73  /  /  / 77  / 79
+  /  /  / 83  /  /  /  /  / 89
+  / 91  /  /  /  /  / 97  /  /
+-------
+7の倍数をふるい落とす。
+  /  /  2  3  /  5  /  7  /  /
+  / 11  / 13  /  /  / 17  / 19
+  /  /  / 23  /  /  /  /  / 29
+  / 31  /  /  /  /  / 37  /  /
+  / 41  / 43  /  /  / 47  /  /
+  /  /  / 53  /  /  /  /  / 59
+  / 61  /  /  /  /  / 67  /  /
+  / 71  / 73  /  /  /  /  / 79
+  /  /  / 83  /  /  /  /  / 89
+  /  /  /  /  /  /  / 97  /  /
+```
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)  
+
 
 <a name="understandnAryNotationChapter2"></a>
 #### n進法を理解する。
+**x進数**は、一般用語。  
+[ビット演算(`&`・`|`・`^`・`~`)](#learnBitwiseOperationsChapter4)は、別の機会。  
+
+<details><summary>展開。</summary>
+
+以下、プログラム。
+```java
+class basenumber {
+	public static void main(String[] args){
+		System.out.printf("%d\n", 255);	// 255	←☆10進数。
+		System.out.printf("%d\n", 0b11111111);	// 255	←☆2進数。
+		System.out.printf("%d\n", 0377);	// 255	←☆8進数。
+		System.out.printf("%d\n", 0xff);	// 255	←☆16進数。
+	}
+}
+```
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)  
+
 
 <a name="learnDataStructuresOverviewChapter3"></a>
 ### データ構造を学ぶ
