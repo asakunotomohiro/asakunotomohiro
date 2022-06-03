@@ -1084,7 +1084,7 @@ namespace 関数
 {
 	class func
 	{
-		public void nofunc(string args)
+		public void nofunc(string args)	←☆refを付けることで参照渡しになる(outの場合は、関数内での初期化をしたうえで参照返しする)。
 		{
 			Console.WriteLine("引数{0}-戻り値なし", args);
 		}
@@ -1095,7 +1095,7 @@ namespace 関数
 		public static void Main(string[] args)
 		{
 			func hoge = new func();
-			hoge.nofunc("bar");
+			hoge.nofunc("bar");	←☆呼び出しもrefを付ける必要が出てくる(outも同様)。
 			// 引数bar-戻り値なし
 		}
 	}
@@ -1915,6 +1915,8 @@ namespace factorial
 #### エラトステネスの篩
 効率よく[素数](#findAPrimeNumberChapter2)を求めることができるアルゴリズムのこと。  
 
+<details><summary>最初の見た目。</summary>
+
 以下、篩いにかける表プログラム。
 ```csharp
 using System;
@@ -1956,6 +1958,16 @@ namespace prime_eratosthenes
  90 91 92 93 94 95 96 97 98 99
 ```
 これを出すためだけのプログラムなので、全然精査されていないように思うプログラムなのだが・・・2章を読了するのが目的であって、アルゴリズムの理解を深めるためでは無くなっているため、気にしない。  
+
+</details>
+
+以下、プログラム。
+```csharp
+```
+
+以下、出力結果。
+```terminal
+```
 
 
 <a name="understandnAryNotationChapter2"></a>
