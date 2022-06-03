@@ -1084,7 +1084,7 @@ namespace 関数
 {
 	class func
 	{
-		public void nofunc(string args)
+		public void nofunc(string args)	←☆refを付けることで参照渡しになる(outの場合は、関数内での初期化をしたうえで参照返しする)。
 		{
 			Console.WriteLine("引数{0}-戻り値なし", args);
 		}
@@ -1095,7 +1095,7 @@ namespace 関数
 		public static void Main(string[] args)
 		{
 			func hoge = new func();
-			hoge.nofunc("bar");
+			hoge.nofunc("bar");	←☆呼び出しもrefを付ける必要が出てくる(outも同様)。
 			// 引数bar-戻り値なし
 		}
 	}
@@ -1208,7 +1208,7 @@ namespace 関数
   [x] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)2022/02/16  
   [x] [素数を求める。](#findAPrimeNumberChapter2)2022/03/12  
   [x] [nの階乗を求める。](#findTheFactorialOfNChapter2)2022/05/22  
-  [ ] [エラトステネスの篩](#eratosthenesSieveChapter2)  
+  [x] [エラトステネスの篩](#eratosthenesSieveChapter2)2022/06/03  
   [ ] [n進法を理解する。](#understandnAryNotationChapter2)  
 <a name="algorithmTextbookLearnedinPythonChapter3"></a>
 * [Chapter3 データ構造を学ぶ](#learnDataStructuresOverviewChapter3)  
@@ -1913,6 +1913,194 @@ namespace factorial
 
 <a name="eratosthenesSieveChapter2"></a>
 #### エラトステネスの篩
+効率よく[素数](#findAPrimeNumberChapter2)を求めることができるアルゴリズムのこと。  
+
+<details><summary>最初の見た目。</summary>
+
+以下、篩いにかける表プログラム。
+```csharp
+using System;
+
+namespace prime_eratosthenes
+{
+	class MainClass
+	{
+		public static void Main(string[] args)
+		{
+			int count = 10;
+			for (int ii = 0; 100 > ii; ii++)
+			{
+				Console.Write("{0, 3:G}", ii);
+				count--;
+				if (count == 0)
+				{
+					Console.WriteLine("");
+					count = 10;
+				}
+			}
+		}
+	}
+}
+```
+0から99までの整数から素数を識別するため、まずは、その整数を並べた。  
+
+以下、出力結果。
+```terminal
+  0  1  2  3  4  5  6  7  8  9
+ 10 11 12 13 14 15 16 17 18 19
+ 20 21 22 23 24 25 26 27 28 29
+ 30 31 32 33 34 35 36 37 38 39
+ 40 41 42 43 44 45 46 47 48 49
+ 50 51 52 53 54 55 56 57 58 59
+ 60 61 62 63 64 65 66 67 68 69
+ 70 71 72 73 74 75 76 77 78 79
+ 80 81 82 83 84 85 86 87 88 89
+ 90 91 92 93 94 95 96 97 98 99
+```
+これを出すためだけのプログラムなので、全然精査されていないように思うプログラムなのだが・・・2章を読了するのが目的であって、アルゴリズムの理解を深めるためでは無くなっているため、気にしない。  
+
+</details>
+
+以下、プログラム。
+```csharp
+using System;
+
+namespace prime_eratosthenes
+{
+	class MainClass
+	{
+		public static int tableView(int[] table)
+		{
+			// 篩いテーブル内容表示。
+			int count = table.Length;
+			for (int ii = 0, jj = 0; count > ii; ii++, jj++)
+			{
+				if (jj == 10)
+				{
+					Console.Write("\n");
+					jj = 0;
+				}
+				if (table[ii] == 999)
+				{
+					Console.Write("  /");
+				}
+				else
+				{
+					Console.Write("{0, 3:G}", table[ii]);
+				}
+			}
+
+			return 0;
+		}
+
+		public static int sievingTable(ref int[] table)
+		{
+			// 篩いテーブル作成。
+			int count = table.Length;
+			for (int ii = 0; count > ii; ii++)
+			{
+				table[ii] = ii;
+			}
+
+			return 0;
+		}
+
+		public static int eratosthenesSieveProcess(ref int[] table, int start)
+		{
+			// エラトステネスの篩を処理する関数。
+			Console.WriteLine("{0}の倍数をふるい落とす。", start);
+			for (int ii = start + start; table.Length > ii; ii += start)
+			{
+				table[ii] = 999;
+			}
+
+			return 0;
+		}
+
+		public static void Main(string[] args)
+		{
+			int[] table = new int[10 * 10];
+			sievingTable(ref table);    // テーブル初期化(必要か？)。
+			table[0] = 999; // falseのつもり。
+			table[1] = 999; // falseのつもり。
+			tableView(table);   // テーブル表示。
+			for (int ii = 2; 10 > ii; ii++)
+			{
+				if (table[ii] == 999)
+				{
+					continue;
+				}
+				Console.Write("\n-----------------------\n");
+				eratosthenesSieveProcess(ref table, ii);    // 篩に掛ける。
+				tableView(table);
+			}
+		}
+	}
+}
+```
+
+以下、出力結果。
+```terminal
+  /  /  2  3  4  5  6  7  8  9
+ 10 11 12 13 14 15 16 17 18 19
+ 20 21 22 23 24 25 26 27 28 29
+ 30 31 32 33 34 35 36 37 38 39
+ 40 41 42 43 44 45 46 47 48 49
+ 50 51 52 53 54 55 56 57 58 59
+ 60 61 62 63 64 65 66 67 68 69
+ 70 71 72 73 74 75 76 77 78 79
+ 80 81 82 83 84 85 86 87 88 89
+ 90 91 92 93 94 95 96 97 98 99
+-----------------------
+2の倍数をふるい落とす。
+  /  /  2  3  /  5  /  7  /  9
+  / 11  / 13  / 15  / 17  / 19
+  / 21  / 23  / 25  / 27  / 29
+  / 31  / 33  / 35  / 37  / 39
+  / 41  / 43  / 45  / 47  / 49
+  / 51  / 53  / 55  / 57  / 59
+  / 61  / 63  / 65  / 67  / 69
+  / 71  / 73  / 75  / 77  / 79
+  / 81  / 83  / 85  / 87  / 89
+  / 91  / 93  / 95  / 97  / 99
+-----------------------
+3の倍数をふるい落とす。
+  /  /  2  3  /  5  /  7  /  /
+  / 11  / 13  /  /  / 17  / 19
+  /  /  / 23  / 25  /  /  / 29
+  / 31  /  /  / 35  / 37  /  /
+  / 41  / 43  /  /  / 47  / 49
+  /  /  / 53  / 55  /  /  / 59
+  / 61  /  /  / 65  / 67  /  /
+  / 71  / 73  /  /  / 77  / 79
+  /  /  / 83  / 85  /  /  / 89
+  / 91  /  /  / 95  / 97  /  /
+-----------------------
+5の倍数をふるい落とす。
+  /  /  2  3  /  5  /  7  /  /
+  / 11  / 13  /  /  / 17  / 19
+  /  /  / 23  /  /  /  /  / 29
+  / 31  /  /  /  /  / 37  /  /
+  / 41  / 43  /  /  / 47  / 49
+  /  /  / 53  /  /  /  /  / 59
+  / 61  /  /  /  /  / 67  /  /
+  / 71  / 73  /  /  / 77  / 79
+  /  /  / 83  /  /  /  /  / 89
+  / 91  /  /  /  /  / 97  /  /
+-----------------------
+7の倍数をふるい落とす。
+  /  /  2  3  /  5  /  7  /  /
+  / 11  / 13  /  /  / 17  / 19
+  /  /  / 23  /  /  /  /  / 29
+  / 31  /  /  /  /  / 37  /  /
+  / 41  / 43  /  /  / 47  /  /
+  /  /  / 53  /  /  /  /  / 59
+  / 61  /  /  /  /  / 67  /  /
+  / 71  / 73  /  /  /  /  / 79
+  /  /  / 83  /  /  /  /  / 89
+  /  /  /  /  /  /  / 97  /  /
+```
+
 
 <a name="understandnAryNotationChapter2"></a>
 #### n進法を理解する。
