@@ -1963,10 +1963,142 @@ namespace prime_eratosthenes
 
 以下、プログラム。
 ```csharp
+using System;
+
+namespace prime_eratosthenes
+{
+	class MainClass
+	{
+		public static int tableView(int[] table)
+		{
+			// 篩いテーブル内容表示。
+			int count = table.Length;
+			for (int ii = 0, jj = 0; count > ii; ii++, jj++)
+			{
+				if (jj == 10)
+				{
+					Console.Write("\n");
+					jj = 0;
+				}
+				if (table[ii] == 999)
+				{
+					Console.Write("  /");
+				}
+				else
+				{
+					Console.Write("{0, 3:G}", table[ii]);
+				}
+			}
+
+			return 0;
+		}
+
+		public static int sievingTable(ref int[] table)
+		{
+			// 篩いテーブル作成。
+			int count = table.Length;
+			for (int ii = 0; count > ii; ii++)
+			{
+				table[ii] = ii;
+			}
+
+			return 0;
+		}
+
+		public static int eratosthenesSieveProcess(ref int[] table, int start)
+		{
+			// エラトステネスの篩を処理する関数。
+			Console.WriteLine("{0}の倍数をふるい落とす。", start);
+			for (int ii = start + start; table.Length > ii; ii += start)
+			{
+				table[ii] = 999;
+			}
+
+			return 0;
+		}
+
+		public static void Main(string[] args)
+		{
+			int[] table = new int[10 * 10];
+			sievingTable(ref table);    // テーブル初期化(必要か？)。
+			table[0] = 999; // falseのつもり。
+			table[1] = 999; // falseのつもり。
+			tableView(table);   // テーブル表示。
+			for (int ii = 2; 10 > ii; ii++)
+			{
+				if (table[ii] == 999)
+				{
+					continue;
+				}
+				Console.Write("\n-----------------------\n");
+				eratosthenesSieveProcess(ref table, ii);    // 篩に掛ける。
+				tableView(table);
+			}
+		}
+	}
+}
 ```
 
 以下、出力結果。
 ```terminal
+  /  /  2  3  4  5  6  7  8  9
+ 10 11 12 13 14 15 16 17 18 19
+ 20 21 22 23 24 25 26 27 28 29
+ 30 31 32 33 34 35 36 37 38 39
+ 40 41 42 43 44 45 46 47 48 49
+ 50 51 52 53 54 55 56 57 58 59
+ 60 61 62 63 64 65 66 67 68 69
+ 70 71 72 73 74 75 76 77 78 79
+ 80 81 82 83 84 85 86 87 88 89
+ 90 91 92 93 94 95 96 97 98 99
+-----------------------
+2の倍数をふるい落とす。
+  /  /  2  3  /  5  /  7  /  9
+  / 11  / 13  / 15  / 17  / 19
+  / 21  / 23  / 25  / 27  / 29
+  / 31  / 33  / 35  / 37  / 39
+  / 41  / 43  / 45  / 47  / 49
+  / 51  / 53  / 55  / 57  / 59
+  / 61  / 63  / 65  / 67  / 69
+  / 71  / 73  / 75  / 77  / 79
+  / 81  / 83  / 85  / 87  / 89
+  / 91  / 93  / 95  / 97  / 99
+-----------------------
+3の倍数をふるい落とす。
+  /  /  2  3  /  5  /  7  /  /
+  / 11  / 13  /  /  / 17  / 19
+  /  /  / 23  / 25  /  /  / 29
+  / 31  /  /  / 35  / 37  /  /
+  / 41  / 43  /  /  / 47  / 49
+  /  /  / 53  / 55  /  /  / 59
+  / 61  /  /  / 65  / 67  /  /
+  / 71  / 73  /  /  / 77  / 79
+  /  /  / 83  / 85  /  /  / 89
+  / 91  /  /  / 95  / 97  /  /
+-----------------------
+5の倍数をふるい落とす。
+  /  /  2  3  /  5  /  7  /  /
+  / 11  / 13  /  /  / 17  / 19
+  /  /  / 23  /  /  /  /  / 29
+  / 31  /  /  /  /  / 37  /  /
+  / 41  / 43  /  /  / 47  / 49
+  /  /  / 53  /  /  /  /  / 59
+  / 61  /  /  /  /  / 67  /  /
+  / 71  / 73  /  /  / 77  / 79
+  /  /  / 83  /  /  /  /  / 89
+  / 91  /  /  /  /  / 97  /  /
+-----------------------
+7の倍数をふるい落とす。
+  /  /  2  3  /  5  /  7  /  /
+  / 11  / 13  /  /  / 17  / 19
+  /  /  / 23  /  /  /  /  / 29
+  / 31  /  /  /  /  / 37  /  /
+  / 41  / 43  /  /  / 47  /  /
+  /  /  / 53  /  /  /  /  / 59
+  / 61  /  /  /  /  / 67  /  /
+  / 71  / 73  /  /  /  /  / 79
+  /  /  / 83  /  /  /  /  / 89
+  /  /  /  /  /  /  / 97  /  /
 ```
 
 
