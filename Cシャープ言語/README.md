@@ -1209,7 +1209,7 @@ namespace 関数
   [x] [素数を求める。](#findAPrimeNumberChapter2)2022/03/12  
   [x] [nの階乗を求める。](#findTheFactorialOfNChapter2)2022/05/22  
   [x] [エラトステネスの篩](#eratosthenesSieveChapter2)2022/06/03  
-  [ ] [n進法を理解する。](#understandnAryNotationChapter2)  
+  [x] [n進法を理解する。](#understandnAryNotationChapter2)2022/06/26  
 <a name="algorithmTextbookLearnedinPythonChapter3"></a>
 * [Chapter3 データ構造を学ぶ](#learnDataStructuresOverviewChapter3)  
   今までに勉強した配列(リスト)を用いた発展を遂げる。  
@@ -2104,6 +2104,33 @@ namespace prime_eratosthenes
 
 <a name="understandnAryNotationChapter2"></a>
 #### n進法を理解する。
+アルゴリズムとして勉強することではない。  
+普通の一般説明。  
+[ビット演算(`&`・`|`・`^`・`~`)](#learnBitwiseOperationsChapter4)は、別の機会。  
+
+以下、プログラム。
+```csharp
+using System;
+
+namespace basenumber
+{
+	class MainClass
+	{
+		public static void Main(string[] args)
+		{
+			int num = 100;
+			string binnum = Convert.ToString(num, 2);
+			Console.WriteLine(" 2進数：{0}", binnum);
+			string octnum = Convert.ToString(num, 8);
+			Console.WriteLine(" 8進数：{0}", octnum);
+			string hexnum = Convert.ToString(num, 16);
+			Console.WriteLine("16進数：{0}", hexnum);
+		}
+	}
+}
+```
+※上記のコンバート関数は、それに10進数を加えた4種類のみ変換できる。  
+
 
 <a name="learnDataStructuresOverviewChapter3"></a>
 ### データ構造を学ぶ
