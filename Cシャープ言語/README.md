@@ -2,128 +2,36 @@
 ここは、プログラミング言語のC#言語を勉強するブランチになる。  
 
 
+<a name="algorithmHowToUseTheBranch"></a>
 ## ブランチの利用方法
-ここのブランチは、書籍のアルゴリズムを勉強するのに使う。  
+ここのブランチは、Python書籍からのアルゴリズム問題をC#言語に置き換えて勉強するのに使う。  
 また、具体的なアルゴリズムの種類は、下記書籍の目次チャプターに限定する。  
+書籍名：[Pythonで学ぶアルゴリズムの教科書](#algorithmTextbookLearnedinPythonBook)  
 ※チャプターごとにブランチを分けていく。  
 
 
+<a name="algorithmHowToStudy"></a>
 ## 勉強方法
 勉強するプログラミング言語の一つとしている。  
-当然本を使うのだが、公式ページを避ける理由がなく、必要に応じて各サイトも利用する。  
+当然本を使う。
+そして、公式ページだけでなく、必要に応じて各サイトも利用する。  
 
 * 活用書籍  
   * [プログラミングC# 第8版](https://www.oreilly.co.jp/books/9784873119366/)  
-  残念ながら本はこれだけしか持っていないという・・・([Unity](https://unity.com/ja)でゲームを作りたいのにこれだけって・・・どんな意気込みだよ)。  
-  本は8版として最新版だが、そもそものコンパイル環境は[C# 9.0](https://docs.microsoft.com/ja-jp/dotnet/csharp/whats-new/csharp-9)があるよね。  
 
 * 活用サイト  
   * [C# 関連のドキュメント](https://docs.microsoft.com/ja-jp/dotnet/csharp/)  
-  * [とほほのC#入門](https://www.tohoho-web.com/ex/c-sharp.html)  
 
 
+<a name="algorithmDevelopmentEnvironment"></a>
 ## 開発環境
 今回は、`Visual Studio 2019 for Mac(VS2019)`を使う。  
 最初は`Visual Studio Code(VSCode)`を使うはずだったが、動かない。  
 デバッグ環境まで用意する必要があるようなのだが、やり方が分からないため、VS2019を使うことにした。  
 開発環境を用意するのに時間を使いたくないからな。  
 
-
-## 「[Pythonで学ぶアルゴリズムの教科書](https://book.impress.co.jp/books/1120101024)」
-本の概要。  
-> エンジニアの基礎体力を身につける  
-
-※プログラミングに使う基礎知識を統一する(簡単に済ませられる量に絞り込む)。  
-* 基礎知識5種類  
-  * [x] [変数](#variable変数)2021/08/20  
-  * [x] [配列](#arrangement配列)2021/09/19  
-  * [x] [条件分岐](#Conditional条件分岐)2021/09/30  
-  * [x] [繰り返し](#repetition繰り返し)2021/09/30  
-  * [x] [関数](#function関数)2021/10/01  
-
-<details><summary>大本の目的であるアルゴリズムの勉強用目次</summary>
-
-※上記の基礎知識5種類の勉強が終わり次第閉じた状態を解除する。  
-
-<a name="algorithmTextbookLearnedinPythonContents"></a>
-* [アルゴリズム勉強目次](#algorithmTextbookLearnedinPython)  
-  * [ ] Chapter 1 プログラミングの基礎知識  
-  * [ ] [Chapter 2 プログラミングの力を養う](#algorithmTextbookLearnedinPythonChapter2)  
-  * [ ] [Chapter 3 データ構造を学ぶ](#algorithmTextbookLearnedinPythonChapter3)  
-  * [ ] [Chapter 4 サーチ](#algorithmTextbookLearnedinPythonChapter4)  
-  * [ ] [Chapter 5 ソート](#algorithmTextbookLearnedinPythonChapter5)  
-  * [ ] [Chapter 6 ハッシュ](#algorithmTextbookLearnedinPythonChapter6)  
-  * [ ] [Chapter 7 さまざまなアルゴリズムを学ぶ](#algorithmTextbookLearnedinPythonChapter7)  
-  * [ ] [Chapter 8 アルゴリズムを見える化する](#algorithmTextbookLearnedinPythonChapter8)  
-  * Appendix 1 Pythonのインストール方法
-  * Appendix 2 テキストエディタと統合開発環境
-  * Appendix 3 Pythonの記述ルール
-
-</details>
-
-<details><summary>基礎知識5種類の作業手順</summary>
-
-## 具体的な基礎知識
-何はともあれ、まずは、"Hello World"を表示するプログラムを作る。  
-その後で、基礎中の基礎となる制御構造(構造化プログラミング)を簡略化しながら勉強する。  
-そのため、以下の手順で勉強を進めることにする。  
-
-* 以下、手順。  
-  * [x] 手順1. 勉強用のブランチに移動する。  
-  * [x] 手順2. ルートディレクトリのひな形ディレクトリをコピーしてくる。  
-  * [x] 手順2-0. ここまでは、上位ディレクトリにある"README.md"で作業を終えているはず。  
-  * [x] 手順2-1. 当ファイル(`README.md`)の書き換えを行う。  
-        ※ 開発環境を記録する。  
-        ※ アルゴリズムの勉強用項目は隠しておく(`details`・`summary`)代わりに、基礎知識5種類の勉強用の項目は出しておく。  
-  * [x] 手順2-2. `helloWorld.[言語用の拡張子]`のファイルを作り、おなじみ"Hello World."プログラムを作る。  
-  * [ ] 手順2-3. main関数不要であれば、"**実行済み**"ディレクトリを削除すること。  
-  * [x] 手順2-4. コミットする。  
-  * [ ] 手順3. 各ディレクトリで、5種類の"絶対的に勉強する一覧"を箇条書きごとに勉強する。  
-    * 以下、5種類の内訳。  
-      ※そのとき、(できる限り)プログラムファイルにモードラインを記載する。  
-      ※チェックリストは上記にある。  
-      変数  
-      配列  
-      条件分岐  
-      繰り返し  
-      関数  
-  * [ ] 手順3-1. 箇条書きごとにコミット実施する。  
-  * [ ] 手順4. 1つのプログラミング言語で、手順3の勉強1種類を終えた時に、次のプログラミング言語に移る。  
-         (細かく分けることでやる気が維持される・・・はず)  
-  * [ ] 手順4-1. 今回のプログラミング言語に戻ってきたことにより、次の箇条書きに移り、勉強を継続(再開)する。  
-  * [ ] 手順5. 上記、5種類の基礎知識を終わるまで繰り返す。  
-  * [ ] 手順6. 5種類の基礎知識終了にて、"study2programming"ブランチにマージする。  
-
-</details>
-
-<details><summary>アルゴリズム問題解決の作業手順</summary>
-
-## 具体的なアルゴリズム問題解決前手順
-基礎知識5種類を勉強するのと同じように、アルゴリズムの勉強にも以下の手順で進める。  
-
-* 以下、手順。  
-  * [ ] 手順1. 勉強用のブランチに移動する(上記[目次](#algorithmTextbookLearnedinPythonContents)の1チャプター分専用ブランチとする)。  
-  * [ ] 手順2. 当ファイル(`README.md`)の書き換えを行う。  
-    [ ] アルゴリズムの勉強用に変更する。  
-    [ ] アルゴリズムの勉強用項目を出すが、基礎知識5種類の勉強項目は隠す(`details`・`summary`)。  
-  * [ ] 編集後、コミットする。  
-  * [ ] 手順3. 各ディレクトリで、チャプタごとに勉強を進める。  
-    ※そのとき、(できる限り)プログラムファイルに[モードライン](https://vim-jp.org/vim-users-jp/2009/06/02/Hack-20.html)を記載する。  
-    ※チェックリストは上記にある。  
-    Chapter 2 プログラミングの力を養う  
-    Chapter 3 データ構造を学ぶ  
-    Chapter 4 サーチ  
-    Chapter 5 ソート  
-    Chapter 6 ハッシュ  
-    Chapter 7 さまざまなアルゴリズムを学ぶ  
-    Chapter 8 アルゴリズムを見える化する  
-  * [ ] 手順4. 1つのプログラミング言語で、手順3の勉強1種類(要は、1チャプタ分の子部分)を終えた時に、次のプログラミング言語に移る。  
-  * [ ] 手順5. 1チャプタ分終了にて、"study2programming"ブランチにマージする。  
-
-</details>
-
-
-## 実際に作業する環境の状況確認
+<a name="algorithmCheckTheStatusOfTheActualWorkingEnvironment"></a>
+<details><summary>実際に作業する環境の状況確認</summary>
 
 * 勉強環境。  
   * 勉強[環境](https://docs.microsoft.com/ja-jp/dotnet/csharp/language-reference/language-specification/introduction)のコンパイルバージョン：version 6.12.0.0  
@@ -153,10 +61,8 @@ $
 ```
 
   * プログラムファイルの[拡張子](https://docs.microsoft.com/ja-jp/dotnet/csharp/language-reference/language-specification/introduction)：`*.cs`  
-  * 実行方式：  
-    例）`コンパイラ方式`・`インタプリタ方式`  
-  * 標準の文字コード(プログラムファイル)：  
-　　例）UTF-8(今時はこれに統一されている？)。  
+  * 実行方式：コンパイラ方式  
+  * 標準の文字コード(プログラムファイル)：UTF-8？  
   * 文字コードの扱い：
 　　例）UTF-8・Unicode  
   * 文字区切り(行末記号)：セミコロン`;`  
@@ -171,13 +77,16 @@ $
   * 複数行コメント方法：`/*〜*/`  
     別解：`#if`ディレクティブ(プリプロセッサ)  
     別解は、今回のアルゴリズムの勉強では使わない。  
+  * デバッガ機能(デバッグ技法)：  
+　　例）`gdb`・`perldebug`・`pdb`など。  
 
 
+<a name="algorithmHelloWorld"></a>
 ### ハローワールドプログラム
 相変わらずvimではコンパイルが出来ない(Pathが長いそうだ)。  
 
 以下、ハローワールドのコンパイル。
-```cs:helloWorld.cs
+```csharp
 $ mcs ./helloWorld.cs	←☆コンパイル。
 $ ll
 total 48
@@ -207,84 +116,149 @@ Hello World.
 $
 ```
 
+</details>
 
+
+<a name="algorithmTextbookLearnedinPythonBook"></a>
+## 「[Pythonで学ぶアルゴリズムの教科書](https://book.impress.co.jp/books/1120101024)」
+本の概要。  
+> エンジニアの基礎体力を身につける  
+
+<a name="basicKnowledgeFiveTypesOfStudyRange"></a>
+<details><summary>基礎知識5種類の項目</summary>
+
+※プログラミングに使う基礎知識を統一する(簡単に済ませられる量に絞り込む)。  
+* 基礎知識5種類  
+  * [x] [変数](#variable変数)  
+  * [x] [配列](#arrangement配列)  
+  * [x] [条件分岐](#Conditional条件分岐)  
+  * [x] [繰り返し](#repetition繰り返し)  
+  * [x] [関数](#function関数)  
+
+</details>
+
+<a name="algorithmTextbookLearnedinPythonContents"></a>
+* [アルゴリズム勉強目次](#algorithmTextbookLearnedinPython)  
+  * [x] [Chapter 1 プログラミングの基礎知識](#basicKnowledgeFiveTypesOfStudyRange)  
+    現時点で完了している(上記の基礎知識5種類として)。  
+  * [x] [Chapter 2 プログラミングの力を養う](#algorithmTextbookLearnedinPythonChapter2)  
+  * [ ] [Chapter 3 データ構造を学ぶ](#algorithmTextbookLearnedinPythonChapter3)  
+  * [ ] [Chapter 4 サーチ](#algorithmTextbookLearnedinPythonChapter4)  
+  * [ ] [Chapter 5 ソート](#algorithmTextbookLearnedinPythonChapter5)  
+  * [ ] [Chapter 6 ハッシュ](#algorithmTextbookLearnedinPythonChapter6)  
+  * [ ] [Chapter 7 さまざまなアルゴリズムを学ぶ](#algorithmTextbookLearnedinPythonChapter7)  
+  * [ ] [Chapter 8 アルゴリズムを見える化する](#algorithmTextbookLearnedinPythonChapter8)  
+  * Appendix 1 Pythonのインストール方法
+  * Appendix 2 テキストエディタと統合開発環境
+  * Appendix 3 Pythonの記述ルール
+
+<a name="breakingAwayFromBasicKnowledge"></a>
+<details><summary>応用知識の項目</summary>
+
+<a name="expandTheScopeOfBasicKnowledge"></a>
+### 基礎知識5種類の勉強範囲を広げる
+基礎知識5種類の勉強は、アルゴリズムの勉強用に特化していたが、この部分は、通常開発ができる範囲に手を広げる。  
+
+* 基礎知識5種類の範囲を広げる  
+  * [ ] [変数](#practicaluseVariable変数)  
+  * [ ] [配列](#practicaluseArrangement配列)  
+  * [ ] [条件分岐](#practicaluseConditional条件分岐)  
+  * [ ] [繰り返し](#practicaluseRepetition繰り返し)  
+  * [ ] [関数](#practicaluseFunction関数)  
+
+
+<a name="rangeOtherThanBasicKnowledge"></a>
+### 基礎知識5種類の勉強以外の項目
+基礎知識5種類に納められない範囲の勉強に手を広げる。  
+
+* [応用知識](#appliedknowledge)  
+  * [ ] [ポインタ・リファレンス](#practicalusePointer)  
+  * [ ] [NULL・nil](#practicaluseNull)  
+  * [ ] [ハッシュ(連想配列)](#practicaluseHash)  
+  * [ ] [ファイル操作](#practicaluseFileoperation)  
+  * [ ] [ディレクトリ操作](#practicaluseDirectorymanipulation)  
+  * [ ] [オブジェクト指向](#practicaluseObjectorientation)  
+  * [ ] [テスト方法](#practicaluseTester)  
+  * [ ] [標準関数(モジュール)](#practicaluseModule)  
+  * [ ] [プロセス管理](#practicaluseSystemfunc)  
+
+</details>
+
+
+<a name="algorithmSpecificBasicKnowledge"></a>
+<details><summary>基礎知識5種類の作業手順</summary>
+
+## 具体的な基礎知識
+何はともあれ、まずは、"Hello World"を表示するプログラムを作る。  
+その後で、基礎中の基礎となる制御構造(構造化プログラミング)を簡略化しながら勉強する。  
+そのため、以下の手順で勉強を進めることにする。  
+
+* 以下、手順。  
+  * [x] 手順1. 勉強用のブランチに移動する。  
+  * [x] 手順2. ルートディレクトリのひな形ディレクトリをコピーしてくる。  
+    ※ディレクトリ名をプログラミング言語に変更する。  
+    ※配下の**Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける**ディレクトリは削除。  
+  * [x] 手順2-1. 当ファイル(`README.md`)の書き換えを行う。  
+        ※ 開発環境を記録する。  
+        ※ アルゴリズムの勉強用項目は隠しておく(`details`・`summary`)代わりに、基礎知識5種類の勉強用の項目は出しておく。  
+  * [x] 手順2-2. `helloWorld.[言語用の拡張子]`のファイルを作り、おなじみ"Hello World."プログラムを作る。  
+  * [x] 手順2-3. main関数不要であれば、"**実行済み**"ディレクトリを削除すること。  
+  * [x] 手順2-4. コミットする。  
+  * [x] 手順3. 各ディレクトリで、5種類の"絶対的に勉強する一覧"を箇条書きごとに勉強する。  
+    * 以下、5種類の内訳。  
+      ※チェックリストは上記にある。  
+      変数  
+      配列  
+      条件分岐  
+      繰り返し  
+      関数  
+  * [x] 手順3-1. 箇条書きごとにコミット実施する。  
+  * [x] 手順4. 1つのプログラミング言語で、手順3の勉強1種類を終えた時に、次のプログラミング言語に移る。  
+         (細かく分けることでやる気が維持される・・・はず)  
+  * [x] 手順4-1. 今回のプログラミング言語に戻ってきたことにより、次の箇条書きに移り、勉強を継続(再開)する。  
+  * [x] 手順5. 上記、5種類の基礎知識を終わるまで繰り返す。  
+  * [x] 手順6. 5種類の基礎知識終了にて、"study2programming"ブランチにマージする。  
+
+</details>
+
+
+<a name="algorithmSpecificAlgorithmPreSolvingProcedure"></a>
+<details><summary>アルゴリズム問題解決の作業手順</summary>
+
+## 具体的なアルゴリズム問題解決前手順
+アルゴリズムの勉強に、以下の手順を行う。  
+
+* 以下、手順。  
+  * [x] 手順1. 勉強用のブランチに移動する(上記[目次](#algorithmTextbookLearnedinPythonContents)の1チャプター分専用ブランチとする)。  
+  * [x] 手順2. ルートディレクトリのひな形ディレクトリ配下の必要なディレクトリをコピーする。  
+    **Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける** ディレクトリ配下の必要なチャプター用ディレクトリ。  
+  * [x] 手順3. 当ファイル(`README.md`)の書き換えを行う。  
+    [x] アルゴリズムの勉強用に変更する。  
+    [x] アルゴリズムの勉強用項目を出すが、基礎知識5種類の勉強項目は隠す(`details`・`summary`)。  
+  * [x] 編集後、コミットする。  
+  * [ ] 手順4. 各ディレクトリで、チャプタごとに勉強を進める。  
+    ※チェックリストは上記にある。  
+    Chapter 2 プログラミングの力を養う  
+    Chapter 3 データ構造を学ぶ  
+    Chapter 4 サーチ  
+    Chapter 5 ソート  
+    Chapter 6 ハッシュ  
+    Chapter 7 さまざまなアルゴリズムを学ぶ  
+    Chapter 8 アルゴリズムを見える化する  
+  * [ ] 手順5. 1つのプログラミング言語で、手順4の勉強1種類(要は、1チャプタ分の子部分)を終えた時に、次のプログラミング言語に移る。  
+  * [ ] 手順6. 1チャプタ分終了にて、"study2programming"ブランチにマージする。  
+
+</details>
+
+
+<a name="algorithmNotes"></a>
 ### ※注意事項
 「アルゴリズムを勉強することが目的」であるということを理解すること。  
 しかし、やる気を維持するためにも1冊分を読了させることも目的としており、深掘りせずに進めることも考慮すること。  
 要は、深く踏み込むか、流し読み程度に抑えるかどうかはそのときに決める。  
 
 
-#### 概要。
-基礎知識として5種類を勉強するが、その目的はアルゴリズムの勉強用であって、5種類を本格的に極めるためではない。  
-そのため、1つ1つを最小限に絞り込み、1つを10分前後の勉強時間に収まるように気をつけること。  
-※現時点で守れていないため、何とかして短い時間に抑え、アルゴリズムの勉強を本格的に勉強できるように考慮すること。  
-
 <a name="variable変数"></a>
-* [変数](#variable変数sub)  
-  * 変数の宣言方法  
-    数値の代入  
-    文字列の代入  
-    代入したそれらの出力  
-  * 代入した値の変更方法  
-    変数を用いた計算  
-    * 計算用演算子の説明  
-    * データ型の説明  
-      数値-整数型  
-      数値-小数型  
-      文字列  
-      論理値  
-    * データ型の変換(キャスト)  
-  * ※スコープは"関数"で説明する。  
-
-<a name="arrangement配列"></a>
-* [配列(リスト)](#arrangement配列sub)  
-  * 宣言方法  
-    要素  
-    要素数  
-    添え字(インデックス)  
-  * 要素追加方法  
-  * 2次元配列  
-  * ※取り出しは"for"で説明する。  
-
-<a name="Conditional条件分岐"></a>
-* [条件分岐](#Conditional条件分岐sub)  
-  * if文  
-    条件式  
-    * if文からの派生  
-      if〜elif〜else  
-    * 演算子  
-      論理演算子  
-      比較演算子  
-
-<a name="repetition繰り返し"></a>
-* [繰り返し](#repetition繰り返しsub)  
-  * for文  
-    条件式  
-    多重(入れ子)利用  
-    break  
-    continue  
-    拡張for文  
-    　例）range  
-    配列からの取り出し。  
-  * while文  
-    条件式  
-    無限ループ  
-
-<a name="function関数"></a>
-* [関数](#function関数sub)  
-  書式  
-  引数  
-  戻り値  
-  * 組み合わせ  
-    引数無し-戻り値無し  
-    引数あり-戻り値無し  
-    引数無し-戻り値あり  
-    引数あり-戻り値あり  
-  * 変数の有効範囲(スコープ)  
-    グローバル変数  
-    ローカル変数  
-
-<a name="variable変数sub"></a>
 <details><summary>実際の変数の勉強</summary>
 
 ### 変数
@@ -307,14 +281,15 @@ $
       * [x] 引き算(`-`)  
       * [x] 掛け算(`*`)  
       * [x] 割り算(`/`)  
-      * [ ] 累乗(`**`)  
+      * 累乗(`**`)  
         C#にはないようだ。  
-      * [ ] 割り算の商(`//`)  
+      * 割り算の商(`//`)  
         C#にはないようだ。  
       * [x] 割り算の余り(`%`)  
   * [型変換(キャスト)方法](#subVariable6)  
     * [x] 明示変換  
       `代入先変数名 = (データ型)変数名`  
+
 
 <a name="subVariable1"></a>
 #### 変数
@@ -332,7 +307,7 @@ $
 その値のことを"初期値"と呼ぶ。  
 
 
-```cs
+```csharp
 int hoge = 1234;
 float boo = 12.34F;
 bool egoh = true;
@@ -355,11 +330,12 @@ egoh = (100 == 100);
 Console.WriteLine(egoh);        // True
 ```
 
+
 <a name="subVariable3"></a>
 #### 変数値の出力方法
 `Console.WriteLine`を使う。  
 
-```cs
+```csharp
 public static void Main(string[] args)
 {
 	Console.WriteLine("Hello World!");
@@ -397,6 +373,7 @@ World.}";
 |string|System.String||||||
 |bool|System.Boolean|||||true:0・false:1|
 
+
 <a name="subVariable5"></a>
 #### 変数値を使った計算方法
 
@@ -412,23 +389,25 @@ World.}";
 |`++`|インクリメント|オペランドに1加算|
 |`--`|デクリメント|オペランドに1減算|
 
+
 <a name="subVariable6"></a>
 #### 型変換(キャスト)方法
 様式：
 `(データ型)変数名`  
 
 以下、キャスト。
-```cs
+```csharp
 byte over = (byte)255;
 Console.WriteLine(over);
 ```
 
 以下、桁あふれするような代入は、エラーになる。
-```cs
+```csharp
 // Error CS0221: Constant value '256' cannot be converted to a 'byte' (use 'unchecked' syntax to override) (CS0221) (データ型)
 byte over = (byte)256;
 Console.WriteLine(over);
 ```
+
 
 <a name="subVariable999"></a>
 #### 変数での説明しない項目。
@@ -472,7 +451,8 @@ Console.WriteLine(over);
 
 </details>
 
-<a name="arrangement配列sub"></a>
+
+<a name="arrangement配列"></a>
 <details><summary>実際の配列の勉強</summary>
 
 ### 配列
@@ -497,19 +477,19 @@ Console.WriteLine(over);
 `データ型[] 配列名 = new データ型[要素数]`  
 `var 配列名 = new データ型[要素数]`  
 例）
-```cs
+```csharp
 int[] numbers = new int[10];
 string[] strings = new string[numbers.Length];
 ```
 ※要素数は、32ビット環境では21億個までが上限として指定できる。  
 
+
 <a name="subArrangement2"></a>
 #### 配列への追加方法
 配列の拡張を意味するのではない。  
 
-様式：
 
-```cs
+```csharp
 using System;
 
 namespace 配列
@@ -541,6 +521,7 @@ namespace 配列
 }
 ```
 
+
 <a name="subArrangement3"></a>
 #### 二次元配列の宣言方法
 今後は、矩形配列を使う。  
@@ -557,7 +538,7 @@ namespace 配列
 取得：`array[0, 0]`  
 ※代入していない要素場所はゼロで初期化される？  
 
-```cs
+```csharp
 using System;
 
 namespace 二次元配列
@@ -593,6 +574,7 @@ namespace 二次元配列
 }
 ```
 
+
 <a name="subArrangement999"></a>
 #### 配列での説明しない項目。
 
@@ -624,7 +606,8 @@ namespace 二次元配列
 
 </details>
 
-<a name="Conditional条件分岐sub"></a>
+
+<a name="Conditional条件分岐"></a>
 <details><summary>実際の条件分岐の勉強</summary>
 
 ### 条件分岐
@@ -664,7 +647,7 @@ else
 ```
 
 以下、プログラム例）
-```c#
+```csharp
 using System;
 
 namespace 条件分岐
@@ -746,7 +729,7 @@ namespace 条件分岐
 </details>
 
 
-<a name="repetition繰り返しsub"></a>
+<a name="repetition繰り返し"></a>
 <details><summary>実際の繰り返しの勉強</summary>
 
 ### 繰り返し
@@ -758,8 +741,8 @@ namespace 条件分岐
     `foreach( データ型 変数名 in コレクション ){〜}`  
     [x] [`for`の入れ子。](#subRepetition4)  
   * [ジャンプ処理](#subRepetition5)  
-    * [x] break  
-    * [x] continue  
+    * [x] [break](#subRepetition5break)  
+    * [x] [continue](#subRepetition5continue)  
   * [x] [真偽条件での繰り返し](#subRepetition6)  
     [x] [基本構造例：while( 条件式 )](#subRepetition6)  
     `while ( 条件式) { 処理; }`  
@@ -781,7 +764,7 @@ for ( 初期化式; 継続条件式; 増減式 )
 ```
 
 以下、実際のプログラム。
-```c#
+```csharp
 using System;
 
 namespace 指定回数条件での繰り返しfor
@@ -804,7 +787,6 @@ namespace 指定回数条件での繰り返しfor
 	}
 }
 ```
-※IDEが勝手に行うフォーマッタ機能を無効化したい。  
 
 
 <a name="subRepetition3"></a>
@@ -818,7 +800,7 @@ foreach ( データ型 変数名 in コレクション )
 ```
 
 以下、実際のプログラム例）
-```c#
+```csharp
 using System;
 
 namespace 拡張for命令での繰り返し処理
@@ -849,8 +831,7 @@ namespace 拡張for命令での繰り返し処理
 <a name="subRepetition4"></a>
 #### `for`の入れ子。
 
-
-```c#
+```csharp
 using System;
 
 namespace forの入れ子
@@ -888,11 +869,12 @@ namespace forの入れ子
 
 * 種類。  
   * [break](#subRepetition5break)  
-  * [continue](#)  
+  * [continue](#subRepetition5continue)  
+
 
 <a name="subRepetition5break"></a>
 以下、break文用のプログラム例）
-```c#
+```csharp
 using System;
 
 namespace ジャンプ処理break
@@ -921,7 +903,7 @@ namespace ジャンプ処理break
 
 <a name="subRepetition5continue"></a>
 以下、continue文用のプログラム例）
-```c#
+```csharp
 using System;
 
 namespace ジャンプ処理continue
@@ -963,7 +945,7 @@ while ( 条件式)
 
 
 以下、プログラム例）
-```c#
+```csharp
 using System;
 
 namespace 真偽条件での繰り返しwhile
@@ -994,7 +976,7 @@ namespace 真偽条件での繰り返しwhile
 `for(;;){〜;}`  
 
 以下、for文での無限ループ例）
-```c#
+```csharp
 using System;
 
 namespace 無限ループfor
@@ -1031,7 +1013,7 @@ while文でもできるはず。
 </details>
 
 
-<a name="function関数sub"></a>
+<a name="function関数"></a>
 <details><summary>実際の関数の勉強</summary>
 
 ### 関数
@@ -1046,7 +1028,6 @@ while文でもできるはず。
     * [スコープ](#subFunction2)  
       [x] グローバルスコープ変数  
       [x] ローカルスコープ変数  
-
 
 <a name="subFunction1"></a>
 #### 関数
@@ -1070,7 +1051,7 @@ while文でもできるはず。
 ```
 
 以下、「引数無し-戻り値無し」の関数呼び出し。
-```c#
+```csharp
 using System;
 
 namespace 関数
@@ -1096,14 +1077,14 @@ namespace 関数
 ```
 
 以下、「引数あり-戻り値無し」の関数呼び出し。
-```c#
+```csharp
 using System;
 
 namespace 関数
 {
 	class func
 	{
-		public void nofunc(string args)
+		public void nofunc(string args)	←☆refを付けることで参照渡しになる(outの場合は、関数内での初期化をしたうえで参照返しする)。
 		{
 			Console.WriteLine("引数{0}-戻り値なし", args);
 		}
@@ -1114,7 +1095,7 @@ namespace 関数
 		public static void Main(string[] args)
 		{
 			func hoge = new func();
-			hoge.nofunc("bar");
+			hoge.nofunc("bar");	←☆呼び出しもrefを付ける必要が出てくる(outも同様)。
 			// 引数bar-戻り値なし
 		}
 	}
@@ -1122,7 +1103,7 @@ namespace 関数
 ```
 
 以下、「引数無し-戻り値あり」の関数呼び出し。
-```c#
+```csharp
 using System;
 
 namespace 関数
@@ -1151,7 +1132,7 @@ namespace 関数
 ```
 
 以下、「引数あり-戻り値あり」の関数呼び出し。
-```c#
+```csharp
 using System;
 
 namespace 関数
@@ -1191,12 +1172,12 @@ namespace 関数
 <details><summary>今回は勉強を見送る一覧</summary>
 
 * 標準的な関数  
-  * [ ] 可変長引数  
-  * [ ] 再帰関数  
-  * [ ] 高階関数  
-    変数の応用部分で説明する？  
+  * [ ] 可変長引数(引数を任意に追加できる)  
+  * [ ] 再帰関数(自分自身を呼び出す)  
+  * [ ] 高階関数(関数を変数に代入・関数を戻り値とする)  
+    別名：無名関数・ラムダ式・(匿名関数は誤訳)  
 * オブジェクト指向  
-  * [ ] クラスの定義  
+  * [ ] クラス  
   * [ ] フィールド  
   * [ ] メソッド  
   * [ ] コンストラクタ  
@@ -1209,14 +1190,11 @@ namespace 関数
   * [ ] 列挙型  
   * [ ] 入れ子クラス  
   * [ ] ジェネリクス  
-  * [ ] ラムダ式(無名関数？)  
 
 </details>
 
 </details>
 
-
-<details><summary>アルゴリズムの勉強用の詳細記述場所</summary>
 
 <a name="algorithmTextbookLearnedinPython"></a>
 #### ☆アルゴリズムの勉強チャプタ概要☆
@@ -1225,113 +1203,974 @@ namespace 関数
   基礎的なプログラミングの力を養っていく。  
   例えば、配列利用の関数定義・繰り返し・再帰関数・条件分岐など。  
   以下、各項目(目次)。  
-  [ ] [平均値を求める。](#findTheAverageValueChapter2)  
-  [ ] [1からnまで足し合わせる。](#addFrom1tonChapter2)  
-  [ ] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
-  [ ] [素数を求める。](#findAPrimeNumberChapter2)  
-  [ ] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
-  [ ] [エラトステネスの篩](#eratosthenesSieveChapter2)  
-  [ ] [n進法を理解する。](#understandnAryNotationChapter2)  
+  [x] [平均値を求める。](#findTheAverageValueChapter2)  
+  [x] [1からnまで足し合わせる。](#addFrom1tonChapter2)  
+  [x] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
+  [x] [素数を求める。](#findAPrimeNumberChapter2)  
+  [x] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
+  [x] [エラトステネスの篩](#eratosthenesSieveChapter2)  
+  [x] [n進法を理解する。](#understandnAryNotationChapter2)  
 <a name="algorithmTextbookLearnedinPythonChapter3"></a>
 * [Chapter3 データ構造を学ぶ](#learnDataStructuresOverviewChapter3)  
   今までに勉強した配列(リスト)を用いた発展を遂げる。  
   ※今回利用するリストはアルゴリズム(概念)用語であり、Pythonで用いているリスト(配列)という用語とは別物。  
-  ※例外処理(`try〜except〜finally`)をの説明をしている(いずれ基礎知識として勉強に組み込む必要がある？)。  
+  ※例外処理(`try〜except〜finally`)の説明をしている(いずれ基礎知識として勉強に組み込む必要がある？)。  
   以下、各項目(目次)。  
-  [ ] [スタック](#stackChapter3)  
-  [ ] [キュー](#queueChapter3)  
-  [ ] [リスト](#listChapter3)  
-  [ ] [木](#woodChapter3)  
-  [ ] [グラフ](#graphChapter3)  
-  [ ] [データを保存する。](#saveTheDataChapter3)  
+  [スタック](#stackChapter3)  
+  [キュー](#queueChapter3)  
+  [リスト](#listChapter3)  
+  [木](#woodChapter3)  
+  [グラフ](#graphChapter3)  
+  [データを保存する。](#saveTheDataChapter3)  
 <a name="algorithmTextbookLearnedinPythonChapter4"></a>
 * [Chapter4 サーチ](#searchOverviewChapter4)  
   複数データから目的地を探し出すこと。  
   ※有名な探索アルゴリズムのみに限定している。  
   以下、各項目(目次)。  
-  [ ] [線形探索](#linearSearchChapter4)  
-  [ ] [二分探索](#binarySearchChapter4)  
-  [ ] [木探索](#treeExplorationChapter4)  
-  [ ] [計算量について知る](#knowAboutComputationalComplexityChapter4)  
-  [ ] [ランダウの記号](#landauSignChapter4)  
-  [ ] [数当てゲーム](#numberGuessingGameChapter4)  
-  [ ] [ビット演算を学ぶ](#learnBitwiseOperationsChapter4)  
+  [線形探索](#linearSearchChapter4)  
+  [二分探索](#binarySearchChapter4)  
+  [木探索](#treeExplorationChapter4)  
+  [計算量について知る](#knowAboutComputationalComplexityChapter4)  
+  [ランダウの記号](#landauSignChapter4)  
+  [数当てゲーム](#numberGuessingGameChapter4)  
+  [ビット演算を学ぶ](#learnBitwiseOperationsChapter4)  
 <a name="algorithmTextbookLearnedinPythonChapter5"></a>
 * [Chapter5 ソート](#sortOverviewChapter5)  
   一定の規則に従い並び替えること。  
   ※有名な並べ替えアルゴリズムのみに限定している。  
   以下、各項目(目次)。  
-  [ ] [選択ソート](#selectionSortChapter5)  
-  [ ] [バブルソート](#bubbleSortChapter5)  
-  [ ] [挿入ソート](#insertionSortChapter5)  
-  [ ] [クイックソート](#quickSortChapter5)  
-  [ ] [マージソート](#mergeSortChapter5)  
-  [ ] [ヒープソート](#heapsortChapter5)  
-  [ ] [クイックソートの再起の過程を出力する。](#outputTheProcessOfQuicksortRecurrenceChapter5)  
-  [ ] [再帰関数を用いたマージソート。](#mergeSortUsingARecursiveFunctionChapter5)  
-  [ ] [プログラミング言語用のソート・ヒープ・キュー関数の使い方。](#howToUsePythonSortInstructionsAndHeapqModuleChapter5)  
-  [ ] [ソートの計算量と計算時間。](#sortCalculationComplexityAndCalculationTimeChapter5)  
+  [選択ソート](#selectionSortChapter5)  
+  [バブルソート](#bubbleSortChapter5)  
+  [挿入ソート](#insertionSortChapter5)  
+  [クイックソート](#quickSortChapter5)  
+  [マージソート](#mergeSortChapter5)  
+  [ヒープソート](#heapsortChapter5)  
+  [クイックソートの再起の過程を出力する。](#outputTheProcessOfQuicksortRecurrenceChapter5)  
+  [再帰関数を用いたマージソート。](#mergeSortUsingARecursiveFunctionChapter5)  
+  [プログラミング言語用のソート・ヒープ・キュー関数の使い方。](#howToUsePythonSortInstructionsAndHeapqModuleChapter5)  
+  [ソートの計算量と計算時間。](#sortCalculationComplexityAndCalculationTimeChapter5)  
 <a name="algorithmTextbookLearnedinPythonChapter6"></a>
 * [Chapter6 ハッシュ](#hashOverviewChapter6)  
   ハッシュとは、データから算出した小さな値のこと。  
   今回は、そのハッシュとしての値を算出する方法を勉強する。  
   以下、各項目(目次)。  
-  [ ] [ハッシュとは。](#whatIsAHashChapter6)  
-  [ ] [ハッシュ関数](#hashFunctionChapter6)  
-  [ ] [ハッシュテーブル](#hashTableChapter6)  
-  [ ] [衝突を回避する。](#avoidCollisionsChapter6)  
-  [ ] [暗号学的ハッシュ関数](#cryptographicHashFunctionChapter6)  
+  [ハッシュとは。](#whatIsAHashChapter6)  
+  [ハッシュ関数](#hashFunctionChapter6)  
+  [ハッシュテーブル](#hashTableChapter6)  
+  [衝突を回避する。](#avoidCollisionsChapter6)  
+  [暗号学的ハッシュ関数](#cryptographicHashFunctionChapter6)  
 <a name="algorithmTextbookLearnedinPythonChapter7"></a>
 * [Chapter7 さまざまなアルゴリズムを学ぶ](#learnVariousAlgorithmsOverviewChapter7)  
   アルゴリズムを勉強する上で必ず関わるアルゴリズムになる。  
   むしろ、ここまで勉強できてアルゴリズムを勉強したと言えるのではないだろうか。  
   以下、各項目(目次)。  
-  [ ] [ユークリッドの互除法](#euclideanAlgorithmChapter7)  
-  [ ] [文字列探索](#stringSearchChapter7)  
-  [ ] [アルゴリズムを理解するヒント(処理の過程の出力)。](#tipsForUnderstandingTheAlgorithmChapter7)  
+  [ユークリッドの互除法](#euclideanAlgorithmChapter7)  
+  [文字列探索](#stringSearchChapter7)  
+  [アルゴリズムを理解するヒント(処理の過程の出力)。](#tipsForUnderstandingTheAlgorithmChapter7)  
 <a name="algorithmTextbookLearnedinPythonChapter8"></a>
 * [Chapter8 アルゴリズムを見える化する](#visualizeTheAlgorithmOverviewChapter8)  
   今回のアルゴリズムを勉強することで、アルゴリズム(もしくはデータ)を可視化する方法を勉強できる。  
   以下、各項目(目次)。  
-  [ ] [n次関数の曲線を描く。](#drawACurveOfTheNthOrderFunctionChapter8)  
-  [ ] [フラクタル図形を描く。](#drawAFractalFigureChapter8)  
-  [ ] [迷路を解く過程を描く。](#drawTheProcessOfSolvingTheMazeChapter8)  
-  [ ] [アルゴリズムを使い分ける。](#useDifferentAlgorithmsChapter8)  
-  [ ] [マンデルブロー集合を描こう。](#letsDrawTheMandelbrotSetChapter8)  
+  [n次関数の曲線を描く。](#drawACurveOfTheNthOrderFunctionChapter8)  
+  [フラクタル図形を描く。](#drawAFractalFigureChapter8)  
+  [迷路を解く過程を描く。](#drawTheProcessOfSolvingTheMazeChapter8)  
+  [アルゴリズムを使い分ける。](#useDifferentAlgorithmsChapter8)  
+  [マンデルブロー集合を描こう。](#letsDrawTheMandelbrotSetChapter8)  
 
 <a name="developProgrammingSkillsOverviewChapter2"></a>
 ### プログラミングの力を養う
 基礎的なプログラミングの力を養っていく。  
 
-* 各項目。  
-  * [平均値を求める。](#findTheAverageValueChapter2)  
-  * [1からnまで足し合わせる。](#addFrom1tonChapter2)  
-  * [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
-  * [素数を求める。](#findAPrimeNumberChapter2)  
-  * [nの階乗を求める。](#findTheFactorialOfNChapter2)  
-  * [エラトステネスの篩](#eratosthenesSieveChapter2)  
-  * [n進法を理解する。](#understandnAryNotationChapter2)  
-
 <a name="findTheAverageValueChapter2"></a>
 #### 平均値を求める。
+勉強内容はPythonと基本同じ。  
+それをC#用に移植する。  
+
+* ルール。  
+  * 点数を配列で定義する。  
+    `var score = new int[]{ 70, 98, 92, 88, 64, };`  
+    Python用配列：`score = [70, 98, 92, 88, 64]`  
+    Perl用配列：`my @score = (70, 98, 92, 88, 64);`  
+    vimScript9用配列：`var score = [70, 98, 92, 88, 64]`  
+    C言語用配列：`int score[] = {70, 98, 92, 88, 64};`  
+    Go言語用配列：`var score = [...]int {70, 98, 92, 88, 64};`  
+    Java言語用配列：`int[] score = { 70, 98, 92, 88, 64, };`  
+  * `for`を用いる。  
+
+<details><summary>展開。</summary>
+
+以下、プログラム。
+```csharp
+using System;
+
+namespace average
+{
+	class MainClass
+	{
+		public static void Main(string[] args)
+		{
+			var score = new int[]{ 70, 98, 92, 88, 64, };
+			var total = 0;
+			foreach (int value in score)
+			{
+				total += value;
+			}
+			var average = (float)total / score.Length;
+			// 以下、出力フォーマットを2種類使った(1つ目も文字列に変換させるべきなのか？)。
+			Console.WriteLine("合計点 {0}", total);             // 合計点 412
+			Console.WriteLine($"平均点 {average.ToString()}");  // 平均点 82.4
+		}
+	}
+}
+```
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)  
+
 
 <a name="addFrom1tonChapter2"></a>
 #### 1からnまで足し合わせる。
+勉強内容はPythonと基本は同じ。  
+それをC#用に移植するだけのこと。  
+
+* ルール1もPythonと同じ。  
+  * `for`を用いる。  
+  * 関数は定義しない。  
+    私のルールは、必ず関数定義をすることに決めているため、ここだけ無視する。  
+
+<details><summary>展開。</summary>
+
+以下、プログラム。
+```csharp
+using System;
+
+namespace addup
+{
+	class MainClass
+	{
+		public static void Main(string[] args)
+		{
+			var total = 0;
+			for (int ii = 0; 10 >= ii; ii++)
+			{
+				total += ii;
+			}
+			Console.WriteLine($"合計点 {total.ToString()}");   // 合計点 55
+		}
+	}
+}
+```
+
+</details>
+
+* ルール2もPythonと同じ。  
+  * nまでの値を関数の引数で受け取る。  
+  * 関数内で合算した結果をreturnで返す。  
+
+<details><summary>展開。</summary>
+
+以下、ルール2のプログラム。
+```csharp
+using System;
+
+namespace addup
+{
+	class MainClass
+	{
+		public static void add2(int count)
+		{
+			var total = 0;
+			for (int ii = 0; count >= ii; ii++)
+			{
+				total += ii;
+			}
+			Console.WriteLine($"合計点 {total.ToString()}");   // 合計点 55
+		}
+		public static void Main(string[] args)
+		{
+			add2(10);
+		}
+	}
+}
+```
+
+</details>
+
+* ルール3もPythonと同じ。  
+  * 工夫して計算する。  
+  * (初めの数+終わりの数)*(足し合わせる個数/2)  
+
+<details><summary>展開。</summary>
+
+以下、ルール3のプログラム。
+```csharp
+using System;
+
+namespace addup
+{
+	class MainClass
+	{
+		public static void add3(int number)
+		{
+			var total = (1 + number) * number / 2;
+
+			Console.WriteLine($"合計点 {total.ToString()}");   // 合計点 55
+		}
+		public static void Main(string[] args)
+		{
+			add3(10);
+		}
+	}
+}
+```
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)  
+
 
 <a name="outputTheMultiplicationTableChapter2"></a>
 #### 九九の式を出力する。
+Pythonでやったように、九九の式を出すのではなく、九九表を出すことにする。  
+ルールはPythonと同じ。  
+
+* 作業ルール。  
+  * 二重ループを使う。  
+
+<details><summary>2重ループのサンプルプログラム(foreach編)。</summary>
+
+```csharp
+using System;
+
+namespace sample
+{
+	class MainClass
+	{
+		public static void Main(string[] args)
+		{
+			var boo = new int[] { 1, 2, 3, };
+			var bar = new string[] { "a", "b", "c", };
+			foreach (var ii in boo)
+			{
+				foreach (var jj in bar)
+				{
+					Console.WriteLine("boo[{0}], bar[{1}]", ii, jj);
+				}
+			}
+		}
+	}
+}
+```
+これは面倒くさい。  
+普通にfor文を使うべきだな。  
+
+以下、出力結果。
+```terminal
+boo[1], bar[a]
+boo[1], bar[b]
+boo[1], bar[c]
+boo[2], bar[a]
+boo[2], bar[b]
+boo[2], bar[c]
+boo[3], bar[a]
+boo[3], bar[b]
+boo[3], bar[c]
+```
+
+</details>
+
+<details><summary>2重ループのサンプルプログラム(for編)。</summary>
+
+```csharp
+using System;
+
+namespace sample
+{
+	class MainClass
+	{
+		public static void Main(string[] args)
+		{
+			for (var ii = 0; 3 > ii; ii++)
+			{
+				for (var jj = 0; 3 > jj; jj++)
+				{
+					Console.WriteLine("boo[{0}], bar[{1}]", ii, jj);
+				}
+			}
+		}
+	}
+}
+```
+
+以下、出力結果。
+```terminal
+boo[0], bar[0]
+boo[0], bar[1]
+boo[0], bar[2]
+boo[1], bar[0]
+boo[1], bar[1]
+boo[1], bar[2]
+boo[2], bar[0]
+boo[2], bar[1]
+boo[2], bar[2]
+```
+
+</details>
+
+<details><summary>縦に並ぶ出力結果</summary>
+
+以下、縦に並ぶ出力結果。
+```csharp
+using System;
+
+namespace sample
+{
+	class MainClass
+	{
+		public static void Main(string[] args)
+		{
+			for (var ii = 1; 10 > ii; ii++)
+			{
+				for (var jj = 1; 10 > jj; jj++)
+				{
+					Console.WriteLine("{0}x{1}={2,2:G}", ii, jj, ii * jj);
+				}
+			}
+		}
+	}
+}
+```
+
+以下、出力結果。
+```terminal
+1x1= 1
+1x2= 2
+1x3= 3
+1x4= 4
+1x5= 5
+1x6= 6
+1x7= 7
+1x8= 8
+1x9= 9
+2x1= 2
+2x2= 4
+2x3= 6
+2x4= 8
+2x5=10
+2x6=12
+2x7=14
+2x8=16
+2x9=18
+3x1= 3
+3x2= 6
+3x3= 9
+3x4=12
+3x5=15
+3x6=18
+3x7=21
+3x8=24
+3x9=27
+4x1= 4
+4x2= 8
+4x3=12
+4x4=16
+4x5=20
+4x6=24
+4x7=28
+4x8=32
+4x9=36
+5x1= 5
+5x2=10
+5x3=15
+5x4=20
+5x5=25
+5x6=30
+5x7=35
+5x8=40
+5x9=45
+6x1= 6
+6x2=12
+6x3=18
+6x4=24
+6x5=30
+6x6=36
+6x7=42
+6x8=48
+6x9=54
+7x1= 7
+7x2=14
+7x3=21
+7x4=28
+7x5=35
+7x6=42
+7x7=49
+7x8=56
+7x9=63
+8x1= 8
+8x2=16
+8x3=24
+8x4=32
+8x5=40
+8x6=48
+8x7=56
+8x8=64
+8x9=72
+9x1= 9
+9x2=18
+9x3=27
+9x4=36
+9x5=45
+9x6=54
+9x7=63
+9x8=72
+9x9=81
+```
+
+</details>
+
+<details><summary>適度に折り返された表示形式。</summary>
+
+以下、四角形っぽい表示に置き換えたプログラム。
+```csharp
+using System;
+
+namespace sample
+{
+	class MainClass
+	{
+		public static void kuku()
+		{
+			for (var ii = 1; 10 > ii; ii++)
+			{
+				for (var jj = 1; 10 > jj; jj++)
+				{
+					Console.Write("{0,2:D}x{1:D}={2,2:G}", jj, ii, ii * jj);
+				}
+				Console.WriteLine("");
+			}
+		}
+		public static void Main(string[] args)
+		{
+			kuku();
+		}
+	}
+}
+```
+
+以下、出力結果。
+```terminal
+ 1x1= 1 2x1= 2 3x1= 3 4x1= 4 5x1= 5 6x1= 6 7x1= 7 8x1= 8 9x1= 9
+ 1x2= 2 2x2= 4 3x2= 6 4x2= 8 5x2=10 6x2=12 7x2=14 8x2=16 9x2=18
+ 1x3= 3 2x3= 6 3x3= 9 4x3=12 5x3=15 6x3=18 7x3=21 8x3=24 9x3=27
+ 1x4= 4 2x4= 8 3x4=12 4x4=16 5x4=20 6x4=24 7x4=28 8x4=32 9x4=36
+ 1x5= 5 2x5=10 3x5=15 4x5=20 5x5=25 6x5=30 7x5=35 8x5=40 9x5=45
+ 1x6= 6 2x6=12 3x6=18 4x6=24 5x6=30 6x6=36 7x6=42 8x6=48 9x6=54
+ 1x7= 7 2x7=14 3x7=21 4x7=28 5x7=35 6x7=42 7x7=49 8x7=56 9x7=63
+ 1x8= 8 2x8=16 3x8=24 4x8=32 5x8=40 6x8=48 7x8=56 8x8=64 9x8=72
+ 1x9= 9 2x9=18 3x9=27 4x9=36 5x9=45 6x9=54 7x9=63 8x9=72 9x9=81
+```
+
+</details>
+
+<details><summary>我々学生時代から親しんできた九九表プログラム。</summary>
+
+```csharp
+using System;
+
+namespace sample
+{
+	class MainClass
+	{
+		public static void kuku()
+		{
+			for (var ii = 1; 10 > ii; ii++)
+			{
+				for (var jj = 1; 10 > jj; jj++)
+				{
+					Console.Write("{0,3:G}", ii * jj);
+				}
+				Console.WriteLine("");
+			}
+		}
+		public static void Main(string[] args)
+		{
+			kuku();
+		}
+	}
+}
+```
+
+以下、出力結果。
+```terminal
+  1  2  3  4  5  6  7  8  9
+  2  4  6  8 10 12 14 16 18
+  3  6  9 12 15 18 21 24 27
+  4  8 12 16 20 24 28 32 36
+  5 10 15 20 25 30 35 40 45
+  6 12 18 24 30 36 42 48 54
+  7 14 21 28 35 42 49 56 63
+  8 16 24 32 40 48 56 64 72
+  9 18 27 36 45 54 63 72 81
+```
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)  
+
 
 <a name="findAPrimeNumberChapter2"></a>
 #### 素数を求める。
+素数とは、1とその数以外に約数を持たない2以上の自然数のこと。  
+
+Pythonに倣い、試す数は**2〜2分のn**までの数で割ることを調べる方法をとる。  
+例えば、10を調べる場合、その半分より大きい数(**6**・**7**・**8**・**9**)では、10を割ることが出来ない。  
+そのことを利用した方法で素数を求める。  
+後日、[エラトステネスの篩](#eratosthenesSieveChapter2)を使った効率のいいアルゴリズムを勉強する。  
+
+* 素数を求めるルール  
+  * 二重ループを使う。  
+  * 2から2分のnまでの数で割る。  
+    ※それらの数で割り切れなければ素数。  
+
+<details><summary>展開。</summary>
+
+以下、プログラム。
+```csharp
+using System;
+
+namespace prime
+{
+	class MainClass
+	{
+		public static void Main(string[] args)
+		{
+			for (var ii = 2; 101 > ii; ii++)
+			{
+				var half = ii / 2;  // 商を求める。
+				bool flag = true;
+				for (var jj = 2; half >= jj; jj++)
+				{
+					if ((ii % jj) == 0)
+					{
+						// 剰余算にて、割り切れる田ならば出力対象外にする。
+						flag = false;
+						break;
+					}
+				}
+				if (flag == true)
+				{
+					Console.Write("{0},", ii);
+				}
+			}
+		}
+	}
+}
+```
+
+以下、出力結果。
+```terminal
+2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,
+```
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)  
+
 
 <a name="findTheFactorialOfNChapter2"></a>
 #### nの階乗を求める。
+**階乗とは**
+1からnまでの全ての整数の積をnの階乗という。  
+
+<a name="findTheFactorialOfNChapter2recursionsample"></a>
+<details><summary>階乗プログラム例。</summary>
+
+以下、サンプルプログラム。
+```csharp
+using System;
+
+namespace factorial
+{
+	class MainClass
+	{
+		public static void Main(string[] args)
+		{
+			var count = 1;
+			for (var ii = 10; ii > 0; ii--)
+			{
+				count *= ii;
+			}
+			Console.WriteLine("10の階乗：{0}", count);	// 3628800
+		}
+	}
+}
+```
+
+</details>
+
+**再帰関数とは**
+関数内から自身の関数を呼び出すことを再帰処理という。
+また、その呼び出す仕組みの関数を再帰関数という。  
+
+<a name="findTheFactorialOfNChapter2factorialsample"></a>
+<details><summary>再帰プログラム例。</summary>
+
+以下、サンプルプログラム。
+```csharp
+using System;
+
+namespace factorial
+{
+	class MainClass
+	{
+		private static int factorialSample(int count)
+		{
+			if (count > 0)
+			{
+				Console.WriteLine("再帰関数{0, 2}回目の実行", count);
+				factorialSample(count - 1);
+			}
+			return count;
+		}
+		public static void Main(string[] args)
+		{
+			factorialSample(10);    // 再帰呼び出し。
+		}
+	}
+}
+```
+
+以下、実行結果。
+```terminal
+再帰関数10回目の実行
+再帰関数 9回目の実行
+再帰関数 8回目の実行
+再帰関数 7回目の実行
+再帰関数 6回目の実行
+再帰関数 5回目の実行
+再帰関数 4回目の実行
+再帰関数 3回目の実行
+再帰関数 2回目の実行
+再帰関数 1回目の実行
+```
+
+</details>
+
+* ルール1  
+  再帰関数を使わない。  
+  * 関数定義は行わない(私のプログラムでは行う)。  
+  * `for`を使う。  
+
+<details><summary>展開。</summary>
+
+以下、ルール1のプログラム。
+```csharp
+using System;
+
+namespace factorial
+{
+	class MainClass
+	{
+		private static int factorial1(int MAX)
+		{
+			var count = 1;
+			for (var ii = MAX; ii > 0; ii--)
+			{
+				count *= ii;
+			}
+			return count;
+		}
+		public static void Main(string[] args)
+		{
+			int ans = factorial1(10);	// ルール1に従った階乗を求める関数呼び出し。
+			Console.WriteLine("10の階乗：{0}", ans);	// 3628800
+		}
+	}
+}
+```
+
+</details>
+
+* ルール2  
+  再帰関数を使う。  
+  * 再帰関数の定義ルール  
+    * `n = 0`
+      **n! = 1**  
+    * `n > 0`
+      **n! = n * (n-1) * (n-2) * ・・・ * 2 * 1**  
+      nから1引いた数を掛け、さらに1づつ引き続けながらnが1にまるまで続ける。  
+
+<details><summary>展開。</summary>
+
+以下、ルール2のプログラム。
+```csharp
+using System;
+
+namespace factorial
+{
+	class MainClass
+	{
+		private static int factorial2(int count)
+		{
+			// 階乗を求める再帰呼び出し関数。
+			var total = 1;
+			if (count == 0)
+			{
+				total = 1;
+			}
+			else
+			{
+				total = count * factorial2(count - 1);
+			}
+			return total;
+		}
+		public static void Main(string[] args)
+		{
+			int ans = factorial2(10);   // ルール2に従った階乗を求める関数呼び出し。
+			Console.WriteLine("10の階乗：{0}", ans);	// 3628800
+		}
+	}
+}
+```
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)  
+
 
 <a name="eratosthenesSieveChapter2"></a>
 #### エラトステネスの篩
+効率よく[素数](#findAPrimeNumberChapter2)を求めることができるアルゴリズムのこと。  
+
+<details><summary>最初の見た目。</summary>
+
+以下、篩いにかける表プログラム。
+```csharp
+using System;
+
+namespace prime_eratosthenes
+{
+	class MainClass
+	{
+		public static void Main(string[] args)
+		{
+			int count = 10;
+			for (int ii = 0; 100 > ii; ii++)
+			{
+				Console.Write("{0, 3:G}", ii);
+				count--;
+				if (count == 0)
+				{
+					Console.WriteLine("");
+					count = 10;
+				}
+			}
+		}
+	}
+}
+```
+0から99までの整数から素数を識別するため、まずは、その整数を並べた。  
+
+以下、出力結果。
+```terminal
+  0  1  2  3  4  5  6  7  8  9
+ 10 11 12 13 14 15 16 17 18 19
+ 20 21 22 23 24 25 26 27 28 29
+ 30 31 32 33 34 35 36 37 38 39
+ 40 41 42 43 44 45 46 47 48 49
+ 50 51 52 53 54 55 56 57 58 59
+ 60 61 62 63 64 65 66 67 68 69
+ 70 71 72 73 74 75 76 77 78 79
+ 80 81 82 83 84 85 86 87 88 89
+ 90 91 92 93 94 95 96 97 98 99
+```
+これを出すためだけのプログラムなので、全然精査されていないように思うプログラムなのだが・・・2章を読了するのが目的であって、アルゴリズムの理解を深めるためでは無くなっているため、気にしない。  
+
+</details>
+
+<details><summary>展開。</summary>
+
+以下、プログラム。
+```csharp
+using System;
+
+namespace prime_eratosthenes
+{
+	class MainClass
+	{
+		public static int tableView(int[] table)
+		{
+			// 篩いテーブル内容表示。
+			int count = table.Length;
+			for (int ii = 0, jj = 0; count > ii; ii++, jj++)
+			{
+				if (jj == 10)
+				{
+					Console.Write("\n");
+					jj = 0;
+				}
+				if (table[ii] == 999)
+				{
+					Console.Write("  /");
+				}
+				else
+				{
+					Console.Write("{0, 3:G}", table[ii]);
+				}
+			}
+
+			return 0;
+		}
+
+		public static int sievingTable(ref int[] table)
+		{
+			// 篩いテーブル作成。
+			int count = table.Length;
+			for (int ii = 0; count > ii; ii++)
+			{
+				table[ii] = ii;
+			}
+
+			return 0;
+		}
+
+		public static int eratosthenesSieveProcess(ref int[] table, int start)
+		{
+			// エラトステネスの篩を処理する関数。
+			Console.WriteLine("{0}の倍数をふるい落とす。", start);
+			for (int ii = start + start; table.Length > ii; ii += start)
+			{
+				table[ii] = 999;
+			}
+
+			return 0;
+		}
+
+		public static void Main(string[] args)
+		{
+			int[] table = new int[10 * 10];
+			sievingTable(ref table);    // テーブル初期化(必要か？)。
+			table[0] = 999; // falseのつもり。
+			table[1] = 999; // falseのつもり。
+			tableView(table);   // テーブル表示。
+			for (int ii = 2; 10 > ii; ii++)
+			{
+				if (table[ii] == 999)
+				{
+					continue;
+				}
+				Console.Write("\n-----------------------\n");
+				eratosthenesSieveProcess(ref table, ii);    // 篩に掛ける。
+				tableView(table);
+			}
+		}
+	}
+}
+```
+
+以下、出力結果。
+```terminal
+  /  /  2  3  4  5  6  7  8  9
+ 10 11 12 13 14 15 16 17 18 19
+ 20 21 22 23 24 25 26 27 28 29
+ 30 31 32 33 34 35 36 37 38 39
+ 40 41 42 43 44 45 46 47 48 49
+ 50 51 52 53 54 55 56 57 58 59
+ 60 61 62 63 64 65 66 67 68 69
+ 70 71 72 73 74 75 76 77 78 79
+ 80 81 82 83 84 85 86 87 88 89
+ 90 91 92 93 94 95 96 97 98 99
+-----------------------
+2の倍数をふるい落とす。
+  /  /  2  3  /  5  /  7  /  9
+  / 11  / 13  / 15  / 17  / 19
+  / 21  / 23  / 25  / 27  / 29
+  / 31  / 33  / 35  / 37  / 39
+  / 41  / 43  / 45  / 47  / 49
+  / 51  / 53  / 55  / 57  / 59
+  / 61  / 63  / 65  / 67  / 69
+  / 71  / 73  / 75  / 77  / 79
+  / 81  / 83  / 85  / 87  / 89
+  / 91  / 93  / 95  / 97  / 99
+-----------------------
+3の倍数をふるい落とす。
+  /  /  2  3  /  5  /  7  /  /
+  / 11  / 13  /  /  / 17  / 19
+  /  /  / 23  / 25  /  /  / 29
+  / 31  /  /  / 35  / 37  /  /
+  / 41  / 43  /  /  / 47  / 49
+  /  /  / 53  / 55  /  /  / 59
+  / 61  /  /  / 65  / 67  /  /
+  / 71  / 73  /  /  / 77  / 79
+  /  /  / 83  / 85  /  /  / 89
+  / 91  /  /  / 95  / 97  /  /
+-----------------------
+5の倍数をふるい落とす。
+  /  /  2  3  /  5  /  7  /  /
+  / 11  / 13  /  /  / 17  / 19
+  /  /  / 23  /  /  /  /  / 29
+  / 31  /  /  /  /  / 37  /  /
+  / 41  / 43  /  /  / 47  / 49
+  /  /  / 53  /  /  /  /  / 59
+  / 61  /  /  /  /  / 67  /  /
+  / 71  / 73  /  /  / 77  / 79
+  /  /  / 83  /  /  /  /  / 89
+  / 91  /  /  /  /  / 97  /  /
+-----------------------
+7の倍数をふるい落とす。
+  /  /  2  3  /  5  /  7  /  /
+  / 11  / 13  /  /  / 17  / 19
+  /  /  / 23  /  /  /  /  / 29
+  / 31  /  /  /  /  / 37  /  /
+  / 41  / 43  /  /  / 47  /  /
+  /  /  / 53  /  /  /  /  / 59
+  / 61  /  /  /  /  / 67  /  /
+  / 71  / 73  /  /  /  /  / 79
+  /  /  / 83  /  /  /  /  / 89
+  /  /  /  /  /  /  / 97  /  /
+```
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)  
+
 
 <a name="understandnAryNotationChapter2"></a>
 #### n進法を理解する。
+アルゴリズムとして勉強することではない。  
+普通の一般説明。  
+[ビット演算(`&`・`|`・`^`・`~`)](#learnBitwiseOperationsChapter4)は、別の機会。  
+
+<details><summary>展開。</summary>
+
+以下、プログラム。
+```csharp
+using System;
+
+namespace basenumber
+{
+	class MainClass
+	{
+		public static void Main(string[] args)
+		{
+			int num = 100;
+			string binnum = Convert.ToString(num, 2);
+			Console.WriteLine(" 2進数：{0}", binnum);
+			string octnum = Convert.ToString(num, 8);
+			Console.WriteLine(" 8進数：{0}", octnum);
+			string hexnum = Convert.ToString(num, 16);
+			Console.WriteLine("16進数：{0}", hexnum);
+		}
+	}
+}
+```
+※上記のコンバート関数は、それに10進数を加えた4種類のみ変換できる。  
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)  
+
 
 <a name="learnDataStructuresOverviewChapter3"></a>
 ### データ構造を学ぶ
@@ -1437,8 +2276,6 @@ namespace 関数
 <a name="howToUsePythonSortInstructionsAndHeapqModuleChapter5"></a>
 #### プログラミング言語用のソート・ヒープ・キュー関数の使い方。
 Python限定にしたくなかったが、他のプログラミング言語にはない可能性がある。  
-[ヒープ](https://docs.microsoft.com/ja-jp/windows/win32/memory/heap-functions)と言うのはアルゴリズムより、コンピュータでの概念のほうが一般的なのかな。  
-[C言語](https://code-reference.com/c/stdlib.h)ですら[クイックソート](https://ja.cppreference.com/w/c/algorithm)があるのだから他のプログラミング言語にはあってしかるべき。  
 
 <a name="sortCalculationComplexityAndCalculationTimeChapter5"></a>
 #### ソートの計算量と計算時間。
@@ -1455,9 +2292,6 @@ Python限定にしたくなかったが、他のプログラミング言語に�
 
 <a name="whatIsAHashChapter6"></a>
 #### ハッシュとは。
-調べればすぐに出てくる。  
-そもそもプログラマーがハッシュを知らないというのはあり得ない。  
-[Git](https://git-scm.com/book/ja/v2/使い始める-Gitの基本)でも[履歴閲覧](https://docs.github.com/ja/github/searching-for-information-on-github/searching-on-github/searching-commits)に[コミットハッシュ値](https://git-scm.com/book/ja/v2/Git-の基本-コミット履歴の閲覧)を使う。  
 
 <a name="hashFunctionChapter6"></a>
 #### ハッシュ関数
@@ -1513,9 +2347,20 @@ Python限定にしたくなかったが、他のプログラミング言語に�
 <a name="letsDrawTheMandelbrotSetChapter8"></a>
 #### マンデルブロー集合を描こう。
 
+
+<a name="appliedknowledge"></a>
+<details><summary>構造化プログラミングの勉強範囲外(応用知識)</summary>
+
+## 応用知識
+基礎知識5種類だけでは不足する知識を補う。  
+
+* 応用部分  
+  * 何を勉強したか記載する。  
+
 </details>
 
 
+<a name="gitflow"></a>
 ## ※Gitのマージルール
 study2programmingに取り込むときのマージは、3方向マージ(`--no-ff`)を使う。  
 
