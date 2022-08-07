@@ -302,7 +302,7 @@ infoは省略可能です。
     * nの階乗(n!)を求める。  
     * エラトステネスの篩(フルイ)  
     * n進法を理解する。  
-  * [ ] [Rust](https://doc.rust-jp.rs/book-ja/index.html)  
+  * [x] [Rust](./Rust言語/README.md)  
     * 平均値を求める。  
     * 1からnまで足し合わせる。  
     * 九九の式を出力する。  

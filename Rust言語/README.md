@@ -4,8 +4,9 @@
 
 <a name="algorithmHowToUseTheBranch"></a>
 ## ブランチの利用方法
-まず始めに、「[Pythonで学ぶアルゴリズムの教科書](https://book.impress.co.jp/books/1120101024)」を勉強する。  
-その次に、応用として、アルゴリズムの部分をRust言語に当てはめながらRustならではのアルゴリズムを身につけていく・・・つもり。  
+「[Pythonで学ぶアルゴリズムの教科書](https://book.impress.co.jp/books/1120101024)」を勉強する。  
+その次の応用として、アルゴリズムの部分をRust言語に当てはめながらRustならではのアルゴリズムを身につけていく・・・つもり。  
+そのため、Rust言語への反映はPython言語用アルゴリズムの勉強より遅れる(当たり前か・・・重複表現？)。  
 
 
 <a name="algorithmHowToStudy"></a>
@@ -13,10 +14,13 @@
 以下の書籍を元にして勉強を進めていく。  
 [プログラミング言語Rust入門](https://project.nikkeibp.co.jp/bnt/atcl/20/P96850/)  
 
-また、以下のサイトも参考にする。  
-[The Rust Programming Language 日本語版](https://doc.rust-jp.rs/book-ja/index.html)  
-上記書籍で、この電子本を紹介しており、最初に読む本として最適とのこと・・・なぜ本を出した。そして、なぜ紹介した。  
-[Rust言語のサンプル集](https://doc.rust-jp.rs/rust-by-example-ja/index.html)  
+* 参考サイト  
+  * [Rust ツアー](https://tourofrust.com/00_ja.html)  
+    公式(?)チュートリアル。  
+  * [docs.microsoft.com](https://docs.microsoft.com/ja-JP/learn/paths/rust-first-steps/)  
+  * [The Rust Programming Language 日本語版](https://doc.rust-jp.rs/book-ja/index.html)  
+  * 上記書籍で、この電子本を紹介しており、最初に読む本として最適とのこと。  
+  * [Rust言語のサンプル集](https://doc.rust-jp.rs/rust-by-example-ja/index.html)  
 
 
 <a name="algorithmDevelopmentEnvironment"></a>
@@ -31,13 +35,14 @@ vimが原因か分からないが、デフォルト(?)の状態で、インデ�
 <details><summary>実際に作業する環境の状況確認</summary>
 
 * 勉強環境。  
-  * 勉強環境のコンパイルバージョン：`cargo 1.54.0`  
+  * 勉強環境のコンパイルバージョン：`cargo 1.56.0`  
+    今回のチャプター2で利用バージョンを上げている。  
 ```terminal
 $ source $HOME/.cargo/env	←☆Path通し。
 $ rustc -V	←☆コンパイラコマンド。
-rustc 1.54.0 (a178d0322 2021-07-26)
+rustc 1.56.0 (09c42c458 2021-10-18)
 $ cargo -V	←☆ビルドシステム(普段はこちらを使うようだ)。
-cargo 1.54.0 (5ae8d74b3 2021-06-22)
+cargo 1.56.0 (4ed5d137b 2021-10-04)
 $
 ```
 
@@ -83,27 +88,29 @@ fn main() {
 #### プロジェクト作成
 様式：
 `cargo new [プロジェクト名]`  
-コマンド：
-`cargo new helloWorld`  
+コマンド例）
+`cargo new hello_world`  
 
+※制約として、日本語名や単語続きなどがあるため、作成時に出力されるワーニングをよく確認すること。  
+基礎知識5種類の勉強では、そのワーニングを無視していたが、今後もプロジェクト名はわかりやすい名前を優先して付けるだろう。  
 
 以下、プロジェクト作成の実行。
 ```terminal
-$ cargo new helloWorld	←☆プロジェクト作成実施(今回手動で書き換え済み)。
-     Created binary (application) `helloWorld` package
+$ cargo new hello_world	←☆プロジェクト作成実施。
+     Created binary (application) `hello_world` package
 $ ll	←☆実行ディレクトリに指定したプロジェクト名のディレクトリが生成される。
-total 24
-drwxr-xr-x  4 asakunotomohiro  staff   128  8 22 15:00 helloWorld/	←☆コレ。
-drwxr-xr-x  9 asakunotomohiro  staff   288  8 22 14:57 基礎知識用の勉強/
--rw-r--r--  1 asakunotomohiro  staff  6189  8 22 01:13 インストールメモ.md
--rw-r--r--  1 asakunotomohiro  staff  3762  8 22 00:35 README.md
-$ ll helloWorld/	←☆中身。
+total 160
+drwxr-xr-x   5 asakunotomohiro  staff    160 10 24 17:43 hello_world/	←☆コレ。
+-rw-r--r--   1 asakunotomohiro  staff  67300 10 24 17:41 README.md
+drwxr-xr-x   7 asakunotomohiro  staff    224 10 24 16:54 基礎知識用の勉強/
+-rw-r--r--   1 asakunotomohiro  staff   8297 10 24 16:54 インストールメモ.md
+$ ll hello_world/	←☆中身。
 total 8
-drwxr-xr-x  3 asakunotomohiro  staff   96  8 22 15:00 src/
--rw-r--r--  1 asakunotomohiro  staff  179  8 22 15:00 Cargo.toml	←☆パッケージのバージョンや読み込むライブラリ設定のファイル。
-$ ll helloWorld/src/
+drwxr-xr-x  3 asakunotomohiro  staff   96 10 24 17:43 src/
+-rw-r--r--  1 asakunotomohiro  staff  180 10 24 17:42 Cargo.toml	←☆パッケージのバージョンや読み込むライブラリ設定のファイル。
+$ ll hello_world/src/
 total 8
--rw-r--r--  1 asakunotomohiro  staff  45  8 22 15:00 main.rs	←☆これがソースファイルらしい。
+-rw-r--r--@ 1 asakunotomohiro  staff  162 10 24 17:43 main.rs	←☆これがソースファイルらしい。
 $
 ```
 ※書籍通りに行けば、ソースファイル名は、**main.fs**になるはずだが、私の環境では**main.rs**になっている。  
@@ -113,83 +120,75 @@ $
 
 以下、プロジェクト内容としての**Cargo.toml**ファイルの内容。
 ```terminal
-$ cat helloWorld/Cargo.toml
+$ cat hello_world/Cargo.toml
 [package]
-name = "helloWorld"
+name = "hello_world"
 version = "0.1.0"
-edition = "2018"
+edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 $
 ```
-※`name`部分を手動で今回書き換え済み。  
 
 以下、プロジェクト内容としての**main.rs**ファイルの内容。
 ```terminal
-$ cat helloWorld/src/main.rs
+$ cat hello_world/src/main.rs
 fn main() {
     println!("Hello, world!");
+	// 出力結果：
+//				Hello, world!
 }
+
+/*	vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=rust noexpandtab: */
 $
 ```
 `println`はマクロだとさ。  
+※ファイル内容は書き換え済み。  
 
 以下、ビルド実施。
 ```terminal
+$ cd hello_world/	←☆プロジェクトに移動。
 $ ll	←☆ビルド前状況。
 total 8
-drwxr-xr-x  3 asakunotomohiro  staff   96  8 22 15:13 src/
--rw-r--r--  1 asakunotomohiro  staff  179  8 22 15:13 Cargo.toml
+drwxr-xr-x  3 asakunotomohiro  staff   96 10 24 17:43 src/
+-rw-r--r--  1 asakunotomohiro  staff  180 10 24 17:42 Cargo.toml
 $ cargo build	←☆ビルド実施(2種類のワーニングは何？)。
-   Compiling helloWorld v0.1.0 (/Users/asakunotomohiro/study勉強用Githubリポジトリ/Rust言語/helloWorld)
-warning: crate `helloWorld` should have a snake case name	←☆気になるが、書籍では何も説明していない。
-  |
-  = note: `#[warn(non_snake_case)]` on by default
-  = help: convert the identifier to snake case: `hello_world`
-
-warning: 1 warning emitted	←☆気になるが、書籍では何も説明していない。
-
-    Finished dev [unoptimized + debuginfo] target(s) in 0.97s
+   Compiling hello_world v0.1.0 (/Users/asakunotomohiro/study勉強用Githubリポジトリ/Rust言語/hello_world)
+    Finished dev [unoptimized + debuginfo] target(s) in 2.24s
 $ ll	←☆ビルド後状況。
 total 16
-drwxr-xr-x@ 5 asakunotomohiro  staff  160  8 22 15:13 target/
--rw-r--r--  1 asakunotomohiro  staff  154  8 22 15:13 Cargo.lock
-drwxr-xr-x  3 asakunotomohiro  staff   96  8 22 15:13 src/
--rw-r--r--  1 asakunotomohiro  staff  179  8 22 15:13 Cargo.toml
+drwxr-xr-x@ 5 asakunotomohiro  staff  160 10 24 17:49 target/
+-rw-r--r--  1 asakunotomohiro  staff  155 10 24 17:49 Cargo.lock
+drwxr-xr-x  3 asakunotomohiro  staff   96 10 24 17:43 src/
+-rw-r--r--  1 asakunotomohiro  staff  180 10 24 17:42 Cargo.toml
 $ ll src/	←☆ソースファイルディレクトリ状況(変化なし)。
 total 8
--rw-r--r--  1 asakunotomohiro  staff  45  8 22 15:13 main.rs
+-rw-r--r--@ 1 asakunotomohiro  staff  162 10 24 17:43 main.rs
 $ ll target/	←☆ターゲットディレクトリ状況。
 total 8
-drwxr-xr-x  10 asakunotomohiro  staff  320  8 22 15:13 debug/
--rw-r--r--   1 asakunotomohiro  staff  177  8 22 15:13 CACHEDIR.TAG
+drwxr-xr-x  10 asakunotomohiro  staff  320 10 24 17:49 debug/
+-rw-r--r--   1 asakunotomohiro  staff  177 10 24 17:49 CACHEDIR.TAG
 $ ll target/debug/	←☆デバッグディレクトリ状況(実行ファイルが作られている)。
-total 800
--rw-r--r--   1 asakunotomohiro  staff     355  8 22 15:13 helloWorld.d
-drwxr-xr-x  12 asakunotomohiro  staff     384  8 22 15:13 deps/
--rwxr-xr-x   2 asakunotomohiro  staff  402340  8 22 15:13 helloWorld*
-drwxr-xr-x   3 asakunotomohiro  staff      96  8 22 15:13 incremental/
-drwxr-xr-x   2 asakunotomohiro  staff      64  8 22 15:13 build/
-drwxr-xr-x   2 asakunotomohiro  staff      64  8 22 15:13 examples/
+total 864
+-rw-r--r--   1 asakunotomohiro  staff     358 10 24 17:49 hello_world.d
+drwxr-xr-x  14 asakunotomohiro  staff     448 10 24 17:49 deps/
+-rwxr-xr-x   2 asakunotomohiro  staff  436124 10 24 17:49 hello_world*
+drwxr-xr-x   3 asakunotomohiro  staff      96 10 24 17:49 incremental/
+drwxr-xr-x   2 asakunotomohiro  staff      64 10 24 17:49 build/
+drwxr-xr-x   2 asakunotomohiro  staff      64 10 24 17:49 examples/
 $
 ```
 
 以下、コンパイル済み実行ファイルの実行。
 ```terminal
+$ pwd
+/Users/asakunotomohiro/study勉強用Githubリポジトリ/Rust言語/hello_world
 $ cargo run	←☆動かす(2種類のワーニングは何？)。
-warning: crate `helloWorld` should have a snake case name
-  |
-  = note: `#[warn(non_snake_case)]` on by default
-  = help: convert the identifier to snake case: `hello_world`
-
-warning: 1 warning emitted
-
-    Finished dev [unoptimized + debuginfo] target(s) in 0.00s
-     Running `target/debug/helloWorld`
+    Finished dev [unoptimized + debuginfo] target(s) in 0.01s
+     Running `target/debug/hello_world`
 Hello, world!	←☆実行結果後の出力内容。
-$
 $ echo $?
 0
 $
@@ -197,16 +196,20 @@ $
 
 もしくは、以下、実行ファイルを直接叩く。
 ```terminal
+$ pwd
+/Users/asakunotomohiro/study勉強用Githubリポジトリ/Rust言語/hello_world
 $ ll target/debug/
-total 800
--rw-r--r--   1 asakunotomohiro  staff     355  8 22 15:13 helloWorld.d
-drwxr-xr-x  12 asakunotomohiro  staff     384  8 22 15:13 deps/
--rwxr-xr-x   2 asakunotomohiro  staff  402340  8 22 15:13 helloWorld*
-drwxr-xr-x   3 asakunotomohiro  staff      96  8 22 15:13 incremental/
-drwxr-xr-x   2 asakunotomohiro  staff      64  8 22 15:13 build/
-drwxr-xr-x   2 asakunotomohiro  staff      64  8 22 15:13 examples/
-$ ./target/debug/helloWorld	←☆直接実行。
+total 864
+-rw-r--r--   1 asakunotomohiro  staff     358 10 24 17:49 hello_world.d
+drwxr-xr-x  14 asakunotomohiro  staff     448 10 24 17:49 deps/
+-rwxr-xr-x   2 asakunotomohiro  staff  436124 10 24 17:49 hello_world*	←☆これ。
+drwxr-xr-x   3 asakunotomohiro  staff      96 10 24 17:49 incremental/
+drwxr-xr-x   2 asakunotomohiro  staff      64 10 24 17:49 build/
+drwxr-xr-x   2 asakunotomohiro  staff      64 10 24 17:49 examples/
+$ ./target/debug/hello_world	←☆直接実行。
 Hello, world!
+$ echo $?
+0
 $
 ```
 
@@ -216,14 +219,25 @@ $
 
 以下、実施。
 ```terminal
+$ pwd
+/Users/asakunotomohiro/study勉強用Githubリポジトリ/Rust言語/hello_world
+$ ll
+total 16
+drwxr-xr-x@ 5 asakunotomohiro  staff  160 10 24 17:49 target/
+-rw-r--r--  1 asakunotomohiro  staff  155 10 24 17:49 Cargo.lock
+drwxr-xr-x  3 asakunotomohiro  staff   96 10 24 17:43 src/	←☆ここに移動。
+-rw-r--r--  1 asakunotomohiro  staff  180 10 24 17:42 Cargo.toml
+$ cd src/
 $ ll
 total 8
--rw-r--r--  1 asakunotomohiro  staff  45  8 22 15:13 main.rs
+-rw-r--r--@ 1 asakunotomohiro  staff  162 10 24 17:43 main.rs
+$ rust
+rust-gdb   rust-lldb  rustc      rustdoc    rustfmt    rustup
 $ rustc main.rs	←☆コンパイル実施。
 $ ll
-total 792
--rwxr-xr-x  1 asakunotomohiro  staff  397372  8 22 15:43 main*	←☆実行ファイル生成。
--rw-r--r--  1 asakunotomohiro  staff      45  8 22 15:13 main.rs
+total 848
+-rwxr-xr-x  1 asakunotomohiro  staff  429972 10 24 17:57 main*	←☆実行ファイル生成。
+-rw-r--r--@ 1 asakunotomohiro  staff     162 10 24 17:43 main.rs
 $ ./main	←☆実行ファイル実行。
 Hello, world!
 $
@@ -235,38 +249,27 @@ $
 
 以下、実施。
 ```terminal
+$ pwd
+/Users/asakunotomohiro/study勉強用Githubリポジトリ/Rust言語/hello_world
 $ ll
 total 16
-drwxr-xr-x@ 5 asakunotomohiro  staff  160  8 22 15:13 target/	←☆クリーンコマンドで、これが消える。
--rw-r--r--  1 asakunotomohiro  staff  154  8 22 15:13 Cargo.lock
-drwxr-xr-x  3 asakunotomohiro  staff   96  8 22 15:13 src/
--rw-r--r--  1 asakunotomohiro  staff  179  8 22 15:13 Cargo.toml
+drwxr-xr-x  4 asakunotomohiro  staff  128 10 24 17:57 src/
+drwxr-xr-x@ 5 asakunotomohiro  staff  160 10 24 17:49 target/	←☆クリーンコマンドで、これが消える。
+-rw-r--r--  1 asakunotomohiro  staff  155 10 24 17:49 Cargo.lock
+-rw-r--r--  1 asakunotomohiro  staff  180 10 24 17:42 Cargo.toml
 $ cargo clean	←☆削除実施。
 $ ll	←☆消えているのが確認できる。
 total 16
--rw-r--r--  1 asakunotomohiro  staff  154  8 22 15:13 Cargo.lock	←☆そもそもこれも無かったはずなのに、これは消えない。
-drwxr-xr-x  3 asakunotomohiro  staff   96  8 22 15:13 src/
--rw-r--r--  1 asakunotomohiro  staff  179  8 22 15:13 Cargo.toml
+drwxr-xr-x  4 asakunotomohiro  staff  128 10 24 17:57 src/
+-rw-r--r--  1 asakunotomohiro  staff  155 10 24 17:49 Cargo.lock	←☆そもそもこれも無かったはずなのに、これは消えない(消したいが、どうやって消す？)。
+-rw-r--r--  1 asakunotomohiro  staff  180 10 24 17:42 Cargo.toml
+$ ll src/
+total 848
+-rwxr-xr-x  1 asakunotomohiro  staff  429972 10 24 17:57 main*	←☆これも一緒に消えて欲しかった。
+-rw-r--r--@ 1 asakunotomohiro  staff     162 10 24 17:43 main.rs
 $
 ```
 
-
-<a name="algorithmHelloWorldDeleteRustc"></a>
-#### 実行ファイル削除(`rustc`)
-
-この個別コンパイル方法では、`clean`で消せない。
-```terminal
-$ ll src/
-total 792
--rwxr-xr-x  1 asakunotomohiro  staff  397372  8 22 15:43 main*	←☆これを消したい。
--rw-r--r--  1 asakunotomohiro  staff      45  8 22 15:13 main.rs
-$ cargo clean	←☆削除実施。
-$ ll src/
-total 792
--rwxr-xr-x  1 asakunotomohiro  staff  397372  8 22 15:43 main*	←☆消えない。
--rw-r--r--  1 asakunotomohiro  staff      45  8 22 15:13 main.rs
-$
-```
 
 <a name="algorithmHelloWorldlockfile"></a>
 #### lockファイルの意味
@@ -298,8 +301,10 @@ $
 
 
 <a name="algorithmHelloWorldProjectWarning"></a>
-#### ワーニング
-上記で出力されたワーニングが何か分からないままになっている。  
+#### 過去にワーニング出現
+過去に作成したカーゴプロジェクトでワーニングが出た。  
+そのワーニングは、プロジェクト名に大文字及び単語区切りとして`_`を使っていなかったのが原因だった。  
+今回作り直したことで、解消した。  
 
 </details>
 
@@ -310,6 +315,8 @@ $
 > エンジニアの基礎体力を身につける  
 
 <a name="basicKnowledgeFiveTypesOfStudyRange"></a>
+<details><summary>基礎知識5種類の項目</summary>
+
 ※プログラミングに使う基礎知識を統一する(簡単に済ませられる量に絞り込む)。  
 * 基礎知識5種類  
   * [x] [変数](#variable変数)  
@@ -320,12 +327,13 @@ $
   * [ ] 所有権  
     Rust言語特有の機能になるため、別で調べた方が良いだろう。  
 
-<a name="algorithmTextbookLearnedinPythonContents"></a>
-<details><summary>アルゴリズム</summary>
+</details>
 
+<a name="algorithmTextbookLearnedinPythonContents"></a>
 * [アルゴリズム勉強目次](#algorithmTextbookLearnedinPython)  
-  * [ ] [Chapter 1 プログラミングの基礎知識](#basicKnowledgeFiveTypesOfStudyRange)  
-  * [ ] [Chapter 2 プログラミングの力を養う](#algorithmTextbookLearnedinPythonChapter2)  
+  * [x] [Chapter 1 プログラミングの基礎知識](#basicKnowledgeFiveTypesOfStudyRange)  
+    現時点で完了している(上記の基礎知識5種類として)。  
+  * [x] [Chapter 2 プログラミングの力を養う](#algorithmTextbookLearnedinPythonChapter2)  
   * [ ] [Chapter 3 データ構造を学ぶ](#algorithmTextbookLearnedinPythonChapter3)  
   * [ ] [Chapter 4 サーチ](#algorithmTextbookLearnedinPythonChapter4)  
   * [ ] [Chapter 5 ソート](#algorithmTextbookLearnedinPythonChapter5)  
@@ -335,8 +343,6 @@ $
   * Appendix 1 Pythonのインストール方法
   * Appendix 2 テキストエディタと統合開発環境
   * Appendix 3 Pythonの記述ルール
-
-</details>
 
 <a name="breakingAwayFromBasicKnowledge"></a>
 <details><summary>応用知識の項目</summary>
@@ -375,7 +381,7 @@ $
 <details><summary>基礎知識5種類の作業手順</summary>
 
 ## 具体的な基礎知識
-何はともあれ、まずは、"Hello World"を表示するプログラムを作る。  
+何はともあれ、まずは、["Hello World"](#algorithmHelloWorld)を表示するプログラムを作る。  
 その後で、基礎中の基礎となる制御構造(構造化プログラミング)を簡略化しながら勉強する。  
 そのため、以下の手順で勉強を進めることにする。  
 
@@ -415,14 +421,13 @@ $
 アルゴリズムの勉強に、以下の手順を行う。  
 
 * 以下、手順。  
-  * [ ] 手順1. 勉強用のブランチに移動する(上記[目次](#algorithmTextbookLearnedinPythonContents)の1チャプター分専用ブランチとする)。  
-  * [ ] 手順2. ルートディレクトリのひな形ディレクトリ配下の必要なディレクトリをコピーする。  
-    **Pythonで学ぶアルゴリズムの教科書 一生モノの知識と技術を身につける** ディレクトリ配下の必要なチャプター用ディレクトリ。  
-  * [ ] 手順3. 当ファイル(`README.md`)の書き換えを行う。  
-    [ ] アルゴリズムの勉強用に変更する。  
-    [ ] アルゴリズムの勉強用項目を出すが、基礎知識5種類の勉強項目は隠す(`details`・`summary`)。  
-  * [ ] 編集後、コミットする。  
-  * [ ] 手順4. 各ディレクトリで、チャプタごとに勉強を進める。  
+  * [x] 手順1. 勉強用のブランチに移動する(上記[目次](#algorithmTextbookLearnedinPythonContents)の1チャプター分専用ブランチとする)。  
+  * [x] 手順2. ルートディレクトリのひな形ディレクトリ配下の必要なディレクトリをコピーする。  
+  * [x] 手順3. 当ファイル(`README.md`)の書き換えを行う。  
+    [x] アルゴリズムの勉強用に変更する。  
+    [x] アルゴリズムの勉強用項目を出すが、基礎知識5種類の勉強項目は隠す(`details`・`summary`)。  
+  * [x] 編集後、コミットする。  
+  * [x] 手順4. 各ディレクトリで、チャプタごとに勉強を進める。  
     ※そのとき、(できる限り)プログラムファイルに[モードライン](https://vim-jp.org/vim-users-jp/2009/06/02/Hack-20.html)を記載する。  
     `/* vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=rust noexpandtab: */`  
     ※チェックリストは上記にある。  
@@ -675,6 +680,12 @@ fn main() {
     数値部分と指数部分を別々に扱う。  
     例）`100.234`の場合、数値部分`1.00234`と指数部分`10の2乗`を別々に扱う。  
     数値部分が固定のため、有効桁数を保って計算できるのが利点になる。  
+
+浮動小数点型
+|ビット長|小数精度|符号なし小数|備考|
+|--------|----|------------|----|
+|単精度浮動小数点数|f32||
+|倍精度浮動小数点数|f64||
 
 * Bool型(論理値型)  
   * `true`  
@@ -1564,122 +1575,760 @@ fn retiffunc( hoge: i32 ) -> i32 {
 
 </details>
 
-<a name="algorithmTextbookLearnedinPython"></a>
-<details><summary>アルゴリズム用記載場所</summary>
 
+<a name="algorithmTextbookLearnedinPython"></a>
 #### ☆アルゴリズムの勉強チャプタ概要☆
 <a name="algorithmTextbookLearnedinPythonChapter2"></a>
 * [Chapter2 プログラミングの力を養う](#developProgrammingSkillsOverviewChapter2)  
   基礎的なプログラミングの力を養っていく。  
   例えば、配列利用の関数定義・繰り返し・再帰関数・条件分岐など。  
   以下、各項目(目次)。  
-  [ ] [平均値を求める。](#findTheAverageValueChapter2)  
-  [ ] [1からnまで足し合わせる。](#addFrom1tonChapter2)  
-  [ ] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
-  [ ] [素数を求める。](#findAPrimeNumberChapter2)  
-  [ ] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
-  [ ] [エラトステネスの篩](#eratosthenesSieveChapter2)  
-  [ ] [n進法を理解する。](#understandnAryNotationChapter2)  
+  [x] [平均値を求める。](#findTheAverageValueChapter2)  
+  [x] [1からnまで足し合わせる。](#addFrom1tonChapter2)  
+  [x] [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
+  [x] [素数を求める。](#findAPrimeNumberChapter2)  
+  [x] [nの階乗を求める。](#findTheFactorialOfNChapter2)  
+  [x] [エラトステネスの篩](#eratosthenesSieveChapter2)  
+  [x] [n進法を理解する。](#understandnAryNotationChapter2)  
 <a name="algorithmTextbookLearnedinPythonChapter3"></a>
 * [Chapter3 データ構造を学ぶ](#learnDataStructuresOverviewChapter3)  
   今までに勉強した配列(リスト)を用いた発展を遂げる。  
   ※今回利用するリストはアルゴリズム(概念)用語であり、Pythonで用いているリスト(配列)という用語とは別物。  
   ※例外処理(`try〜except〜finally`)の説明をしている(いずれ基礎知識として勉強に組み込む必要がある？)。  
   以下、各項目(目次)。  
-  [ ] [スタック](#stackChapter3)  
-  [ ] [キュー](#queueChapter3)  
-  [ ] [リスト](#listChapter3)  
-  [ ] [木](#woodChapter3)  
-  [ ] [グラフ](#graphChapter3)  
-  [ ] [データを保存する。](#saveTheDataChapter3)  
+  [スタック](#stackChapter3)  
+  [キュー](#queueChapter3)  
+  [リスト](#listChapter3)  
+  [木](#woodChapter3)  
+  [グラフ](#graphChapter3)  
+  [データを保存する。](#saveTheDataChapter3)  
 <a name="algorithmTextbookLearnedinPythonChapter4"></a>
 * [Chapter4 サーチ](#searchOverviewChapter4)  
   複数データから目的地を探し出すこと。  
   ※有名な探索アルゴリズムのみに限定している。  
   以下、各項目(目次)。  
-  [ ] [線形探索](#linearSearchChapter4)  
-  [ ] [二分探索](#binarySearchChapter4)  
-  [ ] [木探索](#treeExplorationChapter4)  
-  [ ] [計算量について知る](#knowAboutComputationalComplexityChapter4)  
-  [ ] [ランダウの記号](#landauSignChapter4)  
-  [ ] [数当てゲーム](#numberGuessingGameChapter4)  
-  [ ] [ビット演算を学ぶ](#learnBitwiseOperationsChapter4)  
+  [線形探索](#linearSearchChapter4)  
+  [二分探索](#binarySearchChapter4)  
+  [木探索](#treeExplorationChapter4)  
+  [計算量について知る](#knowAboutComputationalComplexityChapter4)  
+  [ランダウの記号](#landauSignChapter4)  
+  [数当てゲーム](#numberGuessingGameChapter4)  
+  [ビット演算を学ぶ](#learnBitwiseOperationsChapter4)  
 <a name="algorithmTextbookLearnedinPythonChapter5"></a>
 * [Chapter5 ソート](#sortOverviewChapter5)  
   一定の規則に従い並び替えること。  
   ※有名な並べ替えアルゴリズムのみに限定している。  
   以下、各項目(目次)。  
-  [ ] [選択ソート](#selectionSortChapter5)  
-  [ ] [バブルソート](#bubbleSortChapter5)  
-  [ ] [挿入ソート](#insertionSortChapter5)  
-  [ ] [クイックソート](#quickSortChapter5)  
-  [ ] [マージソート](#mergeSortChapter5)  
-  [ ] [ヒープソート](#heapsortChapter5)  
-  [ ] [クイックソートの再起の過程を出力する。](#outputTheProcessOfQuicksortRecurrenceChapter5)  
-  [ ] [再帰関数を用いたマージソート。](#mergeSortUsingARecursiveFunctionChapter5)  
-  [ ] [プログラミング言語用のソート・ヒープ・キュー関数の使い方。](#howToUsePythonSortInstructionsAndHeapqModuleChapter5)  
-  [ ] [ソートの計算量と計算時間。](#sortCalculationComplexityAndCalculationTimeChapter5)  
+  [選択ソート](#selectionSortChapter5)  
+  [バブルソート](#bubbleSortChapter5)  
+  [挿入ソート](#insertionSortChapter5)  
+  [クイックソート](#quickSortChapter5)  
+  [マージソート](#mergeSortChapter5)  
+  [ヒープソート](#heapsortChapter5)  
+  [クイックソートの再起の過程を出力する。](#outputTheProcessOfQuicksortRecurrenceChapter5)  
+  [再帰関数を用いたマージソート。](#mergeSortUsingARecursiveFunctionChapter5)  
+  [プログラミング言語用のソート・ヒープ・キュー関数の使い方。](#howToUsePythonSortInstructionsAndHeapqModuleChapter5)  
+  [ソートの計算量と計算時間。](#sortCalculationComplexityAndCalculationTimeChapter5)  
 <a name="algorithmTextbookLearnedinPythonChapter6"></a>
 * [Chapter6 ハッシュ](#hashOverviewChapter6)  
   ハッシュとは、データから算出した小さな値のこと。  
   今回は、そのハッシュとしての値を算出する方法を勉強する。  
   以下、各項目(目次)。  
-  [ ] [ハッシュとは。](#whatIsAHashChapter6)  
-  [ ] [ハッシュ関数](#hashFunctionChapter6)  
-  [ ] [ハッシュテーブル](#hashTableChapter6)  
-  [ ] [衝突を回避する。](#avoidCollisionsChapter6)  
-  [ ] [暗号学的ハッシュ関数](#cryptographicHashFunctionChapter6)  
+  [ハッシュとは。](#whatIsAHashChapter6)  
+  [ハッシュ関数](#hashFunctionChapter6)  
+  [ハッシュテーブル](#hashTableChapter6)  
+  [衝突を回避する。](#avoidCollisionsChapter6)  
+  [暗号学的ハッシュ関数](#cryptographicHashFunctionChapter6)  
 <a name="algorithmTextbookLearnedinPythonChapter7"></a>
 * [Chapter7 さまざまなアルゴリズムを学ぶ](#learnVariousAlgorithmsOverviewChapter7)  
   アルゴリズムを勉強する上で必ず関わるアルゴリズムになる。  
   むしろ、ここまで勉強できてアルゴリズムを勉強したと言えるのではないだろうか。  
   以下、各項目(目次)。  
-  [ ] [ユークリッドの互除法](#euclideanAlgorithmChapter7)  
-  [ ] [文字列探索](#stringSearchChapter7)  
-  [ ] [アルゴリズムを理解するヒント(処理の過程の出力)。](#tipsForUnderstandingTheAlgorithmChapter7)  
+  [ユークリッドの互除法](#euclideanAlgorithmChapter7)  
+  [文字列探索](#stringSearchChapter7)  
+  [アルゴリズムを理解するヒント(処理の過程の出力)。](#tipsForUnderstandingTheAlgorithmChapter7)  
 <a name="algorithmTextbookLearnedinPythonChapter8"></a>
 * [Chapter8 アルゴリズムを見える化する](#visualizeTheAlgorithmOverviewChapter8)  
   今回のアルゴリズムを勉強することで、アルゴリズム(もしくはデータ)を可視化する方法を勉強できる。  
   以下、各項目(目次)。  
-  [ ] [n次関数の曲線を描く。](#drawACurveOfTheNthOrderFunctionChapter8)  
-  [ ] [フラクタル図形を描く。](#drawAFractalFigureChapter8)  
-  [ ] [迷路を解く過程を描く。](#drawTheProcessOfSolvingTheMazeChapter8)  
-  [ ] [アルゴリズムを使い分ける。](#useDifferentAlgorithmsChapter8)  
-  [ ] [マンデルブロー集合を描こう。](#letsDrawTheMandelbrotSetChapter8)  
+  [n次関数の曲線を描く。](#drawACurveOfTheNthOrderFunctionChapter8)  
+  [フラクタル図形を描く。](#drawAFractalFigureChapter8)  
+  [迷路を解く過程を描く。](#drawTheProcessOfSolvingTheMazeChapter8)  
+  [アルゴリズムを使い分ける。](#useDifferentAlgorithmsChapter8)  
+  [マンデルブロー集合を描こう。](#letsDrawTheMandelbrotSetChapter8)  
+
 
 <a name="developProgrammingSkillsOverviewChapter2"></a>
 ### プログラミングの力を養う
 基礎的なプログラミングの力を養っていく。  
 
-* 各項目。  
-  * [平均値を求める。](#findTheAverageValueChapter2)  
-  * [1からnまで足し合わせる。](#addFrom1tonChapter2)  
-  * [九九の式を出力する。](#outputTheMultiplicationTableChapter2)  
-  * [素数を求める。](#findAPrimeNumberChapter2)  
-  * [nの階乗を求める。](#findTheFactorialOfNChapter2)  
-  * [エラトステネスの篩](#eratosthenesSieveChapter2)  
-  * [n進法を理解する。](#understandnAryNotationChapter2)  
-
 <a name="findTheAverageValueChapter2"></a>
 #### 平均値を求める。
+勉強内容はPythonと基本同じ。  
+それをRust用に移植する。  
+
+* ルール。  
+  * 点数を配列で定義する。  
+    `let score = [ 70, 98, 92, 88, 64, ];`  
+    Python用配列：`score = [70, 98, 92, 88, 64]`  
+    Perl用配列：`my @score = (70, 98, 92, 88, 64);`  
+    vimScript9用配列：`var score = [70, 98, 92, 88, 64]`  
+    C言語用配列：`int score[] = {70, 98, 92, 88, 64};`  
+    Go言語用配列：`var score = [...]int {70, 98, 92, 88, 64};`  
+    Java言語用配列：`int[] score = { 70, 98, 92, 88, 64, };`  
+    C#言語用配列：`var score = new int[]{ 70, 98, 92, 88, 64, };`  
+  * `for`を用いる。  
+
+<details><summary>展開。</summary>
+
+以下、プログラム。
+```rust
+fn main() {
+	let score = [ 70, 98, 92, 88, 64, ];	// 書き換えない配列を用意する。
+	let mut total = 0;	// 書き換える変数。
+	for value in score {
+		// 配列から1つづつ取り出し、合算。
+		total += value;
+	}
+	let average = total as f32 / score.len() as f32;	// 両方を型変換し、計算する。
+	println!("合計点 {0}", total);		// 合計点 412
+	println!("平均点 {0}", average);	// 平均点 82.4
+}
+```
+コンパイル完了まで長い時間かかる。  
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)  
+
 
 <a name="addFrom1tonChapter2"></a>
 #### 1からnまで足し合わせる。
+勉強内容はPythonと基本は同じ。  
+それをRust用に移植するだけのこと。  
+
+* ルール1もPythonと同じ。  
+  * `for`を用いる。  
+  * 関数は定義しない。  
+    私のルールは、必ず関数定義をすることに決めているため、ここだけ無視する。  
+
+<details><summary>展開(ルール1)。</summary>
+
+以下、ルール1のプログラム。
+```rust
+fn main() {
+	let mut count = 0;
+	for ii in 1..11 {
+		count += ii;
+	}
+	println!("合計点 {0}", count);	// 合計点 55
+}
+```
+
+</details>
+
+* ルール2もPythonと同じ。  
+  * nまでの値を関数の引数で受け取る。  
+  * 関数内で合算した結果をreturnで返す。  
+
+<details><summary>展開(ルール2)。</summary>
+
+以下、ルール2のプログラム。
+```rust
+fn add2( total: i32 ) -> i32 {
+	let mut count = 0;
+	let max = total + 1;
+	for ii in 1..max {
+		count += ii;
+	}
+	count
+}
+
+fn main() {
+	let total = add2(10);
+	println!("合計点 {0} << add2関数", total);	// 合計点 55 << add2関数
+}
+```
+
+</details>
+
+* ルール3もPythonと同じ。  
+  * 工夫して計算する。  
+  * (初めの数+終わりの数)*(足し合わせる個数/2)  
+
+<details><summary>展開(ルール3)。</summary>
+
+以下、ルール3のプログラム。
+```rust
+fn add3( total: i32 ) -> i32 {
+	let sumtotal = (1+total) * total / 2;
+
+	return sumtotal;
+}
+
+fn main() {
+	let total = add3(10);
+	println!("合計点 {0} << add3関数", total);	// 合計点 55 << add3関数
+}
+```
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)  
+
 
 <a name="outputTheMultiplicationTableChapter2"></a>
 #### 九九の式を出力する。
+Pythonでやったように、九九の式を出すのではなく、九九表を出すことにする。  
+ルールはPythonと同じ。  
+
+* 作業ルール。  
+  * 二重ループを使う。  
+
+<details><summary>2重ループのサンプルプログラム(for編)。</summary>
+
+以下、プログラム。
+```rust
+fn main() {
+	for ii in 1..3 {
+		for jj in 1..3 {
+			println!("ii[{0:>2}], jj[{1:<2}]", ii, jj);
+		}
+	}
+}
+```
+
+以下、出力結果。
+```terminal
+ii[ 1], jj[1 ]
+ii[ 1], jj[2 ]
+ii[ 2], jj[1 ]
+ii[ 2], jj[2 ]
+```
+右寄せ・左寄せで出力してみた。  
+
+</details>
+
+<details><summary>2重ループのサンプルプログラム(while編)。</summary>
+
+以下、プログラム。
+```rust
+fn main() {
+	let mut ii = 1;
+	while ii < 3 {
+		let mut jj = 1;
+		while jj < 3 {
+			println!("ii[{0:>02}], jj[{1:^3}]", ii, jj);
+			jj += 1;
+		}
+		ii += 1;
+	}
+}
+```
+
+
+以下、出力結果。
+```terminal
+ii[01], jj[ 1 ]
+ii[01], jj[ 2 ]
+ii[02], jj[ 1 ]
+ii[02], jj[ 2 ]
+```
+0埋め・中央配置で出力してみた。  
+
+</details>
+
+<details><summary>縦に並ぶプログラム。</summary>
+
+以下、プログラム。
+```rust
+fn main() {
+	for ii in 1..10 {
+		for jj in 1..10 {
+			println!("{0}x{1}={2:>2}", ii, jj, ii*jj);
+		}
+	}
+}
+```
+
+以下、出力結果。
+```terminal
+1x1= 1
+1x2= 2
+1x3= 3
+1x4= 4
+1x5= 5
+1x6= 6
+1x7= 7
+1x8= 8
+1x9= 9
+2x1= 2
+2x2= 4
+2x3= 6
+2x4= 8
+2x5=10
+2x6=12
+2x7=14
+2x8=16
+2x9=18
+3x1= 3
+3x2= 6
+3x3= 9
+3x4=12
+3x5=15
+3x6=18
+3x7=21
+3x8=24
+3x9=27
+4x1= 4
+4x2= 8
+4x3=12
+4x4=16
+4x5=20
+4x6=24
+4x7=28
+4x8=32
+4x9=36
+5x1= 5
+5x2=10
+5x3=15
+5x4=20
+5x5=25
+5x6=30
+5x7=35
+5x8=40
+5x9=45
+6x1= 6
+6x2=12
+6x3=18
+6x4=24
+6x5=30
+6x6=36
+6x7=42
+6x8=48
+6x9=54
+7x1= 7
+7x2=14
+7x3=21
+7x4=28
+7x5=35
+7x6=42
+7x7=49
+7x8=56
+7x9=63
+8x1= 8
+8x2=16
+8x3=24
+8x4=32
+8x5=40
+8x6=48
+8x7=56
+8x8=64
+8x9=72
+9x1= 9
+9x2=18
+9x3=27
+9x4=36
+9x5=45
+9x6=54
+9x7=63
+9x8=72
+9x9=81
+```
+
+</details>
+
+<details><summary>適度に折り返したプログラム。</summary>
+
+以下、表示形式を長方形に整えたプログラム。
+```rust
+fn main() {
+	for ii in 1..10 {
+		for jj in 1..10 {
+			print!("{0:>2}x{1}={2:>2}", jj, ii, ii*jj);
+		}
+		println!("");
+	}
+}
+```
+
+以下、出力結果。
+```terminal
+ 1x1= 1 2x1= 2 3x1= 3 4x1= 4 5x1= 5 6x1= 6 7x1= 7 8x1= 8 9x1= 9
+ 1x2= 2 2x2= 4 3x2= 6 4x2= 8 5x2=10 6x2=12 7x2=14 8x2=16 9x2=18
+ 1x3= 3 2x3= 6 3x3= 9 4x3=12 5x3=15 6x3=18 7x3=21 8x3=24 9x3=27
+ 1x4= 4 2x4= 8 3x4=12 4x4=16 5x4=20 6x4=24 7x4=28 8x4=32 9x4=36
+ 1x5= 5 2x5=10 3x5=15 4x5=20 5x5=25 6x5=30 7x5=35 8x5=40 9x5=45
+ 1x6= 6 2x6=12 3x6=18 4x6=24 5x6=30 6x6=36 7x6=42 8x6=48 9x6=54
+ 1x7= 7 2x7=14 3x7=21 4x7=28 5x7=35 6x7=42 7x7=49 8x7=56 9x7=63
+ 1x8= 8 2x8=16 3x8=24 4x8=32 5x8=40 6x8=48 7x8=56 8x8=64 9x8=72
+ 1x9= 9 2x9=18 3x9=27 4x9=36 5x9=45 6x9=54 7x9=63 8x9=72 9x9=81
+```
+
+</details>
+
+<details><summary>展開。</summary>
+
+以下、我々学生時代から親しんできた九九表プログラム。
+```rust
+fn main() {
+	for ii in 1..10 {
+		for jj in 1..10 {
+			print!("{0:>3}", ii*jj);
+		}
+		println!("");
+	}
+}
+```
+
+以下、出力結果。
+```terminal
+  1  2  3  4  5  6  7  8  9
+  2  4  6  8 10 12 14 16 18
+  3  6  9 12 15 18 21 24 27
+  4  8 12 16 20 24 28 32 36
+  5 10 15 20 25 30 35 40 45
+  6 12 18 24 30 36 42 48 54
+  7 14 21 28 35 42 49 56 63
+  8 16 24 32 40 48 56 64 72
+  9 18 27 36 45 54 63 72 81
+```
+これぞ九九表だろう。  
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)  
+
 
 <a name="findAPrimeNumberChapter2"></a>
 #### 素数を求める。
+素数とは、1とその数以外に約数を持たない2以上の自然数のこと。  
+
+Pythonに倣い、試す数は**2〜2分のn**までの数で割ることを調べる方法をとる。  
+例えば、10を調べる場合、その半分より大きい数(**6**・**7**・**8**・**9**)では、10を割ることが出来ない。  
+そのことを利用した方法で素数を求める。  
+後日、[エラトステネスの篩](#eratosthenesSieveChapter2)を使った効率のいいアルゴリズムを勉強する。  
+
+* 素数を求めるルール  
+  * 二重ループを使う。  
+  * 2から2分のnまでの数で割る。  
+    ※それらの数で割り切れなければ素数。  
+
+<details><summary>展開。</summary>
+
+以下、プログラム。
+```rust
+fn main() {
+	for ii in 2..101 {
+		let half = ii / 2;	// 商を求める(halfは、書き換えない変数)。
+		let mut flag = true;
+		let mut jj = 2;
+		while jj < half+1 {
+			if (ii % jj) == 0 {
+				flag = false;
+				break;
+			}
+			jj += 1;
+		}
+		if flag == true {
+			print!("{0},", ii );
+		}
+	}
+}
+```
+
+以下、出力結果。
+```terminal
+2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,
+```
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)  
+
 
 <a name="findTheFactorialOfNChapter2"></a>
 #### nの階乗を求める。
+**階乗とは**
+1からnまでの全ての整数の積をnの階乗という。  
+
+* ルール1  
+  再帰関数を使わない。  
+  * 関数定義は行わない(私のプログラムでは行う)。  
+  * `for`を使う。  
+
+<details><summary>展開(ルール1)。</summary>
+
+以下、ルール1のプログラム。
+```rust
+fn factorial1( num: i32 ) {
+	let mut total = num;
+	for ii in 1..10 {
+		total *= ii;
+	}
+
+	println!("10! = {0}", total);	// 3628800
+}
+
+fn main() {
+	factorial1(10);
+}
+```
+
+</details>
+
+* ルール2  
+  再帰関数を使う。  
+  * 再帰関数の定義ルール  
+    * `n = 0`
+      **n! = 1**  
+    * `n > 0`
+      **n! = n * (n-1) * (n-2) * ・・・ * 2 * 1**
+      nから1引いた数を掛け、さらに1づつ引き続けながらnが1にまるまで続ける。  
+
+**再帰関数とは**
+関数内から自身の関数を呼び出すことを再帰処理という。
+また、その呼び出す仕組みの関数を再帰関数という。  
+
+<details><summary>展開(ルール2)。</summary>
+
+以下、再帰関数プログラム例）
+```rust
+fn factorial2( num: i32 ) -> i32 {
+	let mut _total = 0;
+	if num == 0 {
+		_total = 1;
+	}
+	else{
+		_total = num * factorial2(num - 1);
+	}
+
+	return _total;
+}
+
+fn main() {
+	let ret = factorial2(10);
+	println!("10! = {0}", ret);	// 3628800
+}
+```
+
+</details>
+
+<details><summary>プロジェクト作成</summary>
+
+以下、作業。
+```terminal
+$ cargo new factorial
+     Created binary (application) `factorial` package
+$
+```
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)  
+
 
 <a name="eratosthenesSieveChapter2"></a>
 #### エラトステネスの篩
+効率よく[素数](#findAPrimeNumberChapter2)を求めることができるアルゴリズムのこと。  
+
+<details><summary>最初の見た目。</summary>
+
+以下、篩いにかける表プログラム。
+```rust
+fn main() {
+	let mut count = 10;
+	for ii in 0..100 {
+		print!("{0:>3}", ii);
+		count -= 1;
+		if count == 0 {
+			println!("");
+			count = 10;
+		}
+	}
+}
+```
+0から99までの整数から素数を識別するため、まずは、その整数を並べた。  
+
+以下、出力結果。
+```terminal
+  0  1  2  3  4  5  6  7  8  9
+ 10 11 12 13 14 15 16 17 18 19
+ 20 21 22 23 24 25 26 27 28 29
+ 30 31 32 33 34 35 36 37 38 39
+ 40 41 42 43 44 45 46 47 48 49
+ 50 51 52 53 54 55 56 57 58 59
+ 60 61 62 63 64 65 66 67 68 69
+ 70 71 72 73 74 75 76 77 78 79
+ 80 81 82 83 84 85 86 87 88 89
+ 90 91 92 93 94 95 96 97 98 99
+```
+
+</details>
+
+<details><summary>展開。</summary>
+
+以下、プログラム。
+```rust
+fn prime_out_eratosthenes( table: &mut [i32]) {
+	// 表の表示。
+	let max_len = table.len();
+	let mut count = 10;
+	for ii in 0..max_len {
+		if table[ii] == 999 {
+			print!("  /");
+		}
+		else{
+			print!("{0:>3}", table[ii]);
+		}
+		count -= 1;
+		if count == 0 {
+			println!("");
+			count = 10;
+		}
+	}
+}
+
+fn tablecreate( table: &mut [i32]) {
+	// 篩いテーブル作成。
+	for ii in 0..table.len() {
+		table[ii] = ii as i32;
+	}
+	table[0] = 999;	// falseのつもり。
+	table[1] = 999;	// falseのつもり。
+}
+
+fn eratosthenes_sieve_process( table: &mut [i32], start: i32) {
+	// エラトステネスの篩を処理する関数
+	let max_len = table.len();
+	println!("{0}の倍数をふるい落とす。", start);
+	let mut ii:i32 = start + start;
+	while max_len > ii as usize {
+		table[ii as usize] = 999;
+		ii += start;
+	}
+}
+
+fn main() {
+	let mut table: [i32; 10*10] = [0; 10*10];
+	tablecreate(&mut table);	// テーブル作成。
+	prime_out_eratosthenes(&mut table);	// テーブル表示。
+	//for ii in 2..=11 {	// イコール記号を付けることで、右辺値も含む。
+	for ii in 2..11 {	// イコール記号を付けることで、右辺値も含む。
+		if table[ii as usize] == 999 {
+			continue;
+		}
+		println!("------------------------------");
+		eratosthenes_sieve_process(&mut table, ii);	// ふるいに落とす。
+		prime_out_eratosthenes(&mut table);	// テーブル表示。
+	}
+}
+```
+
+以下、出力結果。
+```terminal
+  /  /  2  3  4  5  6  7  8  9
+ 10 11 12 13 14 15 16 17 18 19
+ 20 21 22 23 24 25 26 27 28 29
+ 30 31 32 33 34 35 36 37 38 39
+ 40 41 42 43 44 45 46 47 48 49
+ 50 51 52 53 54 55 56 57 58 59
+ 60 61 62 63 64 65 66 67 68 69
+ 70 71 72 73 74 75 76 77 78 79
+ 80 81 82 83 84 85 86 87 88 89
+ 90 91 92 93 94 95 96 97 98 99
+------------------------------
+2の倍数をふるい落とす。
+  /  /  2  3  /  5  /  7  /  9
+  / 11  / 13  / 15  / 17  / 19
+  / 21  / 23  / 25  / 27  / 29
+  / 31  / 33  / 35  / 37  / 39
+  / 41  / 43  / 45  / 47  / 49
+  / 51  / 53  / 55  / 57  / 59
+  / 61  / 63  / 65  / 67  / 69
+  / 71  / 73  / 75  / 77  / 79
+  / 81  / 83  / 85  / 87  / 89
+  / 91  / 93  / 95  / 97  / 99
+------------------------------
+3の倍数をふるい落とす。
+  /  /  2  3  /  5  /  7  /  /
+  / 11  / 13  /  /  / 17  / 19
+  /  /  / 23  / 25  /  /  / 29
+  / 31  /  /  / 35  / 37  /  /
+  / 41  / 43  /  /  / 47  / 49
+  /  /  / 53  / 55  /  /  / 59
+  / 61  /  /  / 65  / 67  /  /
+  / 71  / 73  /  /  / 77  / 79
+  /  /  / 83  / 85  /  /  / 89
+  / 91  /  /  / 95  / 97  /  /
+------------------------------
+5の倍数をふるい落とす。
+  /  /  2  3  /  5  /  7  /  /
+  / 11  / 13  /  /  / 17  / 19
+  /  /  / 23  /  /  /  /  / 29
+  / 31  /  /  /  /  / 37  /  /
+  / 41  / 43  /  /  / 47  / 49
+  /  /  / 53  /  /  /  /  / 59
+  / 61  /  /  /  /  / 67  /  /
+  / 71  / 73  /  /  / 77  / 79
+  /  /  / 83  /  /  /  /  / 89
+  / 91  /  /  /  /  / 97  /  /
+------------------------------
+7の倍数をふるい落とす。
+  /  /  2  3  /  5  /  7  /  /
+  / 11  / 13  /  /  / 17  / 19
+  /  /  / 23  /  /  /  /  / 29
+  / 31  /  /  /  /  / 37  /  /
+  / 41  / 43  /  /  / 47  /  /
+  /  /  / 53  /  /  /  /  / 59
+  / 61  /  /  /  /  / 67  /  /
+  / 71  / 73  /  /  /  /  / 79
+  /  /  / 83  /  /  /  /  / 89
+  /  /  /  /  /  /  / 97  /  /
+```
+
+</details>
+
+<details><summary>プロジェクト作成</summary>
+
+以下、作業。
+```terminal
+$ cargo new prime_eratosthenes
+     Created binary (application) `prime_eratosthenes` package
+$
+```
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)  
+
 
 <a name="understandnAryNotationChapter2"></a>
 #### n進法を理解する。
+アルゴリズムとして勉強することではない。  
+普通の一般説明。  
+[ビット演算(`&`・`|`・`^`・`~`)](#learnBitwiseOperationsChapter4)は、別の機会。  
+
+<details><summary>展開。</summary>
+
+以下、プログラム。
+```rust
+fn main() {
+	let bin = 0b11111111;	// 2進数。
+	let oct = 0o377;	// 8進数。
+	let hex = 0xff;	// 16進数。
+
+	println!("10進数 {},{},{}", bin, oct, hex);	// 255,255,255
+	println!("16進数 {:x},{:x},{:x}", bin, oct, hex);	// ff,ff,ff
+	println!("8進数 {:o},{:o},{:o}", bin, oct, hex);	// 377,377,377
+	println!("2進数 {:b},{:b},{:b}", bin, oct, hex);	// 11111111,11111111,11111111
+}
+```
+
+</details>
+
+[メニューに戻る](#algorithmTextbookLearnedinPythonChapter2)  
+
 
 <a name="learnDataStructuresOverviewChapter3"></a>
 ### データ構造を学ぶ
@@ -1863,8 +2512,6 @@ Python限定にしたくなかったが、他のプログラミング言語に�
 
 * 応用部分  
   * 何を勉強したか記載する。  
-
-</details>
 
 
 <a name="gitflow"></a>
