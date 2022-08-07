@@ -1589,7 +1589,7 @@ fn retiffunc( hoge: i32 ) -> i32 {
   [x] [素数を求める。](#findAPrimeNumberChapter2)2022/03/21  
   [x] [nの階乗を求める。](#findTheFactorialOfNChapter2)2022/04/30  
   [x] [エラトステネスの篩](#eratosthenesSieveChapter2)2022/05/28  
-  [ ] [n進法を理解する。](#understandnAryNotationChapter2)  
+  [x] [n進法を理解する。](#understandnAryNotationChapter2)2022/08/07  
 <a name="algorithmTextbookLearnedinPythonChapter3"></a>
 * [Chapter3 データ構造を学ぶ](#learnDataStructuresOverviewChapter3)  
   今までに勉強した配列(リスト)を用いた発展を遂げる。  
@@ -2297,6 +2297,24 @@ $
 
 <a name="understandnAryNotationChapter2"></a>
 #### n進法を理解する。
+アルゴリズムとして勉強することではない。  
+普通の一般説明。  
+[ビット演算(`&`・`|`・`^`・`~`)](#learnBitwiseOperationsChapter4)は、別の機会。  
+
+以下、プログラム。
+```rust
+fn main() {
+	let bin = 0b11111111;	// 2進数。
+	let oct = 0o377;	// 8進数。
+	let hex = 0xff;	// 16進数。
+
+	println!("10進数 {},{},{}", bin, oct, hex);	// 255,255,255
+	println!("16進数 {:x},{:x},{:x}", bin, oct, hex);	// ff,ff,ff
+	println!("8進数 {:o},{:o},{:o}", bin, oct, hex);	// 377,377,377
+	println!("2進数 {:b},{:b},{:b}", bin, oct, hex);	// 11111111,11111111,11111111
+}
+```
+
 
 <a name="learnDataStructuresOverviewChapter3"></a>
 ### データ構造を学ぶ
