@@ -16,7 +16,8 @@
 
 * アプリケーション別解説。  
   * [Termux](#softwareTermux)  
-    現在のGooglePlayバージョンでは利用できない。  
+    現在のGooglePlay版では利用できない。  
+    その代わりに[F-Droid](https://f-droid.org)と言うGooglePlayの無法地帯版を導入後に、[Termux](https://f-droid.org/packages/com.termux/)をインストールする。  
 
 
 <a id="android10OperatingSystem"></a>
@@ -182,7 +183,7 @@ AndroidOSで、Linux環境を擬似的に作れるというアプリケーショ
 
 <a name="softwareTermuxstorage"></a>
 ### ストレージへの可視化
-可視化とは言わないが、他のディレクトリへの接続方法として、以下のコマンドにより、可能になる。  
+他のディレクトリへの接続方法として、以下のコマンドにより、可能になる。  
 `termux-setup-storage`
 
 
@@ -218,14 +219,11 @@ N: Possible cause: repository is under maintenance or down (wrong sources.list U
 E: The repository 'https://main.termux-mirror.ml stable Release' does not have a Release file.
 N: Metadata integrity can't be verified, repository is disabled now.
 N: Possible cause: repository is under maintenance or down (wrong sources.list URL?).
-$ echo !?
-bash: !?: event not found
 $
 ```
 
 ・アップデート
 ```terminal
-$
 $ pkg update
 Checking availability of current mirror: ok
 Ign:1 https://dl.bintray.com/grimler/game-packages-24 games InRelease
