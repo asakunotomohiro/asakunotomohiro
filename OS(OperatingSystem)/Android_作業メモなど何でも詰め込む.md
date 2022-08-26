@@ -32,8 +32,8 @@
 
 <a id="android10OperatingSystem"></a>
 ## Android10
-いま持っている携帯電話の最新OSとして使っているバージョンが10になる。  
-ちなみに、WindowsOSのバージョンも10だ(そして、11に対応した能力があるようだ)。  
+WindowsOSのバージョンも10だ。  
+microSDカードの[認識が変わる](#android10peratingsystem2microsdcard4adb)ようだ。  
 
 
 <a name="android10peratingsystem2microsdcard4adb"></a>
@@ -50,7 +50,7 @@
 
 当たり前だが、パソコン(Mac・Windows・Linux)及び携帯電話に接続できるUSBケーブルがあること。  
 
-以下、手順。  
+<details><summary>手順。</summary>
 
 * Mac端末側の操作　その1  
   * [**Android SDK**](https://developer.android.com/studio)を入手する。  
@@ -176,6 +176,14 @@ $
 ```
 そもそも**adb**単体でのインストール指定が問題だったのかもな。  
 
+</details>
+
+
+<a id="android11OperatingSystem"></a>
+## Android11
+いま持っている携帯電話の最新OSとして使っているバージョンが11になる。  
+WindowsOSのバージョンは10だが、11に対応した能力を備えている(対応させないのならば、だから何だって話だが)。  
+
 
 <a id="softwareTermux"></a>
 ## [Termux](https://termux.com)
@@ -193,6 +201,8 @@ AndroidOSで、Linux環境を擬似的に作れるというアプリケーショ
 <a name="softwareTermuxpackage"></a>
 ### パッケージ管理
 現在のGooglePlayからのバージョンでは利用できなくなっている。  
+
+<details><summary>GooglePlay版の操作。</summary>
 
 ・アップグレード
 ```terminal
@@ -268,11 +278,17 @@ $
 どうやら、Adroid10向けに対応できていないのが原因で、今後はGooglePlayからインストールしたTermuxは使い物にならないそうだ。  
 残念だ。  
 
+</details>
+
 
 <a name="softwareTermuxinstallok"></a>
 ### インストール可能にする対応
-野良(?)[ソフトウェア](https://f-droid.org/packages/com.termux/)をインストールすることで、Termuxの代替になるそうだ。  
-野良とは言え、公式ページのはずなので、利用には問題ないと思う。  
+野良(?)[ソフトウェア](https://f-droid.org)をインストールすることで、利用可能な[Termux](https://f-droid.org/packages/com.termux/)もインストールできる。  
+野良とは言え、公式ページ(?)のはずなので、利用には問題ないと思う。  
+それでも無法地帯であるには変わらないため、あるからという理由でバカチョン導入したらえらい目に遭うだろう。  
+そして、[GooglePlay](https://play.google.com)の場所にあるソフトウェアも安全が保証されているわけでは無いため、どっこいどっこいであるため、欲しいのは手にいれて使おう。  
+
+とりあえずインストール方法はインターネット上にあるため、それを参考にインストールすること。  
 
 
 <a id="softwareDroidvim"></a>
