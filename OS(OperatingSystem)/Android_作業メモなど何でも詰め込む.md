@@ -18,6 +18,8 @@
   * [Termux](#softwareTermux)  
     現在のGooglePlay版では利用できない。  
     その代わりに[F-Droid](https://f-droid.org)と言うGooglePlayの無法地帯版を導入後に、[Termux](https://f-droid.org/packages/com.termux/)をインストールする。  
+  * [DroidVim](#softwareDroidvim)  
+    現在のGooglePlay版でも利用できる。  
 
 
 <a id="android10OperatingSystem"></a>
@@ -270,6 +272,20 @@ $
 ### インストール可能にする対応
 野良(?)[ソフトウェア](https://f-droid.org/packages/com.termux/)をインストールすることで、Termuxの代替になるそうだ。  
 野良とは言え、公式ページのはずなので、利用には問題ないと思う。  
+
+
+<a id="softwareDroidvim"></a>
+## [DroidVim](https://play.google.com/store/apps/details?id=com.droidvim)
+AndroidOSで、Vim環境を擬似的に作れるというアプリケーションのひとつ。  
+しかも、結構有名になっているため、探せばすぐに見つかる。  
+使い方もすぐに見つかる。  
+
+
+<a name="softwareDroidvimstorage"></a>
+### ストレージへの可視化
+他のディレクトリへの接続方法として、以下のボタン押下により、可能になる。  
+`MANAGE_EXTERNAL_STORAGES`  
+※[設定]画面-[シェル]画面にある。  
 
 
 <a id="memo99999"></a>
