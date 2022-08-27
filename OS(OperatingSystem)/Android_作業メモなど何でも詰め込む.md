@@ -14,13 +14,14 @@
 * バージョン別解説。  
   * [Android8](#android10OperatingSystem)  
   * [Android10](#android10OperatingSystem)  
+  * [Android11](#android11OperatingSystem)  
 
 * アプリケーション別解説。  
   * [Termux](#softwareTermux)  
     現在のGooglePlay版では利用できない。  
     その代わりに[F-Droid](https://f-droid.org)と言うGooglePlayの無法地帯版を導入後に、[Termux](https://f-droid.org/packages/com.termux/)をインストールする。  
   * [DroidVim](#softwareDroidvim)  
-    現在のGooglePlay版でも利用できる。  
+    現在のGooglePlay版に存在する。  
 
 
 <a id="android10OperatingSystem"></a>
@@ -50,7 +51,9 @@ microSDカードの[認識が変わる](#android10peratingsystem2microsdcard4adb
 
 当たり前だが、パソコン(Mac・Windows・Linux)及び携帯電話に接続できるUSBケーブルがあること。  
 
-<details><summary>手順。</summary>
+<details><summary>作業記録。</summary>
+
+今となっては不要作業であり、無駄な記録になってしまったはずだが、消すのも面倒くさいので残すことにした。  
 
 * Mac端末側の操作　その1  
   * [**Android SDK**](https://developer.android.com/studio)を入手する。  
@@ -204,6 +207,8 @@ AndroidOSで、Linux環境を擬似的に作れるというアプリケーショ
 
 <details><summary>GooglePlay版の操作。</summary>
 
+完全にゴミ記録。  
+
 ・アップグレード
 ```terminal
 $ pkg upgrade
@@ -333,8 +338,18 @@ Building dependency tree... Done
 
 * 私が必須で使いたいキー  
   むしろ、他のショートカットキーも知っておくべきだろう。  
-  * **ボリュームを上げるキー+Q**：メニューバーの表示トグル  
+  以下、ボリューム上げキーとの組み合わせ。  
+  * **+Q**：メニューバーの表示トグル  
     正確にはツールバーというようだ。  
+  * **+E**：Escキー。  
+  * **+T**：Tabキー。  
+  * **+A**：←矢印キー。  
+  * **+S**：↓矢印キー。  
+  * **+W**：↑矢印キー。  
+  * **+D**：→矢印キー。  
+  * **+L**：パイプキー(`|`)。  
+  * **+H**：チルダキー(`~`)。  
+  * **+U**：アンダースコアキー(`_`)。  
 
 
 <a id="softwareDroidvim"></a>
