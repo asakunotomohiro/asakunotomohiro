@@ -290,6 +290,52 @@ $
 
 とりあえずインストール方法はインターネット上にあるため、それを参考にインストールすること。  
 
+インストールを間違えた場合は、パッケージのアップデートなどで気づく。  
+
+<details><summary>エラーメッセージ。</summary>
+
+以下、**apt update**を実行後の内容。
+```text
+Get:1 https://deb.kcubeterm.me/termux-main stable InRelease [507 B]
+Err:1 https://deb.kcubeterm.me/termux-main stable InRelease
+  Clearsigned file isn't valid, got 'NOSPLIT' (does the network require authentication?)
+Reading package lists... Done
+E: Failed to fetch https://deb.kcubeterm.me/termux-main/dists/stable/InRelease  Clearsigned file isn't valid, got 'NOSPLIT' (does the network require authentication?)
+E: The repository 'https://deb.kcubeterm.me/termux-main stable InRelease' is not signed.
+N: Metadata integrity can't be verified, repository is disabled now.
+N: Possible causes: unstable or tampered Internet connection, wrong sources.list, outdated keyring or host is down currently.
+N: Please note that all hosting problems or other serious issues we announce on our social media pages.
+N: Use termux-change-repo for switching to a mirror.
+```
+
+</details>
+
+<details><summary>正常メッセージ。</summary>
+
+上記コマンド。
+```text
+Get:1 https://packages.termux.dev/apt/termux-main stable InRelease [14.0 kB]
+Get:2 https://packages.termux.dev/apt/termux-main stable/main aarch64 Packages [436 kB]
+Fetched 450 kB in 3s (174 kB/s)
+Reading package lists... Done
+Building dependency tree... Done
+49 packages can be upgraded. Run 'apt list --upgradable' to see them.
+```
+
+</details>
+
+何が原因か分からないが、ダウンロードディレクトリからのインストールではなく、FDroidアプリからインストールをする必要があるようだな。  
+
+
+<a name="softwareTermuxshortcutkey"></a>
+### ショートカットキー
+[公式(?)wikiページ](https://wiki.termux.com/wiki/Touch_Keyboard)に記載あり。
+
+* 私が必須で使いたいキー  
+  むしろ、他のショートカットキーも知っておくべきだろう。  
+  * **ボリュームを上げるキー+Q**：メニューバーの表示トグル  
+    正確にはツールバーというようだ。  
+
 
 <a id="softwareDroidvim"></a>
 ## [DroidVim](https://play.google.com/store/apps/details?id=com.droidvim)
