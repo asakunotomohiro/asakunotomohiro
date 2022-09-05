@@ -12,6 +12,7 @@
 一応は五苦九苦しながら八転九倒したことを記録しているが、環境構築は別リポジトリに存在しているため、そちらを見ておけば何かしらの参考になる・・・だろう。  
 
 * バージョン別解説。  
+  もしかしたら端末固有かもしれないが、、、  
   * [Android8](#android10OperatingSystem)  
   * [Android10](#android10OperatingSystem)  
   * [Android11](#android11OperatingSystem)  
@@ -187,6 +188,77 @@ $
 いま持っている携帯電話の最新OSとして使っているバージョンが11になる。  
 WindowsOSのバージョンは10だが、11に対応した能力を備えている(対応させないのならば、だから何だって話だが)。  
 
+
+<a id="android11OperatingSystemosreinstall"></a>
+### 端末再インストール
+以下のメモはすべてお釈迦になった(復元した場合、本当に復元される)。  
+まさか、復元したくないものまで復元されるとは・・・別途取捨選択させて欲しい。  
+
+* Googleアカウントログイン直後にインストーするアプリ一覧。  
+  * 既存アプリの更新  
+  * BlackBerry ランチャー  
+
+* 手順  
+  1. ~~上記アプリ導入後、全て起動する。~~  
+     ~~利用規約に同意するのも目的のひとつ。~~  
+  1. ~~端末再起動。~~  
+  1. ~~「アプリとデータのコピー」実施。~~  
+     1. ~~「データの引き継ぎ-クラウドのバックアップ」~~  
+     1. ~~同端末の当時の最新版のバックアップを選ぶ。~~  
+     1. ~~復元対象の選択。~~  
+        * ~~「アプリ」のみ。~~  
+        * ~~「連絡先・SMSメッセージ・通話履歴・デバイスの設定」不要。~~  
+
+* 既存のアプリ一覧。  
+  * IME  
+    * AquaMozc for Titan  
+    * ATOK  
+    * Hacker's Keyboard  
+  * エディタ  
+    * QuickEditプロ  
+    * Jota+  
+    * Go Compiler  
+    * Pydroid 3  
+    * DroidVim  
+    * ezPDF Reader  
+  * 通信  
+    * Firefox  
+    * Signal  
+    * Telegram  
+    * VK Mail  
+    * AOL  
+    * GitHub  
+    * ONE  
+  * 生活補助  
+    * Remember The Milk  
+    * To Do  
+    * Todoist  
+    * Toggle Track  
+    * ループ習慣トラッカー  
+    * Y!天気  
+    * スマートアラーム  
+    * WriteNote Pro  
+    * Starbucks  
+    * 映画.com  
+    * Foursquare  
+    * Kindle  
+    * Google Book  
+    * Google レンズ  
+    * Google 翻訳  
+  * SNS  
+    * Reddit  
+    * Slack  
+    * Twitter  
+    * Instagram  
+  * ゲーム  
+    * Steam  
+    * Shredder Chess  
+    * Swarm  
+    * シムシティ  
+  * その他  
+    * ファイルマネージャ  
+    * BlackBerry ランチャ  
+      BlackBerry Hub+ サービスも自動でインストールされるようだ。  
 
 <a id="softwareTermux"></a>
 ## [Termux](https://termux.com)
