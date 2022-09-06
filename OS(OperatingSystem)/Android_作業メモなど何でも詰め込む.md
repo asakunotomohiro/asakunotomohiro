@@ -25,6 +25,8 @@
     現在のGooglePlay版に存在する。  
   * [QuickEditプロ](#softwareQuickeditpro)  
     テキストエディタ  
+  * [AquaMozc](#softwareAquamozcrimtitan)  
+    IME。  
 
 
 <a id="android10OperatingSystem"></a>
@@ -491,6 +493,31 @@ ATOKでは文節区切りの変換が出来ないため、利用は論外(買い
     * アクセサリー表示  
     * 自動保存  
     * 全画面表示  
+
+
+<a id="softwareAquamozcrimtitan"></a>
+## [AquaMozc](https://play.google.com/store/apps/details?id=jp.gr.aqua.mozc)
+素晴らしいIME。  
+ノーマルのAquaMozcは、BlackBerry用だが、[Titan](https://play.google.com/store/apps/details?id=jp.gr.aqua.mozc.titan)もある。  
+
+* BlackBerry用の設定  
+  * キーマップの設定  
+    システム配列  
+  * 変換候補の表示位置  
+    入力文字列直下：Key2  
+    画面最下端：KeyOne  
+  * チェックボックスOn  
+    * 英数字直接入力  
+    * symキーをスペースキーとして使用  
+    * キー押下時ポップアップ  
+  * 入力キーボード  
+    QWERTY  
+  * フルスクリーンモード  
+    横画面で有効にする  
+  * キーボードテーマの選択  
+    マテリアル デザイン(ライト)  
+
+なぜに設定をファイルに出力できないのだろう。  
 
 
 <a id="memo99999"></a>
