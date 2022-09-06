@@ -23,6 +23,8 @@
     その代わりに[F-Droid](https://f-droid.org)と言うGooglePlayの無法地帯版を導入後に、[Termux](https://f-droid.org/packages/com.termux/)をインストールする。  
   * [DroidVim](#softwareDroidvim)  
     現在のGooglePlay版に存在する。  
+  * [QuickEditプロ](#softwareQuickeditpro)  
+    テキストエディタ  
 
 
 <a id="android10OperatingSystem"></a>
@@ -468,6 +470,27 @@ ATOKでは文節区切りの変換が出来ないため、利用は論外(買い
     **[Markdown to Html]**メニューを選んだときにインストールされる。  
 
 せっかくならば、Perlを使えるようにして欲しかったぞ。  
+
+
+<a id="softwareQuickeditpro"></a>
+## [QuickEdit](https://play.google.com/store/apps/details?id=com.rhmsoft.edit)
+素晴らしいエディタ。  
+そして、設定変更はない。  
+すべてデフォルトで問題ない。  
+
+* 設定  
+  * フォルダの引き出し：On  
+  * オートインデント：On  
+  * ファイルフィルター：On  
+  * セッションをレジューム：On  
+  * 行番号：On  
+  * 以下、Off。  
+    * ワードラップ  
+    * 戻るボタンで元に戻す  
+    * 自動大文字変換  
+    * アクセサリー表示  
+    * 自動保存  
+    * 全画面表示  
 
 
 <a id="memo99999"></a>
