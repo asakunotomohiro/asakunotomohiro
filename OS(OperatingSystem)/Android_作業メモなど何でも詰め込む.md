@@ -11,6 +11,12 @@
 ## Android
 一応は五苦九苦しながら八転九倒したことを記録しているが、環境構築は別リポジトリに存在しているため、そちらを見ておけば何かしらの参考になる・・・だろう。  
 
+* 必須設定。  
+  * GooglePlayアプリの設定。  
+    * ネットワーク設定：「**アプリの自動更新しない**」を選ぶ。  
+    * アプリ購入時の生体認証不可。  
+    * アプリ購入時は常に認証を求める。  
+
 * バージョン別解説。  
   もしかしたら端末固有かもしれないが、、、  
   * [Android8](#android10OperatingSystem)  
@@ -498,7 +504,7 @@ ATOKでは文節区切りの変換が出来ないため、利用は論外(買い
 <a id="softwareAquamozcrimtitan"></a>
 ## [AquaMozc](https://play.google.com/store/apps/details?id=jp.gr.aqua.mozc)
 素晴らしいIME。  
-ノーマルのAquaMozcは、BlackBerry用だが、[Titan](https://play.google.com/store/apps/details?id=jp.gr.aqua.mozc.titan)もある。  
+ノーマルのAquaMozcはBlackBerry用だが、[Titan](https://play.google.com/store/apps/details?id=jp.gr.aqua.mozc.titan)もある。  
 
 * BlackBerry用の設定  
   * キーマップの設定  
