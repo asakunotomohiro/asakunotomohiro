@@ -24,7 +24,7 @@
 * CPU種類  
   * [Appleシリコン](#macOperatingSystemreinstallsilicon)  
     Apple自家製のCPU(今後はこのCPUを利用していくのだろう)  
-  * Intelプロセッサ  
+  * [Intelプロセッサ](#macOperatingSystemreinstallintel)  
     遺物(WindowsOS上では現役)。  
 
 PowerMac欲しかったが、当時は学生だったからな。  
@@ -85,6 +85,12 @@ PowerMac欲しかったが、当時は学生だったからな。
 
 ちなみに、Appleシリコンのシリコンは、元素のケイ素のこと(のはず)。  
 要は、合成高分子化合物の総称を刺しているのでは無い(はず)。  
+
+
+<a id="macOperatingSystemreinstallintel"></a>
+### intel用macOS再インストール方法
+当たり前だが、公式の説明に従う。  
+[ディスクユーティリティを使って Intel 搭載の Mac を消去する](https://support.apple.com/ja-jp/HT208496)  
 
 
 <a id="memo99999"></a>
