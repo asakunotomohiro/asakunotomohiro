@@ -8,6 +8,11 @@
 ---
 <a id="macOperatingSystem"></a>
 ## MacOS
+複数のOS(バージョン)を持っている。  
+
+今後は、Appleシリコン向けのOSを使うことになるだろう。  
+現在所持している最新版は、**[macOS Monterey(Ver12.4)](https://www.apple.com/jp/macos/monterey/)**になっている(今後メインで使いたい)。  
+現在所持している最古版は、**[macOS Sierra(Ver10.12.6)]()**になっている(オフライン専用)。  
 
 
 <a id="memo99999"></a>
