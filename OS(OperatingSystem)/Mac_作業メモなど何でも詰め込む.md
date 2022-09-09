@@ -15,6 +15,20 @@
 現在所持している最古版は、**[macOS Sierra(Ver10.12.6)]()**になっている(オフライン専用)。  
 
 
+<a id="macOperatingSystemreinstall"></a>
+### macOSを再インストールする方法
+環境設定をやり直すためにも再インストールする。  
+
+* CPU種類  
+  * Appleシリコン  
+    Apple自家製のCPU(今後はこのCPUを利用していくのだろう)  
+  * Intelプロセッサ  
+    遺物(WindowsOS上では現役)。  
+
+PowerMac欲しかったが、当時は学生だったからな。  
+
+
+
 <a id="memo99999"></a>
 ## 個人メモ(総合的な優先度の高いメモ)
 
