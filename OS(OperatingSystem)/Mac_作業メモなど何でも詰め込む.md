@@ -24,7 +24,7 @@
 * CPU種類  
   * [Appleシリコン](#macOperatingSystemreinstallsilicon)  
     Apple自家製のCPU(今後はこのCPUを利用していくのだろう)  
-  * Intelプロセッサ  
+  * [Intelプロセッサ](#macOperatingSystemreinstallintel)  
     遺物(WindowsOS上では現役)。  
 
 PowerMac欲しかったが、当時は学生だったからな。  
@@ -81,10 +81,27 @@ PowerMac欲しかったが、当時は学生だったからな。
   1. 再起動する。  
      * Bluetooth機器を有効化するように促される画面が出る(かも？)。  
   1. 言語選択の画面が表示されたら工場出荷状態になった証。  
-     * 売却などをする場合は**command + Q**押下にて終了する(電源ボタン押下でもいいけど)。  
+     * 売却などをする場合は**command + Q**押下にて終了する(1回のみ有効になるため、2回目以降は電源ボタン押下)。  
 
 ちなみに、Appleシリコンのシリコンは、元素のケイ素のこと(のはず)。  
-要は、合成高分子化合物の総称を刺しているのでは無い(はず)。  
+合成高分子化合物の総称を刺しているのでは無い(はず)。  
+
+
+<a id="macOperatingSystemreinstallintel"></a>
+### intel用macOS再インストール方法
+当たり前だが、公式の説明に従う。  
+[ディスクユーティリティを使って Intel 搭載の Mac を消去する](https://support.apple.com/ja-jp/HT208496)  
+
+* HDDフォーマット手順  
+  1. Macの電源を入れてすぐに「**command+R**」キーを長押し。  
+  1. ユーティリティウインドウで「**ディスクユーティリティ**」を選択し、「続ける」。  
+     この前段階でユーザ名・パスワード入力を求められるそうだが、私の時は何も聞かれなかった。  
+  1. メインハードディスクを消去する。  
+     私の環境でのハードディスク名は、「**Macintosh**」と表記されている(子としてぶら下がっているHDDを選ぶ)。  
+     フォーマット：「**MacOS Extended(Journaled)**」(いわゆるMacOS拡張)を選ぶ(暗号化(Encrypted)は拡張性が下がったはずなので選ばない)。  
+     方式：「**[GUIDパーティションマップ](https://support.apple.com/ja-jp/guide/disk-utility/dsku1c614201/mac)**」を選ぶ。  
+  1. 前の画面に戻り、「**macOSを再インストール**」を選ぶ。  
+     この前段階として、AppleIDなどの入力を求められるようだが、私の環境ではきかれなかった。  
 
 
 <a id="memo99999"></a>
