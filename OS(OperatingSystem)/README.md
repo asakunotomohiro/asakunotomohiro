@@ -32,6 +32,9 @@
 
 <a id="operatingsystemnetwork"></a>
 ## ネットワーク利用
+パソコンからの利用は気にしていないのだが、BlackBerry端末以外の携帯電話からのネットワーク利用は、情報漏洩が気になってしまう。  
+今更感はあるが・・・。  
+と言うことで、今流行のVPNを利用しようと思う。  
 
 
 <a id="operatingsystemcurrentstatus"></a>
