@@ -2,6 +2,13 @@
 学生時代はWindowsOSを使い、社会人になったときはゲームから離れるためにもMac端末を購入して使っていた。  
 今後は、それらだけでなく、他のOS向けに得られた知見をここで記録に残そうと思う。  
 
+* 一覧  
+  * [ネットワーク利用](#operatingsystemnetwork)  
+  * [Android](#androidoperatingsystem)  
+  * [MacOS](#macoperatingsystem)  
+  * [Windows](#windowsoperatingsystem)  
+  * [Linux](#linuxoperatingsystem)  
+  * [UNIX](#unixoperatingsystem)  
 
 <a id="androidoperatingsystem"></a>
 ## Android
@@ -21,6 +28,10 @@
 
 <a id="unixoperatingsystem"></a>
 ## UNIX
+
+
+<a id="operatingsystemnetwork"></a>
+## ネットワーク利用
 
 
 <a id="operatingsystemcurrentstatus"></a>
