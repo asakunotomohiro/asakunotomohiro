@@ -48,6 +48,17 @@
       * FileVault：有効。  
       * ファイアウォール：有効。  
 
+* インストールソフトウェア  
+  * 基本は、[dotfiles-リードミーファイル](https://github.com/asakunotomohiro/dotfiles)に記載済み。  
+  * Xcodeは必須([App Store](https://developer.apple.com/jp/xcode/)から導入可能)。  
+    * 芋づる式に導入されるソフトウェア：Git  
+      後で変更するよね？  
+  * Keynote  
+  * Numbers  
+  * Pages  
+  * iMovie  
+    必要か？  
+
 
 ---
 
