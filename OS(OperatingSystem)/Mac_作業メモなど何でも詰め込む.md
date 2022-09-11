@@ -51,7 +51,7 @@
 * インストールソフトウェア  
   * 基本は、[dotfiles-リードミーファイル](https://github.com/asakunotomohiro/dotfiles)に記載済み。  
   * Xcodeは必須([App Store](https://developer.apple.com/jp/xcode/)から導入可能)。  
-    * 芋づる式に導入されるソフトウェア：Git  
+    * 芋づる式に導入されるソフトウェア：Git v2.32.1  
       後で変更するよね？  
   * Keynote  
   * Numbers  
