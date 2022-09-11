@@ -1025,6 +1025,8 @@ Python3だけが動けば良い。
 ※公式ページからの引用。  
 `<!-- vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=markdown expandtab: -->`  
 ※このファイルの末尾に記載している。  
+　ちなみに、マークダウン記法で[ダイアグラム](https://mermaid-js.github.io/mermaid)を利用することが出来る。  
+　マークダウン記法は、[別途](../ドキュメント作成技法/markdown_作業メモなど何でも詰め込む.md)に記載済み。  
 
 * オプション  
   * `tabstop`・`ts`  
