@@ -14,6 +14,10 @@
 現在所持している最新版は、**[macOS Monterey(Ver12.4)](https://www.apple.com/jp/macos/monterey/)** になっている(今後メインで使いたい)。  
 現在所持している最古版は、**macOS Sierra(Ver10.12.6)** になっている(オフライン専用)。  
 
+* Mac用目次。  
+  * [macOS新規利用前の設定変更](#macOperatingSystemsetting)  
+  * [macOSを再インストールする方法](#macOperatingSystemreinstall)  
+
 
 <a id="macOperatingSystemreinstall"></a>
 ### macOSを再インストールする方法
@@ -27,11 +31,15 @@
   * [Intelプロセッサ](#macOperatingSystemreinstallintel)  
     遺物(WindowsOS上では現役)。  
 
-PowerMac欲しかったが、当時は学生だったからな。  
 
+<a id="macOperatingSystemsetting"></a>
+### macOS新規利用前の設定変更
+
+
+---
 
 <a id="macOperatingSystemreinstallsilicon"></a>
-### appleシリコン用macOS再インストール方法
+#### appleシリコン用macOS再インストール方法
 当たり前だが、公式の説明に従う。  
 
 > Macの電源を入れ、起動オプションのウインドウが表示されるまで電源ボタンをそのまま押し続けます。「オプション」というラベルの付いたギアマークのアイコンをクリックし、「続ける」をクリックします。
@@ -88,7 +96,7 @@ PowerMac欲しかったが、当時は学生だったからな。
 
 
 <a id="macOperatingSystemreinstallintel"></a>
-### intel用macOS再インストール方法
+#### intel用macOS再インストール方法
 当たり前だが、公式の説明に従う。  
 [ディスクユーティリティを使って Intel 搭載の Mac を消去する](https://support.apple.com/ja-jp/HT208496)  
 
