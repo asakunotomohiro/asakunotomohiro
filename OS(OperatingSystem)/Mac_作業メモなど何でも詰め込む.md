@@ -52,12 +52,16 @@
   * 基本は、[dotfiles-リードミーファイル](https://github.com/asakunotomohiro/dotfiles)に記載済み。  
   * Xcodeは必須([App Store](https://developer.apple.com/jp/xcode/)から導入可能)。  
     * 芋づる式に導入されるソフトウェア：Git v2.32.1  
-      後で変更するよね？  
   * Keynote  
   * Numbers  
   * Pages  
   * iMovie  
     必要か？  
+
+* **git clone**  
+  ※**makeLinkfile**の実行でgitconfigを定着させた後に、再度**git clone**を実行する必要がある。  
+    macなどでは不要だろうが、Windowsの場合は勝手に改行を変更する仕様のため、macも万が一を考えて行動した方が良いだろう。  
+    `git config --global core.autocrlf false`で、解決できるけど。  
 
 * 作業ディレクトリの作成。  
   * 書類ディレクトリ配下に、今回などのgit関連を配置する。  
@@ -69,12 +73,13 @@
    +--asakunotomohiro/
    |  +--公的アカウント/
    |  +--私的アカウント/
-   |  +--ローカル/
+   |  \--ローカル/
    +--他サービス(会社とか？)/
       +--公的アカウント/
       +--私的アカウント/
-      +--ローカル/
+      \--ローカル/
 ```
+派遣である以上、会社データを個人端末に入れることは無いけどね。  
 
 ---
 
