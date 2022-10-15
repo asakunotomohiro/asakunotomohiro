@@ -26,6 +26,10 @@
       * YouTube  
       * YT Music  
 
+* microSDカード  
+  * フォーマット形式  
+    exFAT一択。  
+
 * バージョン別解説。  
   もしかしたら端末固有かもしれないが、、、  
   * [Android8](#android10OperatingSystem)  
