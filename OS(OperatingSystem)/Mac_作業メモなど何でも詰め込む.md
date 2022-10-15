@@ -14,6 +14,10 @@
 現在所持している最新版は、**[macOS Monterey(Ver12.4)](https://www.apple.com/jp/macos/monterey/)** になっている(今後メインで使いたい)。  
 現在所持している最古版は、**macOS Sierra(Ver10.12.6)** になっている(オフライン専用)。  
 
+* 目次。  
+  * [macOS新規利用前の設定変更](#macOperatingSystemsetting)  
+  * [macOSを再インストールする方法](#macOperatingSystemreinstall)  
+
 
 <a id="macOperatingSystemreinstall"></a>
 ### macOSを再インストールする方法
@@ -27,12 +31,65 @@
   * [Intelプロセッサ](#macOperatingSystemreinstallintel)  
     遺物(WindowsOS上では現役)。  
 
-PowerMac欲しかったが、当時は学生だったからな。  
 
+<a id="macOperatingSystemsetting"></a>
+### macOS新規利用前の設定変更
+新規に端末を入手する。もしくは、OS再インストールした場合、使い勝手が悪い。  
+そのため、最低限の設定をここに記す。  
+
+* 設定項目  
+  * システム環境設定関係。  
+    * キーボードのショートカット：入力ソースを**command + スペース**に変えること。  
+    * Touch ID：使用しない(うかつに支払いできないようにするためでもある)。  
+    * Bluetooth名変更：共有画面で変更できる。  
+    * Dockとメニューバー：バッテリーの割合を表示させる。  
+    * セキュリティーとプライバシー  
+      * 一般：パスワード要求までの時間を変更。  
+      * FileVault：有効。  
+      * ファイアウォール：有効。  
+
+* インストールソフトウェア  
+  * 基本は、[dotfiles-リードミーファイル](https://github.com/asakunotomohiro/dotfiles)に記載済み。  
+  * Xcodeは必須([App Store](https://developer.apple.com/jp/xcode/)から導入可能)。  
+    * 芋づる式に導入されるソフトウェア：Git v2.32.1  
+  * Keynote  
+  * Numbers  
+  * Pages  
+  * iMovie  
+    必要か？  
+
+* **git clone**  
+  ※**makeLinkfile**の実行でgitconfigを定着させた後に、再度**git clone**を実行する必要がある。  
+    macなどでは不要だろうが、Windowsの場合は勝手に改行を変更する仕様のため、macも万が一を考えて行動した方が良いだろう。  
+    `git config --global core.autocrlf false`で、解決できるけど。  
+
+* 作業ディレクトリの作成。  
+  * 書類ディレクトリ配下に、今回などのgit関連を配置する。  
+    ※配置場所は端末ごとに変わるだろう(よくよく考えなければ使いにくく邪魔くさい場所に常設することになる)。  
+
+以下、ディレクトリ構成例）
+```text
++--書類ディレクトリ/
+   +--asakunotomohiro/
+   |  +--公的アカウント/
+   |  +--私的アカウント/
+   |  \--ローカル/
+   +--他サービス(会社とか？)/
+      +--公的アカウント/
+      +--私的アカウント/
+      \--ローカル/
+```
+派遣である以上、会社データを個人端末に入れることは無いけどね。  
+
+---
 
 <a id="macOperatingSystemreinstallsilicon"></a>
-### appleシリコン用macOS再インストール方法
+#### appleシリコン用macOS再インストール方法
 当たり前だが、公式の説明に従う。  
+
+SDDのフォーマット形式：APFS  
+※APFSとは、Apple File Systemのこと。  
+
 
 > Macの電源を入れ、起動オプションのウインドウが表示されるまで電源ボタンをそのまま押し続けます。「オプション」というラベルの付いたギアマークのアイコンをクリックし、「続ける」をクリックします。
 
@@ -88,9 +145,13 @@ PowerMac欲しかったが、当時は学生だったからな。
 
 
 <a id="macOperatingSystemreinstallintel"></a>
-### intel用macOS再インストール方法
+#### intel用macOS再インストール方法
 当たり前だが、公式の説明に従う。  
 [ディスクユーティリティを使って Intel 搭載の Mac を消去する](https://support.apple.com/ja-jp/HT208496)  
+
+HDDのフォーマット形式：HFS+  
+HFS+とは、Mac OS拡張フォーマットのこと。
+
 
 * HDDフォーマット手順  
   1. Macの電源を入れてすぐに「**command+R**」キーを長押し。  
