@@ -9,6 +9,43 @@
 <a id="linuxOperatingSystem"></a>
 ## LinuxOS
 
+* 目次  
+  * psコマンド  
+  * timeコマンド  
+  * sudoコマンド  
+  * lsコマンド  
+  * yumコマンド  
+  * dnfコマンド  
+  * aptコマンド  
+
+
+<a id="linuxOS_ps_prescribe"></a>
+### psコマンド
+
+
+<a id="linuxOS_time_prescribe"></a>
+### timeコマンド
+
+
+<a id="linuxOS_sudo_prescribe"></a>
+### sudoコマンド
+
+
+<a id="linuxOS_ls_prescribe"></a>
+### lsコマンド
+
+
+<a id="linuxOS_yum_prescribe"></a>
+### yumコマンド
+
+
+<a id="linuxOS_dnf_prescribe"></a>
+### dnfコマンド
+
+
+<a id="linuxOS_apt_prescribe"></a>
+### aptコマンド
+
 
 <a id="memo99999"></a>
 ## 個人メモ(総合的な優先度の高いメモ)
