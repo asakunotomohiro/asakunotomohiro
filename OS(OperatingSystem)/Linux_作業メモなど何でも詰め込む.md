@@ -44,7 +44,6 @@ $ ps aux
 USER               PID  %CPU %MEM      VSZ    RSS   TT  STAT STARTED      TIME COMMAND
 asakunotomohiro   1463  24.0  1.2 422322480 780320   ??  S     1 323   50:53.17 /Applications/Firefox.app/Contents/MacOS/firefox -foreground
 asakunotomohiro    570   4.3  0.9 411372000 591232   ??  S     1 323   16:19.41 /System/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal
-asakunotomohiro  11843   2.2  2.0 48402972 1354976   ??  S     3 323  148:13.60 /Applications/LibreWolf.app/Contents/MacOS/librewolf
 _gamecontrollerd   513   0.0  0.0 408300208  12976   ??  Ss    1 323    0:16.16 /usr/libexec/gamecontrollerd
 asakunotomohiro    512   0.0  0.0 408310768  22208   ??  S     1 323    0:33.09 /usr/libexec/UserEventAgent (Aqua)
 asakunotomohiro    359   0.0  0.3 410330656 184288   ??  Ss    1 323    3:37.54 /System/Library/CoreServices/loginwindow.app/Contents/MacOS/loginwindow console
@@ -66,6 +65,7 @@ $
     * プロセスの状態。  
       **R**：実行可能状態。  
       **S**：スリープ状態。  
+      **Z**：ゾンビ状態。  
       などなど。  
   * **STARTED**(別OSでは**START**表記？)  
     プロセス起動時間。  
@@ -95,18 +95,9 @@ $ ps -eo pid,ppid,comm
   287     1 /usr/libexec/logd	←☆PPIDが1のプロセスは、initシステムから直接起動を受けている(他のもそうだが、1以外は間接起動)。
  1463     1 /Applications/Firefox.app/Contents/MacOS/firefox
  1466  1463 /Applications/Firefox.app/Contents/MacOS/plugin-container.app/Contents/MacOS/plugin-container
- 1474  1463 /Applications/Firefox.app/Contents/MacOS/plugin-container.app/Contents/MacOS/plugin-container
- 1480     1 /System/Library/Frameworks/Metal.framework/Versions/A/XPCServices/MTLCompilerService.xpc/Contents/MacOS/MTLCompilerService
  1482     1 /usr/libexec/memoryanalyticsd
- 1475  1463 /Applications/Firefox.app/Contents/MacOS/plugin-container.app/Contents/MacOS/plugin-container
   570     1 /System/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal
-  693   570 login
- 3981   570 login
-14573   570 login
-51090   570 login
 27020   570 login
-11843     1 /Applications/LibreWolf.app/Contents/MacOS/librewolf
-11844 11843 /Applications/LibreWolf.app/Contents/MacOS/plugin-container.app/Contents/MacOS/plugin-container
   513     1 /usr/libexec/gamecontrollerd
   512     1 /usr/libexec/UserEventAgent
   359     1 /System/Library/CoreServices/loginwindow.app/Contents/MacOS/loginwindow
@@ -119,6 +110,31 @@ $
 
 <a id="linuxOS_time_prescribe"></a>
 ### timeコマンド-プロセス管理。
+プロセスの実行開始から終了までの確認について説明する。  
+
+以下、timeコマンド結果(都合よく改行)。
+```terminal
+$ time sleep 1	←☆勝手に改行した(本来1行出力)。
+sleep 1
+0.00s user	←☆プロセス実行から終了までの　プロセスが直接使用したCPU時間。
+0.00s system	←☆プロセス実行から終了までの　プロセスの依頼を受けてカーネルが使用したCPU時間。
+0% cpu	←☆プロセス実行から終了までの　経過時間？
+1.010 total	←☆当該プロセスが使ったCPU時間？
+$
+```
+紙面と異なる結果になった(MacはUnixということで、Linux結果ではないようで・・・)。  
+
+以下、9秒間動き続けるプログラム結果。
+```terminal
+$ time perl linux_time.pl
+v5.36.0	←☆これは気にしない。
+perl linux_time.pl  0.00s user 0.01s system 0% cpu 9.025 total	←☆今回気にするのはコッチ。
+$
+```
+**0.00s user**：CPUが直接使用していない？  
+**0.01s system**：カーネルが直接使用したのがこの程度？  
+**0% cpu**：なぜここが0？　カーネル使用時間に関係ある？  
+**9.025 total**：当該プロセスが使用したCPU時間は妥当そうだ。  
 
 
 <a id="linuxOS_sudo_prescribe"></a>
