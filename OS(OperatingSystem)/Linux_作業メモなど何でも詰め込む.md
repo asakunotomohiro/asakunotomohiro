@@ -132,6 +132,18 @@ $
 ```
 本来のLinux環境と異なるため、勉強にならないぞ。  
 
+以下、9秒間動き続けるプログラム結果。
+```terminal
+$ time perl linux_time.pl
+v5.36.0	←☆これは気にしない。
+perl linux_time.pl  0.00s user 0.01s system 0% cpu 9.025 total	←☆今回気にするのはコッチ。
+$
+```
+**0.00s user**：CPUが直接使用していない？  
+**0.01s system**：カーネルが直接使用したのがこの程度？  
+**0% cpu**：なぜここが0？　カーネル使用時間に関係ある？  
+**9.025 total**：当該プロセスが使用したCPU時間は妥当そうだ。  
+
 
 <a id="linuxOS_sudo_prescribe"></a>
 ### sudoコマンド
