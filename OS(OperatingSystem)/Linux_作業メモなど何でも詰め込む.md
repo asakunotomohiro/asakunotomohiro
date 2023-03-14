@@ -141,6 +141,38 @@ $
 <a id="linuxOS_sudo_prescribe"></a>
 ### sudoコマンド
 
+以下、lsコマンドにて、権限確認。
+```terminal
+$ ls -alR
+total 152
+drwxr-xr-x  9 asakunotomohiro  staff    288  3 14 16:48 .
+drwxr-xr-x  5 asakunotomohiro  staff    160  3 14 16:49 ..
+-rw-r--r--@ 1 asakunotomohiro  staff   6148  3 14 16:48 .DS_Store	←☆ゴミファイル。
+-rw-r--r--  1 asakunotomohiro  staff  16384  3 14 16:45 .Linux_作業メモなど何でも詰め込む.md.swp
+-rwxr-xr-x  1 asakunotomohiro  staff  27421  3 14 16:42 Android_作業メモなど何でも詰め込む.md
+-rwxr-xr-x  1 asakunotomohiro  staff   6161  3 14 16:45 Linux_作業メモなど何でも詰め込む.md
+-rwxr-xr-x  1 asakunotomohiro  staff  11150  3 14 16:42 Mac_作業メモなど何でも詰め込む.md
+-rw-r--r--  1 asakunotomohiro  staff   3397  3 14 16:42 README.md
+drwxr-xr-x  4 asakunotomohiro  staff    128  3 14 16:42 コマンドの実行確認結果
+
+./コマンドの実行確認結果:
+total 16
+drwxr-xr-x  4 asakunotomohiro  staff  128  3 14 16:42 .
+drwxr-xr-x  9 asakunotomohiro  staff  288  3 14 16:48 ..
+-rw-r--r--  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go	←☆実行権限を与えていない実行ファイル。
+-rwxr--r--  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl	←☆実行ファイル。
+$
+```
+これだけでは理解できない。  
+
+* パーミッション表記の意味。
+  **-rwxrwxrwx**  
+  1文字目：ファイルタイプ  
+  2〜4文字目：ファイルオーナ  
+  5〜7文字目：ファイルグループ  
+  8〜10文字目：その他のユーザ  
+  単語分けするならば、**- rwx rwx rwx**となる。  
+
 
 <a id="linuxOS_ls_prescribe"></a>
 ### lsコマンド
