@@ -16,7 +16,8 @@
   * プロセス管理  
     * [psコマンド](#linuxOS_ps_prescribe)  
     * [timeコマンド](#linuxOS_time_prescribe)  
-  * sudoコマンド  
+  * パーミッション  
+    * [sudoコマンド](#linuxOS_sudo_prescribe)  
   * lsコマンド  
   * yumコマンド  
   * dnfコマンド  
