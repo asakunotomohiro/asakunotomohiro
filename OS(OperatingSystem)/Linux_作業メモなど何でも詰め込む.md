@@ -168,9 +168,9 @@ $
 * パーミッション表記の意味。
   **-rwxrwxrwx**  
   1文字目：[ファイルタイプ](#linuxOS_sudo_prescribe_filetype)  
-  2〜4文字目：ファイルオーナ  
-  5〜7文字目：ファイルグループ  
-  8〜10文字目：その他のユーザ  
+  2〜4文字目：[ファイルオーナ](#linuxOS_sudo_prescribe_permission)  
+  5〜7文字目：[ファイルグループ](#linuxOS_sudo_prescribe_permission)  
+  8〜10文字目：[その他のユーザ](#linuxOS_sudo_prescribe_permission)  
   単語分けするならば、**- rwx rwx rwx**となる。  
 
 
@@ -188,6 +188,24 @@ $
 |p|FIFO(名前付きパイプ)|FIFOを用いたプロセス間通信に利用するファイル||
 |s|Unixドメインソケット|ソケットを用いたプロセス間通信に利用するファイル||
 |?|その他ファイルタイプ|判断しにくいファイル(破損可能性大)||
+
+
+<a id="linuxOS_sudo_prescribe_permission"></a>
+#### sudoコマンド-パーミッション表記
+パーミッション表記は、3種類の3種類で表す(何じゃそりゃ)。  
+
+<a id="linuxOS_sudo_prescribe_permission_sign"></a>
+パーミッション表示の記号の意味  
+**r**：Read-読み込み。  
+**w**：Write-書き込み。  
+**x**：eXecute-実行。  
+
+|文字|意味|備考|
+|:--:|----|----|
+|-|権限未設定||
+|r|読み込み可能||
+|w|書き込み可能||
+|x|実行可能(ディレクトリの場合は、中身の確認可能)。||
 
 
 <a id="linuxOS_ls_prescribe"></a>
