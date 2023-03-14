@@ -14,8 +14,8 @@
 
 * 目次  
   * プロセス管理  
-    * psコマンド  
-    * timeコマンド  
+    * [psコマンド](#linuxOS_ps_prescribe)  
+    * [timeコマンド](#linuxOS_time_prescribe)  
   * sudoコマンド  
   * lsコマンド  
   * yumコマンド  
