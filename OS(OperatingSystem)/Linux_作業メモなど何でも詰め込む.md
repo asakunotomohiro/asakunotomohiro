@@ -29,7 +29,7 @@ psとは、プロセスのことで、プログラムの実行単位として定
 
 
 以下、オプションなしの実行結果。  
-```
+```terminal
 $ ps
   PID TTY           TIME CMD
   711 ttys000    0:00.13 -zsh
@@ -39,16 +39,14 @@ $
 ```
 
 以下、3種類のオプション付き実行結果。
-```
+```terminal
 $ ps aux
 USER               PID  %CPU %MEM      VSZ    RSS   TT  STAT STARTED      TIME COMMAND
 asakunotomohiro   1463  24.0  1.2 422322480 780320   ??  S     1 323   50:53.17 /Applications/Firefox.app/Contents/MacOS/firefox -foreground
-_coreaudiod        386  12.3  0.2 409508464 111920   ??  Ss    1 323  432:42.68 /usr/sbin/coreaudiod
 asakunotomohiro    570   4.3  0.9 411372000 591232   ??  S     1 323   16:19.41 /System/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal
 asakunotomohiro  11843   2.2  2.0 48402972 1354976   ??  S     3 323  148:13.60 /Applications/LibreWolf.app/Contents/MacOS/librewolf
 _gamecontrollerd   513   0.0  0.0 408300208  12976   ??  Ss    1 323    0:16.16 /usr/libexec/gamecontrollerd
 asakunotomohiro    512   0.0  0.0 408310768  22208   ??  S     1 323    0:33.09 /usr/libexec/UserEventAgent (Aqua)
-root               360   0.0  0.0 408305824  23984   ??  Ss    1 323    2:06.72 /System/Library/PrivateFrameworks/CoreDuetContext.framework/Resources/contextstored
 asakunotomohiro    359   0.0  0.3 410330656 184288   ??  Ss    1 323    3:37.54 /System/Library/CoreServices/loginwindow.app/Contents/MacOS/loginwindow console
 　　　・
 　　　・
@@ -62,8 +60,61 @@ $
     プログラムユーザ名(プログラムからファイルを触る場合のユーザ名。正確にはユーザ権限)。  
   * **PID**  
     起動中の全プロセス間で一意に割り当てられてプロセスID。  
+  * **PPID**  
+    PIDの子プロセス。  
+  * **STAT**  
+    * プロセスの状態。  
+      **R**：実行可能状態。  
+      **S**：スリープ状態。  
+      などなど。  
+  * **STARTED**(別OSでは**START**表記？)  
+    プロセス起動時間。  
+  * **TIME**  
+    CPUの使用時間。  
   * **COMMAND**  
     プログラムのコマンドとそのオプション。  
+
+
+<a id="linuxOS_ps_prescribe_relationship"></a>
+#### プロセスの親子関係
+本来であれば、簡単に確認できるコマンドはあるが、私の環境にはなかった。  
+
+以下、単純確認コマンド。  
+```terminal
+$ pstree
+zsh: command not found: pstree
+$
+```
+本来であれば、親子関係になった状態で表示してくれる。  
+
+以下、代替。
+```terminal
+$ ps -eo pid,ppid,comm
+  PID  PPID COMM
+    1     0 /sbin/launchd	←☆システムが起動してから最初に実行されるプロセス(ゆえに、PIDが1になっている)。initシステム。
+  287     1 /usr/libexec/logd	←☆PPIDが1のプロセスは、initシステムから直接起動を受けている(他のもそうだが、1以外は間接起動)。
+ 1463     1 /Applications/Firefox.app/Contents/MacOS/firefox
+ 1466  1463 /Applications/Firefox.app/Contents/MacOS/plugin-container.app/Contents/MacOS/plugin-container
+ 1474  1463 /Applications/Firefox.app/Contents/MacOS/plugin-container.app/Contents/MacOS/plugin-container
+ 1480     1 /System/Library/Frameworks/Metal.framework/Versions/A/XPCServices/MTLCompilerService.xpc/Contents/MacOS/MTLCompilerService
+ 1482     1 /usr/libexec/memoryanalyticsd
+ 1475  1463 /Applications/Firefox.app/Contents/MacOS/plugin-container.app/Contents/MacOS/plugin-container
+  570     1 /System/Applications/Utilities/Terminal.app/Contents/MacOS/Terminal
+  693   570 login
+ 3981   570 login
+14573   570 login
+51090   570 login
+27020   570 login
+11843     1 /Applications/LibreWolf.app/Contents/MacOS/librewolf
+11844 11843 /Applications/LibreWolf.app/Contents/MacOS/plugin-container.app/Contents/MacOS/plugin-container
+  513     1 /usr/libexec/gamecontrollerd
+  512     1 /usr/libexec/UserEventAgent
+  359     1 /System/Library/CoreServices/loginwindow.app/Contents/MacOS/loginwindow
+　　　・
+　　　・
+　　　・
+$
+```
 
 
 <a id="linuxOS_time_prescribe"></a>
