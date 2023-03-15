@@ -320,6 +320,18 @@ total 16
 $
 ```
 
+<a id="linuxOS_sudo_prescribe_permission_chmod_option_group_w"></a>
+以下、グループに書き込み権限付与。
+```terminal
+$ chmod 760 linux_time.go	←☆オーナには全権限を付与した状態でグループに読み込み権限付与(既存残)。
+$ chmod g=w linux_time.pl	←☆題名通り。
+$ ls -l
+total 16
+-rwxrw----  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go	←☆意図した通り。
+-rwx-w----  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl	←☆書き込み権限のみが付与されている(既存剥奪)。
+$
+```
+
 <a id="linuxOS_sudo_prescribe_permission_chmod_option_group_x"></a>
 以下、グループに実行権限付与。
 ```terminal
