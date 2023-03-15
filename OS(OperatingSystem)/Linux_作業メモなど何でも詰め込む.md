@@ -530,6 +530,7 @@ $ dscl . list /Users | grep -v '_'
 (standard input):114:root	←☆管理者権限ユーザだろうね。
 $
 ```
+よくよく考えれば、これらのコマンドは、Linuxとして調べているが、実行環境はMacなのだからMac用に記載すべきだよね。  
 
 
 <a id="memo99999"></a>
