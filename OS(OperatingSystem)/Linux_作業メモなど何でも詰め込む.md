@@ -234,10 +234,24 @@ $
     また、3種類すべて(オーナ・グループ・その他)の場合は、`a`を用いる。  
     そして、アルファベットの順序は固定。  
     例）`chmod u+rx`(オーナに読み込みと実行権限を付与)  
-    追加作業になるため、他の権限はそのままになる。  
+    * 権限の種類。  
+      * `+`：権限を付与する(既存の権限に追加する)。  
+      * `-`：権限を剥奪する(既存の権限に追加する)。  
+      * `=`：権限を絶対的に指定する(既存の権限はなくなる)。  
   * モード  
     読み込み(`4`)・書き込み(`2`)・実行権限(`1`)を7進数値で指定する(組み合わせる)。  
     例）`chmod 500`(オーナに読み込みと実行権限を付与。それ以外は権限剥奪)  
+
+* 対象ユーザ指定前提の権限付与  
+  * [オーナのみに実行権限を付与する。](#linuxOS_sudo_prescribe_permission_chmod_option_owner_x)  
+  * [オーナのみに読み込み権限を付与する。](#linuxOS_sudo_prescribe_permission_chmod_option_owner_r)  
+  * [オーナのみに書き込み権限を付与する。](#linuxOS_sudo_prescribe_permission_chmod_option_owner_w)  
+  * [グループに読み込み権限を付与する。](#linuxOS_sudo_prescribe_permission_chmod_option_group_r)  
+  * [グループに書き込み権限を付与する。](#linuxOS_sudo_prescribe_permission_chmod_option_group_w)  
+  * [グループに実行権限を付与する。](#linuxOS_sudo_prescribe_permission_chmod_option_group_x)  
+  * [その他にすべての権限を付与する。](#linuxOS_sudo_prescribe_permission_chmod_option_others_all)  
+  * [権限の剥奪](#linuxOS_sudo_prescribe_permission_chmod_option_deprivation_authority)  
+
 
 <a id="linuxOS_sudo_prescribe_allnot_permission"></a>
 以下、何も権限がない状態から始める。
@@ -246,6 +260,141 @@ $ ls -l
 total 16
 ----------  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go
 ----------  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl
+$
+```
+
+<a id="linuxOS_sudo_prescribe_permission_chmod_option_owner_x"></a>
+以下、オーナに、実行権限付与。
+```terminal
+$ chmod u+x linux_time.go
+$ chmod 100 linux_time.pl
+$ ls -l
+total 16
+---x------  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go
+---x------  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl
+$
+```
+
+<a id="linuxOS_sudo_prescribe_permission_chmod_option_owner_r"></a>
+以下、オーナに、読み込み権限付与。
+```terminal
+$ chmod u+r linux_time.go	←☆読み込み権限を追加付与。
+$ chmod 400 linux_time.pl	←☆読み込み権限のみ付与。
+$ ls -l
+total 16
+-r-x------  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go	←☆最初に追加した実行権限が残っている。
+-r--------  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl	←☆実行権限がなかったことになっている。
+$
+$ chmod 500 linux_time.pl	←☆読み込みと実行権限を付与。
+$ ls -l
+total 16
+-r-x------  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go
+-r-x------  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl	←☆同じになった。
+$
+```
+
+<a id="linuxOS_sudo_prescribe_permission_chmod_option_owner_w"></a>
+以下、オーナに、書き込み権限付与。
+```terminal
+$ chmod u+w linux_time.go	←☆書き込み権限を追加付与。
+$ chmod 200 linux_time.pl	←☆書き込み権限のみ付与。
+$ ls -l
+total 16
+-rwx------  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go	←☆上記権限が残った状態になっている。
+--w-------  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl	←☆指定した権限のみ与えられている。
+$
+$ chmod 700 linux_time.pl	←☆読み書き実行権限を付与。
+$ ls -l
+total 16
+-rwx------  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go
+-rwx------  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl	←☆同じになった。
+$
+```
+
+<a id="linuxOS_sudo_prescribe_permission_chmod_option_group_r"></a>
+以下、グループに読み込み権限付与。
+```terminal
+$ chmod 740 linux_time.go	←☆オーナには全権限を付与した状態でグループに読み込み権限付与。
+$ chmod g=r linux_time.pl	←☆題名通り。
+$ ls -l
+total 16
+-rwxr-----  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go	←☆意図した通り。
+-rwxr-----  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl	←☆意図した通り。
+$
+```
+
+<a id="linuxOS_sudo_prescribe_permission_chmod_option_group_w"></a>
+以下、グループに書き込み権限付与。
+```terminal
+$ chmod 760 linux_time.go	←☆オーナには全権限を付与した状態でグループに読み込み権限など付与。
+$ chmod g=w linux_time.pl	←☆題名通り。
+$ ls -l
+total 16
+-rwxrw----  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go	←☆意図した通り。
+-rwx-w----  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl	←☆書き込み権限のみが付与されている(既存失効)。
+$
+$ chmod g+r linux_time.pl	←☆プラス記号を用いて追加付与した。
+$ ls -l
+total 16
+-rwxrw----  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go
+-rwxrw----  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl	←☆権限がそろった。
+$
+```
+
+<a id="linuxOS_sudo_prescribe_permission_chmod_option_group_x"></a>
+以下、グループに実行権限付与。
+```terminal
+$ chmod 770 linux_time.go	←☆オーナには全権限を付与した状態でグループに実行権限など付与。
+$ chmod g=x linux_time.pl	←☆題名通り。
+$ ls -l
+total 16
+-rwxrwx---  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go	←☆意図した通り。
+-rwx--x---  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl	←☆実行権限のみが付与されている(既存失効)。
+$
+$ chmod g+rw linux_time.pl	←☆プラス記号を用いて2種類の権限を追加付与した。
+$ ls -l
+total 16
+-rwxrwx---  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go
+-rwxrwx---  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl	←☆権限がそろった。
+$
+```
+
+<a id="linuxOS_sudo_prescribe_permission_chmod_option_others_all"></a>
+以下、その他にすべて(読み書き実行)の権限付与。
+```terminal
+$ chmod o+rwx linux_time.go	←☆グループに全権限を追加付与だが、3種類すべてになるため、追加付与か判断できず。
+$ chmod o=rwx linux_time.pl	←☆グループに全権限を絶対付与だが、3種類すべてになるため、新規付与か判断できず。
+$ ls -l
+total 16
+-rwxrwxrwx  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go	←☆意図した通り。
+-rwxrwxrwx  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl	←☆意図した通り。
+$
+```
+
+<a id="linuxOS_sudo_prescribe_permission_chmod_option_deprivation_authority"></a>
+以下、権限の剥奪。
+```terminal
+$ chmod o-rw  linux_time.go	←☆その他から読み書き権限剥奪。
+$ chmod a-rwx linux_time.pl	←☆3種類(オーナ・グループ・その他)から全権限剥奪
+$ ls -l
+total 16
+-rwxrwx--x  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go
+----------  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl
+$
+$ chmod u=rw  linux_time.go
+$ chmod a=rwx linux_time.pl	←☆3種類に全権限付与。
+$ ls -l
+total 16
+-rw-rwx--x  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go
+-rwxrwxrwx  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl
+$
+$ chmod ug= linux_time.go	←☆オーナ・グループの2種類から全権限剥奪(正確には、"権限なし"を付与する)。
+$ chmod a=  linux_time.pl	←☆3種類から全権限剥奪(正確には、"権限なし"を付与する)。
+$ ls -l
+total 16
+---------x  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go	←☆その他の権限のみ残る。
+----------  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl	←☆意図した通り(権限が一切ない)。
+$
 $
 ```
 
