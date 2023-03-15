@@ -250,6 +250,8 @@ $
   * [グループに書き込み権限を付与する。](#linuxOS_sudo_prescribe_permission_chmod_option_group_w)  
   * [グループに実行権限を付与する。](#linuxOS_sudo_prescribe_permission_chmod_option_group_x)  
   * [その他にすべての権限を付与する。](#linuxOS_sudo_prescribe_permission_chmod_option_others_all)  
+  * [権限の剥奪](#linuxOS_sudo_prescribe_permission_chmod_option_deprivation_authority)  
+
 
 <a id="linuxOS_sudo_prescribe_allnot_permission"></a>
 以下、何も権限がない状態から始める。
@@ -366,6 +368,33 @@ $ ls -l
 total 16
 -rwxrwxrwx  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go	←☆意図した通り。
 -rwxrwxrwx  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl	←☆意図した通り。
+$
+```
+
+<a id="linuxOS_sudo_prescribe_permission_chmod_option_deprivation_authority"></a>
+以下、権限の剥奪。
+```terminal
+$ chmod o-rw  linux_time.go	←☆その他から読み書き権限剥奪。
+$ chmod a-rwx linux_time.pl	←☆3種類(オーナ・グループ・その他)から全権限剥奪
+$ ls -l
+total 16
+-rwxrwx--x  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go
+----------  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl
+$
+$ chmod u=rw  linux_time.go
+$ chmod a=rwx linux_time.pl	←☆3種類に全権限付与。
+$ ls -l
+total 16
+-rw-rwx--x  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go
+-rwxrwxrwx  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl
+$
+$ chmod ug= linux_time.go	←☆オーナ・グループの2種類から全権限剥奪(正確には、"権限なし"を付与する)。
+$ chmod a=  linux_time.pl	←☆3種類から全権限剥奪(正確には、"権限なし"を付与する)。
+$ ls -l
+total 16
+---------x  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go	←☆その他の権限のみ残る。
+----------  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl	←☆意図した通り(権限が一切ない)。
+$
 $
 ```
 
