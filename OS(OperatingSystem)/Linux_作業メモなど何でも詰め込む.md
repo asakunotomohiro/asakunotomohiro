@@ -242,6 +242,7 @@ $
 * 対象ユーザ指定前提の権限付与  
   * [オーナのみに実行権限を付与する。](#linuxOS_sudo_prescribe_permission_chmod_option_x)  
   * [オーナのみに読み込み権限を付与する。](#linuxOS_sudo_prescribe_permission_chmod_option_r)  
+  * [オーナのみに書き込み権限を付与する。](#linuxOS_sudo_prescribe_permission_chmod_option_w)  
 
 <a id="linuxOS_sudo_prescribe_allnot_permission"></a>
 以下、何も権限がない状態から始める。
@@ -280,6 +281,18 @@ $ ls -l
 total 16
 -r-x------  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go
 -r-x------  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl
+$
+```
+
+<a id="linuxOS_sudo_prescribe_permission_chmod_option_w"></a>
+以下、オーナに、読み込み権限付与。
+```terminal
+$ chmod u+w linux_time.go	←☆書き込み権限を追加付与。
+$ chmod 200 linux_time.pl	←☆書き込み権限のみ付与。
+$ ls -l
+total 16
+-rwx------  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go	←☆上記権限が残った状態になっている。
+--w-------  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl	←☆指定した権限のみ与えられている。
 $
 ```
 
