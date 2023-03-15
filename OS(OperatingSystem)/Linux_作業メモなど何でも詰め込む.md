@@ -141,6 +141,12 @@ $
 <a id="linuxOS_sudo_prescribe"></a>
 ### sudoコマンド
 
+* 権限用目次  
+  * [ファイルタイプの意味と用途](#linuxOS_sudo_prescribe_filetype)  
+  * [パーミッション表記](#linuxOS_sudo_prescribe_permission)  
+  * [ファイルorディレクトリ作成時の標準権限](#linuxOS_sudo_prescribe_umask)  
+
+前置き作業。  
 以下、lsコマンドにて、権限確認。
 ```terminal
 $ ls -alR
@@ -179,7 +185,7 @@ $
 
 
 <a id="linuxOS_sudo_prescribe_filetype"></a>
-#### sudoコマンド-ファイルタイプの意味と用途
+#### ファイルタイプの意味と用途
 ファイルタイプは、パーミッションとは無関係。  
 
 |文字|ファイルタイプ|用途|備考|
@@ -195,7 +201,7 @@ $
 
 
 <a id="linuxOS_sudo_prescribe_permission"></a>
-#### sudoコマンド-パーミッション表記
+#### パーミッション表記
 パーミッション表記は、3種類の3種類で表す(何じゃそりゃ)。  
 
 
@@ -241,6 +247,9 @@ $
   * モード  
     読み込み(`4`)・書き込み(`2`)・実行権限(`1`)を7進数値で指定する(組み合わせる)。  
     例）`chmod 500`(オーナに読み込みと実行権限を付与。それ以外は権限剥奪)  
+
+<a name="entitlementORrevocation_Record"></a>
+<details><summary>権限付与または剥奪作業記録。</summary>
 
 * 対象ユーザ指定前提の権限付与  
   * [オーナのみに実行権限を付与する。](#linuxOS_sudo_prescribe_permission_chmod_option_owner_x)  
@@ -397,6 +406,11 @@ total 16
 $
 $
 ```
+
+</details>
+
+<a id="linuxOS_sudo_prescribe_umask"></a>
+#### ファイルorディレクトリ作成時の標準権限
 
 
 <a id="linuxOS_ls_prescribe"></a>
