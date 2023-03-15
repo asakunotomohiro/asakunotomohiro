@@ -280,7 +280,7 @@ $ chmod 500 linux_time.pl	←☆読み込みと実行権限を付与。
 $ ls -l
 total 16
 -r-x------  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go
--r-x------  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl
+-r-x------  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl	←☆同じになった。
 $
 ```
 
@@ -293,6 +293,12 @@ $ ls -l
 total 16
 -rwx------  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go	←☆上記権限が残った状態になっている。
 --w-------  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl	←☆指定した権限のみ与えられている。
+$
+$ chmod 700 linux_time.pl	←☆読み書き実行権限を付与。
+$ ls -l
+total 16
+-rwx------  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go
+-rwx------  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl	←☆同じになった。
 $
 ```
 
