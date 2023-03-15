@@ -165,13 +165,17 @@ $
 ```
 これだけでは理解できない。  
 
+<a id="linuxOS_sudo_prescribe_permission_option"></a>
 * パーミッション表記の意味。
   **-rwxrwxrwx**  
-  1文字目：[ファイルタイプ](#linuxOS_sudo_prescribe_filetype)  
-  2〜4文字目：[ファイルオーナ](#linuxOS_sudo_prescribe_permission)  
-  5〜7文字目：[ファイルグループ](#linuxOS_sudo_prescribe_permission)  
-  8〜10文字目：[その他のユーザ](#linuxOS_sudo_prescribe_permission)  
   単語分けするならば、**- rwx rwx rwx**となる。  
+  * 1文字目：[ファイルタイプ](#linuxOS_sudo_prescribe_filetype)  
+  * 2〜4文字目：[ファイルオーナ](#linuxOS_sudo_prescribe_permission)  
+    `chmod`指定単語：**u**  
+  * 5〜7文字目：[ファイルグループ](#linuxOS_sudo_prescribe_permission)  
+    `chmod`指定単語：**g**  
+  * 8〜10文字目：[その他のユーザ](#linuxOS_sudo_prescribe_permission)  
+    `chmod`指定単語：**o**  
 
 
 <a id="linuxOS_sudo_prescribe_filetype"></a>
@@ -193,6 +197,7 @@ $
 <a id="linuxOS_sudo_prescribe_permission"></a>
 #### sudoコマンド-パーミッション表記
 パーミッション表記は、3種類の3種類で表す(何じゃそりゃ)。  
+
 
 <a id="linuxOS_sudo_prescribe_permission_sign"></a>
 パーミッション表示の記号の意味  
@@ -217,6 +222,32 @@ $
 |**- rwx --- ---**|オーナ同上。グループとその他への権限は何もない。||
 |**- rwx rwx r-x**|オーナ同上。グループの読み書き実行権限あり。その他は読みと実行権限あり。||
 |**- rw- rw- r--**|オーナの読みと実行権限あり。グループの読みと実行権限あり。その他は読み込みのみ権限あり。||
+
+<a id="linuxOS_sudo_prescribe_permission_chmod"></a>
+実際のコマンド例）
+`chmod オプションorモード ファイル`  
+
+<a id="linuxOS_sudo_prescribe_permission_chmod_option"></a>
+* オプションorモード  
+  * オプション  
+    [上記](#linuxOS_sudo_prescribe_permission_option)のアルファベットを指定する。  
+    また、3種類すべて(オーナ・グループ・その他)の場合は、`a`を用いる。  
+    そして、アルファベットの順序は固定。  
+    例）`chmod u+rx`(オーナに読み込みと実行権限を付与)  
+    追加作業になるため、他の権限はそのままになる。  
+  * モード  
+    読み込み(`4`)・書き込み(`2`)・実行権限(`1`)を7進数値で指定する(組み合わせる)。  
+    例）`chmod 500`(オーナに読み込みと実行権限を付与。それ以外は権限剥奪)  
+
+<a id="linuxOS_sudo_prescribe_allnot_permission"></a>
+以下、何も権限がない状態から始める。
+```terminal
+$ ls -l
+total 16
+----------  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go
+----------  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl
+$
+```
 
 
 <a id="linuxOS_ls_prescribe"></a>
