@@ -17,6 +17,9 @@
 * 目次。  
   * [macOS新規利用前の設定変更](#macOperatingSystemsetting)  
   * [macOSを再インストールする方法](#macOperatingSystemreinstall)  
+  * [コマンド](#macOperatingSystemreorder)  
+    * [ユーザ一覧表示](#macOperatingSystemreorder_dscl)  
+
 
 
 <a id="macOperatingSystemreinstall"></a>
@@ -179,6 +182,27 @@ HFS+とは、Mac OS拡張フォーマットのこと。
   1. **Macintosh HD**を選ぶ。  
      ※**Recovery HD**は選べない(そもそもこれから再インストールしてほしい。なぜにネットワーク接続必須なんだよ)。  
      ※時間かかる(私の環境で30分前後でインストール完了)。  
+
+
+<a id="macOperatingSystemreorder"></a>
+### MacOS限定のコマンド
+※Linuxコマンドは[別ファイル](./Linux_作業メモなど何でも詰め込む.md)。  
+
+
+<a id="macOperatingSystemreorder_dscl"></a>
+#### 現在のユーザ一覧表示
+[dscl](https://www.unix.com/man-page/osx/1/dscl/)コマンドを使うようだが、これはMac専用のようだ。  
+
+以下、現在のユーザ一覧を表示する。
+```terminal
+$ dscl . list /Users | grep -v '_'
+(standard input):111:asakunotomohiro	←☆現在のログインユーザ
+(standard input):112:daemon	←☆デーモンだよね。
+(standard input):113:nobody	←☆誰？
+(standard input):114:root	←☆管理者権限ユーザだろうね。
+$
+```
+今後Linuxコマンドとの切り分けが必要な場合、気づかずに間違ったファイルに記載しそうなんだが・・・どうしよう。  
 
 
 <a id="memo99999"></a>

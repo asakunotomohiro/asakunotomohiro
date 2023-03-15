@@ -520,17 +520,7 @@ $
 ### useraddコマンド
 [権限](#linuxOS_sudo_prescribe)確認のために、他ユーザが必須だ。  
 ということで、作成および作業終了後は削除することにした。  
-
-以下、現在のユーザ一覧を表示する。
-```terminal
-$ dscl . list /Users | grep -v '_'
-(standard input):111:asakunotomohiro	←☆現在のログインユーザ
-(standard input):112:daemon	←☆デーモンだよね。
-(standard input):113:nobody	←☆誰？
-(standard input):114:root	←☆管理者権限ユーザだろうね。
-$
-```
-よくよく考えれば、これらのコマンドは、Linuxとして調べているが、実行環境はMacなのだからMac用に記載すべきだよね。  
+※現在、Mac上で作業しているため、ユーザ一覧表示用コマンドは別ファイルを[参照](./Mac_作業メモなど何でも詰め込む.md#macOperatingSystemreorder_dscl)すること。  
 
 
 <a id="memo99999"></a>
