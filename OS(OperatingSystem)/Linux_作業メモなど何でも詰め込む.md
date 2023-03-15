@@ -348,6 +348,12 @@ total 16
 -rwxrwx---  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go	←☆意図した通り。
 -rwx--x---  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl	←☆実行権限のみが付与されている(既存失効)。
 $
+$ chmod g+rw linux_time.pl	←☆プラス記号を用いて2種類の権限を追加付与した。
+$ ls -l
+total 16
+-rwxrwx---  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go
+-rwxrwx---  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl	←☆権限がそろった。
+$
 ```
 
 
