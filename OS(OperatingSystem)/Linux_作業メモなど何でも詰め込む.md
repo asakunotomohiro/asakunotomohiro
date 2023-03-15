@@ -22,6 +22,11 @@
   * yumコマンド  
   * dnfコマンド  
   * aptコマンド  
+  * ユーザ管理  
+    * [ユーザ追加(useradd)コマンド](#linuxOS_useradd_prescribe)  
+      未調査。  
+    * [ユーザ削除(userdel)コマンド](#linuxOS_userdel_prescribe)  
+      未調査。  
 
 
 <a id="linuxOS_ps_prescribe"></a>
@@ -511,6 +516,22 @@ $
 
 <a id="linuxOS_apt_prescribe"></a>
 ### aptコマンド
+
+
+<a id="linuxOS_useradd_prescribe"></a>
+### useraddコマンド
+[権限](#linuxOS_sudo_prescribe)確認のために、他ユーザが必須だ。  
+ということで、作成および作業終了後は削除することにした。  
+※現在、Mac上で作業しているため、ユーザ一覧表示用コマンドは別ファイルを[参照](./Mac_作業メモなど何でも詰め込む.md#macOperatingSystemreorder_dscl)すること。  
+
+以下、ユーザを新規追加。
+```terminal
+$ useradd -M hoge	←☆bashでの操作。
+bash: useradd: コマンドが見つかりません
+$
+```
+zshではコマンドが見つからないというメッセージが英文だった。  
+`zsh: command not found: useradd`  
 
 
 <a id="memo99999"></a>
