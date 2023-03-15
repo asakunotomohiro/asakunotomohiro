@@ -239,6 +239,9 @@ $
     読み込み(`4`)・書き込み(`2`)・実行権限(`1`)を7進数値で指定する(組み合わせる)。  
     例）`chmod 500`(オーナに読み込みと実行権限を付与。それ以外は権限剥奪)  
 
+* 対象ユーザ指定前提の権限付与  
+  * [オーナのみに実行権限を付与する。](#linuxOS_sudo_prescribe_permission_chmod_option_x)  
+
 <a id="linuxOS_sudo_prescribe_allnot_permission"></a>
 以下、何も権限がない状態から始める。
 ```terminal
@@ -246,6 +249,18 @@ $ ls -l
 total 16
 ----------  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go
 ----------  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl
+$
+```
+
+<a id="linuxOS_sudo_prescribe_permission_chmod_option_x"></a>
+以下、オーナに、実行権限付与。
+```terminal
+$ chmod u+x linux_time.go
+$ chmod 100 linux_time.pl
+$ ls -l
+total 16
+---x------  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go
+---x------  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl
 $
 ```
 
