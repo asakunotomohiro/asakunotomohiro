@@ -19,6 +19,7 @@
   * パーミッション  
     * [sudoコマンド](#linuxOS_sudo_prescribe)  
   * lsコマンド  
+    * [FHSとは](#)  
   * yumコマンド  
   * dnfコマンド  
   * aptコマンド  
@@ -521,6 +522,12 @@ TODO: Linux環境構築後に調べる。
 <a id="linuxOS_sudo_prescribe_restrictedDeletionBit"></a>
 #### スティッキービットの権限確認
 TODO: Linux環境構築後に調べる。  
+
+
+<a id="linuxOS_whatis-fhs_prescribe"></a>
+### FHSとは
+Linuxにおけるディレクトリ構成の基本ルールとして、FHS(Filesystem Hierarchy Standard)に則るようだ。  
+Linuxに限らず、Unixにも定めているようだ。  
 
 
 <a id="linuxOS_ls_prescribe"></a>
