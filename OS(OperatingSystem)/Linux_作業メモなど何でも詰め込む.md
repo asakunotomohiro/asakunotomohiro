@@ -249,6 +249,7 @@ $
   * [グループに読み込み権限を付与する。](#linuxOS_sudo_prescribe_permission_chmod_option_group_r)  
   * [グループに書き込み権限を付与する。](#linuxOS_sudo_prescribe_permission_chmod_option_group_w)  
   * [グループに実行権限を付与する。](#linuxOS_sudo_prescribe_permission_chmod_option_group_x)  
+  * [その他にすべての権限を付与する。](#linuxOS_sudo_prescribe_permission_chmod_option_others_all)  
 
 <a id="linuxOS_sudo_prescribe_allnot_permission"></a>
 以下、何も権限がない状態から始める。
@@ -353,6 +354,18 @@ $ ls -l
 total 16
 -rwxrwx---  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go
 -rwxrwx---  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl	←☆権限がそろった。
+$
+```
+
+<a id="linuxOS_sudo_prescribe_permission_chmod_option_others_all"></a>
+以下、その他にすべて(読み書き実行)の権限付与。
+```terminal
+$ chmod o+rwx linux_time.go	←☆グループに全権限を追加付与だが、3種類すべてになるため、追加付与か判断できず。
+$ chmod o=rwx linux_time.pl	←☆グループに全権限を絶対付与だが、3種類すべてになるため、新規付与か判断できず。
+$ ls -l
+total 16
+-rwxrwxrwx  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go	←☆意図した通り。
+-rwxrwxrwx  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl	←☆意図した通り。
 $
 ```
 
