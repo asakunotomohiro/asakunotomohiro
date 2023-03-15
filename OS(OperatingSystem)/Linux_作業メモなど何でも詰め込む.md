@@ -275,6 +275,12 @@ total 16
 -r-x------  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go	←☆最初に追加した実行権限が残っている。
 -r--------  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl	←☆実行権限がなかったことになっている。
 $
+$ chmod 500 linux_time.pl	←☆読み込みと実行権限を付与。
+$ ls -l
+total 16
+-r-x------  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go
+-r-x------  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl
+$
 ```
 
 
