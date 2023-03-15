@@ -22,6 +22,9 @@
   * yumコマンド  
   * dnfコマンド  
   * aptコマンド  
+  * ユーザ管理  
+    * [ユーザ追加(useradd)コマンド](#linuxOS_useradd_prescribe)  
+    * [ユーザ削除(useradd)コマンド](#linuxOS_useradd_prescribe)  
 
 
 <a id="linuxOS_ps_prescribe"></a>
@@ -511,6 +514,12 @@ $
 
 <a id="linuxOS_apt_prescribe"></a>
 ### aptコマンド
+
+
+<a id="linuxOS_useradd_prescribe"></a>
+### useraddコマンド
+[権限](#linuxOS_sudo_prescribe)確認のために、他ユーザが必須だ。  
+ということで、作成および作業終了後は削除することにした。  
 
 
 <a id="memo99999"></a>
