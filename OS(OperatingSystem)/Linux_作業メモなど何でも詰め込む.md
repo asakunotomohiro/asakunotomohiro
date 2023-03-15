@@ -432,18 +432,16 @@ $
 ```
 ※先頭1文字目(左端)は、セキュリティファイルなどに誰でも書き込み以外の権限を付与する場所(語弊のある表現？)。  
 
-以下、ファイル作成時の権限確認。
+以下、ファイル・ディレクトリ作成時の権限確認。
 ```terminal
-$ ll
-total 16
-----------  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl
----------x  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go*
-$ touch linux_umask.txt	←☆上記0002の状態で作成。
+$ umask -p
+umask 0002
+$ touch linux_umask1.txt	←☆ファイル作成。
+$ mkdir linux_umask1	←☆ディレクトリ作成。
 $ ls -l
-total 16
----------x  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go
-----------  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl
--rw-rw-r--  1 asakunotomohiro  staff    0  3 15 15:21 linux_umask.txt	←☆オーナ・グループは、読み書き権限あり。その他は読み込み権限あり(セキュリティ的に不安あり)。
+total 0
+drwxrwxr-x  2 asakunotomohiro  staff  64  3 15 15:51 linux_umask1	←☆オーナ・グループは、すべて権限あり。その他は読み込み実行あり。
+-rw-rw-r--  1 asakunotomohiro  staff   0  3 15 15:47 linux_umask1.txt	←☆オーナ・グループは、読み書き権限あり。その他は読み込み権限あり(セキュリティ的に不安あり)。
 $
 ```
 
@@ -485,13 +483,16 @@ $
 
 以下、ファイル作成により、変更の確認。
 ```terminal
+$ umask -p
+umask 0022
 $ touch linux_umask2.txt
+$ mkdir linux_umask2
 $ ls -l
-total 16
----------x  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go
-----------  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl
--rw-rw-r--  1 asakunotomohiro  staff    0  3 15 15:21 linux_umask.txt	←☆権限変更前に作成したファイル。
--rw-r--r--  1 asakunotomohiro  staff    0  3 15 15:44 linux_umask2.txt	←☆権限変更後に作成したファイル。
+total 0
+drwxrwxr-x  2 asakunotomohiro  staff  64  3 15 15:51 linux_umask1
+-rw-rw-r--  1 asakunotomohiro  staff   0  3 15 15:47 linux_umask1.txt	←☆権限変更前に作成したファイル(セキュリティ不安)。
+drwxr-xr-x  2 asakunotomohiro  staff  64  3 15 15:53 linux_umask2	←☆オーナはすべて権限あり。グループ・その他は読み込み実行あり。
+-rw-r--r--  1 asakunotomohiro  staff   0  3 15 15:53 linux_umask2.txt	←☆権限変更後に作成したファイル(セキュリティ安心)。
 $
 ```
 
