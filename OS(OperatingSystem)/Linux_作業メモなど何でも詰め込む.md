@@ -141,6 +141,12 @@ $
 <a id="linuxOS_sudo_prescribe"></a>
 ### sudoコマンド
 
+* 権限用目次  
+  * [ファイルタイプの意味と用途](#linuxOS_sudo_prescribe_filetype)  
+  * [パーミッション表記](#linuxOS_sudo_prescribe_permission)  
+  * [ファイルorディレクトリ作成時の標準権限](#linuxOS_sudo_prescribe_umask)  
+
+前置き作業。  
 以下、lsコマンドにて、権限確認。
 ```terminal
 $ ls -alR
@@ -179,7 +185,7 @@ $
 
 
 <a id="linuxOS_sudo_prescribe_filetype"></a>
-#### sudoコマンド-ファイルタイプの意味と用途
+#### ファイルタイプの意味と用途
 ファイルタイプは、パーミッションとは無関係。  
 
 |文字|ファイルタイプ|用途|備考|
@@ -195,7 +201,7 @@ $
 
 
 <a id="linuxOS_sudo_prescribe_permission"></a>
-#### sudoコマンド-パーミッション表記
+#### パーミッション表記
 パーミッション表記は、3種類の3種類で表す(何じゃそりゃ)。  
 
 
@@ -241,6 +247,9 @@ $
   * モード  
     読み込み(`4`)・書き込み(`2`)・実行権限(`1`)を7進数値で指定する(組み合わせる)。  
     例）`chmod 500`(オーナに読み込みと実行権限を付与。それ以外は権限剥奪)  
+
+<a name="entitlementORrevocation_Record"></a>
+<details><summary>権限付与または剥奪作業記録。</summary>
 
 * 対象ユーザ指定前提の権限付与  
   * [オーナのみに実行権限を付与する。](#linuxOS_sudo_prescribe_permission_chmod_option_owner_x)  
@@ -395,6 +404,95 @@ total 16
 ---------x  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go	←☆その他の権限のみ残る。
 ----------  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl	←☆意図した通り(権限が一切ない)。
 $
+$
+```
+
+</details>
+
+<a id="linuxOS_sudo_prescribe_umask"></a>
+#### ファイルorディレクトリ作成時の標準権限
+標準権限は`umask`コマンドで確認できる。  
+しかし、**zsh**では作成標準権限の確認ができそうにない。  
+
+* 作業。  
+  * [ファイルとディレクトリのパーミッション初期値確認](#linuxOS_sudo_prescribe_umask_standardPermissionsFilesDirectories)  
+  * [パーミッション初期値の変更](#linuxOS_sudo_prescribe_umask_changeStandardPermissions)  
+
+```terminal
+$ umask -p	←☆zshでの確認(どういうこと？)。
+umask: bad option: -p
+$
+```
+
+以下、bash上でファイルやディレクトリの作成標準権限を確認。
+```terminal
+$ umask -p
+umask 0002
+$
+```
+※先頭1文字目(左端)は、セキュリティファイルなどに誰でも書き込み以外の権限を付与する場所(語弊のある表現？)。  
+
+以下、ファイル・ディレクトリ作成時の権限確認。
+```terminal
+$ umask -p
+umask 0002
+$ touch linux_umask1.txt	←☆ファイル作成。
+$ mkdir linux_umask1	←☆ディレクトリ作成。
+$ ls -l
+total 0
+drwxrwxr-x  2 asakunotomohiro  staff  64  3 15 15:51 linux_umask1	←☆オーナ・グループは、すべて権限あり。その他は読み込み実行あり。
+-rw-rw-r--  1 asakunotomohiro  staff   0  3 15 15:47 linux_umask1.txt	←☆オーナ・グループは、読み書き権限あり。その他は読み込み権限あり(セキュリティ的に不安あり)。
+$
+```
+
+<a id="linuxOS_sudo_prescribe_umask_standardPermissionsFilesDirectories"></a>
+以下、ファイルとディレクトリのパーミッション初期値。  
+
+|種類|初期値(8進数)|パーミンションフラグ|
+|----|:-----------:|--------------------|
+|ファイル|666|**rw- rw- rw-**|
+|ディレクトリ|777|**rwx rwx rwx**|
+
+上記の初期値からumaskの差分にて、作成時の権限が決まる。  
+
+以下、差分の計算。
+```text
+・ファイルの場合。
+  初期値 0666  - rw- rw- rw-
+  umask  0002  - --- --- -w-
+  --------------------------
+  結果   0664  - rw- rw- r--
+
+・ディレクトリの場合。
+  初期値 0777  d rwx rwx rwx
+  umask  0002  - --- --- -w-
+  --------------------------
+  結果   0775  d rwx rwx r-x
+```
+
+<a id="linuxOS_sudo_prescribe_umask_changeStandardPermissions"></a>
+以下、パーミッション初期値の変更方法。  
+```terminal
+$ umask -p
+umask 0002	←☆変更前。
+$ umask 0022	←☆標準権限変更。
+$ umask -p
+umask 0022	←☆変更後。
+$
+```
+
+以下、ファイル作成により、変更の確認。
+```terminal
+$ umask -p
+umask 0022
+$ touch linux_umask2.txt
+$ mkdir linux_umask2
+$ ls -l
+total 0
+drwxrwxr-x  2 asakunotomohiro  staff  64  3 15 15:51 linux_umask1
+-rw-rw-r--  1 asakunotomohiro  staff   0  3 15 15:47 linux_umask1.txt	←☆権限変更前に作成したファイル(セキュリティ不安)。
+drwxr-xr-x  2 asakunotomohiro  staff  64  3 15 15:53 linux_umask2	←☆オーナはすべて権限あり。グループ・その他は読み込み実行あり。
+-rw-r--r--  1 asakunotomohiro  staff   0  3 15 15:53 linux_umask2.txt	←☆権限変更後に作成したファイル(セキュリティ安心)。
 $
 ```
 
