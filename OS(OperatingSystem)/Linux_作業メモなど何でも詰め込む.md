@@ -521,6 +521,16 @@ $
 [権限](#linuxOS_sudo_prescribe)確認のために、他ユーザが必須だ。  
 ということで、作成および作業終了後は削除することにした。  
 
+以下、現在のユーザ一覧を表示する。
+```terminal
+$ dscl . list /Users | grep -v '_'
+(standard input):111:asakunotomohiro	←☆現在のログインユーザ
+(standard input):112:daemon	←☆デーモンだよね。
+(standard input):113:nobody	←☆誰？
+(standard input):114:root	←☆管理者権限ユーザだろうね。
+$
+```
+
 
 <a id="memo99999"></a>
 ## 個人メモ(総合的な優先度の高いメモ)
