@@ -18,7 +18,8 @@
   * [macOS新規利用前の設定変更](#macOperatingSystemsetting)  
   * [macOSを再インストールする方法](#macOperatingSystemreinstall)  
   * [コマンド](#macOperatingSystemreorder)  
-    * [ユーザ一覧表示](#macOperatingSystemreorder_dscl)  
+    * [ユーザ一覧表示](#macOperatingSystemreorder_dscl-list)  
+    * [ユーザ新規追加](#macOperatingSystemreorder_dscl-create)  
 
 
 
@@ -189,7 +190,7 @@ HFS+とは、Mac OS拡張フォーマットのこと。
 ※Linuxコマンドは[別ファイル](./Linux_作業メモなど何でも詰め込む.md)。  
 
 
-<a id="macOperatingSystemreorder_dscl"></a>
+<a id="macOperatingSystemreorder_dscl-list"></a>
 #### 現在のユーザ一覧表示
 [dscl](https://www.unix.com/man-page/osx/1/dscl/)コマンドを使うようだが、これはMac専用のようだ。  
 
@@ -203,6 +204,21 @@ $ dscl . list /Users | grep -v '_'
 $
 ```
 今後Linuxコマンドとの切り分けが必要な場合、気づかずに間違ったファイルに記載しそうなんだが・・・どうしよう。  
+
+
+<a id="macOperatingSystemreorder_dscl-create"></a>
+#### ユーザの新規追加
+ユーザ一覧を表示するコマンドと同じコマンドを使う。  
+しかし、私の持っている書籍上ではGUIからの操作のみを説明しており、コマンドライン上からの説明はなかった。  
+む〜ん。  
+
+以下、実際には試さないが、こんな感じでやるだろう的な・・・。  
+```terminal
+dscl . -create /Users/asakunoTestUser
+dscl . -create /Users/asakunoTestUser UserShell /bin/bash
+dscl . -create /Users/asakunoTestUser RealName asakunoTestUser
+```
+しかし、macOSのしかもコマンドラインで操作することはないだろう前提で使っているため、深く踏み込んで調べることはしない。  
 
 
 <a id="memo99999"></a>

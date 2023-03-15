@@ -24,7 +24,7 @@
   * aptコマンド  
   * ユーザ管理  
     * [ユーザ追加(useradd)コマンド](#linuxOS_useradd_prescribe)  
-    * [ユーザ削除(useradd)コマンド](#linuxOS_useradd_prescribe)  
+    * [ユーザ削除(userdel)コマンド](#linuxOS_userdel_prescribe)  
 
 
 <a id="linuxOS_ps_prescribe"></a>
@@ -521,6 +521,14 @@ $
 [権限](#linuxOS_sudo_prescribe)確認のために、他ユーザが必須だ。  
 ということで、作成および作業終了後は削除することにした。  
 ※現在、Mac上で作業しているため、ユーザ一覧表示用コマンドは別ファイルを[参照](./Mac_作業メモなど何でも詰め込む.md#macOperatingSystemreorder_dscl)すること。  
+
+以下、ユーザを新規追加。
+```terminal
+$ useradd -M asakunoTestUser
+bash: useradd: コマンドが見つかりません
+$
+```
+あっちゃぁ〜。  
 
 
 <a id="memo99999"></a>
