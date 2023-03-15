@@ -411,6 +411,37 @@ $
 
 <a id="linuxOS_sudo_prescribe_umask"></a>
 #### ファイルorディレクトリ作成時の標準権限
+標準権限は`umask`コマンドで確認できる。  
+しかし、**zsh**では動かせない？  
+
+```terminal
+$ umask -p	←☆zshでの確認(どういうこと？)。
+umask: bad option: -p
+$
+```
+
+以下、bash上でファイルやディレクトリの作成標準権限を確認。
+```terminal
+$ umask -p
+umask 0002
+$
+```
+※先頭1文字目(左端)は、セキュリティファイルなどに誰でも書き込み以外の権限を付与する場所(語弊のある表現？)。  
+
+以下、ファイル作成時の権限確認。
+```terminal
+$ ll
+total 16
+----------  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl
+---------x  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go*
+$ touch linux_umask.txt	←☆上記0002の状態で作成。
+$ ls -l
+total 16
+---------x  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go
+----------  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl
+-rw-rw-r--  1 asakunotomohiro  staff    0  3 15 15:21 linux_umask.txt	←☆オーナ・グループは、読み書き権限あり。その他は読み込み権限あり。
+$
+```
 
 
 <a id="linuxOS_ls_prescribe"></a>
