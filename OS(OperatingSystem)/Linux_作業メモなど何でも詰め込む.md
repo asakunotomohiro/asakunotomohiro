@@ -510,14 +510,17 @@ $
 
 <a id="linuxOS_sudo_prescribe_suid"></a>
 #### SUIDの権限確認
+TODO: Linux環境構築後に調べる。  
 
 
 <a id="linuxOS_sudo_prescribe_sgid"></a>
 #### SGIDの権限確認
+TODO: Linux環境構築後に調べる。  
 
 
 <a id="linuxOS_sudo_prescribe_restrictedDeletionBit"></a>
 #### スティッキービットの権限確認
+TODO: Linux環境構築後に調べる。  
 
 
 <a id="linuxOS_ls_prescribe"></a>
