@@ -412,7 +412,11 @@ $
 <a id="linuxOS_sudo_prescribe_umask"></a>
 #### ファイルorディレクトリ作成時の標準権限
 標準権限は`umask`コマンドで確認できる。  
-しかし、**zsh**では動かせない？  
+しかし、**zsh**では作成標準権限の確認ができそうにない。  
+
+* 作業。  
+  * [ファイルとディレクトリのパーミッション初期値確認](#linuxOS_sudo_prescribe_umask_standardPermissionsFilesDirectories)  
+  * [パーミッション初期値の変更](#linuxOS_sudo_prescribe_umask_changeStandardPermissions)  
 
 ```terminal
 $ umask -p	←☆zshでの確認(どういうこと？)。
@@ -439,7 +443,7 @@ $ ls -l
 total 16
 ---------x  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go
 ----------  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl
--rw-rw-r--  1 asakunotomohiro  staff    0  3 15 15:21 linux_umask.txt	←☆オーナ・グループは、読み書き権限あり。その他は読み込み権限あり。
+-rw-rw-r--  1 asakunotomohiro  staff    0  3 15 15:21 linux_umask.txt	←☆オーナ・グループは、読み書き権限あり。その他は読み込み権限あり(セキュリティ的に不安あり)。
 $
 ```
 
@@ -466,6 +470,29 @@ $
   umask  0002  - --- --- -w-
   --------------------------
   結果   0775  d rwx rwx r-x
+```
+
+<a id="linuxOS_sudo_prescribe_umask_changeStandardPermissions"></a>
+以下、パーミッション初期値の変更方法。  
+```terminal
+$ umask -p
+umask 0002	←☆変更前。
+$ umask 0022	←☆標準権限変更。
+$ umask -p
+umask 0022	←☆変更後。
+$
+```
+
+以下、ファイル作成により、変更の確認。
+```terminal
+$ touch linux_umask2.txt
+$ ls -l
+total 16
+---------x  1 asakunotomohiro  staff  253  3 14 16:42 linux_time.go
+----------  1 asakunotomohiro  staff  160  3 14 16:42 linux_time.pl
+-rw-rw-r--  1 asakunotomohiro  staff    0  3 15 15:21 linux_umask.txt	←☆権限変更前に作成したファイル。
+-rw-r--r--  1 asakunotomohiro  staff    0  3 15 15:44 linux_umask2.txt	←☆権限変更後に作成したファイル。
+$
 ```
 
 
