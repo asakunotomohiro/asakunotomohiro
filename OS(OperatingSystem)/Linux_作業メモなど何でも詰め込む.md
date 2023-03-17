@@ -587,14 +587,19 @@ $
 
 <a id="linuxOS_yum_prescribe"></a>
 ### yumコマンド
+Red Hat系OSのパッケージ管理。  
+yumコマンドの前身はrpm？  
 
 
 <a id="linuxOS_dnf_prescribe"></a>
 ### dnfコマンド
+yumコマンドの改良版。  
 
 
 <a id="linuxOS_apt_prescribe"></a>
 ### aptコマンド
+Debian系OSのパッケージ管理。  
+前身はdpkg？  
 
 
 <a id="linuxOS_useradd_prescribe"></a>
