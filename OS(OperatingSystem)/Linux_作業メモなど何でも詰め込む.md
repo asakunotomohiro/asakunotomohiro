@@ -594,6 +594,8 @@ yumコマンドの前身はrpm？
 パッケージ説明：`yum info lisp`  
 パッケージインストール：`yum install lisp`  
 パッケージインストール：`yum install -y lisp`(確認省略)  
+パッケージ削除：`yum remove lisp`  
+パッケージ削除：`yum remove -y lisp`(確認省略)  
 
 
 <a id="linuxOS_dnf_prescribe"></a>
@@ -604,6 +606,8 @@ yumコマンドの改良版。
 パッケージ説明：`dnf info lisp`  
 パッケージインストール：`dnf install lisp`  
 パッケージインストール：`dnf install -y lisp`(確認省略)    
+パッケージ削除：`dnf remove lisp`  
+パッケージ削除：`dnf remove -y lisp`(確認省略)  
 
 
 <a id="linuxOS_apt_prescribe"></a>
@@ -619,6 +623,9 @@ Debian系OSのパッケージ管理。
 パッケージインストール：`apt install lisp`  
 パッケージインストール：`apt install -y lisp`(確認省略)    
 パッケージインストール：`apt install -s lisp`(ドライラン)  
+パッケージ削除：`apt remove lisp`  
+パッケージ削除：`apt remove -y lisp`(確認省略)  
+パッケージ削除：`apt remove -s lisp`(ドライラン)  
 
 
 <a id="linuxOS_useradd_prescribe"></a>
