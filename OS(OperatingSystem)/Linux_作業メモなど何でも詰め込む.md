@@ -591,6 +591,7 @@ Red Hat系OSのパッケージ管理。
 yumコマンドの前身はrpm？  
 
 パッケージ検索：`yum search lisp`  
+パッケージ説明：`yum info lisp`  
 
 
 <a id="linuxOS_dnf_prescribe"></a>
@@ -598,6 +599,7 @@ yumコマンドの前身はrpm？
 yumコマンドの改良版。  
 
 パッケージ検索：`dnf search lisp`  
+パッケージ説明：`dnf info lisp`  
 
 
 <a id="linuxOS_apt_prescribe"></a>
@@ -607,6 +609,9 @@ Debian系OSのパッケージ管理。
 
 パッケージ情報の更新：`apt update`  
 パッケージ検索：`apt search lisp`  
+パッケージ説明：`apt show lisp`  
+パッケージ説明：`apt info lisp`  
+パッケージ説明：`dpkg -s lisp`  
 
 
 <a id="linuxOS_useradd_prescribe"></a>
