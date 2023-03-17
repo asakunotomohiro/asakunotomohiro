@@ -20,10 +20,13 @@
     * [sudoコマンド](#linuxOS_sudo_prescribe)  
   * ディレクトリ構造とファイルシステム  
     * [FHSとは](#linuxOS_whatis-fhs_prescribe)  
+      未調査。  
     * [lsコマンド](#linuxOS_ls_prescribe)  
-  * yumコマンド  
-  * dnfコマンド  
-  * aptコマンド  
+      未調査。  
+  * パッケージ管理  
+    * [yumコマンド](#linuxOS_yum_prescribe)  
+    * [dnfコマンド](#linuxOS_dnf_prescribe)  
+    * [aptコマンド](#linuxOS_apt_prescribe)  
   * ユーザ管理  
     * [ユーザ追加(useradd)コマンド](#linuxOS_useradd_prescribe)  
       未調査。  
