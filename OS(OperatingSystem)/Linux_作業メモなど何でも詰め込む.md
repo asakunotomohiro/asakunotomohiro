@@ -18,8 +18,9 @@
     * [timeコマンド](#linuxOS_time_prescribe)  
   * パーミッション  
     * [sudoコマンド](#linuxOS_sudo_prescribe)  
-  * lsコマンド  
-    * [FHSとは](#)  
+  * ディレクトリ構造とファイルシステム  
+    * [FHSとは](#linuxOS_whatis-fhs_prescribe)  
+    * [lsコマンド](#linuxOS_ls_prescribe)  
   * yumコマンド  
   * dnfコマンド  
   * aptコマンド  
@@ -553,6 +554,19 @@ Linuxに限らず、Unixにも定めているようだ。
 
 <a id="linuxOS_ls_prescribe"></a>
 ### lsコマンド
+ファイルデータを管理するデータをメタデータといい、**ls -li**コマンドの左端に表示される数値が管理番号であり、これをinode番号と言う。  
+
+以下、inodeの確認例。
+```terminal
+$ ls -li
+total 0
+8102128 drwxrwxr-x  2 asakunotomohiro  staff  64  3 15 15:51 linux_umask1
+8100886 -rw-rw-r--  1 asakunotomohiro  staff   0  3 15 15:47 linux_umask1.txt
+8102977 drwxr-xr-x  2 asakunotomohiro  staff  64  3 15 15:53 linux_umask2
+8102924 -rw-r--r--  1 asakunotomohiro  staff   0  3 15 15:53 linux_umask2.txt
+$
+```
+上記の左端にある数値(例えば**8102128**)がinode番号。  
 
 
 <a id="linuxOS_yum_prescribe"></a>
