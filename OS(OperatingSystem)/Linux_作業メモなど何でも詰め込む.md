@@ -568,6 +568,19 @@ $
 ```
 上記の左端にある数値(例えば**8102128**)がinode番号。  
 
+この番号とディレクトリのデータとしてファイル名が管理されている。  
+
+以下、ホームディレクトリのディレクトリエントリを確認するつもりだったが、Macではできそうにない。
+```terminal
+$ hexdump -C -s $((4096 * 288312)) /dev/sda1|head -n 5
+hexdump: /dev/sda1: No such file or directory	←☆macなのだからないのは仕方ない。
+$ hexdump -C -s $((4096 * 288312)) ~/|head -n 5
+hexdump: /Users/asakunotomohiro/: Is a directory	←☆ディレクトリを指定するのではないのか？
+46638000
+$
+```
+
+
 
 <a id="linuxOS_yum_prescribe"></a>
 ### yumコマンド
