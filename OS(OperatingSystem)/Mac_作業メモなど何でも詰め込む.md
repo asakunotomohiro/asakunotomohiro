@@ -17,6 +17,12 @@
 * 目次。  
   * [macOS新規利用前の設定変更](#macOperatingSystemsetting)  
   * [macOSを再インストールする方法](#macOperatingSystemreinstall)  
+  * [コマンド](#macOperatingSystemreorder)  
+    * [ユーザ一覧表示](#macOperatingSystemreorder_dscl-list)  
+      詳細には未調査。  
+    * [ユーザ新規追加](#macOperatingSystemreorder_dscl-create)  
+      未調査。  
+
 
 
 <a id="macOperatingSystemreinstall"></a>
@@ -179,6 +185,42 @@ HFS+とは、Mac OS拡張フォーマットのこと。
   1. **Macintosh HD**を選ぶ。  
      ※**Recovery HD**は選べない(そもそもこれから再インストールしてほしい。なぜにネットワーク接続必須なんだよ)。  
      ※時間かかる(私の環境で30分前後でインストール完了)。  
+
+
+<a id="macOperatingSystemreorder"></a>
+### MacOS限定のコマンド
+※Linuxコマンドは[別ファイル](./Linux_作業メモなど何でも詰め込む.md)。  
+
+
+<a id="macOperatingSystemreorder_dscl-list"></a>
+#### 現在のユーザ一覧表示
+[dscl](https://www.unix.com/man-page/osx/1/dscl/)コマンドを使うようだが、これはMac専用のようだ。  
+
+以下、現在のユーザ一覧を表示する。
+```terminal
+$ dscl . list /Users | grep -v '_'
+(standard input):111:asakunotomohiro	←☆現在のログインユーザ
+(standard input):112:daemon	←☆デーモンだよね。
+(standard input):113:nobody	←☆誰？
+(standard input):114:root	←☆管理者権限ユーザだろうね。
+$
+```
+今後Linuxコマンドとの切り分けが必要な場合、気づかずに間違ったファイルに記載しそうなんだが・・・どうしよう。  
+
+
+<a id="macOperatingSystemreorder_dscl-create"></a>
+#### ユーザの新規追加
+ユーザ一覧を表示するコマンドと同じコマンドを使う。  
+しかし、私の持っている書籍上ではGUIからの操作のみを説明しており、コマンドライン上からの説明はなかった。  
+そして、私はコマンドライン上およびmacOSでユーザを追加するつもりがないため、これ以上の調査はしない。  
+
+以下、実際には試さないが、こんな感じで作業する・・・はず。
+```terminal
+dscl . -create /Users/hogeUser
+dscl . -create /Users/hogeUser UserShell /bin/bash
+dscl . -create /Users/hogeUser RealName hogeUser
+```
+※**sudo**コマンド必須？  
 
 
 <a id="memo99999"></a>
