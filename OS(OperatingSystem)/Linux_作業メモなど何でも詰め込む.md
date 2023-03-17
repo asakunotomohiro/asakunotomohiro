@@ -18,7 +18,9 @@
     * [timeコマンド](#linuxOS_time_prescribe)  
   * パーミッション  
     * [sudoコマンド](#linuxOS_sudo_prescribe)  
-  * lsコマンド  
+  * ディレクトリ構造とファイルシステム  
+    * [FHSとは](#linuxOS_whatis-fhs_prescribe)  
+    * [lsコマンド](#linuxOS_ls_prescribe)  
   * yumコマンド  
   * dnfコマンド  
   * aptコマンド  
@@ -523,8 +525,61 @@ TODO: Linux環境構築後に調べる。
 TODO: Linux環境構築後に調べる。  
 
 
+<a id="linuxOS_whatis-fhs_prescribe"></a>
+### FHSとは
+Linuxにおけるディレクトリ構成の基本ルールとして、FHS(Filesystem Hierarchy Standard)に則るようだ。  
+Linuxに限らず、Unixにも定めているようだ。  
+
+|ディレクトリ名|利用目的|静的|共有可能|
+|--------------|--------|----|--------|
+|/|ルートディレクトリ|||
+|/bin|必須コマンドのバイナリ(一般ユーザ用)|||
+|/boot|ブートローダ用のファイル||×|
+|/dev|デバイスファイル||×|
+|/etc|ホスト固有の設定ファイル|○|×|
+|/home|ユーザのホームディレクトリ(必須ではない)||○|
+|/lib|必須の共有ライブラリ(およびカーネルモジュール)|||
+|/media|リムーバブルメディアのmount場所|||
+|/mnt|一時的なファイルシステムのmount場所|||
+|/opt|追加のアプリケーションパッケージ|○||
+|/proc|カーネル・プロセス情報の疑似ファイルシステム(Linux固有)|||
+|/root|rootユーザのホームディレクトリ(必須ではない)|||
+|/sbin|必須コマンドのバイナリ(特権ユーザ用)|||
+|/srv|このシステムで動くサーバ用のデータ|||
+|/sys|カーネル・システム情報の疑似ファイルシステム(Linux固有)|||
+|/tmp|一時ファイル|||
+|/usr|第2階層|○|○|
+|/var|可変データ|×|△(共有可否あり)|
+
+
 <a id="linuxOS_ls_prescribe"></a>
 ### lsコマンド
+ファイルデータを管理するデータをメタデータといい、**ls -li**コマンドの左端に表示される数値が管理番号であり、これをinode番号と言う。  
+
+以下、inodeの確認例。
+```terminal
+$ ls -li
+total 0
+8102128 drwxrwxr-x  2 asakunotomohiro  staff  64  3 15 15:51 linux_umask1
+8100886 -rw-rw-r--  1 asakunotomohiro  staff   0  3 15 15:47 linux_umask1.txt
+8102977 drwxr-xr-x  2 asakunotomohiro  staff  64  3 15 15:53 linux_umask2
+8102924 -rw-r--r--  1 asakunotomohiro  staff   0  3 15 15:53 linux_umask2.txt
+$
+```
+上記の左端にある数値(例えば**8102128**)がinode番号。  
+
+この番号とディレクトリのデータとしてファイル名が管理されている。  
+
+以下、ホームディレクトリのディレクトリエントリを確認するつもりだったが、Macではできそうにない。
+```terminal
+$ hexdump -C -s $((4096 * 288312)) /dev/sda1|head -n 5
+hexdump: /dev/sda1: No such file or directory	←☆macなのだからないのは仕方ない。
+$ hexdump -C -s $((4096 * 288312)) ~/|head -n 5
+hexdump: /Users/asakunotomohiro/: Is a directory	←☆ディレクトリを指定するのではないのか？
+46638000
+$
+```
+
 
 
 <a id="linuxOS_yum_prescribe"></a>
