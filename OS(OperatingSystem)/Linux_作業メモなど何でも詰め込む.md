@@ -601,6 +601,8 @@ yumコマンドの改良版。
 Debian系OSのパッケージ管理。  
 前身はdpkg？  
 
+パッケージ情報の更新：`apt update`  
+
 
 <a id="linuxOS_useradd_prescribe"></a>
 ### useraddコマンド
