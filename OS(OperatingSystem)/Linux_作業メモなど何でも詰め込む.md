@@ -20,10 +20,13 @@
     * [sudoコマンド](#linuxOS_sudo_prescribe)  
   * ディレクトリ構造とファイルシステム  
     * [FHSとは](#linuxOS_whatis-fhs_prescribe)  
+      未調査。  
     * [lsコマンド](#linuxOS_ls_prescribe)  
-  * yumコマンド  
-  * dnfコマンド  
-  * aptコマンド  
+      未調査。  
+  * パッケージ管理  
+    * [yumコマンド](#linuxOS_yum_prescribe)  
+    * [dnfコマンド](#linuxOS_dnf_prescribe)  
+    * [aptコマンド](#linuxOS_apt_prescribe)  
   * ユーザ管理  
     * [ユーザ追加(useradd)コマンド](#linuxOS_useradd_prescribe)  
       未調査。  
@@ -584,14 +587,58 @@ $
 
 <a id="linuxOS_yum_prescribe"></a>
 ### yumコマンド
+Red Hat系OSのパッケージ管理。  
+yumコマンドの前身はrpm？  
+
+パッケージ検索：`yum search lisp`  
+パッケージ説明：`yum info lisp`  
+パッケージインストール：`yum install lisp`  
+パッケージインストール：`yum install -y lisp`(確認省略)  
+パッケージ削除：`yum remove lisp`  
+パッケージ削除：`yum remove -y lisp`(確認省略)  
+不要パッケージ整理：`yum autoremove -y`(自動削除)  
+対象ファイルをパッケージから検索：`rpm -qf /usr/bin/vim`  
+パッケージからインストールされたファイルを表示する：`rpm -ql vim`  
+インストール済みパッケージ一覧表示：`rpm -qa`  
+パッケージ管理の復旧：`yum-complete-transaction`(事前にインストールしておく必要がある`yum install yum-utils`)  
 
 
 <a id="linuxOS_dnf_prescribe"></a>
 ### dnfコマンド
+yumコマンドの改良版。  
+
+パッケージ検索：`dnf search lisp`  
+パッケージ説明：`dnf info lisp`  
+パッケージインストール：`dnf install lisp`  
+パッケージインストール：`dnf install -y lisp`(確認省略)    
+パッケージ削除：`dnf remove lisp`  
+パッケージ削除：`dnf remove -y lisp`(確認省略)  
+不要パッケージ整理：`dnf autoremove -y`(自動削除)  
+パッケージ管理の復旧：`dnf remove $(dnf repoquery --duplicated --latest-limit=-1 -q)`  
 
 
 <a id="linuxOS_apt_prescribe"></a>
 ### aptコマンド
+Debian系OSのパッケージ管理。  
+前身はdpkg？  
+
+パッケージ情報の更新：`apt update`  
+パッケージ検索：`apt search lisp`  
+パッケージ説明：`apt show lisp`  
+パッケージ説明：`apt info lisp`  
+パッケージ説明：`dpkg -s lisp`  
+パッケージインストール：`apt install lisp`  
+パッケージインストール：`apt install -y lisp`(確認省略)    
+パッケージインストール：`apt install -s lisp`(ドライラン)  
+パッケージ削除：`apt remove lisp`  
+パッケージ削除：`apt remove -y lisp`(確認省略)  
+パッケージ削除：`apt remove -s lisp`(ドライラン)  
+不要パッケージ整理：`apt autoremove -y`(自動削除)  
+不要パッケージ整理：`apt autoclean`(ローカルリポジトリの掃除)  
+対象ファイルをパッケージから検索：`dpkg -S /usr/bin/vim.basic`(実態を引数に渡す必要がある)  
+パッケージからインストールされたファイルを表示する：`dpkg -L vim`  
+インストール済みパッケージ一覧表示：`dpkg -l`  
+パッケージ管理の復旧：`dpkg --configure -a`  
 
 
 <a id="linuxOS_useradd_prescribe"></a>
