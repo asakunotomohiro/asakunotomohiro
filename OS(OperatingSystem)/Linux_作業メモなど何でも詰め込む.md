@@ -600,6 +600,7 @@ yumコマンドの前身はrpm？
 対象ファイルをパッケージから検索：`rpm -qf /usr/bin/vim`  
 パッケージからインストールされたファイルを表示する：`rpm -ql vim`  
 インストール済みパッケージ一覧表示：`rpm -qa`  
+パッケージ管理の復旧：`yum-complete-transaction`(事前にインストールしておく必要がある`yum install yum-utils`)  
 
 
 <a id="linuxOS_dnf_prescribe"></a>
@@ -613,6 +614,7 @@ yumコマンドの改良版。
 パッケージ削除：`dnf remove lisp`  
 パッケージ削除：`dnf remove -y lisp`(確認省略)  
 不要パッケージ整理：`dnf autoremove -y`(自動削除)  
+パッケージ管理の復旧：`dnf remove $(dnf repoquery --duplicated --latest-limit=-1 -q)`  
 
 
 <a id="linuxOS_apt_prescribe"></a>
@@ -636,6 +638,7 @@ Debian系OSのパッケージ管理。
 対象ファイルをパッケージから検索：`dpkg -S /usr/bin/vim.basic`(実態を引数に渡す必要がある)  
 パッケージからインストールされたファイルを表示する：`dpkg -L vim`  
 インストール済みパッケージ一覧表示：`dpkg -l`  
+パッケージ管理の復旧：`dpkg --configure -a`  
 
 
 <a id="linuxOS_useradd_prescribe"></a>
