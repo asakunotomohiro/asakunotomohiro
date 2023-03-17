@@ -599,6 +599,7 @@ yumコマンドの前身はrpm？
 不要パッケージ整理：`yum autoremove -y`(自動削除)  
 対象ファイルをパッケージから検索：`rpm -qf /usr/bin/vim`  
 パッケージからインストールされたファイルを表示する：`rpm -ql vim`  
+インストール済みパッケージ一覧表示：`rpm -qa`  
 
 
 <a id="linuxOS_dnf_prescribe"></a>
@@ -634,6 +635,7 @@ Debian系OSのパッケージ管理。
 不要パッケージ整理：`apt autoclean`(ローカルリポジトリの掃除)  
 対象ファイルをパッケージから検索：`dpkg -S /usr/bin/vim.basic`(実態を引数に渡す必要がある)  
 パッケージからインストールされたファイルを表示する：`dpkg -L vim`  
+インストール済みパッケージ一覧表示：`dpkg -l`  
 
 
 <a id="linuxOS_useradd_prescribe"></a>
