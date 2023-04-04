@@ -13,6 +13,16 @@
 <a id="androidoperatingsystem"></a>
 ## Android
 
+* 目次  
+  * [ローカル端末での暗号化](#androidoperatingsystem_encryptLocal)  
+
+<a id="androidoperatingsystem_encryptLocal"></a>
+### Android(ローカル端末暗号化)
+当然ながらアプリを使う。  
+
+[Cryptomator](https://cryptomator.org)というソフトウェアなのだが、残念ながらAndroidだけでなく、MacOS・Windows・Linux向けなど多岐に渡る。  
+実に素晴らしい。  
+
 
 <a id="macoperatingsystem"></a>
 ## MacOS
