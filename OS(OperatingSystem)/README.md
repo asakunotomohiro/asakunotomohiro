@@ -48,6 +48,13 @@
 
 <a id="operatingsystemnetwork"></a>
 ## ネットワーク利用
+
+* 目次  
+  * [VPN](#operatingsystemnetwork_vpn)  
+  * [PGP](#operatingsystemnetwork_pgp)  
+
+<a id="operatingsystemnetwork_vpn"></a>
+### VPN
 パソコンからの利用は気にしていないのだが、BlackBerry端末以外の携帯電話からのネットワーク利用は、情報漏洩が気になってしまう。  
 今更感はあるが・・・。  
 と言うことで、VPNを利用しようと思う。  
@@ -60,6 +67,22 @@
 とは言え、[不正利用防止の取り組み](https://www.vpngate.net/ja/about_abuse.aspx)として通信ログを記録しているため、VPNとは何ぞやという感じになってしまうが・・・。  
 金を掛けられないため、仕方ない。  
 
+
+<a id="operatingsystemnetwork_pgp"></a>
+### PGP
+基本的には、PGPにて暗号化を行うのだが、大げさなことをしなくても[Cryptomator](#androidoperatingsystem_encryptLocal)アプリを利用するだけで十分に思う。  
+しかし、それは秘密鍵暗号方式とも言える方法であり、公開鍵暗号方式ではない。  
+不特定多数とのやりとりでは、後者を利用するのが望ましいだろう。  
+
+* 目次  
+  * [利用ソフトウェア](#operatingsystemnetwork_pgp_software)  
+  * [利用方法](#operatingsystemnetwork_pgp_howtoencrypt)  
+
+<a id="operatingsystemnetwork_pgp_software"></a>
+#### 利用ソフトウェア
+
+<a id="operatingsystemnetwork_pgp_howtoencrypt"></a>
+#### 利用方法
 
 <a id="operatingsystemcurrentstatus"></a>
 ## 現状
