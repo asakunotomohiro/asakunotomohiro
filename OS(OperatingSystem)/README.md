@@ -80,6 +80,12 @@
 
 <a id="operatingsystemnetwork_pgp_software"></a>
 #### 利用ソフトウェア
+[GnuPG](https://www.gnupg.org/index.html)(通称OpenPGP)を使う。  
+これを使う理由は、有名だからなのか、[Apple社](https://support.apple.com/ja-jp/HT201214)が説明していたこととオープンソースなので、問題はないだろうと判断した。  
+他に紹介しているソフトウェアは、[GPG Keychain](https://gpgtools.org)と言うツールなのだが、よく分かっていない(が、とりあえずインストールしている)。  
+そして、2種類のうち、後者のGPGKeychainは、有料だが、何に金を払えばいいのかいまいち分かっていない(そして、支払いせずに使えている)。  
+もしかしたらサポート代金なのかもしれない(サポート不要ならば無料利用とかかな)。  
+
 
 <a id="operatingsystemnetwork_pgp_howtoencrypt"></a>
 #### 利用方法
