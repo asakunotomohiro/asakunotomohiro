@@ -98,7 +98,7 @@ PGPを使う方法というか、公開鍵の作成を示す。
   1. [主鍵の生成作業](#operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_mainkey)  
   1. [副鍵の生成作業](#operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_subkey)  
   1. [主鍵の秘密鍵をエクスポート](#operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_mainexport)  
-  1. [](#)  
+  1. [主鍵の秘密鍵を削除](#operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_maindelete)  
 
 <a id="operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_mainkey"></a>
 以下、主鍵の生成作業。
@@ -251,6 +251,23 @@ GUIソフトウェアとして[GPGKeychain](#operatingsystemnetwork_pgp_software
 CUI操作での取り出し方法は分からない。  
 また、GUI操作での取り出し方法を文字で説明するのはしんどいため、他の解説を見る必要がある(調べなければ分からないほど難しいものではないが)。  
 
+<a id="operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_maindelete"></a>
+以下、主鍵の秘密鍵を削除作業。
+```terminal
+$ gpg --delete-secret-key asakunotomohiro@pgp.asakunotomohiro.ml	←☆鍵の削除。
+gpg (GnuPG/MacGPG2) 2.2.40; Copyright (C) 2022 g10 Code GmbH
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+
+sec  ed25519/1E7D727572717D74 2023-01-06 asakunotomohiro (pgp@mail) <asakunotomohiro@pgp.asakunotomohiro.ml>
+
+この鍵を鍵リングから削除しますか? (y/N) y	←☆主鍵の削除。
+これは秘密鍵です! 本当に削除しますか? (y/N) y
+gpg: 秘密副鍵: の削除に失敗しました: 操作がキャンセルされました	←☆副鍵を使うため、残しておく必要がある(故に削除キャンセル)。
+gpg: asakunotomohiro@pgp.asakunotomohiro.ml: delete key failed: 操作がキャンセルされました
+$
+```
 
 </details>
 
