@@ -271,6 +271,9 @@ $
 
 </details>
 
+使い方は後日。  
+
+
 <a id="operatingsystemcurrentstatus"></a>
 ## 現状
 今は、基本的にMacOSを使っている。  
