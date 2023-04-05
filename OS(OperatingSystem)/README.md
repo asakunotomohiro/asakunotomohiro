@@ -89,6 +89,9 @@
 
 <a id="operatingsystemnetwork_pgp_howtoencrypt"></a>
 #### 利用方法
+PGPを使う方法というか、公開鍵の作成を示す。  
+
+
 
 <a id="operatingsystemcurrentstatus"></a>
 ## 現状
