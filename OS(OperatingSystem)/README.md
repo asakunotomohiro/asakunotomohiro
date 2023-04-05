@@ -95,8 +95,10 @@ PGPを使う方法というか、公開鍵の作成を示す。
 <details><summary>主鍵の生成から副鍵の生成までの手順記録。</summary>
 
 * 鍵の生成。  
-  * [主鍵の生成作業](#operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_mainkey)  
-  * [副鍵の生成作業](#operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_subkey)  
+  1. [主鍵の生成作業](#operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_mainkey)  
+  1. [副鍵の生成作業](#operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_subkey)  
+  1. [主鍵の秘密鍵をエクスポート](#operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_mainexport)  
+  1. [](#)  
 
 <a id="operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_mainkey"></a>
 以下、主鍵の生成作業。
@@ -238,6 +240,17 @@ gpg> save	←☆この保存を忘れないこと(同時に終了する)。
 $
 ```
 副鍵が作成できたかどうかは、`gpg -k`にて確認できる。  
+
+<a id="operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_mainexport"></a>
+主鍵の秘密鍵などをエクスポート。  
+GUIソフトウェアとして[GPGKeychain](#operatingsystemnetwork_pgp_software)から取り出すのがいいだろう。  
+そして、これを絶対に外部に漏れない場所に保管しておく。  
+印刷して金庫の中でもかまわないし、主鍵が存在する端末を銀行に預けておくのも手である。  
+とりあえず究極に絶対だと言われる場所であれば問題ない。  
+
+CUI操作での取り出し方法は分からない。  
+また、GUI操作での取り出し方法を文字で説明するのはしんどいため、他の解説を見る必要がある(調べなければ分からないほど難しいものではないが)。  
+
 
 </details>
 
