@@ -94,6 +94,11 @@ PGPを使う方法というか、公開鍵の作成を示す。
 <a id="operatingsystemnetwork_pgp_howtoencrypt_mainsubkey"></a>
 <details><summary>主鍵の生成から副鍵の生成までの手順記録。</summary>
 
+* 鍵の生成。  
+  * [主鍵の生成作業](#operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_mainkey)  
+  * [副鍵の生成作業](#operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_subkey)  
+
+<a id="operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_mainkey"></a>
 以下、主鍵の生成作業。
 ```terminal
 $ gpg --full-gen-key --expert	←☆主鍵の生成。
@@ -165,6 +170,74 @@ uid                      asakunotomohiro (pgp@mail) <asakunotomohiro@pgp.asakuno
 
 $
 ```
+
+<a id="operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_subkey"></a>
+以下、副鍵の生成作業。
+```terminal
+$ gpg --edit-key --expert asakunotomohiro@pgp.asakunotomohiro.ml	←☆主鍵に登録したメールアドレスから副鍵を作る。
+gpg (GnuPG/MacGPG2) 2.2.40; Copyright (C) 2022 g10 Code GmbH
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+秘密鍵が利用できます。
+
+gpg: 信用データベースの検査
+gpg: marginals needed: 3  completes needed: 1  trust model: pgp
+gpg: 深さ: 0  有効性:   3  署名:   0  信用: 0-, 0q, 0n, 0m, 0f, 3u
+sec  ed25519/1EBD72E572718D44
+     作成: 2023-01-06  有効期限: 無期限      利用法: SC
+     信用: 究極        有効性: 究極
+[  究極  ] (1). asakunotomohiro (pgp@mail) <asakunotomohiro@pgp.asakunotomohiro.ml>
+
+gpg> addkey	←☆副鍵の追加。
+ご希望の鍵の種類を選択してください:
+   (3) DSA (署名のみ)
+   (4) RSA (署名のみ)
+   (5) Elgamal (暗号化のみ)
+   (6) RSA (暗号化のみ)
+   (7) DSA (機能をあなた自身で設定)
+   (8) RSA (機能をあなた自身で設定)
+  (10) ECC (署名のみ)
+  (11) ECC (機能をあなた自身で設定)	←☆これでもよさそうだが、12を選ぶ。
+  (12) ECC (暗号化のみ)	←☆これ。
+  (13) 既存の鍵
+  (14) カードに存在する鍵
+あなたの選択は? 12
+ご希望の楕円曲線を選択してください:
+   (1) Curve 25519	←☆主鍵と同じこれを選ぶ。
+   (3) NIST P-256
+   (4) NIST P-384
+   (5) NIST P-521
+   (6) Brainpool P-256
+   (7) Brainpool P-384
+   (8) Brainpool P-512
+   (9) secp256k1
+あなたの選択は? 1
+鍵の有効期限を指定してください。
+         0 = 鍵は無期限	←☆副鍵の場合は期限を決めてもいいが、今のところこれを選ぶ。
+      <n>  = 鍵は n 日間で期限切れ
+      <n>w = 鍵は n 週間で期限切れ
+      <n>m = 鍵は n か月間で期限切れ
+      <n>y = 鍵は n 年間で期限切れ
+鍵の有効期間は? (0)
+鍵は無期限です
+これで正しいですか? (y/N) y
+本当に作成しますか? (y/N) y
+たくさんのランダム・バイトの生成が必要です。キーボードを打つ、マウスを動か
+す、ディスクにアクセスするなどの他の操作を素数生成の間に行うことで、乱数生
+成器に十分なエントロピーを供給する機会を与えることができます。
+
+sec  ed25519/1E7D727572717D74
+     作成: 2023-01-06  有効期限: 無期限      利用法: SC
+     信用: 究極        有効性: 究極
+ssb  cv25519/F6C67696465606D6
+     作成: 2023-01-06  有効期限: 無期限      利用法: E
+[  究極  ] (1). asakunotomohiro (pgp@mail) <asakunotomohiro@pgp.asakunotomohiro.ml>
+
+gpg> save	←☆この保存を忘れないこと(同時に終了する)。
+$
+```
+副鍵が作成できたかどうかは、`gpg -k`にて確認できる。  
 
 </details>
 
