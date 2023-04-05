@@ -50,8 +50,15 @@
 ## ネットワーク利用
 
 * 目次  
+  * [ネットサーフィン](#operatingsystemnetwork_internetsurfing)  
   * [VPN](#operatingsystemnetwork_vpn)  
   * [PGP](#operatingsystemnetwork_pgp)  
+
+
+<a id="operatingsystemnetwork_internetsurfing"></a>
+### ネットサーフィン
+普通にネットサーフィンをするだけならば問題ないように思うが、ログインが伴う作業の場合は、暗号化をしておくのが吉だろう。  
+
 
 <a id="operatingsystemnetwork_vpn"></a>
 ### VPN
