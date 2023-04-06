@@ -10,42 +10,6 @@
   * [Linux](#linuxoperatingsystem)  
   * [UNIX](#unixoperatingsystem)  
 
-<a id="androidoperatingsystem"></a>
-## Android
-
-* 目次  
-  * [ローカル端末での暗号化](#androidoperatingsystem_encryptLocal)  
-
-<a id="androidoperatingsystem_encryptLocal"></a>
-### Android(ローカル端末暗号化)
-当然ながらアプリを使う。  
-
-[Cryptomator](https://cryptomator.org)というソフトウェアなのだが、残念ながらAndroidだけでなく、MacOS・Windows・Linux向けなど多岐に渡る。  
-実に素晴らしい。  
-
-
-<a id="macoperatingsystem"></a>
-## MacOS
-
-
-<a id="windowsoperatingsystem"></a>
-## Windows
-
-
-<a id="linuxoperatingsystem"></a>
-## Linux
-職場で使うOSだ。  
-※学生時代は仮想環境にLinuxをインストールしてプログラミングの勉強をしていたが、社会人になってからMacを利用することになったため、Linux環境が不要になった。  
-面白そうなLinuxディストリビューションはインストールして触ったことあるが、それっきりで終わるという・・・(しかも、それが深夜で終わった頃には25時とか26時とか・・・4〜5時間後には起床して通勤するというのに、、、若かった)。  
-
-ここでは重要だが、頻繁に使わないコマンドをまとめようと思う。  
-※[grep](../検索利用メモ/正規表現の勉強_作業メモなど何でも詰め込む.md)・[awk](../ドキュメント作成技法/sedとawk_作業メモなど何でも詰め込む.md)・[sed](../ドキュメント作成技法/sedとawk_作業メモなど何でも詰め込む.md)・[find](../検索利用メモ/findの勉強_作業メモなど何でも詰め込む.md)などなどの主要なコマンドは別資料にまとめている(二重管理するつもりはないが、別に分けるのも難しい状況で困る)。  
-
-
-<a id="unixoperatingsystem"></a>
-## UNIX
-
-
 <a id="operatingsystemnetwork"></a>
 ## ネットワーク利用
 
@@ -303,6 +267,47 @@ $
 </details>
 
 使い方は後日。  
+
+
+<a id="androidoperatingsystem"></a>
+## Android
+別途[作業メモ](./Android_作業メモなど何でも詰め込む.md)ファイルあり。  
+
+* 目次  
+  * [ローカル端末での暗号化](#androidoperatingsystem_encryptLocal)  
+
+
+<a id="androidoperatingsystem_encryptLocal"></a>
+### Android(ローカル端末暗号化)
+当然ながらアプリを使う。  
+
+[Cryptomator](https://cryptomator.org)というソフトウェアなのだが、残念ながらAndroidだけでなく、MacOS・Windows・Linux向けなど多岐に渡る。  
+実に素晴らしい。  
+
+
+<a id="macoperatingsystem"></a>
+## MacOS
+別途[作業メモ](./Mac_作業メモなど何でも詰め込む.md)ファイルあり。  
+
+
+<a id="windowsoperatingsystem"></a>
+## Windows
+
+
+<a id="linuxoperatingsystem"></a>
+## Linux
+別途[作業メモ](./Linux_作業メモなど何でも詰め込む.md)ファイルあり。  
+
+職場で使うOSだ。  
+※学生時代は仮想環境にLinuxをインストールしてプログラミングの勉強をしていたが、社会人になってからMacを利用することになったため、Linux環境が不要になった。  
+面白そうなLinuxディストリビューションはインストールして触ったことあるが、それっきりで終わるという・・・(しかも、それが深夜で終わった頃には25時とか26時とか・・・4〜5時間後には起床して通勤するというのに、、、若かった)。  
+
+ここでは重要だが、頻繁に使わないコマンドをまとめようと思う。  
+※[grep](../検索利用メモ/正規表現の勉強_作業メモなど何でも詰め込む.md)・[awk](../ドキュメント作成技法/sedとawk_作業メモなど何でも詰め込む.md)・[sed](../ドキュメント作成技法/sedとawk_作業メモなど何でも詰め込む.md)・[find](../検索利用メモ/findの勉強_作業メモなど何でも詰め込む.md)などなどの主要なコマンドは別資料にまとめている(二重管理するつもりはないが、別に分けるのも難しい状況で困る)。  
+
+
+<a id="unixoperatingsystem"></a>
+## UNIX
 
 
 <a id="operatingsystemcurrentstatus"></a>
