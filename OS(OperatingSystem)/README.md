@@ -22,6 +22,7 @@
 <a id="operatingsystemnetwork_internetsurfing"></a>
 ### ネットサーフィン
 普通にネットサーフィンをするだけならば問題ないように思うが、ログインが伴う作業の場合は、暗号化をしておくのが吉だろう。  
+もっとも、Twitterアカウントデータが[流出](https://piyolog.hatenadiary.jp/entry/2023/01/07/000622)する出来事は私のあずかり知らぬところになるため、私だけが暗号化通信しても意味がない。  
 
 [Torブラウザ](https://www.torproject.org)を利用することにより、通信の自由を保障されるネットサーフィンが可能になる。  
 しかし、幾重にも通信経路をたどることから通信速度は無茶苦茶遅い。  
@@ -312,6 +313,7 @@ $
 
 <a id="windowsoperatingsystem"></a>
 ## Windows
+別途[作業メモ](./Windows_作業メモなど何でも詰め込む.md)ファイルあり。  
 
 
 <a id="linuxoperatingsystem"></a>
