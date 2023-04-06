@@ -233,59 +233,50 @@ $
 
 * 既存のアプリ一覧。  
   * IME  
-    * AquaMozc for Titan  
-    * ATOK  
-    * Hacker's Keyboard  
+    * [AquaMozc for Titan](https://play.google.com/store/apps/details?id=jp.gr.aqua.mozc.titan)  
+    * [ATOK(買い切り版)](https://play.google.com/store/apps/details?id=com.justsystems.atokmobile.service)  
   * エディタ  
-    * QuickEditプロ  
-    * Jota+  
-    * Go Compiler  
-    * Pydroid 3  
-    * DroidVim  
-    * ezPDF Reader  
+    * [QuickEditプロ](https://play.google.com/store/apps/details?id=com.rhmsoft.edit.pro)  
+    * [Jota+](https://play.google.com/store/apps/details?id=jp.sblo.pandora.jota.plus)  
+    * [DroidVim](https://play.google.com/store/apps/details?id=com.droidvim)  
+    * [ezPDF Reader(PDF閲覧/編集)](https://play.google.com/store/apps/details?id=udk.android.reader)  
   * 通信  
-    * Firefox  
-    * Signal  
-    * Telegram  
-    * VK Mail  
-    * AOL  
-    * GitHub  
-    * ONE  
+    * [Firefox(ブラウザ)](https://play.google.com/store/apps/details?id=org.mozilla.firefox)  
+    * [torbrowser(ブラウザ)](https://play.google.com/store/apps/details?id=org.torproject.torbrowser)  
+    * [Orbot(暗号化)](https://play.google.com/store/apps/details?id=org.torproject.android)  
+    * [Signal(チャット)](https://play.google.com/store/apps/details?id=org.thoughtcrime.securesms)  
+    * [Telegram(チャット)](https://play.google.com/store/apps/details?id=org.telegram.messenger)  
+    * [AOL(メールソフト)](https://play.google.com/store/apps/details?id=com.aol.mobile.aolapp)  
+    * [GitHub(ソースコード管理)](https://play.google.com/store/apps/details?id=com.github.android)  
   * 生活補助  
-    * Remember The Milk  
-    * To Do  
-    * Todoist  
-    * Toggle Track  
-    * ループ習慣トラッカー  
-    * Y!天気  
-    * スマートアラーム  
-    * WriteNote Pro  
-    * Starbucks  
-    * 映画com  
-    * Foursquare  
-    * Kindle  
-    * Google Book  
-    * Google レンズ  
-    * Google 翻訳  
+    * [To Do](https://play.google.com/store/apps/details?id=com.microsoft.todos)  
+    * [Toggle Track](https://play.google.com/store/apps/details?id=com.toggl.giskard)  
+    * [ループ習慣トラッカー](https://play.google.com/store/apps/details?id=org.isoron.uhabits)  
+    * [Y!天気](https://play.google.com/store/apps/details?id=jp.co.yahoo.android.weather.type1)  
+    * [スマートアラーム](https://play.google.com/store/apps/details?id=jp.tanyu.SmartAlarm)  
+    * [Starbucks](https://play.google.com/store/apps/details?id=com.starbucks.jp)  
+    * [Kindle](https://play.google.com/store/apps/details?id=com.amazon.kindle)  
+    * [cryptomator](https://play.google.com/store/apps/details?id=org.cryptomator)  
+    * [passwordkeeper](https://play.google.com/store/apps/details?id=com.blackberry.passwordkeeper)  
+    * [Google Book](https://play.google.com/store/apps/details?id=com.google.android.apps.books)  
+    * [Google レンズ](https://play.google.com/store/apps/details?id=com.google.ar.lens)  
+    * [Google 翻訳](https://play.google.com/store/apps/details?id=com.google.android.apps.translate)  
   * SNS  
-    * Reddit  
-    * Slack  
-    * Twitter  
-    * Instagram  
+    * [Reddit](https://play.google.com/store/apps/details?id=com.reddit.frontpage)  
+    * [Slack](https://play.google.com/store/apps/details?id=com.Slack)  
+    * [Twitter](https://play.google.com/store/apps/details?id=com.twitter.android)  
+    * [Instagram](https://play.google.com/store/apps/details?id=com.instagram.android)  
   * ゲーム  
-    * Steam  
-    * Shredder Chess  
-    * Swarm  
-    * シムシティ  
-  * 娯楽  
+    * [Steam](https://play.google.com/store/apps/details?id=com.valvesoftware.android.steam.community)  
+    * [Shredder Chess](https://play.google.com/store/apps/details?id=com.shredderchess.android)  
+  * 娯楽(3種類とも電子漫画)  
     * マンガUP!  
-    * ピッコマ  
     * サンデーうぇぶり  
     * マガポケ  
   * その他  
-    * ファイルマネージャ  
-    * BlackBerry ランチャ  
-      BlackBerry Hub+ サービスも自動でインストールされるようだ。  
+    * [ファイルマネージャ](https://play.google.com/store/apps/details?id=com.alphainventor.filemanager)  
+    * [BlackBerry ランチャ](https://play.google.com/store/apps/details?id=com.blackberry.blackberrylauncher)  
+      [BlackBerry Hub+サービス](https://play.google.com/store/apps/details?id=com.blackberry.infrastructure)も自動でインストールされるようだ。  
 
 <a id="softwareTermux"></a>
 ## [Termux](https://termux.com)
