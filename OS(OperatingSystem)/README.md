@@ -31,11 +31,12 @@
 また、[Rcloneによる暗号化ストレージ](https://zenn.dev/milly/books/rclone-crypt-gdrive)にすることで、移行する必要がなくなるようだ。  
 Googleドライブに限らず、他のクラウドストレージにも対応しているようだ。  
 
-* クラウドストレージ利用保留  
-  * <https://www.idrive.com>  
-  * <https://mega.io/pricing>  
+* クラウドストレージ  
+  * [idrive(アカウント作成時にのみゼロ知識証明を選べる)サブスクリプション](https://www.idrive.com)  
+  * [メガ(ゼロ知識証明利用可能)サブスクリプション](https://mega.nz/aff=jnWJKfzcabA)  
+  * [pCloud(有料でゼロ知識証明利用可能)買い切り型](https://partner.pcloud.com/r/92117)
 
-そもそも年間の支払金額と利用したい容量があわず、なかなか契約に踏み切れない。  
+サブスクリプションの場合は、利用したい容量と金額が合わず、なかなか契約に踏み切れない。  
 
 [クラウドを支えるこれからの暗号技術](https://herumi.github.io/ango/)がPDFとして配布されており、暗号について勉強することができる。  
 その前段階として、結城 浩さんの[暗号技術入門](https://www.sbcr.jp/product/4797382228/)を読む必要がある。  
