@@ -17,6 +17,7 @@
   * [ネットサーフィン](#operatingsystemnetwork_internetsurfing)  
   * [VPN](#operatingsystemnetwork_vpn)  
   * [PGP](#operatingsystemnetwork_pgp)  
+  * [メール](#operatingsystemnetwork_mail)  
 
 
 <a id="operatingsystemnetwork_internetsurfing"></a>
@@ -288,6 +289,12 @@ $
 </details>
 
 使い方は後日。  
+
+
+<a id="operatingsystemnetwork_mail"></a>
+### メール
+普段のメールの使い方について。  
+※ここに記載するのは正しいのか？  
 
 
 <a id="androidoperatingsystem"></a>
