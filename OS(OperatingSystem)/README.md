@@ -332,6 +332,10 @@ $
 
 <a id="operatingsystemnetwork_mail_SendAndReceiveOnClient"></a>
 #### メールクライアントからの送受信
+[Thunderbird](https://www.thunderbird.net/ja/)ソフトウェアを利用することにした。  
+残念ながら昨日・今日から利用するため、全く知らないことばかりだ。  
+学生時代は、[秀丸メール](https://hide.maruo.co.jp/software/tk.html)を使っていた(名前から分かるとおり、[秀丸エディタ](https://hide.maruo.co.jp/software/hidemaru.html)を作っている会社のメールソフト)。  
+社会人になってからは、もっぱらWeb上でメールを送受信していた(いつでもどこでもが魅力だった)。  
 
 
 <a id="androidoperatingsystem"></a>
