@@ -296,6 +296,18 @@ $
 普段のメールの使い方について。  
 ※ここに記載するのは正しいのか？  
 
+* メールの利用方法  
+  * [Webブラウザからの送受信](#operatingsystemnetwork_mail_SendAndReceiveInBrowser)  
+  * [メールクライアントからの送受信](#operatingsystemnetwork_mail_SendAndReceiveOnClient)  
+
+<a id="operatingsystemnetwork_mail_SendAndReceiveInBrowser"></a>
+#### Webブラウザからの送受信
+普段Firefoxブラウザを使っている。  
+
+
+<a id="operatingsystemnetwork_mail_SendAndReceiveOnClient"></a>
+#### メールクライアントからの送受信
+
 
 <a id="androidoperatingsystem"></a>
 ## Android
