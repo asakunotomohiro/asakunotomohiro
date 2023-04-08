@@ -304,7 +304,7 @@ $
 #### Webブラウザからの送受信
 普段Firefoxブラウザを使っている。  
 
-* Firefoxブラウザのアドオン  
+* Firefoxブラウザへの導入済みアドオン  
   * [Canvas Defender](https://addons.mozilla.org/ja/firefox/addon/no-canvas-fingerprinting/)  
     トラッキング防止のため(Fingerprint向け)。
     ※今までのCookie利用とは違い、JavaScriptを用いてCanvasからの生成画像による追跡になるため、それを偽物にすることで対策になるんだそうだ(そのため、定期的な作り直しが必須)。  
@@ -318,6 +318,16 @@ $
     JavaScriptの無効化。  
   * [Web Threat Shield](https://addons.mozilla.org/ja/firefox/addon/web-threat-shield/)  
     ライセンスを持っていないのに、なぜか入れっぱなし。  
+
+* Firefoxブラウザへの導入見送りアドオン  
+  昔使っていたが、今は無効化している一覧(使わなくなった理由は忘れた)。  
+  * [Disconnect](https://addons.mozilla.org/ja/firefox/addon/disconnect/)  
+  * [NoScript Security Suite](https://addons.mozilla.org/ja/firefox/addon/noscript/)  
+  * [DownThemAll!](https://addons.mozilla.org/ja/firefox/addon/downthemall/)  
+  * [Keyboard Control for Firefox](https://addons.mozilla.org/ja/firefox/addon/keyboard-control-for-firefox/)  
+  * [Saka Key](https://addons.mozilla.org/ja/firefox/addon/saka-key/)  
+  * [Tridactyl](https://addons.mozilla.org/ja/firefox/addon/tridactyl-vim/)  
+  * [VVimpulation](https://addons.mozilla.org/ja/firefox/addon/vvimpulation/)  
 
 
 <a id="operatingsystemnetwork_mail_SendAndReceiveOnClient"></a>
