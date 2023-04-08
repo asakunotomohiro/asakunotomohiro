@@ -329,6 +329,11 @@ $
   * [Tridactyl](https://addons.mozilla.org/ja/firefox/addon/tridactyl-vim/)  
   * [VVimpulation](https://addons.mozilla.org/ja/firefox/addon/vvimpulation/)  
 
+[2023年4月においてクリックジャッキング未対策のサイトはどの条件で被害を受けるか](https://blog.tokumaru.org/2023/04/clickjacking-condition.html)  
+> クロスサイトトラッキングCookie（一番上）
+
+を受け入れる設定をした場合、被害に遭うため、ブロックしなければならない。  
+
 
 <a id="operatingsystemnetwork_mail_SendAndReceiveOnClient"></a>
 #### メールクライアントからの送受信
