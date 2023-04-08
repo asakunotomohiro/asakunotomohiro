@@ -304,7 +304,7 @@ $
 #### Webブラウザからの送受信
 普段Firefoxブラウザを使っている。  
 
-* Firefoxブラウザへの導入済みアドオン  
+* Firefoxブラウザへの有効アドオン  
   * [Canvas Defender](https://addons.mozilla.org/ja/firefox/addon/no-canvas-fingerprinting/)  
     トラッキング防止のため(Fingerprint向け)。
     ※今までのCookie利用とは違い、JavaScriptを用いてCanvasからの生成画像による追跡になるため、それを偽物にすることで対策になるんだそうだ(そのため、定期的な作り直しが必須)。  
@@ -319,20 +319,40 @@ $
   * [Web Threat Shield](https://addons.mozilla.org/ja/firefox/addon/web-threat-shield/)  
     ライセンスを持っていないのに、なぜか入れっぱなし。  
 
-* Firefoxブラウザへの導入見送りアドオン  
+* Firefoxブラウザへの無効アドオン  
   昔使っていたが、今は無効化している一覧(使わなくなった理由は忘れた)。  
   * [Disconnect](https://addons.mozilla.org/ja/firefox/addon/disconnect/)  
+    トラッキング防止アドオン(有効でもよさそうだが、未使用にした理由を忘れた)。  
   * [NoScript Security Suite](https://addons.mozilla.org/ja/firefox/addon/noscript/)  
+    JavaScriptなどをブロックする(ホワイトリスト方式で許可する)。  
   * [DownThemAll!](https://addons.mozilla.org/ja/firefox/addon/downthemall/)  
+    複数の画像を一括ダウンロード(一応利用するかもということで保存しているだけだった)。  
   * [Keyboard Control for Firefox](https://addons.mozilla.org/ja/firefox/addon/keyboard-control-for-firefox/)  
+    よく分からないが、古いようだ。  
   * [Saka Key](https://addons.mozilla.org/ja/firefox/addon/saka-key/)  
+    viキーバインドのような挙動を得られるようだ。  
   * [Tridactyl](https://addons.mozilla.org/ja/firefox/addon/tridactyl-vim/)  
+    viキーバインドのような挙動を得られるようだ。  
   * [VVimpulation](https://addons.mozilla.org/ja/firefox/addon/vvimpulation/)  
+    viキーバインドのような挙動を得られるようだ。  
 
 [2023年4月においてクリックジャッキング未対策のサイトはどの条件で被害を受けるか](https://blog.tokumaru.org/2023/04/clickjacking-condition.html)  
 > クロスサイトトラッキングCookie（一番上）
 
 を受け入れる設定をした場合、被害に遭うため、ブロックしなければならない。  
+<https://support.yahoo-net.jp/SccYjcommon/s/article/H000012099>  
+公式Yahooページには、犯罪幇助方法が説明されているってことね。  
+**iPhone向けSafariで「サイト越えトラッキングを防ぐ」機能をオフにする**
+```text
+iOS 11以降では、「サイト越えトラッキングを防ぐ」がオン（有効）になっている場合があります。
+
+「サイト越えトラッキングを防ぐ」がオンになっている場合、Cookie（クッキー）がSafari上に残らなくなります。
+
+Yahoo! JAPANでは、複数のサービスでCookieを使用しているため、「サイト越えトラッキングを防ぐ」をオンにしていると、サービス内の機能が限定されるなど、一部のサービスを利用できません。
+
+以下の手順を参考に、「サイト越えトラッキングを防ぐ」機能をオフにしてからYahoo! JAPANのサービスをご利用ください。
+```
+上記一部の説明をそのまま貼り付けた。  
 
 
 <a id="operatingsystemnetwork_mail_SendAndReceiveOnClient"></a>
