@@ -304,6 +304,21 @@ $
 #### Webブラウザからの送受信
 普段Firefoxブラウザを使っている。  
 
+* Firefoxブラウザのアドオン  
+  * [Canvas Defender](https://addons.mozilla.org/ja/firefox/addon/no-canvas-fingerprinting/)  
+    トラッキング防止のため(Fingerprint向け)。
+    ※今までのCookie利用とは違い、JavaScriptを用いてCanvasからの生成画像による追跡になるため、それを偽物にすることで対策になるんだそうだ(そのため、定期的な作り直しが必須)。  
+  * [Evernote Web Clipper](https://addons.mozilla.org/ja/firefox/addon/evernote-web-clipper/)  
+  　だいぶ前に利用を停止しているため、削除予定。  
+  * [Mailvelope](https://addons.mozilla.org/ja/firefox/addon/mailvelope/)  
+    ブラウザ上でPGPを利用するのに便利らしい。  
+  * [Random User-Agent (Switcher)](https://addons.mozilla.org/ja/firefox/addon/random_user_agent/)  
+    ブラウザの名前・バージョン。オペレーティングシステムの名前(Mac・Windows・Linuxなど)・バージョン。ブラウザに導入済みプラグインなどの偽物を送信する。  
+  * [uMatrix](https://addons.mozilla.org/ja/firefox/addon/umatrix/)  
+    JavaScriptの無効化。  
+  * [Web Threat Shield](https://addons.mozilla.org/ja/firefox/addon/web-threat-shield/)  
+    ライセンスを持っていないのに、なぜか入れっぱなし。  
+
 
 <a id="operatingsystemnetwork_mail_SendAndReceiveOnClient"></a>
 #### メールクライアントからの送受信
