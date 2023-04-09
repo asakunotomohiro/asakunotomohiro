@@ -456,6 +456,12 @@ Microsoft社が無償で[Outlook](https://www.microsoft.com/ja-jp/microsoft-365/
 <https://addons.thunderbird.net/ja/thunderbird/addon/bordercolors-d/>  
 アカウントごとのメール送信ウィンドウ枠の色を付ける。  
 
+* 設定(以下以外はデフォルト)  
+  * Choose the highlight style  
+    **Border on all sides**  
+
+通常利用のアカウントはできる限り青に近づけた(原色の青は目に厳しいので)。  
+
 
 <a id="androidoperatingsystem"></a>
 ## Android
