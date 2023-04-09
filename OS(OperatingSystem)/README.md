@@ -454,6 +454,7 @@ Microsoft社が無償で[Outlook](https://www.microsoft.com/ja-jp/microsoft-365/
 <a id="operatingsystemnetwork_mail_bordercolorsd"></a>
 ##### BorderColors Dアドオンについて。
 <https://addons.thunderbird.net/ja/thunderbird/addon/bordercolors-d/>  
+アカウントごとのメール送信ウィンドウ枠の色を付ける。  
 
 
 <a id="androidoperatingsystem"></a>
