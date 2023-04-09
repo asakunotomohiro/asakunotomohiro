@@ -470,6 +470,8 @@ Microsoft社が無償で[Outlook](https://www.microsoft.com/ja-jp/microsoft-365/
 <https://addons.thunderbird.net/ja/thunderbird/addon/auto-address-cleaner-t>  
 送信までメールアドレスに紐付いた名前が付いたままだが、送信時にその名前を削除後、メールアドレスだけで送信する。  
 
+設定項目はない。  
+
 
 <a id="androidoperatingsystem"></a>
 ## Android
