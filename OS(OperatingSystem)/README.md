@@ -482,6 +482,11 @@ Microsoft社が無償で[Outlook](https://www.microsoft.com/ja-jp/microsoft-365/
 <https://addons.thunderbird.net/ja/thunderbird/addon/display-mail-user-agent-t/>  
 送信者が使用しているメーラーをアイコン表示する。  
 
+しかし、私の使い方では機能しないだろうから無効化する。  
+また、色はあらかじめ淡い色にしておこうと思う。  
+友達や会社の人とやりとりするようになったときに有効化する・・・かな。。。  
+なぜに友達や社会人たちはLINEに依存するのだろう(韓国かどこかに個人情報を無償提供して得るもの有るのだろうか)。  
+
 
 <a id="androidoperatingsystem"></a>
 ## Android
