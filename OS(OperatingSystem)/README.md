@@ -605,6 +605,12 @@ Microsoft社が無償で[Outlook](https://www.microsoft.com/ja-jp/microsoft-365/
 ここでは重要だが、頻繁に使わないコマンドをまとめようと思う。  
 ※[grep](../検索利用メモ/正規表現の勉強_作業メモなど何でも詰め込む.md)・[awk](../ドキュメント作成技法/sedとawk_作業メモなど何でも詰め込む.md)・[sed](../ドキュメント作成技法/sedとawk_作業メモなど何でも詰め込む.md)・[find](../検索利用メモ/findの勉強_作業メモなど何でも詰め込む.md)などなどの主要なコマンドは別資料にまとめている(二重管理するつもりはないが、別に分けるのも難しい状況で困る)。  
 
+* 勉強？  
+  * [Linuxとコマンドラインを学ぶための5つのゲームだそう。](https://mastodon.social/@nogajun/110103822464802402)  
+
+* コミュニティ？  
+  * [openSUSE](https://www.geeko.jp)  
+
 
 <a id="unixoperatingsystem"></a>
 ## UNIX
