@@ -180,6 +180,7 @@ uid                      asakunotomohiro (pgp@mail) <asakunotomohiro@pgp.asakuno
 
 $
 ```
+最後に出てきたメッセージの「**執行証明書を〜〜〜に保管しました。**」と言うファイルは最後に削除する(当然秘密鍵と一緒に別途保管後に実施)。  
 
 <a id="operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_subkey"></a>
 以下、副鍵の生成作業。
@@ -247,17 +248,17 @@ ssb  cv25519/1616161616161616
 gpg> save	←☆この保存を忘れないこと(同時に終了する)。
 $
 ```
-副鍵が作成できたかどうかは、`gpg -k`にて確認できる。  
+副鍵が作成できたかどうかは、`gpg -k`or`gpg --list-keys`にて確認できる。  
 
 以下、副鍵作成結果確認。
 ```terminal
 $ gpg -k
 /Users/asakunotomohiro/.gnupg/pubring.kbx
 -----------------------------------
-pub   ed25519 2023-04-01 [SC]	←☆主鍵。
+pub   ed25519 2023-04-01 [SC]	←☆主鍵(2種類の機能有り：Cは鍵に対する署名・Sはファイルに対する署名)。
       3838383838383838383838383838383838383838
 uid           [  究極  ] asakunotomohiro (pgp@mail) <asakunotomohiro@pgp.asakunotomohiro.ml>
-sub   cv25519 2023-04-01 [E]	←☆副鍵。
+sub   cv25519 2023-04-01 [E]	←☆副鍵(1機能有り：Eは暗号化)。
 
 $
 ```
@@ -268,6 +269,7 @@ GUIソフトウェアとして[GPGKeychain](#operatingsystemnetwork_pgp_software
 そして、これを絶対に外部に漏れない場所に保管しておく。  
 印刷して金庫の中でもかまわないし、主鍵が存在する端末を銀行に預けておくのも手である。  
 とりあえず究極に絶対だと言われる場所であれば問題ない。  
+※当たり前だが、エクスポート時に上記で入力したパスフレーズが必要になる。  
 
 CUI操作での取り出し方法は分からない。  
 また、GUI操作での取り出し方法を文字で説明するのはしんどいため、他の解説を見る必要がある(調べなければ分からないほど難しいものではないが)。  
@@ -295,13 +297,30 @@ $
 $ gpg -k
 /Users/asakunotomohiro/.gnupg/pubring.kbx
 -----------------------------------
-pub   ed25519 2023-04-01 [SC]	←☆主鍵。
+pub   ed25519 2023-04-01 [SC]	←☆主鍵(本来、秘密鍵がない場合シャープ記号が付くようだ)。
       3838383838383838383838383838383838383838
 uid           [  究極  ] asakunotomohiro (pgp@mail) <asakunotomohiro@pgp.asakunotomohiro.ml>
 sub   cv25519 2023-04-01 [E]	←☆副鍵。
 
 $
 ```
+秘密鍵を削除したはずだが、消えていないのだろうか。  
+しかし、もう一度削除しようにも秘密鍵が見つからないと言われてエラー終了してしまった。  
+
+<a id="operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_mainrevfiledel"></a>
+主鍵の失効証明書の削除。  
+
+以下、その作業。
+```terminal
+$ cd ~/.gnupg/openpgp-revocs.d/
+$ ll
+total 112
+-rw-------  1 asakunotomohiro  staff  1426  4  5 13:31 4949494949494949494949494949494949494949.rev
+$ shred -u 4949494949494949494949494949494949494949.rev	←☆消せないのだが？
+zsh: command not found: shred
+$
+```
+どういうこと？  
 
 </details>
 
@@ -495,7 +514,7 @@ Microsoft社が無償で[Outlook](https://www.microsoft.com/ja-jp/microsoft-365/
 ##### ImportExportTools NGアドオンについて。
 <https://addons.thunderbird.net/ja/thunderbird/addon/importexporttools-ng/>  
 ※PGP送受信では暗号化されたままエクスポートされる？  
-※[元の開発](https://addons.thunderbird.net/ja/thunderbird/addon/importexporttools/)からフォークされた次期バージョン(**NextGen**)ということで、頭文字をとって、**NG**になっているようだ(NGを別の意味で捉えたよ)。  
+※[元の開発](https://addons.thunderbird.net/ja/thunderbird/addon/importexporttools/)からフォークされた次期バージョン(**NextGen**)ということで、頭文字をとって、**NG**になっているようだ(NGを別の意味で捉えてしまった)。  
 
 * 1つ目案：PGPから復号化後にエクスポートの手順(インポートできるか不明)。  
   1. メール単体(複数でもかまわないが、ディレクトリという意味ではない)を選択する。  
@@ -534,7 +553,7 @@ Microsoft社が無償で[Outlook](https://www.microsoft.com/ja-jp/microsoft-365/
     * 添付ファイルの拡張子が以下だった場合に確認する。  
       exe  
 
-今後条件を変えた場合、ここへの先を忘れるかもしれない。  
+今後、条件を変えた場合ここへの記入を忘れるかもしれない。  
 
 
 <a id="operatingsystemnetwork_mail_bordercolorsd"></a>
@@ -562,10 +581,9 @@ Microsoft社が無償で[Outlook](https://www.microsoft.com/ja-jp/microsoft-365/
 <https://addons.thunderbird.net/ja/thunderbird/addon/display-mail-user-agent-t/>  
 送信者が使用しているメーラーをアイコン表示する。  
 
-しかし、私の使い方では機能しないだろうから無効化する。  
-また、色はあらかじめ淡い色にしておこうと思う。  
-友達や会社の人とやりとりするようになったときに有効化する・・・かな。。。  
-なぜに友達や社会人たちはLINEに依存するのだろう(韓国かどこかに個人情報を無償提供して得るもの有るのだろうか)。  
+色は淡い色にする。  
+友達や会社の人とやりとりするまで無効化するつもりだったが、有効化しておこう。  
+それにしても友達や会社の人たちはLINEに依存する(個人情報を他国に無償提供する理由は何だろう)。  
 
 
 <a id="androidoperatingsystem"></a>
