@@ -195,6 +195,10 @@ HFS+とは、Mac OS拡張フォーマットのこと。
 
 <a id="macOperatingSystemreorder_coreutils"></a>
 #### 一般コマンドの導入
+今回も[Homebrew](https://brew.sh)を使い、[coreutils](https://formulae.brew.sh/formula/coreutils)を導入する。  
+元々の使いたいコマンドはこの中に含まれており、その1つが[shred](https://linuxjm.osdn.jp/info/GNU_coreutils/coreutils-ja_83.html)だ。  
+これはファイルを復元不可能なまでに削除するため、どうしても欲しかった(個人端末で熱望する理由はないけど)。  
+
 
 <a id="macOperatingSystemreorder_dscl-list"></a>
 #### 現在のユーザ一覧表示
