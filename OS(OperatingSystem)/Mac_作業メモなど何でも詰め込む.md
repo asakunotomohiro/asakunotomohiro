@@ -271,6 +271,32 @@ Written by Colin Plumb.
 $
 ```
 
+以下、動作確認・・・もどき。
+```terminal
+$ ll
+total 24
+-rw-r--r--   1 asakunotomohiro  staff    34  4 11 00:57 testfile.txt
+-rw-r--r--   1 asakunotomohiro  staff   206  4 11 00:55 testfile.txt.gpg
+$ echo "導入確認" > test20230411.txt
+$ ll
+total 32
+-rw-r--r--   1 asakunotomohiro  staff    13  4 11 10:05 test20230411.txt	←☆このファイルを消す。
+-rw-r--r--   1 asakunotomohiro  staff    34  4 11 00:57 testfile.txt
+-rw-r--r--   1 asakunotomohiro  staff   206  4 11 00:55 testfile.txt.gpg
+$ shred test20230411.txt	←☆コマンド実施。
+$ ll
+total 32
+-rw-r--r--   1 asakunotomohiro  staff  4096  4 11 10:05 test20230411.txt	←☆消えていない。
+-rw-r--r--   1 asakunotomohiro  staff    34  4 11 00:57 testfile.txt
+-rw-r--r--   1 asakunotomohiro  staff   206  4 11 00:55 testfile.txt.gpg
+$ shred -u test20230411.txt	←☆再挑戦(オプション付き)。
+$ ll	←☆消えている。
+total 24
+-rw-r--r--   1 asakunotomohiro  staff    34  4 11 00:57 testfile.txt
+-rw-r--r--   1 asakunotomohiro  staff   206  4 11 00:55 testfile.txt.gpg
+$
+```
+
 
 <a id="macOperatingSystemreorder_dscl-list"></a>
 #### 現在のユーザ一覧表示
