@@ -256,6 +256,20 @@ $ echo $?
 0
 $
 ```
+Pathを通す必要があるのか？  
+
+以下、特にPath通し作業せずに使える確認。
+```terminal
+$ shred --version
+shred (GNU coreutils) 9.2
+Copyright (C) 2023 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Colin Plumb.
+$
+```
 
 
 <a id="macOperatingSystemreorder_dscl-list"></a>
