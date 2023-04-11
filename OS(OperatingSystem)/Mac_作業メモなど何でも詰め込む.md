@@ -18,8 +18,10 @@
   * [macOS新規利用前の設定変更](#macOperatingSystemsetting)  
   * [macOSを再インストールする方法](#macOperatingSystemreinstall)  
   * [コマンド](#macOperatingSystemreorder)  
+    * [一般コマンドの導入](#macOperatingSystemreorder_coreutils)  
+      Linuxには標準で入っているコマンドをMacに導入する。  
     * [ユーザ一覧表示](#macOperatingSystemreorder_dscl-list)  
-      詳細には未調査。  
+      詳細には踏み込まず。  
     * [ユーザ新規追加](#macOperatingSystemreorder_dscl-create)  
       未調査。  
 
@@ -191,6 +193,8 @@ HFS+とは、Mac OS拡張フォーマットのこと。
 ### MacOS限定のコマンド
 ※Linuxコマンドは[別ファイル](./Linux_作業メモなど何でも詰め込む.md)。  
 
+<a id="macOperatingSystemreorder_coreutils"></a>
+#### 一般コマンドの導入
 
 <a id="macOperatingSystemreorder_dscl-list"></a>
 #### 現在のユーザ一覧表示
