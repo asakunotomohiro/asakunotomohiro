@@ -313,12 +313,16 @@ $
 以下、その作業。
 ```terminal
 $ cd ~/.gnupg/openpgp-revocs.d/
+$ pwd
+/Users/asakunotomohiro/.gnupg/openpgp-revocs.d
 $ ll
 total 112
 -rw-------  1 asakunotomohiro  staff  1426  4  5 13:31 4949494949494949494949494949494949494949.rev
-$ shred -u 4949494949494949494949494949494949494949.rev	←☆消せないのだが？
-zsh: command not found: shred
+$ shred -uz 4949494949494949494949494949494949494949.rev
+$ ll
+total 0
 $
+
 ```
 どういうこと？  
 
