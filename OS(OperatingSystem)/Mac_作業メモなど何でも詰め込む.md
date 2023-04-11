@@ -204,28 +204,6 @@ HFS+とは、Mac OS拡張フォーマットのこと。
 $ brew install coreutils
 Running `brew update --auto-update`...
 ==> Auto-updated Homebrew!
-==> Updated Homebrew from 4.0.10 (cfa427fbb) to 4.0.12 (7ea4726f2).
-Updated 2 taps (homebrew/core and homebrew/cask).
-==> New Formulae
-aarch64-elf-gdb          blocky                   gat                      ksops                    renovate                 trust-dns
-aliyunpan                cloudpan189-go           hz                       meta-package-manager     thriftgo                 wazero
-arjun                    devcontainer             kitex                    ntfy                     trurl                    wxlua
-==> New Casks
-alipay-key-tool          beardie                  mullvad-browser          orcaslicer               stack                    vbrokers
-archaeology              carbide-create           nozbe                    piclist                  usmart-trade
-
-You have 5 outdated formulae installed.
-
-
-The 4.0.12 changelog can be found at:
-  https://github.com/Homebrew/brew/releases/tag/4.0.12
-==> Fetching dependencies for coreutils: gmp
-==> Fetching gmp
-==> Downloading https://ghcr.io/v2/homebrew/core/gmp/manifests/6.2.1_1
-######################################################################## 100.0%
-==> Downloading https://ghcr.io/v2/homebrew/core/gmp/blobs/sha256:a43a2ae4c44d90626b835a968a32327c8b8bbf754ec1d2590f8ac656c71dace9
-==> Downloading from https://pkg-containers.githubusercontent.com/ghcr1/blobs/sha256:a43a2ae4c44d90626b835a968a32327c8b8bbf754ec1d2590f8ac656c71dace9?s
-######################################################################## 100.0%
 ==> Fetching coreutils
 ==> Downloading https://ghcr.io/v2/homebrew/core/coreutils/manifests/9.2
 ######################################################################## 100.0%
@@ -260,7 +238,7 @@ Pathを通す必要があるのか？
 
 以下、特にPath通し作業せずに使える確認。
 ```terminal
-$ shred --version
+$ shred --version	←☆バージョン確認。
 shred (GNU coreutils) 9.2
 Copyright (C) 2023 Free Software Foundation, Inc.
 License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
@@ -270,30 +248,17 @@ There is NO WARRANTY, to the extent permitted by law.
 Written by Colin Plumb.
 $
 ```
+すでに通っているPathだったのかもな(要確認)。  
 
 以下、動作確認・・・もどき。
 ```terminal
-$ ll
-total 24
--rw-r--r--   1 asakunotomohiro  staff    34  4 11 00:57 testfile.txt
--rw-r--r--   1 asakunotomohiro  staff   206  4 11 00:55 testfile.txt.gpg
 $ echo "導入確認" > test20230411.txt
 $ ll
 total 32
 -rw-r--r--   1 asakunotomohiro  staff    13  4 11 10:05 test20230411.txt	←☆このファイルを消す。
--rw-r--r--   1 asakunotomohiro  staff    34  4 11 00:57 testfile.txt
--rw-r--r--   1 asakunotomohiro  staff   206  4 11 00:55 testfile.txt.gpg
-$ shred test20230411.txt	←☆コマンド実施。
-$ ll
-total 32
--rw-r--r--   1 asakunotomohiro  staff  4096  4 11 10:05 test20230411.txt	←☆消えていない。
--rw-r--r--   1 asakunotomohiro  staff    34  4 11 00:57 testfile.txt
--rw-r--r--   1 asakunotomohiro  staff   206  4 11 00:55 testfile.txt.gpg
-$ shred -u test20230411.txt	←☆再挑戦(オプション付き)。
+$ shred -u test20230411.txt	←☆オプション付きで実施(オプションを付けない場合削除しない)。
 $ ll	←☆消えている。
-total 24
--rw-r--r--   1 asakunotomohiro  staff    34  4 11 00:57 testfile.txt
--rw-r--r--   1 asakunotomohiro  staff   206  4 11 00:55 testfile.txt.gpg
+total 0
 $
 ```
 
