@@ -199,6 +199,64 @@ HFS+とは、Mac OS拡張フォーマットのこと。
 元々の使いたいコマンドはこの中に含まれており、その1つが[shred](https://linuxjm.osdn.jp/info/GNU_coreutils/coreutils-ja_83.html)だ。  
 これはファイルを復元不可能なまでに削除するため、どうしても欲しかった(個人端末で熱望する理由はないけど)。  
 
+以下、インストール作業。
+```terminal
+$ brew install coreutils
+Running `brew update --auto-update`...
+==> Auto-updated Homebrew!
+==> Updated Homebrew from 4.0.10 (cfa427fbb) to 4.0.12 (7ea4726f2).
+Updated 2 taps (homebrew/core and homebrew/cask).
+==> New Formulae
+aarch64-elf-gdb          blocky                   gat                      ksops                    renovate                 trust-dns
+aliyunpan                cloudpan189-go           hz                       meta-package-manager     thriftgo                 wazero
+arjun                    devcontainer             kitex                    ntfy                     trurl                    wxlua
+==> New Casks
+alipay-key-tool          beardie                  mullvad-browser          orcaslicer               stack                    vbrokers
+archaeology              carbide-create           nozbe                    piclist                  usmart-trade
+
+You have 5 outdated formulae installed.
+
+
+The 4.0.12 changelog can be found at:
+  https://github.com/Homebrew/brew/releases/tag/4.0.12
+==> Fetching dependencies for coreutils: gmp
+==> Fetching gmp
+==> Downloading https://ghcr.io/v2/homebrew/core/gmp/manifests/6.2.1_1
+######################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/gmp/blobs/sha256:a43a2ae4c44d90626b835a968a32327c8b8bbf754ec1d2590f8ac656c71dace9
+==> Downloading from https://pkg-containers.githubusercontent.com/ghcr1/blobs/sha256:a43a2ae4c44d90626b835a968a32327c8b8bbf754ec1d2590f8ac656c71dace9?s
+######################################################################## 100.0%
+==> Fetching coreutils
+==> Downloading https://ghcr.io/v2/homebrew/core/coreutils/manifests/9.2
+######################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/coreutils/blobs/sha256:5076ee683ec021506f83687a9b2ad5e5643ef9825784cf5a92d184e947bda127
+==> Downloading from https://pkg-containers.githubusercontent.com/ghcr1/blobs/sha256:5076ee683ec021506f83687a9b2ad5e5643ef9825784cf5a92d184e947bda127?s
+######################################################################## 100.0%
+==> Installing dependencies for coreutils: gmp
+==> Installing coreutils dependency: gmp
+==> Pouring gmp--6.2.1_1.arm64_monterey.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/gmp/6.2.1_1: 21 files, 3.2MB
+==> Installing coreutils
+==> Pouring coreutils--9.2.arm64_monterey.bottle.tar.gz
+==> Caveats
+Commands also provided by macOS and the commands dir, dircolors, vdir have been installed with the prefix "g".
+If you need to use these commands with their normal names, you can add a "gnubin" directory to your PATH with:
+  PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
+==> Summary
+🍺  /opt/homebrew/Cellar/coreutils/9.2: 480 files, 13.2MB
+==> Running `brew cleanup coreutils`...
+Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.
+Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
+==> Caveats
+==> coreutils
+Commands also provided by macOS and the commands dir, dircolors, vdir have been installed with the prefix "g".
+If you need to use these commands with their normal names, you can add a "gnubin" directory to your PATH with:
+  PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
+$ echo $?
+0
+$
+```
+
 
 <a id="macOperatingSystemreorder_dscl-list"></a>
 #### 現在のユーザ一覧表示
