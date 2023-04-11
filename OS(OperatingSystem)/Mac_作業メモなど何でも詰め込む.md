@@ -199,6 +199,8 @@ HFS+とは、Mac OS拡張フォーマットのこと。
 元々の使いたいコマンドはこの中に含まれており、その1つが[shred](https://linuxjm.osdn.jp/info/GNU_coreutils/coreutils-ja_83.html)だ。  
 これはファイルを復元不可能なまでに削除するため、どうしても欲しかった(個人端末で熱望する理由はないけど)。  
 
+<details><summary>作業記録。</summary>
+
 以下、インストール作業。
 ```terminal
 $ brew install coreutils
@@ -261,6 +263,8 @@ $ ll	←☆消えている。
 total 0
 $
 ```
+
+</details>
 
 
 <a id="macOperatingSystemreorder_dscl-list"></a>

@@ -322,6 +322,37 @@ $
 ```
 どういうこと？  
 
+<a id="operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_runencrypt"></a>
+以下、暗号化および復号化の動作確認。
+```terminal
+$ echo "ファイルの暗号化テスト" > testfile.txt
+$ ll testfile.txt
+-rw-r--r--  1 asakunotomohiro  staff  34  4 11 00:54 testfile.txt	←☆このファイルが対象。
+$ gpg -e -r asakunotomohiro@pgp.asakunotomohiro.ml testfile.txt	←☆暗号化実施。
+$ ll testfile.txt*
+-rw-r--r--  1 asakunotomohiro  staff  206  4 11 00:55 testfile.txt.gpg
+-rw-r--r--  1 asakunotomohiro  staff   34  4 11 00:54 testfile.txt
+$ rm testfile.txt	←☆元のファイル削除。
+$ cat testfile.txt.gpg	←☆暗号化されている。
+?^ٸh;???@>???I??۰?h*W§+???~???,?fN0aSc'????Q??C???i?Մ;???&C???X??wu?h??Rūp)@?l8?????????V
+??ެ=??ʆ??H??,?V?-??v??p?6:z????;?[??Bߧc??k??\?c?G?,?????zp,?]???"'?Ө?&P!DN6?sM?q???%
+$ ll testfile.txt*
+-rw-r--r--  1 asakunotomohiro  staff  206  4 11 00:55 testfile.txt.gpg
+$ gpg testfile.txt.gpg	←☆復号化(推測された行動になるため、明示した方がいい)。
+gpg: *警告*: コマンドが指定されていません。なにを意味しているのか当ててみます ...
+gpg: 256-ビットECDH鍵, ID D9B8680F3B8DACE0, 日付2023-04-10に暗号化されました
+      "asakunotomohiro (pgp@mail) <asakunotomohiro@pgp.asakunotomohiro.ml>"
+$ ll testfile.txt*
+-rw-r--r--  1 asakunotomohiro  staff   34  4 11 00:57 testfile.txt	←☆復号化された。
+-rw-r--r--  1 asakunotomohiro  staff  206  4 11 00:55 testfile.txt.gpg
+$ cat testfile.txt	←☆中身も問題なく復号化されている。
+ファイルの暗号化テスト
+$ shred -u testfile.txt.gpg
+$ ll testfile.txt*
+-rw-r--r--  1 asakunotomohiro  staff  34  4 11 00:57 testfile.txt
+$
+```
+
 </details>
 
 使い方は後日。  
