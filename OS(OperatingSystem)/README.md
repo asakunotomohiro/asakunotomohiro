@@ -343,32 +343,58 @@ $
 以下、暗号化および復号化の動作確認。
 ```terminal
 $ echo "ファイルの暗号化テスト" > testfile.txt
-$ ll testfile.txt
--rw-r--r--  1 asakunotomohiro  staff  34  4 11 00:54 testfile.txt	←☆このファイルが対象。
+$ ll
+total 8
+-rw-r--r--  1 asakunotomohiro  staff  34  4 22 07:52 testfile.txt	←☆このファイルが対象。
+$ cat testfile.txt
+ファイルの暗号化テスト
 $ gpg -e -r asakuno.secure@pgp.asakuno.org testfile.txt	←☆暗号化実施。
-$ ll testfile.txt*
--rw-r--r--  1 asakunotomohiro  staff  206  4 11 00:55 testfile.txt.gpg
--rw-r--r--  1 asakunotomohiro  staff   34  4 11 00:54 testfile.txt
-$ rm testfile.txt	←☆元のファイル削除。
-$ cat testfile.txt.gpg	←☆暗号化されている。
+$ ll
+total 16
+-rw-r--r--  1 asakunotomohiro  staff  206  4 22 07:52 testfile.txt.gpg	←☆暗号化されたファイル。
+-rw-r--r--  1 asakunotomohiro  staff   34  4 22 07:52 testfile.txt	←☆最初に作成した平文ファイル。
+$ rm testfile.txt	←☆平文ファイル削除。
+$ ll
+total 8
+-rw-r--r--  1 asakunotomohiro  staff  206  4 22 07:52 testfile.txt.gpg
+$ cat testfile.txt.gpg
 ?^ٸh;???@>???I??۰?h*W§+???~???,?fN0aSc'????Q??C???i?Մ;???&C???X??wu?h??Rūp)@?l8?????????V
 ??ެ=??ʆ??H??,?V?-??v??p?6:z????;?[??Bߧc??k??\?c?G?,?????zp,?]???"'?Ө?&P!DN6?sM?q???%
-$ ll testfile.txt*
--rw-r--r--  1 asakunotomohiro  staff  206  4 11 00:55 testfile.txt.gpg
+$ gpg -d testfile.txt.gpg	←☆復号化(しかし、画面出力のみで終わる)。
+gpg: 256-ビットECDH鍵, ID A86D2576AAA988CC, 日付2023-04-21に暗号化されました
+      "asakunotomohiro (pgp@securemail) <asakuno.secure@pgp.asakuno.org>"
+ファイルの暗号化テスト	←☆暗号化対象の文言(平文内容を出力した結果)。
+$ ll	←☆ファイルへの出力がないため、暗号化されたファイルのみある。
+total 8
+-rw-r--r--  1 asakunotomohiro  staff  206  4 22 07:52 testfile.txt.gpg
+$ gpg -p testfile.txt.gpg	←☆私の意図した結果と異なるというか、そもそもオプションがないとはどういうこと？
+無効なオプション "-p"
+$ gpg -d testfile.txt.gpg -o test	←☆順番が大事なようだ。
+使い方: gpg [オプション] --decrypt [filename]
+$ gpg -o test -d testfile.txt.gpg	←☆復号時に、平文へのファイル指定があるため、そこに書き込む。
+gpg: 256-ビットECDH鍵, ID A86D2576AAA988CC, 日付2023-04-21に暗号化されました
+      "asakunotomohiro (pgp@securemail) <asakuno.secure@pgp.asakuno.org>"
+$ ll
+total 16
+-rw-r--r--  1 asakunotomohiro  staff   34  4 22 08:07 test	←☆指定したファイル名で出力されている。
+-rw-r--r--  1 asakunotomohiro  staff  206  4 22 07:52 testfile.txt.gpg
+$ cat test	←☆平文になっているのが確認できる。
+ファイルの暗号化テスト
+$
 $ gpg testfile.txt.gpg	←☆復号化(推測された行動になるため、明示した方がいい)。
 gpg: *警告*: コマンドが指定されていません。なにを意味しているのか当ててみます ...
-gpg: 256-ビットECDH鍵, ID D9B8680F3B8DACE0, 日付2023-04-10に暗号化されました
+gpg: 256-ビットECDH鍵, ID A86D2576AAA988CC, 日付2023-04-21に暗号化されました
       "asakunotomohiro (pgp@securemail) <asakuno.secure@pgp.asakuno.org>"
-$ ll testfile.txt*
--rw-r--r--  1 asakunotomohiro  staff   34  4 11 00:57 testfile.txt	←☆復号化された。
--rw-r--r--  1 asakunotomohiro  staff  206  4 11 00:55 testfile.txt.gpg
-$ cat testfile.txt	←☆中身も問題なく復号化されている。
+$ ll
+total 24
+-rw-r--r--  1 asakunotomohiro  staff   34  4 22 08:14 testfile.txt	←☆復号化されたファイル。
+-rw-r--r--  1 asakunotomohiro  staff   34  4 22 08:07 test
+-rw-r--r--  1 asakunotomohiro  staff  206  4 22 07:52 testfile.txt.gpg
+$ cat testfile.txt
 ファイルの暗号化テスト
-$ shred -u testfile.txt.gpg
-$ ll testfile.txt*
--rw-r--r--  1 asakunotomohiro  staff  34  4 11 00:57 testfile.txt
 $
 ```
+復号化したファイル名を暗号化ファイル名と異なる指定をした場合、平文がそのままコンピュータ上に残り、暗号化されたファイルが複数ある場合はどれを復号化したのか判断付かいかもしれない。  
 
 </details>
 
