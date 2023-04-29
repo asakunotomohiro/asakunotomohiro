@@ -454,15 +454,32 @@ $
 
 <a id="operatingsystemnetwork_pgppeggingcontrol"></a>
 #### PGP紐付け管理
-よく分かっていないのだが、チャットを含むメッセージ送受信が可能な自己証明サービスとして[keybase](https://keybase.io/)と言うのがある。  
+よく分かっていないのだが、暗号通信を前提としたチャットを含むメッセージ送受信が可能な自己証明サービスとして[keybase](https://keybase.io/)と言うのがある。  
 あるのは使わなければ損するだろうということで、ここで他のサービスとの紐付けを行うことにした。  
 
-アカウント作成やアプリケーションインストールなどは説明不要だろう。  
+アカウント作成やアプリケーションインストールなどは説明不要だろう(WindowsOSで例えるならば、GUI操作として、「**次へ**」をクリックし続ければ、インストール完了だ)。  
 そして、[公開鍵](#operatingsystemnetwork_pgp_howtoencrypt)はすでに作成済みとして、以下の作業を行う。  
 
 KeybaseGUI画面から鍵の取り込みを行うのだが、なぜかやり方のみ提示し、実際の取り込み方法はCUI操作が要求される。
 ```terminal
 $ keybase pgp select --no-publish --import	←☆オプションは、keybaseサーバに鍵を渡さずに使えるようにする(と解釈した)。
+　　　・
+　　　・
+　　　・
+▶ ERROR Key 0116fc91768d223a2a54d85fe570b010e5bca302cc3e30c427b694a24d94b21009870a is not active in user's sigchain. Publish key first to be able to import to local Keybase keychain
+$
+```
+エラーになったということは、結局公開しなければならないということなのだろう・・・。  
+
+以下、やり直し。
+```terminal
+$ gpg -K asakuno.secure@pgp.asakuno.org
+sec#  ed25519 2023-04-21 [SC]
+      993B74F887EF3B8F080911044C20892B88F7F574
+uid           [  究極  ] asakunotomohiro (pgp@securemail) <asakuno.secure@pgp.asakuno.org>
+ssb   cv25519 2023-04-21 [E] [有効期限: 2028-04-19]
+
+$ keybase pgp select --import asakuno.secure@pgp.asakuno.org
 You are selecting a PGP key to publish in your profile, and
 importing secret key to *local*, *encrypted* Keybase keyring.
 
@@ -476,11 +493,11 @@ hardware device (like a smart card or a Yubikey).
 #    Algo   Key Id             Created   UserId
 =    ====   ======             =======   ======
 1    256?   4C20892B88F7F574             asakunotomohiro <asakuno.secure@pgp.asakuno.org>
-Choose a key: 1	←☆選んだ途端に秘密鍵の取り出し用パスフレーズ入力ボックスが表示された。
-▶ ERROR ImportKey (secret: true) error: GPG error: exit status 2
+Choose a key: 1
+▶ ERROR key generation error: GPG error: exit status 2	←☆どういうこと？
 $
 ```
-よく考えたらやりたいことがあったため、今回の作業は後回しにする。  
+なぜ取り込めない？  
 
 
 <a id="operatingsystemnetwork_mail"></a>
