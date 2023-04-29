@@ -296,13 +296,38 @@ GUIソフトウェアとして[GPGKeychain](#operatingsystemnetwork_pgp_software
 とりあえず究極に絶対だと言われる場所であれば問題ない。  
 ※当たり前だが、エクスポート時に、上記で入力したパスフレーズが必要になる。  
 
-CUI操作での取り出し方法は分からない。  
-また、GUI操作での取り出し方法を文字で説明するのはしんどいため、他の解説を見る必要がある(調べなければ分からないほど難しいものではないが)。  
+GUI操作での取り出し方法を文字で説明するのはしんどいため、解説は他の人に委ねる(調べなければ分からないほど難しいものではないが)。  
+
+以下、CUI上での公開鍵取りだし。
+```terminal
+$ gpg -K asakuno.secure@pgp.asakuno.org
+sec#  ed25519 2023-04-21 [SC]
+      993B74F887EF3B8F080911044C20892B88F7F574
+uid           [  究極  ] asakunotomohiro (pgp@securemail) <asakuno.secure@pgp.asakuno.org>
+ssb   cv25519 2023-04-21 [E] [有効期限: 2028-04-19]
+
+$ gpg --armor --export asakuno.secure@pgp.asakuno.org
+-----BEGIN PGP PUBLIC KEY BLOCK-----
+
+mDMEZEKbJhYJKwYBBAHaRw8BAQdA6UcR88SnTnaBRJW8F9wtWZfxLinb95t6mrE+
+Y1Znpou0TGFzYWt1bm90b21vaGlybyAocGdwQOOCu+OCreODpeOCouODoeODvOOD
+qykgPGFzYWt1bm8uc2VjdXJlQHBncC5hc2FrdW5vLm9yZz6IkAQTFggAOBYhBJk7
+dPiH7zuPCAkRBEwgiSuI9/V0BQJkQpsmAhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4B
+AheAAAoJEEwgiSuI9/V05CgBAKarhzAe3PVfpaJcMu10nYsaJK1Ro0/hJTOOFWFj
++EHEAP9PMXPlpc2V2lU+7SvnJ1G6aNWt9RhauboIyLIB0dqnBLg4BGRCm7cSCisG
+AQQBl1UBBQEBB0AjkrGYwyNB2krysMEr3j/aFrgKgju+kv7+BBgcNMp0WgMBCAeI
+fgQYFggAJhYhBJk7dPiH7zuPCAkRBEwgiSuI9/V0BQJkQpu3AhsMBQkJZgGAAAoJ
+EEwgiSuI9/V0fGAA/RuIy6Pw8ppCIrdn1pha/QoUFC5OJvuw33gbSi+X+E3tAQD3
+1dOkbQ1UGUXibugr2IfwCz2s4Hv54j7E6NxsOAcRCQ==
+=Bje/
+-----END PGP PUBLIC KEY BLOCK-----
+$
+```
 
 <details><summary>エクスポートした公開鍵。</summary>
 
 ```text
------BEGIN PGP PUBLIC KEY BLOCK-----
+-----BEGIN PGP PUBLIC KEY BLOCK-----	←☆ここがパブリックになっていること(プライベートになっている場合は秘密鍵であるため速攻削除すること)。
 
 mDMEZEKbJhYJKwYBBAHaRw8BAQdA6UcR88SnTnaBRJW8F9wtWZfxLinb95t6mrE+
 Y1Znpou0TGFzYWt1bm90b21vaGlybyAocGdwQOOCu+OCreODpeOCouODoeODvOOD
@@ -319,7 +344,7 @@ EEwgiSuI9/V0fGAA/RuIy6Pw8ppCIrdn1pha/QoUFC5OJvuw33gbSi+X+E3tAQD3
 ```
 これさえ有れば、私にメールを送ることができる。  
 ちょっとした*テスト*のために**使わないこと**。  
-ただ、これを使わなければ、私の手元に届かず、迷惑メール判定されるように仕込んである。  
+※これを使わなければ、サーバ側で削除する仕組みを作っている。  
 
 </details>
 
@@ -394,7 +419,7 @@ $
 $ gpg -K asakuno.secure@pgp.asakuno.org	←☆鍵の状態を知る。
 sec#  ed25519 2023-04-21 [SC]
       993B74F887EF3B8F080911044C20892B88F7F574
-uid           [  究極  ] asakunotomohiro (pgp@セキュアメール) <asakuno.secure@pgp.asakuno.org>
+uid           [  究極  ] asakunotomohiro (pgp@securemail) <asakuno.secure@pgp.asakuno.org>
 ssb   cv25519 2023-04-21 [E] [有効期限: 2028-04-19]	←☆副鍵のパスフレーズのみ変更。
 
 $ gpg --edit-key asakuno.secure@pgp.asakuno.org	←☆鍵の編集。
