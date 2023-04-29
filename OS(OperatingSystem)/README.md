@@ -499,6 +499,49 @@ $
 ```
 なぜ取り込めない？  
 
+以下、原因対処・・・失敗。
+```terminal
+$ gpg -K asakuno.secure@pgp.asakuno.org
+sec#  ed25519 2023-04-21 [SC]
+      993B74F887EF3B8F080911044C20892B88F7F574
+uid           [  究極  ] asakunotomohiro (pgp@securemail) <asakuno.secure@pgp.asakuno.org>
+ssb   cv25519 2023-04-21 [E] [有効期限: 2028-04-19]
+
+$ gpg --edit-key asakuno.secure@pgp.asakuno.org
+gpg (GnuPG/MacGPG2) 2.2.41; Copyright (C) 2022 g10 Code GmbH
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+秘密副鍵が利用できます。
+
+pub  ed25519/4C20892B88F7F574
+     作成: 2023-04-21  有効期限: 無期限      利用法: SC
+     信用: 究極        有効性: 究極
+ssb  cv25519/A86D2576AAA988CC
+     作成: 2023-04-21  有効期限: 2028-04-19  利用法: E
+[  究極  ] (1). asakunotomohiro (pgp@securemail) <asakuno.secure@pgp.asakuno.org>
+
+gpg> showpref
+[  究極  ] (1). asakunotomohiro (pgp@securemail) <asakuno.secure@pgp.asakuno.org>
+     暗号方式: AES256, AES192, AES, 3DES
+     AEAD:	←☆ここが空なのが原因でエラーになった。
+     ダイジェスト: SHA512, SHA384, SHA256, SHA224, SHA1
+     圧縮: ZLIB, BZIP2, ZIP, 無圧縮
+     機能: MDC, AEAD, 鍵サーバ 修正しない
+
+gpg> setpref AES256 AES192 AES 3DES SHA512 SHA384 SHA256 SHA224 ZLIB BZIP2 ZIP Uncompressed	←☆AEADに設定。
+この実行には秘密鍵がいります。	←☆？
+
+gpg> updpref	←☆AEAD更新。
+この実行には秘密鍵がいります。	←☆？
+
+gpg> save
+鍵は無変更なので更新は不要です。	←☆？
+$
+```
+結局駄目だった(本来であれば、更新時にパスフレーズ入力があるが、今回ないため、反映できていないことになる)。  
+主鍵の秘密鍵が必要ということか・・・。  
+
 
 <a id="operatingsystemnetwork_mail"></a>
 ### メール
