@@ -498,34 +498,8 @@ GUIソフトウェアとして[GPGKeychain](#operatingsystemnetwork_pgp_software
 
 GUI操作での取り出し方法を文字で説明するのはしんどいため、解説は他の人に委ねる(調べなければ分からないほど難しいものではないが)。  
 
-以下、CUI上での秘密鍵取りだし(公開鍵含むつもりだったが失敗)。
-```terminal
-$ gpg -K asakuno.secure@pgp.asakuno.org
-sec   ed25519 2023-04-21 [SC]
-      993B74F887EF3B8F080911044C20892B88F7F574
-uid           [  究極  ] asakunotomohiro (pgp@securemail) <asakuno.secure@pgp.asakuno.org>
-ssb   cv25519 2023-04-21 [E] [有効期限: 2028-04-19]
 
-$ gpg --export-secret-keys --armor asakuno.secure@pgp.asakuno.org > privkey.asc	←☆パスフレーズを聞かれる(指定した秘密鍵などすべて出力される)。
-$ ll privkey.asc
--rw-r--r--  1 asakunotomohiro  staff  935  4 30 11:13 privkey.asc
-$ date
-2023年 4月30日 日曜日 11時14分15秒 JST
-$
-```
-
-以下の結果は意図していない内容が出てきた。
-```text
------BEGIN PGP PRIVATE KEY BLOCK-----
-　　　・
-　　　・
-　　　・
------END PGP PRIVATE KEY BLOCK-----
-```
-私の今回のCUI作業は間違っていることだろう(素直にGPGKeychainを使うべし)。  
-
-
-以下、CUI上での公開鍵取りだし(秘密鍵無し)。
+以下、CUI上での公開鍵取りだし(**秘密鍵無し**)。
 ```terminal
 $ gpg -K asakuno.secure@pgp.asakuno.org
 sec#  ed25519 2023-04-21 [SC]
@@ -698,7 +672,7 @@ ssb  ed25519/00889BFF44F3F5EB	←☆これ。
 gpg> passwd	←☆パスフレーズ変更実施。
 gpg: 鍵 4C20892B88F7F574/4C20892B88F7F574: パスフレーズの変更エラー: 秘密鍵がありません
 
-gpg> q	←☆エラーになったのでqで終了したが、変更されているようだ(上記のエラーは主鍵に対してか？)。
+gpg> q	←☆エラーになったのでqで終了したが、変更されているようだ(上記のエラーは主鍵に対して)。
 $
 ```
 
