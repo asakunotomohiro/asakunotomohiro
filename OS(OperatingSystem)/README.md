@@ -128,6 +128,7 @@ PGPを使う方法というか、公開鍵の作成を示す。
 * 鍵の生成。  
   1. [主鍵の生成作業](#operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_mainkey)  
   1. [副鍵の生成作業](#operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_subkey)  
+  1. [優先指定リストを設定](#operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_setpref)  
   1. [主鍵の秘密鍵をエクスポート](#operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_mainexport)  
   1. [主鍵の秘密鍵を削除](#operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_maindelete)  
   1. [副鍵のパスフレーズ変更](#operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_subchangepass)  
@@ -288,8 +289,130 @@ sub   cv25519 2023-04-21 [E]	←☆副鍵(1種類の機能有り：Eは暗号化
 $
 ```
 
+<a id="operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_setpref"></a>
+以下、優先指定リストを設定する。  
+これは、暗号・署名・圧縮・機能に使用するアルゴリズムを確認後、設定されていない箇所に設定する作業。  
+設定する理由は、未設定の場合、後述の[PGP紐付け管理](#operatingsystemnetwork_pgppeggingcontrol)でエラーになるため、事前に設定しておく。  
+何より、主鍵の秘密鍵が必須のようなので、ここで作業する必要がある。  
+
+以下、その作業。
+```terminal
+$ gpg -K asakuno.secure@pgp.asakuno.org
+sec   ed25519 2023-04-21 [SC]
+      993B74F887EF3B8F080911044C20892B88F7F574
+uid           [  究極  ] asakunotomohiro (pgp@securemail) <asakuno.secure@pgp.asakuno.org>
+ssb   cv25519 2023-04-21 [E] [有効期限: 2028-04-19]
+
+$ gpg --edit-key asakuno.secure@pgp.asakuno.org
+gpg (GnuPG/MacGPG2) 2.2.41; Copyright (C) 2022 g10 Code GmbH
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+秘密鍵が利用できます。
+
+sec  ed25519/4C20892B88F7F574
+     作成: 2023-04-21  有効期限: 無期限      利用法: SC
+     信用: 究極        有効性: 究極
+ssb  cv25519/A86D2576AAA988CC
+     作成: 2023-04-21  有効期限: 2028-04-19  利用法: E
+[  究極  ] (1). asakunotomohiro (pgp@securemail) <asakuno.secure@pgp.asakuno.org>
+
+gpg> pref	←☆指定可能一覧。
+[  究極  ] (1). asakunotomohiro (pgp@securemail) <asakuno.secure@pgp.asakuno.org>
+     S9 S8 S7 S2 H10 H9 H8 H11 H2 Z2 Z3 Z1 [mdc] [no-ks-modify]
+
+gpg> showpref	←☆現在の設定済み確認。
+[  究極  ] (1). asakunotomohiro (pgp@securemail) <asakuno.secure@pgp.asakuno.org>
+     暗号方式: AES256, AES192, AES, 3DES
+     AEAD:	←☆ここが空では困る。
+     ダイジェスト: SHA512, SHA384, SHA256, SHA224, SHA1
+     圧縮: ZLIB, BZIP2, ZIP, 無圧縮
+     機能: MDC, AEAD, 鍵サーバ 修正しない
+
+gpg> setpref AES256 AES192 AES 3DES SHA512 SHA384 SHA256 SHA224 ZLIB BZIP2 ZIP Uncompressed	←☆設定実施。
+優先指定の一覧を設定:
+     暗号方式: AES256, AES192, AES, 3DES
+     AEAD:	←☆設定したのに空のまんまになっている？
+     ダイジェスト: SHA512, SHA384, SHA256, SHA224, SHA1
+     圧縮: ZLIB, BZIP2, ZIP, 無圧縮
+     機能: MDC, AEAD, 鍵サーバ 修正しない
+優先指定を本当に更新しますか? (y/N) y	←☆とりあえず更新。
+
+sec  ed25519/4C20892B88F7F574
+     作成: 2023-04-21  有効期限: 無期限      利用法: SC
+     信用: 究極        有効性: 究極
+ssb  cv25519/A86D2576AAA988CC
+     作成: 2023-04-21  有効期限: 2028-04-19  利用法: E
+[  究極  ] (1). asakunotomohiro (pgp@securemail) <asakuno.secure@pgp.asakuno.org>
+
+gpg> showpref	←☆反映していないので設定前の状態が表示される。
+[  究極  ] (1). asakunotomohiro (pgp@securemail) <asakuno.secure@pgp.asakuno.org>
+     暗号方式: AES256, AES192, AES, 3DES
+     AEAD:
+     ダイジェスト: SHA512, SHA384, SHA256, SHA224, SHA1
+     圧縮: ZLIB, BZIP2, ZIP, 無圧縮
+     機能: MDC, AEAD, 鍵サーバ 修正しない
+
+gpg> updpref	←☆更新。
+優先指定の一覧を設定:
+     暗号方式: AES256, AES192, AES, 3DES
+     AEAD:	←☆なぜ空？
+     ダイジェスト: SHA512, SHA384, SHA256, SHA224, SHA1
+     圧縮: ZLIB, BZIP2, ZIP, 無圧縮
+     機能: MDC, AEAD, 鍵サーバ 修正しない
+優先指定を本当に更新しますか? (y/N) y
+
+sec  ed25519/4C20892B88F7F574
+     作成: 2023-04-21  有効期限: 無期限      利用法: SC
+     信用: 究極        有効性: 究極
+ssb  cv25519/A86D2576AAA988CC
+     作成: 2023-04-21  有効期限: 2028-04-19  利用法: E
+[  究極  ] (1). asakunotomohiro (pgp@securemail) <asakuno.secure@pgp.asakuno.org>
+
+gpg> showpref	←☆もう一度確認。
+[  究極  ] (1). asakunotomohiro (pgp@securemail) <asakuno.secure@pgp.asakuno.org>
+     暗号方式: AES256, AES192, AES, 3DES
+     AEAD:	←☆まだ空なのは、セーブしていないから？
+     ダイジェスト: SHA512, SHA384, SHA256, SHA224, SHA1
+     圧縮: ZLIB, BZIP2, ZIP, 無圧縮
+     機能: MDC, AEAD, 鍵サーバ 修正しない
+
+gpg> save	←☆保存する。
+$ gpg -K asakuno.secure@pgp.asakuno.org
+sec   ed25519 2023-04-21 [SC]
+      993B74F887EF3B8F080911044C20892B88F7F574
+uid           [  究極  ] asakunotomohiro (pgp@securemail) <asakuno.secure@pgp.asakuno.org>
+ssb   cv25519 2023-04-21 [E] [有効期限: 2028-04-19]
+
+$ gpg --edit-key asakuno.secure@pgp.asakuno.org	←☆もう一度確認。
+gpg (GnuPG/MacGPG2) 2.2.41; Copyright (C) 2022 g10 Code GmbH
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+秘密鍵が利用できます。
+
+sec  ed25519/4C20892B88F7F574
+     作成: 2023-04-21  有効期限: 無期限      利用法: SC
+     信用: 究極        有効性: 究極
+ssb  cv25519/A86D2576AAA988CC
+     作成: 2023-04-21  有効期限: 2028-04-19  利用法: E
+[  究極  ] (1). asakunotomohiro (pgp@securemail) <asakuno.secure@pgp.asakuno.org>
+
+gpg> showpref	←☆駄目やん。
+[  究極  ] (1). asakunotomohiro (pgp@securemail) <asakuno.secure@pgp.asakuno.org>
+     暗号方式: AES256, AES192, AES, 3DES
+     AEAD:
+     ダイジェスト: SHA512, SHA384, SHA256, SHA224, SHA1
+     圧縮: ZLIB, BZIP2, ZIP, 無圧縮
+     機能: MDC, AEAD, 鍵サーバ 修正しない
+
+gpg> q
+$
+```
+
+
 <a id="operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_mainexport"></a>
-主鍵の秘密鍵などをエクスポート。  
+以下、主鍵の秘密鍵などをエクスポート。  
 GUIソフトウェアとして[GPGKeychain](#operatingsystemnetwork_pgp_software)から取り出すのがいいだろう。  
 そして、これを絶対に外部に漏れない場所に保管しておく。  
 印刷して金庫の中でもかまわないし、主鍵が存在する端末を銀行に預けておくのも手である。  
@@ -298,7 +421,7 @@ GUIソフトウェアとして[GPGKeychain](#operatingsystemnetwork_pgp_software
 
 GUI操作での取り出し方法を文字で説明するのはしんどいため、解説は他の人に委ねる(調べなければ分からないほど難しいものではないが)。  
 
-以下、CUI上での公開鍵取りだし。
+以下、CUI上での公開鍵取りだし(秘密鍵無し)。
 ```terminal
 $ gpg -K asakuno.secure@pgp.asakuno.org
 sec#  ed25519 2023-04-21 [SC]
@@ -306,20 +429,8 @@ sec#  ed25519 2023-04-21 [SC]
 uid           [  究極  ] asakunotomohiro (pgp@securemail) <asakuno.secure@pgp.asakuno.org>
 ssb   cv25519 2023-04-21 [E] [有効期限: 2028-04-19]
 
-$ gpg --armor --export asakuno.secure@pgp.asakuno.org
+$ gpg --armor --export asakuno.secure@pgp.asakuno.org	←☆これで取り出せる。
 -----BEGIN PGP PUBLIC KEY BLOCK-----
-
-mDMEZEKbJhYJKwYBBAHaRw8BAQdA6UcR88SnTnaBRJW8F9wtWZfxLinb95t6mrE+
-Y1Znpou0TGFzYWt1bm90b21vaGlybyAocGdwQOOCu+OCreODpeOCouODoeODvOOD
-qykgPGFzYWt1bm8uc2VjdXJlQHBncC5hc2FrdW5vLm9yZz6IkAQTFggAOBYhBJk7
-dPiH7zuPCAkRBEwgiSuI9/V0BQJkQpsmAhsDBQsJCAcCBhUKCQgLAgQWAgMBAh4B
-AheAAAoJEEwgiSuI9/V05CgBAKarhzAe3PVfpaJcMu10nYsaJK1Ro0/hJTOOFWFj
-+EHEAP9PMXPlpc2V2lU+7SvnJ1G6aNWt9RhauboIyLIB0dqnBLg4BGRCm7cSCisG
-AQQBl1UBBQEBB0AjkrGYwyNB2krysMEr3j/aFrgKgju+kv7+BBgcNMp0WgMBCAeI
-fgQYFggAJhYhBJk7dPiH7zuPCAkRBEwgiSuI9/V0BQJkQpu3AhsMBQkJZgGAAAoJ
-EEwgiSuI9/V0fGAA/RuIy6Pw8ppCIrdn1pha/QoUFC5OJvuw33gbSi+X+E3tAQD3
-1dOkbQ1UGUXibugr2IfwCz2s4Hv54j7E6NxsOAcRCQ==
-=Bje/
 -----END PGP PUBLIC KEY BLOCK-----
 $
 ```
