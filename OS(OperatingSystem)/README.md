@@ -289,10 +289,10 @@ sub   cv25519 2023-04-21 [E]	←☆副鍵(1種類の機能有り：Eは暗号化
 $
 ```
 
-<details><summary>書名のみの副鍵作成作業。</summary>
+<details><summary>書名のみの副鍵新規追加作成作業。</summary>
 
 ```terminal
-$ gpg --edit-key --expert asakuno.secure@pgp.asakuno.org
+$ gpg --edit-key --expert asakuno.secure@pgp.asakuno.org	←☆鍵の編集。
 gpg (GnuPG/MacGPG2) 2.2.41; Copyright (C) 2022 g10 Code GmbH
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
@@ -306,7 +306,7 @@ ssb  cv25519/A86D2576AAA988CC
      作成: 2023-04-21  有効期限: 2028-04-19  利用法: E
 [  究極  ] (1). asakunotomohiro (pgp@securemail) <asakuno.secure@pgp.asakuno.org>
 
-gpg> addkey
+gpg> addkey	←☆副鍵追加。
 ご希望の鍵の種類を選択してください:
    (3) DSA (署名のみ)
    (4) RSA (署名のみ)
@@ -314,14 +314,14 @@ gpg> addkey
    (6) RSA (暗号化のみ)
    (7) DSA (機能をあなた自身で設定)
    (8) RSA (機能をあなた自身で設定)
-  (10) ECC (署名のみ)
+  (10) ECC (署名のみ)	←☆今回はこれ。
   (11) ECC (機能をあなた自身で設定)
   (12) ECC (暗号化のみ)
   (13) 既存の鍵
   (14) カードに存在する鍵
 あなたの選択は? 10
 ご希望の楕円曲線を選択してください:
-   (1) Curve 25519
+   (1) Curve 25519	←☆これを選んだつもりだが？
    (3) NIST P-256
    (4) NIST P-384
    (5) NIST P-521
@@ -336,7 +336,7 @@ gpg> addkey
       <n>w = 鍵は n 週間で期限切れ
       <n>m = 鍵は n か月間で期限切れ
       <n>y = 鍵は n 年間で期限切れ
-鍵の有効期間は? (0)3y
+鍵の有効期間は? (0)3y	←☆3年にした。
 鍵は水  4/29 13:02:21 2026 JSTで期限切れとなります
 これで正しいですか? (y/N) y
 本当に作成しますか? (y/N) y
@@ -349,11 +349,11 @@ sec  ed25519/4C20892B88F7F574
      信用: 究極        有効性: 究極
 ssb  cv25519/A86D2576AAA988CC
      作成: 2023-04-21  有効期限: 2028-04-19  利用法: E
-ssb  ed25519/00889BFF44F3F5EB
+ssb  ed25519/00889BFF44F3F5EB	←☆今回作成した副鍵。
      作成: 2023-04-30  有効期限: 2026-04-29  利用法: S
 [  究極  ] (1). asakunotomohiro (pgp@securemail) <asakuno.secure@pgp.asakuno.org>
 
-gpg> save
+gpg> save	←☆作成した副鍵の保存。
 $ gpg -K asakuno.secure@pgp.asakuno.org
 sec   ed25519 2023-04-21 [SC]
       993B74F887EF3B8F080911044C20892B88F7F574
@@ -659,6 +659,50 @@ gpg> save	←☆今回は不要だったが、付けて損はない(毎回実行
 $
 ```
 GUI(GPGKeychain)から秘密鍵を削除した場合、すべての秘密鍵が消えるようだ。  
+
+<details><summary>書名のみの副鍵パスフレーズ変更作業。</summary>
+
+```terminal
+$ gpg -K asakuno.secure@pgp.asakuno.org
+sec#  ed25519 2023-04-21 [SC]
+      993B74F887EF3B8F080911044C20892B88F7F574
+uid           [  究極  ] asakunotomohiro (pgp@securemail) <asakuno.secure@pgp.asakuno.org>
+ssb   cv25519 2023-04-21 [E] [有効期限: 2028-04-19]
+ssb   ed25519 2023-04-30 [S] [有効期限: 2026-04-29]
+
+$ gpg -K --with-subkey-fingerprint asakuno.secure@pgp.asakuno.org
+sec#  ed25519 2023-04-21 [SC]
+      993B74F887EF3B8F080911044C20892B88F7F574
+uid           [  究極  ] asakunotomohiro (pgp@securemail) <asakuno.secure@pgp.asakuno.org>
+ssb   cv25519 2023-04-21 [E] [有効期限: 2028-04-19]
+      31EC0D189C70A1AADB546650A86D2576AAA988CC
+ssb   ed25519 2023-04-30 [S] [有効期限: 2026-04-29]	←☆この副鍵のパスフレーズのみ変更したい。
+      06ED9B3E20676E623DE917DE00889BFF44F3F5EB
+
+$ gpg --edit-key 06ED9B3E20676E623DE917DE00889BFF44F3F5EB	←☆ゆえに、ピンポイントで指定する。
+gpg (GnuPG/MacGPG2) 2.2.41; Copyright (C) 2022 g10 Code GmbH
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+秘密副鍵が利用できます。
+
+pub  ed25519/4C20892B88F7F574
+     作成: 2023-04-21  有効期限: 無期限      利用法: SC
+     信用: 究極        有効性: 究極
+ssb  cv25519/A86D2576AAA988CC
+     作成: 2023-04-21  有効期限: 2028-04-19  利用法: E
+ssb  ed25519/00889BFF44F3F5EB	←☆これ。
+     作成: 2023-04-30  有効期限: 2026-04-29  利用法: S
+[  究極  ] (1). asakunotomohiro (pgp@securemail) <asakuno.secure@pgp.asakuno.org>
+
+gpg> passwd	←☆パスフレーズ変更実施。
+gpg: 鍵 4C20892B88F7F574/4C20892B88F7F574: パスフレーズの変更エラー: 秘密鍵がありません
+
+gpg> q	←☆エラーになったのでqで終了したが、変更されているようだ(上記のエラーは主鍵に対してか？)。
+$
+```
+
+</details>
 
 <a id="operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_runencrypt"></a>
 以下、暗号化および復号化の動作確認。
