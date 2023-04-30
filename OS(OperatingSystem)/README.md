@@ -473,6 +473,8 @@ $
 ```
 エラーになったということは、結局公開しなければならないということなのだろう・・・。  
 
+<details><summary>やり直すが失敗する。</summary>
+
 以下、やり直し。
 ```terminal
 $ gpg -K asakuno.secure@pgp.asakuno.org
@@ -522,6 +524,49 @@ sec#  ed25519 2023-04-21 [SC]
 uid           [  究極  ] asakunotomohiro (pgp@securemail) <asakuno.secure@pgp.asakuno.org>
 ssb   cv25519 2023-04-21 [E] [有効期限: 2028-04-19]	←☆Eは暗号化のみ。
 
+$
+```
+
+</details>
+
+以下、やり直しとして、公開することにした作業。
+```terminal
+$ gpg -K asakuno.secure@pgp.asakuno.org
+sec#  ed25519 2023-04-21 [SC]
+      993B74F887EF3B8F080911044C20892B88F7F574
+uid           [  究極  ] asakunotomohiro (pgp@securemail) <asakuno.secure@pgp.asakuno.org>
+ssb   cv25519 2023-04-21 [E] [有効期限: 2028-04-19]
+ssb   ed25519 2023-04-30 [S] [有効期限: 2026-04-29]
+
+$ gpg -K --with-subkey-fingerprint asakuno.secure@pgp.asakuno.org
+sec#  ed25519 2023-04-21 [SC]
+      993B74F887EF3B8F080911044C20892B88F7F574
+uid           [  究極  ] asakunotomohiro (pgp@securemail) <asakuno.secure@pgp.asakuno.org>
+ssb   cv25519 2023-04-21 [E] [有効期限: 2028-04-19]
+      31EC0D189C70A1AADB546650A86D2576AAA988CC
+ssb   ed25519 2023-04-30 [S] [有効期限: 2026-04-29]
+      06ED9B3E20676E623DE917DE00889BFF44F3F5EB
+
+$ keybase pgp select --import --multi asakuno.secure@pgp.asakuno.org
+You are selecting a PGP key to publish in your profile, and
+importing secret key to *local*, *encrypted* Keybase keyring.
+
+If your GnuPG key is encrypted, you will be asked for passphrase
+to unlock it. You may be asked *twice* - first by GnuPG, to export
+encrypted key bundle, and then by Keybase, to unlock the secret key.
+
+Please note that this will not work if your secret key lives on a
+hardware device (like a smart card or a Yubikey).
+
+#    Algo   Key Id             Created   UserId
+=    ====   ======             =======   ======
+1    256?   4C20892B88F7F574             asakunotomohiro <asakuno.secure@pgp.asakuno.org>
+Choose a key: 1
+▶ INFO Generated new PGP key:	←☆パスフレーズは書名用のみ聞かれた(いいのか？)。
+▶ INFO   user: asakunotomohiro (pgp@securemail) <asakuno.secure@pgp.asakuno.org>
+▶ INFO   256-bit EdDSA key, ID 4C20892B88F7F574, created 2023-04-21
+$ echo $?
+0
 $
 ```
 
