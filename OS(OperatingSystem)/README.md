@@ -460,7 +460,9 @@ $
 アカウント作成やアプリケーションインストールなどは説明不要だろう(WindowsOSで例えるならば、GUI操作として、「**次へ**」をクリックし続ければ、インストール完了だ)。  
 そして、[公開鍵](#operatingsystemnetwork_pgp_howtoencrypt)はすでに作成済みとして、以下の作業を行う。  
 
-KeybaseGUI画面から鍵の取り込みを行うのだが、なぜかやり方のみ提示し、実際の取り込み方法はCUI操作が要求される。
+KeybaseGUI画面から鍵の取り込みを行うのだが、なぜかやり方のみ提示し、実際の取り込み方法はCUI操作が要求される。  
+また、今回の作業は、鍵の特性項目すべて埋まっている必要がある。  
+そのため、不足している場合は、[優先指定リストを設定](#operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_setpref)する作業にて、不足分を埋めること。  
 ```terminal
 $ keybase pgp select --no-publish --import	←☆オプションは、keybaseサーバに鍵を渡さずに使えるようにする(と解釈した)。
 　　　・
