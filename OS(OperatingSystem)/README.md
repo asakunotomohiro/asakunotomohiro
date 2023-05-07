@@ -1022,6 +1022,17 @@ $ cat -n gpg.conf
 $
 ```
 
+3. 公開鍵をサーバに登録。
+```terminal
+$ gpg --export asakuno.secure@pgp.asakuno.org | curl -T - https://keys.openpgp.org
+Key successfully uploaded. Proceed with verification here:
+https://keys.openpgp.org/upload/abcdefghijklmnopqrstuvwxyz
+$
+```
+出力されたURLが認証だろうと思い、開いたことにより、これでキーサーバに登録できたと思ったのだが、できていないようだ。  
+> You uploaded the key 993B74F887EF3B8F080911044C20892B88F7F574.  
+> This key is now published with only non-identity information. (What does this mean?)  
+
 
 * 検索手順  
   * <https://keyoxide.org>  
