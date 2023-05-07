@@ -1022,7 +1022,7 @@ $ cat -n gpg.conf
 $
 ```
 
-3. 公開鍵をサーバに登録。
+3. 公開鍵をサーバにテスト登録(検証であり、実際には登録されていない)。
 ```terminal
 $ gpg --export asakuno.secure@pgp.asakuno.org | curl -T - https://keys.openpgp.org
 Key successfully uploaded. Proceed with verification here:
@@ -1032,6 +1032,16 @@ $
 出力されたURLが認証だろうと思い、開いたことにより、これでキーサーバに登録できたと思ったのだが、できていないようだ。  
 > You uploaded the key 993B74F887EF3B8F080911044C20892B88F7F574.  
 > This key is now published with only non-identity information. (What does this mean?)  
+
+4. 公開鍵をサーバに登録実施。  
+様式：`gpg --keyserver [鍵サーバーのアドレス] --send-keys [鍵ID]`  
+※鍵IDは、GPGKeychainから鍵の詳細画面で確認できる。
+```terminal
+$ gpg --keyserver keys.openpgp.org --send-keys 88F7F574
+gpg: 鍵4C20892B88F7F574をhkp://keys.openpgp.orgへ送信
+$
+```
+※鍵IDは識別できればいいはずなので、メールアドレスを指定しても認識してくれるように思う。。。きっと・・・。  
 
 
 * 検索手順  
