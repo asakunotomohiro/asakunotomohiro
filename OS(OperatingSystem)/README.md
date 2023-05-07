@@ -1067,7 +1067,20 @@ $
 というメッセージの次行にメールアドレスと認証メールを送るボタンが表示される。  
 あとはいつも通り(?)に手順を踏めばいい。  
 
-* 検索手順  
+以下、検索。
+```terminal
+$ gpg --keyserver keys.openpgp.org --search-keys asakuno.secure@pgp.asakuno.org
+gpg: data source: http://keys.openpgp.org:11371
+(1)	asakunotomohiro (pgp@securemail) <asakuno.secure@pgp.asakun
+	  256 bit EDDSA key 4C20892B88F7F574, 作成: 2023-04-21
+Keys 1-1 of 1 for "asakuno.secure@pgp.asakuno.org".  番号(s)、N)次、またはQ)中止を入力してください >1
+gpg: 鍵4C20892B88F7F574:"asakunotomohiro (pgp@securemail) <asakuno.secure@pgp.asakuno.org>"変更なし
+gpg:           処理数の合計: 1
+gpg:               変更なし: 1
+$
+```
+
+* 手動(ブラウザ)検索手順  
   * <https://keyoxide.org>  
     ここで検索できる(実際に探したら見つかった)。  
 
