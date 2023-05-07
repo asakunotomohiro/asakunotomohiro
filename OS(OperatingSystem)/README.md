@@ -222,7 +222,7 @@ There is NO WARRANTY, to the extent permitted by law.
    (5) NIST P-521	←☆これが現時点の最強選択肢。
    (6) Brainpool P-256
    (7) Brainpool P-384
-   (8) Brainpool P-512	←☆最強硬度？
+   (8) Brainpool P-512	←☆最強硬度？(しかし、キーサーバに対応していない)。
    (9) secp256k1
 あなたの選択は? 5
 鍵の有効期限を指定してください。
@@ -956,7 +956,7 @@ $
   * [keyserver](https://www.keyserver.net)  
     古い(稼働停止済み)。  
 
-* 登録手順  
+* 登録手順(ブラウザ上)  
   <https://keys.openpgp.org>にて登録。  
   1. **upload**を選ぶ。  
      > You can also upload or manage your key.  
@@ -977,6 +977,95 @@ $
 > To make the key available for search by email address, you can verify it belongs to you:  
 > asakuno.secure@pgp.asakuno.org  
 > Note: Some providers delay emails for up to 15 minutes to prevent spam. Please be patient.  
+
+* 登録手順(コマンドライン上)  
+  そもそもの[設定](https://keys.openpgp.org/about/usage)から確認する必要がある。  
+
+1. 設定ファイルの確認。
+```terminal
+$ cd ~/.gnupg
+$ pwd
+/Users/asakunotomohiro/.gnupg
+$ ll *conf
+-rw-------@ 1 asakunotomohiro  staff  87  5  6 20:18 gpg.conf
+-rw-------  1 asakunotomohiro  staff  41  1  5 22:06 gpg-agent.conf
+-rw-------  1 asakunotomohiro  staff  34  1  5 22:06 dirmngr.conf
+$ cat -n gpg.conf	←☆このファイルにキーサーバを記述する。
+     1	auto-key-retrieve
+     2	no-emit-version
+     3	default-key 993B74F887EF3B8F080911044C20892B88F7F574
+$ cat -n gpg-agent.conf
+     1	default-cache-ttl 600
+     2	max-cache-ttl 7200
+$ cat -n dirmngr.conf	←☆このファイルは何？
+     1	keyserver hkps://keys.openpgp.org
+$
+```
+> This is the standard configuration file read by dirmngr on startup.  
+> It may contain any valid long option; the leading two dashes may not be entered and the option may not be abbreviated.  
+> This file is also read after a SIGHUP however not all options will actually have an effect.  
+> This default name may be changed on the command line (see option --options).  
+> You should backup this file.  
+
+よく分からない[ファイル](https://gnupg.org/documentation/manuals/gnupg/Dirmngr-Configuration.html)が起因で標準利用のキーサーバが決まる感じだな。  
+鍵の検索や取得に特化しているだけかもしれない。  
+素直に言われたファイル(**gpg.conf**)に書き込むことにする。  
+
+2. 利用キーサーバをファイルに書き込む。
+```terminal
+$ vi gpg.conf
+$ cat -n gpg.conf
+     1	auto-key-retrieve
+     2	no-emit-version
+     3	default-key 993B74F887EF3B8F080911044C20892B88F7F574
+     4	keyserver hkps://keys.openpgp.org	←☆これを書き込んだ。
+$
+```
+
+3. 公開鍵をサーバに登録実施。  
+様式：`gpg --keyserver [鍵サーバーのアドレス] --send-keys [鍵ID]`  
+※鍵IDは、GPGKeychainから鍵の詳細画面で確認できる。
+```terminal
+$ gpg --keyserver keys.openpgp.org --send-keys 88F7F574
+gpg: 鍵4C20892B88F7F574をhkp://keys.openpgp.orgへ送信
+$
+```
+~~送信しただけで登録まではできていないようで、検索にかからない~~ (検索方法に問題があったはず)。  
+
+ちなみに、メールアドレス指定での登録はできない。
+```terminal
+$ gpg --keyserver keys.openpgp.org --send-keys asakuno.secure@pgp.asakuno.org
+gpg: "asakuno.secure@pgp.asakuno.org"鍵IDではありません: スキップします
+$
+```
+
+4. サーバ登録済みの公開鍵をメールアドレスで検索可能作業。
+```terminal
+$ gpg --export asakuno.secure@pgp.asakuno.org | curl -T - https://keys.openpgp.org
+Key successfully uploaded. Proceed with verification here:
+https://keys.openpgp.org/upload/abcdefghijklmnopqrstuvwxyz
+$
+```
+出力されたURLが認証だろうと思い、開いたときに以下のメッセージが出力され、これでキーサーバでメールアドレス検索できると思ったのだが、できない。  
+> You uploaded the key 993B74F887EF3B8F080911044C20892B88F7F574.  
+> This key is now published with only non-identity information. (What does this mean?)  
+
+5. 鍵サーバでの検索。
+```terminal
+$ gpg --keyserver keys.openpgp.org --search-keys asakuno.secure@pgp.asakuno.org
+gpg: data source: http://keys.openpgp.org:11371
+gpg: 鍵"asakuno.secure@pgp.asakuno.org"が鍵サーバに見つかりません
+gpg: 鍵サーバの検索に失敗しました: 見つかりません
+$
+```
+~~どういうこと？~~  
+メールアドレスで検索できない理由は、認証メールに付いているURLを開かないのが原因なのだが、~~認証メールを送る方法が分からない~~。  
+
+暗号の種類によってはキーサーバ側が対応しておらず、認証メールを送る手段がとれないため、やり直す必要がある。  
+やり直したことにより、見慣れた(?)画面が開き、  
+`〜〜To make the key available for search by email address, you can verify it belongs to you:~~`
+というメッセージの次行にメールアドレスと認証メールを送るボタンが表示される。  
+あとはいつも通り(?)に手順を踏めばいい。  
 
 * 検索手順  
   * <https://keyoxide.org>  
