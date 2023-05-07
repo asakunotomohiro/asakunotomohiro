@@ -956,7 +956,7 @@ $
   * [keyserver](https://www.keyserver.net)  
     古い(稼働停止済み)。  
 
-* 登録手順  
+* 登録手順(ブラウザ上)  
   <https://keys.openpgp.org>にて登録。  
   1. **upload**を選ぶ。  
      > You can also upload or manage your key.  
@@ -977,6 +977,38 @@ $
 > To make the key available for search by email address, you can verify it belongs to you:  
 > asakuno.secure@pgp.asakuno.org  
 > Note: Some providers delay emails for up to 15 minutes to prevent spam. Please be patient.  
+
+* 登録手順(コマンドライン上)  
+  そもそもの[設定](https://keys.openpgp.org/about/usage)から確認する必要がある。  
+
+1. 設定ファイルの確認。
+```terminal
+$ cd ~/.gnupg
+$ pwd
+/Users/asakunotomohiro/.gnupg
+$ ll *conf
+-rw-------@ 1 asakunotomohiro  staff  87  5  6 20:18 gpg.conf
+-rw-------  1 asakunotomohiro  staff  41  1  5 22:06 gpg-agent.conf
+-rw-------  1 asakunotomohiro  staff  34  1  5 22:06 dirmngr.conf
+$ cat -n gpg.conf	←☆このファイルに使うキーサーバを記述するそうだ。
+     1	auto-key-retrieve
+     2	no-emit-version
+     3	default-key 993B74F887EF3B8F080911044C20892B88F7F574
+$ cat -n gpg-agent.conf
+     1	default-cache-ttl 600
+     2	max-cache-ttl 7200
+$ cat -n dirmngr.conf	←☆このファイルは何？
+     1	keyserver hkps://keys.openpgp.org
+$
+```
+> This is the standard configuration file read by dirmngr on startup.  
+> It may contain any valid long option; the leading two dashes may not be entered and the option may not be abbreviated.  
+> This file is also read after a SIGHUP however not all options will actually have an effect.  
+> This default name may be changed on the command line (see option --options).  
+> You should backup this file.  
+
+よく分からないファイルが起因で標準利用のキーサーバが決まる感じだな。  
+
 
 * 検索手順  
   * <https://keyoxide.org>  
