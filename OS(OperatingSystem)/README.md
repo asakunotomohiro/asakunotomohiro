@@ -934,24 +934,45 @@ $
 
 
 * 鍵管理サーバ(キーサーバという)一覧。  
+  * <https://keys.openpgp.org>  
+    これを使うことにした。  
+    歴史は[新しい](https://mailarchive.ietf.org/arch/msg/openpgp/1cQeIV8s81lhwG_FQtMuc2JbRSk/)ようだな。  
+    しかし、2019年の時点で[10万点](https://keys.openpgp.org/about/news)の公開鍵が登録されているようだ。  
   * <https://www.pgp.net>  
-    URLから関連していると思うが？  
   * <https://keyserver.pgp.com>  
     日本語で扱えるようだ。  
-  * <https://keys.openpgp.org>  
-    知っている人が使っているようだ。  
   * <https://pgp.surf.nl>  
-    使えるようだ。  
   * <https://keyserver.ubuntu.com>  
-    稼働している。  
   * <https://keys.mailvelope.com/manage.html>  
-    動いている。  
   * <http://pgp.mit.edu>  
     動かないのだが？  
   * <sks-keyservers.net>  
-    [古い](https://wiki.archlinux.jp/index.php/トーク:GnuPG)(使うな)。  
+    [古い](https://wiki.archlinux.jp/index.php/トーク:GnuPG)(存在しないサーバ)。  
   * [keyserver](https://www.keyserver.net)  
-    古い(使うな)。  
+    古い(稼働停止済み)。  
+
+* 登録手順  
+  <https://keys.openpgp.org>にて登録。  
+  1. **upload**を選ぶ。  
+     > You can also upload or manage your key.  
+  1. **Upload your key**にて、公開鍵を選ぶ。  
+     1. 私は**GPG Keychain**から公開鍵を排出。  
+     1. `asakunotomohiro (88F7F574) – 公開鍵.asc`というファイルを選ぶ。  
+  1. **Upload**ボタンクリック。  
+  1. 認証メールを送るボタン(**Send Verification Email**)をクリック(全文説明は、以下の引用部分がそう)。  
+  1. ボタンクリック後は、ボタンの文言が**Verification Pending**に変わることを確認。  
+  1. メール受信箱にて、**Verify asakuno.secure@pgp.asakuno.org for your key on keys.openpgp.org**という件名のメールを確認する。  
+  1. メール本文に記載している認証URLを開く。  
+  1. ブラウザ本文に、**Your key 993B74F887EF3B8F080911044C20892B88F7F574 is now published for the identity asakuno.secure@pgp.asakuno.org.**が表示され、無事に登録された。  
+  1. 実際に検索を掛けて公開鍵を確認する。  
+     ・・・あ・・・あぁ・・・よく分からないが、アップロードしたのと中身が違うぞ・・・どういうこと？  
+
+
+> You uploaded the key 993B74F887EF3B8F080911044C20892B88F7F574.  
+> This key is now published with only non-identity information. (What does this mean?)  
+> To make the key available for search by email address, you can verify it belongs to you:  
+> asakuno.secure@pgp.asakuno.org  
+> Note: Some providers delay emails for up to 15 minutes to prevent spam. Please be patient.  
 
 
 <a id="operatingsystemnetwork_mail"></a>
