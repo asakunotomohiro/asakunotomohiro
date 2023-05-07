@@ -1029,7 +1029,7 @@ Key successfully uploaded. Proceed with verification here:
 https://keys.openpgp.org/upload/abcdefghijklmnopqrstuvwxyz
 $
 ```
-出力されたURLが認証だろうと思い、開いたことにより、これでキーサーバに登録できたと思ったのだが、できていないようだ。  
+出力されたURLが認証だろうと思い、開いたときに以下のメッセージが出力され、これでキーサーバに登録できたと思ったのだが、できていないようだ。  
 > You uploaded the key 993B74F887EF3B8F080911044C20892B88F7F574.  
 > This key is now published with only non-identity information. (What does this mean?)  
 
@@ -1042,6 +1042,18 @@ gpg: 鍵4C20892B88F7F574をhkp://keys.openpgp.orgへ送信
 $
 ```
 ※鍵IDは識別できればいいはずなので、メールアドレスを指定しても認識してくれるように思う。。。きっと・・・。  
+送信しただけで登録まではできていないようで、検索にかからない。  
+
+5. 鍵サーバでの検索。
+```terminal
+$ gpg --keyserver keys.openpgp.org --search-keys asakuno.secure@pgp.asakuno.org
+gpg: data source: http://keys.openpgp.org:11371
+gpg: 鍵"asakuno.secure@pgp.asakuno.org"が鍵サーバに見つかりません
+gpg: 鍵サーバの検索に失敗しました: 見つかりません
+$
+```
+どういうこと？  
+上記のコマンドでサーバに鍵を送れたはずなんだが、、、  
 
 
 * 検索手順  
