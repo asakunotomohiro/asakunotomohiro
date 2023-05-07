@@ -990,7 +990,7 @@ $ ll *conf
 -rw-------@ 1 asakunotomohiro  staff  87  5  6 20:18 gpg.conf
 -rw-------  1 asakunotomohiro  staff  41  1  5 22:06 gpg-agent.conf
 -rw-------  1 asakunotomohiro  staff  34  1  5 22:06 dirmngr.conf
-$ cat -n gpg.conf	←☆このファイルに使うキーサーバを記述するそうだ。
+$ cat -n gpg.conf	←☆このファイルにキーサーバを記述する。
      1	auto-key-retrieve
      2	no-emit-version
      3	default-key 993B74F887EF3B8F080911044C20892B88F7F574
@@ -1007,7 +1007,20 @@ $
 > This default name may be changed on the command line (see option --options).  
 > You should backup this file.  
 
-よく分からないファイルが起因で標準利用のキーサーバが決まる感じだな。  
+よく分からない[ファイル](https://gnupg.org/documentation/manuals/gnupg/Dirmngr-Configuration.html)が起因で標準利用のキーサーバが決まる感じだな。  
+鍵の検索や取得に特化しているだけかもしれない。  
+素直に言われたファイル(**gpg.conf**)に書き込むことにする。  
+
+2. 利用キーサーバをファイルに書き込む。
+```terminal
+$ vi gpg.conf
+$ cat -n gpg.conf
+     1	auto-key-retrieve
+     2	no-emit-version
+     3	default-key 993B74F887EF3B8F080911044C20892B88F7F574
+     4	keyserver hkps://keys.openpgp.org	←☆これを書き込んだ。
+$
+```
 
 
 * 検索手順  
