@@ -1022,18 +1022,7 @@ $ cat -n gpg.conf
 $
 ```
 
-3. 公開鍵をサーバにテスト登録(検証であり、実際には登録されていない)。
-```terminal
-$ gpg --export asakuno.secure@pgp.asakuno.org | curl -T - https://keys.openpgp.org
-Key successfully uploaded. Proceed with verification here:
-https://keys.openpgp.org/upload/abcdefghijklmnopqrstuvwxyz
-$
-```
-出力されたURLが認証だろうと思い、開いたときに以下のメッセージが出力され、これでキーサーバに登録できたと思ったのだが、できていないようだ。  
-> You uploaded the key 993B74F887EF3B8F080911044C20892B88F7F574.  
-> This key is now published with only non-identity information. (What does this mean?)  
-
-4. 公開鍵をサーバに登録実施。  
+3. 公開鍵をサーバに登録実施。  
 様式：`gpg --keyserver [鍵サーバーのアドレス] --send-keys [鍵ID]`  
 ※鍵IDは、GPGKeychainから鍵の詳細画面で確認できる。
 ```terminal
@@ -1041,8 +1030,25 @@ $ gpg --keyserver keys.openpgp.org --send-keys 88F7F574
 gpg: 鍵4C20892B88F7F574をhkp://keys.openpgp.orgへ送信
 $
 ```
-※鍵IDは識別できればいいはずなので、メールアドレスを指定しても認識してくれるように思う。。。きっと・・・。  
-送信しただけで登録まではできていないようで、検索にかからない。  
+~~送信しただけで登録まではできていないようで、検索にかからない~~ (検索方法に問題があったはず)。  
+
+ちなみに、メールアドレス指定での登録はできない。
+```terminal
+$ gpg --keyserver keys.openpgp.org --send-keys asakuno.secure@pgp.asakuno.org
+gpg: "asakuno.secure@pgp.asakuno.org"鍵IDではありません: スキップします
+$
+```
+
+4. サーバ登録済みの公開鍵をメールアドレスで検索可能作業。
+```terminal
+$ gpg --export asakuno.secure@pgp.asakuno.org | curl -T - https://keys.openpgp.org
+Key successfully uploaded. Proceed with verification here:
+https://keys.openpgp.org/upload/abcdefghijklmnopqrstuvwxyz
+$
+```
+出力されたURLが認証だろうと思い、開いたときに以下のメッセージが出力され、これでキーサーバでメールアドレス検索できると思ったのだが、できない。  
+> You uploaded the key 993B74F887EF3B8F080911044C20892B88F7F574.  
+> This key is now published with only non-identity information. (What does this mean?)  
 
 5. 鍵サーバでの検索。
 ```terminal
@@ -1052,8 +1058,8 @@ gpg: 鍵"asakuno.secure@pgp.asakuno.org"が鍵サーバに見つかりません
 gpg: 鍵サーバの検索に失敗しました: 見つかりません
 $
 ```
-どういうこと？  
-上記のコマンドでサーバに鍵を送れたはずなんだが、、、  
+~~どういうこと？~~  
+メールアドレスで検索できない理由は、認証メールに付いているURLを開かないのが原因なのだが、認証メールを送る方法が分からない。  
 
 
 * 検索手順  
