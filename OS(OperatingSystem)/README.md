@@ -574,6 +574,51 @@ $
 出力結果をサーバ側のSSHファイルに記載する。  
 私はGithub側の**SSHキーの管理**と言う項目内容に追加した。  
 
+今度は、私が使う端末の環境整備を行う。  
+以下、SSHの秘密鍵を今回作成したgnuPGのSSHに紐付ける(?)事前作業。
+```terminal
+$ gpg --list-keys --with-keygrip asakuno.secure@pgp.asakuno.org
+pub   nistp521 2023-05-13 [C]
+      736A270643E90E1C99D470C6E1AE542959117853
+      Keygrip = 33D382F2A39DBE16CDB2E78E6056869EDBAA3317
+uid           [  究極  ] asakunotomohiro (pgp@セキュアメール) <asakuno.secure@pgp.asakuno.org>
+sub   nistp521 2023-05-13 [E] [有効期限: 2033-05-10]
+      Keygrip = D88EC4ADCF2D754DCBFAE86487009F8B5D655A58
+sub   ed25519 2023-05-13 [S] [有効期限: 2033-05-10]
+      Keygrip = 1ACF65D6C929194DA6CB6714A94857C713101EA7
+sub   ed25519 2023-05-13 [A]
+      Keygrip = 63838A95C5759CCD56C740270C0AC82D8F43697C	←☆これを使う。
+
+$
+$ ll ~/.gnupg/sshcontrol
+-rw-------  1 asakunotomohiro  staff  676  1  5 22:43 /Users/asakunotomohiro/.gnupg/sshcontrol
+$ cat ~/.gnupg/sshcontrol
+# List of allowed ssh keys.  Only keys present in this file are used
+# in the SSH protocol.  The ssh-add tool may add new entries to this
+# file to enable them; you may also add them manually.  Comment
+# lines, like this one, as well as empty lines are ignored.  Lines do
+# have a certain length limit but this is not serious limitation as
+# the format of the entries is fixed and checked by gpg-agent. A
+# non-comment line starts with optional white spaces, followed by the
+# keygrip of the key given as 40 hex digits, optionally followed by a
+# caching TTL in seconds, and another optional field for arbitrary
+# flags.   Prepend the keygrip with an '!' mark to disable it.
+
+$ echo 63838A95C5759CCD56C740270C0AC82D8F43697C 0 >> ~/.gnupg/sshcontrol	←☆ファイル末尾に追加。
+$ tail ~/.gnupg/sshcontrol
+# file to enable them; you may also add them manually.  Comment
+# lines, like this one, as well as empty lines are ignored.  Lines do
+# have a certain length limit but this is not serious limitation as
+# the format of the entries is fixed and checked by gpg-agent. A
+# non-comment line starts with optional white spaces, followed by the
+# keygrip of the key given as 40 hex digits, optionally followed by a
+# caching TTL in seconds, and another optional field for arbitrary
+# flags.   Prepend the keygrip with an '!' mark to disable it.
+
+63838A95C5759CCD56C740270C0AC82D8F43697C 0	←☆追加されている。
+$
+```
+
 </details>
 
 <details><summary>優先指定リストを設定するが、勘違いかもしれない(pref・showpref・setpref・updpref)。</summary>
