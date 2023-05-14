@@ -648,20 +648,34 @@ asakunotomohiro@github.com: Permission denied (publickey).
 $
 ```
 
-以下のは何だ？
+以下、SSHの鍵を作成する。
 ```terminal
-┌─────────────────────────────────────┐
-│ OpenPGPの秘密副鍵をエクスポートするためにパスフレーズを入力してください: │
-│ "asakunotomohiro (pgp@セキュアメール) <asakuno.secure@pgp.asakuno.org>"  │
-│ 521ビットECDH鍵, ID ,                                                    │
-│ 作成日付 2023-05-13 .                                                    │
-│                                                                          │
-│                                                                          │
-│ パスフレーズ: __________________________________________________________ │
-│                                                                          │
-│           <OK>                                    <キャンセル(C)>        │
-└─────────────────────────────────────┘
+$ ssh-keygen -t ed25519 -C "github@asakunotomohiro" -f ~/.ssh/id_rsa
+Generating public/private ed25519 key pair.
+Enter passphrase (empty for no passphrase):	←☆パスフレーズを入力する。
+Enter same passphrase again:	←☆再入力。
+Your identification has been saved in /Users/asakunotomohiro/.ssh/id_rsa
+Your public key has been saved in /Users/asakunotomohiro/.ssh/id_rsa.pub
+The key fingerprint is:
+SHA256:0yDW8dpzMZUcTG5T2jnOOEqsMg0daurHhODcUQZqtbA github@asakunotomohiro
+The key's randomart image is:
++--[ED25519 256]--+
+|    .o      oo. -|
+|    +  o =   =oBo|
+|   E -o o o - % -|
+|  == = . o . * . |
+|  o . o S * * =  |
+|   o * + = + *   |
+|      o.o . o    |
+|       o.  o     |
+|     .           |
++----[SHA256]-----+
+$ ssh -T git@github.com
+Hi there, asakunotomohiro! You've successfully authenticated with the key named openpgp:0x8F59AA85, but Forgejo does not provide shell access.
+If this is unexpected, please log in with password and setup Forgejo under another user.
+$
 ```
+
 
 </details>
 
