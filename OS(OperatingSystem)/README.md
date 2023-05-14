@@ -619,6 +619,21 @@ $ tail ~/.gnupg/sshcontrol
 $
 ```
 
+以下、GnuPGのエージェント起動および接続確認。
+```terminal
+$ gpg-agent	←☆エージェントの起動確認。
+gpg-agent[58166]: このセッションでgpg-agentは実行されていません	←☆起動されていない場合、このメッセージが出る。
+$ gpg-connect-agent /bye	←☆手動起動。
+gpg-connect-agent: gpg-agentが動いていません - 開始します'/opt/homebrew/Cellar/gnupg/2.4.1/bin/gpg-agent'
+gpg-connect-agent: agent の起動のため、5秒待ちます...
+gpg-connect-agent: agentへの接続が確立しました
+$ gpg-agent
+gpg-agent[58174]: gpg-agent running and available	←☆起動された場合のメッセージ。
+$ ssh-add -L	←☆ここで登録した鍵内容が出るはずなのだが・・・。
+Could not open a connection to your authentication agent.
+$
+```
+
 </details>
 
 <details><summary>優先指定リストを設定するが、勘違いかもしれない(pref・showpref・setpref・updpref)。</summary>
