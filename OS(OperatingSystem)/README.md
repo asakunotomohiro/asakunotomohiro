@@ -567,12 +567,13 @@ ssb   ed25519 2023-05-13 [S] [有効期限: 2033-05-10]
 ssb   ed25519 2023-05-13 [A]
       9D36A530DEC2681C48932743CFBCA7868F59AA85
 
-$ gpg --export-ssh-key asakuno.secure@pgp.asakuno.org	←☆SSHの公開鍵を生成する。
+$ gpg --export-ssh-key asakuno.secure@pgp.asakuno.org	←☆SSHの公開鍵を生成する(引数は、主鍵のIDを指定する)。
 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII2SHbw1t+qo4u2tEVUf3ClZiDZPjTcW4YNAZmpz0zr+ openpgp:0x8F59AA85
 $
 ```
 出力結果をサーバ側のSSHファイルに記載する。  
 私はGithub側の**SSHキーの管理**と言う項目内容に追加した。  
+※**内容**に貼り付けることで、**キー名**は自動付与される。  
 
 今度は、私が使う端末の環境整備を行う。  
 以下、SSHの秘密鍵を今回作成したgnuPGのSSHに紐付ける(?)事前作業。
@@ -632,6 +633,34 @@ gpg-agent[58174]: gpg-agent running and available	←☆起動された場合の
 $ ssh-add -L	←☆ここで登録した鍵内容が出るはずなのだが・・・。
 Could not open a connection to your authentication agent.
 $
+```
+
+以下、前準備有りの公開鍵確認。
+```terminal
+$ export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)	←☆必須(ログインシェルに記録必須)。
+$ gpgconf --launch gpg-agent	←☆必須(ログインシェルに記録必須)。
+$ ssh-add -L	←☆この出力が欲しかった。
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII2SHbw1t+qo4u2tEVUf3ClZiDZPjTcW4YNAZmpz0zr+ (none)
+$ ssh-add -l
+256 SHA256:thjoMd9QLEjVnf0YFjKjauHj/8Kxya9zlR5eSz+iVig (none) (ED25519)
+$ ssh -T asakunotomohiro-Github
+asakunotomohiro@github.com: Permission denied (publickey).
+$
+```
+
+以下のは何だ？
+```terminal
+┌─────────────────────────────────────┐
+│ OpenPGPの秘密副鍵をエクスポートするためにパスフレーズを入力してください: │
+│ "asakunotomohiro (pgp@セキュアメール) <asakuno.secure@pgp.asakuno.org>"  │
+│ 521ビットECDH鍵, ID ,                                                    │
+│ 作成日付 2023-05-13 .                                                    │
+│                                                                          │
+│                                                                          │
+│ パスフレーズ: __________________________________________________________ │
+│                                                                          │
+│           <OK>                                    <キャンセル(C)>        │
+└─────────────────────────────────────┘
 ```
 
 </details>

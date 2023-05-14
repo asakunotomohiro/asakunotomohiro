@@ -218,6 +218,37 @@ $
 ```
 実行したいプログラムが手に入った。  
 
+<details><summary>関係あるのか？</summary>
+
+よく分かっていないが、必要なようだ。
+```terminal
+$ brew install pinentry-mac
+==> Downloading https://formulae.brew.sh/api/formula.jws.json
+-#O=#     #      # Downloading https://formulae.brew.sh/api/cask.jws.json
+###################################################################################################################################################################################### 100.0%
+==> Fetching pinentry-mac
+==> Downloading https://ghcr.io/v2/homebrew/core/pinentry-mac/manifests/1.1.1.1
+###################################################################################################################################################################################### 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/pinentry-mac/blobs/sha256:7ebbe0d43dcdf88c28e7df80ddb21ca669968107beaf7dd224efc461cc25474b
+==> Downloading from https://pkg-containers.githubusercontent.com/ghcr1/blobs/sha256:7ebbe0d43dcdf88c28e7df80ddb21ca669968107beaf7dd224efc461cc25474b?se=2023-05-14T12%3A55%3A00Z&sig=LjQ11FP
+###################################################################################################################################################################################### 100.0%
+==> Pouring pinentry-mac--1.1.1.1.arm64_monterey.bottle.tar.gz
+==> Caveats
+You can now set this as your pinentry program like
+
+~/.gnupg/gpg-agent.conf
+    pinentry-program /opt/homebrew/bin/pinentry-mac
+==> Summary
+🍺  /opt/homebrew/Cellar/pinentry-mac/1.1.1.1: 19 files, 513.3KB
+==> Running `brew cleanup pinentry-mac`...
+Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.
+Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
+$ which pinentry-mac
+/opt/homebrew/bin/pinentry-mac
+$
+```
+
+</details>
 
 <a name="homebrewgnupgversion"></a>
 ### バージョン確認。
