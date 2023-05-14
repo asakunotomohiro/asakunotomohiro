@@ -594,31 +594,15 @@ $
 $ ll ~/.gnupg/sshcontrol
 -rw-------  1 asakunotomohiro  staff  676  1  5 22:43 /Users/asakunotomohiro/.gnupg/sshcontrol
 $ cat ~/.gnupg/sshcontrol
-# List of allowed ssh keys.  Only keys present in this file are used
-# in the SSH protocol.  The ssh-add tool may add new entries to this
-# file to enable them; you may also add them manually.  Comment
-# lines, like this one, as well as empty lines are ignored.  Lines do
-# have a certain length limit but this is not serious limitation as
-# the format of the entries is fixed and checked by gpg-agent. A
-# non-comment line starts with optional white spaces, followed by the
-# keygrip of the key given as 40 hex digits, optionally followed by a
-# caching TTL in seconds, and another optional field for arbitrary
-# flags.   Prepend the keygrip with an '!' mark to disable it.
 
-$ echo 63838A95C5759CCD56C740270C0AC82D8F43697C 0 >> ~/.gnupg/sshcontrol	←☆ファイル末尾に追加。
+$ echo 63838A95C5759CCD56C740270C0AC82D8F43697C 0 >> ~/.gnupg/sshcontrol	←☆ファイル末尾に追加(不要？)。
 $ tail ~/.gnupg/sshcontrol
-# file to enable them; you may also add them manually.  Comment
-# lines, like this one, as well as empty lines are ignored.  Lines do
-# have a certain length limit but this is not serious limitation as
-# the format of the entries is fixed and checked by gpg-agent. A
-# non-comment line starts with optional white spaces, followed by the
-# keygrip of the key given as 40 hex digits, optionally followed by a
-# caching TTL in seconds, and another optional field for arbitrary
-# flags.   Prepend the keygrip with an '!' mark to disable it.
 
 63838A95C5759CCD56C740270C0AC82D8F43697C 0	←☆追加されている。
 $
 ```
+もしかして、不要な作業か？  
+接続したときに(自動で)書き込まれるようだ。  
 
 以下、GnuPGのエージェント起動および接続確認。
 ```terminal
@@ -638,24 +622,24 @@ $
 以下、前準備有りの公開鍵確認。
 ```terminal
 $ export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)	←☆必須(ログインシェルに記録必須)。
-$ gpgconf --launch gpg-agent	←☆必須(ログインシェルに記録必須)。
+$ gpgconf --launch gpg-agent	←☆必須？(一度起動させることにより、常駐するのかもしれない)
 $ ssh-add -L	←☆この出力が欲しかった。
-ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII2SHbw1t+qo4u2tEVUf3ClZiDZPjTcW4YNAZmpz0zr+ (none)
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAII2SHbw1t+qo4u2tEVUf3ClZiDZPjTcW4YNAZmpz0zr+ (none)	←☆none表記は、SSHキーを紐付けていないから？
 $ ssh-add -l
 256 SHA256:thjoMd9QLEjVnf0YFjKjauHj/8Kxya9zlR5eSz+iVig (none) (ED25519)
-$ ssh -T asakunotomohiro-Github
-asakunotomohiro@github.com: Permission denied (publickey).
+$ ssh -T git@github.com
+git@github.com: Permission denied (publickey).
 $
 ```
 
 以下、SSHの鍵を作成する。
 ```terminal
-$ ssh-keygen -t ed25519 -C "github@asakunotomohiro" -f ~/.ssh/id_rsa
+$ ssh-keygen -t ed25519 -C "github@asakunotomohiro" -f ~/.ssh/id_ecdsa
 Generating public/private ed25519 key pair.
 Enter passphrase (empty for no passphrase):	←☆パスフレーズを入力する。
 Enter same passphrase again:	←☆再入力。
-Your identification has been saved in /Users/asakunotomohiro/.ssh/id_rsa
-Your public key has been saved in /Users/asakunotomohiro/.ssh/id_rsa.pub
+Your identification has been saved in /Users/asakunotomohiro/.ssh/id_ecdsa
+Your public key has been saved in /Users/asakunotomohiro/.ssh/id_ecdsa.pub
 The key fingerprint is:
 SHA256:0yDW8dpzMZUcTG5T2jnOOEqsMg0daurHhODcUQZqtbA github@asakunotomohiro
 The key's randomart image is:
@@ -671,11 +655,44 @@ The key's randomart image is:
 |     .           |
 +----[SHA256]-----+
 $ ssh -T git@github.com
-Hi there, asakunotomohiro! You've successfully authenticated with the key named openpgp:0x8F59AA85, but Forgejo does not provide shell access.
-If this is unexpected, please log in with password and setup Forgejo under another user.
+Hi asakunotomohiro! You've successfully authenticated, but GitHub does not provide shell access.
 $
 ```
+急に接続ができたことにより、よく分からないため、`~/.ssh/known_hosts`のファイル内容をすべて削除し、もう一度接続をした。  
+~~あぁ接続できなくなり、エラーになった~~(そんなことはなく、普通に接続できる)。  
+~~逆に、紐付けを削除することができない~~。  
 
+紐付けを解除する場合、`~/.gnupg/sshcontrol`ファイルのKeygrip先頭に`!`を追加することで紐付きが解除される(しかし、消えるわけではないのが気持ち悪い)。  
+もしかして、サーバ側に登録しているSSH鍵を削除することで解除される？  
+しかし、手間だよな(ってことは、違うってことなのかな)。  
+
+接続時間などを決めるための設定を以下行う。
+```terminal
+$ cat ~/.gnupg/gpg-agent.conf
+default-cache-ttl 600	←☆元から記入されていた。
+max-cache-ttl 7200	←☆元から記入されていた。
+enable-ssh-support	←☆これも今回追記。
+pinentry-program /opt/homebrew/bin/pinentry-mac
+default-cache-ttl-ssh 1800	←☆30分間有効(秒指定)。接続した時間から有効時間が決まる(接続するたびに延長ってことだよね)。
+max-cache-ttl-ssh 3600	←☆1時間有効(秒指定)。最初の接続から指定時間で無効化される？
+$
+```
+もっと短くてかまわないように思うが、どうだろう。  
+
+以下、環境変数確認。
+```terminal
+$ env | grep SSH
+(standard input):8:SSH_AUTH_SOCK=/Users/asakunotomohiro/.gnupg/S.gpg-agent.ssh
+$
+```
+GPGPファイルを読み込むようになっていればいいようだ。  
+
+以下じゃ駄目ってことなんだろうね。
+```terminal
+$ echo $SSH_AUTH_SOCK
+/private/tmp/com.apple.launchd.9MwWRuEKwD/Listeners
+$
+```
 
 </details>
 
