@@ -634,12 +634,12 @@ $
 
 以下、SSHの鍵を作成する。
 ```terminal
-$ ssh-keygen -t ed25519 -C "github@asakunotomohiro" -f ~/.ssh/id_ecdsa
+$ ssh-keygen -t ed25519 -C "github@asakunotomohiro" -f ~/.ssh/id_ed25519
 Generating public/private ed25519 key pair.
 Enter passphrase (empty for no passphrase):	←☆パスフレーズを入力する。
 Enter same passphrase again:	←☆再入力。
-Your identification has been saved in /Users/asakunotomohiro/.ssh/id_ecdsa
-Your public key has been saved in /Users/asakunotomohiro/.ssh/id_ecdsa.pub
+Your identification has been saved in /Users/asakunotomohiro/.ssh/id_ed25519
+Your public key has been saved in /Users/asakunotomohiro/.ssh/id_ed25519.pub
 The key fingerprint is:
 SHA256:0yDW8dpzMZUcTG5T2jnOOEqsMg0daurHhODcUQZqtbA github@asakunotomohiro
 The key's randomart image is:
@@ -679,7 +679,8 @@ $ cat ~/.gnupg/gpg-agent.conf
 default-cache-ttl 600	←☆元から記入されていた。
 max-cache-ttl 7200	←☆元から記入されていた。
 enable-ssh-support	←☆これも今回追記。
-pinentry-program /opt/homebrew/bin/pinentry-mac
+pinentry-program $(which pinentry-mac)	←☆Githubではわざわざこの書き方をしていた。
+    #pinentry-program /opt/homebrew/bin/pinentry-mac	←☆通常は、決め打ちでいいよね。
 default-cache-ttl-ssh 1800	←☆30分間有効(秒指定)。接続した時間から有効時間が決まる(接続するたびに延長ってことだよね)。
 max-cache-ttl-ssh 3600	←☆1時間有効(秒指定)。最初の接続から指定時間で無効化される？
 $
@@ -698,6 +699,26 @@ GPGPファイルを読み込むようになっていればいいようだ。
 ちなみに、`~/.ssh/config`にて、**IdentitiesOnly**は使わない(No)ようだ。  
 このへんもいまいち理解できない。  
 TODO: 調べる。  
+
+GPGキーにて、コミットを検証できるように、アカウントに登録した。  
+[説明](https://docs.github.com/ja/authentication/managing-commit-signature-verification/generating-a-new-gpg-key)とは違うが、`gpg --armor --export asakuno.secure@pgp.asakuno.org`にて出力された公開鍵を貼り付けた。  
+
+* 以下、手順継続  
+  もしかして、鍵指紋指定が必須？  
+  1. `git config --global user.signingkey asakuno.secure@pgp.asakuno.org`  
+     登録実施。  
+  1. `git config --list`  
+     登録確認。  
+     `user.signingkey=asakuno.secure@pgp.asakuno.org`が出てくる。  
+     Githubの説明では主鍵なのか副鍵なのか判断付かなかったが、副鍵への説明がここで出てきた(遅いぞ)。  
+  1. `git config --global commit.gpgsign true`  
+     すべてのコミットに対して署名をする場合にこのコマンドを使う(私はそんなことしたくない。むしろできない)。  
+     登録した場合の表記は、`commit.gpgsign=true`となる。  
+  1. GPGスイートを使用していない場合の手順はあるが、スイートって何？  
+  1. PINまたはパスフレーズの入力を求めるメッセージ表示に**pinentry-mac**が必要とのこと([インストール](../encrypt暗号化/homebrew管理.md)しておいてよかったのか)。  
+  1. `killall gpg-agent`にて、エージェントを止める(?)。  
+  * [SSHキー](https://docs.github.com/ja/authentication/managing-commit-signature-verification/telling-git-about-your-signing-key#telling-git-about-your-ssh-key)を使って署名もできるようだが、せっかくGPG管理をしているのだから今回不要ということで。  
+
 
 </details>
 

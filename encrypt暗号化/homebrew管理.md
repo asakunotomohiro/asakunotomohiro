@@ -247,6 +247,7 @@ $ which pinentry-mac
 /opt/homebrew/bin/pinentry-mac
 $
 ```
+PINやパスフレーズ入力をさせるために[必要](https://docs.github.com/ja/authentication/managing-commit-signature-verification/telling-git-about-your-signing-key)とのこと。  
 
 </details>
 
