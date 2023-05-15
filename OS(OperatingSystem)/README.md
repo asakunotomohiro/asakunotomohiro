@@ -608,7 +608,7 @@ $
 ```terminal
 $ gpg-agent	←☆エージェントの起動確認。
 gpg-agent[58166]: このセッションでgpg-agentは実行されていません	←☆起動されていない場合、このメッセージが出る。
-$ gpg-connect-agent /bye	←☆手動起動。
+$ gpg-connect-agent /bye	←☆手動起動(再起動：gpg-connect-agent reloadagent /bye)。
 gpg-connect-agent: gpg-agentが動いていません - 開始します'/opt/homebrew/Cellar/gnupg/2.4.1/bin/gpg-agent'
 gpg-connect-agent: agent の起動のため、5秒待ちます...
 gpg-connect-agent: agentへの接続が確立しました
@@ -658,13 +658,20 @@ $ ssh -T git@github.com
 Hi asakunotomohiro! You've successfully authenticated, but GitHub does not provide shell access.
 $
 ```
-急に接続ができたことにより、よく分からないため、`~/.ssh/known_hosts`のファイル内容をすべて削除し、もう一度接続をした。  
-~~あぁ接続できなくなり、エラーになった~~(そんなことはなく、普通に接続できる)。  
-~~逆に、紐付けを削除することができない~~。  
+接続ができるようになった。  
+
+公開鍵の確認：  
+<https://github.com/asakunotomohiro.keys>  
+<https://api.github.com/users/asakunotomohiro/keys>  
 
 紐付けを解除する場合、`~/.gnupg/sshcontrol`ファイルのKeygrip先頭に`!`を追加することで紐付きが解除される(しかし、消えるわけではないのが気持ち悪い)。  
 もしかして、サーバ側に登録しているSSH鍵を削除することで解除される？  
-しかし、手間だよな(ってことは、違うってことなのかな)。  
+それは手間だよ(ってことは、違う方法で消す？)。  
+
+しかも、今回のSSHキーを1個作るだけで他のサーバにも接続できるということでいいのかな。  
+それはそれで虚弱性というか、1個破られたら引きずられて他も攻撃されることになるのだが・・・(そのためのパスフレーズを長く設定するのだろうけど・・・しかしな・・・)。  
+
+TODO: 消す方法を調べる(令和5年5月15日(月))。  
 
 接続時間などを決めるための設定を以下行う。
 ```terminal
@@ -686,13 +693,11 @@ $ env | grep SSH
 $
 ```
 GPGPファイルを読み込むようになっていればいいようだ。  
+`/private/tmp/com.apple.launchd.9MWWRUEKWD/Listeners`の表記が出たら駄目なのだろう。  
 
-以下じゃ駄目ってことなんだろうね。
-```terminal
-$ echo $SSH_AUTH_SOCK
-/private/tmp/com.apple.launchd.9MwWRuEKwD/Listeners
-$
-```
+ちなみに、`~/.ssh/config`にて、**IdentitiesOnly**は使わない(No)ようだ。  
+このへんもいまいち理解できない。  
+TODO: 調べる。  
 
 </details>
 
