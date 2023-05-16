@@ -218,9 +218,9 @@ $
 ```
 実行したいプログラムが手に入った。  
 
-<details><summary>関係あるのか？</summary>
+<details><summary>パスフレーズ入力用プログラムインストール(pinentry-mac)。</summary>
 
-よく分かっていないが、必要なようだ。
+以下、インストール作業記録。
 ```terminal
 $ brew install pinentry-mac
 ==> Downloading https://formulae.brew.sh/api/formula.jws.json
