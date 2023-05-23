@@ -1514,6 +1514,41 @@ pub  rsa4096/8A9E3745558E41AF
 $
 ```
 
+以下、デフォルト鍵を指定しない場合の挙動確認。
+```terminal
+$ cat -n ~/.gnupg/gpg.conf
+     1	auto-key-retrieve
+     2	no-emit-version
+     3	#default-key 2771F0FCF8FE74CD9B9C25439D4893D18D358530	←☆コメントアウト。
+     4	#keyserver
+$ gpg --sign-key support@gpgtools.org
+
+pub  rsa4096/8A9E3745558E41AF
+     作成: 2020-05-04  有効期限: 2024-05-03  利用法: SC
+     信用: 不明の     有効性: 不明の
+sub  rsa4096/B35D2E404496652B
+     作成: 2020-05-04  有効期限: 2024-05-03  利用法: E
+[  不明  ] (1). GPGTools Support <support@gpgtools.org>
+
+
+pub  rsa4096/8A9E3745558E41AF
+     作成: 2020-05-04  有効期限: 2024-05-03  利用法: SC
+     信用: 不明の     有効性: 不明の
+  主鍵フィンガープリント: B97E 9964 ACAD 1907 970D  37CC 8A9E 3745 558E 41AF
+
+     GPGTools Support <support@gpgtools.org>
+
+この鍵は2024-05-03で期限が切れます。
+本当にこの鍵にあなたの鍵"asakunotomohiro (サンプル) <asakunotomohiro@example.com>"で署名してよいですか	←☆鍵束の先頭鍵が勝手に使われる。
+(1EBD72E572718D44)
+
+本当に署名しますか? (y/N) N
+
+鍵は無変更なので更新は不要です。
+$
+```
+どの鍵が署名鍵として使われるか分からないため、デフォルト鍵は指定すべきだと思う。  
+
 
 以下、その作業。
 ```terminal
