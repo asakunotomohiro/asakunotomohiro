@@ -2404,6 +2404,22 @@ $
 そして、これ以外のファイルを登録する必要がない。  
 そのため、リポジトリ作成時にリードミーファイル・gitignoreファイル・ライセンスファイルは付けない。  
 
+1. 手順その2  
+ローカル端末上にクローン実施。  
+`git clone git@github.com:asakunotomohiro/2771F0FCF8FE74CD9B9C25439D4893D18D358530.git`  
+以下、その作業。
+```terminal
+$ git clone git@github.com:asakunotomohiro/2771F0FCF8FE74CD9B9C25439D4893D18D358530.git
+Cloning into '2771F0FCF8FE74CD9B9C25439D4893D18D358530'...
+warning: You appear to have cloned an empty repository.	←☆リポジトリ作成時に何もファイルを作ってない証拠。
+$
+$ ll
+total 0
+drwxr-xr-x   3 asakunotomohiro  staff    96  5 23 23:38 2771F0FCF8FE74CD9B9C25439D4893D18D358530/	←☆これ(当然中身は空)。
+drwxr-xr-x  34 asakunotomohiro  staff  1088  5 22 01:42 dotfiles/
+$
+```
+
 
 </details>
 
