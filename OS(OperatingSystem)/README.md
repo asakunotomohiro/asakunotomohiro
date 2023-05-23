@@ -1548,9 +1548,46 @@ pub  rsa4096/8A9E3745558E41AF
 $
 ```
 どの鍵が署名鍵として使われるか分からないため、デフォルト鍵は指定すべきだと思う。  
+もしくは、ダミー鍵を事前に用意しておいて、それをデフォルト指定しておくとか・・・(複数あるならば有効打と思う)。  
 
+以下、デフォルト鍵をオプション指定での挙動確認。
+```terminal
+$ cat -n ~/.gnupg/gpg.conf
+     1	auto-key-retrieve
+     2	no-emit-version
+     3	#default-key 2771F0FCF8FE74CD9B9C25439D4893D18D358530	←☆コメントアウト。
+     4	#keyserver
+$ gpg --default-key 2771F0FCF8FE74CD9B9C25439D4893D18D358530 --sign-key support@gpgtools.org	←☆今回は鍵指紋で指定しているが、メールアドレスでもいい。
 
-以下、その作業。
+pub  rsa4096/8A9E3745558E41AF
+     作成: 2020-05-04  有効期限: 2024-05-03  利用法: SC
+     信用: 不明の     有効性: 不明の
+sub  rsa4096/B35D2E404496652B
+     作成: 2020-05-04  有効期限: 2024-05-03  利用法: E
+[  不明  ] (1). GPGTools Support <support@gpgtools.org>
+
+gpg: デフォルトの署名用の秘密鍵として"2771F0FCF8FE74CD9B9C25439D4893D18D358530"を用います
+
+pub  rsa4096/8A9E3745558E41AF
+     作成: 2020-05-04  有効期限: 2024-05-03  利用法: SC
+     信用: 不明の     有効性: 不明の
+  主鍵フィンガープリント: B97E 9964 ACAD 1907 970D  37CC 8A9E 3745 558E 41AF
+
+     GPGTools Support <support@gpgtools.org>
+
+この鍵は2024-05-03で期限が切れます。
+本当にこの鍵にあなたの鍵"asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>"で署名してよいですか	←☆指定した鍵を使って署名する。
+(9D4893D18D358530)
+
+本当に署名しますか? (y/N) N
+
+鍵は無変更なので更新は不要です。
+$
+```
+短いオプションは、`-u`を使う。  
+例）`gpg -u asakuno.secure@pgp.asakuno.org --sign-key support@gpgtools.org`  
+
+以下、デフォルト鍵を指定した上での署名作業。
 ```terminal
 $ gpg -K --with-subkey-fingerprint asakuno.secure@pgp.asakuno.org
 sec   ed448 2023-05-22 [C]
