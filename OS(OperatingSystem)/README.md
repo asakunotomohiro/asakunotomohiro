@@ -2532,49 +2532,19 @@ ssb   ed25519 2023-05-22 [S] [有効期限: 2099-05-03]
 ssb   ed25519 2023-05-22 [A] [有効期限: 2099-05-03]
       8013753761C78FA1A48230C682AA8224E47F7A68
 
-$ gpg --delete-secret-key 2771F0FCF8FE74CD9B9C25439D4893D18D358530	←☆主鍵の削除。
-gpg (GnuPG) 2.4.1; Copyright (C) 2023 g10 Code GmbH
-This is free software: you are free to change and redistribute it.
-There is NO WARRANTY, to the extent permitted by law.
-
-
-sec  ed25519/9D4893D18D358530 2023-05-22 asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
-
-この鍵を鍵リングから削除しますか? (y/N) y
-これは秘密鍵です! 本当に削除しますか? (y/N) y
-gpg: 秘密副鍵: の削除に失敗しました: 操作がキャンセルされました
-gpg: 2771F0FCF8FE74CD9B9C25439D4893D18D358530: delete key failed: 操作がキャンセルされました	←☆副鍵は残す。
-$ gpg --send-keys 2771F0FCF8FE74CD9B9C25439D4893D18D358530	←☆キーサーバに送信。
-gpg: 鍵9D4893D18D358530をhkps://keys.openpgp.orgへ送信
-$ gpg -K --with-subkey-fingerprint asakuno.secure@pgp.asakuno.org
-sec#  ed25519 2023-05-22 [C] [有効期限: 2105-05-03]
-      2771F0FCF8FE74CD9B9C25439D4893D18D358530
-uid           [  究極  ] asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
-ssb   cv25519 2023-05-22 [E] [有効期限: 2099-05-03]
-      728B0A778912932B9397341B2B6243601FA1DBDA
-ssb   ed25519 2023-05-22 [S] [有効期限: 2099-05-03]
-      60A7B0576F7404D51D59520C7A430907759D9FF4
-ssb   ed25519 2023-05-22 [A] [有効期限: 2099-05-03]
-      8013753761C78FA1A48230C682AA8224E47F7A68
-
-$ gpg --list-keys --with-sig-list --list-options show-notations 2771F0FCF8FE74CD9B9C25439D4893D18D358530
-pub   ed25519 2023-05-22 [C] [有効期限: 2105-05-03]
-      2771F0FCF8FE74CD9B9C25439D4893D18D358530
-uid           [  究極  ] asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
-sig 3    N   9D4893D18D358530 2023-05-24  [自己署名]
-   署名注釈: proof@ariadne.id=https://github.com/asakunotomohiro/2771F0FCF8FE74CD9B9C25439D4893D18D358530
-sig          4C20892B88F7F574 2023-05-22  [ユーザIDが見つかりません]
-sig          635EC3A6D7233F2B 2023-05-22  [ユーザIDが見つかりません]
-sig          E1AE542959117853 2023-05-22  [ユーザIDが見つかりません]
-sub   cv25519 2023-05-22 [E] [有効期限: 2099-05-03]
-sig          9D4893D18D358530 2023-05-22  [自己署名]
-sub   ed25519 2023-05-22 [S] [有効期限: 2099-05-03]
-sig          9D4893D18D358530 2023-05-22  [自己署名]
-sub   ed25519 2023-05-22 [A] [有効期限: 2099-05-03]
-sig          9D4893D18D358530 2023-05-22  [自己署名]
-
 $
 ```
+
+1. 手順その5  
+検索。  
+<https://keyoxide.org/2771F0FCF8FE74CD9B9C25439D4893D18D358530>  
+以下、その結果。
+```text
+---
+asakunotomohiro@github.com
+None of the matched service providers could be verified. Keyoxide was not able to determine which was the correct service provider or why the verification process failed.
+```
+失敗ですか・・・そうですか。  
 
 </details>
 
