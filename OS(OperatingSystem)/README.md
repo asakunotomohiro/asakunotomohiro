@@ -2548,6 +2548,80 @@ None of the matched service providers could be verified. Keyoxide was not able t
 ```
 失敗ですか・・・そうですか。  
 
+1. 手順その6  
+主鍵への登録内容を削除する。  
+```terminal
+$ gpg --list-keys --with-sig-list --list-options show-notations 2771F0FCF8FE74CD9B9C25439D4893D18D358530
+pub   ed25519 2023-05-22 [C] [有効期限: 2105-05-03]
+      2771F0FCF8FE74CD9B9C25439D4893D18D358530
+uid           [  究極  ] asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
+sig 3    N   9D4893D18D358530 2023-05-24  [自己署名]
+   署名注釈: proof@ariadne.id=https://github.com/asakunotomohiro/2771F0FCF8FE74CD9B9C25439D4893D18D358530	←☆これを消したい。
+sig          4C20892B88F7F574 2023-05-22  [ユーザIDが見つかりません]
+sig          635EC3A6D7233F2B 2023-05-22  [ユーザIDが見つかりません]
+sig          E1AE542959117853 2023-05-22  [ユーザIDが見つかりません]
+sub   cv25519 2023-05-22 [E] [有効期限: 2099-05-03]
+sig          9D4893D18D358530 2023-05-22  [自己署名]
+sub   ed25519 2023-05-22 [S] [有効期限: 2099-05-03]
+sig          9D4893D18D358530 2023-05-22  [自己署名]
+sub   ed25519 2023-05-22 [A] [有効期限: 2099-05-03]
+sig          9D4893D18D358530 2023-05-22  [自己署名]
+
+$ gpg --edit-key 2771F0FCF8FE74CD9B9C25439D4893D18D358530	←☆主鍵内容変更。
+gpg (GnuPG) 2.4.1; Copyright (C) 2023 g10 Code GmbH
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+秘密鍵が利用できます。
+
+sec  ed25519/9D4893D18D358530
+     作成: 2023-05-22  有効期限: 2105-05-03  利用法: C
+     信用: 究極        有効性: 究極
+ssb  cv25519/2B6243601FA1DBDA
+     作成: 2023-05-22  有効期限: 2099-05-03  利用法: E
+ssb  ed25519/7A430907759D9FF4
+     作成: 2023-05-22  有効期限: 2099-05-03  利用法: S
+ssb  ed25519/82AA8224E47F7A68
+     作成: 2023-05-22  有効期限: 2099-05-03  利用法: A
+[  究極  ] (1). asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
+
+gpg> notation	←☆修正。
+注釈を入力: -proof@ariadne.id=https://github.com/asakunotomohiro/2771F0FCF8FE74CD9B9C25439D4893D18D358530	←☆入力値の先頭にマイナス記号を付けることで削除できるようだ。
+Current notations for user ID "asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>":
+         proof@ariadne.id=https://github.com/asakunotomohiro/2771F0FCF8FE74CD9B9C25439D4893D18D358530
+Removing notation: proof@ariadne.id=https://github.com/asakunotomohiro/2771F0FCF8FE74CD9B9C25439D4893D18D358530
+進みますか? (y/N) y
+
+sec  ed25519/9D4893D18D358530
+     作成: 2023-05-22  有効期限: 2105-05-03  利用法: C
+     信用: 究極        有効性: 究極
+ssb  cv25519/2B6243601FA1DBDA
+     作成: 2023-05-22  有効期限: 2099-05-03  利用法: E
+ssb  ed25519/7A430907759D9FF4
+     作成: 2023-05-22  有効期限: 2099-05-03  利用法: S
+ssb  ed25519/82AA8224E47F7A68
+     作成: 2023-05-22  有効期限: 2099-05-03  利用法: A
+[  究極  ] (1). asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
+
+gpg> save	←☆作業を保存(忘れないこと)。
+$ gpg --list-keys --with-sig-list --list-options show-notations 2771F0FCF8FE74CD9B9C25439D4893D18D358530
+pub   ed25519 2023-05-22 [C] [有効期限: 2105-05-03]
+      2771F0FCF8FE74CD9B9C25439D4893D18D358530
+uid           [  究極  ] asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
+sig 3        9D4893D18D358530 2023-05-24  [自己署名]
+sig          4C20892B88F7F574 2023-05-22  [ユーザIDが見つかりません]
+sig          635EC3A6D7233F2B 2023-05-22  [ユーザIDが見つかりません]
+sig          E1AE542959117853 2023-05-22  [ユーザIDが見つかりません]
+sub   cv25519 2023-05-22 [E] [有効期限: 2099-05-03]
+sig          9D4893D18D358530 2023-05-22  [自己署名]
+sub   ed25519 2023-05-22 [S] [有効期限: 2099-05-03]
+sig          9D4893D18D358530 2023-05-22  [自己署名]
+sub   ed25519 2023-05-22 [A] [有効期限: 2099-05-03]
+sig          9D4893D18D358530 2023-05-22  [自己署名]
+
+$
+```
+
 </details>
 
 1. 手順その4  
