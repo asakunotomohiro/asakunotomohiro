@@ -2445,6 +2445,8 @@ This is an OpenPGP proof that connects [my OpenPGP key](https://keyoxide.org/277
 $
 ```
 
+<details><summary>Githubのリポジトリ登録失敗記録。</summary>
+
 1. 手順その4  
 ~~Githubリポジトリの設定変更~~  
 ~~不要と思われるようなWikis・Issuesは利用不可に設定した~~。  
@@ -2545,6 +2547,16 @@ asakunotomohiro@github.com
 None of the matched service providers could be verified. Keyoxide was not able to determine which was the correct service provider or why the verification process failed.
 ```
 失敗ですか・・・そうですか。  
+
+</details>
+
+1. 手順その4  
+GitHubのGistに登録。  
+どこに何を登録すればいいのか憶測になるが、題名には鍵指紋を入力し、本文は上記の内容を貼り付けることで問題なさそうだ。  
+作成時のボタン内容は**Create public gist**にしてからクリック。  
+<https://gist.github.com/asakunotomohiro/55aa4271cb27d7fa90ce50f168b882d5>  
+本物の紐付けファイルがGithubGistにできあがった。  
+
 
 </details>
 
