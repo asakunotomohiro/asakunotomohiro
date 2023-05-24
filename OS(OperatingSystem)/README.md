@@ -2444,7 +2444,14 @@ This is an OpenPGP proof that connects [my OpenPGP key](https://keyoxide.org/277
 <!-- vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=markdown expandtab: -->
 $
 ```
-とりあえず、コミットおよびプッシュ実施。  
+
+1. 手順その4  
+~~Githubリポジトリの設定変更~~  
+~~不要と思われるようなWikis・Issuesは利用不可に設定した~~。  
+~~Pull Requestsもすべて利用不可にしたかったが、どれか1つは有効化しておく必要があるらしいため、**Allow merge commits**のみ有効化した~~。  
+あぁ勘違いだった。  
+リポジトリを作成した上で、何かしらの作業をすると思っていたが、[Gist](https://gist.github.com/asakunotomohiro)と言うのが別にあり、それで上記のファイル内容を貼り付けるのだろう。  
+間違った作業をしてしまった。  
 
 </details>
 
