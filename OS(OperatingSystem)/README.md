@@ -2628,7 +2628,7 @@ $
 
 1. 手順その4  
 GitHubのGistに登録。  
-どこに何を登録すればいいのか憶測になるが、題名には鍵指紋を入力し、本文は上記の内容を貼り付けることで問題なさそうだ。  
+どこに何を登録すればいいのか憶測になるが、題名には**openpgp.md**を入力し、本文は上記の内容を貼り付けることで問題なさそうだ。  
 作成時のボタン内容は**Create public gist**にしてからクリック。  
 <https://gist.github.com/asakunotomohiro/55aa4271cb27d7fa90ce50f168b882d5>  
 本物の紐付けファイルがGithubGistにできあがった。  
@@ -2726,12 +2726,15 @@ $
 ```text
 github
 asakunotomohiro
+
 Profile link: https://github.com/asakunotomohiro
 Proof link: https://gist.github.com/asakunotomohiro/55aa4271cb27d7fa90ce50f168b882d5
+
 Claim verification has completed.
-The claim COULD NOT BE verified by the proof.
+
+The claim HAS BEEN verified by the proof.
 ```
-駄目だった。  
+ファイル名(GithubGistに付ける題名)も大事だというのが分かった。  
 
 </details>
 
