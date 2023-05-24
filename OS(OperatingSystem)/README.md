@@ -2719,6 +2719,20 @@ gpg: 鍵9D4893D18D358530をhkps://keys.openpgp.orgへ送信
 $
 ```
 
+1. 手順その6  
+検索。  
+<https://keyoxide.org/2771F0FCF8FE74CD9B9C25439D4893D18D358530>  
+以下、その結果。
+```text
+github
+asakunotomohiro
+Profile link: https://github.com/asakunotomohiro
+Proof link: https://gist.github.com/asakunotomohiro/55aa4271cb27d7fa90ce50f168b882d5
+Claim verification has completed.
+The claim COULD NOT BE verified by the proof.
+```
+駄目だった。  
+
 </details>
 
 
