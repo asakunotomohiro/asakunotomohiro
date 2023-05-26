@@ -277,7 +277,11 @@ $
 秘密鍵から作れるため、保管せずに削除してかまわない(パスフレーズを忘れた場合は必要なので、どうするかは人それぞれかな)。  
 
 コメントには短めを付けるのが吉かもしれない。  
-この後、[鍵管理サーバ](https://keys.openpgp.org)に登録作業をするが、当然ながら今回作成した公開鍵を取得することができる(登録したのだから当たり前だが)。  
+そして、[keyoxide](#operatingsystemnetwork_pgppeggingcontrol_keyoxide)にて、コメントが表示される。  
+例）<https://keyoxide.org/3637202523e7c1309ab79e99ef2dc5827b445f4b>にて、**material for test frameworks**がコメントだろう。  
+当然ながら私のコメントには、**securemail@セキュアメール**が[表示](https://keyoxide.org/2771F0FCF8FE74CD9B9C25439D4893D18D358530)されている。  
+
+この後、[鍵管理サーバ](https://keys.openpgp.org)に登録作業をする。  
 
 <details><summary>公開した結果。</summary>
 
@@ -2169,6 +2173,8 @@ keybase公式の[取扱説明書(URLはコマンドライン)](https://book.keyb
 そして、[公開鍵](#operatingsystemnetwork_pgp_howtoencrypt)はすでに作成済みとして、以下の作業を行う。  
 ※秘密鍵はアップロードしないこと。  
 
+ちなみに、この会社は、[Zoom](https://blog.zoom.us/zoom-acquires-keybase-and-announces-goal-of-developing-the-most-broadly-used-enterprise-end-to-end-encryption-offering/)に[買収](https://keybase.io/blog/keybase-joins-zoom)された。  
+
 以下、勘違いではないようだ？  
 
 <details><summary>勘違い。</summary>
@@ -2235,7 +2241,7 @@ $
      この時点で理解できないのだが、どういう意味？  
   1. 署名済みの鍵束と公開鍵をサーバにあげる。  
   1. `--import`付きの場合は、秘密鍵の半分をローカルの鍵束に保存する。  
-     これも理解できない(半分とは、公開鍵を表しているようだ)。  
+     これも理解できない(半分とは、公開鍵を表しているようだ？)。  
   1. 保存した秘密鍵を暗号化する(どうやって？どこに？何のために？)。  
 
 * keybaseの利用説明。  
@@ -2252,7 +2258,9 @@ $
 公開する公開鍵は1種類だと思うのだが？  
 
 ちなみに、`--no-import`というオプションもあるようだ。  
-鍵束に登録せずに公開鍵をサーバにあげるようだ([keyoxide](#operatingsystemnetwork_pgppeggingcontrol_keyoxide)の[keybase](#operatingsystemnetwork_pgppeggingcontrol_keyoxide_keybase)にて、秘密鍵はサーバにあげるべきでない忠告が表示されている)。  
+鍵束に登録せずに公開鍵をサーバにあげるようだ？  
+[keyoxide](#operatingsystemnetwork_pgppeggingcontrol_keyoxide)の[keybase](#operatingsystemnetwork_pgppeggingcontrol_keyoxide_keybase)にて、秘密鍵はサーバにあげるべきでない忠告が表示されている。  
+その秘密鍵の話は、公開鍵についての一般知識への忠告であり、Keybaseで秘密鍵をサーバ保存することではない(と思っているのだが、どうだろう)。  
 
 <details><summary>やり直すが失敗する。</summary>
 
@@ -2378,12 +2386,115 @@ $
 
 </details>
 
+<a id="operatingsystemnetwork_pgppeggingcontrol_keybase_github"></a>
+ついでに、Githubに紐付ける。  
+※[keyoxide](#operatingsystemnetwork_pgppeggingcontrol_keyoxide)から[Github](#operatingsystemnetwork_pgppeggingcontrol_keyoxide_github)への紐付けは別作業。  
+<https://book.keybase.io/docs/cli>  
+`keybase prove github`にて、紐付けができるようだ。  
+以下、その作業。
+```terminal
+$ keybase prove --list-services --all	←☆キーベースから紐付け可能一覧コマンド。
+All supported services:
+  web
+  twitter
+  github
+  reddit
+  hackernews
+  https
+  http
+  dns
+  lobste.rs
+  tactoken.io
+  market.link
+  dmoj.ca
+  theqrl.org
+  omg.lol
+  galactictalk.org
+  app.lfg.directory
+$ keybase prove github	←☆ギットハブに紐付け。
+Your username on Github: asakunotomohiro
+Please publicly post the following Gist, and name it keybase.md	←☆ギットハブGistに一般公開で、このファイル名を付けて以下の内容を作成する。
+
+### Keybase proof	←☆ここから以下を貼り付ける。
+
+I hereby claim:
+
+  * I am asakunotomohiro on github.
+  * I am asakunotomohiro (https://keybase.io/asakunotomohiro) on keybase.
+  * I have a public key abcdefghijklmnopqrstuvwxyz
+
+To claim this, I am signing this object:
+
+```json
+{
+  "body": {
+    "key": {
+      "eldest_kid": "abcdefghijklmnopqrstuvwxyz",
+      "host": "keybase.io",
+      "kid": "abcdefghijklmnopqrstuvwxyz",
+      "uid": "abcdefghijklmnopqrstuvwxyz",
+      "username": "asakunotomohiro"
+    },
+    "merkle_root": {
+      "ctime": 0123456789,
+      "hash": "abcdefghijklmnopqrstuvwxyz",
+      "hash_meta": "abcdefghijklmnopqrstuvwxyz",
+      "seqno": 0123456789
+    },
+    "service": {
+      "entropy": "abcdefghijklmnopqrstuvwxyz",
+      "name": "github",
+      "username": "asakunotomohiro"
+    },
+    "type": "web_service_binding",
+    "version": 2
+  },
+  "client": {
+    "name": "keybase.io go client",
+    "version": "6.0.4"
+  },
+  "ctime": 0123456789,
+  "expire_in": 0123456789,
+  "prev": "abcdefghijklmnopqrstuvwxyz",
+  "seqno": 23,
+  "tag": "signature"
+}
+```
+
+with the key [abcdefghijklmnopqrstuvwxyz](https://keybase.io/asakunotomohiro), yielding the signature:
+
+```
+abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz1234567890
+
+```
+
+And finally, I am proving ownership of the github account by posting this as a gist.
+
+### My publicly-auditable identity:
+
+https://keybase.io/asakunotomohiro
+
+### From the command line:
+
+Consider the [keybase command line program](https://keybase.io/download).
+
+```bash
+# look me up
+keybase id asakunotomohiro
+```	←☆ここまでを貼り付ける。
+
+Check GitHub now? [Y/n] y	←☆よく分からずにyを選択してしまった(紐付けるかどうかだけを聞いているのかと・・・)。
+Couldn't find posted proof.	←☆準備ができていない注意を受ける。
+Check GitHub again now? [Y/n] Y	←☆準備ができた上で同意する。
+▶ NOTICE Success!	←☆紐付き成功。
+$
+```
+
+
 <a id="operatingsystemnetwork_pgppeggingcontrol_keyoxide"></a>
 #### PGPをkeyoxideに紐付け管理
 せっかくのなので、公開しているメールアドレスを<https://keyoxide.org>に紐付けることにした。  
 この作業には、**主鍵**の秘密鍵を**使う**。  
-
-ちなみに、この会社は、[Zoom](https://blog.zoom.us/zoom-acquires-keybase-and-announces-goal-of-developing-the-most-broadly-used-enterprise-end-to-end-encryption-offering/)に[買収](https://keybase.io/blog/keybase-joins-zoom)された。  
 
 <https://codeberg.org/keyoxide/keyoxide-cli>  
 にて、ローカル上で何かできるようだ。  
@@ -2396,8 +2507,13 @@ $
 <a id="operatingsystemnetwork_pgppeggingcontrol_keyoxide_github"></a>
 <details><summary>Githubへの登録作業。</summary>
 
+Githubというか、正確にはGithubアカウントに紐付ける作業となり、その登録方法にGithubのGistを使う。  
+[Keybase](#operatingsystemnetwork_pgppeggingcontrol_keybase)から[Github](#operatingsystemnetwork_pgppeggingcontrol_keybase_github)への紐付けは別作業。  
+
 <https://github.com/asakunotomohiro>  
 <https://docs.keyoxide.org/service-providers/github/>  
+
+<details><summary>Githubのリポジトリ登録失敗記録。</summary>
 
 1. 手順その1  
 gistへの登録に、一般公開するリポジトリは鍵指紋を名前に使うのが慣例のようだ。  
@@ -2448,8 +2564,6 @@ This is an OpenPGP proof that connects [my OpenPGP key](https://keyoxide.org/277
 $
 ```
 ファイル名・ファイル内容は大事。  
-
-<details><summary>Githubのリポジトリ登録失敗記録。</summary>
 
 1. 手順その3  
 書き込みファイルを用意する([アイデンティティの証明](https://docs.keyoxide.org/understanding-keyoxide/identity-proof-formats/))。  
@@ -2647,16 +2761,132 @@ sig          9D4893D18D358530 2023-05-22  [自己署名]
 $
 ```
 
+<details><summary>注釈一括削除。</summary>
+
+ちなみに、注釈の一括削除は**none**で行える。
+```terminal
+$ gpg --list-keys --with-sig-list --list-options show-notations 2771F0FCF8FE74CD9B9C25439D4893D18D358530	←☆状況確認。
+pub   ed25519 2023-05-22 [C] [有効期限: 2105-05-03]
+      2771F0FCF8FE74CD9B9C25439D4893D18D358530
+uid           [  究極  ] asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
+sig 3    N   9D4893D18D358530 2023-05-26  [自己署名]
+   署名注釈: proof@ariadne.id=https://gist.github.com/asakunotomohiro/114a342e6e08c909e3991860299ee379	←☆これらの注釈を削除。
+   署名注釈: proof@ariadne.id=https://keybase.io/asakunotomohiro	←☆これらの注釈を削除。
+sig          4C20892B88F7F574 2023-05-22  [ユーザIDが見つかりません]
+sig          635EC3A6D7233F2B 2023-05-22  [ユーザIDが見つかりません]
+sig          E1AE542959117853 2023-05-22  [ユーザIDが見つかりません]
+sub   cv25519 2023-05-22 [E] [有効期限: 2099-05-03]
+sig          9D4893D18D358530 2023-05-22  [自己署名]
+sub   ed25519 2023-05-22 [S] [有効期限: 2099-05-03]
+sig          9D4893D18D358530 2023-05-22  [自己署名]
+sub   ed25519 2023-05-22 [A] [有効期限: 2099-05-03]
+sig          9D4893D18D358530 2023-05-22  [自己署名]
+
+$ gpg --edit-key 2771F0FCF8FE74CD9B9C25439D4893D18D358530	←☆編集コマンド。
+gpg (GnuPG) 2.4.1; Copyright (C) 2023 g10 Code GmbH
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+秘密鍵が利用できます。
+
+sec  ed25519/9D4893D18D358530
+     作成: 2023-05-22  有効期限: 2105-05-03  利用法: C
+     信用: 究極        有効性: 究極
+ssb  cv25519/2B6243601FA1DBDA
+     作成: 2023-05-22  有効期限: 2099-05-03  利用法: E
+ssb  ed25519/7A430907759D9FF4
+     作成: 2023-05-22  有効期限: 2099-05-03  利用法: S
+ssb  ed25519/82AA8224E47F7A68
+     作成: 2023-05-22  有効期限: 2099-05-03  利用法: A
+[  究極  ] (1). asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
+
+gpg> none	←☆一括削除実施失敗。
+
+無効なコマンド ("help"を参照)
+
+gpg> notation	←☆注釈入力コマンド。
+注釈を入力: none	←☆一括削除実施。
+Current notations for user ID "asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>":
+         proof@ariadne.id=https://gist.github.com/asakunotomohiro/114a342e6e08c909e3991860299ee379
+         proof@ariadne.id=https://keybase.io/asakunotomohiro
+Removing all notations
+進みますか? (y/N) y	←☆実行。
+
+sec  ed25519/9D4893D18D358530
+     作成: 2023-05-22  有効期限: 2105-05-03  利用法: C
+     信用: 究極        有効性: 究極
+ssb  cv25519/2B6243601FA1DBDA
+     作成: 2023-05-22  有効期限: 2099-05-03  利用法: E
+ssb  ed25519/7A430907759D9FF4
+     作成: 2023-05-22  有効期限: 2099-05-03  利用法: S
+ssb  ed25519/82AA8224E47F7A68
+     作成: 2023-05-22  有効期限: 2099-05-03  利用法: A
+[  究極  ] (1). asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
+
+gpg> save	←☆保存。
+$ gpg --list-keys --with-sig-list --list-options show-notations 2771F0FCF8FE74CD9B9C25439D4893D18D358530	←☆削除結果確認。
+pub   ed25519 2023-05-22 [C] [有効期限: 2105-05-03]
+      2771F0FCF8FE74CD9B9C25439D4893D18D358530
+uid           [  究極  ] asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
+sig 3        9D4893D18D358530 2023-05-26  [自己署名]
+sig          4C20892B88F7F574 2023-05-22  [ユーザIDが見つかりません]
+sig          635EC3A6D7233F2B 2023-05-22  [ユーザIDが見つかりません]
+sig          E1AE542959117853 2023-05-22  [ユーザIDが見つかりません]
+sub   cv25519 2023-05-22 [E] [有効期限: 2099-05-03]
+sig          9D4893D18D358530 2023-05-22  [自己署名]
+sub   ed25519 2023-05-22 [S] [有効期限: 2099-05-03]
+sig          9D4893D18D358530 2023-05-22  [自己署名]
+sub   ed25519 2023-05-22 [A] [有効期限: 2099-05-03]
+sig          9D4893D18D358530 2023-05-22  [自己署名]
+
+$
+```
+2種類の注釈が消えている。
+
 </details>
 
-1. 手順その4  
-GitHubのGistに登録。  
-どこに何を登録すればいいのか憶測になるが、題名には**openpgp.md**を入力し、本文は上記の内容を貼り付けることで問題なさそうだ。  
-作成時のボタン内容は**Create public gist**にしてからクリック。  
-<https://gist.github.com/asakunotomohiro/55aa4271cb27d7fa90ce50f168b882d5>  
-本物の紐付けファイルがGithubGistにできあがった。  
+</details>
 
-1. 手順その5  
+1. 手順その1  
+GitHubのGistに登録。  
+題名には**openpgp.md**を入力し、本文は下記の内容を貼り付ける。
+```terminal
+$ cat openpgp.md	←☆書き込んだ内容。
+This is an OpenPGP proof that connects [my OpenPGP key](https://keyoxide.org/2771F0FCF8FE74CD9B9C25439D4893D18D358530) to [this Github account](https://github.com/asakunotomohiro). For details check out https://keyoxide.org/guides/openpgp-proofs
+
+[Verifying my OpenPGP key: $argon2id$v=19$m=64,t=512,p=2$9TvPgs5Lp4xyWDYOb9fzUQ$yhMHBfFuDcnKKmsnK7aNuw]
+$
+```
+作成時のボタン内容は**Create public gist**にしてからクリック。  
+<https://gist.github.com/asakunotomohiro/114a342e6e08c909e3991860299ee379>  
+紐付けファイルがGithubGistにできあがった。  
+
+<details><summary>検証用URLのハッシュ化。</summary>
+
+ちなみに、上記通り、検証URLをハッシュに置き換えて利用できる。  
+<https://docs.keyoxide.org/understanding-keyoxide/identity-proof-formats/>  
+にて、主鍵の鍵指紋を**Compute a hash**欄に入力する。  
+入力値：`openpgp4fpr:2771f0fcf8fe74cd9b9c25439d4893d18d358530`  
+そして、  
+```text
+(argon2)$argon2id$v=19$m=64,t=512,p=2$9TvPgs5Lp4xyWDYOb9fzUQ$yhMHBfFuDcnKKmsnK7aNuw
+(bcrypt)$2a$11$7RtNeq3Jn2vwUBWMZ7dxSOfp2T0HYLD4xygxA.w7AErf1nKgMLcCW
+```
+の結果が得られる(例であり、実行するたびに値が変わる)。  
+そして、上下どちらを使ってもかまわないが、最新版である**Argon2**を使うのがいいと思う(対応していればだが・・・？)。  
+
+そもそもArgon2が何かを理解していない。  
+<https://argon2.online>  
+値を再現することもできず、、、どうなればいいのかわからない(このURL自体安全かどうか分からない。検索したら出てきただけ)。  
+
+これを利用する利点は、GithubGistから公開鍵にたどり着けないことにある。  
+公開鍵からGithubアカウントに辿れるが、その逆ができないため、メールアドレスがさらされずにアカウント同士を紐付けできることが利点・・・のようだ(知られずに紐付けようとする理由は何だろう)。  
+今回堂々と掲示しているのだから私の環境では無意味だが・・・(隠せることを示したくて使った)。  
+鍵指紋をハッシュ化などできなければ意味がないとも思っている。  
+
+</details>
+
+1. 手順その2  
 主鍵への登録作業。
 ```terminal
 $ gpg --list-keys --with-sig-list --list-options show-notations 2771F0FCF8FE74CD9B9C25439D4893D18D358530	←☆状況確認。
@@ -2692,10 +2922,10 @@ ssb  ed25519/82AA8224E47F7A68
      作成: 2023-05-22  有効期限: 2099-05-03  利用法: A
 [  究極  ] (1). asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
 
-gpg> notation	←☆GistURLの追加。
-注釈を入力: proof@ariadne.id=https://gist.github.com/asakunotomohiro/55aa4271cb27d7fa90ce50f168b882d5
+gpg> notation	←☆編集コマンド。
+注釈を入力: proof@ariadne.id=https://gist.github.com/asakunotomohiro/114a342e6e08c909e3991860299ee379	←☆GistURLの追加。
 No notations on user ID "asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>"
-Adding notation: proof@ariadne.id=https://gist.github.com/asakunotomohiro/55aa4271cb27d7fa90ce50f168b882d5
+Adding notation: proof@ariadne.id=https://gist.github.com/asakunotomohiro/114a342e6e08c909e3991860299ee379
 
 sec  ed25519/9D4893D18D358530
      作成: 2023-05-22  有効期限: 2105-05-03  利用法: C
@@ -2709,12 +2939,12 @@ ssb  ed25519/82AA8224E47F7A68
 [  究極  ] (1). asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
 
 gpg> save	←☆編集内容の保存。
-$ gpg --list-keys --with-sig-list --list-options show-notations 2771F0FCF8FE74CD9B9C25439D4893D18D358530
+$ gpg --list-keys --with-sig-list --list-options show-notations 2771F0FCF8FE74CD9B9C25439D4893D18D358530	←☆編集後の状況確認。
 pub   ed25519 2023-05-22 [C] [有効期限: 2105-05-03]
       2771F0FCF8FE74CD9B9C25439D4893D18D358530
 uid           [  究極  ] asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
 sig 3    N   9D4893D18D358530 2023-05-24  [自己署名]
-   署名注釈: proof@ariadne.id=https://gist.github.com/asakunotomohiro/55aa4271cb27d7fa90ce50f168b882d5	←☆本当にGistURLが追加されている。
+   署名注釈: proof@ariadne.id=https://gist.github.com/asakunotomohiro/114a342e6e08c909e3991860299ee379	←☆追加。
 sig          4C20892B88F7F574 2023-05-22  [ユーザIDが見つかりません]
 sig          635EC3A6D7233F2B 2023-05-22  [ユーザIDが見つかりません]
 sig          E1AE542959117853 2023-05-22  [ユーザIDが見つかりません]
@@ -2742,7 +2972,7 @@ gpg: 鍵9D4893D18D358530をhkps://keys.openpgp.orgへ送信
 $
 ```
 
-1. 手順その6  
+1. 手順その3  
 検索。  
 <https://keyoxide.org/2771F0FCF8FE74CD9B9C25439D4893D18D358530>  
 以下、その結果。
@@ -2751,7 +2981,7 @@ github
 asakunotomohiro
 
 Profile link: https://github.com/asakunotomohiro
-Proof link: https://gist.github.com/asakunotomohiro/55aa4271cb27d7fa90ce50f168b882d5
+Proof link: https://gist.github.com/asakunotomohiro/114a342e6e08c909e3991860299ee379
 
 Claim verification has completed.
 
@@ -2770,12 +3000,12 @@ The claim HAS BEEN verified by the proof.
 > Uploading your OpenPGP private key to Keybase is NOT recommended and may pose serious security risks! Consider only uploading your OpenPGP public key.  
 
 どういう意味？  
-オプションを付けなければ問題ない挙動だよね。  
+~~オプションを付けなければ問題ない挙動だよね~~。  
 
 
 1. 手順その1  
 ```terminal
-$ gpg -K --with-subkey-fingerprint asakuno.secure@pgp.asakuno.org	←☆編集前の状況確認。
+$ gpg -K --with-subkey-fingerprint asakuno.secure@pgp.asakuno.org	←☆編集前の状況確認(コマンド間違えた)。
 sec   ed25519 2023-05-22 [C] [有効期限: 2105-05-03]
       2771F0FCF8FE74CD9B9C25439D4893D18D358530
 uid           [  究極  ] asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
@@ -2807,8 +3037,8 @@ ssb  ed25519/82AA8224E47F7A68
 gpg> notation
 注釈を入力: proof@ariadne.id=https://keybase.io/asakunotomohiro	←☆追加。
 Current notations for user ID "asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>":
-         proof@ariadne.id=https://gist.github.com/asakunotomohiro/55aa4271cb27d7fa90ce50f168b882d5
-Adding notation: proof@ariadne.id=https://keybase.io/asakunotomohiro
+         proof@ariadne.id=https://gist.github.com/asakunotomohiro/114a342e6e08c909e3991860299ee379	←☆Github紐付け作業で追加済み。
+Adding notation: proof@ariadne.id=https://keybase.io/asakunotomohiro	←☆今回追加する内容。
 
 sec  ed25519/9D4893D18D358530
      作成: 2023-05-22  有効期限: 2105-05-03  利用法: C
@@ -2821,13 +3051,13 @@ ssb  ed25519/82AA8224E47F7A68
      作成: 2023-05-22  有効期限: 2099-05-03  利用法: A
 [  究極  ] (1). asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
 
-gpg> save
+gpg> save	←☆保存(大事というか必須)。
 $ gpg --list-keys --with-sig-list --list-options show-notations 2771F0FCF8FE74CD9B9C25439D4893D18D358530	←☆追加後の状況確認。
 pub   ed25519 2023-05-22 [C] [有効期限: 2105-05-03]
       2771F0FCF8FE74CD9B9C25439D4893D18D358530
 uid           [  究極  ] asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
 sig 3    N   9D4893D18D358530 2023-05-26  [自己署名]
-   署名注釈: proof@ariadne.id=https://gist.github.com/asakunotomohiro/55aa4271cb27d7fa90ce50f168b882d5
+   署名注釈: proof@ariadne.id=https://gist.github.com/asakunotomohiro/114a342e6e08c909e3991860299ee379
    署名注釈: proof@ariadne.id=https://keybase.io/asakunotomohiro	←☆これを追加。
 sig          4C20892B88F7F574 2023-05-22  [ユーザIDが見つかりません]
 sig          635EC3A6D7233F2B 2023-05-22  [ユーザIDが見つかりません]
