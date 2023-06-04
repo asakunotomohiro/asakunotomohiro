@@ -32,7 +32,7 @@
 
 * バージョン別解説。  
   もしかしたら端末固有かもしれないが、、、  
-  * [Android8](#android10OperatingSystem)  
+  * [Android8](#android8peratingSystem)  
   * [Android10](#android10OperatingSystem)  
   * [Android11](#android11OperatingSystem)  
 
@@ -48,7 +48,7 @@
     IME。  
 
 
-<a id="android10OperatingSystem"></a>
+<a id="android8peratingSystem"></a>
 ## Android8
 いま持っている携帯電話のバージョンは、8.1.0になる。  
 古いが、未だに使っている。  
@@ -58,6 +58,10 @@
 <a id="android10OperatingSystem"></a>
 ## Android10
 microSDカードの[認識が変わる](#android10peratingsystem2microsdcard4adb)ようだ。  
+
+[Unihertz](https://www.unihertz.com/ja-jp/collections/titan-series)が壊れてしまった。  
+そのため、[修理](https://www.atom-denshi.co.jp/repair-guide.html)を出す必要がある。  
+しかし、めんどくさい。  
 
 
 <a name="android10peratingsystem2microsdcard4adb"></a>
