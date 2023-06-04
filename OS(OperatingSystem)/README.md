@@ -81,6 +81,22 @@
   * [SeaMonkey](https://www.seamonkey-project.org/)  
     ブラウザ機能だけでなく、メール送受信もできるようだが、使うことはないだろう。  
 
+* ルータ  
+  * [Wavlink](https://www.wavlink.com/en_us/index.html)  
+    [安価な場合バックドアが存在する](https://gigazine.net/news/20201124-walmart-jetstream-router-backdoor/)ようだ。  
+    そのため、使ってはならない。  
+  * [Dリンク](https://www.dlink-jp.com)  
+    [バックドアの脆弱性](https://www.itmedia.co.jp/enterprise/articles/1312/03/news038.html)があるため、使うべきでない。  
+  * [TP-Link](https://www.tp-link.com/)  
+    [NTPサーバに負荷を掛けるバグを含む](https://en.wikipedia.org/wiki/NTP_server_misuse_and_abuse)[問題](https://www.tp-link.com/jp/press/news/17792/)があった。  
+    そして、[TFTPバックドア](https://sekurak.pl/tp-link-httptftp-backdoor/)として、root権限で実行できる？(翻訳がいまいちで理解できない部分が多い)  
+    とにかく使ってはならないルータのひとつ。  
+  * [NETGEAR](https://www.netgear.com/jp/home/wifi/routers/)  
+    [バグを含んでいた](https://ja.wikipedia.org/wiki/Network_Time_Protocol#.E3.82.A6.E3.82.A3.E3.82.B9.E3.82.B3.E3.83.B3.E3.82.B7.E3.83.B3.E5.A4.A7.E5.AD.A6-.E3.83.8D.E3.83.83.E3.83.88.E3.82.AE.E3.82.A2NTP.E5.95.8F.E9.A1.8C)。  
+    バックドアではないが、[検証不十分](https://pc.watch.impress.co.jp/docs/news/1086464.html)なルータを使うのは恐ろしい。  
+  * 英文  
+    [This WiFi router is a Black Friday steal. Experts say it's a security risk.](https://mashable.com/article/jetstream-wifi-router-backdoor)  
+    [Walmart-exclusive router and others sold on Amazon & eBay contain hidden backdoors to control devices](https://cybernews.com/security/walmart-exclusive-routers-others-made-in-china-contain-backdoors-to-control-devices/)  
 
 ネットサーフィンとはちょっと違うが、クラウドストレージを利用する場合は[ゼロ知識証明](https://ja.wikipedia.org/wiki/ゼロ知識証明)が使われているサービスを利用する・・・つもり。  
 そのため、今はGoogleドライブなどから撤退するために、そこに置いてある資材を引き上げているのだが、遅々として進まない。  
