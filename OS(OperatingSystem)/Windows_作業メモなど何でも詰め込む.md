@@ -4,6 +4,8 @@
 
 [個人メモ(総合的な優先度の高いメモ)](#memo99999)  
 
+[レノボ端末](https://www.lenovo.com)には、[バックドアを仕込んでる](https://gigazine.net/news/20180920-lenovo-backdoor-in-china/)ことが明言されている。  
+
 ---
 <a id="windowsOperatingSystem"></a>
 ## WindowsOS
