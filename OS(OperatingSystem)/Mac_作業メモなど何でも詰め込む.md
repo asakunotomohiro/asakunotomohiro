@@ -26,7 +26,6 @@
       未調査。  
 
 
-
 <a id="macOperatingSystemreinstall"></a>
 ### macOSを再インストールする方法
 環境設定をやり直すためにも再インストールする。  
