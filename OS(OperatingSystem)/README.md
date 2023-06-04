@@ -55,6 +55,8 @@
   世間が騒いだときに覗く場所？  
   * [日本ネットワークインフォメーションセンター](https://www.nic.ad.jp/ja/)  
 
+ネット活用時に、[教員向け ChatGPT 講座 ～基礎から応用まで～](https://www.youtube.com/watch?v=lwccHzqfuvc)が参考になるかも？  
+
 
 <a id="operatingsystemnetwork_internetsurfing"></a>
 ### ネットサーフィン
