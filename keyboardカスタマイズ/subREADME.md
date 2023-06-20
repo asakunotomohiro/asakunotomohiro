@@ -8,6 +8,15 @@
 その中でもQMKを用いたキーボードを長らく利用しているため、主にQMK利用について記録する。
 それ以外も存在することを記録しておく。  
 
+* キーマップ設定方法  
+  * [QMK](#keyboard_qmk)  
+
+
+<a id="keyboard_qmk"></a>
+## QMKによるキーマップ変更方法について。
+私は、[QMK](https://github.com/qmk/qmk_firmware)を使い、組み立てたキーボードにキーマップを書き込んでいる。  
+正確には、自分専用に作成したキーマップをキーボードに書き込んでいる(結局一緒の表現か？)。  
+
 
 以上。
 <!-- vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=markdown expandtab: -->
