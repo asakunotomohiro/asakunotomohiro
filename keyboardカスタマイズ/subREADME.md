@@ -39,6 +39,25 @@
   1. **Create fork**ボタン押下する。  
      フォークが行われる。  
 
+* クローン手順  
+  1. ローカルにクローンする(思ったより時間かかる)。  
+     `git clone git@github.com:asakunotomohiro/qmk_firmware.git`  
+
+```terminal
+$ git clone git@github.com:asakunotomohiro/qmk_firmware.git -b master qmk_firmware20230621
+Cloning into 'qmk_firmware20230621'...
+remote: Enumerating objects: 448751, done.
+remote: Counting objects: 100% (36/36), done.
+remote: Compressing objects: 100% (30/30), done.
+remote: Total 448751 (delta 9), reused 12 (delta 4), pack-reused 448715
+Receiving objects: 100% (448751/448751), 247.93 MiB | 1.52 MiB/s, done.
+Resolving deltas: 100% (227884/227884), done.
+Updating files: 100% (35573/35573), done.
+$ echo $?
+0
+$
+```
+
 
 以上。
 <!-- vim: set ts=4 sts=4 sw=4 tw=0 ff=unix fenc=utf-8 ft=markdown expandtab: -->
