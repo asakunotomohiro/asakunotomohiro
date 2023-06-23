@@ -61,6 +61,7 @@ $
 * コンパイル環境構築手順  
   1. クローン環境でコンパイル実施。  
 
+以下、QMKインストール作業。
 ```terminal
 $ ll
 total 288
@@ -82,7 +83,7 @@ drwxr-xr-x   23 asakunotomohiro  staff    736  6 23 00:33 platforms/
 -rw-r--r--    1 asakunotomohiro  staff  15174  6 23 00:33 license_GPLv2.md
 drwxr-xr-x   15 asakunotomohiro  staff    480  6 23 00:33 lib/
 drwxr-xr-x    4 asakunotomohiro  staff    128  6 23 00:33 layouts/
-drwxr-xr-x  933 asakunotomohiro  staff  29856  6 23 00:33 keyboards/
+drwxr-xr-x  933 asakunotomohiro  staff  29856  6 23 00:33 keyboards/	←☆この配下にplanckディレクトリがある。
 drwxr-xr-x   19 asakunotomohiro  staff    608  6 23 00:33 drivers/
 -rw-r--r--    1 asakunotomohiro  staff    278  6 23 00:33 doxygen-todo
 drwxr-xr-x  181 asakunotomohiro  staff   5792  6 23 00:33 docs/
@@ -92,7 +93,7 @@ drwxr-xr-x   15 asakunotomohiro  staff    480  6 23 00:33 builddefs/
 -rw-r--r--    1 asakunotomohiro  staff  18092  6 23 00:33 LICENSE
 -rw-r--r--    1 asakunotomohiro  staff   8688  6 23 00:33 Doxyfile
 $ make planck/rev7:default	←☆説明通りにやるが失敗する。
-make: qmk: Command not found
+make: qmk: Command not found	←☆qmkコマンドが別途必要なようだ。
 make: *** No rule to make target 'planck/rev7:default'. Stop.
 |
 | QMK's make format is:
@@ -117,17 +118,450 @@ ERROR: Cannot run "qmk hello"!
 make: *** [planck/rev7:default] Error 1
 $ qmk setup	←☆たしかにインストールされていない。
 zsh: command not found: qmk
-$ brew install --cask qmk-toolbox	←☆QMKツールボックスをインストール。
+$ brew tap homebrew/cask-drivers	←☆説明書通りなのに、なぜ駄目だ。
+Error: homebrew/cask-drivers was deprecated. This tap is now empty and all its contents were either deleted or migrated.
+$
+$ brew install qmk/qmk/qmk
+Running `brew update --auto-update`...
+==> Auto-updated Homebrew!
+==> Updated Homebrew from 52967ee53 to 66c6e5b5f.
+Updated 1 tap (homebrew/core).
+==> New Formulae
+gotestsum                                                                                            zrok
+
+You have 12 outdated formulae installed.
+
+==> Tapping qmk/qmk
+Cloning into '/opt/homebrew/Library/Taps/qmk/homebrew-qmk'...
+remote: Enumerating objects: 446, done.
+remote: Counting objects: 100% (145/145), done.
+remote: Compressing objects: 100% (67/67), done.
+remote: Total 446 (delta 81), reused 129 (delta 71), pack-reused 301
+Receiving objects: 100% (446/446), 75.63 KiB | 1.11 MiB/s, done.
+Resolving deltas: 100% (258/258), done.
+Tapped 3 formulae (20 files, 107.2KB).
+==> Tapping osx-cross/arm
+Cloning into '/opt/homebrew/Library/Taps/osx-cross/homebrew-arm'...
+remote: Enumerating objects: 351, done.
+remote: Counting objects: 100% (131/131), done.
+remote: Compressing objects: 100% (87/87), done.
+remote: Total 351 (delta 50), reused 91 (delta 41), pack-reused 220
+Receiving objects: 100% (351/351), 83.21 KiB | 495.00 KiB/s, done.
+Resolving deltas: 100% (128/128), done.
+Tapped 8 formulae (27 files, 133.2KB).
+==> Tapping osx-cross/avr
+Cloning into '/opt/homebrew/Library/Taps/osx-cross/homebrew-avr'...
+remote: Enumerating objects: 1763, done.
+remote: Counting objects: 100% (608/608), done.
+remote: Compressing objects: 100% (223/223), done.
+remote: Total 1763 (delta 412), reused 527 (delta 373), pack-reused 1155
+Receiving objects: 100% (1763/1763), 390.17 KiB | 1.02 MiB/s, done.
+Resolving deltas: 100% (1145/1145), done.
+Tapped 10 formulae (32 files, 660.0KB).
+==> Fetching dependencies for qmk/qmk/qmk: icu4c, boost, confuse, libftdi, libusb-compat, avrdude, bootloadhid, clang-format, dfu-programmer, dfu-util, make, mdloader, osx-cross/arm/arm-gcc-bin@8, automake, texinfo, avr-binutils, isl, mpfr, libmpc, osx-cross/avr/avr-gcc@8, libimagequant, libpng, fribidi, xorgproto, harfbuzz, libraqm, libtiff, openjpeg, tcl-tk, webp, pillow, python and teensy_loader_cli
+==> Fetching icu4c
+==> Downloading https://ghcr.io/v2/homebrew/core/icu4c/manifests/73.2
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/icu4c/blobs/sha256:953797d46546c570c4fab4e8b2395624ae90acd492f75b68ff99fbd115ccd748
+################################################################################################################################################################################################## 100.0%
+==> Fetching boost
+==> Downloading https://ghcr.io/v2/homebrew/core/boost/manifests/1.82.0_1
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/boost/blobs/sha256:acb65f0a6f8a12472eaa2aa223353ceac4134617bc9f99e936df65cfd5240507
+################################################################################################################################################################################################## 100.0%
+==> Fetching confuse
+==> Downloading https://ghcr.io/v2/homebrew/core/confuse/manifests/3.3
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/confuse/blobs/sha256:1c7aa3d075082f2742747ac5034f60c90b448c694ccc5b3330b71f1afdd81f81
+################################################################################################################################################################################################## 100.0%
+==> Fetching libftdi
+==> Downloading https://ghcr.io/v2/homebrew/core/libftdi/manifests/1.5_2
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/libftdi/blobs/sha256:db8777d9eec5f36b23b191183c6d25c398484c09b2ca5833d5ef252ef5ce7bfd
+################################################################################################################################################################################################## 100.0%
+==> Fetching libusb-compat
+==> Downloading https://ghcr.io/v2/homebrew/core/libusb-compat/manifests/0.1.8
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/libusb-compat/blobs/sha256:f166717b7947442be0d3dd9f4f32af5a81dc1b88e33c1e6d255f3661f1c9b00c
+################################################################################################################################################################################################## 100.0%
+==> Fetching avrdude
+==> Downloading https://ghcr.io/v2/homebrew/core/avrdude/manifests/7.0_2
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/avrdude/blobs/sha256:50c20fe810d534c1c4cea3209ca812d35167c4b51e140f7154d96563d9e397e0
+################################################################################################################################################################################################## 100.0%
+==> Fetching bootloadhid
+==> Downloading https://ghcr.io/v2/homebrew/core/bootloadhid/manifests/2012-12-08
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/bootloadhid/blobs/sha256:2abf7dd9ed6601a8f2f42073b64abb33d20f7e81fdfd9d296f5441987d2054fe
+################################################################################################################################################################################################## 100.0%
+==> Fetching clang-format
+==> Downloading https://ghcr.io/v2/homebrew/core/clang-format/manifests/16.0.6
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/clang-format/blobs/sha256:91f8990b07097ce1b70a7d0cf4141236f25ba541423be618a839330f380ce3ba
+################################################################################################################################################################################################## 100.0%
+==> Fetching dfu-programmer
+==> Downloading https://ghcr.io/v2/homebrew/core/dfu-programmer/manifests/1.0.0
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/dfu-programmer/blobs/sha256:0ee3ca7e532f5126a3057d13a2939e1f0232d7b6cff2af0672f53d6144e8f6e2
+################################################################################################################################################################################################## 100.0%
+==> Fetching dfu-util
+==> Downloading https://ghcr.io/v2/homebrew/core/dfu-util/manifests/0.11
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/dfu-util/blobs/sha256:03e81fc129ada62759e3cd8d892131ca326851ab6631730e9d101405c0e2594d
+################################################################################################################################################################################################## 100.0%
+==> Fetching make
+==> Downloading https://ghcr.io/v2/homebrew/core/make/manifests/4.4.1
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/make/blobs/sha256:23e26446ffdefd2b7fe44c559e11ab6bc127abd32233847f4e73bb3de87d98c6
+################################################################################################################################################################################################## 100.0%
+==> Fetching qmk/qmk/mdloader
+==> Downloading https://github.com/Massdrop/mdloader/archive/1.0.7.tar.gz
+==> Downloading from https://codeload.github.com/Massdrop/mdloader/tar.gz/refs/tags/1.0.7
+ #=O#-    #       #
+==> Fetching osx-cross/arm/arm-gcc-bin@8
+==> Downloading https://developer.arm.com/-/media/Files/downloads/gnu-rm/8-2019q3/RC1.1/gcc-arm-none-eabi-8-2019-q3-update-mac.tar.bz2
+==> Downloading from https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/8-2019q3/RC1.1/gcc-arm-none-eabi-8-2019-q3-update-mac.tar.bz2
+################################################################################################################################################################################################## 100.0%
+==> Fetching automake
+==> Downloading https://ghcr.io/v2/homebrew/core/automake/manifests/1.16.5
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/automake/blobs/sha256:f68481d06be7fa3f0a0881edb825a336e7f6548191c762d68bd817183b238f5a
+################################################################################################################################################################################################## 100.0%
+==> Fetching texinfo
+==> Downloading https://ghcr.io/v2/homebrew/core/texinfo/manifests/7.0.3
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/texinfo/blobs/sha256:203015ceba1fbf1093a5c011e19fbabe6b1dca05ad045e19758e11c6a7e9877c
+################################################################################################################################################################################################## 100.0%
+==> Fetching osx-cross/avr/avr-binutils
+==> Downloading https://raw.githubusercontent.com/archlinux/svntogit-community/c3efadcb76f4d8b1a3784015e7c472f59dbfa7de/avr-binutils/repos/community-x86_64/avr-size.patch
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://raw.githubusercontent.com/osx-cross/homebrew-avr/18d50ba2a168a3b90a25c96e4bc4c053df77d7dc/Patch/avr-binutils-elf-bfd-gdb-fix.patch
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://ftp.gnu.org/gnu/binutils/binutils-2.40.tar.xz
+################################################################################################################################################################################################## 100.0%
+==> Fetching isl
+==> Downloading https://ghcr.io/v2/homebrew/core/isl/manifests/0.26
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/isl/blobs/sha256:1814fe867c61b34cd5c763cf2ebda99d7883db78348c8b663f98cc95a1348d16
+################################################################################################################################################################################################## 100.0%
+==> Fetching mpfr
+==> Downloading https://ghcr.io/v2/homebrew/core/mpfr/manifests/4.2.0-p9
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/mpfr/blobs/sha256:176114984411aeb1187a50fd9ffc39d7dfe0bf5dc29ab13b0ecc95307d619ff9
+################################################################################################################################################################################################## 100.0%
+==> Fetching libmpc
+==> Downloading https://ghcr.io/v2/homebrew/core/libmpc/manifests/1.3.1
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/libmpc/blobs/sha256:da4ff781bc469c82af17f98f0bdbf20932e222d0520ab784cd1b322b789ad7a5
+################################################################################################################################################################################################## 100.0%
+==> Fetching osx-cross/avr/avr-gcc@8
+==> Downloading https://gist.githubusercontent.com/DavidEGrayson/88bceb3f4e62f45725ecbb9248366300/raw/c1f515475aff1e1e3985569d9b715edb0f317648/gcc-11-arm-darwin.patch
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://download.savannah.gnu.org/releases/avr-libc/avr-libc-2.1.0.tar.bz2
+==> Downloading from https://mirrors.sarata.com/non-gnu/avr-libc/avr-libc-2.1.0.tar.bz2
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://ftp.gnu.org/gnu/gcc/gcc-8.5.0/gcc-8.5.0.tar.xz
+################################################################################################################################################################################################## 100.0%
+==> Fetching libimagequant
+==> Downloading https://ghcr.io/v2/homebrew/core/libimagequant/manifests/4.2.0
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/libimagequant/blobs/sha256:97c3688ef5aa75bd33d85e823137164e9d466d42e13c18f728ce80f07b00b657
+################################################################################################################################################################################################## 100.0%
+==> Fetching libpng
+==> Downloading https://ghcr.io/v2/homebrew/core/libpng/manifests/1.6.40
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/libpng/blobs/sha256:c309cf133ab08f4fd25210da897eaaff2603e9a7e1bdc178821c7e186fb9ee69
+################################################################################################################################################################################################## 100.0%
+==> Fetching fribidi
+==> Downloading https://ghcr.io/v2/homebrew/core/fribidi/manifests/1.0.13
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/fribidi/blobs/sha256:0272f179bac6809467c56eb0b1fac7f1de88b4c012fd36e77411aec39e5f9b4f
+################################################################################################################################################################################################## 100.0%
+==> Fetching xorgproto
+==> Downloading https://ghcr.io/v2/homebrew/core/xorgproto/manifests/2023.2
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/xorgproto/blobs/sha256:de818c35cca25c4b2286a5642d5d1748320f6031039ec46b375fd11e935ef7e3
+################################################################################################################################################################################################## 100.0%
+==> Fetching harfbuzz
+==> Downloading https://ghcr.io/v2/homebrew/core/harfbuzz/manifests/7.3.0_1
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/harfbuzz/blobs/sha256:4ff40bff874789528ce27fbba3f7413ecfab35a338c7a7b98c67c25900a23401
+################################################################################################################################################################################################## 100.0%
+==> Fetching libraqm
+==> Downloading https://ghcr.io/v2/homebrew/core/libraqm/manifests/0.10.1
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/libraqm/blobs/sha256:ac95b8239c3e26dfd2cba18417d279cf5fe39cf1e3b02e01930e324fa4334174
+################################################################################################################################################################################################## 100.0%
+==> Fetching libtiff
+==> Downloading https://ghcr.io/v2/homebrew/core/libtiff/manifests/4.5.1
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/libtiff/blobs/sha256:c9ec64c61687ec04d3d98e017c2a7ec5c23ff8a061cdeaf54209197fdbfa53e7
+################################################################################################################################################################################################## 100.0%
+==> Fetching openjpeg
+==> Downloading https://ghcr.io/v2/homebrew/core/openjpeg/manifests/2.5.0_1
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/openjpeg/blobs/sha256:4608628e92a5691cd45550219c92def72e3543f372af39f88d1bda2b87a40f3b
+################################################################################################################################################################################################## 100.0%
+==> Fetching tcl-tk
+==> Downloading https://ghcr.io/v2/homebrew/core/tcl-tk/manifests/8.6.13_3-1
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/tcl-tk/blobs/sha256:f40d605c127e7a7895cd2b1506ef1ac0e59e6f8ad671a7f4e802c4726ef21595
+################################################################################################################################################################################################## 100.0%
+==> Fetching webp
+==> Downloading https://ghcr.io/v2/homebrew/core/webp/manifests/1.3.0_1
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/webp/blobs/sha256:f86256aed05f84aa98f925384c6317fecc60e9f55a52c92a8c9ddcbc0af4116d
+################################################################################################################################################################################################## 100.0%
+==> Fetching pillow
+==> Downloading https://ghcr.io/v2/homebrew/core/pillow/manifests/9.5.0_1
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/pillow/blobs/sha256:996a0e92f7957956425d372f0e7b896a487708449b29b3ab57e491535c2b0366
+################################################################################################################################################################################################## 100.0%
+==> Fetching python@3.11
+==> Downloading https://ghcr.io/v2/homebrew/core/python/3.11/manifests/3.11.4-1
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/python/3.11/blobs/sha256:ae4c32c3a4924c93133e31d3810b5a8e992514775c6e91627e304f82b9fa906b
+################################################################################################################################################################################################## 100.0%
+==> Fetching teensy_loader_cli
+==> Downloading https://ghcr.io/v2/homebrew/core/teensy_loader_cli/manifests/2.2
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/teensy_loader_cli/blobs/sha256:97148c203288820eb1f651a744f6bd0867b38383671ec7b7d0961504ecfc51ad
+################################################################################################################################################################################################## 100.0%
+==> Fetching qmk/qmk/qmk
+==> Downloading https://files.pythonhosted.org/packages/d7/d8/05696357e0311f5b5c316d7b95f46c669dd9c15aaeecbb48c7d0aeb88c40/appdirs-1.4.4.tar.gz
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://files.pythonhosted.org/packages/9d/50/e5b3e9824a387920c4b92870359c9f7dbf21a6cd6d3dff5bf4fd3b50237a/argcomplete-3.0.5.tar.gz
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://files.pythonhosted.org/packages/21/31/3f468da74c7de4fcf9b25591e682856389b3400b4b62f201e65f15ea3e07/attrs-22.2.0.tar.gz
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://files.pythonhosted.org/packages/d8/53/6f443c9a4a8358a93a6792e2acffb9d9d5cb0a5cfd8802644b7b1c9a02e4/colorama-0.4.6.tar.gz
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://files.pythonhosted.org/packages/6a/ab/88d67f02024700b48cd8232579ad1316aa9df2272c63049c27cc094229d6/dotty_dict-1.3.1.tar.gz
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://files.pythonhosted.org/packages/ee/48/d53580d30b1fabf25d0d1fcc3f5b26d08d2ac75a1890ff6d262f9f027436/halo-0.0.31.tar.gz
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://files.pythonhosted.org/packages/e0/2a/87d8d87343c9be4f839972b0a3bef66b8b4f0d350cda11f2d3d8222f29ab/hid-1.0.5.tar.gz
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://files.pythonhosted.org/packages/82/e5/0b56d723a76ca67abadbf7fb71609fb0ea7e6926e94fcca6c65a85b36a0e/hjson-3.1.0.tar.gz
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://files.pythonhosted.org/packages/36/3d/ca032d5ac064dff543aa13c984737795ac81abc9fb130cd2fcff17cfabc7/jsonschema-4.17.3.tar.gz
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://files.pythonhosted.org/packages/45/87/e86645d758a4401c8c81914b6a88470634d1785c9ad09823fa4a1bd89250/log_symbols-0.0.14.tar.gz
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://files.pythonhosted.org/packages/92/c0/3377091d68d98f7448e9e3624d6692548efcd98917cc48a69efb650a3eb4/milc-1.6.6.tar.gz
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://files.pythonhosted.org/packages/00/d5/4903f310765e0ff2b8e91ffe55031ac6af77d982f0156061e20a4d1a8b2d/Pillow-9.5.0.tar.gz
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://files.pythonhosted.org/packages/da/6a/c427c06913204e24de28de5300d3f0e809933f376e0b7df95194b2bb3f71/Pygments-2.14.0.tar.gz
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://files.pythonhosted.org/packages/bf/90/445a7dbd275c654c268f47fa9452152709134f61f09605cf776407055a89/pyrsistent-0.19.3.tar.gz
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://files.pythonhosted.org/packages/1e/7d/ae3f0a63f41e4d2f6cb66a5b57197850f919f59e558159a4dd3a818f5082/pyserial-3.5.tar.gz
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://files.pythonhosted.org/packages/d9/6e/433a5614132576289b8643fe598dd5d51b16e130fd591564be952e15bb45/pyusb-1.2.1.tar.gz
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://files.pythonhosted.org/packages/71/39/171f1c67cd00715f190ba0b100d606d440a28c93c7714febeca8b79af85e/six-1.16.0.tar.gz
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://files.pythonhosted.org/packages/d3/91/bb331f0a43e04d950a710f402a0986a54147a35818df0e1658551c8d12e1/spinners-0.0.24.tar.gz
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://files.pythonhosted.org/packages/e5/4e/b2a54a21092ad2d5d70b0140e4080811bee06a39cc8481651579fe865c89/termcolor-2.2.0.tar.gz
+################################################################################################################################################################################################## 100.0%
+==> Downloading https://files.pythonhosted.org/packages/08/df/60d820bcaf228d620cf1e894ffd4b6cfd8084504c0e49335ca1df29713cd/qmk-1.1.2.tar.gz
+################################################################################################################################################################################################## 100.0%
+==> Installing qmk from qmk/qmk
+==> Installing dependencies for qmk/qmk/qmk: icu4c, boost, confuse, libftdi, libusb-compat, avrdude, bootloadhid, clang-format, dfu-programmer, dfu-util, make, mdloader, osx-cross/arm/arm-gcc-bin@8, automake, texinfo, avr-binutils, isl, mpfr, libmpc, osx-cross/avr/avr-gcc@8, libimagequant, libpng, fribidi, xorgproto, harfbuzz, libraqm, libtiff, openjpeg, tcl-tk, webp, pillow, python and teensy_loader_cli
+==> Installing qmk/qmk/qmk dependency: icu4c
+==> Pouring icu4c--73.2.arm64_ventura.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/icu4c/73.2: 268 files, 80.1MB
+==> Installing qmk/qmk/qmk dependency: boost
+==> Pouring boost--1.82.0_1.arm64_ventura.bottle.tar.gz
+==> Downloading https://formulae.brew.sh/api/cask.jws.json
+################################################################################################################################################################################################## 100.0%
+🍺  /opt/homebrew/Cellar/boost/1.82.0_1: 16,057 files, 491.8MB
+==> Installing qmk/qmk/qmk dependency: confuse
+==> Pouring confuse--3.3.arm64_ventura.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/confuse/3.3: 15 files, 243.2KB
+==> Installing qmk/qmk/qmk dependency: libftdi
+==> Pouring libftdi--1.5_2.arm64_ventura.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/libftdi/1.5_2: 58 files, 1.1MB
+==> Installing qmk/qmk/qmk dependency: libusb-compat
+==> Pouring libusb-compat--0.1.8.arm64_ventura.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/libusb-compat/0.1.8: 14 files, 134.5KB
+==> Installing qmk/qmk/qmk dependency: avrdude
+==> Pouring avrdude--7.0_2.arm64_ventura.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/avrdude/7.0_2: 9 files, 2.4MB
+==> Installing qmk/qmk/qmk dependency: bootloadhid
+==> Pouring bootloadhid--2012-12-08.arm64_ventura.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/bootloadhid/2012-12-08: 6 files, 80.4KB
+==> Installing qmk/qmk/qmk dependency: clang-format
+==> Pouring clang-format--16.0.6.arm64_ventura.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/clang-format/16.0.6: 10 files, 2.9MB
+==> Installing qmk/qmk/qmk dependency: dfu-programmer
+==> Pouring dfu-programmer--1.0.0.arm64_ventura.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/dfu-programmer/1.0.0: 7 files, 159.9KB
+==> Installing qmk/qmk/qmk dependency: dfu-util
+==> Pouring dfu-util--0.11.arm64_ventura.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/dfu-util/0.11: 13 files, 285.9KB
+==> Installing qmk/qmk/qmk dependency: make
+==> Pouring make--4.4.1.arm64_ventura.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/make/4.4.1: 16 files, 1.3MB
+==> Installing qmk/qmk/qmk dependency: mdloader
+==> make prefix=/opt/homebrew/Cellar/mdloader/1.0.7_2
+/opt/homebrew/Library/Taps/qmk/homebrew-qmk/Formula/mdloader.rb:19: warning: conflicting chdir during another chdir block
+🍺  /opt/homebrew/Cellar/mdloader/1.0.7_2: 5 files, 110.7KB, built in 3 seconds
+==> Installing qmk/qmk/qmk dependency: osx-cross/arm/arm-gcc-bin@8
+🍺  /opt/homebrew/Cellar/arm-gcc-bin@8/8-2019-q3-update_3: 5,775 files, 509.4MB, built in 13 seconds
+==> Installing qmk/qmk/qmk dependency: automake
+==> Pouring automake--1.16.5.arm64_ventura.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/automake/1.16.5: 131 files, 3.5MB
+==> Installing qmk/qmk/qmk dependency: texinfo
+==> Pouring texinfo--7.0.3.arm64_ventura.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/texinfo/7.0.3: 417 files, 9MB
+==> Installing qmk/qmk/qmk dependency: avr-binutils
+==> Downloading https://formulae.brew.sh/api/formula.jws.json
+################################################################################################################################################################################################## 100.0%
+==> Patching
+==> Applying avr-size.patch
+patching file 'binutils/size.c'
+==> Applying avr-binutils-elf-bfd-gdb-fix.patch
+patching file 'bfd/elf-bfd.h'
+==> ../configure --prefix=/opt/homebrew/Cellar/avr-binutils/2.40_2 --libdir=/opt/homebrew/Cellar/avr-binutils/2.40_2/lib/avr --infodir=/opt/homebrew/Cellar/avr-binutils/2.40_2/share/info --mandir=/opt/
+==> make
+==> make install
+🍺  /opt/homebrew/Cellar/avr-binutils/2.40_2: 159 files, 13.5MB, built in 1 minute 4 seconds
+==> Installing qmk/qmk/qmk dependency: isl
+==> Pouring isl--0.26.arm64_ventura.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/isl/0.26: 73 files, 7.6MB
+==> Installing qmk/qmk/qmk dependency: mpfr
+==> Pouring mpfr--4.2.0-p9.arm64_ventura.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/mpfr/4.2.0-p9: 30 files, 3MB
+==> Installing qmk/qmk/qmk dependency: libmpc
+==> Pouring libmpc--1.3.1.arm64_ventura.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/libmpc/1.3.1: 12 files, 470KB
+==> Installing qmk/qmk/qmk dependency: osx-cross/avr/avr-gcc@8
+==> Patching
+==> Applying gcc-11-arm-darwin.patch
+patching file 'gcc/config/host-darwin.c'
+==> ../configure --target=avr --prefix=/opt/homebrew/Cellar/avr-gcc@8/8.5.0_1 --libdir=/opt/homebrew/Cellar/avr-gcc@8/8.5.0_1/lib/avr-gcc/8 --enable-languages=c,c++ --with-ld=/opt/homebrew/opt/avr-binu
+==> make BOOT_LDFLAGS=-Wl,-headerpad_max_install_names
+==> make install
+Forcing build system to aarch64-apple-darwin.
+==> ./configure --prefix=/opt/homebrew/Cellar/avr-gcc@8/8.5.0_1 --host=avr
+==> make install
+🍺  /opt/homebrew/Cellar/avr-gcc@8/8.5.0_1: 1,753 files, 223.0MB, built in 6 minutes 48 seconds
+==> Installing qmk/qmk/qmk dependency: libimagequant
+==> Pouring libimagequant--4.2.0.arm64_ventura.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/libimagequant/4.2.0: 11 files, 13.6MB
+==> Installing qmk/qmk/qmk dependency: libpng
+==> Pouring libpng--1.6.40.arm64_ventura.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/libpng/1.6.40: 27 files, 1.3MB
+==> Installing qmk/qmk/qmk dependency: fribidi
+==> Pouring fribidi--1.0.13.arm64_ventura.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/fribidi/1.0.13: 67 files, 733.4KB
+==> Installing qmk/qmk/qmk dependency: xorgproto
+==> Pouring xorgproto--2023.2.arm64_ventura.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/xorgproto/2023.2: 267 files, 3.9MB
+==> Installing qmk/qmk/qmk dependency: harfbuzz
+==> Pouring harfbuzz--7.3.0_1.arm64_ventura.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/harfbuzz/7.3.0_1: 76 files, 9.2MB
+==> Installing qmk/qmk/qmk dependency: libraqm
+==> Pouring libraqm--0.10.1.arm64_ventura.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/libraqm/0.10.1: 11 files, 90.8KB
+==> Installing qmk/qmk/qmk dependency: libtiff
+==> Pouring libtiff--4.5.1.arm64_ventura.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/libtiff/4.5.1: 473 files, 8MB
+==> Installing qmk/qmk/qmk dependency: openjpeg
+==> Pouring openjpeg--2.5.0_1.arm64_ventura.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/openjpeg/2.5.0_1: 536 files, 13.8MB
+==> Installing qmk/qmk/qmk dependency: tcl-tk
+==> Pouring tcl-tk--8.6.13_3.arm64_ventura.bottle.1.tar.gz
+🍺  /opt/homebrew/Cellar/tcl-tk/8.6.13_3: 3,064 files, 53.1MB
+==> Installing qmk/qmk/qmk dependency: webp
+==> Pouring webp--1.3.0_1.arm64_ventura.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/webp/1.3.0_1: 63 files, 2.3MB
+==> Installing qmk/qmk/qmk dependency: pillow
+==> Pouring pillow--9.5.0_1.arm64_ventura.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/pillow/9.5.0_1: 221 files, 4.2MB
+==> Installing qmk/qmk/qmk dependency: python
+==> Pouring python@3.11--3.11.4.arm64_ventura.bottle.1.tar.gz
+==> /opt/homebrew/Cellar/python@3.11/3.11.4/bin/python3.11 -m ensurepip
+==> /opt/homebrew/Cellar/python@3.11/3.11.4/bin/python3.11 -m pip install -v --no-deps --no-index --upgrade --isolated --target=/opt/homebrew/lib/python3.11/site-packages /opt/homebrew/Cellar/python@3.
+🍺  /opt/homebrew/Cellar/python@3.11/3.11.4: 3,288 files, 61.9MB
+==> Installing qmk/qmk/qmk dependency: teensy_loader_cli
+==> Pouring teensy_loader_cli--2.2.arm64_ventura.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/teensy_loader_cli/2.2: 4 files, 62.4KB
+==> Installing qmk/qmk/qmk
+==> Downloading https://formulae.brew.sh/api/formula.jws.json
+-#O=#     #       #
+==> python3 -m venv --system-site-packages /opt/homebrew/Cellar/qmk/1.1.2_1/libexec
+==> /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/bin/pip install -v --no-deps --no-binary :all: --use-feature=no-binary-enable-wheel-cache --ignore-installed /private/tmp/qmk--appdirs-20230623-14234-yo4hhj
+==> /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/bin/pip install -v --no-deps --no-binary :all: --use-feature=no-binary-enable-wheel-cache --ignore-installed /private/tmp/qmk--argcomplete-20230623-14234-k4
+==> /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/bin/pip install -v --no-deps --no-binary :all: --use-feature=no-binary-enable-wheel-cache --ignore-installed /private/tmp/qmk--attrs-20230623-14234-1sjfh81/
+==> /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/bin/pip install -v --no-deps --no-binary :all: --use-feature=no-binary-enable-wheel-cache --ignore-installed /private/tmp/qmk--colorama-20230623-14234-5i34n
+==> /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/bin/pip install -v --no-deps --no-binary :all: --use-feature=no-binary-enable-wheel-cache --ignore-installed /private/tmp/qmk--dotty-dict-20230623-14234-18b
+==> /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/bin/pip install -v --no-deps --no-binary :all: --use-feature=no-binary-enable-wheel-cache --ignore-installed /private/tmp/qmk--halo-20230623-14234-z3a65o/ha
+==> /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/bin/pip install -v --no-deps --no-binary :all: --use-feature=no-binary-enable-wheel-cache --ignore-installed /private/tmp/qmk--hid-20230623-14234-1q2rs3p/hi
+==> /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/bin/pip install -v --no-deps --no-binary :all: --use-feature=no-binary-enable-wheel-cache --ignore-installed /private/tmp/qmk--hjson-20230623-14234-4q5r8v/h
+==> /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/bin/pip install -v --no-deps --no-binary :all: --use-feature=no-binary-enable-wheel-cache --ignore-installed /private/tmp/qmk--jsonschema-20230623-14234-12h
+==> /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/bin/pip install -v --no-deps --no-binary :all: --use-feature=no-binary-enable-wheel-cache --ignore-installed /private/tmp/qmk--log-symbols-20230623-14234-1h
+==> /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/bin/pip install -v --no-deps --no-binary :all: --use-feature=no-binary-enable-wheel-cache --ignore-installed /private/tmp/qmk--milc-20230623-14234-1fsyodo/m
+==> /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/bin/pip install -v --no-deps --no-binary :all: --use-feature=no-binary-enable-wheel-cache --ignore-installed /private/tmp/qmk--Pillow-20230623-14234-9n71c4/
+==> /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/bin/pip install -v --no-deps --no-binary :all: --use-feature=no-binary-enable-wheel-cache --ignore-installed /private/tmp/qmk--Pygments-20230623-14234-7xc7f
+==> /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/bin/pip install -v --no-deps --no-binary :all: --use-feature=no-binary-enable-wheel-cache --ignore-installed /private/tmp/qmk--pyrsistent-20230623-14234-rzj
+==> /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/bin/pip install -v --no-deps --no-binary :all: --use-feature=no-binary-enable-wheel-cache --ignore-installed /private/tmp/qmk--pyserial-20230623-14234-gwzlf
+==> /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/bin/pip install -v --no-deps --no-binary :all: --use-feature=no-binary-enable-wheel-cache --ignore-installed /private/tmp/qmk--pyusb-20230623-14234-9vyfqu/p
+==> /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/bin/pip install -v --no-deps --no-binary :all: --use-feature=no-binary-enable-wheel-cache --ignore-installed /private/tmp/qmk--six-20230623-14234-kmmsul/six
+==> /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/bin/pip install -v --no-deps --no-binary :all: --use-feature=no-binary-enable-wheel-cache --ignore-installed /private/tmp/qmk--spinners-20230623-14234-qwkwu
+==> /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/bin/pip install -v --no-deps --no-binary :all: --use-feature=no-binary-enable-wheel-cache --ignore-installed /private/tmp/qmk--termcolor-20230623-14234-19ff
+==> /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/bin/pip install -v --no-deps --no-binary :all: --use-feature=no-binary-enable-wheel-cache --ignore-installed /private/tmp/qmk-20230624-14234-1mxgrs8/qmk-1.1
+==> Caveats
+QMK Firmware has been installed but your environment may not have been setup yet. Please set it up now:
+
+    qmk setup
+
+If you have a fork already you can specify it like this:
+
+    qmk setup <username>/qmk_firmware
+
+This will create qmk_firmware in your home directory. If you'd like to change this location, use the -H flag as well:
+
+    qmk setup -H /your/preferred/path
+==> Summary
+🍺  /opt/homebrew/Cellar/qmk/1.1.2_1: 2,675 files, 32.3MB, built in 10 minutes 2 seconds
+==> Running `brew cleanup qmk`...
+Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.
+Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
+==> Caveats
+==> qmk
+QMK Firmware has been installed but your environment may not have been setup yet. Please set it up now:
+
+    qmk setup
+
+If you have a fork already you can specify it like this:
+
+    qmk setup <username>/qmk_firmware
+
+This will create qmk_firmware in your home directory. If you'd like to change this location, use the -H flag as well:
+
+    qmk setup -H /your/preferred/path
+$ qmk --version
+1.1.2
+$
+```
+
+以下、QMKツールボックスインストール作業。
+```terminal
+$ brew install --cask qmk-toolbox	←☆QMKツールボックスをインストール(ツールボックスではなく、qmkが必須)。
 Running `brew update --auto-update`...
 ==> Auto-updated Homebrew!
 ==> Updated Homebrew from 4.0.21 (e37650d12) to 4.0.24 (52967ee53).
 Updated 2 taps (homebrew/core and homebrew/cask).
 ==> New Formulae
-cargo-generate      conda-lock          getmail6            git-tools           hivex               jsmn                lowdown             mariadb@10.11       ord                 slsa-verifier
-charls              core-lightning      gffread             grype               jsign               judy                ls-lint             minigraph           shush               typical
+cargo-generate  conda-lock      getmail6    git-tools   hivex   jsmn    lowdown     mariadb@10.11   ord     slsa-verifier
+charls          core-lightning  gffread     grype       jsign   judy    ls-lint     minigraph       shush   typical
 ==> New Casks
-apple-hewlett-packard-printer-drivers   command-x                               eset-cyber-security                     graalvm-jdk                             mumu-x
-audiocupcake                            devpod                                  frappe-books                            grs-bluewallet                          rode-connect
+apple-hewlett-packard-printer-drivers   command-x   eset-cyber-security     graalvm-jdk     mumu-x
+audiocupcake                            devpod      frappe-books            grs-bluewallet  rode-connect
 
 You have 11 outdated formulae installed.
 
@@ -135,17 +569,23 @@ You have 11 outdated formulae installed.
 The 4.0.24 changelog can be found at:
   https://github.com/Homebrew/brew/releases/tag/4.0.24
 ==> Downloading https://github.com/qmk/qmk_toolbox/releases/download/0.2.2/QMK.Toolbox.app.zip
-==> Downloading from https://objects.githubusercontent.com/github-production-release-asset-2e65be/102075885/7a9672d3-0ccf-43b2-91b3-535865eeab24?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIW
-################################################################################################################################################################################################## 100.0%
+==> Downloading from https://objects.githubusercontent.com/github-production-release-asset-2e65be/Amz-Credential=AKIAIW
+####################################################################################################################### 100.0%
 ==> Installing Cask qmk-toolbox
 ==> Moving App 'QMK Toolbox.app' to '/Applications/QMK Toolbox.app'
 🍺  qmk-toolbox was successfully installed!	←☆インストールできたようだ。
 $ qmk hello	←☆駄目じゃねぇか。
 zsh: command not found: qmk
-$ brew tap homebrew/cask-drivers	←☆説明書通りなのに、なぜ駄目だ。
-Error: homebrew/cask-drivers was deprecated. This tap is now empty and all its contents were either deleted or migrated.
+$ ll -d /Applications/QMK\ Toolbox.app	←☆インストール確認した。
+drwxr-xr-x@ 3 asakunotomohiro  admin  96  5 18  2022 /Applications/QMK Toolbox.app/
 $
 ```
+Macのセキュリティが働き、制限がかかっていると思ったが、どうやらそういうことでもないようだ。  
+本当にGUIからの操作のみになっている(なぜなんだろう)。  
+CUIで操作できないとは説明になかった(GUIで操作することの説明もなかったぞ)。  
+
+MEMO: システム設定---\>プライバシーとセキュリティ---\>セキュリティ---\>App Storeと確認済みの開発元からのアプリケーションを許可  
+
 
 
 以上。
