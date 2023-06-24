@@ -551,11 +551,39 @@ $
 
 以下、よく分からないCコンパイラのインストール作業。
 ```terminal
+$ brew install avr-gcc	←☆インストールコマンド。
+==> Fetching osx-cross/avr/avr-gcc@9
+==> Downloading https://gist.githubusercontent.com/DavidEGrayson/88bceb3f4e62f45725ecbb9248366300/raw/c1f515475aff1e1e3985569d9b715edb0f317648/gcc-11-arm-darwin.patch
+Already downloaded: /Users/asakunotomohiro/Library/Caches/Homebrew/downloads/def654fc009e1286443dbc4e1baa98eeeaee383d419d8a1d15200ab895520379--gcc-11-arm-darwin.patch
+==> Downloading https://download.savannah.gnu.org/releases/avr-libc/avr-libc-2.1.0.tar.bz2
+Already downloaded: /Users/asakunotomohiro/Library/Caches/Homebrew/downloads/82989e2eb60e70483e667482e25d205685a09019a1c993b99a467ad14d3bb2d0--avr-libc-2.1.0.tar.bz2
+==> Downloading https://ftp.gnu.org/gnu/gcc/gcc-9.4.0/gcc-9.4.0.tar.xz
+################################################################################################################################################################################################## 100.0%
+==> Installing avr-gcc@9 from osx-cross/avr
+==> Patching
+==> Applying gcc-11-arm-darwin.patch
+patching file 'gcc/config/host-darwin.c'
+==> ../configure --target=avr --prefix=/opt/homebrew/Cellar/avr-gcc@9/9.4.0 --libdir=/opt/homebrew/Cellar/avr-gcc@9/9.4.0/lib/avr-gcc/9 --enable-languages=c,c++ --with-ld=/opt/homebrew/opt/avr-binutils
+==> make BOOT_LDFLAGS=-Wl,-headerpad_max_install_names
+==> make install
+Forcing build system to aarch64-apple-darwin.
+==> ./configure --prefix=/opt/homebrew/Cellar/avr-gcc@9/9.4.0 --host=avr
+==> make install
+🍺  /opt/homebrew/Cellar/avr-gcc@9/9.4.0: 1,761 files, 225.3MB, built in 8 minutes 25 seconds
+==> Running `brew cleanup avr-gcc@9`...
+Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.
+Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
+Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/avr-gcc@9--patch--c4e9df9802772ddecb71aa675bb9403ad34c085d1359cb0e45b308ab6db551c6.patch... (594B)
+$
+```
+
+以下、よく分からないCコンパイラのインストール作業。
+```terminal
 $ brew install arm-none-eabi-gcc
 Warning: No available formula with the name "arm-none-eabi-gcc". Did you mean arm-none-eabi-gcc@9 or arm-none-eabi-gcc@8?
 ==> Searching for similarly named formulae and casks...
 ==> Formulae
-osx-cross/arm/arm-none-eabi-gcc@8                                                                    osx-cross/arm/arm-none-eabi-gcc@9
+osx-cross/arm/arm-none-eabi-gcc@8           osx-cross/arm/arm-none-eabi-gcc@9
 
 To install osx-cross/arm/arm-none-eabi-gcc@8, run:
   brew install osx-cross/arm/arm-none-eabi-gcc@8
