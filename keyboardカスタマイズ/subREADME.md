@@ -549,7 +549,23 @@ $ qmk --version
 $
 ```
 
+以下、よく分からないCコンパイラのインストール作業。
+```terminal
+$ brew install arm-none-eabi-gcc
+Warning: No available formula with the name "arm-none-eabi-gcc". Did you mean arm-none-eabi-gcc@9 or arm-none-eabi-gcc@8?
+==> Searching for similarly named formulae and casks...
+==> Formulae
+osx-cross/arm/arm-none-eabi-gcc@8                                                                    osx-cross/arm/arm-none-eabi-gcc@9
+
+To install osx-cross/arm/arm-none-eabi-gcc@8, run:
+  brew install osx-cross/arm/arm-none-eabi-gcc@8
+$
+```
+
 以下、コンパイル作業。
+
+<details><summary>コンパイル失敗1回目。</summary>
+
 ```terminal
 $ make planck/rev7:default
 Submodule 'lib/chibios' (https://github.com/qmk/ChibiOS) registered for path 'lib/chibios'
@@ -578,7 +594,7 @@ Cloning into '/Users/asakunotomohiro/qmk_firmware/lib/lvgl'...
 Submodule path 'lib/lvgl': checked out 'e19410f8f8a256609da72cff549598e0df6fa4cf'
 Making planck/rev7 with keymap default
 
-/bin/sh: arm-none-eabi-gcc: command not found
+/bin/sh: arm-none-eabi-gcc: command not found	←☆これは何？
 Generating: .build/obj_planck_rev7_default/src/info_deps.d                                          [OK]
 /bin/sh: arm-none-eabi-gcc: command not found
 sh: arm-none-eabi-gcc: command not found
@@ -588,6 +604,25 @@ Make finished with errors
 make: *** [planck/rev7:default] Error 1
 $
 ```
+
+</details>
+
+<details><summary>コンパイル失敗2回目。</summary>
+
+```terminal
+$ make planck/rev7:default
+Making planck/rev7 with keymap default
+
+/bin/sh: arm-none-eabi-gcc: command not found
+sh: arm-none-eabi-gcc: command not found	←☆インストールしたのだが？
+sh: arm-none-eabi-gcc: command not found
+make[1]: *** [gccversion] Error 127
+Make finished with errors
+make: *** [planck/rev7:default] Error 1
+$
+```
+
+</details>
 
 以下、QMKツールボックスインストール作業。
 ```terminal
