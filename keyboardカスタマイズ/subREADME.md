@@ -659,13 +659,115 @@ If you need to have arm-none-eabi-gcc@9 first in your PATH, run:
 For compilers to find arm-none-eabi-gcc@9 you may need to set:
   export LDFLAGS="-L/opt/homebrew/opt/arm-none-eabi-gcc@9/lib"
 $
+$ brew install osx-cross/arm/arm-none-eabi-binutils	←☆なぜインストールされている？
+Running `brew update --auto-update`...
+==> Auto-updated Homebrew!
+==> Updated Homebrew from 9b485e590 to 5bf89a3d2.
+No changes to formulae or casks.
+
+Warning: osx-cross/arm/arm-none-eabi-binutils 2.38 is already installed and up-to-date.
+To reinstall 2.38, run:
+  brew reinstall arm-none-eabi-binutils
+$
 ```
 
 以下、コンパイル作業。
 
+<details><summary>コンパイル失敗1回目。</summary>
+
 ```terminal
-$ arm-none-eabi-gcc --version	←☆zshrcファイルで環境変数を設定しているのだが、読み込めない。
-zsh: command not found: arm-none-eabi-gcc
+$ make planck/rev7:default
+Submodule 'lib/chibios' (https://github.com/qmk/ChibiOS) registered for path 'lib/chibios'
+Cloning into '/Users/asakunotomohiro/qmk_firmware/lib/chibios'...
+Submodule path 'lib/chibios': checked out '11edb1610980f213b9f83161e1715a46fb7e4c51'
+Submodule 'lib/chibios-contrib' (https://github.com/qmk/ChibiOS-Contrib) registered for path 'lib/chibios-contrib'
+Cloning into '/Users/asakunotomohiro/qmk_firmware/lib/chibios-contrib'...
+Submodule path 'lib/chibios-contrib': checked out 'a224be155ae18d38deccf33a6c1d259b9a5ad8d3'
+Submodule 'lib/googletest' (https://github.com/qmk/googletest) registered for path 'lib/googletest'
+Cloning into '/Users/asakunotomohiro/qmk_firmware/lib/googletest'...
+Submodule path 'lib/googletest': checked out 'e2239ee6043f73722e7aa812a459f54a28552929'
+Submodule 'lib/lufa' (https://github.com/qmk/lufa) registered for path 'lib/lufa'
+Cloning into '/Users/asakunotomohiro/qmk_firmware/lib/lufa'...
+Submodule path 'lib/lufa': checked out '549b97320d515bfca2f95c145a67bd13be968faa'
+Submodule 'lib/vusb' (https://github.com/qmk/v-usb) registered for path 'lib/vusb'
+Cloning into '/Users/asakunotomohiro/qmk_firmware/lib/vusb'...
+Submodule path 'lib/vusb': checked out '819dbc1e5d5926b17e27e00ca6d3d2988adae04e'
+Submodule 'lib/printf' (https://github.com/qmk/printf) registered for path 'lib/printf'
+Cloning into '/Users/asakunotomohiro/qmk_firmware/lib/printf'...
+Submodule path 'lib/printf': checked out 'c2e3b4e10d281e7f0f694d3ecbd9f320977288cc'
+Submodule 'lib/pico-sdk' (https://github.com/qmk/pico-sdk.git) registered for path 'lib/pico-sdk'
+Cloning into '/Users/asakunotomohiro/qmk_firmware/lib/pico-sdk'...
+Submodule path 'lib/pico-sdk': checked out 'a3398d8d3a772f37fef44a74743a1de69770e9c2'
+Submodule 'lib/lvgl' (https://github.com/qmk/lvgl.git) registered for path 'lib/lvgl'
+Cloning into '/Users/asakunotomohiro/qmk_firmware/lib/lvgl'...
+Submodule path 'lib/lvgl': checked out 'e19410f8f8a256609da72cff549598e0df6fa4cf'
+Making planck/rev7 with keymap default
+
+/bin/sh: arm-none-eabi-gcc: command not found	←☆これは何？
+Generating: .build/obj_planck_rev7_default/src/info_deps.d                                          [OK]
+/bin/sh: arm-none-eabi-gcc: command not found
+sh: arm-none-eabi-gcc: command not found
+sh: arm-none-eabi-gcc: command not found
+make[1]: *** [gccversion] Error 127
+Make finished with errors
+make: *** [planck/rev7:default] Error 1
+$
+```
+
+</details>
+
+<details><summary>コンパイル失敗2回目。</summary>
+
+avr-gccをインストールしたが、失敗した。  
+arm-none-eabi-gccがなければだめなのだろう。  
+おかしい。  
+arm-none-eabi-gccをインストールしたが、エラーになる。
+
+```terminal
+$ make planck/rev7:default
+Making planck/rev7 with keymap default
+
+/bin/sh: arm-none-eabi-gcc: command not found
+sh: arm-none-eabi-gcc: command not found
+sh: arm-none-eabi-gcc: command not found
+make[1]: *** [gccversion] Error 127
+Make finished with errors
+make: *** [planck/rev7:default] Error 1
+$
+```
+
+以下、インストール済みの確認作業。
+```terminal
+$ brew list -1
+==> Formulae
+arm-gcc-bin@8
+arm-none-eabi-binutils
+arm-none-eabi-gcc@9	←☆これ。
+autoconf
+automake
+avr-binutils
+avr-gcc@8
+avr-gcc@9
+avrdude
+berkeley-db
+（略）
+texinfo
+unbound
+webp
+xorgproto
+xz
+zstd
+
+==> Casks
+qmk-toolbox
+$
+```
+
+</details>
+
+<details><summary>コンパイル失敗3回目。</summary>
+
+```terminal
 $ export PATH="/opt/homebrew/opt/arm-none-eabi-gcc@9/bin:$PATH"
 $ arm-none-eabi-gcc --version
 arm-none-eabi-gcc (Homebrew ARM GCC 9.5.0) 9.5.0
@@ -857,96 +959,6 @@ dfu-suffix: Could not open file .build/planck_rev7_default.bin for reading: No s
 make[1]: *** [.build/planck_rev7_default.bin] Error 66
 Make finished with errors
 make: *** [planck/rev7:default] Error 1
-$
-```
-
-<details><summary>コンパイル失敗1回目。</summary>
-
-```terminal
-$ make planck/rev7:default
-Submodule 'lib/chibios' (https://github.com/qmk/ChibiOS) registered for path 'lib/chibios'
-Cloning into '/Users/asakunotomohiro/qmk_firmware/lib/chibios'...
-Submodule path 'lib/chibios': checked out '11edb1610980f213b9f83161e1715a46fb7e4c51'
-Submodule 'lib/chibios-contrib' (https://github.com/qmk/ChibiOS-Contrib) registered for path 'lib/chibios-contrib'
-Cloning into '/Users/asakunotomohiro/qmk_firmware/lib/chibios-contrib'...
-Submodule path 'lib/chibios-contrib': checked out 'a224be155ae18d38deccf33a6c1d259b9a5ad8d3'
-Submodule 'lib/googletest' (https://github.com/qmk/googletest) registered for path 'lib/googletest'
-Cloning into '/Users/asakunotomohiro/qmk_firmware/lib/googletest'...
-Submodule path 'lib/googletest': checked out 'e2239ee6043f73722e7aa812a459f54a28552929'
-Submodule 'lib/lufa' (https://github.com/qmk/lufa) registered for path 'lib/lufa'
-Cloning into '/Users/asakunotomohiro/qmk_firmware/lib/lufa'...
-Submodule path 'lib/lufa': checked out '549b97320d515bfca2f95c145a67bd13be968faa'
-Submodule 'lib/vusb' (https://github.com/qmk/v-usb) registered for path 'lib/vusb'
-Cloning into '/Users/asakunotomohiro/qmk_firmware/lib/vusb'...
-Submodule path 'lib/vusb': checked out '819dbc1e5d5926b17e27e00ca6d3d2988adae04e'
-Submodule 'lib/printf' (https://github.com/qmk/printf) registered for path 'lib/printf'
-Cloning into '/Users/asakunotomohiro/qmk_firmware/lib/printf'...
-Submodule path 'lib/printf': checked out 'c2e3b4e10d281e7f0f694d3ecbd9f320977288cc'
-Submodule 'lib/pico-sdk' (https://github.com/qmk/pico-sdk.git) registered for path 'lib/pico-sdk'
-Cloning into '/Users/asakunotomohiro/qmk_firmware/lib/pico-sdk'...
-Submodule path 'lib/pico-sdk': checked out 'a3398d8d3a772f37fef44a74743a1de69770e9c2'
-Submodule 'lib/lvgl' (https://github.com/qmk/lvgl.git) registered for path 'lib/lvgl'
-Cloning into '/Users/asakunotomohiro/qmk_firmware/lib/lvgl'...
-Submodule path 'lib/lvgl': checked out 'e19410f8f8a256609da72cff549598e0df6fa4cf'
-Making planck/rev7 with keymap default
-
-/bin/sh: arm-none-eabi-gcc: command not found	←☆これは何？
-Generating: .build/obj_planck_rev7_default/src/info_deps.d                                          [OK]
-/bin/sh: arm-none-eabi-gcc: command not found
-sh: arm-none-eabi-gcc: command not found
-sh: arm-none-eabi-gcc: command not found
-make[1]: *** [gccversion] Error 127
-Make finished with errors
-make: *** [planck/rev7:default] Error 1
-$
-```
-
-</details>
-
-<details><summary>コンパイル失敗2回目。</summary>
-
-avr-gccをインストールしたが、失敗した。  
-arm-none-eabi-gccがなければだめなのだろう。  
-おかしい。  
-arm-none-eabi-gccをインストールしたが、エラーになる。
-
-```terminal
-$ make planck/rev7:default
-Making planck/rev7 with keymap default
-
-/bin/sh: arm-none-eabi-gcc: command not found
-sh: arm-none-eabi-gcc: command not found
-sh: arm-none-eabi-gcc: command not found
-make[1]: *** [gccversion] Error 127
-Make finished with errors
-make: *** [planck/rev7:default] Error 1
-$
-```
-
-以下、インストール済みの確認作業。
-```terminal
-$ brew list -1
-==> Formulae
-arm-gcc-bin@8
-arm-none-eabi-binutils
-arm-none-eabi-gcc@9	←☆これ。
-autoconf
-automake
-avr-binutils
-avr-gcc@8
-avr-gcc@9
-avrdude
-berkeley-db
-（略）
-texinfo
-unbound
-webp
-xorgproto
-xz
-zstd
-
-==> Casks
-qmk-toolbox
 $
 ```
 
