@@ -675,77 +675,11 @@ $
 ```terminal
 $ qmk setup
 ☒ Could not find qmk_firmware!
-Would you like to clone qmk/qmk_firmware to /Users/asakunotomohiro/qmk_firmware? [y/n] y
+Would you like to clone qmk/qmk_firmware to /Users/asakunotomohiro/qmk_firmware? [y/n] y	←☆ここでセットアップするのは軽率だったかも。
 Cloning into '/Users/asakunotomohiro/qmk_firmware'...
 Updating files:  31% (11137/35623)
 Updating files:  32% (11400/35623)
-Updating files:  33% (11756/35623)
-Updating files:  34% (12112/35623)
-Updating files:  35% (12469/35623)
-Updating files:  36% (12825/35623)
-Updating files:  37% (13181/35623)
-Updating files:  38% (13537/35623)
-Updating files:  39% (13893/35623)
-Updating files:  40% (14250/35623)
-Updating files:  41% (14606/35623)
-Updating files:  42% (14962/35623)
-Updating files:  43% (15318/35623)
-Updating files:  44% (15675/35623)
-Updating files:  45% (16031/35623)
-Updating files:  46% (16387/35623)
-Updating files:  47% (16743/35623)
-Updating files:  48% (17100/35623)
-Updating files:  49% (17456/35623)
-Updating files:  50% (17812/35623)
-Updating files:  51% (18168/35623)
-Updating files:  52% (18524/35623)
-Updating files:  53% (18881/35623)
-Updating files:  54% (19237/35623)
-Updating files:  55% (19593/35623)
-Updating files:  56% (19949/35623)
-Updating files:  57% (20306/35623)
-Updating files:  58% (20662/35623)
-Updating files:  59% (21018/35623)
-Updating files:  60% (21374/35623)
-Updating files:  61% (21731/35623)
-Updating files:  62% (22087/35623)
-Updating files:  62% (22436/35623)
-Updating files:  63% (22443/35623)
-Updating files:  64% (22799/35623)
-Updating files:  65% (23155/35623)
-Updating files:  66% (23512/35623)
-Updating files:  67% (23868/35623)
-Updating files:  68% (24224/35623)
-Updating files:  69% (24580/35623)
-Updating files:  70% (24937/35623)
-Updating files:  71% (25293/35623)
-Updating files:  72% (25649/35623)
-Updating files:  73% (26005/35623)
-Updating files:  74% (26362/35623)
-Updating files:  75% (26718/35623)
-Updating files:  76% (27074/35623)
-Updating files:  77% (27430/35623)
-Updating files:  78% (27786/35623)
-Updating files:  79% (28143/35623)
-Updating files:  80% (28499/35623)
-Updating files:  81% (28855/35623)
-Updating files:  82% (29211/35623)
-Updating files:  83% (29568/35623)
-Updating files:  84% (29924/35623)
-Updating files:  85% (30280/35623)
-Updating files:  86% (30636/35623)
-Updating files:  87% (30993/35623)
-Updating files:  88% (31349/35623)
-Updating files:  89% (31705/35623)
-Updating files:  90% (32061/35623)
-Updating files:  91% (32417/35623)
-Updating files:  92% (32774/35623)
-Updating files:  93% (33130/35623)
-Updating files:  93% (33326/35623)
-Updating files:  94% (33486/35623)
-Updating files:  95% (33842/35623)
-Updating files:  96% (34199/35623)
-Updating files:  97% (34555/35623)
+（略）
 Updating files:  98% (34911/35623)
 Updating files:  99% (35267/35623)
 Updating files: 100% (35623/35623)
@@ -759,23 +693,7 @@ Submodule 'lib/pico-sdk' (https://github.com/qmk/pico-sdk.git) registered for pa
 Submodule 'lib/printf' (https://github.com/qmk/printf) registered for path 'lib/printf'
 Submodule 'lib/vusb' (https://github.com/qmk/v-usb) registered for path 'lib/vusb'
 Cloning into '/Users/asakunotomohiro/qmk_firmware/lib/chibios'...
-Cloning into '/Users/asakunotomohiro/qmk_firmware/lib/chibios-contrib'...
-Cloning into '/Users/asakunotomohiro/qmk_firmware/lib/googletest'...
-Cloning into '/Users/asakunotomohiro/qmk_firmware/lib/lufa'...
-Cloning into '/Users/asakunotomohiro/qmk_firmware/lib/lvgl'...
-Cloning into '/Users/asakunotomohiro/qmk_firmware/lib/pico-sdk'...
-Cloning into '/Users/asakunotomohiro/qmk_firmware/lib/printf'...
-Cloning into '/Users/asakunotomohiro/qmk_firmware/lib/vusb'...
-Submodule path 'lib/chibios': checked out '11edb1610980f213b9f83161e1715a46fb7e4c51'
-Submodule path 'lib/chibios-contrib': checked out 'a224be155ae18d38deccf33a6c1d259b9a5ad8d3'
-Submodule 'ext/mcux-sdk' (https://github.com/NXPmicro/mcux-sdk) registered for path 'lib/chibios-contrib/ext/mcux-sdk'
-Cloning into '/Users/asakunotomohiro/qmk_firmware/lib/chibios-contrib/ext/mcux-sdk'...
-Submodule path 'lib/chibios-contrib/ext/mcux-sdk': checked out '102c27d7cc2aaac87c133702e7829a105e0cb433'
-Submodule path 'lib/googletest': checked out 'e2239ee6043f73722e7aa812a459f54a28552929'
-Submodule path 'lib/lufa': checked out '549b97320d515bfca2f95c145a67bd13be968faa'
-Submodule path 'lib/lvgl': checked out 'e19410f8f8a256609da72cff549598e0df6fa4cf'
-Submodule path 'lib/pico-sdk': checked out 'a3398d8d3a772f37fef44a74743a1de69770e9c2'
-Submodule path 'lib/printf': checked out 'c2e3b4e10d281e7f0f694d3ecbd9f320977288cc'
+（略）
 Submodule path 'lib/vusb': checked out '819dbc1e5d5926b17e27e00ca6d3d2988adae04e'
 Ψ Successfully cloned https://github.com/qmk/qmk_firmware to /Users/asakunotomohiro/qmk_firmware!
 Ψ Added https://github.com/qmk/qmk_firmware as remote upstream.
@@ -811,7 +729,7 @@ freetype 2.13.0_1 -> 2.13.1
 ==> Downloading https://ghcr.io/v2/homebrew/core/freetype/blobs/sha256:87a44e9a3
 ######################################################################### 100.0%
 ==> Upgrading freetype
-  2.13.0_1 -> 2.13.1 
+  2.13.0_1 -> 2.13.1
 
 ==> Pouring freetype--2.13.1.arm64_ventura.bottle.tar.gz
 🍺  /opt/homebrew/Cellar/freetype/2.13.1: 67 files, 2.4MB
@@ -824,7 +742,7 @@ Installing dependencies
 Warning: qmk/qmk/qmk 1.1.2_1 is already installed and up-to-date.
 To reinstall 1.1.2_1, run:
   brew reinstall qmk
-Linking /opt/homebrew/Cellar/avr-gcc@8/8.5.0_1... 
+Linking /opt/homebrew/Cellar/avr-gcc@8/8.5.0_1...
 Error: Could not symlink bin/avr-c++
 Target /opt/homebrew/bin/avr-c++
 is a symlink belonging to avr-gcc@9. You can unlink it:
@@ -885,6 +803,194 @@ $
 ```
 
 以下、コンパイル作業。
+```terminal
+$ make planck/rev7:default
+Making planck/rev7 with keymap default
+
+arm-none-eabi-gcc (GNU Tools for Arm Embedded Processors 8-2019-q3-update) 8.3.1 20190703 (release) [gcc-8-branch revision 273027]
+Copyright (C) 2018 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+Compiling: keyboards/planck/rev7/matrix.c                                                           [OK]
+Compiling: keyboards/planck/planck.c                                                                [OK]
+Compiling: keyboards/planck/rev7/rev7.c                                                             [OK]
+Compiling: .build/obj_planck_rev7/src/default_keyboard.c                                            [OK]
+Compiling: quantum/keymap_introspection.c                                                           [OK]
+Compiling: quantum/quantum.c                                                                        [OK]
+Compiling: quantum/bitwise.c                                                                        [OK]
+Compiling: quantum/led.c                                                                            [OK]
+Compiling: quantum/action.c                                                                         [OK]
+Compiling: quantum/action_layer.c                                                                   [OK]
+Compiling: quantum/action_tapping.c                                                                 [OK]
+Compiling: quantum/action_util.c                                                                    [OK]
+Compiling: quantum/eeconfig.c                                                                       [OK]
+Compiling: quantum/keyboard.c                                                                       [OK]
+Compiling: quantum/keymap_common.c                                                                  [OK]
+Compiling: quantum/keycode_config.c                                                                 [OK]
+Compiling: quantum/sync_timer.c                                                                     [OK]
+Compiling: quantum/logging/debug.c                                                                  [OK]
+Compiling: quantum/logging/sendchar.c                                                               [OK]
+Compiling: quantum/logging/print.c                                                                  [OK]
+Compiling: quantum/bootmagic/bootmagic_lite.c                                                       [OK]
+Compiling: quantum/bootmagic/magic.c                                                                [OK]
+Compiling: quantum/matrix_common.c                                                                  [OK]
+Compiling: quantum/debounce/sym_defer_g.c                                                           [OK]
+Compiling: quantum/main.c                                                                           [OK]
+Compiling: lib/printf/src/printf/printf.c                                                           [OK]
+Compiling: quantum/process_keycode/process_audio.c                                                  [OK]
+Compiling: quantum/process_keycode/process_clicky.c                                                 [OK]
+Compiling: quantum/audio/audio.c                                                                    [OK]
+Compiling: platforms/chibios/drivers/audio_dac_basic.c                                              [OK]
+Compiling: quantum/audio/voices.c                                                                   [OK]
+Compiling: quantum/audio/luts.c                                                                     [OK]
+Compiling: quantum/process_keycode/process_music.c                                                  [OK]
+Compiling: quantum/mousekey.c                                                                       [OK]
+Compiling: drivers/eeprom/eeprom_driver.c                                                           [OK]
+Compiling: drivers/eeprom/eeprom_wear_leveling.c                                                    [OK]
+Compiling: quantum/wear_leveling/wear_leveling.c                                                    [OK]
+Compiling: platforms/chibios/drivers/wear_leveling/wear_leveling_efl.c                              [OK]
+Compiling: quantum/color.c                                                                          [OK]
+Compiling: quantum/rgblight/rgblight.c                                                              [OK]
+Compiling: quantum/process_keycode/process_rgb.c                                                    [OK]
+Compiling: platforms/chibios/drivers/ws2812_pwm.c                                                   [OK]
+Compiling: quantum/led_tables.c                                                                     [OK]
+Compiling: lib/fnv/qmk_fnv_type_validation.c                                                        [OK]
+Compiling: lib/fnv/hash_32a.c                                                                       [OK]
+Compiling: lib/fnv/hash_64a.c                                                                       [OK]
+Compiling: quantum/process_keycode/process_magic.c                                                  [OK]
+Compiling: quantum/send_string/send_string.c                                                        [OK]
+Compiling: quantum/encoder.c                                                                        [OK]
+Compiling: quantum/command.c                                                                        [OK]
+Compiling: quantum/deferred_exec.c                                                                  [OK]
+Compiling: quantum/dip_switch.c                                                                     [OK]
+Compiling: quantum/process_keycode/process_grave_esc.c                                              [OK]
+Compiling: quantum/process_keycode/process_space_cadet.c                                            [OK]
+Assembling: lib/chibios/os/common/startup/ARMCMx/compilers/GCC/crt0_v7m.S                           [OK]
+Assembling: lib/chibios/os/common/startup/ARMCMx/compilers/GCC/vectors.S                            [OK]
+Assembling: lib/chibios/os/common/ports/ARMv7-M/compilers/GCC/chcoreasm.S                           [OK]
+Compiling: tmk_core/protocol/host.c                                                                 [OK]
+Compiling: tmk_core/protocol/report.c                                                               [OK]
+Compiling: tmk_core/protocol/usb_device_state.c                                                     [OK]
+Compiling: tmk_core/protocol/usb_util.c                                                             [OK]
+Compiling: platforms/suspend.c                                                                      [OK]
+Compiling: platforms/synchronization_util.c                                                         [OK]
+Compiling: platforms/timer.c                                                                        [OK]
+Compiling: platforms/chibios/hardware_id.c                                                          [OK]
+Compiling: platforms/chibios/platform.c                                                             [OK]
+Compiling: platforms/chibios/suspend.c                                                              [OK]
+Compiling: platforms/chibios/timer.c                                                                [OK]
+Compiling: platforms/chibios/bootloaders/stm32_dfu.c                                                [OK]
+Compiling: tmk_core/protocol/chibios/usb_main.c                                                     [OK]
+Compiling: tmk_core/protocol/chibios/chibios.c                                                      [OK]
+Compiling: tmk_core/protocol/usb_descriptor.c                                                       [OK]
+Compiling: tmk_core/protocol/chibios/usb_driver.c                                                   [OK]
+Compiling: tmk_core/protocol/chibios/usb_util.c                                                     [OK]
+Compiling: lib/chibios/os/oslib/src/chmboxes.c                                                      [OK]
+Compiling: lib/chibios/os/oslib/src/chmemcore.c                                                     [OK]
+Compiling: lib/chibios/os/oslib/src/chmemheaps.c                                                    [OK]
+Compiling: lib/chibios/os/oslib/src/chmempools.c                                                    [OK]
+Compiling: lib/chibios/os/oslib/src/chpipes.c                                                       [OK]
+Compiling: lib/chibios/os/oslib/src/chobjcaches.c                                                   [OK]
+Compiling: lib/chibios/os/oslib/src/chdelegates.c                                                   [OK]
+Compiling: lib/chibios/os/oslib/src/chfactory.c                                                     [OK]
+Compiling: lib/chibios/os/common/startup/ARMCMx/compilers/GCC/crt1.c                                [OK]
+Compiling: lib/chibios/os/rt/src/chsys.c                                                            [OK]
+Compiling: lib/chibios/os/rt/src/chrfcu.c                                                           [OK]
+Compiling: lib/chibios/os/rt/src/chdebug.c                                                          [OK]
+Compiling: lib/chibios/os/rt/src/chtrace.c                                                          [OK]
+Compiling: lib/chibios/os/rt/src/chvt.c                                                             [OK]
+Compiling: lib/chibios/os/rt/src/chschd.c                                                           [OK]
+Compiling: lib/chibios/os/rt/src/chinstances.c                                                      [OK]
+Compiling: lib/chibios/os/rt/src/chthreads.c                                                        [OK]
+Compiling: lib/chibios/os/rt/src/chtm.c                                                             [OK]
+Compiling: lib/chibios/os/rt/src/chstats.c                                                          [OK]
+Compiling: lib/chibios/os/rt/src/chregistry.c                                                       [OK]
+Compiling: lib/chibios/os/rt/src/chsem.c                                                            [OK]
+Compiling: lib/chibios/os/rt/src/chmtx.c                                                            [OK]
+Compiling: lib/chibios/os/rt/src/chcond.c                                                           [OK]
+Compiling: lib/chibios/os/rt/src/chevents.c                                                         [OK]
+Compiling: lib/chibios/os/rt/src/chmsg.c                                                            [OK]
+Compiling: lib/chibios/os/rt/src/chdynamic.c                                                        [OK]
+Compiling: lib/chibios/os/common/ports/ARMv7-M/chcore.c                                             [OK]
+Compiling: lib/chibios/os/hal/osal/rt-nil/osal.c                                                    [OK]
+Compiling: lib/chibios/os/hal/src/hal.c                                                             [OK]
+Compiling: lib/chibios/os/hal/src/hal_st.c                                                          [OK]
+Compiling: lib/chibios/os/hal/src/hal_buffers.c                                                     [OK]
+Compiling: lib/chibios/os/hal/src/hal_queues.c                                                      [OK]
+Compiling: lib/chibios/os/hal/src/hal_flash.c                                                       [OK]
+Compiling: lib/chibios/os/hal/src/hal_mmcsd.c                                                       [OK]
+Compiling: lib/chibios/os/hal/src/hal_adc.c                                                         [OK]
+Compiling: lib/chibios/os/hal/src/hal_can.c                                                         [OK]
+Compiling: lib/chibios/os/hal/src/hal_crypto.c                                                      [OK]
+Compiling: lib/chibios/os/hal/src/hal_dac.c                                                         [OK]
+Compiling: lib/chibios/os/hal/src/hal_efl.c                                                         [OK]
+Compiling: lib/chibios/os/hal/src/hal_gpt.c                                                         [OK]
+Compiling: lib/chibios/os/hal/src/hal_i2c.c                                                         [OK]
+Compiling: lib/chibios/os/hal/src/hal_i2s.c                                                         [OK]
+Compiling: lib/chibios/os/hal/src/hal_icu.c                                                         [OK]
+Compiling: lib/chibios/os/hal/src/hal_mac.c                                                         [OK]
+Compiling: lib/chibios/os/hal/src/hal_mmc_spi.c                                                     [OK]
+Compiling: lib/chibios/os/hal/src/hal_pal.c                                                         [OK]
+Compiling: lib/chibios/os/hal/src/hal_pwm.c                                                         [OK]
+Compiling: lib/chibios/os/hal/src/hal_rtc.c                                                         [OK]
+Compiling: lib/chibios/os/hal/src/hal_sdc.c                                                         [OK]
+Compiling: lib/chibios/os/hal/src/hal_serial.c                                                      [OK]
+Compiling: lib/chibios/os/hal/src/hal_serial_usb.c                                                  [OK]
+Compiling: lib/chibios/os/hal/src/hal_sio.c                                                         [OK]
+Compiling: lib/chibios/os/hal/src/hal_spi.c                                                         [OK]
+Compiling: lib/chibios/os/hal/src/hal_trng.c                                                        [OK]
+Compiling: lib/chibios/os/hal/src/hal_uart.c                                                        [OK]
+Compiling: lib/chibios/os/hal/src/hal_usb.c                                                         [OK]
+Compiling: lib/chibios/os/hal/src/hal_wdg.c                                                         [OK]
+Compiling: lib/chibios/os/hal/src/hal_wspi.c                                                        [OK]
+Compiling: lib/chibios/os/hal/ports/common/ARMCMx/nvic.c                                            [OK]
+Compiling: lib/chibios/os/hal/ports/STM32/STM32F3xx/stm32_isr.c                                     [OK]
+Compiling: lib/chibios/os/hal/ports/STM32/STM32F3xx/hal_lld.c                                       [OK]
+Compiling: lib/chibios/os/hal/ports/STM32/STM32F3xx/hal_efl_lld.c                                   [OK]
+Compiling: lib/chibios/os/hal/ports/STM32/LLD/ADCv3/hal_adc_lld.c                                   [OK]
+Compiling: lib/chibios/os/hal/ports/STM32/LLD/CANv1/hal_can_lld.c                                   [OK]
+Compiling: lib/chibios/os/hal/ports/STM32/LLD/DACv1/hal_dac_lld.c                                   [OK]
+Compiling: lib/chibios/os/hal/ports/STM32/LLD/DMAv1/stm32_dma.c                                     [OK]
+Compiling: lib/chibios/os/hal/ports/STM32/LLD/EXTIv1/stm32_exti.c                                   [OK]
+Compiling: lib/chibios/os/hal/ports/STM32/LLD/GPIOv2/hal_pal_lld.c                                  [OK]
+Compiling: lib/chibios/os/hal/ports/STM32/LLD/I2Cv2/hal_i2c_lld.c                                   [OK]
+Compiling: lib/chibios/os/hal/ports/STM32/LLD/RTCv2/hal_rtc_lld.c                                   [OK]
+Compiling: lib/chibios/os/hal/ports/STM32/LLD/SPIv2/hal_i2s_lld.c                                   [OK]
+Compiling: lib/chibios/os/hal/ports/STM32/LLD/SPIv2/hal_spi_v2_lld.c                                [OK]
+Compiling: lib/chibios/os/hal/ports/STM32/LLD/SYSTICKv1/hal_st_lld.c                                [OK]
+Compiling: lib/chibios/os/hal/ports/STM32/LLD/TIMv1/hal_gpt_lld.c                                   [OK]
+Compiling: lib/chibios/os/hal/ports/STM32/LLD/TIMv1/hal_icu_lld.c                                   [OK]
+Compiling: lib/chibios/os/hal/ports/STM32/LLD/TIMv1/hal_pwm_lld.c                                   [OK]
+Compiling: lib/chibios/os/hal/ports/STM32/LLD/USARTv2/hal_serial_lld.c                              [OK]
+Compiling: lib/chibios/os/hal/ports/STM32/LLD/USARTv2/hal_sio_lld.c                                 [OK]
+Compiling: lib/chibios/os/hal/ports/STM32/LLD/USARTv2/hal_uart_lld.c                                [OK]
+Compiling: lib/chibios/os/hal/ports/STM32/LLD/USBv1/hal_usb_lld.c                                   [OK]
+Compiling: lib/chibios/os/hal/ports/STM32/LLD/xWDGv1/hal_wdg_lld.c                                  [OK]
+Compiling: lib/chibios/os/hal/boards/ST_STM32F3_DISCOVERY/board.c                                   [OK]
+Compiling: lib/chibios/os/hal/lib/streams/chprintf.c                                                [OK]
+Compiling: lib/chibios/os/hal/lib/streams/chscanf.c                                                 [OK]
+Compiling: lib/chibios/os/hal/lib/streams/memstreams.c                                              [OK]
+Compiling: lib/chibios/os/hal/lib/streams/nullstreams.c                                             [OK]
+Compiling: lib/chibios/os/hal/lib/streams/bufstreams.c                                              [OK]
+Compiling: lib/chibios/os/various/syscalls.c                                                        [OK]
+Compiling: platforms/chibios/syscall-fallbacks.c                                                    [OK]
+Compiling: platforms/chibios/wait.c                                                                 [OK]
+Compiling: platforms/chibios/synchronization_util.c                                                 [OK]
+Linking: .build/planck_rev7_default.elf                                                             [OK]
+Creating binary load file for flashing: .build/planck_rev7_default.bin                              [OK]
+Creating load file for flashing: .build/planck_rev7_default.hex                                     [OK]
+
+Size after:
+   text    data     bss     dec     hex filename
+      0   54220       0   54220    d3cc planck_rev7_default.bin
+
+Copying planck_rev7_default.bin to qmk_firmware folder                                              [OK]
+(Firmware size check does not yet support STM32F303; skipping)
+$ echo $?
+0
+$
+```
 
 <details><summary>コンパイル失敗1回目。</summary>
 
