@@ -671,6 +671,219 @@ To reinstall 2.38, run:
 $
 ```
 
+以下、qmkセットアップ作業。
+```terminal
+$ qmk setup
+☒ Could not find qmk_firmware!
+Would you like to clone qmk/qmk_firmware to /Users/asakunotomohiro/qmk_firmware? [y/n] y
+Cloning into '/Users/asakunotomohiro/qmk_firmware'...
+Updating files:  31% (11137/35623)
+Updating files:  32% (11400/35623)
+Updating files:  33% (11756/35623)
+Updating files:  34% (12112/35623)
+Updating files:  35% (12469/35623)
+Updating files:  36% (12825/35623)
+Updating files:  37% (13181/35623)
+Updating files:  38% (13537/35623)
+Updating files:  39% (13893/35623)
+Updating files:  40% (14250/35623)
+Updating files:  41% (14606/35623)
+Updating files:  42% (14962/35623)
+Updating files:  43% (15318/35623)
+Updating files:  44% (15675/35623)
+Updating files:  45% (16031/35623)
+Updating files:  46% (16387/35623)
+Updating files:  47% (16743/35623)
+Updating files:  48% (17100/35623)
+Updating files:  49% (17456/35623)
+Updating files:  50% (17812/35623)
+Updating files:  51% (18168/35623)
+Updating files:  52% (18524/35623)
+Updating files:  53% (18881/35623)
+Updating files:  54% (19237/35623)
+Updating files:  55% (19593/35623)
+Updating files:  56% (19949/35623)
+Updating files:  57% (20306/35623)
+Updating files:  58% (20662/35623)
+Updating files:  59% (21018/35623)
+Updating files:  60% (21374/35623)
+Updating files:  61% (21731/35623)
+Updating files:  62% (22087/35623)
+Updating files:  62% (22436/35623)
+Updating files:  63% (22443/35623)
+Updating files:  64% (22799/35623)
+Updating files:  65% (23155/35623)
+Updating files:  66% (23512/35623)
+Updating files:  67% (23868/35623)
+Updating files:  68% (24224/35623)
+Updating files:  69% (24580/35623)
+Updating files:  70% (24937/35623)
+Updating files:  71% (25293/35623)
+Updating files:  72% (25649/35623)
+Updating files:  73% (26005/35623)
+Updating files:  74% (26362/35623)
+Updating files:  75% (26718/35623)
+Updating files:  76% (27074/35623)
+Updating files:  77% (27430/35623)
+Updating files:  78% (27786/35623)
+Updating files:  79% (28143/35623)
+Updating files:  80% (28499/35623)
+Updating files:  81% (28855/35623)
+Updating files:  82% (29211/35623)
+Updating files:  83% (29568/35623)
+Updating files:  84% (29924/35623)
+Updating files:  85% (30280/35623)
+Updating files:  86% (30636/35623)
+Updating files:  87% (30993/35623)
+Updating files:  88% (31349/35623)
+Updating files:  89% (31705/35623)
+Updating files:  90% (32061/35623)
+Updating files:  91% (32417/35623)
+Updating files:  92% (32774/35623)
+Updating files:  93% (33130/35623)
+Updating files:  93% (33326/35623)
+Updating files:  94% (33486/35623)
+Updating files:  95% (33842/35623)
+Updating files:  96% (34199/35623)
+Updating files:  97% (34555/35623)
+Updating files:  98% (34911/35623)
+Updating files:  99% (35267/35623)
+Updating files: 100% (35623/35623)
+Updating files: 100% (35623/35623), done.
+Submodule 'lib/chibios' (https://github.com/qmk/ChibiOS) registered for path 'lib/chibios'
+Submodule 'lib/chibios-contrib' (https://github.com/qmk/ChibiOS-Contrib) registered for path 'lib/chibios-contrib'
+Submodule 'lib/googletest' (https://github.com/qmk/googletest) registered for path 'lib/googletest'
+Submodule 'lib/lufa' (https://github.com/qmk/lufa) registered for path 'lib/lufa'
+Submodule 'lib/lvgl' (https://github.com/qmk/lvgl.git) registered for path 'lib/lvgl'
+Submodule 'lib/pico-sdk' (https://github.com/qmk/pico-sdk.git) registered for path 'lib/pico-sdk'
+Submodule 'lib/printf' (https://github.com/qmk/printf) registered for path 'lib/printf'
+Submodule 'lib/vusb' (https://github.com/qmk/v-usb) registered for path 'lib/vusb'
+Cloning into '/Users/asakunotomohiro/qmk_firmware/lib/chibios'...
+Cloning into '/Users/asakunotomohiro/qmk_firmware/lib/chibios-contrib'...
+Cloning into '/Users/asakunotomohiro/qmk_firmware/lib/googletest'...
+Cloning into '/Users/asakunotomohiro/qmk_firmware/lib/lufa'...
+Cloning into '/Users/asakunotomohiro/qmk_firmware/lib/lvgl'...
+Cloning into '/Users/asakunotomohiro/qmk_firmware/lib/pico-sdk'...
+Cloning into '/Users/asakunotomohiro/qmk_firmware/lib/printf'...
+Cloning into '/Users/asakunotomohiro/qmk_firmware/lib/vusb'...
+Submodule path 'lib/chibios': checked out '11edb1610980f213b9f83161e1715a46fb7e4c51'
+Submodule path 'lib/chibios-contrib': checked out 'a224be155ae18d38deccf33a6c1d259b9a5ad8d3'
+Submodule 'ext/mcux-sdk' (https://github.com/NXPmicro/mcux-sdk) registered for path 'lib/chibios-contrib/ext/mcux-sdk'
+Cloning into '/Users/asakunotomohiro/qmk_firmware/lib/chibios-contrib/ext/mcux-sdk'...
+Submodule path 'lib/chibios-contrib/ext/mcux-sdk': checked out '102c27d7cc2aaac87c133702e7829a105e0cb433'
+Submodule path 'lib/googletest': checked out 'e2239ee6043f73722e7aa812a459f54a28552929'
+Submodule path 'lib/lufa': checked out '549b97320d515bfca2f95c145a67bd13be968faa'
+Submodule path 'lib/lvgl': checked out 'e19410f8f8a256609da72cff549598e0df6fa4cf'
+Submodule path 'lib/pico-sdk': checked out 'a3398d8d3a772f37fef44a74743a1de69770e9c2'
+Submodule path 'lib/printf': checked out 'c2e3b4e10d281e7f0f694d3ecbd9f320977288cc'
+Submodule path 'lib/vusb': checked out '819dbc1e5d5926b17e27e00ca6d3d2988adae04e'
+Ψ Successfully cloned https://github.com/qmk/qmk_firmware to /Users/asakunotomohiro/qmk_firmware!
+Ψ Added https://github.com/qmk/qmk_firmware as remote upstream.
+Ψ QMK Doctor is checking your environment.
+Ψ CLI version: 1.1.2
+Ψ QMK home: /Users/asakunotomohiro/qmk_firmware
+Ψ Detected macOS 13.4 (Apple Silicon).
+Ψ Git branch: master
+Ψ Repo version: 0.21.3
+Ψ - Latest master: 2023-06-24 11:54:23 -0700 (3a42fbb0c9) -- Mechlovin Zed65 rev1 Touch-Up (#21373)
+Ψ - Latest upstream/master: 2023-06-24 11:54:23 -0700 (3a42fbb0c9) -- Mechlovin Zed65 rev1 Touch-Up (#21373)
+Ψ - Latest upstream/develop: None
+Ψ - Common ancestor with upstream/master: 2023-06-24 11:54:23 -0700 (3a42fbb0c9) -- Mechlovin Zed65 rev1 Touch-Up (#21373)
+Ψ - Common ancestor with upstream/develop: None
+Ψ CLI installed in virtualenv.
+☒ Can't find arm-none-eabi-gcc in your path.
+Would you like to install dependencies? [Y/n] Y
+Checking Homebrew installation
+Updated 1 tap (homebrew/cask).
+==> New Casks
+rio
+==> Outdated Formulae
+freetype
+
+You have 1 outdated formula installed.
+You can upgrade it with brew upgrade
+or list it with brew outdated.
+==> Upgrading 1 outdated package:
+freetype 2.13.0_1 -> 2.13.1
+==> Fetching freetype
+==> Downloading https://ghcr.io/v2/homebrew/core/freetype/manifests/2.13.1
+######################################################################### 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/freetype/blobs/sha256:87a44e9a3
+######################################################################### 100.0%
+==> Upgrading freetype
+  2.13.0_1 -> 2.13.1 
+
+==> Pouring freetype--2.13.1.arm64_ventura.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/freetype/2.13.1: 67 files, 2.4MB
+==> Running `brew cleanup freetype`...
+Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.
+Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
+Removing: /opt/homebrew/Cellar/freetype/2.13.0_1... (67 files, 2.4MB)
+Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/freetype--2.13.0_1... (911.3KB)
+Installing dependencies
+Warning: qmk/qmk/qmk 1.1.2_1 is already installed and up-to-date.
+To reinstall 1.1.2_1, run:
+  brew reinstall qmk
+Linking /opt/homebrew/Cellar/avr-gcc@8/8.5.0_1... 
+Error: Could not symlink bin/avr-c++
+Target /opt/homebrew/bin/avr-c++
+is a symlink belonging to avr-gcc@9. You can unlink it:
+  brew unlink avr-gcc@9
+
+To force the link and overwrite all conflicting files:
+  brew link --overwrite avr-gcc@8
+
+To list all files that would be deleted:
+  brew link --overwrite --dry-run avr-gcc@8
+Linking /opt/homebrew/Cellar/arm-gcc-bin@8/8-2019-q3-update_3... 36 symlinks created.
+
+If you need to have this software first in your PATH instead consider running:
+  echo 'export PATH="/opt/homebrew/opt/arm-gcc-bin@8/bin:$PATH"' >> ~/.zshrc
+Requirement already satisfied: appdirs in /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/lib/python3.11/site-packages (from -r /Users/asakunotomohiro/qmk_firmware/requirements.txt (line 2)) (1.4.4)
+Requirement already satisfied: argcomplete in /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/lib/python3.11/site-packages (from -r /Users/asakunotomohiro/qmk_firmware/requirements.txt (line 3)) (3.0.5)
+Requirement already satisfied: colorama in /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/lib/python3.11/site-packages (from -r /Users/asakunotomohiro/qmk_firmware/requirements.txt (line 4)) (0.4.6)
+Requirement already satisfied: dotty-dict in /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/lib/python3.11/site-packages (from -r /Users/asakunotomohiro/qmk_firmware/requirements.txt (line 5)) (1.3.1)
+Requirement already satisfied: hid in /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/lib/python3.11/site-packages (from -r /Users/asakunotomohiro/qmk_firmware/requirements.txt (line 6)) (1.0.5)
+Requirement already satisfied: hjson in /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/lib/python3.11/site-packages (from -r /Users/asakunotomohiro/qmk_firmware/requirements.txt (line 7)) (3.1.0)
+Requirement already satisfied: jsonschema>=4 in /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/lib/python3.11/site-packages (from -r /Users/asakunotomohiro/qmk_firmware/requirements.txt (line 8)) (4.17.3)
+Requirement already satisfied: milc>=1.4.2 in /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/lib/python3.11/site-packages (from -r /Users/asakunotomohiro/qmk_firmware/requirements.txt (line 9)) (1.6.6)
+Requirement already satisfied: pygments in /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/lib/python3.11/site-packages (from -r /Users/asakunotomohiro/qmk_firmware/requirements.txt (line 10)) (2.14.0)
+Requirement already satisfied: pyserial in /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/lib/python3.11/site-packages (from -r /Users/asakunotomohiro/qmk_firmware/requirements.txt (line 11)) (3.5)
+Requirement already satisfied: pyusb in /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/lib/python3.11/site-packages (from -r /Users/asakunotomohiro/qmk_firmware/requirements.txt (line 12)) (1.2.1)
+Requirement already satisfied: pillow in /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/lib/python3.11/site-packages (from -r /Users/asakunotomohiro/qmk_firmware/requirements.txt (line 13)) (9.5.0)
+Requirement already satisfied: attrs>=17.4.0 in /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/lib/python3.11/site-packages (from jsonschema>=4->-r /Users/asakunotomohiro/qmk_firmware/requirements.txt (line 8)) (22.2.0)
+Requirement already satisfied: pyrsistent!=0.17.0,!=0.17.1,!=0.17.2,>=0.14.0 in /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/lib/python3.11/site-packages (from jsonschema>=4->-r /Users/asakunotomohiro/qmk_firmware/requirements.txt (line 8)) (0.19.3)
+Requirement already satisfied: halo in /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/lib/python3.11/site-packages (from milc>=1.4.2->-r /Users/asakunotomohiro/qmk_firmware/requirements.txt (line 9)) (0.0.31)
+Requirement already satisfied: spinners in /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/lib/python3.11/site-packages (from milc>=1.4.2->-r /Users/asakunotomohiro/qmk_firmware/requirements.txt (line 9)) (0.0.24)
+Requirement already satisfied: log_symbols>=0.0.14 in /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/lib/python3.11/site-packages (from halo->milc>=1.4.2->-r /Users/asakunotomohiro/qmk_firmware/requirements.txt (line 9)) (0.0.14)
+Requirement already satisfied: termcolor>=1.1.0 in /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/lib/python3.11/site-packages (from halo->milc>=1.4.2->-r /Users/asakunotomohiro/qmk_firmware/requirements.txt (line 9)) (2.2.0)
+Requirement already satisfied: six>=1.12.0 in /opt/homebrew/Cellar/qmk/1.1.2_1/libexec/lib/python3.11/site-packages (from halo->milc>=1.4.2->-r /Users/asakunotomohiro/qmk_firmware/requirements.txt (line 9)) (1.16.0)
+
+[notice] A new release of pip is available: 23.0.1 -> 23.1.2
+[notice] To update, run: pip install --upgrade pip
+Ψ All dependencies are installed.
+Ψ Found arm-none-eabi-gcc version 8.3.1
+Ψ Found avr-gcc version 9.4.0
+⚠ We do not recommend avr-gcc newer than 8. Downgrading to 8.x is recommended.
+Ψ Found avrdude version 7.0
+Ψ Found dfu-programmer version 1.0.0
+Ψ Found dfu-util version 0.11
+Ψ Submodules are up to date.
+Ψ Submodule status:
+Ψ - lib/chibios: 2023-04-15 13:48:04 +0000 --  (11edb1610)
+Ψ - lib/chibios-contrib: 2023-01-11 16:42:27 +0100 --  (a224be15)
+Ψ - lib/googletest: 2021-06-11 06:37:43 -0700 --  (e2239ee6)
+Ψ - lib/lufa: 2022-08-26 12:09:55 +1000 --  (549b97320)
+Ψ - lib/vusb: 2022-06-13 09:18:17 +1000 --  (819dbc1)
+Ψ - lib/printf: 2022-06-29 23:59:58 +0300 --  (c2e3b4e)
+Ψ - lib/pico-sdk: 2023-02-12 20:19:37 +0100 --  (a3398d8)
+Ψ - lib/lvgl: 2022-04-11 04:44:53 -0600 --  (e19410f8)
+Ψ QMK is ready to go, but minor problems were found
+$ echo $?
+0
+$
+```
+
 以下、コンパイル作業。
 
 <details><summary>コンパイル失敗1回目。</summary>
@@ -821,9 +1034,9 @@ Copyright (C) 2019 Free Software Foundation, Inc.
 This is free software; see the source for copying conditions.  There is NO
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-Compiling: quantum/command.c                                                                        [OK]
-Linking: .build/planck_rev7_default.elf                                                             [OK]
-Creating binary load file for flashing: .build/planck_rev7_default.bin                             sh: arm-none-eabi-objcopy: command not found
+Compiling: quantum/command.c                                                   [OK]
+Linking: .build/planck_rev7_default.elf                                        [OK]
+Creating binary load file for flashing: .build/planck_rev7_default.bin        sh: arm-none-eabi-objcopy: command not found
  [OK]
 dfu-suffix: Could not open file .build/planck_rev7_default.bin for reading: No such file or directory
 gmake[1]: *** [builddefs/common_rules.mk:253: .build/planck_rev7_default.bin] Error 66
