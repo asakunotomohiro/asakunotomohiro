@@ -992,6 +992,37 @@ $ echo $?
 $
 ```
 
+以下、qmkコマンドによるコンパイル。
+```terminal
+$ qmk compile -kb planck/rev7 -km default
+Ψ Compiling keymap with gmake --jobs=1 planck/rev7:default
+
+
+Making planck/rev7 with keymap default
+
+arm-none-eabi-gcc (GNU Tools for Arm Embedded Processors 8-2019-q3-update) 8.3.1 20190703 (release) [gcc-8-branch revision 273027]
+Copyright (C) 2018 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+Size before:
+   text    data     bss     dec     hex filename
+      0   54220       0   54220    d3cc planck_rev7_default.bin
+
+Compiling: quantum/command.c                                                                        [OK]
+Linking: .build/planck_rev7_default.elf                                                             [OK]
+Creating binary load file for flashing: .build/planck_rev7_default.bin                              [OK]
+Creating load file for flashing: .build/planck_rev7_default.hex                                     [OK]
+
+Size after:
+   text    data     bss     dec     hex filename
+      0   54220       0   54220    d3cc planck_rev7_default.bin
+
+Copying planck_rev7_default.bin to qmk_firmware folder                                              [OK]
+(Firmware size check does not yet support STM32F303; skipping)
+$
+```
+
 <details><summary>コンパイル失敗1回目。</summary>
 
 ```terminal
