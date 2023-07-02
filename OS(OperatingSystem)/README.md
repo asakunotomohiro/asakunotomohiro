@@ -3229,21 +3229,10 @@ A proxy was used to fetch the proof: proxy.keyoxide.org
 使用期間というか、利用断念したサービスにも言及している。  
 
 * メールサービス一覧  
-  * [startmail](#operatingsystemnetwork_mail_servicestartmail)  
   * [posteo](#operatingsystemnetwork_mail_serviceposteo)  
   * [lycos](#operatingsystemnetwork_mail_servicelycos)  
-
-
-<a id="operatingsystemnetwork_mail_servicestartmail"></a>
-##### startmail
-<https://www.startmail.com>  
-支払いが止まった場合、アカウント内容ではなく、アカウントごと消される(復活できない)。  
-そのため、安全に使うにはいいかもしれないが、支払い能力がギリギリの場合は、怖くて使えないサービスだろう。  
-通常価格は、年間$59.95ドルであるため、9千円程度で、1万円も行かないと思うが、月間にしたら600円ほどかな。  
-ちょっと高いため、メール中心の生活でもないため、選ばない。  
-
-20GBの容量があるため、1度利用を始めた場合、でかい添付ファイルを頻繁にやりとりしなければ、一生もつだろう。  
-私は、10年以上前に作成したGoogleアカウントに、15GBのうち1%も使っていない状況になっており、手に余る容量に悩んでいたりするほどだ。  
+  * [mailbox](#operatingsystemnetwork_mail_servicemailbox)  
+  * [startmail](#operatingsystemnetwork_mail_servicestartmail)  
 
 
 <a id="operatingsystemnetwork_mail_serviceposteo"></a>
@@ -3261,6 +3250,27 @@ A proxy was used to fetch the proof: proxy.keyoxide.org
 よくわからないが、やめた方がいい。  
 ログイン時に2段階認証を設定できず、細かい設定がないため、無料メールサービスを利用しているのと変わらない。  
 昔は日本法人を持っていたとかいないとか・・・。  
+
+
+<a id="operatingsystemnetwork_mail_servicemailbox"></a>
+##### mailbox
+<https://mailbox.org/>  
+日本語がないため、結構辛いように思う。  
+何より、[startmail](#operatingsystemnetwork_mail_servicestartmail)と同じように、支払いができない場合、アカウントがまるごと削除されるようだ。  
+どれほどの容量が使えるのか説明がない(見つけられないだけ？)。  
+他のに比べてありかもしれない。  
+
+
+<a id="operatingsystemnetwork_mail_servicestartmail"></a>
+##### startmail
+<https://www.startmail.com>  
+支払いが止まった場合、アカウント内容ではなく、アカウントごと消される(復活できない)。  
+そのため、安全に使うにはいいかもしれないが、支払い能力がギリギリの場合は、怖くて使えないサービスだろう。  
+通常価格は、年間$59.95ドルであるため、9千円程度で、1万円も行かないと思うが、月間にしたら600円ほどかな。  
+ちょっと高いため、メール中心の生活でもないため、選ばない。  
+
+20GBの容量があるため、1度利用を始めた場合、でかい添付ファイルを頻繁にやりとりしなければ、一生もつだろう。  
+私は、10年以上前に作成したGoogleアカウントに、15GBのうち1%も使っていない状況になっており、手に余る容量に悩んでいたりするほどだ。  
 
 
 <a id="operatingsystemnetwork_mail_SendAndReceiveInBrowser"></a>
