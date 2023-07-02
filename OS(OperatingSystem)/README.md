@@ -25,6 +25,8 @@
 * 検索エンジン  
   * [duckduckgo](https://duckduckgo.com)  
   * [startpage](https://www.startpage.com)  
+  * [qwant](https://www.qwant.com/)  
+    日本未対応。  
   * 以下、安全性不明。  
     * <https://swisscows.com/en>  
     * <https://metager.org>  
@@ -3217,8 +3219,26 @@ A proxy was used to fetch the proof: proxy.keyoxide.org
 ※ここに記載するのは正しいのか？  
 
 * メールの利用方法  
+  * [利用サービス](#operatingsystemnetwork_mail_SendAndReceiveInService)  
   * [Webブラウザからの送受信](#operatingsystemnetwork_mail_SendAndReceiveInBrowser)  
   * [メールクライアントからの送受信](#operatingsystemnetwork_mail_SendAndReceiveOnClient)  
+
+<a id="operatingsystemnetwork_mail_SendAndReceiveInService"></a>
+#### メールサービス
+利用サービスについての感想を一言つぶやく。  
+使用期間というか、利用断念したサービスにも言及している。  
+
+* メールサービス一覧  
+  * [startmail](https://www.startmail.com)  
+
+
+<a id="operatingsystemnetwork_mail_servicestartmail"></a>
+##### startmail
+支払いが止まった場合、アカウント内容ではなく、アカウントごと消される。  
+そのため、安全に使うにはいいかもしれないが、支払い能力がギリギリの場合は、怖くて使えないサービスだろう。  
+通常価格は、年間$59.95ドルであるため、9千円程度で、1万円も行かないと思うが、月間にしたら600円ほどかな。  
+ちょっと高いため、メール中心の生活でもないため、選ばない。  
+
 
 <a id="operatingsystemnetwork_mail_SendAndReceiveInBrowser"></a>
 #### Webブラウザからの送受信
