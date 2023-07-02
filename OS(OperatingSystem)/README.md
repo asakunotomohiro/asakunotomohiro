@@ -3229,12 +3229,14 @@ A proxy was used to fetch the proof: proxy.keyoxide.org
 使用期間というか、利用断念したサービスにも言及している。  
 
 * メールサービス一覧  
-  * [startmail](https://www.startmail.com)  
-  * [posteo](https://posteo.de/)  
+  * [startmail](#operatingsystemnetwork_mail_servicestartmail)  
+  * [posteo](#operatingsystemnetwork_mail_serviceposteo)  
+  * [lycos](#operatingsystemnetwork_mail_servicelycos)  
 
 
 <a id="operatingsystemnetwork_mail_servicestartmail"></a>
 ##### startmail
+<https://www.startmail.com>  
 支払いが止まった場合、アカウント内容ではなく、アカウントごと消される(復活できない)。  
 そのため、安全に使うにはいいかもしれないが、支払い能力がギリギリの場合は、怖くて使えないサービスだろう。  
 通常価格は、年間$59.95ドルであるため、9千円程度で、1万円も行かないと思うが、月間にしたら600円ほどかな。  
@@ -3246,10 +3248,19 @@ A proxy was used to fetch the proof: proxy.keyoxide.org
 
 <a id="operatingsystemnetwork_mail_serviceposteo"></a>
 ##### posteo
+<https://posteo.de/>  
 月々1ユーロの支払いで安いのだが、2GBの容量しかないため、50MBの添付ファイルをやりとりする場合、数十通で限界になってしまう。  
 実際にはそこまで複数のやりとりは発生しないだろうが、、、10年間のメール送受信だけでは1GBも合計で使っていないため、1通や2通ぐらいの50MB添付ファイルはたかがしれているのは目に見えている。  
 そんなことより、1番の難関は英語ですべてを理解する必要があること・・・辛いため、常用できないだろう。  
 メールソフトを使うことができるため、英語に苦戦するのは最初だけで、あとは使い慣れた環境で利用できるのは利点だろうか。  
+
+
+<a id="operatingsystemnetwork_mail_servicelycos"></a>
+##### lycos
+<https://mail.lycos.com>  
+よくわからないが、やめた方がいい。  
+ログイン時に2段階認証を設定できず、細かい設定がないため、無料メールサービスを利用しているのと変わらない。  
+昔は日本法人を持っていたとかいないとか・・・。  
 
 
 <a id="operatingsystemnetwork_mail_SendAndReceiveInBrowser"></a>
