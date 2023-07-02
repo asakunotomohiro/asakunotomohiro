@@ -3233,6 +3233,7 @@ A proxy was used to fetch the proof: proxy.keyoxide.org
   * [lycos](#operatingsystemnetwork_mail_servicelycos)  
   * [mailbox](#operatingsystemnetwork_mail_servicemailbox)  
   * [startmail](#operatingsystemnetwork_mail_servicestartmail)  
+  * [runbox](#operatingsystemnetwork_mail_servicerunbox)  
 
 
 <a id="operatingsystemnetwork_mail_serviceposteo"></a>
@@ -3250,6 +3251,7 @@ A proxy was used to fetch the proof: proxy.keyoxide.org
 よくわからないが、やめた方がいい。  
 ログイン時に2段階認証を設定できず、細かい設定がないため、無料メールサービスを利用しているのと変わらない。  
 昔は日本法人を持っていたとかいないとか・・・。  
+5GBの容量がある。  
 
 
 <a id="operatingsystemnetwork_mail_servicemailbox"></a>
@@ -3271,6 +3273,15 @@ A proxy was used to fetch the proof: proxy.keyoxide.org
 
 20GBの容量があるため、1度利用を始めた場合、でかい添付ファイルを頻繁にやりとりしなければ、一生もつだろう。  
 私は、10年以上前に作成したGoogleアカウントに、15GBのうち1%も使っていない状況になっており、手に余る容量に悩んでいたりするほどだ。  
+
+
+<a id="operatingsystemnetwork_mail_servicerunbox"></a>
+##### runbox
+<https://runbox.com>  
+説明が多く理解できない。  
+年間20ドルほど。  
+高額ではない(月額200円もいかない)。  
+安全面もあると思う。  
 
 
 <a id="operatingsystemnetwork_mail_SendAndReceiveInBrowser"></a>
