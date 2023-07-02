@@ -25,6 +25,8 @@
 * 検索エンジン  
   * [duckduckgo](https://duckduckgo.com)  
   * [startpage](https://www.startpage.com)  
+  * [qwant](https://www.qwant.com/)  
+    日本未対応。  
   * 以下、安全性不明。  
     * <https://swisscows.com/en>  
     * <https://metager.org>  
@@ -3217,8 +3219,70 @@ A proxy was used to fetch the proof: proxy.keyoxide.org
 ※ここに記載するのは正しいのか？  
 
 * メールの利用方法  
+  * [利用サービス](#operatingsystemnetwork_mail_SendAndReceiveInService)  
   * [Webブラウザからの送受信](#operatingsystemnetwork_mail_SendAndReceiveInBrowser)  
   * [メールクライアントからの送受信](#operatingsystemnetwork_mail_SendAndReceiveOnClient)  
+
+<a id="operatingsystemnetwork_mail_SendAndReceiveInService"></a>
+#### メールサービス
+利用サービスについての感想を一言つぶやく。  
+使用期間というか、利用断念したサービスにも言及している。  
+
+* メールサービス一覧  
+  * [posteo](#operatingsystemnetwork_mail_serviceposteo)  
+  * [lycos](#operatingsystemnetwork_mail_servicelycos)  
+  * [mailbox](#operatingsystemnetwork_mail_servicemailbox)  
+  * [startmail](#operatingsystemnetwork_mail_servicestartmail)  
+  * [runbox](#operatingsystemnetwork_mail_servicerunbox)  
+
+
+<a id="operatingsystemnetwork_mail_serviceposteo"></a>
+##### posteo
+<https://posteo.de/>  
+月々1ユーロの支払いで安いのだが、2GBの容量しかないため、50MBの添付ファイルをやりとりする場合、数十通で限界になってしまう。  
+実際にはそこまで複数のやりとりは発生しないだろうが、、、10年間のメール送受信だけでは1GBも合計で使っていないため、1通や2通ぐらいの50MB添付ファイルはたかがしれているのは目に見えている。  
+そんなことより、1番の難関は英語ですべてを理解する必要があること・・・辛いため、常用できないだろう。  
+メールソフトを使うことができるため、英語に苦戦するのは最初だけで、あとは使い慣れた環境で利用できるのは利点だろうか。  
+
+
+<a id="operatingsystemnetwork_mail_servicelycos"></a>
+##### lycos
+<https://mail.lycos.com>  
+よくわからないが、やめた方がいい。  
+ログイン時に2段階認証を設定できず、細かい設定がないため、無料メールサービスを利用しているのと変わらない。  
+昔は日本法人を持っていたとかいないとか・・・。  
+5GBの容量がある。  
+
+
+<a id="operatingsystemnetwork_mail_servicemailbox"></a>
+##### mailbox
+<https://mailbox.org/>  
+日本語がないため、結構辛いように思う。  
+何より、[startmail](#operatingsystemnetwork_mail_servicestartmail)と同じように、支払いができない場合、アカウントがまるごと削除されるようだ。  
+どれほどの容量が使えるのか説明がない(見つけられないだけ？)。  
+他のに比べてありかもしれない。  
+
+
+<a id="operatingsystemnetwork_mail_servicestartmail"></a>
+##### startmail
+<https://www.startmail.com>  
+支払いが止まった場合、アカウント内容ではなく、アカウントごと消される(復活できない)。  
+そのため、安全に使うにはいいかもしれないが、支払い能力がギリギリの場合は、怖くて使えないサービスだろう。  
+通常価格は、年間$59.95ドルであるため、9千円程度で、1万円も行かないと思うが、月間にしたら600円ほどかな。  
+ちょっと高いため、メール中心の生活でもないため、選ばない。  
+
+20GBの容量があるため、1度利用を始めた場合、でかい添付ファイルを頻繁にやりとりしなければ、一生もつだろう。  
+私は、10年以上前に作成したGoogleアカウントに、15GBのうち1%も使っていない状況になっており、手に余る容量に悩んでいたりするほどだ。  
+
+
+<a id="operatingsystemnetwork_mail_servicerunbox"></a>
+##### runbox
+<https://runbox.com>  
+説明が多く理解できない。  
+年間20ドルほど。  
+高額ではない(月額200円もいかない)。  
+安全面もあると思う。  
+
 
 <a id="operatingsystemnetwork_mail_SendAndReceiveInBrowser"></a>
 #### Webブラウザからの送受信
