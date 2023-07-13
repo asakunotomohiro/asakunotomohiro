@@ -27,10 +27,10 @@
   * [startpage](https://www.startpage.com)  
   * [qwant](https://www.qwant.com/)  
     日本未対応。  
+  * [ecosia](https://www.ecosia.org)  
+  * [metager](https://metager.org)  
   * 以下、安全性不明。  
     * <https://swisscows.com/en>  
-    * <https://metager.org>  
-    * <https://www.ecosia.org>  
     * <https://www.mojeek.com>  
     * <https://searx.nixnet.services/>  
     * <https://search.privacyguides.net/>  
