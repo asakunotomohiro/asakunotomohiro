@@ -3253,6 +3253,10 @@ A proxy was used to fetch the proof: proxy.keyoxide.org
 昔は日本法人を持っていたとかいないとか・・・。  
 5GBの容量がある。  
 
+さらにセキュリティ的に大問題になる仕組みとして、サービス終了後にメールアカウントが保持されず、一般開放されるところ。  
+そのため、第3者が取得可能になり、どう考えても乗っ取りというかなりすましになる。  
+メールサービス側としては何も違法なことはしていないが、利用者が分からしたらかなりの危険度をはらんでいる。  
+
 
 <a id="operatingsystemnetwork_mail_servicemailbox"></a>
 ##### mailbox
