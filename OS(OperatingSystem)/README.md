@@ -3792,6 +3792,7 @@ Microsoft社が無償で[Outlook](https://www.microsoft.com/ja-jp/microsoft-365/
 
 携帯電話は、AndroidOSのみになっている。  
 昔は、BlackBerryOSだったが、今は昔・・・悲しいよ。  
+そして、とりあえず、[eOS](https://e.foundation/e-os/)を使っている電話機を手に入れたのだが、未だに使いこなせていないため、AndroidOSと併用というか、eOS電話機は家に置いたままになっている。  
 
 
 以上。
