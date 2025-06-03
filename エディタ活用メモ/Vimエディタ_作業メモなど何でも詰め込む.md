@@ -1323,6 +1323,15 @@ todo: パターン指定
 * クリップボードレジスタ(マウスで選択されたテキスト`*`)  
 OSのクリップボードを経由する。  
 
+* レジスタ操作用の履歴管理プラグイン  
+  * [yankround.vim](https://github.com/LeafCage/yankround.vim)  
+    yankround はレジスタの履歴を取得し、再利用するためのVimプラグインです。  
+  * [Yoink.vim](https://github.com/svermeulen/vim-yoink)  
+    Yoink will automatically maintain a history of yanks that you can choose between when pasting.  
+  * [yankstack.vim](https://github.com/maxbrunsfeld/vim-yankstack)  
+    delete things without worrying about losing the text that you yanked previously.  
+  * [YankRing.vim](https://github.com/vim-scripts/YankRing.vim)  
+    The YankRing plugin allows the user to configure the number of yanked, deleted and changed text.  
 
 <a id="viBibleImprovedGihyo2200003"></a>
 ##### 複数のファイル操作
