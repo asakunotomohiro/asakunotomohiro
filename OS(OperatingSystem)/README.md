@@ -3229,6 +3229,8 @@ A proxy was used to fetch the proof: proxy.keyoxide.org
 私はmacOSを使っているため、GUIからBIOユビキーに指紋登録ができない。  
 そのため、コマンドライン操作が必須になる(GUIはWindowsOS必須のようだ)。  
 
+<details><summary>環境インストール(Homebrew版)。</summary>
+
 ```terminal
 $ ykman info
 zsh: command not found: ykman
@@ -3250,6 +3252,8 @@ YubiKey Manager (ykman) version: 5.7.2
 $
 ```
 BIO対応するには、最低でもバージョン4.*が必須(mac版は1.*のみ)。  
+
+</details>
 
 以下、登録済みの確認方法。
 ```terminal
@@ -3286,11 +3290,17 @@ OpenPGP     	Disabled
 YubiHSM Auth	Disabled
 $
 ```
-
+ちなみに、登録済みの"**RP ID**"一括削除はない(あるのは端末リセットのみであるため、本当にまるごと消える)。  
 
 
 <a id="operatingsystemnetwork_yubico_pincode"></a>
 #### PINコード
+GUIで登録できる。  
+Webサービスで、FIDOセキュリティキーを使うときに、Pinコード入力を促されるため、そのときに入力すればいい。  
+
+
+<a id="operatingsystemnetwork_yubico_biofido"></a>
+#### BIOコード
 
 
 
