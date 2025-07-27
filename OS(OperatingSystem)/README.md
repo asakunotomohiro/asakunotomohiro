@@ -3233,58 +3233,12 @@ A proxy was used to fetch the proof: proxy.keyoxide.org
 $ ykman info
 zsh: command not found: ykman
 $ brew install ykman	←☆インストール実施。
-==> Auto-updating Homebrew...	←☆ホームブリュが壊れている。
+==> Auto-updating Homebrew...
 Adjust how often this is run with HOMEBREW_AUTO_UPDATE_SECS or disable with
 HOMEBREW_NO_AUTO_UPDATE. Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
-fatal: ambiguous argument 'refs/remotes/origin/main': unknown revision or path not in the working tree.
-Use '--' to separate paths from revisions, like this:
-'git <command> [<revision>...] -- [<file>...]'
-==> Auto-updated Homebrew!
-Updated 3 taps (osx-cross/avr, homebrew/core and homebrew/cask).
-==> New Formulae
-air: Fast and opinionated formatter for R code
-apigeecli: Apigee management API command-line interface
-ayatana-ido: Ayatana Indicator Display Objects
-backlog-md: Markdown‑native Task Manager & Kanban visualizer for any Git repository
-badread: Long read simulator that can imitate many types of read problems
-brush: Bourne RUsty SHell (command interpreter)
-burrow: Kafka Consumer Lag Checking
-cargo-component: Create WebAssembly components based on the component model proposal
-ccusage: CLI tool for analyzing Claude Code usage from local JSONL files
-dagu: Lightweight and powerful workflow engine
-damask-grid: Grid solver of DAMASK - Multi-physics crystal plasticity simulation package
-decker: HyperCard-like multimedia sketchpad
 　　　・
 　　　・
 　　　・
-==> Fetching ykman
-==> Downloading https://ghcr.io/v2/homebrew/core/ykman/blobs/sha256:87773a77350d507bd05943f10c30a60a14d73b30043dd0e71ee9a8304bc9773b
-######################################################################################################################################### 100.0%
-==> Installing dependencies for ykman: openssl@3, cryptography, readline and sqlite
-==> Installing ykman dependency: openssl@3
-==> Downloading https://ghcr.io/v2/homebrew/core/openssl/3/manifests/3.5.1
-Already downloaded: /Users/asakunojp/Library/Caches/Homebrew/downloads/9d8c8da104539ae29f198f366fe5794ac377d96a92458ae62557e3f83b03a351--openssl@3-3.5.1.bottle_manifest.json
-==> Pouring openssl@3--3.5.1.arm64_sequoia.bottle.tar.gz
-
-🍺  /opt/homebrew/Cellar/openssl@3/3.5.1: 7,563 files, 35.4MB
-==> Installing ykman dependency: cryptography
-==> Downloading https://ghcr.io/v2/homebrew/core/cryptography/manifests/45.0.5
-Already downloaded: /Users/asakunojp/Library/Caches/Homebrew/downloads/aef769ab2818d79e8ecf12e84ee1e9fda8044539f180d647fb7720f870aedfbf--cryptography-45.0.5.bottle_manifest.json
-==> Pouring cryptography--45.0.5.arm64_sequoia.bottle.tar.gz
-🍺  /opt/homebrew/Cellar/cryptography/45.0.5: 218 files, 9.1MB
-==> Installing ykman dependency: readline
-==> Downloading https://ghcr.io/v2/homebrew/core/readline/manifests/8.3.1
-Already downloaded: /Users/asakunojp/Library/Caches/Homebrew/downloads/52cb2bb3f0d9e66789968b865501c41ed80dc303eb488939476b309f1d350dc5--readline-8.3.1.bottle_manifest.json
-==> Pouring readline--8.3.1.arm64_sequoia.bottle.tar.gz
-🍺  /opt/homebrew/Cellar/readline/8.3.1: 56 files, 2.6MB
-==> Installing ykman dependency: sqlite
-==> Downloading https://ghcr.io/v2/homebrew/core/sqlite/manifests/3.50.3
-Already downloaded: /Users/asakunojp/Library/Caches/Homebrew/downloads/caae514078baa0b320054492023cd6f1f3da0e6733ccb13fc00ae274821dc973--sqlite-3.50.3.bottle_manifest.json
-==> Pouring sqlite--3.50.3.arm64_sequoia.bottle.tar.gz
-🍺  /opt/homebrew/Cellar/sqlite/3.50.3: 13 files, 4.9MB
-==> Installing ykman
-==> Pouring ykman--5.7.2.arm64_sequoia.bottle.1.tar.gz
-🍺  /opt/homebrew/Cellar/ykman/5.7.2: 348 files, 2.9MB
 ==> Running `brew cleanup ykman`...
 Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.
 Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
@@ -3296,6 +3250,43 @@ YubiKey Manager (ykman) version: 5.7.2
 $
 ```
 BIO対応するには、最低でもバージョン4.*が必須(mac版は1.*のみ)。  
+
+以下、登録済みの確認方法。
+```terminal
+$ ykman list	←☆端末情報。
+YubiKey 5Ci (5.8.9) [OTP+FIDO+CCID] Serial: 21027354
+$ ykman fido credentials list	←☆登録済みのFIDO2情報。
+Enter your PIN:	←☆PINコード入力。
+Credential ID  RP ID       Username  Display name
+6d162734...    google.com  asakuno   asakuno     
+a5465a6d...    github.com  asakuno   asakuno     
+$
+```
+
+登録済みのFIDO2削除コマンド：`ykman fido credentials delete <credential-id>`  
+端末に登録しているPINの変更コマンド：`ykman fido access change-pin`  
+登録済みのFIDO2リセットコマンド：`ykman fido reset`  
+
+以下、詳細な端末情報確認方法(表示例)。
+```terminal
+$ ykman info
+Device type: YubiKey 5Ci
+Serial number: 21027354
+Firmware version: 5.8.9
+Form factor: Keychain (USB-C, Lightning)
+Enabled USB interfaces: OTP, FIDO, CCID
+
+Applications
+Yubico OTP  	Disabled
+FIDO U2F    	Disabled
+FIDO2       	Disabled
+OATH        	Disabled
+PIV         	Enabled	←☆有効(他無効)。
+OpenPGP     	Disabled
+YubiHSM Auth	Disabled
+$
+```
+
 
 
 <a id="operatingsystemnetwork_yubico_pincode"></a>
