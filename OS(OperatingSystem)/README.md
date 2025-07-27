@@ -39,6 +39,7 @@
   * [ネットサーフィン](#operatingsystemnetwork_internetsurfing)  
   * [VPN](#operatingsystemnetwork_vpn)  
   * [PGP](#operatingsystemnetwork_pgp)  
+  * [FIDOセキュリティキー](#operatingsystemnetwork_yubico)  
   * [メール](#operatingsystemnetwork_mail)  
 
 * 仕様書  
@@ -3211,6 +3212,130 @@ A proxy was used to fetch the proof: proxy.keyoxide.org
 ```
 
 </details>
+
+
+<a id="operatingsystemnetwork_yubico"></a>
+### FIDOセキュリティキー
+調べてわかったのだが、ユビキーというのは、Yubicoという会社の登録商標だった。  
+そのため、通常は、セキュリティキーと表現するのが適切になる(さらに正確に言えば、FIDOセキュリティキーとのこと)。  
+
+[YubiKey 5にサイドチャネル攻撃でセキュリティが破られる脆弱性が見つかる、バージョン5.7より前のYubiKeyは永久に危険との勧告](https://gigazine.net/news/20240904-yubikeys-vulnerable-cloning-attacks-side-channel/)  
+[YubiKey製品の暗号化ライブラリ脆弱性の発見に関するご案内（第一報）](https://securitykey.scsk.jp/yubikey/1644/)  
+[JVNDB-2024-007966 複数の Yubico 製品における観測可能な不一致に関する脆弱性](https://jvndb.jvn.jp/ja/contents/2024/JVNDB-2024-007966.html)  
+[YubiKey 暗号欠陥の脆弱性により攻撃者が秘密鍵を抽出してデバイスを複製できる](https://rocket-boys.co.jp/security-measures-lab/yubikey-encryption-flaw-secret-key-extraction/)  
+
+
+* FIDOセキュリティキーの利用方法  
+  * [環境構築](#operatingsystemnetwork_yubico_cliykman)  
+  * [PINコード](#operatingsystemnetwork_yubico_pincode)  
+  * [BIOコード](#operatingsystemnetwork_yubico_biofido)  
+
+<a id="operatingsystemnetwork_yubico_cliykman"></a>
+### 環境構築(ykman)
+私はmacOSを使っているため、GUIからBIOユビキーに指紋登録ができない。  
+そのため、コマンドライン操作が必須になる(GUIはWindowsOS必須のようだ)。  
+
+<details><summary>環境インストール(Homebrew版)。</summary>
+https://formulae.brew.sh/formula/ykman  
+
+```terminal
+$ ykman info
+zsh: command not found: ykman
+$ brew install ykman	←☆インストール実施。
+==> Auto-updating Homebrew...
+Adjust how often this is run with HOMEBREW_AUTO_UPDATE_SECS or disable with
+HOMEBREW_NO_AUTO_UPDATE. Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
+　　　・
+　　　・
+　　　・
+==> Running `brew cleanup ykman`...
+Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.
+Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
+==> Caveats
+zsh completions have been installed to:
+  /opt/homebrew/share/zsh/site-functions
+$ ykman --version
+YubiKey Manager (ykman) version: 5.7.2
+$
+```
+BIO対応するには、最低でもバージョン4.*が必須(mac版は1.*のみ)。  
+
+</details>
+
+以下、登録済みの確認方法。
+```terminal
+$ ykman list	←☆端末情報。
+YubiKey 5Ci (5.8.9) [OTP+FIDO+CCID] Serial: 21027354
+$ ykman fido credentials list	←☆登録済みのFIDO2情報。
+Enter your PIN:	←☆PINコード入力。
+Credential ID  RP ID       Username        Display name
+6d162734...    google.com  asakuno.secure  asakuno     
+a5465a6d...    github.com  asakuno.secure  asakuno     
+$
+```
+
+登録済みのFIDO2削除コマンド：`ykman fido credentials delete <credential-id>`  
+端末に登録しているPINの変更コマンド：`ykman fido access change-pin`  
+登録済みのFIDO2リセットコマンド：`ykman fido reset`  
+
+以下、詳細な端末情報確認方法(表示例)。
+```terminal
+$ ykman info
+Device type: YubiKey 5Ci	←☆この端末では指紋登録できない。
+Serial number: 21027354
+Firmware version: 5.8.9
+Form factor: Keychain (USB-C, Lightning)
+Enabled USB interfaces: OTP, FIDO, CCID
+
+Applications
+Yubico OTP  	Disabled
+FIDO U2F    	Disabled
+FIDO2       	Disabled
+OATH        	Disabled
+PIV         	Enabled	←☆有効(他無効)。
+OpenPGP     	Disabled
+YubiHSM Auth	Disabled
+$
+```
+ちなみに、登録済みの"**RP ID**"一括削除はない(あるのは端末リセットのみであるため、本当にまるごと消える)。  
+
+
+<a id="operatingsystemnetwork_yubico_pincode"></a>
+#### PINコード
+GUIで登録できる。  
+Webサービスで、FIDOセキュリティキーを使うときに、Pinコード入力を促されるため、そのときに入力すればいい。  
+
+
+<a id="operatingsystemnetwork_yubico_biofido"></a>
+#### BIOコード
+指紋認証コマンド：[ykman fido fingerprints [OPTIONS] COMMAND [ARGS]...](https://docs.yubico.com/software/yubikey/tools/ykman/FIDO_Commands.html#id17)  
+* 対象製品  
+  * [YubiKey C Bio - FIDO Edition](https://www.yubico.com/jp/product/yubikey-bio-series/yubikey-c-bio/)  
+  * [日本代理店](https://ykey.yubion.com/collections/yubikey-bio-security-key/products/yubikey-c-bio)  
+
+以下、指紋登録作業。
+```terminal
+$ ykman fido fingerprints list	←☆登録一覧コマンド(何も登録されていない)。
+Enter your PIN:
+$ ykman fido fingerprints add "左足指"	←☆登録作業(通常日本語入力はできないようだ)。
+Enter your PIN:
+Place your finger against the sensor now...
+4 more scans needed.
+Place your finger against the sensor now...
+3 more scans needed.
+Place your finger against the sensor now...
+2 more scans needed.
+Place your finger against the sensor now...
+Capture failed. Re-center your finger, and try again.	←☆認識しなければ再登録が必要なようだ。
+Place your finger against the sensor now...
+1 more scans needed.
+Place your finger against the sensor now...
+Capture complete.
+$ ykman fido fingerprints list	←☆1件登録されている。
+Enter your PIN:
+ID: 1e2a (右足指)
+$
+```
 
 
 <a id="operatingsystemnetwork_mail"></a>
