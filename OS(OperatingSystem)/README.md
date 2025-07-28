@@ -2061,6 +2061,79 @@ $
 秘密鍵をYubiKey(FIDOセキュリティキー)に焼き付ける。  
 目的は、mac端末にある秘密鍵を完全消去及び手軽に使えるようにするため。  
 
+以下、コマンド利用内容の確認作業。
+```terminal
+[~] $ gpg --edit-card
+
+gpg: *警告*: サーバ'gpg-agent'はこちらより古いです(2.2.41 < 2.4.8)
+gpg: 注意: 古いサーバは、重要なセキュリティの修正が欠如しているかもしれません。
+gpg: 注意: "gpgconf --kill all"コマンドを使って再起動してください。
+gpg: *警告*: サーバ'scdaemon'はこちらより古いです(2.2.41 < 2.4.8)
+gpg: 注意: 古いサーバは、重要なセキュリティの修正が欠如しているかもしれません。
+gpg: 注意: "gpgconf --kill all"コマンドを使って再起動してください。
+Reader ...........: Yubico YubiKey OTP FIDO CCID
+Application ID ...: D2760001240103040006240372580000
+Application type .: OpenPGP
+Version ..........: 5.8
+Manufacturer .....: Yubico
+Serial number ....: 21027354
+Name of cardholder: [未設定]
+Language prefs ...: [未設定]
+Salutation .......: 
+URL of public key : [未設定]
+Login data .......: [未設定]
+Signature PIN ....: 強制なし
+Key attributes ...: rsa2048 rsa2048 rsa2048
+Max. PIN lengths .: 127 127 127
+PIN retry counter : 3 0 3
+Signature counter : 0
+KDF setting ......: off
+UIF setting ......: Sign=off Decrypt=off Auth=off
+Signature key ....: [none]
+Encryption key....: [none]
+Authentication key: [none]
+General key info..: [none]
+
+gpg/card> help	←☆通常アカウント権限での利用可能コマンド一覧。
+quit           このメニューを終了
+admin          管理コマンドを表示
+help           このヘルプを表示
+list           全有効データを表示
+fetch          カードURLで指定された鍵の取得
+passwd         PINブロックの解除や変更のメニュー
+verify         PINを確認しすべてのデータを表示する
+unblock        PINをリセット・コードでブロックを解除する
+openpgp        OpenPGP app にスイッチします
+
+gpg/card> admin	←☆権限昇格。
+管理者コマンドが許可されています
+
+gpg/card> help	←☆利用可能コマンド増加。
+quit           このメニューを終了
+admin          管理コマンドを表示
+help           このヘルプを表示
+list           全有効データを表示
+name           カード所有者の名前の変更
+url            鍵を取得するURLの変更
+fetch          カードURLで指定された鍵の取得
+login          ログイン名の変更
+lang           言語の優先指定の変更
+salutation     カード所有者の敬称の変更
+cafpr          CAフィンガープリントの変更
+forcesig       署名強制PINフラグを反転
+generate       新しい鍵を生成
+passwd         PINブロックの解除や変更のメニュー
+verify         PINを確認しすべてのデータを表示する
+unblock        PINをリセット・コードでブロックを解除する
+factory-reset  すべての鍵とデータを破壊します
+kdf-setup      PIN認証のKDFを設定する (on/single/off)
+key-attr       鍵の属性の変更
+uif            ユーザインタラクションフラグの変更
+openpgp        OpenPGP app にスイッチします
+
+gpg/card>	←☆あとに続く。
+```
+
 
 <a id="operatingsystemnetwork_pgp_keyserver"></a>
 #### PGP鍵サーバへの登録
