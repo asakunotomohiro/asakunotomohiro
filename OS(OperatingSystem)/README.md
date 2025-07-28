@@ -2065,12 +2065,6 @@ $
 ```terminal
 $ gpg --edit-card
 
-gpg: *警告*: サーバ'gpg-agent'はこちらより古いです(2.2.41 < 2.4.8)
-gpg: 注意: 古いサーバは、重要なセキュリティの修正が欠如しているかもしれません。
-gpg: 注意: "gpgconf --kill all"コマンドを使って再起動してください。
-gpg: *警告*: サーバ'scdaemon'はこちらより古いです(2.2.41 < 2.4.8)
-gpg: 注意: 古いサーバは、重要なセキュリティの修正が欠如しているかもしれません。
-gpg: 注意: "gpgconf --kill all"コマンドを使って再起動してください。
 Reader ...........: Yubico YubiKey OTP FIDO CCID
 Application ID ...: D2760001240103040006240372580000
 Application type .: OpenPGP
@@ -2191,10 +2185,6 @@ $
 以下、実際の鍵焼き付け作業。
 ```terminal
 $ gpg -K asakuno.secure@pgp.asakuno.org
-gpg: *警告*: サーバ'gpg-agent'はこちらより古いです(2.2.41 < 2.4.8)
-gpg: 注意: 古いサーバは、重要なセキュリティの修正が欠如しているかもしれません。
-gpg: 注意: "gpgconf --kill all"コマンドを使って再起動してください。
-gpg: problem with fast path key listing: IPCパラメータエラーです - ignored
 sec   ed25519 2023-05-22 [C] [有効期限: 2105-05-03]
       2771F0FCF8FE74CD9B9C25439D4893D18D358530
 uid           [  究極  ] asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
@@ -2203,10 +2193,6 @@ ssb   ed25519 2023-05-22 [S] [有効期限: 2099-05-03]
 ssb   ed25519 2023-05-22 [A] [有効期限: 2099-05-03]
 
 $ gpg -K --with-subkey-fingerprint asakuno.secure@pgp.asakuno.org
-gpg: *警告*: サーバ'gpg-agent'はこちらより古いです(2.2.41 < 2.4.8)
-gpg: 注意: 古いサーバは、重要なセキュリティの修正が欠如しているかもしれません。
-gpg: 注意: "gpgconf --kill all"コマンドを使って再起動してください。
-gpg: problem with fast path key listing: IPCパラメータエラーです - ignored
 sec   ed25519 2023-05-22 [C] [有効期限: 2105-05-03]
       2771F0FCF8FE74CD9B9C25439D4893D18D358530
 uid           [  究極  ] asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
@@ -2222,10 +2208,6 @@ gpg (GnuPG) 2.4.8; Copyright (C) 2025 g10 Code GmbH
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
 
-gpg: *警告*: サーバ'gpg-agent'はこちらより古いです(2.2.41 < 2.4.8)
-gpg: 注意: 古いサーバは、重要なセキュリティの修正が欠如しているかもしれません。
-gpg: 注意: "gpgconf --kill all"コマンドを使って再起動してください。
-gpg: problem with fast path key listing: IPCパラメータエラーです - ignored
 秘密鍵が利用できます。
 
 sec  ed25519/9D4893D18D358530
@@ -2238,11 +2220,11 @@ ssb  ed25519/7A430907759D9FF4
 ssb  ed25519/82AA8224E47F7A68
      作成: 2023-05-22  有効期限: 2099-05-03  利用法: A
 [  究極  ] (1). asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
-	←☆本来であれば、"key 1"というコマンドで鍵を指定するのだが、1つしかないため、省略。
+
 gpg> keytocard	←☆鍵の焼き付け実施。
 この主鍵を本当に移動しますか? (y/N) y
 鍵を保管する場所を選択してください:
-   (1) 署名鍵	←☆"(2) 暗号化鍵"もあるようだ。
+   (1) 署名鍵	←☆"(2) 暗号化鍵"もあるようだ(それが副鍵のこと)。
 あなたの選択は? 1	←☆管理者PINを聞かれる。
 
 sec  ed25519/9D4893D18D358530
@@ -2265,12 +2247,6 @@ $
 ```terminal
 $ gpg --edit-card
 
-gpg: *警告*: サーバ'gpg-agent'はこちらより古いです(2.2.41 < 2.4.8)
-gpg: 注意: 古いサーバは、重要なセキュリティの修正が欠如しているかもしれません。
-gpg: 注意: "gpgconf --kill all"コマンドを使って再起動してください。
-gpg: *警告*: サーバ'scdaemon'はこちらより古いです(2.2.41 < 2.4.8)
-gpg: 注意: 古いサーバは、重要なセキュリティの修正が欠如しているかもしれません。
-gpg: 注意: "gpgconf --kill all"コマンドを使って再起動してください。
 Reader ...........: Yubico YubiKey OTP FIDO CCID
 Application ID ...: D2760001240103040006240372580000
 Application type .: OpenPGP
@@ -2325,6 +2301,27 @@ Q - quit
 あなたの選択は? q
 
 gpg/card> q
+$
+```
+
+以下、現在の鍵の状況。
+```terminal
+$ gpg -K --with-subkey-fingerprint --list-secret-keys --with-keygrip asakuno.secure@pgp.asakuno.org
+sec>  ed25519 2023-05-22 [C] [有効期限: 2105-05-03]	←☆主鍵は移動している(>記号があるためローカルにはない)。
+      2771F0FCF8FE74CD9B9C25439D4893D18D358530
+      Keygrip = F5E7F028D27E3BDA27ACCACC7BC9169AFB1F1B8C
+   カードシリアル番号 = 0008 21027354	←☆カードに移動していることがわかる。
+uid           [  究極  ] asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
+ssb   cv25519 2023-05-22 [E] [有効期限: 2099-05-03]	←☆ローカルに残っているのがわかる。
+      728B0A778912932B9397341B2B6243601FA1DBDA
+      Keygrip = 2171B37E2634D42D99CEE1CCB9275333FC38F3CD
+ssb   ed25519 2023-05-22 [S] [有効期限: 2099-05-03]	←☆ローカルに残っているのがわかる。
+      60A7B0576F7404D51D59520C7A430907759D9FF4
+      Keygrip = EF64C76F724DB6E41A170AAC86047841775F7354
+ssb   ed25519 2023-05-22 [A] [有効期限: 2099-05-03]	←☆ローカルに残っているのがわかる。
+      8013753761C78FA1A48230C682AA8224E47F7A68
+      Keygrip = 174968D4F353A60CB18A96DE3680AF8FB6C14E95
+
 $
 ```
 
