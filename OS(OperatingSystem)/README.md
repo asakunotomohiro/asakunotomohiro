@@ -2283,9 +2283,9 @@ gpg/card> admin
 gpg/card> passwd
 gpg: OpenPGPカードno. D2760001240103040006240372580000を検出
 
-1 - change PIN
-2 - unblock PIN
-3 - change Admin PIN
+1 - change PIN	←☆FIDOとは別のPin。
+2 - unblock PIN	←☆これは何？
+3 - change Admin PIN	←☆今回これ。
 4 - set the Reset Code
 Q - quit
 
@@ -2329,52 +2329,29 @@ $
 以下、移動結果。
 ```terminal
 $ gpg -K --with-subkey-fingerprint --list-secret-keys --with-keygrip asakuno.secure@pgp.asakuno.org
-sec#  ed25519 2023-05-22 [C] [有効期限: 2105-05-03]
-      2771F0FCF8FE74CD9B9C25439D4893D18D358530
-      Keygrip = F5E7F028D27E3BDA27ACCACC7BC9169AFB1F1B8C
-uid           [  究極  ] asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
-ssb#  cv25519 2023-05-22 [E] [有効期限: 2099-05-03]
-      728B0A778912932B9397341B2B6243601FA1DBDA
-      Keygrip = 2171B37E2634D42D99CEE1CCB9275333FC38F3CD
-ssb   ed25519 2023-05-22 [S] [有効期限: 2099-05-03]
-      60A7B0576F7404D51D59520C7A430907759D9FF4
-      Keygrip = EF64C76F724DB6E41A170AAC86047841775F7354
-ssb>  ed25519 2023-05-22 [A] [有効期限: 2099-05-03]
-      8013753761C78FA1A48230C682AA8224E47F7A68
-   カードシリアル番号 = 0008 21027354
-      Keygrip = 174968D4F353A60CB18A96DE3680AF8FB6C14E95
-
-$
-```
-どういうこと？  
-
-以下、再挑戦。
-```terminal
-$ gpg -K --with-subkey-fingerprint --list-secret-keys --with-keygrip asakuno.secure@pgp.asakuno.org
-sec>  ed25519 2023-05-22 [C] [有効期限: 2105-05-03]
+sec>  ed25519 2023-05-22 [C] [有効期限: 2105-05-03]	←☆カードに移動していることがわかる。
       2771F0FCF8FE74CD9B9C25439D4893D18D358530
       Keygrip = F5E7F028D27E3BDA27ACCACC7BC9169AFB1F1B8C
    カードシリアル番号 = 0008 21027354
 uid           [  究極  ] asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
-ssb>  cv25519 2023-05-22 [E] [有効期限: 2099-05-03]
+ssb>  cv25519 2023-05-22 [E] [有効期限: 2099-05-03]	←☆カードに移動していることがわかる。
       728B0A778912932B9397341B2B6243601FA1DBDA
    カードシリアル番号 = 0008 21027354
       Keygrip = 2171B37E2634D42D99CEE1CCB9275333FC38F3CD
 ssb#  ed25519 2023-05-22 [S] [有効期限: 2099-05-03]	←☆この鍵はどういう扱い？
       60A7B0576F7404D51D59520C7A430907759D9FF4
       Keygrip = EF64C76F724DB6E41A170AAC86047841775F7354
-ssb>  ed25519 2023-05-22 [A] [有効期限: 2099-05-03]
+ssb>  ed25519 2023-05-22 [A] [有効期限: 2099-05-03]	←☆カードに移動していることがわかる。
       8013753761C78FA1A48230C682AA8224E47F7A68
    カードシリアル番号 = 0008 21027354
       Keygrip = 174968D4F353A60CB18A96DE3680AF8FB6C14E95
 
 $
 ```
-まぁこれならいいか。  
-とりあえず、ファイルの[暗号及び復号](#operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_runencrypt)をユビキーでこなせたため、問題なしとする(署名の動作確認どうしよう)。  
+ファイルの[暗号及び復号](#operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_runencrypt)をユビキーでこなせたため、問題なしとする(署名の動作確認どうしよう)。  
 ちなみに、復号するとき、ユビキーの挿入を促された。  
 そして、復号するときにPinコードを聞かれたのだが、何を入力すればいいのか全くわからなかった。  
-ということで、デフォルト(123456)を入力したらすんなり通ったため、速攻変更した(FIDO2とOpenPGPのPinコードが別だということを言葉でなく心で理解できたぜ、プロシュート兄ィ)。  
+ということで、デフォルト(123456)を入力したらすんなり通ったため、速攻変更した(FIDO2とOpenPGPのPinコードが別だということを理解した)。  
 
 
 <a id="operatingsystemnetwork_pgp_keyserver"></a>
