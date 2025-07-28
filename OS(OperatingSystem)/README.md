@@ -2324,6 +2324,30 @@ ssb   ed25519 2023-05-22 [A] [有効期限: 2099-05-03]	←☆ローカルに残
 
 $
 ```
+同じように移動する。
+
+以下、移動結果。
+```terminal
+$ gpg -K --with-subkey-fingerprint --list-secret-keys --with-keygrip asakuno.secure@pgp.asakuno.org
+sec#  ed25519 2023-05-22 [C] [有効期限: 2105-05-03]
+      2771F0FCF8FE74CD9B9C25439D4893D18D358530
+      Keygrip = F5E7F028D27E3BDA27ACCACC7BC9169AFB1F1B8C
+uid           [  究極  ] asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
+ssb#  cv25519 2023-05-22 [E] [有効期限: 2099-05-03]
+      728B0A778912932B9397341B2B6243601FA1DBDA
+      Keygrip = 2171B37E2634D42D99CEE1CCB9275333FC38F3CD
+ssb   ed25519 2023-05-22 [S] [有効期限: 2099-05-03]
+      60A7B0576F7404D51D59520C7A430907759D9FF4
+      Keygrip = EF64C76F724DB6E41A170AAC86047841775F7354
+ssb>  ed25519 2023-05-22 [A] [有効期限: 2099-05-03]
+      8013753761C78FA1A48230C682AA8224E47F7A68
+   カードシリアル番号 = 0008 21027354
+      Keygrip = 174968D4F353A60CB18A96DE3680AF8FB6C14E95
+
+$
+```
+どういうこと？  
+
 
 
 <a id="operatingsystemnetwork_pgp_keyserver"></a>
