@@ -2063,7 +2063,7 @@ $
 
 以下、コマンド利用内容の確認作業。
 ```terminal
-[~] $ gpg --edit-card
+$ gpg --edit-card
 
 gpg: *警告*: サーバ'gpg-agent'はこちらより古いです(2.2.41 < 2.4.8)
 gpg: 注意: 古いサーバは、重要なセキュリティの修正が欠如しているかもしれません。
@@ -2133,6 +2133,57 @@ openpgp        OpenPGP app にスイッチします
 
 gpg/card>	←☆あとに続く。
 ```
+
+以下、作業継続。
+```terminal
+gpg/card>	←☆上記から作業継続。
+gpg/card> kdf-setup	←☆平文から暗号化(デフォルトPINの時に設定が必須とのこと。PIN変更後にこれをしたらPIN入力を受け付けないとか)。
+
+gpg/card> name	←☆氏名の入力。
+カード所有者の姓 (surname): asakunotomohiro
+カード所有者の名 (given name):
+
+gpg/card> lang	←☆利用言語の設定。
+言語の優先指定: ja	←☆日本語。
+
+gpg/card> login	←☆メールアドレスの入力(ログイン名なのに？)。
+ログイン・データ (アカウント名): asakuno.secure@pgp.asakuno.org
+
+gpg/card> list
+
+Reader ...........: Yubico YubiKey OTP FIDO CCID
+Application ID ...: D2760001240103040006240372580000
+Application type .: OpenPGP
+Version ..........: 5.8
+Manufacturer .....: Yubico
+Serial number ....: 21027354
+Name of cardholder: asakunotomohiro
+Language prefs ...: ja
+Salutation .......:
+URL of public key : [未設定]
+Login data .......: asakuno.secure@pgp.asakuno.org
+Signature PIN ....: 強制なし
+Key attributes ...: rsa2048 rsa2048 rsa2048
+Max. PIN lengths .: 127 127 127
+PIN retry counter : 3 0 3
+Signature counter : 0
+KDF setting ......: on
+UIF setting ......: Sign=off Decrypt=off Auth=off
+Signature key ....: [none]
+Encryption key....: [none]
+Authentication key: [none]
+General key info..: [none]
+
+gpg/card> url
+公開鍵を取得するURL: https://keybase.io/asakunotomohiro
+
+gpg/card> quit	←☆いったん抜ける。
+$
+```
+とりあえず、他のサイトで解説しているとおりに設定してみた。  
+大丈夫だろうか・・・。  
+
+
 
 
 <a id="operatingsystemnetwork_pgp_keyserver"></a>
