@@ -2079,7 +2079,7 @@ Manufacturer .....: Yubico
 Serial number ....: 21027354
 Name of cardholder: [未設定]
 Language prefs ...: [未設定]
-Salutation .......: 
+Salutation .......:
 URL of public key : [未設定]
 Login data .......: [未設定]
 Signature PIN ....: 強制なし
@@ -2258,6 +2258,73 @@ ssb  ed25519/82AA8224E47F7A68
 
 注意: 秘密鍵のローカルなコピーは"save"だけで削除されます。
 gpg> save
+$
+```
+
+以下、管理者PINの変更。
+```terminal
+$ gpg --edit-card
+
+gpg: *警告*: サーバ'gpg-agent'はこちらより古いです(2.2.41 < 2.4.8)
+gpg: 注意: 古いサーバは、重要なセキュリティの修正が欠如しているかもしれません。
+gpg: 注意: "gpgconf --kill all"コマンドを使って再起動してください。
+gpg: *警告*: サーバ'scdaemon'はこちらより古いです(2.2.41 < 2.4.8)
+gpg: 注意: 古いサーバは、重要なセキュリティの修正が欠如しているかもしれません。
+gpg: 注意: "gpgconf --kill all"コマンドを使って再起動してください。
+Reader ...........: Yubico YubiKey OTP FIDO CCID
+Application ID ...: D2760001240103040006240372580000
+Application type .: OpenPGP
+Version ..........: 5.8
+Manufacturer .....: Yubico
+Serial number ....: 21027354
+Name of cardholder: asakunotomohiro
+Language prefs ...: ja
+Salutation .......:
+URL of public key : https://github.com/asakunotomohiro.gpg	←☆1つしか登録されない？
+Login data .......: asakuno.secure@pgp.asakuno.org
+Signature PIN ....: 強制なし
+Key attributes ...: ed25519 rsa2048 rsa2048
+Max. PIN lengths .: 127 127 127
+PIN retry counter : 3 0 3
+Signature counter : 0
+KDF setting ......: on
+UIF setting ......: Sign=off Decrypt=off Auth=off
+Signature key ....: 2771 F0FC F8FE 74CD 9B9C  2543 9D48 93D1 8D35 8530
+      created ....: 2023-05-22 09:24:47
+Encryption key....: [none]
+Authentication key: [none]
+General key info..:
+pub  ed25519/9D4893D18D358530 2023-05-22 asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
+sec>  ed25519/9D4893D18D358530  作成: 2023-05-22  有効期限: 2105-05-03
+                                カード番号: 0008 21027354
+ssb   cv25519/2B6243601FA1DBDA  作成: 2023-05-22  有効期限: 2099-05-03
+ssb   ed25519/7A430907759D9FF4  作成: 2023-05-22  有効期限: 2099-05-03
+ssb   ed25519/82AA8224E47F7A68  作成: 2023-05-22  有効期限: 2099-05-03
+
+gpg/card> admin
+管理者コマンドが許可されています
+
+gpg/card> passwd
+gpg: OpenPGPカードno. D2760001240103040006255425490000を検出
+
+1 - change PIN
+2 - unblock PIN
+3 - change Admin PIN
+4 - set the Reset Code
+Q - quit
+
+あなたの選択は? 3
+PIN changed.
+
+1 - change PIN
+2 - unblock PIN
+3 - change Admin PIN
+4 - set the Reset Code
+Q - quit
+
+あなたの選択は? q
+
+gpg/card> q
 $
 ```
 
