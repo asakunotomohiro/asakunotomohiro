@@ -2285,10 +2285,10 @@ Login data .......: asakuno.secure@pgp.asakuno.org
 Signature PIN ....: 強制なし
 Key attributes ...: ed25519 rsa2048 rsa2048
 Max. PIN lengths .: 127 127 127
-PIN retry counter : 3 0 3
+PIN retry counter : 3 0 3	←☆PINの試行回数変更コマンド：ykman openpgp access set-retries <PIN> <Reset Code> <Admin PIN>
 Signature counter : 0
 KDF setting ......: on
-UIF setting ......: Sign=off Decrypt=off Auth=off
+UIF setting ......: Sign=off Decrypt=off Auth=off	←☆デフォルトのままでいいと思う(変更コマンド：ykman openpgp keys set-touch <sig|enc|aut> <Off/On/Cached/Fixed/Cached-Fixed>)。
 Signature key ....: 2771 F0FC F8FE 74CD 9B9C  2543 9D48 93D1 8D35 8530
       created ....: 2023-05-22 09:24:47
 Encryption key....: [none]
