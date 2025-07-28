@@ -2138,6 +2138,7 @@ gpg/card>	←☆あとに続く。
 ```terminal
 gpg/card>	←☆上記から作業継続。
 gpg/card> kdf-setup	←☆平文から暗号化(デフォルトPINの時に設定が必須とのこと。PIN変更後にこれをしたらPIN入力を受け付けないとか)。
+                        ※管理者PINの入力を求められる(デフォルト/12345678)。
 
 gpg/card> name	←☆氏名の入力。
 カード所有者の姓 (surname): asakunotomohiro
@@ -2177,6 +2178,9 @@ General key info..: [none]
 gpg/card> url
 公開鍵を取得するURL: https://keybase.io/asakunotomohiro
 
+gpg/card> url
+公開鍵を取得するURL: https://github.com/asakunotomohiro.gpg
+
 gpg/card> quit	←☆いったん抜ける。
 $
 ```
@@ -2184,6 +2188,78 @@ $
 大丈夫だろうか・・・。  
 
 
+以下、実際の鍵焼き付け作業。
+```terminal
+$ gpg -K asakuno.secure@pgp.asakuno.org
+gpg: *警告*: サーバ'gpg-agent'はこちらより古いです(2.2.41 < 2.4.8)
+gpg: 注意: 古いサーバは、重要なセキュリティの修正が欠如しているかもしれません。
+gpg: 注意: "gpgconf --kill all"コマンドを使って再起動してください。
+gpg: problem with fast path key listing: IPCパラメータエラーです - ignored
+sec   ed25519 2023-05-22 [C] [有効期限: 2105-05-03]
+      2771F0FCF8FE74CD9B9C25439D4893D18D358530
+uid           [  究極  ] asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
+ssb   cv25519 2023-05-22 [E] [有効期限: 2099-05-03]
+ssb   ed25519 2023-05-22 [S] [有効期限: 2099-05-03]
+ssb   ed25519 2023-05-22 [A] [有効期限: 2099-05-03]
+
+$ gpg -K --with-subkey-fingerprint asakuno.secure@pgp.asakuno.org
+gpg: *警告*: サーバ'gpg-agent'はこちらより古いです(2.2.41 < 2.4.8)
+gpg: 注意: 古いサーバは、重要なセキュリティの修正が欠如しているかもしれません。
+gpg: 注意: "gpgconf --kill all"コマンドを使って再起動してください。
+gpg: problem with fast path key listing: IPCパラメータエラーです - ignored
+sec   ed25519 2023-05-22 [C] [有効期限: 2105-05-03]
+      2771F0FCF8FE74CD9B9C25439D4893D18D358530
+uid           [  究極  ] asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
+ssb   cv25519 2023-05-22 [E] [有効期限: 2099-05-03]
+      728B0A778912932B9397341B2B6243601FA1DBDA
+ssb   ed25519 2023-05-22 [S] [有効期限: 2099-05-03]
+      60A7B0576F7404D51D59520C7A430907759D9FF4
+ssb   ed25519 2023-05-22 [A] [有効期限: 2099-05-03]
+      8013753761C78FA1A48230C682AA8224E47F7A68
+
+$ gpg --edit-key 2771F0FCF8FE74CD9B9C25439D4893D18D358530
+gpg (GnuPG) 2.4.8; Copyright (C) 2025 g10 Code GmbH
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+gpg: *警告*: サーバ'gpg-agent'はこちらより古いです(2.2.41 < 2.4.8)
+gpg: 注意: 古いサーバは、重要なセキュリティの修正が欠如しているかもしれません。
+gpg: 注意: "gpgconf --kill all"コマンドを使って再起動してください。
+gpg: problem with fast path key listing: IPCパラメータエラーです - ignored
+秘密鍵が利用できます。
+
+sec  ed25519/9D4893D18D358530
+     作成: 2023-05-22  有効期限: 2105-05-03  利用法: C
+     信用: 究極        有効性: 究極
+ssb  cv25519/2B6243601FA1DBDA
+     作成: 2023-05-22  有効期限: 2099-05-03  利用法: E
+ssb  ed25519/7A430907759D9FF4
+     作成: 2023-05-22  有効期限: 2099-05-03  利用法: S
+ssb  ed25519/82AA8224E47F7A68
+     作成: 2023-05-22  有効期限: 2099-05-03  利用法: A
+[  究極  ] (1). asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
+	←☆本来であれば、"key 1"というコマンドで鍵を指定するのだが、1つしかないため、省略。
+gpg> keytocard	←☆鍵の焼き付け実施。
+この主鍵を本当に移動しますか? (y/N) y
+鍵を保管する場所を選択してください:
+   (1) 署名鍵	←☆"(2) 暗号化鍵"もあるようだ。
+あなたの選択は? 1	←☆管理者PINを聞かれる。
+
+sec  ed25519/9D4893D18D358530
+     作成: 2023-05-22  有効期限: 2105-05-03  利用法: C
+     信用: 究極        有効性: 究極
+ssb  cv25519/2B6243601FA1DBDA
+     作成: 2023-05-22  有効期限: 2099-05-03  利用法: E
+ssb  ed25519/7A430907759D9FF4
+     作成: 2023-05-22  有効期限: 2099-05-03  利用法: S
+ssb  ed25519/82AA8224E47F7A68
+     作成: 2023-05-22  有効期限: 2099-05-03  利用法: A
+[  究極  ] (1). asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
+
+注意: 秘密鍵のローカルなコピーは"save"だけで削除されます。
+gpg> save
+$
+```
 
 
 <a id="operatingsystemnetwork_pgp_keyserver"></a>
