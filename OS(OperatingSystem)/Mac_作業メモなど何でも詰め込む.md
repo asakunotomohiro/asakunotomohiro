@@ -360,6 +360,20 @@ $
 ```
 無事にセットアップ完了。  
 
+以下、サンプルのコンパイル。
+```terminal
+$ cd examples/Devices/Keyboardio/Atreus
+$ make compile
+Using Kaleidoscope from /Users/asakunotomohiro/study勉強用Githubリポジトリ/github@Kaleidoscope-Keyboardio-Preonic/
+Building in quiet mode. For a lot more information, add 'VERBOSE=1' to the beginning of your call to /Library/Developer/CommandLineTools/usr/bin/make
+Firmware build at /var/folders/c3/0s8xw01169qc2x42yn7_7v000000gn/T//kaleidoscope-asakunotomohiro/output/4258663563-Atreus.ino/Atreus-ce946d.hex
+$ echo $?
+0
+$
+```
+成功したが、私が持っているキーボードは、Preonic何だが!?  
+どうすればいい？  
+
 
 <a id="memo99999"></a>
 ## 個人メモ(総合的な優先度の高いメモ)
