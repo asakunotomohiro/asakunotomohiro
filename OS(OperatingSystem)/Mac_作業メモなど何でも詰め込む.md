@@ -236,68 +236,13 @@ https://github.com/keyboardio/Kaleidoscope
 ```terminal
 $ arduino-cli version
 zsh: command not found: arduino-cli
-$ brew install arduino-cli
+$ brew install arduino-cli	←☆Arduinoインストール実施。
 ==> Downloading https://ghcr.io/v2/homebrew/core/arduino-cli/manifests/1.2.2
 ######################################################################################################################################### 100.0%
 ==> Fetching arduino-cli
-==> Downloading https://ghcr.io/v2/homebrew/core/arduino-cli/blobs/sha256:2a608c9576803a752c6fad9769438ac81746dc5c7ebb57e374f90e85ee324ff7
-######################################################################################################################################### 100.0%
-==> Pouring arduino-cli--1.2.2.arm64_sequoia.bottle.tar.gz
-🍺  /opt/homebrew/Cellar/arduino-cli/1.2.2: 9 files, 23.1MB
-==> Running `brew cleanup arduino-cli`...
-Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.
-Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
-==> `brew cleanup` has not been run in the last 30 days, running now...
-Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.
-Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/berkeley-db@5_bottle_manifest--5.3.28_1... (11.0KB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/berkeley-db@5--5.3.28_1... (22.5MB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/cairo_bottle_manifest--1.18.4... (29.3KB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/cairo--1.18.4... (736.1KB)
-Removing: /opt/homebrew/Cellar/cryptography/45.0.4... (218 files, 9.2MB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/cryptography_bottle_manifest--45.0.4... (12.3KB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/cryptography--45.0.4... (2.9MB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/gnutls_bottle_manifest--3.8.9... (20KB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/gnutls--3.8.9... (3.0MB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/icu4c@76_bottle_manifest--76.1_2... (10.9KB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/icu4c@76--76.1_2... (29.6MB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/icu4c@77_bottle_manifest--77.1... (10.9KB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/icu4c@77--77.1... (29.7MB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/jpeg_bottle_manifest--9f... (9.6KB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/jpeg--9f... (303.7KB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/libassuan_bottle_manifest--3.0.2... (9.7KB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/libassuan--3.0.2... (171.7KB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/libidn2_bottle_manifest--2.3.8... (11KB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/libidn2--2.3.8... (304.3KB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/libx11_bottle_manifest--1.8.12... (15.7KB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/libx11--1.8.12... (2.2MB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/little-cms2_bottle_manifest--2.17... (11.1KB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/little-cms2--2.17... (423.2KB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/macvim_bottle_manifest--9.1.1128... (16.2KB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/macvim--9.1.1128... (18.6MB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/mpfr_bottle_manifest--4.2.2... (10.2KB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/mpfr--4.2.2... (1MB)
-Removing: /opt/homebrew/Cellar/openssl@3/3.5.0... (7,563 files, 35.4MB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/openssl@3_bottle_manifest--3.5.0... (11.9KB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/openssl@3--3.5.0... (10.2MB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/pango_bottle_manifest--1.56.3... (30.7KB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/pango--1.56.3... (829.5KB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/pcre2_bottle_manifest--10.45... (10.3KB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/pcre2--10.45... (2.2MB)
-Removing: /opt/homebrew/Cellar/readline/8.2.13... (51 files, 1.7MB)
-Removing: /opt/homebrew/Cellar/sqlite/3.50.1... (13 files, 4.9MB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/sqlite_bottle_manifest--3.50.1... (11.2KB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/sqlite--3.50.1... (2.2MB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/zstd_bottle_manifest--1.5.7... (9.5KB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/zstd--1.5.7... (770.5KB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/rust--1.87.0... (93.7MB)
-Removing: /Users/asakunotomohiro/Library/Caches/Homebrew/llvm--20.1.7... (406.7MB)
-Removing: /Users/asakunotomohiro/Library/Logs/Homebrew/perl... (64B)
-Removing: /Users/asakunotomohiro/Library/Logs/Homebrew/glib... (64B)
-Removing: /Users/asakunotomohiro/Library/Logs/Homebrew/rust... (64B)
-Removing: /Users/asakunotomohiro/Library/Logs/Homebrew/llvm... (64B)
-Removing: /Users/asakunotomohiro/Library/Logs/Homebrew/openssl@3... (64B)
-Removing: /Users/asakunotomohiro/Library/Logs/Homebrew/ca-certificates... (64B)
+　　　・
+　　　・
+　　　・
 Removing: /Users/asakunotomohiro/Library/Logs/Homebrew/unbound... (64B)
 Removing: /Users/asakunotomohiro/Library/Logs/Homebrew/gnupg... (64B)
 Removing: /Users/asakunotomohiro/Library/Logs/Homebrew/ruby... (64B)
@@ -308,6 +253,55 @@ $ arduino-cli version
 arduino-cli  Version: 1.2.2 Commit: Homebrew Date: 2025-04-22T13:49:40Z
 $
 ```
+
+以下、セットアップ作業(失敗)。
+```terminal
+$ git branch
+* master
+$ arduino-cli version
+arduino-cli  Version: 1.2.2 Commit: Homebrew Date: 2025-04-22T13:49:40Z
+$ pwd
+/Users/asakunotomohiro/study勉強用Githubリポジトリ/github@Kaleidoscope-Keyboardio-Preonic
+$ make setup	←☆セットアップ実施。
+Building in quiet mode. For a lot more information, add 'VERBOSE=1' to the beginning of your call to /Library/Developer/CommandLineTools/usr/bin/make
+Downloading index: package_index.tar.bz2 downloaded
+Downloading index: package_kaleidoscope_devel_index.json downloaded
+Platform arduino:avr@1.8.6 already installed
+Tool arduino:avr-gcc@7.3.0-atmel3.6.1-arduino7 already installed
+Tool arduino:avrdude@6.3.0-arduino17 already installed
+Downloading packages...
+keyboardio:avr-tools-only@0.0.1 keyboardio:avr-tools-only@0.0.1はすでにダウンロードされています
+Installing platform keyboardio:avr-tools-only@0.0.1...
+Configuring platform....
+Platform keyboardio:avr-tools-only@0.0.1 installed
+Tool keyboardio:xpack-arm-none-eabi-gcc@9.3.1-1.3 already installed
+Tool keyboardio:xpack-openocd@0.11.0-1 already installed
+Tool keyboardio:dfu-util@0.11.0-arduino3 already installed
+Downloading packages...
+keyboardio:gd32-tools-only@0.0.1 keyboardio:gd32-tools-only@0.0.1はすでにダウンロードされています
+Installing platform keyboardio:gd32-tools-only@0.0.1...
+Configuring platform....
+Platform keyboardio:gd32-tools-only@0.0.1 installed
+cd /Users/asakunotomohiro/study勉強用Githubリポジトリ/github@Kaleidoscope-Keyboardio-Preonic//.arduino/user/hardware/keyboardio; git pull; \
+		git submodule update --init --recursive
+Already up to date.
+cd /Users/asakunotomohiro/study勉強用Githubリポジトリ/github@Kaleidoscope-Keyboardio-Preonic//.arduino/user/hardware/keyboardio/gd32; git pull; \
+		git submodule update --init --recursive
+Already up to date.
+Downloading index: package_index.tar.bz2 downloaded
+Downloading index: package_kaleidoscope_master_index.json downloaded
+Downloading packages...
+keyboardio:arm-none-eabi-gcc@9-2019q4 keyboardio:arm-none-eabi-gcc@9-2019q4はすでにダウンロードされています
+keyboardio:nrfjprog@9.4.0 keyboardio:nrfjprog@9.4.0はすでにダウンロードされています
+keyboardio:CMSIS@5.7.0 context deadline exceeded (Client.Timeout or context cancellation while reading body)
+Error during install: context deadline exceeded (Client.Timeout or context cancellation while reading body)
+make: *** [install-arduino-core-nrf52] Error 1
+$ echo $?
+2
+$
+```
+
+
 
 
 <a id="memo99999"></a>
