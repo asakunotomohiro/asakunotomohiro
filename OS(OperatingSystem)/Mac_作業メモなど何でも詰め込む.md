@@ -228,9 +228,11 @@ dscl . -create /Users/hogeUser RealName hogeUser
 <a id="keyboardioKaleidoscopeEnvironmentConstruction"></a>
 ### keyboardioのKaleidoscopeの環境構築。
 **TODO: 適切な記述場所があれば、移動すること。**  
-https://github.com/keyboardio/Kaleidoscope
+https://github.com/keyboardio/Kaleidoscope  
+https://chrysalis.keyboard.io/	←☆これを使うことで、ブラウザのGUI環境でキーマップ変更が可能になる。  
+※工場出荷状態のキーマップ状態を"**Kaleidoscope-Keyboardio-Preonic**"ディレクトリに格納済み(ブラウザから反映できるはず)。  
 
-どうやら**[Arduino](https://formulae.brew.sh/formula/arduino-cli)**を事前に用意しておく必要があるようだ。  
+どうやら **[Arduino](https://formulae.brew.sh/formula/arduino-cli)** を事前に用意しておく必要があるようだ。  
 そして、IDE環境もあるようだが、コマンドライン操作で十分だろう。  
 以下、事前インストール作業(`brew install arduino-cli`)。
 ```terminal
@@ -238,7 +240,7 @@ $ arduino-cli version
 zsh: command not found: arduino-cli
 $ brew install arduino-cli	←☆Arduinoインストール実施。
 ==> Downloading https://ghcr.io/v2/homebrew/core/arduino-cli/manifests/1.2.2
-######################################################################################################################################### 100.0%
+############################################################################100.0%
 ==> Fetching arduino-cli
 　　　・
 　　　・
@@ -266,29 +268,9 @@ $ make setup	←☆セットアップ実施。
 Building in quiet mode. For a lot more information, add 'VERBOSE=1' to the beginning of your call to /Library/Developer/CommandLineTools/usr/bin/make
 Downloading index: package_index.tar.bz2 downloaded
 Downloading index: package_kaleidoscope_devel_index.json downloaded
-Platform arduino:avr@1.8.6 already installed
-Tool arduino:avr-gcc@7.3.0-atmel3.6.1-arduino7 already installed
-Tool arduino:avrdude@6.3.0-arduino17 already installed
-Downloading packages...
-keyboardio:avr-tools-only@0.0.1 keyboardio:avr-tools-only@0.0.1はすでにダウンロードされています
-Installing platform keyboardio:avr-tools-only@0.0.1...
-Configuring platform....
-Platform keyboardio:avr-tools-only@0.0.1 installed
-Tool keyboardio:xpack-arm-none-eabi-gcc@9.3.1-1.3 already installed
-Tool keyboardio:xpack-openocd@0.11.0-1 already installed
-Tool keyboardio:dfu-util@0.11.0-arduino3 already installed
-Downloading packages...
-keyboardio:gd32-tools-only@0.0.1 keyboardio:gd32-tools-only@0.0.1はすでにダウンロードされています
-Installing platform keyboardio:gd32-tools-only@0.0.1...
-Configuring platform....
-Platform keyboardio:gd32-tools-only@0.0.1 installed
-cd /Users/asakunotomohiro/study勉強用Githubリポジトリ/github@Kaleidoscope-Keyboardio-Preonic//.arduino/user/hardware/keyboardio; git pull; \
-		git submodule update --init --recursive
-Already up to date.
-cd /Users/asakunotomohiro/study勉強用Githubリポジトリ/github@Kaleidoscope-Keyboardio-Preonic//.arduino/user/hardware/keyboardio/gd32; git pull; \
-		git submodule update --init --recursive
-Already up to date.
-Downloading index: package_index.tar.bz2 downloaded
+　　　・
+　　　・
+　　　・
 Downloading index: package_kaleidoscope_master_index.json downloaded
 Downloading packages...
 keyboardio:arm-none-eabi-gcc@9-2019q4 keyboardio:arm-none-eabi-gcc@9-2019q4はすでにダウンロードされています
@@ -309,45 +291,9 @@ $ make setup
 Building in quiet mode. For a lot more information, add 'VERBOSE=1' to the beginning of your call to /Library/Developer/CommandLineTools/usr/bin/make
 Downloading index: package_index.tar.bz2 downloaded
 Downloading index: package_kaleidoscope_devel_index.json downloaded
-Platform arduino:avr@1.8.6 already installed
-Tool arduino:avr-gcc@7.3.0-atmel3.6.1-arduino7 already installed
-Tool arduino:avrdude@6.3.0-arduino17 already installed
-Downloading packages...
-keyboardio:avr-tools-only@0.0.1 keyboardio:avr-tools-only@0.0.1はすでにダウンロードされています
-Installing platform keyboardio:avr-tools-only@0.0.1...
-Configuring platform....
-Platform keyboardio:avr-tools-only@0.0.1 installed
-Tool keyboardio:xpack-arm-none-eabi-gcc@9.3.1-1.3 already installed
-Tool keyboardio:xpack-openocd@0.11.0-1 already installed
-Tool keyboardio:dfu-util@0.11.0-arduino3 already installed
-Downloading packages...
-keyboardio:gd32-tools-only@0.0.1 keyboardio:gd32-tools-only@0.0.1はすでにダウンロードされています
-Installing platform keyboardio:gd32-tools-only@0.0.1...
-Configuring platform....
-Platform keyboardio:gd32-tools-only@0.0.1 installed
-cd /Users/asakunotomohiro/study勉強用Githubリポジトリ/github@Kaleidoscope-Keyboardio-Preonic//.arduino/user/hardware/keyboardio; git pull; \
-		git submodule update --init --recursive
-Already up to date.
-cd /Users/asakunotomohiro/study勉強用Githubリポジトリ/github@Kaleidoscope-Keyboardio-Preonic//.arduino/user/hardware/keyboardio/gd32; git pull; \
-		git submodule update --init --recursive
-Already up to date.
-Downloading index: package_index.tar.bz2 downloaded
-Downloading index: package_kaleidoscope_master_index.json downloaded
-Downloading packages...
-keyboardio:arm-none-eabi-gcc@9-2019q4 keyboardio:arm-none-eabi-gcc@9-2019q4はすでにダウンロードされています
-keyboardio:nrfjprog@9.4.0 keyboardio:nrfjprog@9.4.0はすでにダウンロードされています
-keyboardio:CMSIS@5.7.0 keyboardio:CMSIS@5.7.0はすでにダウンロードされています
-arduino:openocd@0.11.0-arduino2 arduino:openocd@0.11.0-arduino2はすでにダウンロードされています
-keyboardio:nrf52@2025.7.28154301 downloaded
-Installing keyboardio:arm-none-eabi-gcc@9-2019q4...
-Configuring tool....
-keyboardio:arm-none-eabi-gcc@9-2019q4をインストールしました
-Installing keyboardio:nrfjprog@9.4.0...
-Configuring tool....
-keyboardio:nrfjprog@9.4.0をインストールしました
-Installing keyboardio:CMSIS@5.7.0...
-Configuring tool....
-keyboardio:CMSIS@5.7.0をインストールしました
+　　　・
+　　　・
+　　　・
 Installing arduino:openocd@0.11.0-arduino2...
 Configuring tool....
 arduino:openocd@0.11.0-arduino2をインストールしました
