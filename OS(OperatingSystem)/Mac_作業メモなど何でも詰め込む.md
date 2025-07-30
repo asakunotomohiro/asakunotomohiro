@@ -377,6 +377,32 @@ $
 えぇ。  
 なぜ、プラグイン!?  
 
+ということで、以下、コンパイル(失敗)。
+```terminal
+$ make compile
+Using Kaleidoscope from /Users/asakunotomohiro/study勉強用Githubリポジトリ/github@Kaleidoscope-Keyboardio-Preonic/
+Building in quiet mode. For a lot more information, add 'VERBOSE=1' to the beginning of your call to /Library/Developer/CommandLineTools/usr/bin/make
+「Kaleidoscope.h」に対して複数のライブラリが見つかりました	←☆このような重複がけたたましいほど存在していた。
+  使用済：/Users/asakunotomohiro/study勉強用Githubリポジトリ/github@Kaleidoscope-Keyboardio-Preonic
+  未使用：/Users/asakunotomohiro/study勉強用Githubリポジトリ/github@Kaleidoscope-Keyboardio-Preonic/.arduino/data/packages/keyboardio/hardware/nrf52/2025.7.28154301/libraries/Kaleidoscope
+Error during build: exec: "python": executable file not found in $PATH
+make: *** [compile] Error 1
+$
+```
+仕方ないため、重複ファイルをすべて消して、コンパイルをやり直した。
+
+以下、再実施。
+```terminal
+$ make compile
+Using Kaleidoscope from /Users/asakunotomohiro/study勉強用Githubリポジトリ/github@Kaleidoscope-Keyboardio-Preonic/
+Building in quiet mode. For a lot more information, add 'VERBOSE=1' to the beginning of your call to /Library/Developer/CommandLineTools/usr/bin/make
+Error during build: exec: "python": executable file not found in $PATH
+make: *** [compile] Error 1
+$
+```
+Python環境がないって・・・あるよ。  
+
+
 
 <a id="memo99999"></a>
 ## 個人メモ(総合的な優先度の高いメモ)
