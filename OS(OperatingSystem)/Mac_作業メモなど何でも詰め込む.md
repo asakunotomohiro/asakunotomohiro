@@ -366,13 +366,16 @@ $ cd examples/Devices/Keyboardio/Atreus
 $ make compile
 Using Kaleidoscope from /Users/asakunotomohiro/study勉強用Githubリポジトリ/github@Kaleidoscope-Keyboardio-Preonic/
 Building in quiet mode. For a lot more information, add 'VERBOSE=1' to the beginning of your call to /Library/Developer/CommandLineTools/usr/bin/make
-Firmware build at /var/folders/c3/0s8xw01169qc2x42yn7_7v000000gn/T//kaleidoscope-asakunotomohiro/output/4258663563-Atreus.ino/Atreus-ce946d.hex
+Firmware build at kaleidoscope-asakunotomohiro/output/4258663563-Atreus.ino/Atreus-ce946d.hex
 $ echo $?
 0
 $
 ```
 成功したが、私が持っているキーボードは、Preonic何だが!?  
 どうすればいい？  
+仕方ないため、[https://discord.gg/](https://discord.gg/QRxsUGXKxP)で質問したら`/Users/asakunotomohiro/study勉強用Githubリポジトリ/github@Kaleidoscope-Keyboardio-Preonic/plugins/Kaleidoscope-Hardware-Keyboardio-Preonic/examples/Devices/Keyboardio/Preonic/Makefile`に[ある](https://discord.com/channels/492408953041321984/1214287365967978646/1399753302769664061)とのこと。  
+えぇ。  
+なぜ、プラグイン!?  
 
 
 <a id="memo99999"></a>
