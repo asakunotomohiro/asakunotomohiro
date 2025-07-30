@@ -402,6 +402,22 @@ $
 ```
 Python環境がないって・・・あるよ。  
 
+以下、Python環境からリンクして再実施。
+```terminal
+$ sudo ln -s $(which python3) /usr/local/bin/python
+Password:
+$ make compile
+Using Kaleidoscope from /Users/asakunotomohiro/study勉強用Githubリポジトリ/github@Kaleidoscope-Keyboardio-Preonic/
+Building in quiet mode. For a lot more information, add 'VERBOSE=1' to the beginning of your call to /Library/Developer/CommandLineTools/usr/bin/make
+/Users/asakunotomohiro/study勉強用Githubリポジトリ/github@Kaleidoscope-Keyboardio-Preonic/.arduino/data/packages/keyboardio/hardware/nrf52/2025.7.28154301/tools/uf2conv/uf2conv.py:177: SyntaxWarning: invalid escape sequence '\s'
+  words = re.split('\s+', line)
+Firmware build at /var/folders/c3/0s8xw01169qc2x42yn7_7v000000gn/T//kaleidoscope-asakunotomohiro/output/172765298-Preonic.ino/Preonic-ce946d-dirty.hex
+$ echo $?
+0
+$
+```
+できた。  
+コンパイルに成功したが、本当にここで正しいのか、未だに懐疑的だ。  
 
 
 <a id="memo99999"></a>
