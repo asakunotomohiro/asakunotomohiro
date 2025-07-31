@@ -22,6 +22,8 @@
       詳細には未調査。  
     * [ユーザ新規追加](#macOperatingSystemreorder_dscl-create)  
       未調査。  
+  * 開発環境構築(TODO: このファイルに記載するのは違うような気がする)。  
+    * keyboardioの[Kaleidoscope](#keyboardioKaleidoscopeEnvironmentConstruction)を用意する。  
 
 
 
@@ -221,6 +223,147 @@ dscl . -create /Users/hogeUser UserShell /bin/bash
 dscl . -create /Users/hogeUser RealName hogeUser
 ```
 ※**sudo**コマンド必須？  
+
+
+<a id="keyboardioKaleidoscopeEnvironmentConstruction"></a>
+### keyboardioのKaleidoscopeの環境構築。
+**TODO: 適切な記述場所があれば、移動すること。**  
+https://github.com/keyboardio/Kaleidoscope  
+https://chrysalis.keyboard.io/	←☆これを使うことで、ブラウザのGUI環境でキーマップ変更が可能になる。  
+※工場出荷状態のキーマップ状態を"**Kaleidoscope-Keyboardio-Preonic**"ディレクトリに格納済み(ブラウザから反映できるはず)。  
+
+どうやら **[Arduino](https://formulae.brew.sh/formula/arduino-cli)** を事前に用意しておく必要があるようだ。  
+そして、IDE環境もあるようだが、コマンドライン操作で十分だろう。  
+以下、事前インストール作業(`brew install arduino-cli`)。
+```terminal
+$ arduino-cli version
+zsh: command not found: arduino-cli
+$ brew install arduino-cli	←☆Arduinoインストール実施。
+==> Downloading https://ghcr.io/v2/homebrew/core/arduino-cli/manifests/1.2.2
+############################################################################100.0%
+==> Fetching arduino-cli
+　　　・
+　　　・
+　　　・
+Removing: /Users/asakunotomohiro/Library/Logs/Homebrew/unbound... (64B)
+Removing: /Users/asakunotomohiro/Library/Logs/Homebrew/gnupg... (64B)
+Removing: /Users/asakunotomohiro/Library/Logs/Homebrew/ruby... (64B)
+==> Caveats
+zsh completions have been installed to:
+  /opt/homebrew/share/zsh/site-functions
+$ arduino-cli version
+arduino-cli  Version: 1.2.2 Commit: Homebrew Date: 2025-04-22T13:49:40Z
+$
+```
+
+以下、セットアップ作業(失敗)。
+```terminal
+$ git branch
+* master
+$ arduino-cli version
+arduino-cli  Version: 1.2.2 Commit: Homebrew Date: 2025-04-22T13:49:40Z
+$ pwd
+/Users/asakunotomohiro/study勉強用Githubリポジトリ/github@Kaleidoscope-Keyboardio-Preonic
+$ make setup	←☆セットアップ実施。
+Building in quiet mode. For a lot more information, add 'VERBOSE=1' to the beginning of your call to /Library/Developer/CommandLineTools/usr/bin/make
+Downloading index: package_index.tar.bz2 downloaded
+Downloading index: package_kaleidoscope_devel_index.json downloaded
+　　　・
+　　　・
+　　　・
+Downloading index: package_kaleidoscope_master_index.json downloaded
+Downloading packages...
+keyboardio:arm-none-eabi-gcc@9-2019q4 keyboardio:arm-none-eabi-gcc@9-2019q4はすでにダウンロードされています
+keyboardio:nrfjprog@9.4.0 keyboardio:nrfjprog@9.4.0はすでにダウンロードされています
+keyboardio:CMSIS@5.7.0 context deadline exceeded (Client.Timeout or context cancellation while reading body)
+Error during install: context deadline exceeded (Client.Timeout or context cancellation while reading body)
+make: *** [install-arduino-core-nrf52] Error 1
+$ echo $?
+2
+$
+```
+何度やっても失敗する。  
+そのため、`.arduino/data`にある"**package_kaleidoscope_master_index.json**"ファイルから直接ファイルを取得(ダウンロード)して、`.arduino/downloads/packages`に移動した。  
+
+以下、セットアップやり直し作業。
+```terminal
+$ make setup
+Building in quiet mode. For a lot more information, add 'VERBOSE=1' to the beginning of your call to /Library/Developer/CommandLineTools/usr/bin/make
+Downloading index: package_index.tar.bz2 downloaded
+Downloading index: package_kaleidoscope_devel_index.json downloaded
+　　　・
+　　　・
+　　　・
+Installing arduino:openocd@0.11.0-arduino2...
+Configuring tool....
+arduino:openocd@0.11.0-arduino2をインストールしました
+Installing platform keyboardio:nrf52@2025.7.28154301...
+Configuring platform....
+Platform keyboardio:nrf52@2025.7.28154301 installed
+$ echo $?
+0
+$
+```
+無事にセットアップ完了。  
+
+以下、サンプルのコンパイル。
+```terminal
+$ cd examples/Devices/Keyboardio/Atreus
+$ make compile
+Using Kaleidoscope from /Users/asakunotomohiro/study勉強用Githubリポジトリ/github@Kaleidoscope-Keyboardio-Preonic/
+Building in quiet mode. For a lot more information, add 'VERBOSE=1' to the beginning of your call to /Library/Developer/CommandLineTools/usr/bin/make
+Firmware build at kaleidoscope-asakunotomohiro/output/4258663563-Atreus.ino/Atreus-ce946d.hex
+$ echo $?
+0
+$
+```
+成功したが、私が持っているキーボードは、Preonic何だが!?  
+どうすればいい？  
+仕方ないため、[https://discord.gg/](https://discord.gg/QRxsUGXKxP)で質問したら`/Users/asakunotomohiro/study勉強用Githubリポジトリ/github@Kaleidoscope-Keyboardio-Preonic/plugins/Kaleidoscope-Hardware-Keyboardio-Preonic/examples/Devices/Keyboardio/Preonic/Makefile`に[ある](https://discord.com/channels/492408953041321984/1214287365967978646/1399753302769664061)とのこと。  
+えぇ。  
+なぜ、プラグイン!?  
+
+ということで、以下、コンパイル(失敗)。
+```terminal
+$ make compile
+Using Kaleidoscope from /Users/asakunotomohiro/study勉強用Githubリポジトリ/github@Kaleidoscope-Keyboardio-Preonic/
+Building in quiet mode. For a lot more information, add 'VERBOSE=1' to the beginning of your call to /Library/Developer/CommandLineTools/usr/bin/make
+「Kaleidoscope.h」に対して複数のライブラリが見つかりました	←☆このような重複がけたたましいほど存在していた。
+  使用済：/Users/asakunotomohiro/study勉強用Githubリポジトリ/github@Kaleidoscope-Keyboardio-Preonic
+  未使用：/Users/asakunotomohiro/study勉強用Githubリポジトリ/github@Kaleidoscope-Keyboardio-Preonic/.arduino/data/packages/keyboardio/hardware/nrf52/2025.7.28154301/libraries/Kaleidoscope
+Error during build: exec: "python": executable file not found in $PATH
+make: *** [compile] Error 1
+$
+```
+仕方ないため、重複ファイルをすべて消して、コンパイルをやり直した。
+
+以下、再実施。
+```terminal
+$ make compile
+Using Kaleidoscope from /Users/asakunotomohiro/study勉強用Githubリポジトリ/github@Kaleidoscope-Keyboardio-Preonic/
+Building in quiet mode. For a lot more information, add 'VERBOSE=1' to the beginning of your call to /Library/Developer/CommandLineTools/usr/bin/make
+Error during build: exec: "python": executable file not found in $PATH
+make: *** [compile] Error 1
+$
+```
+Python環境がないって・・・あるよ。  
+
+以下、Python環境からリンクして再実施。
+```terminal
+$ sudo ln -s $(which python3) /usr/local/bin/python
+Password:
+$ make compile
+Using Kaleidoscope from /Users/asakunotomohiro/study勉強用Githubリポジトリ/github@Kaleidoscope-Keyboardio-Preonic/
+Building in quiet mode. For a lot more information, add 'VERBOSE=1' to the beginning of your call to /Library/Developer/CommandLineTools/usr/bin/make
+/Users/asakunotomohiro/study勉強用Githubリポジトリ/github@Kaleidoscope-Keyboardio-Preonic/.arduino/data/packages/keyboardio/hardware/nrf52/2025.7.28154301/tools/uf2conv/uf2conv.py:177: SyntaxWarning: invalid escape sequence '\s'
+  words = re.split('\s+', line)
+Firmware build at /var/folders/c3/0s8xw01169qc2x42yn7_7v000000gn/T//kaleidoscope-asakunotomohiro/output/172765298-Preonic.ino/Preonic-ce946d-dirty.hex
+$ echo $?
+0
+$
+```
+できた。  
+コンパイルに成功したが、本当にここで正しいのか、未だに懐疑的だ。  
 
 
 <a id="memo99999"></a>
