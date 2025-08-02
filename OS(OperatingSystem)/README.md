@@ -3663,115 +3663,23 @@ $
 $ brew list | grep ssh	←☆HomebrewによるOpenSSHは入っていない。
 $ which ssh-keygen
 /usr/bin/ssh-keygen
-$ brew list
-==> Formulae
-arduino-cli		cryptography		hidapi			libraqm			mdloader		python@3.13
-arm-gcc-bin@8		cscope			icu4c@75		libtasn1		mpdecimal		qmk
-arm-none-eabi-binutils	dfu-programmer		icu4c@76		libtiff			mpfr			rbenv
-arm-none-eabi-gcc@8	dfu-util		icu4c@77		libunistring		nettle			readline
-arm-none-eabi-gcc@9	esptool			isl			libusb			node			ruby
-autoconf		fontconfig		jpeg			libusb-compat		npth			ruby-build
-automake		freetype		jpeg-turbo		libuv			openjdk			sqlite
-avr-binutils		fribidi			leptonica		libx11			openjdk@11		teensy_loader_cli
-avr-gcc@8		gdbm			libarchive		libxau			openjpeg		tesseract
-avr-gcc@9		gettext			libassuan		libxcb			openssl@3		texinfo
-avrdude			giflib			libb2			libxdmcp		p11-kit			unbound
-berkeley-db@5		glib			libevent		libxext			pango			webp
-boost			gmp			libftdi			libxrender		pcre2			wget2
-bootloadhid		gnupg			libgcrypt		libyaml			perl			woff2
-brotli			gnutls			libgpg-error		little-cms2		pillow			xorgproto
-c-ares			go			libidn2			lua			pinentry		xz
-ca-certificates		golangci-lint		libimagequant		lz4			pinentry-mac		ykman
-cairo			gpgme			libksba			lzo			pipx			zstd
-cffi			gradle			libmpc			m4			pixman
-clang-format		graphite2		libnghttp2		macvim			pkgconf
-confuse			harfbuzz		libpng			make			pycparser
-coreutils		hid_bootloader_cli	libpsl			maven			python-packaging
-
-==> Casks
-izip		librewolf	qmk-toolbox
 $ brew install openssh
 ==> Downloading https://formulae.brew.sh/api/formula.jws.json
 ==> Downloading https://formulae.brew.sh/api/cask.jws.json
 ==> Fetching downloads for: openssh
-==> Downloading https://ghcr.io/v2/homebrew/core/openssh/manifests/9.9p2
-######################################################################################################################################### 100.0%
-==> Fetching dependencies for openssh: ldns, libcbor and libfido2
-==> Downloading https://ghcr.io/v2/homebrew/core/ldns/manifests/1.8.4-2
-######################################################################################################################################### 100.0%
-==> Fetching ldns
-==> Downloading https://ghcr.io/v2/homebrew/core/ldns/blobs/sha256:2707eaadad1873f87ee5f9daf71f7710aee3be3ca4116768c2f1514f59704d65
-######################################################################################################################################### 100.0%
-==> Downloading https://ghcr.io/v2/homebrew/core/libcbor/manifests/0.12.0
-######################################################################################################################################### 100.0%
-==> Fetching libcbor
-==> Downloading https://ghcr.io/v2/homebrew/core/libcbor/blobs/sha256:a4b607654d91133a0a38fcc6106bfe3504e82101f6a3ebcba6ca81109645ffd0
-######################################################################################################################################### 100.0%
-==> Downloading https://ghcr.io/v2/homebrew/core/libfido2/manifests/1.16.0
-######################################################################################################################################### 100.0%
-==> Fetching libfido2
-==> Downloading https://ghcr.io/v2/homebrew/core/libfido2/blobs/sha256:fc3ca624819563b43e5ddc18ea7f391df1573e4e392a8a49c6aa3a510973f4dd
-######################################################################################################################################### 100.0%
-==> Fetching openssh
-==> Downloading https://ghcr.io/v2/homebrew/core/openssh/blobs/sha256:0f9bafc94fa471cbb2385c7d6c94555007562649922e994db8c0445a509f7309
-######################################################################################################################################### 100.0%
-==> Installing dependencies for openssh: ldns, libcbor and libfido2
-==> Installing openssh dependency: ldns
-==> Downloading https://ghcr.io/v2/homebrew/core/ldns/manifests/1.8.4-2
-Already downloaded: /Users/asakunotomohiro/Library/Caches/Homebrew/downloads/b1e8f29281069e7d8cd3303a53fc827adfde5ab2e8a03a3dd4b2f092613d392a--ldns-1.8.4-2.bottle_manifest.json
-==> Pouring ldns--1.8.4.arm64_sequoia.bottle.2.tar.gz
-🍺  /opt/homebrew/Cellar/ldns/1.8.4: 573 files, 7.2MB
-==> Installing openssh dependency: libcbor
-==> Downloading https://ghcr.io/v2/homebrew/core/libcbor/manifests/0.12.0
-Already downloaded: /Users/asakunotomohiro/Library/Caches/Homebrew/downloads/22ac2daeeb60d00b219e1a92979d8ff2ce1ca83d3cbfb177dca0150a0cedfe58--libcbor-0.12.0.bottle_manifest.json
-==> Pouring libcbor--0.12.0.arm64_sequoia.bottle.tar.gz
-🍺  /opt/homebrew/Cellar/libcbor/0.12.0: 36 files, 208.7KB
-==> Installing openssh dependency: libfido2
-==> Downloading https://ghcr.io/v2/homebrew/core/libfido2/manifests/1.16.0
-Already downloaded: /Users/asakunotomohiro/Library/Caches/Homebrew/downloads/5691a8c4c18f7d557160b40695910cc117fb05535fbb88ebaf55e283f401c917--libfido2-1.16.0.bottle_manifest.json
-==> Pouring libfido2--1.16.0.arm64_sequoia.bottle.tar.gz
-🍺  /opt/homebrew/Cellar/libfido2/1.16.0: 566 files, 1.3MB
-==> Installing openssh
-==> Pouring openssh--9.9p2.arm64_sequoia.bottle.tar.gz
-🍺  /opt/homebrew/Cellar/openssh/9.9p2: 47 files, 6.7MB
-==> Running `brew cleanup openssh`...
+　　　・
+　　　・
+　　　・
 Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.
 Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
 ==> No outdated dependents to upgrade!
 $ brew list | grep ssh	←☆HomebrewによるOpenSSHが入っている。
 (standard input):101:openssh
-$ brew list
-==> Formulae
-arduino-cli		cryptography		hidapi			libnghttp2		macvim			pixman
-arm-gcc-bin@8		cscope			icu4c@75		libpng			make			pkgconf
-arm-none-eabi-binutils	dfu-programmer		icu4c@76		libpsl			maven			pycparser
-arm-none-eabi-gcc@8	dfu-util		icu4c@77		libraqm			mdloader		python-packaging
-arm-none-eabi-gcc@9	esptool			isl			libtasn1		mpdecimal		python@3.13
-autoconf		fontconfig		jpeg			libtiff			mpfr			qmk
-automake		freetype		jpeg-turbo		libunistring		nettle			rbenv
-avr-binutils		fribidi			ldns			libusb			node			readline
-avr-gcc@8		gdbm			leptonica		libusb-compat		npth			ruby
-avr-gcc@9		gettext			libarchive		libuv			openjdk			ruby-build
-avrdude			giflib			libassuan		libx11			openjdk@11		sqlite
-berkeley-db@5		glib			libb2			libxau			openjpeg		teensy_loader_cli
-boost			gmp			libcbor			libxcb			openssh			tesseract
-bootloadhid		gnupg			libevent		libxdmcp		openssl@3		texinfo
-brotli			gnutls			libfido2		libxext			p11-kit			unbound
-c-ares			go			libftdi			libxrender		pango			webp
-ca-certificates		golangci-lint		libgcrypt		libyaml			pcre2			wget2
-cairo			gpgme			libgpg-error		little-cms2		perl			woff2
-cffi			gradle			libidn2			lua			pillow			xorgproto
-clang-format		graphite2		libimagequant		lz4			pinentry		xz
-confuse			harfbuzz		libksba			lzo			pinentry-mac		ykman
-coreutils		hid_bootloader_cli	libmpc			m4			pipx			zstd
-
-==> Casks
-izip		librewolf	qmk-toolbox
 $ which ssh-keygen
 /usr/bin/ssh-keygen
 $ ssh -V
 OpenSSH_9.8p1, LibreSSL 3.3.6
-$ brew link --overwrite openssh	←☆Homebrewを使うようにする？
+$ brew link --overwrite openssh	←☆Homebrewを使うようにする。
 Warning: Already linked: /opt/homebrew/Cellar/openssh/9.9p2
 To relink, run:
   brew unlink openssh && brew link openssh
@@ -3784,7 +3692,31 @@ OpenSSH_9.8p1, LibreSSL 3.3.6
 $
 ```
 
-
+上記の準備を経て、再度以下SSHの鍵を作成する。
+```terminal
+$ ssh-keygen -t ed25519-sk -O resident -O verify-required -C "bitbucket@asakunotomohiro_BIO" ~/.ssh/id_ed25519sk
+Generating public/private ed25519-sk key pair.
+You may need to touch your authenticator to authorize key generation.
+Enter passphrase for "/Users/asakunotomohiro/.ssh/id_ed25519sk" (empty for no passphrase): 1234
+Enter same passphrase again: 1234
+Your identification has been saved in /Users/asakunotomohiro/.ssh/id_ed25519sk
+Your public key has been saved in /Users/asakunotomohiro/.ssh/id_ed25519sk.pub
+The key fingerprint is:
+SHA256:mp/iHLp4manP7cSOE+HfddSJdG3F2SGg/o53E7CCbyk bitbucket@asakunotomohiro_BIO
+The key's randomart image is:
++[ED25519-SK 256]-+
+|              .B=|
+|            ..o.=|
+|           ... . |
+|        . ...    |
+|       .o. S+ =  |
+|       +0.. +o.= |
+|      =  o o +* o|
+|     .o*+B. .E o |
+|     o*= +=*    o|
++----[SHA256]-----+
+$
+```
 
 
 <a id="operatingsystemnetwork_mail"></a>
