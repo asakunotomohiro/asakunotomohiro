@@ -1008,7 +1008,7 @@ $
 </details>
 
 <a id="operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_subkeycertification"></a>
-SSH接続するときに利用するようだ。  
+SSH接続するときに利用するようだ([ユビキーのBIO版によるssh鍵の生成](#operatingsystemnetwork_yubico_biossh)は別にある)。  
 そのため、とりあえず作った。  
 
 <details><summary>認証のみの副鍵新規追加作成作業。</summary>
@@ -3528,6 +3528,7 @@ A proxy was used to fetch the proof: proxy.keyoxide.org
   * [環境構築](#operatingsystemnetwork_yubico_cliykman)  
   * [PINコード](#operatingsystemnetwork_yubico_pincode)  
   * [BIOコード](#operatingsystemnetwork_yubico_biofido)  
+  * [BIO版によるssh鍵の生成](#operatingsystemnetwork_yubico_biossh)  
 
 <a id="operatingsystemnetwork_yubico_cliykman"></a>
 ### 環境構築(ykman)
@@ -3635,6 +3636,92 @@ Enter your PIN:
 ID: 1e2a (右足指)
 $
 ```
+
+<a id="operatingsystemnetwork_yubico_biossh"></a>
+#### BIO版によるssh鍵の生成
+※[PGPによるSSH鍵の生成](#operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_subkeycertification)は今回と別であるため、気をつけること。  
+
+以下、SSHの鍵を作成する。
+```terminal
+$ ssh -V
+OpenSSH_9.8p1, LibreSSL 3.3.6
+$ ssh-keygen -t ed25519-sk -O resident -O verify-required -C "github@asakunotomohiro_BIO" ~/.ssh/id_ed25519sk
+Generating public/private ed25519-sk key pair.
+You may need to touch your authenticator to authorize key generation.
+No FIDO SecurityKeyProvider specified
+Key enrollment failed: invalid format
+$ echo $?
+255
+$
+```
+失敗した。  
+これは、MacOS標準搭載のOpenSSHを使っていることが原因だそうだ。  
+そのため、Homebrewを入れることにした。  
+
+以下、環境構築。
+```terminal
+$ brew list | grep ssh	←☆HomebrewによるOpenSSHは入っていない。
+$ which ssh-keygen
+/usr/bin/ssh-keygen
+$ brew install openssh
+==> Downloading https://formulae.brew.sh/api/formula.jws.json
+==> Downloading https://formulae.brew.sh/api/cask.jws.json
+==> Fetching downloads for: openssh
+　　　・
+　　　・
+　　　・
+Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.
+Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
+==> No outdated dependents to upgrade!
+$ brew list | grep ssh	←☆HomebrewによるOpenSSHが入っている。
+(standard input):101:openssh
+$ which ssh-keygen
+/usr/bin/ssh-keygen
+$ ssh -V
+OpenSSH_9.8p1, LibreSSL 3.3.6
+$ brew link --overwrite openssh	←☆Homebrewを使うようにする。
+Warning: Already linked: /opt/homebrew/Cellar/openssh/9.9p2
+To relink, run:
+  brew unlink openssh && brew link openssh
+$ echo $?
+0
+$ which ssh-keygen	←☆同じだが？
+/usr/bin/ssh-keygen
+$ ssh -V
+OpenSSH_9.8p1, LibreSSL 3.3.6
+$
+```
+
+上記の準備を経て、再度以下SSHの鍵を作成する。
+```terminal
+$ ssh-keygen -t ed25519-sk -O resident -O verify-required -C "github@asakunotomohiro_BIO" ~/.ssh/id_ed25519sk
+Generating public/private ed25519-sk key pair.
+You may need to touch your authenticator to authorize key generation.	←☆この当たりでBIOの指紋を通す必要がある。
+Enter passphrase for "/Users/asakunotomohiro/.ssh/id_ed25519sk" (empty for no passphrase): 1234
+Enter same passphrase again: 1234
+Your identification has been saved in /Users/asakunotomohiro/.ssh/id_ed25519sk	←☆これは誰にも公開してはならない(秘密鍵)。
+Your public key has been saved in /Users/asakunotomohiro/.ssh/id_ed25519sk.pub	←☆この公開鍵をGithubに登録する。
+The key fingerprint is:
+SHA256:mp/iHLp4manP7cSOE+HfddSJdG3F2SGg/o53E7CCbyk github@asakunotomohiro_BIO
+The key's randomart image is:
++[ED25519-SK 256]-+
+|              .B=|
+|            ..o.=|
+|           ... . |
+|        . ...    |
+|       .o. S+ =  |
+|       +0.. +o.= |
+|      =  o o +* o|
+|     .o*+B. .E o |
+|     o*= +=*    o|
++----[SHA256]-----+
+$
+```
+上記鍵生成時オプションの **-O verify-required** は、[付けなければならない](https://support.atlassian.com/bitbucket-data-center/kb/fido2-based-ssh-keys-ecdsa-sk-and-ed25519-sk-dont-work-in-bitbucket-data-center/)ようだ。  
+ただし、これを付けた場合、過去に作成した鍵が使えなくなるんだと。。。  
+
+そして、公開鍵をサーバに登録できない。  
+なぜだ？  
 
 
 <a id="operatingsystemnetwork_mail"></a>
