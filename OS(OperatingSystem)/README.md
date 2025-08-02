@@ -3645,7 +3645,7 @@ $
 ```terminal
 $ ssh -V
 OpenSSH_9.8p1, LibreSSL 3.3.6
-$ ssh-keygen -t ed25519-sk -O resident -O verify-required -C "bitbucket@asakunotomohiro_BIO" ~/.ssh/id_ed25519sk
+$ ssh-keygen -t ed25519-sk -O resident -O verify-required -C "github@asakunotomohiro_BIO" ~/.ssh/id_ed25519sk
 Generating public/private ed25519-sk key pair.
 You may need to touch your authenticator to authorize key generation.
 No FIDO SecurityKeyProvider specified
@@ -3694,15 +3694,15 @@ $
 
 上記の準備を経て、再度以下SSHの鍵を作成する。
 ```terminal
-$ ssh-keygen -t ed25519-sk -O resident -O verify-required -C "bitbucket@asakunotomohiro_BIO" ~/.ssh/id_ed25519sk
+$ ssh-keygen -t ed25519-sk -O resident -O verify-required -C "github@asakunotomohiro_BIO" ~/.ssh/id_ed25519sk
 Generating public/private ed25519-sk key pair.
-You may need to touch your authenticator to authorize key generation.
+You may need to touch your authenticator to authorize key generation.	←☆この当たりでBIOの指紋を通す必要がある。
 Enter passphrase for "/Users/asakunotomohiro/.ssh/id_ed25519sk" (empty for no passphrase): 1234
 Enter same passphrase again: 1234
-Your identification has been saved in /Users/asakunotomohiro/.ssh/id_ed25519sk
-Your public key has been saved in /Users/asakunotomohiro/.ssh/id_ed25519sk.pub
+Your identification has been saved in /Users/asakunotomohiro/.ssh/id_ed25519sk	←☆これは誰にも公開してはならない(秘密鍵)。
+Your public key has been saved in /Users/asakunotomohiro/.ssh/id_ed25519sk.pub	←☆この公開鍵をGithubに登録する。
 The key fingerprint is:
-SHA256:mp/iHLp4manP7cSOE+HfddSJdG3F2SGg/o53E7CCbyk bitbucket@asakunotomohiro_BIO
+SHA256:mp/iHLp4manP7cSOE+HfddSJdG3F2SGg/o53E7CCbyk github@asakunotomohiro_BIO
 The key's randomart image is:
 +[ED25519-SK 256]-+
 |              .B=|
@@ -3717,6 +3717,11 @@ The key's randomart image is:
 +----[SHA256]-----+
 $
 ```
+上記鍵生成時オプションの **-O verify-required** は、[付けなければならない](https://support.atlassian.com/bitbucket-data-center/kb/fido2-based-ssh-keys-ecdsa-sk-and-ed25519-sk-dont-work-in-bitbucket-data-center/)ようだ。  
+ただし、これを付けた場合、過去に作成した鍵が使えなくなるんだと。。。  
+
+そして、公開鍵をサーバに登録できない。  
+なぜだ？  
 
 
 <a id="operatingsystemnetwork_mail"></a>
