@@ -3529,6 +3529,7 @@ A proxy was used to fetch the proof: proxy.keyoxide.org
   * [PINコード](#operatingsystemnetwork_yubico_pincode)  
   * [BIOコード](#operatingsystemnetwork_yubico_biofido)  
   * [BIO版によるssh鍵の生成](#operatingsystemnetwork_yubico_biossh)  
+  * [GPG版によるssh鍵の生成](#operatingsystemnetwork_yubico_GPGssh)  
 
 <a id="operatingsystemnetwork_yubico_cliykman"></a>
 ### 環境構築(ykman)
@@ -3640,6 +3641,7 @@ $
 <a id="operatingsystemnetwork_yubico_biossh"></a>
 #### BIO版によるssh鍵の生成
 ※[PGPによるSSH鍵の生成](#operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_subkeycertification)は今回と別であるため、気をつけること。  
+※サーバ側が対応している必要がある。  
 
 以下、SSHの鍵を作成する。
 ```terminal
@@ -3722,6 +3724,57 @@ $
 
 そして、公開鍵をサーバに登録できない。  
 なぜだ？  
+
+
+<a id="operatingsystemnetwork_yubico_GPGssh"></a>
+#### GPG版によるssh鍵の生成
+※[PGPによるSSH鍵の生成](#operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_subkeycertification)は今回と別であるため、気をつけること。  
+
+以下、GPGにYubiKeyを認識させる。
+```terminal
+$ gpg --card-status
+gpg: *警告*: サーバ'gpg-agent'はこちらより古いです(2.2.41 < 2.4.8)
+gpg: 注意: 古いサーバは、重要なセキュリティの修正が欠如しているかもしれません。
+gpg: 注意: "gpgconf --kill all"コマンドを使って再起動してください。
+gpg: *警告*: サーバ'scdaemon'はこちらより古いです(2.2.41 < 2.4.8)
+gpg: 注意: 古いサーバは、重要なセキュリティの修正が欠如しているかもしれません。
+gpg: 注意: "gpgconf --kill all"コマンドを使って再起動してください。
+Reader ...........: Yubico YubiKey OTP FIDO CCID
+Application ID ...: D2760001240103040006240372580000
+Application type .: OpenPGP
+Version ..........: 5.8
+Manufacturer .....: Yubico
+Serial number ....: 21027354
+Name of cardholder: asakunotomohiro
+Language prefs ...: ja
+Salutation .......:
+URL of public key : https://github.com/asakunotomohiro.gpg
+Login data .......: asakuno.secure@pgp.asakuno.org
+Signature PIN ....: 強制なし
+Key attributes ...: ed25519 rsa2048 rsa2048
+Max. PIN lengths .: 127 127 127
+PIN retry counter : 4 0 4
+Signature counter : 0
+KDF setting ......: on
+UIF setting ......: Sign=off Decrypt=off Auth=off
+Signature key ....: 60A7 B057 6F74 04D5 1D59  520C 7A43 0907 759D 9FF4
+      created ....: 2023-05-22 09:44:09
+Encryption key....: 728B 0A77 8912 932B 9397  341B 2B62 4360 1FA1 DBDA
+      created ....: 2023-05-22 09:35:46
+Authentication key: 60A7 B057 6F74 04D5 1D59  520C 7A43 0907 759D 9FF4
+      created ....: 2023-05-22 09:44:09
+General key info..: sub  ed25519/7A430907759D9FF4 2023-05-22 asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
+sec>  ed25519/9D4893D18D358530  作成: 2023-05-22  有効期限: 2105-05-03
+                                カード番号: 0008 21027354
+ssb>  cv25519/2B6243601FA1DBDA  作成: 2023-05-22  有効期限: 2099-05-03
+                                カード番号: 0008 21027354
+ssb>  ed25519/7A430907759D9FF4  作成: 2023-05-22  有効期限: 2099-05-03
+                                カード番号: 0008 21027354
+ssb>  ed25519/82AA8224E47F7A68  作成: 2023-05-22  有効期限: 2099-05-03
+                                カード番号: 0008 21027354
+$
+```
+
 
 
 <a id="operatingsystemnetwork_mail"></a>
