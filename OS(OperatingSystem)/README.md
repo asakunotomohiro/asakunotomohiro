@@ -3813,6 +3813,46 @@ $ echo $?
 $
 ```
 
+以下、ユビキーの秘密鍵を読み込むためのライブラリをインストール。
+```terminal
+$ brew list | grep PKCS11
+$ brew list | grep opensc
+$ brew install opensc
+==> Auto-updating Homebrew...
+Adjust how often this is run with HOMEBREW_AUTO_UPDATE_SECS or disable with
+HOMEBREW_NO_AUTO_UPDATE. Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
+==> Auto-updated Homebrew!
+==> Updated Homebrew from aecd2b3447 to 65d3c6e950.
+Updated 1 tap (homebrew/cask).
+==> New Casks
+font-vend-sans
+
+You have 26 outdated formulae installed.
+
+==> Fetching downloads for: opensc
+==> Downloading https://ghcr.io/v2/homebrew/core/opensc/manifests/0.26.1
+################################################################################################################### 100.0%
+==> Fetching opensc
+==> Downloading https://ghcr.io/v2/homebrew/core/opensc/blobs/sha256:0ae0073b4ba388df854a2c1bb2a31ad83e4ff800eb392d2577940
+################################################################################################################### 100.0%
+==> Pouring opensc--0.26.1.arm64_sequoia.bottle.tar.gz
+==> Caveats
+The OpenSSH PKCS11 smartcard integration will not work from High Sierra
+onwards. If you need this functionality, unlink this formula, then install
+the OpenSC cask.
+==> Summary
+🍺  /opt/homebrew/Cellar/opensc/0.26.1: 122 files, 7.8MB
+==> Running `brew cleanup opensc`...
+Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.
+Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
+==> No outdated dependents to upgrade!
+$ echo $?
+0
+$ brew list | grep opensc
+(standard input):101:opensc
+$
+```
+
 
 <a id="operatingsystemnetwork_mail"></a>
 ### メール
