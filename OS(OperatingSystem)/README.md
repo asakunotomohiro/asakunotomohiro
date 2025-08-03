@@ -2221,7 +2221,7 @@ ssb  ed25519/82AA8224E47F7A68
      作成: 2023-05-22  有効期限: 2099-05-03  利用法: A
 [  究極  ] (1). asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
 
-gpg> keytocard	←☆鍵の焼き付け実施。
+gpg> keytocard	←☆鍵の焼き付け実施(副鍵への移動は"key [副鍵の個数目]")。
 この主鍵を本当に移動しますか? (y/N) y
 鍵を保管する場所を選択してください:
    (1) 署名鍵	←☆"(2) 暗号化鍵"もあるようだ(それが副鍵のこと)。
@@ -3776,10 +3776,6 @@ $
 以下、PGP鍵の性能確認。
 ```terminal
 $ gpg --list-secret-keys asakuno.secure@pgp.asakuno.org
-gpg: *警告*: サーバ'gpg-agent'はこちらより古いです(2.2.41 < 2.4.8)
-gpg: 注意: 古いサーバは、重要なセキュリティの修正が欠如しているかもしれません。
-gpg: 注意: "gpgconf --kill all"コマンドを使って再起動してください。
-gpg: problem with fast path key listing: IPCパラメータエラーです - ignored
 sec>  ed25519 2023-05-22 [C] [有効期限: 2105-05-03]
       2771F0FCF8FE74CD9B9C25439D4893D18D358530
    カードシリアル番号 = 0008 21027354
@@ -3791,6 +3787,31 @@ ssb>  ed25519 2023-05-22 [A] [有効期限: 2099-05-03]	←☆使用法として
 $
 ```
 そのときは、[認証のみの副鍵追加作業](#operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_subkeycertification)が発生する。  
+
+以下、サーバにssh接続実施(失敗)。
+```terminal
+$ grep -i enable-ssh-support ~/.gnupg/gpg-agent.conf
+/Users/asakunotomohiro/.gnupg/gpg-agent.conf:3:enable-ssh-support
+$ ps aux | grep gpg-agent
+(standard input):897:asakunotomohiro        65277   0.0  0.0 410733328   1664 s000  S+    4:57PM   0:00.00 grep --color=always -EHin gpg-agent
+(standard input):936:asakunotomohiro        59244   0.0  0.0 410931728   3344   ??  Ss    4:16PM   0:00.35 gpg-agent --homedir /Users/asakunotomohiro/.gnupg --use-standard-socket --daemon
+$ gpgconf --kill gpg-agent
+$ ps aux | grep gpg-agent
+(standard input):913:asakunotomohiro        65284   0.0  0.0 410724112   1504 s000  S+    4:58PM   0:00.00 grep --color=always -EHin gpg-agent
+$ gpg-connect-agent updatestartuptty /bye
+gpg-connect-agent: gpg-agentが動いていません - 開始します'/opt/homebrew/Cellar/gnupg/2.4.8/bin/gpg-agent'
+gpg-connect-agent: agent の起動のため、8秒待ちます...
+gpg-connect-agent: agentへの接続が確立しました
+OK
+$
+$ ssh -T git@github
+lib_contains_symbol: open /usr/local/lib/libykcs11.dylib: No such file or directory
+provider /usr/local/lib/libykcs11.dylib is not a PKCS11 library
+git@github.com: Permission denied (publickey).
+$ echo $?
+255
+$
+```
 
 
 <a id="operatingsystemnetwork_mail"></a>
