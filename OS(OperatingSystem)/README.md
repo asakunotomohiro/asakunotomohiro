@@ -3643,6 +3643,8 @@ $
 ※[PGPによるSSH鍵の生成](#operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_subkeycertification)は今回と別であるため、気をつけること。  
 ※サーバ側が対応している必要がある。  
 
+<details><summary>ssh鍵生成(少し失敗含む)。</summary>
+
 以下、SSHの鍵を作成する。
 ```terminal
 $ ssh -V
@@ -3694,6 +3696,8 @@ OpenSSH_9.8p1, LibreSSL 3.3.6
 $
 ```
 
+</details>
+
 上記の準備を経て、再度以下SSHの鍵を作成する。
 ```terminal
 $ ssh-keygen -t ed25519-sk -O resident -O verify-required -C "github@asakunotomohiro_BIO" ~/.ssh/id_ed25519sk
@@ -3733,12 +3737,6 @@ $
 以下、GPGにYubiKeyを認識させる。
 ```terminal
 $ gpg --card-status
-gpg: *警告*: サーバ'gpg-agent'はこちらより古いです(2.2.41 < 2.4.8)
-gpg: 注意: 古いサーバは、重要なセキュリティの修正が欠如しているかもしれません。
-gpg: 注意: "gpgconf --kill all"コマンドを使って再起動してください。
-gpg: *警告*: サーバ'scdaemon'はこちらより古いです(2.2.41 < 2.4.8)
-gpg: 注意: 古いサーバは、重要なセキュリティの修正が欠如しているかもしれません。
-gpg: 注意: "gpgconf --kill all"コマンドを使って再起動してください。
 Reader ...........: Yubico YubiKey OTP FIDO CCID
 Application ID ...: D2760001240103040006240372580000
 Application type .: OpenPGP
@@ -3775,6 +3773,24 @@ ssb>  ed25519/82AA8224E47F7A68  作成: 2023-05-22  有効期限: 2099-05-03
 $
 ```
 
+以下、PGP鍵の性能確認。
+```terminal
+$ gpg --list-secret-keys asakuno.secure@pgp.asakuno.org
+gpg: *警告*: サーバ'gpg-agent'はこちらより古いです(2.2.41 < 2.4.8)
+gpg: 注意: 古いサーバは、重要なセキュリティの修正が欠如しているかもしれません。
+gpg: 注意: "gpgconf --kill all"コマンドを使って再起動してください。
+gpg: problem with fast path key listing: IPCパラメータエラーです - ignored
+sec>  ed25519 2023-05-22 [C] [有効期限: 2105-05-03]
+      2771F0FCF8FE74CD9B9C25439D4893D18D358530
+   カードシリアル番号 = 0008 21027354
+uid           [  究極  ] asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
+ssb>  cv25519 2023-05-22 [E] [有効期限: 2099-05-03]
+ssb>  ed25519 2023-05-22 [S] [有効期限: 2099-05-03]
+ssb>  ed25519 2023-05-22 [A] [有効期限: 2099-05-03]	←☆使用法としてAがない場合、ユビキーに焼き付けてもssh接続できない。
+
+$
+```
+そのときは、[認証のみの副鍵追加作業](#operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_subkeycertification)が発生する。  
 
 
 <a id="operatingsystemnetwork_mail"></a>
