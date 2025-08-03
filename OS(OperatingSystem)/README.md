@@ -3838,7 +3838,7 @@ git@github.com: Permission denied (publickey).
 $
 ```
 
-以下、他の方法で確認する(OpenSC方式でSSHにYubiKeyを使う)。
+以下、他の方法で確認する(OpenSC方式でSSHにYubiKeyを使うが失敗)。
 ```terminal
 $ ll /Library/LaunchDaemons/com.apple.pcscd.plist
 ls: /Library/LaunchDaemons/com.apple.pcscd.plist: No such file or directory
@@ -3867,6 +3867,47 @@ $ brew list | grep yubico
 $
 ```
 ユビキーのPIVに秘密鍵を入れておく必要があるようだ。  
+ユビキーのPIVは、[9aスロット](https://developers.yubico.com/PIV/Introduction/Certificate_slots.html)とのこと。
+
+以下、PIVなどの管理ツールインストール作業。
+```terminal
+$ yubico-piv-tool
+zsh: command not found: yubico-piv-tool
+$ brew install yubico-piv-tool
+==> Auto-updating Homebrew...
+Adjust how often this is run with HOMEBREW_AUTO_UPDATE_SECS or disable with
+HOMEBREW_NO_AUTO_UPDATE. Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
+==> Fetching downloads for: yubico-piv-tool
+==> Downloading https://ghcr.io/v2/homebrew/core/yubico-piv-tool/manifests/2.7.2
+################################################################################################################### 100.0%
+==> Fetching dependencies for yubico-piv-tool: ca-certificates
+==> Downloading https://ghcr.io/v2/homebrew/core/ca-certificates/manifests/2025-07-15
+################################################################################################################### 100.0%
+==> Fetching ca-certificates
+==> Downloading https://ghcr.io/v2/homebrew/core/ca-certificates/blobs/sha256:84e089e758e75d61228f97d54b3eb1918737a2272c74
+################################################################################################################### 100.0%
+==> Fetching yubico-piv-tool
+==> Downloading https://ghcr.io/v2/homebrew/core/yubico-piv-tool/blobs/sha256:32cb4be3a8571a7383f46bd6886512be9cf152607629
+################################################################################################################### 100.0%
+==> Installing yubico-piv-tool dependency: ca-certificates
+==> Downloading https://ghcr.io/v2/homebrew/core/ca-certificates/manifests/2025-07-15
+Already downloaded: /Users/asakunotomohiro/Library/Caches/Homebrew/downloads/1b8ec93adfe410583ff46788783b030707eec1898c7ded356e25694e4c29aa32--ca-certificates-2025-07-15.bottle_manifest.json
+==> Pouring ca-certificates--2025-07-15.all.bottle.tar.gz
+==> Regenerating CA certificate bundle from keychain, this may take a while...
+🍺  /opt/homebrew/Cellar/ca-certificates/2025-07-15: 4 files, 225.8KB
+==> Pouring yubico-piv-tool--2.7.2.arm64_sequoia.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/yubico-piv-tool/2.7.2: 19 files, 968KB
+==> Running `brew cleanup yubico-piv-tool`...
+Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.
+Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
+==> No outdated dependents to upgrade!
+$ echo $?
+0
+$ yubico-piv-tool -a status
+Failed to connect to yubikey: Error in PCSC call.
+Try removing and reconnecting the device.
+$
+```
 
 
 <a id="operatingsystemnetwork_mail"></a>
