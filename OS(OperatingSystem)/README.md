@@ -3821,37 +3821,52 @@ $ brew install opensc
 ==> Auto-updating Homebrew...
 Adjust how often this is run with HOMEBREW_AUTO_UPDATE_SECS or disable with
 HOMEBREW_NO_AUTO_UPDATE. Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
-==> Auto-updated Homebrew!
-==> Updated Homebrew from aecd2b3447 to 65d3c6e950.
-Updated 1 tap (homebrew/cask).
-==> New Casks
-font-vend-sans
-
-You have 26 outdated formulae installed.
-
-==> Fetching downloads for: opensc
-==> Downloading https://ghcr.io/v2/homebrew/core/opensc/manifests/0.26.1
-################################################################################################################### 100.0%
-==> Fetching opensc
-==> Downloading https://ghcr.io/v2/homebrew/core/opensc/blobs/sha256:0ae0073b4ba388df854a2c1bb2a31ad83e4ff800eb392d2577940
-################################################################################################################### 100.0%
-==> Pouring opensc--0.26.1.arm64_sequoia.bottle.tar.gz
-==> Caveats
-The OpenSSH PKCS11 smartcard integration will not work from High Sierra
-onwards. If you need this functionality, unlink this formula, then install
-the OpenSC cask.
-==> Summary
-🍺  /opt/homebrew/Cellar/opensc/0.26.1: 122 files, 7.8MB
+　　　・
+　　　・
+　　　・
 ==> Running `brew cleanup opensc`...
 Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.
 Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
 ==> No outdated dependents to upgrade!
-$ echo $?
-0
 $ brew list | grep opensc
 (standard input):101:opensc
 $
+$ ssh -T git@github	←☆駄目だが？
+lib_contains_symbol: open /usr/local/lib/libykcs11.dylib: No such file or directory
+provider /usr/local/lib/libykcs11.dylib is not a PKCS11 library
+git@github.com: Permission denied (publickey).
+$
 ```
+
+以下、他の方法で確認する(OpenSC方式でSSHにYubiKeyを使う)。
+```terminal
+$ ll /Library/LaunchDaemons/com.apple.pcscd.plist
+ls: /Library/LaunchDaemons/com.apple.pcscd.plist: No such file or directory
+$ launchctl load /Library/LaunchDaemons/com.apple.pcscd.plist
+Warning: Expecting a LaunchAgents path since the command was ran as user. Got LaunchDaemons instead.
+`launchctl bootstrap` is a recommended alternative.
+Load failed: 5: Input/output error
+Try running `launchctl bootstrap` as root for richer errors.
+$ ps aux | grep pcscd
+(standard input):1012:asakunotomohiro        69382   0.0  0.0 410059408    560 s000  R+   11:22PM   0:00.00 grep --color=always -EHin pcscd
+(standard input):1029:asakunotomohiro        69122   0.0  0.0 426934016   5152   ??  Ss   10:29PM   0:10.13 /System/Library/Frameworks/PCSC.framework/Versions/A/XPCServices/com.apple.ctkpcscd.xpc/Contents/MacOS/com.apple.ctkpcscd
+(standard input):1051:asakunotomohiro        66537   0.0  0.0 426933456   3872   ??  Ss    9:09PM   0:06.27 /System/Library/Frameworks/PCSC.framework/Versions/A/XPCServices/com.apple.ctkpcscd.xpc/Contents/MacOS/com.apple.ctkpcscd
+$ opensc-tool --list-readers	←☆私は何をしているんだ？
+# Detected readers (pcsc)
+Nr.  Card  Features  Name
+0    Yes             Yubico YubiKey OTP+FIDO+CCID
+$ ssh-keygen -D /opt/homebrew/lib/opensc-pkcs11.so	←☆ユビキーから公開鍵を取り出そうとしている。
+cannot read public key from pkcs11
+$ find /opt/homebrew -name "opensc-pkcs11.so"
+/opt/homebrew/lib/opensc-pkcs11.so
+/opt/homebrew/lib/pkcs11/opensc-pkcs11.so
+/opt/homebrew/Cellar/opensc/0.26.1/lib/opensc-pkcs11.so
+/opt/homebrew/Cellar/opensc/0.26.1/lib/pkcs11/opensc-pkcs11.so
+$
+$ brew list | grep yubico
+$
+```
+ユビキーのPIVに秘密鍵を入れておく必要があるようだ。  
 
 
 <a id="operatingsystemnetwork_mail"></a>
