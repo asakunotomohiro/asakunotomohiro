@@ -3913,7 +3913,13 @@ Slot 9a:
 	Private Key Algorithm:	ECCP256
 PIN tries left:	3
 $
+$ ssh-keygen -D /opt/homebrew/lib/opensc-pkcs11.so
+Enter PIN for 'PIV_II': 1234
+cannot read public key from pkcs11
+$
 ```
+秘密鍵が存在するのに、存在しないことになっている。  
+これは、証明書が存在しないため、鍵の存在を確認できないためとのこと。  
 
 
 <a id="operatingsystemnetwork_mail"></a>
