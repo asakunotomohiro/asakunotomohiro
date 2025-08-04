@@ -3921,6 +3921,21 @@ $
 秘密鍵が存在するのに、存在しないことになっている。  
 これは、証明書が存在しないため、鍵の存在を確認できないためとのこと。  
 
+以下、自己署名実施。
+```terminal
+$ ykman piv certificates generate -s 'CN=asakunotomohiro,DC=asakunotomohiro' 9a pubkey.pem
+Enter a management key [blank to use default key]: 5678
+Enter PIN: 5678
+ERROR: PIN verification failed, 2 tries left.
+$ ykman piv certificates generate -s 'CN=asakunotomohiro,DC=asakunotomohiro' 9a pubkey.pem
+Enter a management key [blank to use default key]: 5678	←☆マネジメントキー。
+Enter PIN: 1234	←☆通常のPin。
+Certificate generated in slot AUTHENTICATION.
+$ echo $?
+0
+$
+```
+
 
 <a id="operatingsystemnetwork_mail"></a>
 ### メール
