@@ -3903,7 +3903,7 @@ Failed to connect to yubikey: Error in PCSC call.
 Try removing and reconnecting the device.
 $ yubico-piv-tool -a generate -s 9a -A ECCP256 -o pubkey.pem
 Successfully generated a new private key.
-$ yubico-piv-tool -a status	←☆PIV内容の確認(鍵が入っている)。
+$ yubico-piv-tool -a status	←☆PIV内容の確認(鍵が入っている)。 ※'ykman piv info'コマンドを使うのが吉なのだろう。
 Version:	5.4.3
 Serial Number:	24037258
 CHUID:	No data available
@@ -3935,6 +3935,22 @@ $ echo $?
 0
 $
 ```
+
+以下、公開鍵の取得作業(どのコマンドが正解？)。
+```terminal
+$ yubico-piv-tool --version
+yubico-piv-tool 2.7.2	←☆古い？
+$
+$ ykman piv keys generate -a ECCP384 9a pubkey.pem	←☆他のサイトを参考にしたら暗号方式が私のと異なっていた。
+Enter a management key [blank to use default key]: 5678
+Private key generated in slot 9A (AUTHENTICATION), public key written to pubkey.pem.	←☆新しく作り直した？
+$ ll pubkey.pem
+-rw-r--r--  1 asakunotomohiro  staff  215  8  4 16:01 pubkey.pem
+$
+```
+この時点で、GUIのユビキー管理画面にスロット9の内容が記入されている。  
+本当は、自己署名実施したときに記入されているだろう。  
+そして、本当の取り出しは、`ykman piv certificates export -F PEM 9a cert.pem`なのだろう。  
 
 
 <a id="operatingsystemnetwork_mail"></a>
