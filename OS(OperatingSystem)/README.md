@@ -3951,6 +3951,17 @@ $
 この時点で、GUIのユビキー管理画面にスロット9の内容が記入されている。  
 本当は、自己署名実施したときに記入されているだろう。  
 そして、本当の取り出しは、`ykman piv certificates export -F PEM 9a cert.pem`なのだろう。  
+その後、`openssl x509 -in cert.pem -pubkey -noout`にて、ファイル内容に公開鍵の確認ができることでコマンド操作の成功を確信できるのだろう。  
+
+SSH用の公開鍵は、`ssh-keygen -D /opt/homebrew/lib/opensc-pkcs11.so`コマンドで出力する。  
+
+以下、ssh接続確認(失敗)。
+```terminal
+$ ssh -T git@github	←☆駄目だが？
+git@github.com: Permission denied (publickey).
+$
+```
+むしろ状況悪化していないか？  
 
 
 <a id="operatingsystemnetwork_mail"></a>
