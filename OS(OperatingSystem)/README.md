@@ -4020,6 +4020,15 @@ Slot 9A (AUTHENTICATION):
 $
 ```
 
+以下、自己署名実施。
+```terminal
+$ ykman piv certificates generate -s 'CN=asakunotomohiro,DC=asakunotomohiro' 9a pubkey.pem
+Enter a management key [blank to use default key]: 5678
+Enter PIN: 1234
+Certificate generated in slot AUTHENTICATION.
+$
+```
+
 
 <a id="operatingsystemnetwork_mail"></a>
 ### メール
