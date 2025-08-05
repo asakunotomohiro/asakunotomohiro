@@ -3979,6 +3979,29 @@ PUK tries remaining:      4/4
 Management key algorithm: TDES
 CHUID: No data available
 CCC:   No data available
+$ gpg -K --with-subkey-fingerprint asakuno.secure@pgp.asakuno.org
+sec>  ed25519 2023-05-22 [C] [有効期限: 2105-05-03]
+      2771F0FCF8FE74CD9B9C25439D4893D18D358530
+   カードシリアル番号 = 0008 21027354
+uid           [  究極  ] asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
+ssb>  cv25519 2023-05-22 [E] [有効期限: 2099-05-03]
+      728B0A778912932B9397341B2B6243601FA1DBDA
+   カードシリアル番号 = 0008 21027354
+ssb>  ed25519 2023-05-22 [S] [有効期限: 2099-05-03]
+      60A7B0576F7404D51D59520C7A430907759D9FF4
+   カードシリアル番号 = 0008 21027354
+ssb>  ed25519 2023-05-22 [A] [有効期限: 2099-05-03]
+      8013753761C78FA1A48230C682AA8224E47F7A68
+   カードシリアル番号 = 0008 21027354
+
+$
+```
+
+以下、ユビキーのPIV(スロット9)に秘密鍵を作成する。
+```terminal
+$ ykman piv keys generate -a ECCP256 9a pubkey.pem
+Enter a management key [blank to use default key]: 5678
+Private key generated in slot 9A (AUTHENTICATION), public key written to pubkey.pem.
 $
 ```
 
