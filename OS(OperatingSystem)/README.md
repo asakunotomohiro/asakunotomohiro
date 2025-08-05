@@ -4070,13 +4070,20 @@ $ date
 $
 ```
 
-以下、自己署名ファイル内容から公開鍵の出力作業。
+以下、自己署名ファイルから公開鍵の出力作業。
 ```terminal
 $ openssl x509 -in cert.pem -pubkey -noout
 -----BEGIN PUBLIC KEY-----
 MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE30gLPisjJAOGBsSg45txg7yrrEk4
 yKT/tOlQdFqiFYRaDusf+QFhQ2uLcB4ak1fsyTe5zgN/O9UNyp2ylIaR+A==
 -----END PUBLIC KEY-----
+$
+```
+
+以下、ユビキーのPIVから公開鍵の取得作業(上記と異なる)。
+```terminal
+$ ssh-keygen -D /opt/homebrew/lib/opensc-pkcs11.so
+ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBN9ICz4rIyQDhgbEoOObcYO8q6xJOMik/7TpUHRaohWEWg7rH/kBYUNri3AeGpNX7Mk3uc4DfzvVDcqdspSGkfg= PIV AUTH pubkey
 $
 ```
 
