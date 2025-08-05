@@ -2221,7 +2221,7 @@ ssb  ed25519/82AA8224E47F7A68
      作成: 2023-05-22  有効期限: 2099-05-03  利用法: A
 [  究極  ] (1). asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
 
-gpg> keytocard	←☆鍵の焼き付け実施。
+gpg> keytocard	←☆鍵の焼き付け実施(副鍵への移動は"key [副鍵の個数目]")。
 この主鍵を本当に移動しますか? (y/N) y
 鍵を保管する場所を選択してください:
    (1) 署名鍵	←☆"(2) 暗号化鍵"もあるようだ(それが副鍵のこと)。
@@ -3529,6 +3529,7 @@ A proxy was used to fetch the proof: proxy.keyoxide.org
   * [PINコード](#operatingsystemnetwork_yubico_pincode)  
   * [BIOコード](#operatingsystemnetwork_yubico_biofido)  
   * [BIO版によるssh鍵の生成](#operatingsystemnetwork_yubico_biossh)  
+  * [GPG版によるssh鍵での接続(失敗)](#operatingsystemnetwork_yubico_GPGssh)  
 
 <a id="operatingsystemnetwork_yubico_cliykman"></a>
 ### 環境構築(ykman)
@@ -3640,6 +3641,9 @@ $
 <a id="operatingsystemnetwork_yubico_biossh"></a>
 #### BIO版によるssh鍵の生成
 ※[PGPによるSSH鍵の生成](#operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_subkeycertification)は今回と別であるため、気をつけること。  
+※サーバ側が対応している必要がある。  
+
+<details><summary>ssh鍵生成(少し失敗含む)。</summary>
 
 以下、SSHの鍵を作成する。
 ```terminal
@@ -3692,6 +3696,8 @@ OpenSSH_9.8p1, LibreSSL 3.3.6
 $
 ```
 
+</details>
+
 上記の準備を経て、再度以下SSHの鍵を作成する。
 ```terminal
 $ ssh-keygen -t ed25519-sk -O resident -O verify-required -C "github@asakunotomohiro_BIO" ~/.ssh/id_ed25519sk
@@ -3722,6 +3728,250 @@ $
 
 そして、公開鍵をサーバに登録できない。  
 なぜだ？  
+
+
+<a id="operatingsystemnetwork_yubico_GPGssh"></a>
+#### GPG版によるssh鍵での接続(失敗)
+※[PGPによるSSH鍵の生成](#operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_subkeycertification)は今回と別であるため、気をつけること。  
+※PGPとGPGは管理者が異なる(PGPは商用ライセンス・GPGPは完全オープンソースライセンス)。  
+　YubiKeyとの連携やSSH利用ではGPG一択  
+
+<details><summary>失敗。</summary>
+
+以下、GPGにYubiKeyを認識させる。
+```terminal
+$ gpg --card-status
+Reader ...........: Yubico YubiKey OTP FIDO CCID
+Application ID ...: D2760001240103040006240372580000
+Application type .: OpenPGP
+Version ..........: 5.8
+Manufacturer .....: Yubico
+Serial number ....: 21027354
+Name of cardholder: asakunotomohiro
+Language prefs ...: ja
+Salutation .......:
+URL of public key : https://github.com/asakunotomohiro.gpg
+Login data .......: asakuno.secure@pgp.asakuno.org
+Signature PIN ....: 強制なし
+Key attributes ...: ed25519 rsa2048 rsa2048
+Max. PIN lengths .: 127 127 127
+PIN retry counter : 4 0 4
+Signature counter : 0
+KDF setting ......: on
+UIF setting ......: Sign=off Decrypt=off Auth=off
+Signature key ....: 60A7 B057 6F74 04D5 1D59  520C 7A43 0907 759D 9FF4
+      created ....: 2023-05-22 09:44:09
+Encryption key....: 728B 0A77 8912 932B 9397  341B 2B62 4360 1FA1 DBDA
+      created ....: 2023-05-22 09:35:46
+Authentication key: 60A7 B057 6F74 04D5 1D59  520C 7A43 0907 759D 9FF4
+      created ....: 2023-05-22 09:44:09
+General key info..: sub  ed25519/7A430907759D9FF4 2023-05-22 asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
+sec>  ed25519/9D4893D18D358530  作成: 2023-05-22  有効期限: 2105-05-03
+                                カード番号: 0008 21027354
+ssb>  cv25519/2B6243601FA1DBDA  作成: 2023-05-22  有効期限: 2099-05-03
+                                カード番号: 0008 21027354
+ssb>  ed25519/7A430907759D9FF4  作成: 2023-05-22  有効期限: 2099-05-03
+                                カード番号: 0008 21027354
+ssb>  ed25519/82AA8224E47F7A68  作成: 2023-05-22  有効期限: 2099-05-03
+                                カード番号: 0008 21027354
+$
+```
+
+以下、GPG鍵の性能確認。
+```terminal
+$ gpg --list-secret-keys asakuno.secure@pgp.asakuno.org
+sec>  ed25519 2023-05-22 [C] [有効期限: 2105-05-03]
+      2771F0FCF8FE74CD9B9C25439D4893D18D358530
+   カードシリアル番号 = 0008 21027354
+uid           [  究極  ] asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
+ssb>  cv25519 2023-05-22 [E] [有効期限: 2099-05-03]
+ssb>  ed25519 2023-05-22 [S] [有効期限: 2099-05-03]
+ssb>  ed25519 2023-05-22 [A] [有効期限: 2099-05-03]	←☆使用法としてAがない場合、ユビキーに焼き付けてもssh接続できない。
+
+$
+```
+そのときは、[認証のみの副鍵追加作業](#operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_subkeycertification)が発生する。  
+
+以下、サーバにssh接続実施(失敗)。
+```terminal
+$ grep -i enable-ssh-support ~/.gnupg/gpg-agent.conf
+/Users/asakunotomohiro/.gnupg/gpg-agent.conf:3:enable-ssh-support
+$ ps aux | grep gpg-agent
+(standard input):897:asakunotomohiro        65277   0.0  0.0 410733328   1664 s000  S+    4:57PM   0:00.00 grep --color=always -EHin gpg-agent
+(standard input):936:asakunotomohiro        59244   0.0  0.0 410931728   3344   ??  Ss    4:16PM   0:00.35 gpg-agent --homedir /Users/asakunotomohiro/.gnupg --use-standard-socket --daemon
+$ gpgconf --kill gpg-agent
+$ ps aux | grep gpg-agent
+(standard input):913:asakunotomohiro        65284   0.0  0.0 410724112   1504 s000  S+    4:58PM   0:00.00 grep --color=always -EHin gpg-agent
+$ gpg-connect-agent updatestartuptty /bye
+gpg-connect-agent: gpg-agentが動いていません - 開始します'/opt/homebrew/Cellar/gnupg/2.4.8/bin/gpg-agent'
+gpg-connect-agent: agent の起動のため、8秒待ちます...
+gpg-connect-agent: agentへの接続が確立しました
+OK
+$
+$ ssh -T git@github
+lib_contains_symbol: open /usr/local/lib/libykcs11.dylib: No such file or directory
+provider /usr/local/lib/libykcs11.dylib is not a PKCS11 library
+git@github.com: Permission denied (publickey).
+$ echo $?
+255
+$
+```
+
+</details>
+
+以下、ユビキーの秘密鍵を読み込むためのライブラリをインストール。
+```terminal
+$ brew list | grep PKCS11
+$ brew list | grep opensc
+$ brew install opensc
+==> Auto-updating Homebrew...
+Adjust how often this is run with HOMEBREW_AUTO_UPDATE_SECS or disable with
+HOMEBREW_NO_AUTO_UPDATE. Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
+　　　・
+　　　・
+　　　・
+==> Running `brew cleanup opensc`...
+Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.
+Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
+==> No outdated dependents to upgrade!
+$ brew list | grep opensc
+(standard input):101:opensc
+$
+$ ssh -T git@github	←☆駄目だが？
+lib_contains_symbol: open /usr/local/lib/libykcs11.dylib: No such file or directory
+provider /usr/local/lib/libykcs11.dylib is not a PKCS11 library
+git@github.com: Permission denied (publickey).
+$
+```
+
+<details><summary>失敗(目的からずれたことをやっている)。</summary>
+
+以下、他の方法で確認する(OpenSC方式でSSHにYubiKeyを使うが失敗)。
+```terminal
+$ ll /Library/LaunchDaemons/com.apple.pcscd.plist
+ls: /Library/LaunchDaemons/com.apple.pcscd.plist: No such file or directory
+$ launchctl load /Library/LaunchDaemons/com.apple.pcscd.plist
+Warning: Expecting a LaunchAgents path since the command was ran as user. Got LaunchDaemons instead.
+`launchctl bootstrap` is a recommended alternative.
+Load failed: 5: Input/output error
+Try running `launchctl bootstrap` as root for richer errors.
+$ ps aux | grep pcscd
+(standard input):1012:asakunotomohiro        69382   0.0  0.0 410059408    560 s000  R+   11:22PM   0:00.00 grep --color=always -EHin pcscd
+(standard input):1029:asakunotomohiro        69122   0.0  0.0 426934016   5152   ??  Ss   10:29PM   0:10.13 /System/Library/Frameworks/PCSC.framework/Versions/A/XPCServices/com.apple.ctkpcscd.xpc/Contents/MacOS/com.apple.ctkpcscd
+(standard input):1051:asakunotomohiro        66537   0.0  0.0 426933456   3872   ??  Ss    9:09PM   0:06.27 /System/Library/Frameworks/PCSC.framework/Versions/A/XPCServices/com.apple.ctkpcscd.xpc/Contents/MacOS/com.apple.ctkpcscd
+$ opensc-tool --list-readers	←☆私は何をしているんだ？
+# Detected readers (pcsc)
+Nr.  Card  Features  Name
+0    Yes             Yubico YubiKey OTP+FIDO+CCID
+$ ssh-keygen -D /opt/homebrew/lib/opensc-pkcs11.so	←☆ユビキーから公開鍵を取り出そうとしている。
+cannot read public key from pkcs11
+$ find /opt/homebrew -name "opensc-pkcs11.so"
+/opt/homebrew/lib/opensc-pkcs11.so
+/opt/homebrew/lib/pkcs11/opensc-pkcs11.so
+/opt/homebrew/Cellar/opensc/0.26.1/lib/opensc-pkcs11.so
+/opt/homebrew/Cellar/opensc/0.26.1/lib/pkcs11/opensc-pkcs11.so
+$
+$ brew list | grep yubico
+$
+```
+ユビキーのPIVに秘密鍵を入れておく必要があるようだ。  
+ユビキーのPIVは、[9aスロット](https://developers.yubico.com/PIV/Introduction/Certificate_slots.html)とのこと。
+
+以下、PIVなどの管理ツールインストール作業(不要だった)。
+```terminal
+$ yubico-piv-tool
+zsh: command not found: yubico-piv-tool
+$ brew install yubico-piv-tool
+==> Auto-updating Homebrew...
+Adjust how often this is run with HOMEBREW_AUTO_UPDATE_SECS or disable with
+HOMEBREW_NO_AUTO_UPDATE. Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
+==> Fetching downloads for: yubico-piv-tool
+==> Downloading https://ghcr.io/v2/homebrew/core/yubico-piv-tool/manifests/2.7.2
+　　　・
+　　　・
+　　　・
+==> Running `brew cleanup yubico-piv-tool`...
+Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.
+Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
+==> No outdated dependents to upgrade!
+$ echo $?
+0
+$ yubico-piv-tool -a status
+Failed to connect to yubikey: Error in PCSC call.
+Try removing and reconnecting the device.
+$
+```
+
+以下、YubiKeyの"PIVスロット(9a)"にED25519鍵を生成作業。
+```terminal
+$ yubico-piv-tool --version
+yubico-piv-tool 2.7.2
+$ yubico-piv-tool -a status	←☆PIV内容の確認(何も入っていない)。
+Failed to connect to yubikey: Error in PCSC call.
+Try removing and reconnecting the device.
+$ yubico-piv-tool -a generate -s 9a -A ECCP256 -o pubkey.pem
+Successfully generated a new private key.
+$ yubico-piv-tool -a status	←☆PIV内容の確認(鍵が入っている)。 ※'ykman piv info'コマンドを使うのが吉なのだろう。
+Version:	5.8.9
+Serial Number:	24037258
+CHUID:	No data available
+CCC:	No data available
+All non-listed slots are empty
+Slot 9a:
+	Private Key Algorithm:	ECCP256
+PIN tries left:	3
+$
+$ ssh-keygen -D /opt/homebrew/lib/opensc-pkcs11.so
+Enter PIN for 'PIV_II': 1234
+cannot read public key from pkcs11
+$
+```
+秘密鍵が存在するのに、存在しないことになっている。  
+これは、証明書が存在しないため、鍵の存在を確認できないためとのこと。  
+
+以下、公開鍵の取得作業(どのコマンドが正解？)。
+```terminal
+$ yubico-piv-tool --version
+yubico-piv-tool 2.7.2	←☆古い？
+$
+$ ykman piv keys generate -a ECCP384 9a pubkey.pem	←☆他のサイトを参考にしたら暗号方式が私のと異なっていた。
+Enter a management key [blank to use default key]: 5678
+Private key generated in slot 9A (AUTHENTICATION), public key written to pubkey.pem.	←☆新しく作り直した？
+$ ll pubkey.pem
+-rw-r--r--  1 asakunotomohiro  staff  215  8  4 16:01 pubkey.pem
+$
+```
+この時点で、GUIのユビキー管理画面にスロット9の内容が記入されている。  
+本当は、自己署名実施したときに記入されているだろう。  
+そして、本当の取り出しは、`ykman piv certificates export -F PEM 9a cert.pem`なのだろう。  
+その後、`openssl x509 -in cert.pem -pubkey -noout`にて、ファイル内容に公開鍵の確認ができることでコマンド操作の成功を確信できるのだろう。  
+
+SSH用の公開鍵は、`ssh-keygen -D /opt/homebrew/lib/opensc-pkcs11.so`コマンドで出力する。  
+
+以下、ssh接続確認(失敗)。
+```terminal
+$ ssh -T git@github	←☆駄目だが？
+git@github.com: Permission denied (publickey).
+$
+```
+むしろ状況悪化していないか？  
+
+</details>
+
+以下、自己署名実施。
+```terminal
+$ ykman piv certificates generate -s 'CN=asakunotomohiro,DC=asakunotomohiro' 9a pubkey.pem
+Enter a management key [blank to use default key]: 5678
+Enter PIN: 5678
+ERROR: PIN verification failed, 2 tries left.
+$ ykman piv certificates generate -s 'CN=asakunotomohiro,DC=asakunotomohiro' 9a pubkey.pem
+Enter a management key [blank to use default key]: 5678	←☆マネジメントキー。
+Enter PIN: 1234	←☆通常のPin。
+Certificate generated in slot AUTHENTICATION.
+$ echo $?
+0
+$
+```
 
 
 <a id="operatingsystemnetwork_mail"></a>
