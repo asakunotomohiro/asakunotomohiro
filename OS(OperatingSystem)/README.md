@@ -4005,7 +4005,7 @@ Private key generated in slot 9A (AUTHENTICATION), public key written to pubkey.
 $
 ```
 
-以下、ユビキーの情報確認。
+以下、秘密鍵作成後のユビキー情報確認。
 ```terminal
 $ ykman piv info
 PIV version:              5.8.9
@@ -4026,6 +4026,28 @@ $ ykman piv certificates generate -s 'CN=asakunotomohiro,DC=asakunotomohiro' 9a 
 Enter a management key [blank to use default key]: 5678
 Enter PIN: 1234
 Certificate generated in slot AUTHENTICATION.
+$
+```
+
+以下、ユビキーの情報確認。
+```terminal
+$ ykman piv info
+PIV version:              5.8.9
+PIN tries remaining:      4/4
+PUK tries remaining:      4/4
+Management key algorithm: TDES
+CHUID: 3019d4e739da739ced39ce739d836858210842108421c84210c3eb34109184c47439004f7992c7aa575d1bcdbc350832303330303130313e00fe00
+CCC:   No data available
+Slot 9A (AUTHENTICATION):
+  Private key type: ECCP256
+  Public key type:  ECCP256
+  Subject DN:       CN=asakunotomohiro,DC=asakunotomohiro
+  Issuer DN:        CN=asakunotomohiro,DC=asakunotomohiro
+  Serial:           76:3f:e4:4a:64:c9:d9:82:4d:97:72:d3:18:14:a9:60:a6:19:37:01
+  Fingerprint:      affb1865e06ff5d82f29f813f4dd819dd475f6046a18cb883147929df3c4118b
+  Not before:       2025-08-05T06:17:30+00:00
+  Not after:        2026-08-05T06:17:30+00:00
+
 $
 ```
 
