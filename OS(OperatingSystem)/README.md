@@ -4005,6 +4005,21 @@ Private key generated in slot 9A (AUTHENTICATION), public key written to pubkey.
 $
 ```
 
+以下、ユビキーの情報確認。
+```terminal
+$ ykman piv info
+PIV version:              5.8.9
+PIN tries remaining:      3/3
+PUK tries remaining:      3/3
+Management key algorithm: TDES
+CHUID: No data available
+CCC:   No data available
+Slot 9A (AUTHENTICATION):
+  Private key type: ECCP256
+
+$
+```
+
 
 <a id="operatingsystemnetwork_mail"></a>
 ### メール
