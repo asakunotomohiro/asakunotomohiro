@@ -4029,7 +4029,7 @@ Certificate generated in slot AUTHENTICATION.
 $
 ```
 
-以下、ユビキーの情報確認。
+以下、自己署名実施後のユビキー情報確認。
 ```terminal
 $ ykman piv info
 PIV version:              5.8.9
@@ -4048,6 +4048,25 @@ Slot 9A (AUTHENTICATION):
   Not before:       2025-08-05T06:17:30+00:00
   Not after:        2026-08-05T06:17:30+00:00
 
+$
+```
+
+以下、ファイル出力実施。
+```terminal
+$ ll pubkey.pem cert.pem
+-rw-r--r--  1 asakunotomohiro  staff  451  8  5 15:15 pubkey.pem	←☆秘密鍵作成時に出力されたファイルがこれだろう。
+-rw-r--r--  1 asakunotomohiro  staff  558  8  4 21:45 cert.pem	←☆これは過去に出力されたファイル。
+$ date
+2025年 8月 5日 火曜日 15時18分05秒 JST
+$
+$ ykman piv certificates export -F PEM 9a cert.pem	←☆自己署名ファイル出力。
+Certificate from slot 9A (AUTHENTICATION) exported to cert.pem.
+$
+$ ll pubkey.pem cert.pem
+-rw-r--r--  1 asakunotomohiro  staff  1103  8  5 15:18 cert.pem	←☆自己署名ファイル。
+-rw-r--r--  1 asakunotomohiro  staff   451  8  5 15:15 pubkey.pem
+$ date
+2025年 8月 5日 火曜日 15時18分30秒 JST
 $
 ```
 
