@@ -3524,12 +3524,13 @@ A proxy was used to fetch the proof: proxy.keyoxide.org
 [YubiKey 暗号欠陥の脆弱性により攻撃者が秘密鍵を抽出してデバイスを複製できる](https://rocket-boys.co.jp/security-measures-lab/yubikey-encryption-flaw-secret-key-extraction/)  
 
 
-* FIDOセキュリティキーの利用方法  
+* セキュリティキーの利用方法  
   * [環境構築](#operatingsystemnetwork_yubico_cliykman)  
   * [PINコード](#operatingsystemnetwork_yubico_pincode)  
   * [BIOコード](#operatingsystemnetwork_yubico_biofido)  
   * [BIO版によるssh鍵の生成](#operatingsystemnetwork_yubico_biossh)  
   * [GPG版によるssh鍵での接続(失敗)](#operatingsystemnetwork_yubico_GPGssh)  
+  * [PIV版によるssh鍵での接続](#operatingsystemnetwork_yubico_PIVssh)  
 
 <a id="operatingsystemnetwork_yubico_cliykman"></a>
 ### 環境構築(ykman)
@@ -3819,31 +3820,6 @@ $
 
 </details>
 
-以下、ユビキーの秘密鍵を読み込むためのライブラリをインストール。
-```terminal
-$ brew list | grep PKCS11
-$ brew list | grep opensc
-$ brew install opensc
-==> Auto-updating Homebrew...
-Adjust how often this is run with HOMEBREW_AUTO_UPDATE_SECS or disable with
-HOMEBREW_NO_AUTO_UPDATE. Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
-　　　・
-　　　・
-　　　・
-==> Running `brew cleanup opensc`...
-Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.
-Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
-==> No outdated dependents to upgrade!
-$ brew list | grep opensc
-(standard input):101:opensc
-$
-$ ssh -T git@github	←☆駄目だが？
-lib_contains_symbol: open /usr/local/lib/libykcs11.dylib: No such file or directory
-provider /usr/local/lib/libykcs11.dylib is not a PKCS11 library
-git@github.com: Permission denied (publickey).
-$
-```
-
 <details><summary>失敗(目的からずれたことをやっている)。</summary>
 
 以下、他の方法で確認する(OpenSC方式でSSHにYubiKeyを使うが失敗)。
@@ -3972,6 +3948,32 @@ $ echo $?
 0
 $
 ```
+
+<a id="operatingsystemnetwork_yubico_PIVssh"></a>
+#### PIV版によるssh鍵での接続
+※[PGPによるSSH鍵の生成](#operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_subkeycertification)は今回と別であるため、気をつけること。  
+
+
+以下、ユビキーの秘密鍵を読み込むためのライブラリをインストール。
+```terminal
+$ brew list | grep PKCS11
+$ brew list | grep opensc
+$ brew install opensc
+==> Auto-updating Homebrew...
+Adjust how often this is run with HOMEBREW_AUTO_UPDATE_SECS or disable with
+HOMEBREW_NO_AUTO_UPDATE. Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
+　　　・
+　　　・
+　　　・
+==> Running `brew cleanup opensc`...
+Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.
+Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
+==> No outdated dependents to upgrade!
+$ brew list | grep opensc
+(standard input):101:opensc
+$
+```
+
 
 
 <a id="operatingsystemnetwork_mail"></a>
