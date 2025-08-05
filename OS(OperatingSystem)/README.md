@@ -4070,6 +4070,16 @@ $ date
 $
 ```
 
+以下、自己署名ファイル内容から公開鍵の出力作業。
+```terminal
+$ openssl x509 -in cert.pem -pubkey -noout
+-----BEGIN PUBLIC KEY-----
+MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE30gLPisjJAOGBsSg45txg7yrrEk4
+yKT/tOlQdFqiFYRaDusf+QFhQ2uLcB4ak1fsyTe5zgN/O9UNyp2ylIaR+A==
+-----END PUBLIC KEY-----
+$
+```
+
 
 <a id="operatingsystemnetwork_mail"></a>
 ### メール
