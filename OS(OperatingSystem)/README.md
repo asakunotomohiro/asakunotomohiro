@@ -3737,7 +3737,7 @@ $
 ※PGPとGPGは管理者が異なる(PGPは商用ライセンス・GPGPは完全オープンソースライセンス)。  
 　YubiKeyとの連携やSSH利用ではGPG一択  
 
-<details><summary>失敗。</summary>
+<details><summary>失敗(目的からずれたことをやっている)。</summary>
 
 以下、GPGにYubiKeyを認識させる。
 ```terminal
@@ -3817,10 +3817,6 @@ $ echo $?
 255
 $
 ```
-
-</details>
-
-<details><summary>失敗(目的からずれたことをやっている)。</summary>
 
 以下、他の方法で確認する(OpenSC方式でSSHにYubiKeyを使うが失敗)。
 ```terminal
@@ -3974,6 +3970,17 @@ $ brew list | grep opensc
 $
 ```
 
+以下、ユビキーの情報確認。
+```terminal
+$ ykman piv info
+PIV version:              5.8.9
+PIN tries remaining:      4/4
+PUK tries remaining:      4/4
+Management key algorithm: TDES
+CHUID: No data available
+CCC:   No data available
+$
+```
 
 
 <a id="operatingsystemnetwork_mail"></a>
