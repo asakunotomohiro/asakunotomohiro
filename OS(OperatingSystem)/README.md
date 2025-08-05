@@ -3529,7 +3529,7 @@ A proxy was used to fetch the proof: proxy.keyoxide.org
   * [PINコード](#operatingsystemnetwork_yubico_pincode)  
   * [BIOコード](#operatingsystemnetwork_yubico_biofido)  
   * [BIO版によるssh鍵の生成](#operatingsystemnetwork_yubico_biossh)  
-  * [GPG版によるssh鍵の生成](#operatingsystemnetwork_yubico_GPGssh)  
+  * [GPG版によるssh鍵での接続(失敗)](#operatingsystemnetwork_yubico_GPGssh)  
 
 <a id="operatingsystemnetwork_yubico_cliykman"></a>
 ### 環境構築(ykman)
@@ -3731,8 +3731,12 @@ $
 
 
 <a id="operatingsystemnetwork_yubico_GPGssh"></a>
-#### GPG版によるssh鍵の生成
+#### GPG版によるssh鍵での接続(失敗)
 ※[PGPによるSSH鍵の生成](#operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_subkeycertification)は今回と別であるため、気をつけること。  
+※PGPとGPGは管理者が異なる(PGPは商用ライセンス・GPGPは完全オープンソースライセンス)。  
+　YubiKeyとの連携やSSH利用ではGPG一択  
+
+<details><summary>失敗。</summary>
 
 以下、GPGにYubiKeyを認識させる。
 ```terminal
@@ -3773,7 +3777,7 @@ ssb>  ed25519/82AA8224E47F7A68  作成: 2023-05-22  有効期限: 2099-05-03
 $
 ```
 
-以下、PGP鍵の性能確認。
+以下、GPG鍵の性能確認。
 ```terminal
 $ gpg --list-secret-keys asakuno.secure@pgp.asakuno.org
 sec>  ed25519 2023-05-22 [C] [有効期限: 2105-05-03]
@@ -3813,6 +3817,8 @@ $ echo $?
 $
 ```
 
+</details>
+
 以下、ユビキーの秘密鍵を読み込むためのライブラリをインストール。
 ```terminal
 $ brew list | grep PKCS11
@@ -3837,6 +3843,8 @@ provider /usr/local/lib/libykcs11.dylib is not a PKCS11 library
 git@github.com: Permission denied (publickey).
 $
 ```
+
+<details><summary>失敗(目的からずれたことをやっている)。</summary>
 
 以下、他の方法で確認する(OpenSC方式でSSHにYubiKeyを使うが失敗)。
 ```terminal
@@ -3869,7 +3877,7 @@ $
 ユビキーのPIVに秘密鍵を入れておく必要があるようだ。  
 ユビキーのPIVは、[9aスロット](https://developers.yubico.com/PIV/Introduction/Certificate_slots.html)とのこと。
 
-以下、PIVなどの管理ツールインストール作業。
+以下、PIVなどの管理ツールインストール作業(不要だった)。
 ```terminal
 $ yubico-piv-tool
 zsh: command not found: yubico-piv-tool
@@ -3921,21 +3929,6 @@ $
 秘密鍵が存在するのに、存在しないことになっている。  
 これは、証明書が存在しないため、鍵の存在を確認できないためとのこと。  
 
-以下、自己署名実施。
-```terminal
-$ ykman piv certificates generate -s 'CN=asakunotomohiro,DC=asakunotomohiro' 9a pubkey.pem
-Enter a management key [blank to use default key]: 5678
-Enter PIN: 5678
-ERROR: PIN verification failed, 2 tries left.
-$ ykman piv certificates generate -s 'CN=asakunotomohiro,DC=asakunotomohiro' 9a pubkey.pem
-Enter a management key [blank to use default key]: 5678	←☆マネジメントキー。
-Enter PIN: 1234	←☆通常のPin。
-Certificate generated in slot AUTHENTICATION.
-$ echo $?
-0
-$
-```
-
 以下、公開鍵の取得作業(どのコマンドが正解？)。
 ```terminal
 $ yubico-piv-tool --version
@@ -3962,6 +3955,23 @@ git@github.com: Permission denied (publickey).
 $
 ```
 むしろ状況悪化していないか？  
+
+</details>
+
+以下、自己署名実施。
+```terminal
+$ ykman piv certificates generate -s 'CN=asakunotomohiro,DC=asakunotomohiro' 9a pubkey.pem
+Enter a management key [blank to use default key]: 5678
+Enter PIN: 5678
+ERROR: PIN verification failed, 2 tries left.
+$ ykman piv certificates generate -s 'CN=asakunotomohiro,DC=asakunotomohiro' 9a pubkey.pem
+Enter a management key [blank to use default key]: 5678	←☆マネジメントキー。
+Enter PIN: 1234	←☆通常のPin。
+Certificate generated in slot AUTHENTICATION.
+$ echo $?
+0
+$
+```
 
 
 <a id="operatingsystemnetwork_mail"></a>
