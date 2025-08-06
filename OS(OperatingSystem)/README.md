@@ -4149,6 +4149,7 @@ $
   * [mailbox](#operatingsystemnetwork_mail_servicemailbox)  
   * [startmail](#operatingsystemnetwork_mail_servicestartmail)  
   * [runbox](#operatingsystemnetwork_mail_servicerunbox)  
+  * [tuta](#operatingsystemnetwork_mail_servicetuta)  
 
 
 <a id="operatingsystemnetwork_mail_serviceposteo"></a>
@@ -4214,6 +4215,13 @@ $
 年間20ドルほど。  
 高額ではない(月額200円もいかない)。  
 安全面もあると思う。  
+
+
+<a id="operatingsystemnetwork_mail_servicetuta"></a>
+##### tuta
+<https://tuta.com/>  
+月額3ドルの完全暗号化メール。  
+制限があるとはいえ、無料で使える部分もあるため、試すにはいいかもしれない。  
 
 
 <a id="operatingsystemnetwork_mail_SendAndReceiveInBrowser"></a>
