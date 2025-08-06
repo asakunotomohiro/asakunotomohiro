@@ -4105,6 +4105,28 @@ drwxr-xr-x  4 asakunotomohiro  staff  128  8  6 11:22 pvivateRepository/
 $
 ```
 
+以下、動作確認(接続確認)。
+```terminal
+$ ssh -T git@github	←☆configファイル利用(接続成功)。
+Enter PIN for 'asakunotomohiro': 1234
+Hi asakunotomohiro! You've successfully authenticated, but GitHub does not provide shell access.
+$ ssh -T git@github.com	←☆通常利用(接続失敗)。
+sign_and_send_pubkey: signing failed for RSA "cardno:21_027_354" from agent: agent refused operation
+sign_and_send_pubkey: signing failed for ED25519 "github@asakunotomohiro" from agent: agent refused operation
+git@github.com: Permission denied (publickey).
+$
+$ cat -n ~/.ssh/config | head -8
+     1	Host github
+     2		HostName github.com
+     3		User asakunotomohiro
+     4	#	IdentitiesOnly yes	←☆あってはならないようだ。
+     5		IdentityAgent none	# ssh-agentに登録された鍵を無視する。
+     6		PKCS11Provider /opt/homebrew/lib/opensc-pkcs11.so
+     7	
+     8	
+$
+```
+
 
 <a id="operatingsystemnetwork_mail"></a>
 ### メール
