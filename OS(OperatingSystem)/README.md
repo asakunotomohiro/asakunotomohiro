@@ -4154,10 +4154,23 @@ $
 <a id="operatingsystemnetwork_mail_serviceposteo"></a>
 ##### posteo
 <https://posteo.de/>  
+**使うな**(支払いを止めた場合、他の人にアカウントを取得される)。  
 月々1ユーロの支払いで安いのだが、2GBの容量しかないため、50MBの添付ファイルをやりとりする場合、数十通で限界になってしまう。  
 実際にはそこまで複数のやりとりは発生しないだろうが、、、10年間のメール送受信だけでは1GBも合計で使っていないため、1通や2通ぐらいの50MB添付ファイルはたかがしれているのは目に見えている。  
 そんなことより、1番の難関は英語ですべてを理解する必要があること・・・辛いため、常用できないだろう。  
 メールソフトを使うことができるため、英語に苦戦するのは最初だけで、あとは使い慣れた環境で利用できるのは利点だろうか。  
+
+> You have not added credit to your Posteo account for a longer period of time.
+> 
+> We have therefore terminated your account on 19 July 2025 with 14 days' notice as of 02 August 2025.
+> We had also informed you on how to back up your data until the termination date and announced that the account would be blocked as of 03 August 2025.
+> It is now no longer possible to access the account and emails will no longer be received. On 31 October 2025 the account and any potentially remaining data will be completely deleted from our servers.
+> 
+> The account's email address (including aliases) will be available for registration again after a security period of 24 months has passed. Please remember to inform all contacts and any services that you have registered with this email address that you no longer use this address/these addresses.
+> 
+> If you would like to continue using the terminated account, please contact customer support at "サポートメール" before the final date of deletion.
+
+※サポートメール部分は本物のメールアドレスを書き換えている。  
 
 
 <a id="operatingsystemnetwork_mail_servicelycos"></a>
