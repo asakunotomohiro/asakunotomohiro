@@ -3809,7 +3809,7 @@ gpg-connect-agent: agent の起動のため、8秒待ちます...
 gpg-connect-agent: agentへの接続が確立しました
 OK
 $
-$ ssh -T git@github
+$ ssh -T git@github.com
 lib_contains_symbol: open /usr/local/lib/libykcs11.dylib: No such file or directory
 provider /usr/local/lib/libykcs11.dylib is not a PKCS11 library
 git@github.com: Permission denied (publickey).
@@ -4084,6 +4084,24 @@ $
 ```terminal
 $ ssh-keygen -D /opt/homebrew/lib/opensc-pkcs11.so
 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBN9ICz4rIyQDhgbEoOObcYO8q6xJOMik/7TpUHRaohWEWg7rH/kBYUNri3AeGpNX7Mk3uc4DfzvVDcqdspSGkfg= PIV AUTH pubkey
+$
+```
+上記ではなく、こちらの公開鍵をGithubのアカウントに登録する。  
+
+以下、ローカル端末にリポジトリを取得。
+```terminal
+$ git clone git@github:asakunotomohiro/pvivateRepository.git
+Cloning into 'pvivateRepository'...
+Enter PIN for 'asakunotomohiro': 1234
+remote: Enumerating objects: 3, done.
+remote: Counting objects: 100% (3/3), done.
+remote: Compressing objects: 100% (2/2), done.
+remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+Receiving objects: 100% (3/3), done.
+$ echo $?
+0
+$ ll -d pvivateRepository
+drwxr-xr-x  4 asakunotomohiro  staff  128  8  6 11:22 pvivateRepository/
 $
 ```
 
