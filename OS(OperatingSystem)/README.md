@@ -3524,12 +3524,13 @@ A proxy was used to fetch the proof: proxy.keyoxide.org
 [YubiKey 暗号欠陥の脆弱性により攻撃者が秘密鍵を抽出してデバイスを複製できる](https://rocket-boys.co.jp/security-measures-lab/yubikey-encryption-flaw-secret-key-extraction/)  
 
 
-* FIDOセキュリティキーの利用方法  
+* セキュリティキーの利用方法  
   * [環境構築](#operatingsystemnetwork_yubico_cliykman)  
   * [PINコード](#operatingsystemnetwork_yubico_pincode)  
   * [BIOコード](#operatingsystemnetwork_yubico_biofido)  
   * [BIO版によるssh鍵の生成](#operatingsystemnetwork_yubico_biossh)  
   * [GPG版によるssh鍵での接続(失敗)](#operatingsystemnetwork_yubico_GPGssh)  
+  * [PIV版によるssh鍵での接続](#operatingsystemnetwork_yubico_PIVssh)  
 
 <a id="operatingsystemnetwork_yubico_cliykman"></a>
 ### 環境構築(ykman)
@@ -3736,7 +3737,7 @@ $
 ※PGPとGPGは管理者が異なる(PGPは商用ライセンス・GPGPは完全オープンソースライセンス)。  
 　YubiKeyとの連携やSSH利用ではGPG一択  
 
-<details><summary>失敗。</summary>
+<details><summary>失敗(目的からずれたことをやっている)。</summary>
 
 以下、GPGにYubiKeyを認識させる。
 ```terminal
@@ -3808,7 +3809,7 @@ gpg-connect-agent: agent の起動のため、8秒待ちます...
 gpg-connect-agent: agentへの接続が確立しました
 OK
 $
-$ ssh -T git@github
+$ ssh -T git@github.com
 lib_contains_symbol: open /usr/local/lib/libykcs11.dylib: No such file or directory
 provider /usr/local/lib/libykcs11.dylib is not a PKCS11 library
 git@github.com: Permission denied (publickey).
@@ -3816,35 +3817,6 @@ $ echo $?
 255
 $
 ```
-
-</details>
-
-以下、ユビキーの秘密鍵を読み込むためのライブラリをインストール。
-```terminal
-$ brew list | grep PKCS11
-$ brew list | grep opensc
-$ brew install opensc
-==> Auto-updating Homebrew...
-Adjust how often this is run with HOMEBREW_AUTO_UPDATE_SECS or disable with
-HOMEBREW_NO_AUTO_UPDATE. Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
-　　　・
-　　　・
-　　　・
-==> Running `brew cleanup opensc`...
-Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.
-Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
-==> No outdated dependents to upgrade!
-$ brew list | grep opensc
-(standard input):101:opensc
-$
-$ ssh -T git@github	←☆駄目だが？
-lib_contains_symbol: open /usr/local/lib/libykcs11.dylib: No such file or directory
-provider /usr/local/lib/libykcs11.dylib is not a PKCS11 library
-git@github.com: Permission denied (publickey).
-$
-```
-
-<details><summary>失敗(目的からずれたことをやっている)。</summary>
 
 以下、他の方法で確認する(OpenSC方式でSSHにYubiKeyを使うが失敗)。
 ```terminal
@@ -3912,7 +3884,7 @@ Try removing and reconnecting the device.
 $ yubico-piv-tool -a generate -s 9a -A ECCP256 -o pubkey.pem
 Successfully generated a new private key.
 $ yubico-piv-tool -a status	←☆PIV内容の確認(鍵が入っている)。 ※'ykman piv info'コマンドを使うのが吉なのだろう。
-Version:	5.4.3
+Version:	5.8.9
 Serial Number:	21027354
 CHUID:	No data available
 CCC:	No data available
@@ -3970,6 +3942,188 @@ Enter PIN: 1234	←☆通常のPin。
 Certificate generated in slot AUTHENTICATION.
 $ echo $?
 0
+$
+```
+
+<a id="operatingsystemnetwork_yubico_PIVssh"></a>
+#### PIV版によるssh鍵での接続
+※[PGPによるSSH鍵の生成](#operatingsystemnetwork_pgp_howtoencrypt_mainsubkey_subkeycertification)は今回と別であるため、気をつけること。  
+
+
+以下、ユビキーの秘密鍵を読み込むためのライブラリをインストール。
+```terminal
+$ brew list | grep PKCS11
+$ brew list | grep opensc
+$ brew install opensc
+==> Auto-updating Homebrew...
+Adjust how often this is run with HOMEBREW_AUTO_UPDATE_SECS or disable with
+HOMEBREW_NO_AUTO_UPDATE. Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
+　　　・
+　　　・
+　　　・
+==> Running `brew cleanup opensc`...
+Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.
+Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
+==> No outdated dependents to upgrade!
+$ brew list | grep opensc
+(standard input):101:opensc
+$
+```
+
+以下、ユビキーの情報確認。
+```terminal
+$ ykman piv info
+PIV version:              5.8.9
+PIN tries remaining:      4/4
+PUK tries remaining:      4/4
+Management key algorithm: TDES
+CHUID: No data available
+CCC:   No data available
+$ gpg -K --with-subkey-fingerprint asakuno.secure@pgp.asakuno.org
+sec>  ed25519 2023-05-22 [C] [有効期限: 2105-05-03]
+      2771F0FCF8FE74CD9B9C25439D4893D18D358530
+   カードシリアル番号 = 0008 21027354
+uid           [  究極  ] asakunotomohiro (securemail@セキュアメール) <asakuno.secure@pgp.asakuno.org>
+ssb>  cv25519 2023-05-22 [E] [有効期限: 2099-05-03]
+      728B0A778912932B9397341B2B6243601FA1DBDA
+   カードシリアル番号 = 0008 21027354
+ssb>  ed25519 2023-05-22 [S] [有効期限: 2099-05-03]
+      60A7B0576F7404D51D59520C7A430907759D9FF4
+   カードシリアル番号 = 0008 21027354
+ssb>  ed25519 2023-05-22 [A] [有効期限: 2099-05-03]
+      8013753761C78FA1A48230C682AA8224E47F7A68
+   カードシリアル番号 = 0008 21027354
+
+$
+```
+
+以下、ユビキーのPIV(スロット9)に秘密鍵を作成する。
+```terminal
+$ ykman piv keys generate -a ECCP256 9a pubkey.pem
+Enter a management key [blank to use default key]: 5678
+Private key generated in slot 9A (AUTHENTICATION), public key written to pubkey.pem.
+$
+```
+
+以下、秘密鍵作成後のユビキー情報確認。
+```terminal
+$ ykman piv info
+PIV version:              5.8.9
+PIN tries remaining:      3/3
+PUK tries remaining:      3/3
+Management key algorithm: TDES
+CHUID: No data available
+CCC:   No data available
+Slot 9A (AUTHENTICATION):
+  Private key type: ECCP256
+
+$
+```
+
+以下、自己署名実施。
+```terminal
+$ ykman piv certificates generate -s 'CN=asakunotomohiro,DC=asakunotomohiro' 9a pubkey.pem
+Enter a management key [blank to use default key]: 5678
+Enter PIN: 1234
+Certificate generated in slot AUTHENTICATION.
+$
+```
+
+以下、自己署名実施後のユビキー情報確認。
+```terminal
+$ ykman piv info
+PIV version:              5.8.9
+PIN tries remaining:      4/4
+PUK tries remaining:      4/4
+Management key algorithm: TDES
+CHUID: 3019d4e739da739ced39ce739d836858210842108421c84210c3eb34109184c47439004f7992c7aa575d1bcdbc350832303330303130313e00fe00
+CCC:   No data available
+Slot 9A (AUTHENTICATION):
+  Private key type: ECCP256
+  Public key type:  ECCP256
+  Subject DN:       CN=asakunotomohiro,DC=asakunotomohiro
+  Issuer DN:        CN=asakunotomohiro,DC=asakunotomohiro
+  Serial:           76:3f:e4:4a:64:c9:d9:82:4d:97:72:d3:18:14:a9:60:a6:19:37:01
+  Fingerprint:      affb1865e06ff5d82f29f813f4dd819dd475f6046a18cb883147929df3c4118b
+  Not before:       2025-08-05T06:17:30+00:00
+  Not after:        2026-08-05T06:17:30+00:00
+
+$
+```
+
+以下、ファイル出力実施。
+```terminal
+$ ll pubkey.pem cert.pem
+-rw-r--r--  1 asakunotomohiro  staff  451  8  5 15:15 pubkey.pem	←☆秘密鍵作成時に出力されたファイルがこれだろう。
+-rw-r--r--  1 asakunotomohiro  staff  558  8  4 21:45 cert.pem	←☆これは過去に出力されたファイル。
+$ date
+2025年 8月 5日 火曜日 15時18分05秒 JST
+$
+$ ykman piv certificates export -F PEM 9a cert.pem	←☆自己署名ファイル出力。
+Certificate from slot 9A (AUTHENTICATION) exported to cert.pem.
+$
+$ ll pubkey.pem cert.pem
+-rw-r--r--  1 asakunotomohiro  staff  1103  8  5 15:18 cert.pem	←☆自己署名ファイル。
+-rw-r--r--  1 asakunotomohiro  staff   451  8  5 15:15 pubkey.pem
+$ date
+2025年 8月 5日 火曜日 15時18分30秒 JST
+$
+```
+
+以下、自己署名ファイルから公開鍵の出力作業。
+```terminal
+$ openssl x509 -in cert.pem -pubkey -noout
+-----BEGIN PUBLIC KEY-----
+MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE30gLPisjJAOGBsSg45txg7yrrEk4
+yKT/tOlQdFqiFYRaDusf+QFhQ2uLcB4ak1fsyTe5zgN/O9UNyp2ylIaR+A==
+-----END PUBLIC KEY-----
+$
+```
+
+以下、ユビキーのPIVから公開鍵の取得作業(上記と異なる)。
+```terminal
+$ ssh-keygen -D /opt/homebrew/lib/opensc-pkcs11.so
+ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBN9ICz4rIyQDhgbEoOObcYO8q6xJOMik/7TpUHRaohWEWg7rH/kBYUNri3AeGpNX7Mk3uc4DfzvVDcqdspSGkfg= PIV AUTH pubkey
+$
+```
+上記ではなく、こちらの公開鍵をGithubのアカウントに登録する。  
+
+以下、ローカル端末にリポジトリを取得。
+```terminal
+$ git clone git@github:asakunotomohiro/pvivateRepository.git
+Cloning into 'pvivateRepository'...
+Enter PIN for 'asakunotomohiro': 1234
+remote: Enumerating objects: 3, done.
+remote: Counting objects: 100% (3/3), done.
+remote: Compressing objects: 100% (2/2), done.
+remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0 (from 0)
+Receiving objects: 100% (3/3), done.
+$ echo $?
+0
+$ ll -d pvivateRepository
+drwxr-xr-x  4 asakunotomohiro  staff  128  8  6 11:22 pvivateRepository/
+$
+```
+
+以下、動作確認(接続確認)。
+```terminal
+$ ssh -T git@github	←☆configファイル利用(接続成功)。
+Enter PIN for 'asakunotomohiro': 1234
+Hi asakunotomohiro! You've successfully authenticated, but GitHub does not provide shell access.
+$ ssh -T git@github.com	←☆通常利用(接続失敗)。
+sign_and_send_pubkey: signing failed for RSA "cardno:21_027_354" from agent: agent refused operation
+sign_and_send_pubkey: signing failed for ED25519 "github@asakunotomohiro" from agent: agent refused operation
+git@github.com: Permission denied (publickey).
+$
+$ cat -n ~/.ssh/config | head -8
+     1	Host github
+     2		HostName github.com
+     3		User asakunotomohiro
+     4	#	IdentitiesOnly yes	←☆あってはならないようだ。
+     5		IdentityAgent none	# ssh-agentに登録された鍵を無視する。
+     6		PKCS11Provider /opt/homebrew/lib/opensc-pkcs11.so
+     7	
+     8	
 $
 ```
 
