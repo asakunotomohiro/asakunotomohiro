@@ -250,7 +250,9 @@ $
     * [Orbot(暗号化)](https://play.google.com/store/apps/details?id=org.torproject.android)  
     * [Signal(チャット)](https://play.google.com/store/apps/details?id=org.thoughtcrime.securesms)  
     * [Telegram(チャット)](https://play.google.com/store/apps/details?id=org.telegram.messenger)  
+      [whatsApp](https://www.whatsapp.com)より貧弱な暗号通信。  
     * [AOL(メールソフト)](https://play.google.com/store/apps/details?id=com.aol.mobile.aolapp)  
+      個人情報ダダ漏れのサービス。  
     * [GitHub(ソースコード管理)](https://play.google.com/store/apps/details?id=com.github.android)  
   * 生活補助  
     * [To Do](https://play.google.com/store/apps/details?id=com.microsoft.todos)  

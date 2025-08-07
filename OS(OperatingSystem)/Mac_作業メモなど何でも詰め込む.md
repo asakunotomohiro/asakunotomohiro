@@ -18,13 +18,14 @@
   * [macOS新規利用前の設定変更](#macOperatingSystemsetting)  
   * [macOSを再インストールする方法](#macOperatingSystemreinstall)  
   * [コマンド](#macOperatingSystemreorder)  
+    * [一般コマンドの導入](#macOperatingSystemreorder_coreutils)  
+      Linuxには標準で入っているコマンドをMacに導入する。  
     * [ユーザ一覧表示](#macOperatingSystemreorder_dscl-list)  
-      詳細には未調査。  
+      詳細には踏み込まず。  
     * [ユーザ新規追加](#macOperatingSystemreorder_dscl-create)  
       未調査。  
   * 開発環境構築(TODO: このファイルに記載するのは違うような気がする)。  
     * keyboardioの[Kaleidoscope](#keyboardioKaleidoscopeEnvironmentConstruction)を用意する。  
-
 
 
 <a id="macOperatingSystemreinstall"></a>
@@ -192,6 +193,79 @@ HFS+とは、Mac OS拡張フォーマットのこと。
 <a id="macOperatingSystemreorder"></a>
 ### MacOS限定のコマンド
 ※Linuxコマンドは[別ファイル](./Linux_作業メモなど何でも詰め込む.md)。  
+
+<a id="macOperatingSystemreorder_coreutils"></a>
+#### 一般コマンドの導入
+今回も[Homebrew](https://brew.sh)を使い、[coreutils](https://formulae.brew.sh/formula/coreutils)を導入する。  
+元々の使いたいコマンドはこの中に含まれており、その1つが[shred](https://linuxjm.osdn.jp/info/GNU_coreutils/coreutils-ja_83.html)だ。  
+これはファイルを復元不可能なまでに削除するため、どうしても欲しかった(個人端末で熱望する理由はないけど)。  
+
+<details><summary>作業記録。</summary>
+
+以下、インストール作業。
+```terminal
+$ brew install coreutils
+Running `brew update --auto-update`...
+==> Auto-updated Homebrew!
+==> Fetching coreutils
+==> Downloading https://ghcr.io/v2/homebrew/core/coreutils/manifests/9.2
+######################################################################## 100.0%
+==> Downloading https://ghcr.io/v2/homebrew/core/coreutils/blobs/sha256:5076ee683ec021506f83687a9b2ad5e5643ef9825784cf5a92d184e947bda127
+==> Downloading from https://pkg-containers.githubusercontent.com/ghcr1/blobs/sha256:5076ee683ec021506f83687a9b2ad5e5643ef9825784cf5a92d184e947bda127?s
+######################################################################## 100.0%
+==> Installing dependencies for coreutils: gmp
+==> Installing coreutils dependency: gmp
+==> Pouring gmp--6.2.1_1.arm64_monterey.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/gmp/6.2.1_1: 21 files, 3.2MB
+==> Installing coreutils
+==> Pouring coreutils--9.2.arm64_monterey.bottle.tar.gz
+==> Caveats
+Commands also provided by macOS and the commands dir, dircolors, vdir have been installed with the prefix "g".
+If you need to use these commands with their normal names, you can add a "gnubin" directory to your PATH with:
+  PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
+==> Summary
+🍺  /opt/homebrew/Cellar/coreutils/9.2: 480 files, 13.2MB
+==> Running `brew cleanup coreutils`...
+Disable this behaviour by setting HOMEBREW_NO_INSTALL_CLEANUP.
+Hide these hints with HOMEBREW_NO_ENV_HINTS (see `man brew`).
+==> Caveats
+==> coreutils
+Commands also provided by macOS and the commands dir, dircolors, vdir have been installed with the prefix "g".
+If you need to use these commands with their normal names, you can add a "gnubin" directory to your PATH with:
+  PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
+$ echo $?
+0
+$
+```
+Pathを通す必要があるのか？  
+
+以下、特にPath通し作業せずに使える確認。
+```terminal
+$ shred --version	←☆バージョン確認。
+shred (GNU coreutils) 9.2
+Copyright (C) 2023 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Colin Plumb.
+$
+```
+すでに通っているPathだったのかもな(要確認)。  
+
+以下、動作確認・・・もどき。
+```terminal
+$ echo "導入確認" > test20230411.txt
+$ ll
+total 32
+-rw-r--r--   1 asakunotomohiro  staff    13  4 11 10:05 test20230411.txt	←☆このファイルを消す。
+$ shred -u test20230411.txt	←☆オプション付きで実施(オプションを付けない場合削除しない)。
+$ ll	←☆消えている。
+total 0
+$
+```
+
+</details>
 
 
 <a id="macOperatingSystemreorder_dscl-list"></a>
