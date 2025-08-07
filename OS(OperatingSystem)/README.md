@@ -21,6 +21,7 @@
 また、[Hitomi Kimura](https://twitter.com/hitok_/status/1650720610065035264)さんによる心配事について、利用規約やプライバシー規約を見返したが問題なさそうだった。  
 そもそも用語を理解していないのだが、2要素認証などとは別物？  
 そして、Googleによる[パスキー](https://security.googleblog.com/2022/10/SecurityofPasskeysintheGooglePasswordManager.html)の利用についても考慮する。  
+オープンソースの2段階認証アプリ：[android-authenticator](https://github.com/protonpass/android-authenticator)  
 
 * 検索エンジン  
   * [duckduckgo](https://duckduckgo.com)  
@@ -39,7 +40,7 @@
   * [ネットサーフィン](#operatingsystemnetwork_internetsurfing)  
   * [VPN](#operatingsystemnetwork_vpn)  
   * [PGP](#operatingsystemnetwork_pgp)  
-  * [FIDOセキュリティキー](#operatingsystemnetwork_yubico)  
+  * [セキュリティキー](#operatingsystemnetwork_yubico)  
   * [メール](#operatingsystemnetwork_mail)  
 
 * 仕様書  
@@ -3518,15 +3519,18 @@ A proxy was used to fetch the proof: proxy.keyoxide.org
 
 
 <a id="operatingsystemnetwork_yubico"></a>
-### FIDOセキュリティキー
+### セキュリティキー
 調べてわかったのだが、ユビキーというのは、Yubicoという会社の登録商標だった。  
 そのため、通常は、セキュリティキーと表現するのが適切になる(さらに正確に言えば、FIDOセキュリティキーとのこと)。  
+[パスキーってなに？パスワードの代わりになる最新の技術を解説](https://www.trustbind.jp/column/passkeys-20240314.html)  
 
 [YubiKey 5にサイドチャネル攻撃でセキュリティが破られる脆弱性が見つかる、バージョン5.7より前のYubiKeyは永久に危険との勧告](https://gigazine.net/news/20240904-yubikeys-vulnerable-cloning-attacks-side-channel/)  
 [YubiKey製品の暗号化ライブラリ脆弱性の発見に関するご案内（第一報）](https://securitykey.scsk.jp/yubikey/1644/)  
 [JVNDB-2024-007966 複数の Yubico 製品における観測可能な不一致に関する脆弱性](https://jvndb.jvn.jp/ja/contents/2024/JVNDB-2024-007966.html)  
 [YubiKey 暗号欠陥の脆弱性により攻撃者が秘密鍵を抽出してデバイスを複製できる](https://rocket-boys.co.jp/security-measures-lab/yubikey-encryption-flaw-secret-key-extraction/)  
+[Passkey認証におけるアカウント乗っ取り - Non Discoverable Credentialフローとの混在に起因する脆弱性(CVE-2025-26788)解説](https://blog.flatt.tech/entry/passkey_security_2)  
 
+[Bringing passkeys to Android & Chrome](https://android-developers.googleblog.com/2022/10/bringing-passkeys-to-android-and-chrome.html)  
 
 * セキュリティキーの利用方法  
   * [環境構築](#operatingsystemnetwork_yubico_cliykman)  
@@ -3535,6 +3539,10 @@ A proxy was used to fetch the proof: proxy.keyoxide.org
   * [BIO版によるssh鍵の生成](#operatingsystemnetwork_yubico_biossh)  
   * [GPG版によるssh鍵での接続(失敗)](#operatingsystemnetwork_yubico_GPGssh)  
   * [PIV版によるssh鍵での接続](#operatingsystemnetwork_yubico_PIVssh)  
+
+* ログイン方法。  
+  * [セキュリティ キーを使用してMicrosoftアカウントにサインインする](https://support.microsoft.com/ja-jp/topic/セキュリティ-キーを使用してアカウントにサインインする-b23a2a45-6ab8-4c86-9f22-bcadf60235aa)  
+
 
 <a id="operatingsystemnetwork_yubico_cliykman"></a>
 ### 環境構築(ykman)
