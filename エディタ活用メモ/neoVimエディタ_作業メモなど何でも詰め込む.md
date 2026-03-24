@@ -342,6 +342,12 @@ To show this information, run `devbox info nodejs`
 $ echo $?
 0
 $
+$ devbox add neovim	←☆本命のNeovimエディタをインストール実施。
+Info: Adding package "neovim@latest" to devbox.json
+Info: Installing the following packages to the nix store: neovim@latest
+$ echo $?
+0
+$
 ```
 
 <a id="theDarksideCommunicationGroup9784873102870020003"></a>
