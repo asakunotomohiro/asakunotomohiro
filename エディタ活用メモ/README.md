@@ -6,6 +6,7 @@
 
 * [Vim](https://www.vim.org)  
   [Windows用](https://www.kaoriya.net/software/vim/)・[Mac用](https://github.com/macvim-dev/macvim)  
+* [neoVim](https://neovim.io)  
 * [秀丸エディタ](https://hide.maruo.co.jp/software/hidemaru.html)  
 * [サクラエディタ](https://sakura-editor.github.io)  
 
@@ -16,6 +17,9 @@ Unix・Linux・Windows・MacなどあらゆるOSに移植されている。
 いまは、AndroidOSでも使えるようになっている。  
 
 [スクリプト](https://vim-jp.org/vimdoc-ja/usr_41.html)も使えるため、プログラミング言語のひとつとして基礎知識を調べた([勉強](../vimScript言語/README.md)した)。  
+
+### Neovimとは。
+vimエディタから派生したエディタ。  
 
 ### 秀丸エディタとは。
 Windows専用のテキストエディタとして日本で有名になっている。  
