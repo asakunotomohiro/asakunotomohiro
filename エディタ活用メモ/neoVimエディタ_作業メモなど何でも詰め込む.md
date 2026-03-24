@@ -94,7 +94,9 @@ ASIN：
 
 * 仮想環境  
   * [Devbox](https://www.jetify.com/devbox)  
+    * [手順](#theDarksideCommunicationGroup9784873102870020002)  
   * [Docker](https://www.docker.com/)  
+    * [手順](#theDarksideCommunicationGroup9784873102870020003)  
 
 <a id="theDarksideCommunicationGroup9784873102870010000"></a>
 ### Neovim を使ってみよう！
@@ -116,6 +118,159 @@ ASIN：
 
 <a id="theDarksideCommunicationGroup9784873102870020002"></a>
 #### Devbox を使った環境構築
+
+[インストール](https://www.jetify.com/docs/devbox/installing-devbox#macos)
+```terminal
+$ curl -fsSL https://get.jetify.com/devbox | bash	←☆インストール実施。
+Devbox 📦 by Jetify
+  Instant, easy and predictable development environments.
+
+  This script downloads and installs the latest devbox binary.
+
+Confirm Installation Details
+  Location:     /usr/local/bin/devbox
+  Download URL: https://releases.jetify.com/devbox
+
+? Install devbox to /usr/local/bin (requires sudo)? [Y/n] y	←☆インストール場所(ここがデフォルト？)。
+
+Downloading and Installing
+✓ Downloading devbox binary... [DONE]
+→ Installing in /usr/local/bin/devbox (requires sudo)...
+Password:	←☆mac端末のパスワード。
+Sorry, try again.
+✓ Installing in /usr/local/bin/devbox... [DONE]
+✓ Successfully installed devbox 🚀
+
+Next Steps
+  1. Learn how to use devbox
+     Run devbox help or read the docs at https://github.com/jetify-com/devbox
+  2. Get help and give feedback
+     Join our community at https://discord.gg/jetify
+$ echo $?
+0
+$
+```
+
+また、環境ファイル(dotfiles)の管理に[direnv](https://github.com/direnv/direnv)を使うことで、開発環境を分離することが容易になるとのこと。  
+https://direnv.net
+```terminal
+$ brew install direnv
+==> Auto-updating Homebrew...
+Adjust how often this is run with `$HOMEBREW_AUTO_UPDATE_SECS` or disable with
+`$HOMEBREW_NO_AUTO_UPDATE=1`. Hide these hints with `$HOMEBREW_NO_ENV_HINTS=1` (see `man brew`).
+==> Downloading https://ghcr.io/v2/homebrew/core/portable-ruby/blobs/sha256:cef6f881f516d2cdbd0a5bfc7e20318da8b047cf2674ee27c5d4858d3ecd6430
+####################################################################################################################################################### 100.0%
+==> Pouring portable-ruby-4.0.1.arm64_big_sur.bottle.tar.gz
+==> Auto-updated Homebrew!
+==> Updated Homebrew from 5.0.16 (01cfc40124) to 5.1.1 (d974a18df9).
+Updated 3 taps (osx-cross/arm, homebrew/core and homebrew/cask).
+==> New Formulae
+apache-arrow-adbc: Cross-language, Arrow-native database access
+apkeep: Command-line tool for downloading APK files from various sources
+atuin-server: Sync server for atuin - Improved shell history for zsh, bash, fish and nushell
+buildkitd: Concurrent, cache-efficient, and Dockerfile-agnostic builder toolkit (Daemon)
+checkpwn: Check Have I Been Pwned and see if it's time for you to change passwords
+cline: AI-powered coding agent for complex work
+cloudflare-speed-cli: Cloudflare-based speed test with optional TUI
+ctx7: Manage AI coding skills and documentation context
+cyan: iOS app injector and modifier
+dlpack: Common in-memory tensor structure
+docker-engine: Pack, ship and run any application as a lightweight container (Daemon)
+dtop: Terminal dashboard for Docker monitoring across multiple hosts
+et: Remote terminal with IP roaming
+ffc.h: Single-header C99 accelerated float/double parsing
+flowrs: TUI application for Apache Airflow
+garden: Grow and cultivate collections of Git trees
+ggml: Tensor library for machine learning
+gittype: CLI code-typing game that turns your source code into typing challenges
+googleworkspace-cli: CLI for Drive, Gmail, Calendar, Sheets, Docs, Chat, Admin, and more
+icestorm: Tools for analyzing and creating Lattice iCE40 FPGA bitstream files
+ipapatch: CLI tool to patch iOS IPA files and their plugins
+kubectl-tree: Kubectl plugin to browse Kubernetes object hierarchies as a tree
+lief: Library to Instrument Executable Formats
+lua@5.4: Powerful, lightweight programming language
+mkbrr: Is a tool to create, modify and inspect torrent files. Fast
+models: Fast TUI and CLI for browsing AI models, benchmarks, and coding agents
+nfd2nfc: Convert filesystem entry names from NFD to NFC for cross-platform compatibility
+nono: Capability-based sandbox shell for AI agents with OS-enforced isolation
+oh-my-agent: Portable multi-agent harness for .agents-based skills and workflows
+openspec: Spec-driven development (SDD) for AI coding assistants
+osx-cross/arm/arm-gcc-bin@15
+pet: Simple command-line snippet manager
+pipewire-gstreamer: GStreamer Plugin for PipeWire
+portless: Replace port numbers with stable, named local URLs for humans and agents
+powershell: Command-line shell and scripting language
+rustypaste-cli: CLI tool for rustypaste
+scala-cli: Scala language runner and build tool
+sem-cli: Semantic version control CLI with entity-level diffs and blame
+spicedb: Open Source, Google Zanzibar-inspired database
+summarize: Multi-modal AI tool to extract and summarize content
+topicctl: Declarative Kafka topic management
+torf-cli: CLI tool for creating, reading and editing torrent files
+tsshd: UDP SSH server for trzsz-ssh (tssh) with roaming support
+upterm: Instant terminal sharing
+vapoursynth-bestsource: Audio/video source and FFmpeg wrapper
+vapoursynth-bm3d: BM3D denoising filter for VapourSynth
+vapoursynth-descale: VapourSynth plugin to undo upscaling
+vuls: Agentless Vulnerability Scanner for Linux/FreeBSD
+weave: Entity-level semantic merge driver for Git using tree-sitter
+wireplumber: Session / policy manager implementation for PipeWire
+wmbusmeters: Read wired or wireless mbus protocol to acquire utility meter readings
+x-cli: Command-line power tool for Twitter
+zsign: Cross-platform codesigning tool for iOS apps
+zvbi: Vertical Blanking Interval (VBI) decoding library
+zxc: High-performance asymmetric lossless compression library
+zycore-c: Zyan Core Library for C
+==> New Casks
+dbeaverteam: Universal database tool and SQL client
+dbvr: Lightweight CLI tool for running database operations
+fidelity-trader+: Trading platform
+font-ghanachocolate
+font-miranda-sans
+font-selawik
+gram: Code editor focused on stability, without AI, subscriptions, or telemetry
+ltx-desktop: Desktop app for generating videos with LTX models
+paseo: Self-hosted daemon for AI coding agents
+seamly2d: Pattern making software
+spectra-app: OpenSpec document management desktop app
+spokenly: Dictation and transcription app with AI-powered editing
+supasidebar: Arc-like sidebar to save links, files and folders from any browser
+t3-code: Minimal GUI for AI code agents
+tablepro: Native database client for MySQL, PostgreSQL, SQLite, and MongoDB
+tencent-ugit: Tencent Git GUI Client
+ulaa: Privacy-centric browser with advanced tracking protection
+vcmi: Open-source engine for Heroes of Might & Magic III
+voicemod: Real-time voice changer and soundboard
+wowup-cf: World of Warcraft addon manager
+x-air-edit: Remote control for the Behringer X AIR series mixers
+
+You have 34 outdated formulae installed.
+
+
+The 5.1.0 release notes are available on the Homebrew Blog:
+  https://brew.sh/blog/5.1.0
+The 5.1.1 changelog can be found at:
+  https://github.com/Homebrew/brew/releases/tag/5.1.1
+==> Fetching downloads for: direnv
+✔︎ Bottle Manifest direnv (2.37.1)                                                                                                  Downloaded   14.9KB/ 14.9KB
+✔︎ Bottle Manifest bash (5.3.9)                                                                                                     Downloaded   11.1KB/ 11.1KB
+✔︎ Bottle bash (5.3.9)                                                                                                              Downloaded    3.4MB/  3.4MB
+✔︎ Bottle direnv (2.37.1)                                                                                                           Downloaded    6.4MB/  6.4MB
+==> Installing direnv dependency: bash
+==> Pouring bash--5.3.9.arm64_tahoe.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/bash/5.3.9: 172 files, 13.8MB
+==> Pouring direnv--2.37.1.arm64_tahoe.bottle.tar.gz
+🍺  /opt/homebrew/Cellar/direnv/2.37.1: 12 files, 11.6MB
+==> Running `brew cleanup direnv`...
+Disable this behaviour by setting `HOMEBREW_NO_INSTALL_CLEANUP=1`.
+Hide these hints with `HOMEBREW_NO_ENV_HINTS=1` (see `man brew`).
+$ echo $?
+0
+$ direnv --version
+2.37.1
+$
+```
+※ディレクトリ移動に合わせて環境変数を自動で切り替えるシェル拡張ツールのこと。
 
 <a id="theDarksideCommunicationGroup9784873102870020003"></a>
 #### Docker を使った環境構築
