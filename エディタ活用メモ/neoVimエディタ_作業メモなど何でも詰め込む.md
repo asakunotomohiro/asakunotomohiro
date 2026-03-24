@@ -90,6 +90,11 @@ ASIN：
 
 <a id="theDarksideCommunicationGroup9784873102870000000"></a>
 ### まえがき
+仮想環境を構築後、使い捨て環境としてNeovimを使うとのこと。
+
+* 仮想環境  
+  * [Devbox](https://www.jetify.com/devbox)  
+  * [Docker](https://www.docker.com/)  
 
 <a id="theDarksideCommunicationGroup9784873102870010000"></a>
 ### Neovim を使ってみよう！
