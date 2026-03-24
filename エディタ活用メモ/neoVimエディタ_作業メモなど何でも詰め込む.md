@@ -348,6 +348,52 @@ Info: Installing the following packages to the nix store: neovim@latest
 $ echo $?
 0
 $
+$ devbox generate direnv	←☆.envrcファイルの作成(思ったより時間が掛かった)。
+Info: Ensuring packages are installed.
+✓ Computed the Devbox environment.
+Success: generated .envrc file in "".
+Success: ran `direnv allow `
+$ echo $?
+0
+$ ls -la
+total 56
+drwxr-xr-x    7 asakunotomohiro  staff    224  3月 25 00:13 .
+drwx------@ 860 asakunotomohiro  staff  27520  3月 24 22:29 ..
+drwxr-xr-x    8 asakunotomohiro  staff    256  3月 25 00:13 .devbox
+-rw-r--r--    1 asakunotomohiro  staff    276  3月 25 00:13 .envrc	←☆これのことだろう。
+drwxr-xr-x    2 asakunotomohiro  staff     64  3月 24 22:29 dev20260324
+-rw-r--r--    1 asakunotomohiro  staff    518  3月 24 23:56 devbox.json
+-rw-r--r--    1 asakunotomohiro  staff  20163  3月 25 00:13 devbox.lock
+$ cat .envrc
+#!/usr/bin/env bash
+
+# Automatically sets up your devbox environment whenever you cd into this
+# directory via our direnv integration:
+
+eval "$(devbox generate direnv --print-envrc)"
+
+# check out https://www.jetify.com/docs/devbox/ide_configuration/direnv/
+# for more details
+$ echo "export NVIM_APPNAME=./dev20260324" >> .envrc	←☆設定ファイルへの書き込み作業。
+$ ln -s $(pwd)/dev20260324 ~/.config/dev20260324	←☆リンクファイルの作成作業。
+$ cat .envrc
+#!/usr/bin/env bash
+
+# Automatically sets up your devbox environment whenever you cd into this
+# directory via our direnv integration:
+
+eval "$(devbox generate direnv --print-envrc)"
+
+# check out https://www.jetify.com/docs/devbox/ide_configuration/direnv/
+# for more details
+export NVIM_APPNAME=./dev20260324	←☆ファイル末尾に追記した内容。
+$
+$ direnv allow	←☆.envrcファイルの読み込み。
+$ direnv reload
+$
+$ nvim	←☆これで起動できるはず。
+zsh: command not found: nvim
+$
 ```
 
 <a id="theDarksideCommunicationGroup9784873102870020003"></a>
