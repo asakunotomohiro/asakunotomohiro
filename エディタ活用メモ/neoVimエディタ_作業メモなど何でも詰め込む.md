@@ -272,6 +272,78 @@ $
 ```
 ※ディレクトリ移動に合わせて環境変数を自動で切り替えるシェル拡張ツールのこと。
 
+以下、Devboxを使うための準備作業。
+```terminal
+$ mkdir -p neovimTest/dev20260324
+$ cd neovimTest
+$ devbox init	←☆初期化(?)作業。
+✓ Downloading version 0.17.0... [DONE]
+✓ Verifying checksum... [DONE]
+✓ Unpacking binary... [DONE]
+
+$ echo $?
+0
+$ ll -a
+total 8
+-rw-r--r--    1 asakunotomohiro  staff   342B  3月 24 22:31 devbox.json
+drwxr-xr-x    4 asakunotomohiro  staff   128B  3月 24 22:31 ./
+drwxr-xr-x    2 asakunotomohiro  staff    64B  3月 24 22:29 dev20260324/
+drwx------@ 860 asakunotomohiro  staff    27K  3月 24 22:29 ../
+$ devbox add curl nerdfonts git lazygit fzf ripgrep fd unzip nodejs	←☆下準備作業(べらんぼうに時間が掛かる)。
+
+Nix is not installed. Devbox will attempt to install it.
+
+Press enter to continue or ctrl-c to exit.
+
+ INFO nix-installer v2.34.1
+`nix-installer` needs to run as `root`, attempting to escalate now via `sudo`...
+Password:
+ INFO nix-installer v2.34.1
+ INFO Step: Create an APFS volume `Nix Store` for Nix on `disk3` and add it to `/etc/fstab` mounting on `/nix`
+ INFO Step: Provision Nix
+ INFO Step: Create build users (UID 351-382) and group (GID 350)
+ INFO Step: Configure Time Machine exclusions
+ INFO Step: Configure Nix
+ INFO Step: Configuring zsh to support using Nix in non-interactive shells
+ INFO Step: Create a `launchctl` plist to put Nix into your PATH
+ INFO Step: Configure upstream Nix daemon service
+ INFO Step: Remove directory `/nix/temp-install-dir`
+ INFO Waiting up to 10s for Nix daemon socket
+ INFO Running self test for shell sh
+ INFO Running self test for shell bash
+ INFO Running self test for shell zsh
+Nix was installed successfully!
+To get started using Nix, open a new shell or run `. /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh`
+
+Nix installed successfully. Devbox is ready to use!
+Info: Adding package "curl@latest" to devbox.json
+Ensuring nixpkgs registry is downloaded.
+Downloaded 'github:NixOS/nixpkgs/34a626458d686f1b58139620a8b2793e9e123bba' to '/nix/store/jzpjpvpbr0ma8prlfhp3wk89p0i85ac3-source' (hash 'sha256-nAlsuFVl77/sioOE3ce7ukm8iC+DmhakoYsDQfcbpLY=').
+Ensuring nixpkgs registry is downloaded: Success
+Info: Adding package "nerdfonts@latest" to devbox.json
+Info: Adding package "git@latest" to devbox.json
+Info: Adding package "lazygit@latest" to devbox.json
+Info: Adding package "fzf@latest" to devbox.json
+Info: Adding package "ripgrep@latest" to devbox.json
+Info: Adding package "fd@latest" to devbox.json
+Info: Adding package "unzip@latest" to devbox.json
+Info: Adding package "nodejs@latest" to devbox.json
+Info: Installing the following packages to the nix store: unzip@latest, nodejs@latest, curl@latest, git@latest, nerdfonts@latest, lazygit@latest, fzf@latest, ripgrep@latest, fd@latest
+
+nodejs NOTES:
+Devbox automatically configures Corepack for Nodejs when DEVBOX_COREPACK_ENABLED=1. You can install Yarn or Pnpm by adding them to your `package.json` file using `packageManager`
+Corepack binaries will be installed in your local `.devbox` directory
+
+This plugin creates the following helper files:
+
+To show this information, run `devbox info nodejs`
+
+
+$ echo $?
+0
+$
+```
+
 <a id="theDarksideCommunicationGroup9784873102870020003"></a>
 #### Docker を使った環境構築
 
