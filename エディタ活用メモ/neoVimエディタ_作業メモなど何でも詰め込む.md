@@ -398,6 +398,7 @@ $
 
 <a id="theDarksideCommunicationGroup9784873102870020003"></a>
 #### Docker を使った環境構築
+Dockerのインストールコマンド：`brew install docker`
 
 <a id="theDarksideCommunicationGroup9784873102870030000"></a>
 ### プラグインとプラグインマネージャー
