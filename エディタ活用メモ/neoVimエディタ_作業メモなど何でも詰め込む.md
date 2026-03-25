@@ -398,6 +398,130 @@ $
 
 <a id="theDarksideCommunicationGroup9784873102870020003"></a>
 #### Docker を使った環境構築
+Dockerのインストールコマンド：`brew install docker`
+
+ドッカーファイル内容。
+```terminal
+$ cat -n Dockerfile
+     1	FROM manjarolinux/base:latest
+     2	
+     3	# パッケージリスト更新
+     4	RUN pacman -Syu
+     5	
+     6	# AUR用にyayをインストール。
+     7	RUN pacman -S --noconfirm yay
+     8	
+     9	# 必要なパッケージをインストール
+    10	RUN pacman -S --needed --noconfirm \
+    11		base-devel \
+    12		binutils \
+    13		curl \
+    14		gcc \
+    15		git \
+    16		make \
+    17		nodejs \
+    18		sudo \
+    19		unzip \
+    20		yay
+    21	
+    22	# ユーザjohnを作成し、パスワードを設定。
+    23	#RUN useradd -m -G wheel -s /bin/bash john && \
+    24	#	echo "john ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+    25	RUN useradd -m -G wheel -s /bin/bash asakunotomohiro && \
+    26		echo "asakunotomohiro ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+    27	
+    28	# 一般ユーザjohnのホームディレクトリを作業ディレクトリに設定
+    29	#WORKDIR /home/john
+    30	WORKDIR /home/asakunotomohiro
+    31	
+    32	# 一般ユーザjohnに切り替え。
+    33	#USER john
+    34	USER asakunotomohiro
+    35	
+    36	# yayを使用したパッケージのインストール
+    37	RUN yay -S --needed --noconfirm \
+    38		fd \
+    39		fzf \
+    40		lazygit \
+    41		nerd-fonts \
+    42		ripgrep
+    43	
+    44	# GitHubからNeovimのAppImageをダウンロード
+    45	## arm64, x86_64のどちらを選ぶかはホスト端末依存。
+    46	## 補足：
+    47	##	arm64: Apple Siliconや最新のスマホなどが使っている。
+    48	##	x86_64: 昔からのパソコン(IntelやAMDのチップ)が使っている。
+    49	ARG PLATFORM=arm64
+    50	ARG NVIM_APP=nvim-linux-${PLATFORM}.appimage
+    51	ARG URL=https://github.com/neovim/neovim/releases/latest/download
+    52	
+    53	RUN curl -LO ${URL}/${NVIM_APP}
+    54	
+    55	# NeovimのAppImageを実行可能にする。
+    56	RUN chmod u+x ${NVIM_APP}
+    57	
+    58	# NeovimのAppImageを展開
+    59	RUN ./${NVIM_APP} --appimage-extract
+    60	
+    61	# NeovimのAppImageを移動
+    62	RUN sudo mv squashfs-root /
+    63	
+    64	# Symbolic linkを作成
+    65	RUN sudo ln -s /squashfs-root/AppRun /usr/bin/nvim
+    66	
+    67	# bashの起動
+    68	SHELL ["/bin/bash", "-c"]
+$
+```
+
+以下、ビルド作業。
+```terminal
+$ docker buildx build -t neovim_docker .
+[+] Building 125.0s (16/16) FINISHED                                                                                                   docker:desktop-linux
+ => [internal] load build definition from Dockerfile                                                                                                   0.0s
+ => => transferring dockerfile: 1.77kB                                                                                                                 0.0s
+ => [internal] load metadata for docker.io/manjarolinux/base:latest                                                                                    0.9s
+ => [internal] load .dockerignore                                                                                                                      0.0s
+ => => transferring context: 2B                                                                                                                        0.0s
+ => [ 1/12] FROM docker.io/manjarolinux/base:latest@sha256:bbf1f1d746f28e138eea610e140d2f28cbb5b7c5da2fbff034b883527aa604e9                            0.0s
+ => CACHED [ 2/12] RUN pacman -Syu                                                                                                                     0.0s
+ => CACHED [ 3/12] RUN pacman -S --noconfirm yay                                                                                                       0.0s
+ => CACHED [ 4/12] RUN pacman -S --needed --noconfirm  base-devel  binutils  curl  gcc  git  make  nodejs  sudo  unzip  yay                            0.0s
+ => [ 5/12] RUN useradd -m -G wheel -s /bin/bash asakunotomohiro &&  echo "asakunotomohiro ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers                    0.1s
+ => [ 6/12] WORKDIR /home/asakunotomohiro                                                                                                              0.0s
+ => [ 7/12] RUN yay -S --needed --noconfirm  fd  fzf  lazygit  nerd-fonts  ripgrep                                                                   107.7s
+ => [ 8/12] RUN curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-arm64.appimage                                           2.2s
+ => [ 9/12] RUN chmod u+x nvim-linux-arm64.appimage                                                                                                    0.1s
+ => [10/12] RUN ./nvim-linux-arm64.appimage --appimage-extract                                                                                         0.3s
+ => [11/12] RUN sudo mv squashfs-root /                                                                                                                2.4s
+ => [12/12] RUN sudo ln -s /squashfs-root/AppRun /usr/bin/nvim                                                                                         0.2s
+ => exporting to image                                                                                                                                11.0s
+ => => exporting layers                                                                                                                               11.0s
+ => => writing image sha256:d6681635501e9e62823efa131799b648777ef2cb5d03ce240ce71b4e6228e710                                                           0.0s
+ => => naming to docker.io/library/neovim_docker                                                                                                       0.0s
+
+What's next:
+    View a summary of image vulnerabilities and recommendations → docker scout quickview
+$ echo $?
+0
+$
+```
+
+以下、ドッカーイメージ起動。
+```terminal
+$ docker run -v $(pwd)/nvim-dev:/home/asakunotomohiro/.config/nvim -it neovim_docker	←☆イメージ起動。
+sh-5.2$ nvim	←☆エディタ起動(ファイル操作不可)。
+sh-5.2$ nvim --version	←☆エディタのバージョン確認。
+NVIM v0.11.6
+Build type: Release
+LuaJIT 2.1.1741730670
+Run "nvim -V1 -v" for more info
+sh-5.2$ exit
+exit
+$
+```
+エディタ操作がローカル端末に反映されない。  
+TODO: イメージ起動の方法を調べる(ローカル端末と紐付くように起動する方法が知りたい)。
 
 <a id="theDarksideCommunicationGroup9784873102870030000"></a>
 ### プラグインとプラグインマネージャー
