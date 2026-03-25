@@ -1326,12 +1326,18 @@ OSのクリップボードを経由する。
 * レジスタ操作用の履歴管理プラグイン  
   * [yankround.vim](https://github.com/LeafCage/yankround.vim)  
     yankround はレジスタの履歴を取得し、再利用するためのVimプラグインです。  
+    9年ほど前から更新が途絶えている。  
   * [Yoink.vim](https://github.com/svermeulen/vim-yoink)  
     Yoink will automatically maintain a history of yanks that you can choose between when pasting.  
+    5年ほど前から更新が途絶えている。  
   * [yankstack.vim](https://github.com/maxbrunsfeld/vim-yankstack)  
     delete things without worrying about losing the text that you yanked previously.  
+    12年ほど前から更新が途絶えている。  
   * [YankRing.vim](https://github.com/vim-scripts/YankRing.vim)  
     The YankRing plugin allows the user to configure the number of yanked, deleted and changed text.  
+    11年ほど前から更新が途絶えている。  
+
+情けないことに、どれも使い方がわからない。  
 
 <a id="viBibleImprovedGihyo2200003"></a>
 ##### 複数のファイル操作
