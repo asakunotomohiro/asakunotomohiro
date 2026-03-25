@@ -507,6 +507,22 @@ $ echo $?
 $
 ```
 
+以下、ドッカーイメージ起動。
+```terminal
+$ docker run -v $(pwd)/nvim-dev:/home/asakunotomohiro/.config/nvim -it neovim_docker	←☆イメージ起動。
+sh-5.2$ nvim	←☆エディタ起動(ファイル操作不可)。
+sh-5.2$ nvim --version	←☆エディタのバージョン確認。
+NVIM v0.11.6
+Build type: Release
+LuaJIT 2.1.1741730670
+Run "nvim -V1 -v" for more info
+sh-5.2$ exit
+exit
+$
+```
+エディタ操作がローカル端末に反映されない。  
+TODO: イメージ起動の方法を調べる(ローカル端末と紐付くように起動する方法が知りたい)。
+
 <a id="theDarksideCommunicationGroup9784873102870030000"></a>
 ### プラグインとプラグインマネージャー
 
