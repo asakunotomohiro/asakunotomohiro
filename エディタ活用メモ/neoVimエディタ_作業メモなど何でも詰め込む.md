@@ -474,6 +474,39 @@ $ cat -n Dockerfile
 $
 ```
 
+以下、ビルド作業。
+```terminal
+$ docker buildx build -t neovim_docker .
+[+] Building 125.0s (16/16) FINISHED                                                                                                   docker:desktop-linux
+ => [internal] load build definition from Dockerfile                                                                                                   0.0s
+ => => transferring dockerfile: 1.77kB                                                                                                                 0.0s
+ => [internal] load metadata for docker.io/manjarolinux/base:latest                                                                                    0.9s
+ => [internal] load .dockerignore                                                                                                                      0.0s
+ => => transferring context: 2B                                                                                                                        0.0s
+ => [ 1/12] FROM docker.io/manjarolinux/base:latest@sha256:bbf1f1d746f28e138eea610e140d2f28cbb5b7c5da2fbff034b883527aa604e9                            0.0s
+ => CACHED [ 2/12] RUN pacman -Syu                                                                                                                     0.0s
+ => CACHED [ 3/12] RUN pacman -S --noconfirm yay                                                                                                       0.0s
+ => CACHED [ 4/12] RUN pacman -S --needed --noconfirm  base-devel  binutils  curl  gcc  git  make  nodejs  sudo  unzip  yay                            0.0s
+ => [ 5/12] RUN useradd -m -G wheel -s /bin/bash asakunotomohiro &&  echo "asakunotomohiro ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers                    0.1s
+ => [ 6/12] WORKDIR /home/asakunotomohiro                                                                                                              0.0s
+ => [ 7/12] RUN yay -S --needed --noconfirm  fd  fzf  lazygit  nerd-fonts  ripgrep                                                                   107.7s
+ => [ 8/12] RUN curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-arm64.appimage                                           2.2s
+ => [ 9/12] RUN chmod u+x nvim-linux-arm64.appimage                                                                                                    0.1s
+ => [10/12] RUN ./nvim-linux-arm64.appimage --appimage-extract                                                                                         0.3s
+ => [11/12] RUN sudo mv squashfs-root /                                                                                                                2.4s
+ => [12/12] RUN sudo ln -s /squashfs-root/AppRun /usr/bin/nvim                                                                                         0.2s
+ => exporting to image                                                                                                                                11.0s
+ => => exporting layers                                                                                                                               11.0s
+ => => writing image sha256:d6681635501e9e62823efa131799b648777ef2cb5d03ce240ce71b4e6228e710                                                           0.0s
+ => => naming to docker.io/library/neovim_docker                                                                                                       0.0s
+
+What's next:
+    View a summary of image vulnerabilities and recommendations → docker scout quickview
+$ echo $?
+0
+$
+```
+
 <a id="theDarksideCommunicationGroup9784873102870030000"></a>
 ### プラグインとプラグインマネージャー
 
