@@ -400,6 +400,80 @@ $
 #### Docker を使った環境構築
 Dockerのインストールコマンド：`brew install docker`
 
+ドッカーファイル内容。
+```terminal
+$ cat -n Dockerfile
+     1	FROM manjarolinux/base:latest
+     2	
+     3	# パッケージリスト更新
+     4	RUN pacman -Syu
+     5	
+     6	# AUR用にyayをインストール。
+     7	RUN pacman -S --noconfirm yay
+     8	
+     9	# 必要なパッケージをインストール
+    10	RUN pacman -S --needed --noconfirm \
+    11		base-devel \
+    12		binutils \
+    13		curl \
+    14		gcc \
+    15		git \
+    16		make \
+    17		nodejs \
+    18		sudo \
+    19		unzip \
+    20		yay
+    21	
+    22	# ユーザjohnを作成し、パスワードを設定。
+    23	#RUN useradd -m -G wheel -s /bin/bash john && \
+    24	#	echo "john ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+    25	RUN useradd -m -G wheel -s /bin/bash asakunotomohiro && \
+    26		echo "asakunotomohiro ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+    27	
+    28	# 一般ユーザjohnのホームディレクトリを作業ディレクトリに設定
+    29	#WORKDIR /home/john
+    30	WORKDIR /home/asakunotomohiro
+    31	
+    32	# 一般ユーザjohnに切り替え。
+    33	#USER john
+    34	USER asakunotomohiro
+    35	
+    36	# yayを使用したパッケージのインストール
+    37	RUN yay -S --needed --noconfirm \
+    38		fd \
+    39		fzf \
+    40		lazygit \
+    41		nerd-fonts \
+    42		ripgrep
+    43	
+    44	# GitHubからNeovimのAppImageをダウンロード
+    45	## arm64, x86_64のどちらを選ぶかはホスト端末依存。
+    46	## 補足：
+    47	##	arm64: Apple Siliconや最新のスマホなどが使っている。
+    48	##	x86_64: 昔からのパソコン(IntelやAMDのチップ)が使っている。
+    49	ARG PLATFORM=arm64
+    50	ARG NVIM_APP=nvim-linux-${PLATFORM}.appimage
+    51	ARG URL=https://github.com/neovim/neovim/releases/latest/download
+    52	
+    53	RUN curl -LO ${URL}/${NVIM_APP}
+    54	
+    55	# NeovimのAppImageを実行可能にする。
+    56	RUN chmod u+x ${NVIM_APP}
+    57	
+    58	# NeovimのAppImageを展開
+    59	RUN ./${NVIM_APP} --appimage-extract
+    60	
+    61	# NeovimのAppImageを移動
+    62	RUN sudo mv squashfs-root /
+    63	
+    64	# Symbolic linkを作成
+    65	RUN sudo ln -s /squashfs-root/AppRun /usr/bin/nvim
+    66	
+    67	# bashの起動
+    68	SHELL ["/bin/bash", "-c"]
+$
+```
+
 <a id="theDarksideCommunicationGroup9784873102870030000"></a>
 ### プラグインとプラグインマネージャー
 
