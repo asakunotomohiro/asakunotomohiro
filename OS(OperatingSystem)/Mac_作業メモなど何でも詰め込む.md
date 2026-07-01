@@ -9,9 +9,9 @@
 ## MacOS
 複数のOS([バージョン](https://support.apple.com/en-us/HT201260))を持っている。  
 
-今後は、Appleシリコン向けのOSを使うことになるだろう。  
+今後は、Appleシリコン端末を使うことになるだろう。  
 現在所持している最新版は、~~**[macOS Monterey(Ver12.4)](https://www.apple.com/jp/macos/monterey/)**~~ になっている(今後メインで使いたい)。  
-現在所持している最古版は、**macOS Sierra(Ver10.12.6)** になっている(オフライン専用)。  
+現在所持している最古版は、~~**macOS Sierra(Ver10.12.6)**~~ になっている(オフライン専用)。  
 
 * 目次。  
   * [macOS新規利用前の設定変更](#macOperatingSystemsetting)  
