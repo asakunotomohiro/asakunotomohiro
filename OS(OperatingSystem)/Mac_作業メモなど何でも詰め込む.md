@@ -95,7 +95,7 @@
 #### appleシリコン用macOS再インストール方法
 当たり前だが、公式の説明に従う。  
 
-SDDのフォーマット形式：APFS  
+SSDのフォーマット形式：APFS  
 ※APFSとは、Apple File Systemのこと。  
 
 * 工場出荷状態に戻す手順。  
